@@ -1,0 +1,25 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 22, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "vs2026-x64",
+      "displayName": "Visual Studio 2026 x64",
+      "generator": "Visual Studio 18 2026",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "HPEQ_JUCE_DIR": "$env{HPEQ_JUCE_DIR}",
+        "HPEQ_HPDG_SOURCE_DIR": "$env{HPEQ_HPDG_SOURCE_DIR}"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "release", "configurePreset": "vs2026-x64", "configuration": "Release" },
+    { "name": "debug", "configurePreset": "vs2026-x64", "configuration": "Debug" }
+  ],
+  "testPresets": [
+    { "name": "release", "configurePreset": "vs2026-x64", "configuration": "Release", "output": { "outputOnFailure": true } },
+    { "name": "debug", "configurePreset": "vs2026-x64", "configuration": "Debug", "output": { "outputOnFailure": true } }
+  ]
+}

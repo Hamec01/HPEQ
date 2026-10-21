@@ -46,3 +46,22 @@ y = Align(xE) + sum_nodes nodeMix * delta_node
   is enabled for K > 1 only after its own tests (order matters, bypass of any slot, latency sum) and a
   CPU measurement of the 6-slot worst case (T12 extended).
 - State schema v1 stores nodes as a slot array from the start, so no migration is needed later.
+
+## D3 — 2026-10-21 — Rewrite the processors, do not port HPDG's
+
+**Decision:** the owner considers HPDG's EQ, MonstaFX, Compressor "and everything else" raw. HPEQ
+implements all processors anew, to a measured quality bar.
+
+**Overrides:** `01` §1 "Кандидат на extraction" and `03` M4.1 "Исследуй reuse `DrumCompressorBlock`".
+
+**Consequences:**
+- HPDG blocks are used only as a **measured baseline to beat** (M0 `hpdg_block_audit`): every new
+  processor's report shows the same test on the HPDG block and on the HPEQ processor.
+- Known defects that the rewrite must not repeat (from the M0 audit): allocations on the audio
+  thread (scratch `setSize`, per-call `std::vector`, `IIR::Coefficients` creation), no parameter
+  smoothing on EQ coefficients (zipper on automation), only 3 EQ shapes at fixed 12 dB/oct, a
+  compressor whose real attack/release/makeup differ from the displayed values (drum "character"
+  scaling, block-peak gain reduction, no knee), Monsta randomness tied to HPDG's generator.
+- The milestone order is unchanged: the processors come after the M2 routing gate (EQ in M3,
+  Compressor/Reverb in M4, Monsta and the rest in M6).
+- HPDG itself is not changed by this decision; improving HPDG's own Sound Module is a separate task.
