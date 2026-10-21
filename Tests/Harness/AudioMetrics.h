@@ -48,7 +48,8 @@ int estimateDelay(const juce::AudioBuffer<float>& y, const juce::AudioBuffer<flo
 // Bins where |X| is more than `maskDb` below max|X| are unreliable and reported as nullopt.
 struct TransferPoint
 {
-    double frequencyHz = 0.0;
+    double frequencyHz = 0.0;    // requested
+    double binFrequencyHz = 0.0; // the FFT bin actually measured (compare analytic values here)
     std::optional<double> magnitudeDb;
     std::optional<double> phaseRadians;
 };

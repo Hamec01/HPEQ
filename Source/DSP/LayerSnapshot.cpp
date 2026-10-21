@@ -43,9 +43,9 @@ FxSlotParams makeSlot(const FxSlotState& state)
 }
 } // namespace
 
-bool isEqShapeProcessed(EqShape shape) noexcept
+bool isEqShapeProcessed(EqShape) noexcept
 {
-    return shape == EqShape::Bell; // M3 adds the other shapes and slopes
+    return true; // M3: every shape and slope of the model is implemented
 }
 
 bool isFxTypeProcessed(FxType type) noexcept
@@ -65,6 +65,8 @@ LayerSnapshot makeSnapshot(const LayerState& layer)
         band.frequencyHz = static_cast<float>(node.frequencyHz);
         band.gainDb = static_cast<float>(node.gainDb);
         band.q = static_cast<float>(node.q);
+        band.slopeDbPerOct = node.slopeDbPerOct;
+        band.channel = node.channel;
     }
     for (size_t i = 0; i < layer.fxNodes.size() && i < snapshot.fx.size(); ++i)
     {
@@ -74,6 +76,7 @@ LayerSnapshot makeSnapshot(const LayerState& layer)
         fx.lowHz = static_cast<float>(node.lowHz);
         fx.highHz = static_cast<float>(node.highHz);
         fx.mix = node.mix;
+        fx.channel = node.channel;
         fx.numSlots = static_cast<int>(std::min(node.chain.size(), fx.slots.size()));
         for (int s = 0; s < fx.numSlots; ++s)
             fx.slots[static_cast<size_t>(s)] = makeSlot(node.chain[static_cast<size_t>(s)]);

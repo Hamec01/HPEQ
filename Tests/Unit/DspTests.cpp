@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <memory>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
@@ -80,7 +81,8 @@ struct RenderResult
 // Renders `input` through a fresh engine with `snapshot`, in blocks of `block`.
 RenderResult render(const LayerSnapshot& snapshot, const juce::AudioBuffer<float>& input, int block, double fs = kFs)
 {
-    LayerEngine engine;
+    auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+    auto& engine = *enginePtr;
     engine.prepare(fs, block);
     engine.publish(snapshot);
     RenderResult r { input, 0 };
@@ -305,7 +307,8 @@ public:
 
         beginTest("MIX-0: after mixing a running compressor out, output equals the passive-node render exactly");
         {
-            LayerEngine engine;
+            auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+            auto& engine = *enginePtr;
             engine.prepare(kFs, 256);
             LayerSnapshot s;
             s.eq[0] = bell(2000, 3.0f);
@@ -337,7 +340,8 @@ public:
 
         beginTest("FX off again: disabling the last node returns to the bit-exact PRE-EQ output");
         {
-            LayerEngine engine;
+            auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+            auto& engine = *enginePtr;
             engine.prepare(kFs, 256);
             LayerSnapshot s;
             s.eq[0] = bell(150, -3.0f);
@@ -371,7 +375,8 @@ public:
             // Thresholds fixed before the run: HF products > 5 kHz below -60 dB (as for edge glides) and
             // no short-term level dip deeper than 3 dB below the quieter steady state around a change.
             const auto sine = makeSine({ kFs, 2, 1.2, kFixtureSeed }, 1000.0, -6.0);
-            LayerEngine engine;
+            auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+            auto& engine = *enginePtr;
             engine.prepare(kFs, 256);
             LayerSnapshot s;
             auto y = sine;
@@ -468,7 +473,8 @@ public:
 
         beginTest("T04: 100k random mutations, random blocks 1..2048, no NaN/Inf, bounded, no allocations");
         {
-            LayerEngine engine;
+            auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+            auto& engine = *enginePtr;
             engine.prepare(kFs, 512); // blocks above 512 exercise the internal chunking
             DeterministicRandom random(kFixtureSeed + 4);
             const auto uni = [&](double lo, double hi) { return lo + (hi - lo) * (random.nextBipolar() * 0.5 + 0.5); };
@@ -532,7 +538,8 @@ public:
         beginTest("range move during playback is smooth (HF products < -60 dB)");
         {
             const auto sine = makeSine({ kFs, 2, 1.0, kFixtureSeed }, 1000.0, -6.0);
-            LayerEngine engine;
+            auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+            auto& engine = *enginePtr;
             engine.prepare(kFs, 256);
             LayerSnapshot s;
             s.fx[0] = node(250, 700, { gainSlot(-12.0f) });
@@ -562,7 +569,8 @@ public:
             // Same signal and sweep as the M0 HPDG EQ audit: 100 Hz sine -12 dBFS, bell 100 Hz Q 1
             // swept -12 -> +12 dB over 1 s, new target every 512 samples; HF above 2 kHz.
             auto y = makeSine({ kFs, 1, 1.0, kFixtureSeed }, 100.0, -12.0);
-            LayerEngine engine;
+            auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+            auto& engine = *enginePtr;
             engine.prepare(kFs, 512);
             LayerSnapshot s;
             for (int start = 0; start < y.getNumSamples(); start += 512)
@@ -625,7 +633,8 @@ public:
             withEq.eq[0] = bell(80.0f, -18.0f, 2.0f);
             const auto measureGr = [&](const LayerSnapshot& s)
             {
-                LayerEngine engine;
+                auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+                auto& engine = *enginePtr;
                 engine.prepare(kFs, 512);
                 engine.publish(s);
                 auto y = low;
@@ -648,7 +657,8 @@ public:
 
         beginTest("plugin: bypass with active processing settles to the exact dry signal");
         {
-            FxPluginProcessor p;
+            auto pPtr = std::make_unique<FxPluginProcessor>();
+            auto& p = *pPtr;
             auto project = p.getProject();
             FxNodeState n;
             n.chain.front().type = FxType::Gain;

@@ -2,6 +2,7 @@
 // editor open/close (M1-C, in-process), identity vs HPDG.
 
 #include <cmath>
+#include <memory>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
@@ -63,7 +64,8 @@ public:
     {
         beginTest("identity: audio insert effect, distinct from HPDG");
         {
-            FxPluginProcessor p;
+            auto pPtr = std::make_unique<FxPluginProcessor>();
+            auto& p = *pPtr;
             expectEquals(juce::String(JucePlugin_Name), juce::String("HPEQ"));
             expect(JucePlugin_IsSynth == 0, "IS_SYNTH must be FALSE");
             expect(!p.acceptsMidi() && !p.producesMidi() && !p.isMidiEffect());
@@ -76,7 +78,8 @@ public:
 
         beginTest("bus layouts: mono->mono and stereo->stereo only");
         {
-            FxPluginProcessor p;
+            auto pPtr = std::make_unique<FxPluginProcessor>();
+            auto& p = *pPtr;
             const auto layout = [](juce::AudioChannelSet in, juce::AudioChannelSet out)
             {
                 juce::AudioProcessor::BusesLayout l;
@@ -98,7 +101,8 @@ public:
                 for (int channels : { 1, 2 })
                     for (int block : kBlocks)
                     {
-                        FxPluginProcessor p;
+                        auto pPtr = std::make_unique<FxPluginProcessor>();
+                        auto& p = *pPtr;
                         expect(configure(p, channels, fs, block));
                         const auto input = makeSyntheticDrums({ fs, channels, 0.25, kFixtureSeed });
                         auto audio = input;
@@ -113,7 +117,8 @@ public:
 
         beginTest("bypass is bit-exact even with output gain set");
         {
-            FxPluginProcessor p;
+            auto pPtr = std::make_unique<FxPluginProcessor>();
+            auto& p = *pPtr;
             setParameter(p, params::outputGain, -12.0f);
             setParameter(p, params::bypass, 1.0f);
             expect(configure(p, 2, 48000.0, 512));
@@ -125,7 +130,8 @@ public:
 
         beginTest("output gain: -6 dB settles exactly, ramp is smooth, no allocations");
         {
-            FxPluginProcessor p;
+            auto pPtr = std::make_unique<FxPluginProcessor>();
+            auto& p = *pPtr;
             expect(configure(p, 2, 48000.0, 256));
             setParameter(p, params::outputGain, -6.0f);
             const auto input = makeSine({ 48000.0, 2, 1.0, kFixtureSeed }, 1000.0, -6.0);
@@ -162,7 +168,8 @@ public:
 
         beginTest("blocks larger than prepared and empty blocks are handled");
         {
-            FxPluginProcessor p;
+            auto pPtr = std::make_unique<FxPluginProcessor>();
+            auto& p = *pPtr;
             expect(configure(p, 2, 48000.0, 64));
             setParameter(p, params::outputGain, 3.0f);
             auto audio = makePinkNoise({ 48000.0, 2, 0.2, kFixtureSeed }, -20.0);
@@ -176,7 +183,8 @@ public:
 
         beginTest("T04 (M1 scope): 100k random parameter mutations, random blocks 1..2048");
         {
-            FxPluginProcessor p;
+            auto pPtr = std::make_unique<FxPluginProcessor>();
+            auto& p = *pPtr;
             expect(configure(p, 2, 48000.0, 2048));
             DeterministicRandom random(kFixtureSeed);
             const auto source = makeWhiteNoise({ 48000.0, 2, 1.0, kFixtureSeed }, -6.0);
@@ -216,7 +224,8 @@ public:
 
         beginTest("M1-C (in-process): 100 editor open/close cycles while audio runs");
         {
-            FxPluginProcessor p;
+            auto pPtr = std::make_unique<FxPluginProcessor>();
+            auto& p = *pPtr;
             expect(configure(p, 2, 48000.0, 512));
             auto audio = makePinkNoise({ 48000.0, 2, 0.05, kFixtureSeed }, -20.0);
             juce::MidiBuffer midi;

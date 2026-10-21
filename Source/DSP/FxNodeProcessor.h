@@ -52,9 +52,14 @@ private:
     int mixSteps = 1;
     bool wanted = false, running = false;
     double lowHz = 250.0, highHz = 700.0; // clamped to [1 Hz, 0.45 fs], low <= high
+    float targetMix = 1.0f;
+    // Channel mode: Stereo / Linked Stereo (compressor detector linked), Dual Mono (unlinked),
+    // Left / Right / Mid / Side (the chain runs on that component only; its delta is routed back).
+    ChannelMode mode = ChannelMode::Stereo, pendingMode = ChannelMode::Stereo;
+    bool modeChangePending = false;
     LinearRamp nodeMix;
     std::array<Slot, kMaxFxPerNode> slots;
 
-    std::array<std::vector<float>, kMaxChannels> chain, work;
+    std::array<std::vector<float>, kMaxChannels> chain, work, bandWork;
 };
 } // namespace hpeq::dsp

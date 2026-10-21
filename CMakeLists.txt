@@ -63,6 +63,7 @@ target_sources(HPEQ
         Source/DSP/PreEqProcessor.cpp
         Source/DSP/Processors.cpp
         Source/DSP/CrossoverTree.cpp
+        Source/DSP/EqDesign.cpp
         Source/Plugin/FxPluginProcessor.cpp
         Source/Plugin/FxPluginEditor.cpp)
 
@@ -95,7 +96,8 @@ add_executable(HPEQ_Tests
     Tests/Unit/HarnessTests.cpp
     Tests/Unit/PluginContractTests.cpp
     Tests/Unit/StateTests.cpp
-    Tests/Unit/DspTests.cpp)
+    Tests/Unit/DspTests.cpp
+    Tests/Unit/EqTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_link_libraries(HPEQ_Tests PRIVATE HPEQ)
 add_test(NAME HPEQ_Tests COMMAND HPEQ_Tests)
@@ -103,7 +105,8 @@ add_test(NAME HPEQ_Tests COMMAND HPEQ_Tests)
 # M2 lab: H1 vs H2 frequency-core experiment on the real engine (JSON, SVG, WAV).
 add_executable(HPEQ_Lab
     ${HPEQ_HARNESS_SOURCES}
-    Tests/Tools/LabMain.cpp)
+    Tests/Tools/LabMain.cpp
+    Tests/Tools/LabM3.cpp)
 target_include_directories(HPEQ_Lab PRIVATE Tests)
 target_link_libraries(HPEQ_Lab PRIVATE HPEQ)
 

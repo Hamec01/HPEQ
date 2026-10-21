@@ -2,6 +2,7 @@
 // versions, sanitising limits (incl. the 6-slot chain from DECISIONS D2).
 
 #include <cmath>
+#include <memory>
 #include <limits>
 
 #include <juce_audio_processors/juce_audio_processors.h>
@@ -101,13 +102,16 @@ public:
 
         beginTest("plugin state: parameters, project and sound survive save/restore");
         {
-            FxPluginProcessor a;
+            auto aPtr = std::make_unique<FxPluginProcessor>();
+            auto& a = *aPtr;
             setParameter(a, params::outputGain, -4.5f);
             a.setProject(makeRichProject());
             juce::MemoryBlock blob;
             a.getStateInformation(blob);
 
-            FxPluginProcessor b;
+            auto bPtr = std::make_unique<FxPluginProcessor>();
+
+            auto& b = *bPtr;
             b.setStateInformation(blob.getData(), static_cast<int>(blob.getSize()));
             expectWithinAbsoluteError(b.getParameters().getRawParameterValue("outputGain")->load(), -4.5f, 1.0e-4f);
             expect(toValueTree(a.getProject()).isEquivalentTo(toValueTree(b.getProject())));
@@ -129,7 +133,9 @@ public:
             tree.removeProperty("schemaVersion", nullptr);
             expect(!fromValueTree(tree).has_value());
 
-            FxPluginProcessor p;
+            auto pPtr = std::make_unique<FxPluginProcessor>();
+
+            auto& p = *pPtr;
             p.setProject(makeRichProject());
             const auto before = toValueTree(p.getProject());
             const char garbage[] = "definitely not a plugin state";

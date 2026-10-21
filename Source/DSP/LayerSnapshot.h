@@ -18,6 +18,8 @@ struct EqBandParams
     float frequencyHz = 1000.0f;
     float gainDb = 0.0f;
     float q = 0.707f;
+    int slopeDbPerOct = 12;
+    ChannelMode channel = ChannelMode::Stereo;
 };
 
 // Processor parameter block. The meaning of `values` depends on `type` (see the k* indices).
@@ -43,6 +45,7 @@ struct FxNodeParams
     float lowHz = 250.0f;
     float highHz = 700.0f;
     float mix = 1.0f;
+    ChannelMode channel = ChannelMode::Stereo;
     int numSlots = 0;
     std::array<FxSlotParams, kMaxFxPerNode> slots {};
 };

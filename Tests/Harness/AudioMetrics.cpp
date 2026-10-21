@@ -178,6 +178,7 @@ std::vector<TransferPoint> measureTransfer(const juce::AudioBuffer<float>& y,
         TransferPoint point;
         point.frequencyHz = f;
         const auto bin = static_cast<size_t>(std::llround(f / binHz));
+        point.binFrequencyHz = static_cast<double>(bin) * binHz;
         if (bin < X.size() && std::abs(X[bin]) > floor && floor > 0.0)
         {
             const auto h = Y[bin] / X[bin];

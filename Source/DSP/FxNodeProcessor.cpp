@@ -9,7 +9,7 @@ void FxNodeProcessor::prepare(double newSampleRate, int maxBlockSize)
 {
     sampleRate = newSampleRate;
     mixSteps = stepsFor(kMixRampSeconds, sampleRate);
-    for (auto* group : { &chain, &work })
+    for (auto* group : { &chain, &work, &bandWork })
         for (auto& channel : *group)
             channel.assign(static_cast<size_t>(maxBlockSize), 0.0f);
     for (auto& slot : slots)
@@ -36,9 +36,12 @@ void FxNodeProcessor::reset() noexcept
 void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
 {
     wanted = p.active;
+    targetMix = p.mix;
     if (wanted && !running)
     {
         running = true;
+        mode = p.channel;
+        modeChangePending = false;
         nodeMix.reset(0.0);
         for (auto& slot : slots)
         {
@@ -53,7 +56,13 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
     highHz = design::clampFrequency(p.highHz, sampleRate);
     if (highHz < lowHz)
         std::swap(lowHz, highHz);
-    nodeMix.setTarget(wanted ? static_cast<double>(p.mix) : 0.0, mixSteps);
+    // A channel-mode change re-routes the delta: fade the node out, switch, fade back in.
+    if (p.channel != mode)
+    {
+        modeChangePending = true;
+        pendingMode = p.channel;
+    }
+    nodeMix.setTarget(wanted && !modeChangePending ? static_cast<double>(p.mix) : 0.0, mixSteps);
 
     for (int k = 0; k < kMaxFxPerNode; ++k)
     {
@@ -85,7 +94,7 @@ void FxNodeProcessor::runProcessor(Slot& slot, float* const* channels, int numCh
     switch (slot.type)
     {
         case FxType::Gain:       slot.gain.process(channels, numChannels, numSamples, slot.params); break;
-        case FxType::Compressor: slot.compressor.process(channels, numChannels, numSamples, slot.params); break;
+        case FxType::Compressor: slot.compressor.process(channels, numChannels, numSamples, slot.params, mode != ChannelMode::DualMono); break;
         case FxType::Limiter:
         case FxType::Reverb:
         case FxType::Delay:
@@ -103,33 +112,64 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
     if (!running)
         return;
 
+    // Route the stereo band into the work domain of the channel mode (M = (L+R)/2, S = (L-R)/2).
+    const bool stereo = numChannels > 1;
+    int workChannels = numChannels;
+    switch (mode)
+    {
+        case ChannelMode::Stereo:
+        case ChannelMode::LinkedStereo:
+        case ChannelMode::DualMono: workChannels = numChannels; break;
+        case ChannelMode::Left:
+        case ChannelMode::Mid:      workChannels = 1; break;
+        case ChannelMode::Right:
+        case ChannelMode::Side:     workChannels = stereo ? 1 : 0; break; // nothing to process on mono
+    }
+
+    float* bandWorkPtr[kMaxChannels] {};
     float* chainPtr[kMaxChannels] {};
     float* workPtr[kMaxChannels] {};
-    for (int ch = 0; ch < numChannels; ++ch)
+    for (int ch = 0; ch < kMaxChannels; ++ch)
     {
+        bandWorkPtr[ch] = bandWork[static_cast<size_t>(ch)].data();
         chainPtr[ch] = chain[static_cast<size_t>(ch)].data();
         workPtr[ch] = work[static_cast<size_t>(ch)].data();
     }
 
-    for (int ch = 0; ch < numChannels; ++ch)
-        std::copy(bandPtr[ch], bandPtr[ch] + numSamples, chainPtr[ch]);
+    const float* const* b = bandPtr; // Stereo-like modes and Left use the band as it is
+    if (workChannels > 0)
+    {
+        if (mode == ChannelMode::Right)
+            b = bandPtr + 1;
+        else if (stereo && (mode == ChannelMode::Mid || mode == ChannelMode::Side))
+        {
+            const float sign = mode == ChannelMode::Mid ? 1.0f : -1.0f;
+            for (int i = 0; i < numSamples; ++i)
+                bandWorkPtr[0][i] = 0.5f * (bandPtr[0][i] + sign * bandPtr[1][i]);
+            b = bandWorkPtr;
+        }
+        for (int ch = 0; ch < workChannels; ++ch)
+            std::copy(b[ch], b[ch] + numSamples, chainPtr[ch]);
+    }
 
     for (auto& slot : slots)
     {
         if (!slot.running)
             continue;
-        for (int ch = 0; ch < numChannels; ++ch)
-            std::copy(chainPtr[ch], chainPtr[ch] + numSamples, workPtr[ch]);
-        runProcessor(slot, workPtr, numChannels, numSamples);
-
+        if (workChannels > 0)
+        {
+            for (int ch = 0; ch < workChannels; ++ch)
+                std::copy(chainPtr[ch], chainPtr[ch] + numSamples, workPtr[ch]);
+            runProcessor(slot, workPtr, workChannels, numSamples);
+        }
         for (int i = 0; i < numSamples; ++i)
         {
             const auto m = static_cast<float>(slot.mix.next());
             if (m == 1.0f)
-                for (int ch = 0; ch < numChannels; ++ch)
+                for (int ch = 0; ch < workChannels; ++ch)
                     chainPtr[ch][i] = workPtr[ch][i];
             else if (m != 0.0f)
-                for (int ch = 0; ch < numChannels; ++ch)
+                for (int ch = 0; ch < workChannels; ++ch)
                     chainPtr[ch][i] += m * (workPtr[ch][i] - chainPtr[ch][i]);
         }
         if (!slot.wanted && !slot.mix.isRamping() && slot.mix.value() == 0.0)
@@ -141,9 +181,47 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
         for (int i = 0; i < numSamples; ++i)
         {
             const auto g = static_cast<float>(nodeMix.next()) * presence[i];
-            for (int ch = 0; ch < numChannels; ++ch)
-                out[ch][i] += g * (chainPtr[ch][i] - bandPtr[ch][i]);
+            if (workChannels == 0)
+                continue;
+            switch (mode)
+            {
+                case ChannelMode::Stereo:
+                case ChannelMode::LinkedStereo:
+                case ChannelMode::DualMono:
+                    for (int ch = 0; ch < workChannels; ++ch)
+                        out[ch][i] += g * (chainPtr[ch][i] - b[ch][i]);
+                    break;
+                case ChannelMode::Left:  out[0][i] += g * (chainPtr[0][i] - b[0][i]); break;
+                case ChannelMode::Right: out[1][i] += g * (chainPtr[0][i] - b[0][i]); break;
+                case ChannelMode::Mid:
+                {
+                    const float d = g * (chainPtr[0][i] - b[0][i]);
+                    out[0][i] += d;
+                    if (stereo)
+                        out[1][i] += d;
+                    break;
+                }
+                case ChannelMode::Side:
+                {
+                    const float d = g * (chainPtr[0][i] - b[0][i]);
+                    out[0][i] += d;
+                    out[1][i] -= d;
+                    break;
+                }
+            }
         }
+    }
+
+    if (modeChangePending && !nodeMix.isRamping() && nodeMix.value() == 0.0)
+    {
+        mode = pendingMode;
+        modeChangePending = false;
+        for (auto& slot : slots)
+        {
+            slot.gain.reset();
+            slot.compressor.reset();
+        }
+        nodeMix.setTarget(wanted ? static_cast<double>(targetMix) : 0.0, mixSteps);
     }
     if (!wanted && !nodeMix.isRamping() && nodeMix.value() == 0.0)
         running = false;

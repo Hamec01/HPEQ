@@ -61,13 +61,29 @@ public:
     enum class Mode { LowPass, HighPass, AllPass };
 
     void setMode(Mode m) noexcept { mode = m; }
-    void setFrequency(double sampleRate, double frequencyHz, double q) noexcept
+    // `interpolate`: glide g linearly over the next kControlInterval samples (call advance() once per
+    // sample), instead of stepping it; a stepped g leaks zipper products into the output.
+    void setFrequency(double sampleRate, double frequencyHz, double q, bool interpolate = false) noexcept
     {
-        const double g = std::tan(3.14159265358979323846 * design::clampFrequency(frequencyHz, sampleRate) / sampleRate);
+        const double target = std::tan(3.14159265358979323846 * design::clampFrequency(frequencyHz, sampleRate) / sampleRate);
         k = 1.0 / q;
-        a1 = 1.0 / (1.0 + g * (g + k));
-        a2 = g * a1;
-        a3 = g * a2;
+        if (!interpolate)
+        {
+            g = gTarget = target;
+            remaining = 0;
+            derive();
+            return;
+        }
+        gTarget = target;
+        gStep = (target - g) / kControlInterval;
+        remaining = kControlInterval;
+    }
+    void advance() noexcept
+    {
+        if (remaining <= 0)
+            return;
+        g = --remaining == 0 ? gTarget : g + gStep;
+        derive();
     }
     void reset() noexcept { state = {}; }
 
@@ -89,8 +105,17 @@ public:
     }
 
 private:
+    void derive() noexcept
+    {
+        a1 = 1.0 / (1.0 + g * (g + k));
+        a2 = g * a1;
+        a3 = g * a2;
+    }
+
     Mode mode = Mode::AllPass;
     double k = 1.4142135623730951, a1 = 1.0, a2 = 0.0, a3 = 0.0;
+    double g = 0.0, gTarget = 0.0, gStep = 0.0;
+    int remaining = 0;
     std::array<std::array<double, 2>, kMaxChannels> state {};
 };
 

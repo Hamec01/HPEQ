@@ -1,6 +1,9 @@
 #pragma once
 
+#include <array>
 #include <atomic>
+
+#include "DSP/DspConfig.h"
 
 #include "DSP/LayerSnapshot.h"
 
@@ -19,7 +22,8 @@ public:
 };
 
 // Feed-forward compressor, written for HPEQ (DECISIONS D3), every behaviour documented:
-//  - detector: stereo-linked sample peak, level x = 20 log10 max(|L|, |R|)
+//  - detector: sample peak; linked: x = 20 log10 max(|L|, |R|) and one gain for both channels,
+//    unlinked (Dual Mono): one detector and gain per channel
 //  - gain computer: soft knee of width W (dB) around threshold T, ratio R
 //        x <  T - W/2 : y = x
 //        |x - T| <= W/2: y = x + (1/R - 1) (x - T + W/2)^2 / (2W)
@@ -34,14 +38,14 @@ class CompressorProcessor
 public:
     void prepare(double sampleRate) noexcept;
     void reset() noexcept;
-    void process(float* const* channels, int numChannels, int numSamples, const FxSlotParams&) noexcept;
+    void process(float* const* channels, int numChannels, int numSamples, const FxSlotParams&, bool linked = true) noexcept;
 
     static double staticGainReductionDb(double levelDb, double thresholdDb, double ratio, double kneeDb) noexcept;
     float getGainReductionDb() const noexcept { return meterGainReductionDb.load(std::memory_order_relaxed); }
 
 private:
     double sampleRate = 48000.0;
-    double smoothedReductionDb = 0.0;
+    std::array<double, kMaxChannels> smoothedReductionDb {};
     std::atomic<float> meterGainReductionDb { 0.0f };
 };
 } // namespace hpeq::dsp

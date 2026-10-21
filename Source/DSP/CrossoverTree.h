@@ -61,7 +61,7 @@ private:
     };
 
     void allocate(int node) noexcept;
-    void updateCoefficients(int node) noexcept;
+    void updateCoefficients(int node, bool interpolate) noexcept;
 
     double sampleRate = 48000.0;
     int glideSteps = 1, birthSteps = 1, presenceSteps = 1;

@@ -6,6 +6,7 @@
 
 #include <chrono>
 #include <cmath>
+#include <memory>
 #include <functional>
 #include <iostream>
 #include <algorithm>
@@ -87,7 +88,8 @@ juce::AudioBuffer<float> renderEngine(const juce::AudioBuffer<float>& x, const s
         n.numSlots = 1;
         n.slots[0] = perNodeSlot[i];
     }
-    LayerEngine engine;
+    auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+    auto& engine = *enginePtr;
     engine.prepare(kFs, block);
     engine.publish(snapshot);
     auto y = withPreroll(x);
@@ -451,18 +453,27 @@ juce::var timing(const std::function<void(juce::AudioBuffer<float>&)>& processBl
 
 juce::var engineTiming(const LayerSnapshot& snapshot, int block = 512)
 {
-    LayerEngine engine;
+    auto enginePtr = std::make_unique<LayerEngine>(); // ~115 KB: keep it off the stack
+    auto& engine = *enginePtr;
     engine.prepare(kFs, block);
     engine.publish(snapshot);
     return timing([&](juce::AudioBuffer<float>& b) { engine.process(b.getArrayOfWritePointers(), 2, b.getNumSamples()); }, block);
 }
 } // namespace
 
+int runM3Lab(const juce::File& out, const juce::String& commit); // LabM3.cpp
+
 int main(int argc, char* argv[])
 {
     juce::StringArray args;
     for (int i = 1; i < argc; ++i)
         args.add(argv[i]);
+    if (args.contains("m3"))
+    {
+        const auto o = args.indexOf("--out"), c = args.indexOf("--commit");
+        return runM3Lab(juce::File::getCurrentWorkingDirectory().getChildFile(o >= 0 ? args[o + 1] : "hpeq_m3_lab"),
+                        c >= 0 ? args[c + 1] : juce::String("unknown"));
+    }
     const auto outIndex = args.indexOf("--out");
     const auto out = juce::File::getCurrentWorkingDirectory().getChildFile(outIndex >= 0 ? args[outIndex + 1] : "hpeq_m2_lab");
     const auto commitIndex = args.indexOf("--commit");

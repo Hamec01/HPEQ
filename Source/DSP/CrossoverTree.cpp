@@ -41,10 +41,10 @@ void CrossoverTree::allocate(int node) noexcept
     for (int k = 0; k < kMaxFxNodesPerLayer; ++k)
         for (auto& b : edges[static_cast<size_t>(k)].foreignAllPass[static_cast<size_t>(node)])
             b.reset();
-    updateCoefficients(node);
+    updateCoefficients(node, false);
 }
 
-void CrossoverTree::updateCoefficients(int node) noexcept
+void CrossoverTree::updateCoefficients(int node, bool interpolate) noexcept
 {
     auto& e = edges[static_cast<size_t>(node)];
     const double lo = std::exp2(e.logLow.value()), hi = std::exp2(e.logHigh.value());
@@ -52,11 +52,11 @@ void CrossoverTree::updateCoefficients(int node) noexcept
     for (int side = 0; side < 2; ++side)
     {
         e.dryAllPass[static_cast<size_t>(side)].setMode(TptSvf::Mode::AllPass);
-        e.dryAllPass[static_cast<size_t>(side)].setFrequency(sampleRate, side == 0 ? lo : hi, q);
+        e.dryAllPass[static_cast<size_t>(side)].setFrequency(sampleRate, side == 0 ? lo : hi, q, interpolate);
         e.highPass[static_cast<size_t>(side)].setMode(TptSvf::Mode::HighPass);
-        e.highPass[static_cast<size_t>(side)].setFrequency(sampleRate, lo, q);
+        e.highPass[static_cast<size_t>(side)].setFrequency(sampleRate, lo, q, interpolate);
         e.lowPass[static_cast<size_t>(side)].setMode(TptSvf::Mode::LowPass);
-        e.lowPass[static_cast<size_t>(side)].setFrequency(sampleRate, hi, q);
+        e.lowPass[static_cast<size_t>(side)].setFrequency(sampleRate, hi, q, interpolate);
     }
     for (int k = 0; k < kMaxFxNodesPerLayer; ++k)
     {
@@ -64,7 +64,7 @@ void CrossoverTree::updateCoefficients(int node) noexcept
         for (int side = 0; side < 2; ++side)
         {
             pair[static_cast<size_t>(side)].setMode(TptSvf::Mode::AllPass);
-            pair[static_cast<size_t>(side)].setFrequency(sampleRate, side == 0 ? lo : hi, q);
+            pair[static_cast<size_t>(side)].setFrequency(sampleRate, side == 0 ? lo : hi, q, interpolate);
         }
     }
 }
@@ -128,7 +128,7 @@ void CrossoverTree::process(const float* const* in, int numChannels, int numSamp
                 {
                     e.logLow.next();
                     e.logHigh.next();
-                    updateCoefficients(j);
+                    updateCoefficients(j, true);
                 }
                 if (e.allocated && e.birth && !e.logLow.isRamping() && !e.logHigh.isRamping())
                 {
@@ -140,6 +140,17 @@ void CrossoverTree::process(const float* const* in, int numChannels, int numSamp
         for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
             if (edges[static_cast<size_t>(j)].allocated)
                 presence[j][i] = static_cast<float>(edges[static_cast<size_t>(j)].presence.next());
+
+        for (auto& e : edges)
+        {
+            if (!e.allocated)
+                continue;
+            for (auto& f : e.dryAllPass) f.advance();
+            for (auto& f : e.highPass) f.advance();
+            for (auto& f : e.lowPass) f.advance();
+            for (auto& pair : e.foreignAllPass)
+                for (auto& f : pair) f.advance();
+        }
 
         for (int ch = 0; ch < numChannels; ++ch)
         {
