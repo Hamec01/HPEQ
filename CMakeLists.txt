@@ -62,7 +62,7 @@ target_sources(HPEQ
         Source/DSP/LayerSnapshot.cpp
         Source/DSP/PreEqProcessor.cpp
         Source/DSP/Processors.cpp
-        Source/DSP/RegionSelector.cpp
+        Source/DSP/CrossoverTree.cpp
         Source/Plugin/FxPluginProcessor.cpp
         Source/Plugin/FxPluginEditor.cpp)
 

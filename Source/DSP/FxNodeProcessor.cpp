@@ -1,4 +1,5 @@
 #include "DSP/FxNodeProcessor.h"
+#include "DSP/Biquad.h"
 
 #include <algorithm>
 
@@ -8,10 +9,9 @@ void FxNodeProcessor::prepare(double newSampleRate, int maxBlockSize)
 {
     sampleRate = newSampleRate;
     mixSteps = stepsFor(kMixRampSeconds, sampleRate);
-    for (auto* group : { &band, &chain, &work })
+    for (auto* group : { &chain, &work })
         for (auto& channel : *group)
             channel.assign(static_cast<size_t>(maxBlockSize), 0.0f);
-    selector.prepare(sampleRate);
     for (auto& slot : slots)
     {
         slot.gain.prepare(sampleRate);
@@ -39,7 +39,6 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
     if (wanted && !running)
     {
         running = true;
-        selector.reset(p.lowHz, p.highHz);
         nodeMix.reset(0.0);
         for (auto& slot : slots)
         {
@@ -50,7 +49,10 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
     if (!running)
         return;
 
-    selector.setRange(p.lowHz, p.highHz);
+    lowHz = design::clampFrequency(p.lowHz, sampleRate);
+    highHz = design::clampFrequency(p.highHz, sampleRate);
+    if (highHz < lowHz)
+        std::swap(lowHz, highHz);
     nodeMix.setTarget(wanted ? static_cast<double>(p.mix) : 0.0, mixSteps);
 
     for (int k = 0; k < kMaxFxPerNode; ++k)
@@ -96,22 +98,19 @@ void FxNodeProcessor::runProcessor(Slot& slot, float* const* channels, int numCh
     }
 }
 
-void FxNodeProcessor::process(const float* const* xE, float* const* out, int numChannels, int numSamples, int controlPhase) noexcept
+void FxNodeProcessor::process(const float* const* bandPtr, const float* presence, float* const* out, int numChannels, int numSamples) noexcept
 {
     if (!running)
         return;
 
-    float* bandPtr[kMaxChannels] {};
     float* chainPtr[kMaxChannels] {};
     float* workPtr[kMaxChannels] {};
     for (int ch = 0; ch < numChannels; ++ch)
     {
-        bandPtr[ch] = band[static_cast<size_t>(ch)].data();
         chainPtr[ch] = chain[static_cast<size_t>(ch)].data();
         workPtr[ch] = work[static_cast<size_t>(ch)].data();
     }
 
-    selector.process(xE, bandPtr, numChannels, numSamples, controlPhase);
     for (int ch = 0; ch < numChannels; ++ch)
         std::copy(bandPtr[ch], bandPtr[ch] + numSamples, chainPtr[ch]);
 
@@ -141,7 +140,7 @@ void FxNodeProcessor::process(const float* const* xE, float* const* out, int num
     {
         for (int i = 0; i < numSamples; ++i)
         {
-            const auto g = static_cast<float>(nodeMix.next());
+            const auto g = static_cast<float>(nodeMix.next()) * presence[i];
             for (int ch = 0; ch < numChannels; ++ch)
                 out[ch][i] += g * (chainPtr[ch][i] - bandPtr[ch][i]);
         }

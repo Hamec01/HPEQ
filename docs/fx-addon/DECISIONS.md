@@ -66,7 +66,7 @@ implements all processors anew, to a measured quality bar.
   Compressor/Reverb in M4, Monsta and the rest in M6).
 - HPDG itself is not changed by this decision; improving HPDG's own Sound Module is a separate task.
 
-## D4 — PROPOSED 2026-10-21 (awaiting owner) — Frequency core H3 instead of H1
+## D4 — ACCEPTED 2026-10-21 — Frequency core H3 instead of H1
 
 **Evidence:** `reports/M2_REPORT.md`. H1 ("delta bands", spec default) is bit-exact at bypass but adds
 up to +2.3 dB (LR8: +3.9 dB) of false boost when a node cuts, because the minimum-phase band rotates
@@ -77,3 +77,14 @@ all-pass dry) keeps H2's response and supports overlap.
 **Would override:** `01` §5 "default для перекрывающихся FX Nodes в V1 — H1" and the exact-identity
 reading of T01/T02 for "node bypassed while other nodes are active" (compared to the documented
 all-pass result instead, 04 §3). "All FX off" stays bit-exact: the tree is not run.
+
+**Owner:** accepted 2026-10-21 ("внедряй H3 в движок ..., кроссфейд при смене набора границ").
+
+**Implementation note (measured, same principle, different transition method):** the planned
+crossfade between the old and the new tree on a structure change produced a **17.8 dB level dip**
+on a 1 kHz tone (two differently phased all-pass signals cancel mid-fade). The engine therefore uses
+the order-free form of H3: each node's band is its own LR4 band times the all-passes of all other
+nodes' edges, the dry is the product of all edge all-passes; band/dry stays real, so the response is
+the same phase-coherent H3 response, and edges are born and retired at 1 Hz (where an all-pass is
+numerically an identity) and glide, so no crossfade is ever needed (worst dip 0.52 dB). Overlap and
+edge crossing need no special handling. Evidence:  §5.

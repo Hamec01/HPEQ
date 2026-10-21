@@ -72,8 +72,8 @@ juce::AudioBuffer<float> withoutPreroll(const juce::AudioBuffer<float>& y)
     return out;
 }
 
-// --- H1: the real engine -------------------------------------------------------------------------
-juce::AudioBuffer<float> renderH1(const juce::AudioBuffer<float>& x, const std::vector<Range>& nodes,
+// --- The real engine (H3, order-free tree, DECISIONS D4) -------------------------------------------------------------------------
+juce::AudioBuffer<float> renderEngine(const juce::AudioBuffer<float>& x, const std::vector<Range>& nodes,
                                   const std::vector<FxSlotParams>& perNodeSlot, int block = 512)
 {
     LayerSnapshot snapshot;
@@ -245,6 +245,87 @@ juce::AudioBuffer<float> renderH1Offline(const juce::AudioBuffer<float>& x, cons
     return y;
 }
 
+// Offline H1 with an arbitrary processor on one band: y = x + (P(b) - b), b = LR4 band of x.
+juce::AudioBuffer<float> renderH1OfflineBand(const juce::AudioBuffer<float>& x, Range range,
+                                             const std::function<void(juce::AudioBuffer<float>&)>& process)
+{
+    auto band = x;
+    for (int ch = 0; ch < x.getNumChannels(); ++ch)
+    {
+        std::array<Biquad, 4> chain;
+        chain[0].setCoefficients(design::highPass(kFs, range.low, design::kButterworthQ));
+        chain[1].setCoefficients(design::highPass(kFs, range.low, design::kButterworthQ));
+        chain[2].setCoefficients(design::lowPass(kFs, range.high, design::kButterworthQ));
+        chain[3].setCoefficients(design::lowPass(kFs, range.high, design::kButterworthQ));
+        for (int i = 0; i < x.getNumSamples(); ++i)
+        {
+            double v = x.getSample(ch, i);
+            for (auto& f : chain)
+                v = f.processSample(0, v);
+            band.setSample(ch, i, static_cast<float>(v));
+        }
+    }
+    auto processed = band;
+    process(processed);
+    auto y = x;
+    for (int ch = 0; ch < y.getNumChannels(); ++ch)
+    {
+        y.addFrom(ch, 0, processed, ch, 0, y.getNumSamples());
+        y.addFrom(ch, 0, band, ch, 0, y.getNumSamples(), -1.0f);
+    }
+    return y;
+}
+
+// Offline order-free H3 for constant gains, plain RBJ cascades (independent of the engine's SVFs):
+// dry = prod_all AP(x);  band_j = prod_{other edges} AP( LP4_hi( HP4_lo(x) ) );  y = dry + sum (g-1) band_j.
+juce::AudioBuffer<float> renderH3Offline(const juce::AudioBuffer<float>& x, const std::vector<Range>& nodes,
+                                         const std::vector<double>& gainsDb)
+{
+    const auto cascade = [&](int ch, const std::vector<BiquadCoefficients>& sections)
+    {
+        juce::AudioBuffer<float> out(1, x.getNumSamples());
+        std::vector<Biquad> f(sections.size());
+        for (size_t k = 0; k < sections.size(); ++k)
+            f[k].setCoefficients(sections[k]);
+        for (int i = 0; i < x.getNumSamples(); ++i)
+        {
+            double v = x.getSample(ch, i);
+            for (auto& b : f)
+                v = b.processSample(0, v);
+            out.setSample(0, i, static_cast<float>(v));
+        }
+        return out;
+    };
+    auto y = x;
+    for (int ch = 0; ch < x.getNumChannels(); ++ch)
+    {
+        std::vector<BiquadCoefficients> all;
+        for (const auto& r : nodes)
+        {
+            all.push_back(design::allPass(kFs, r.low, design::kButterworthQ));
+            all.push_back(design::allPass(kFs, r.high, design::kButterworthQ));
+        }
+        auto sum = cascade(ch, all);
+        for (size_t j = 0; j < nodes.size(); ++j)
+        {
+            const double g = std::pow(10.0, gainsDb[j] / 20.0);
+            std::vector<BiquadCoefficients> sections {
+                design::highPass(kFs, nodes[j].low, design::kButterworthQ), design::highPass(kFs, nodes[j].low, design::kButterworthQ),
+                design::lowPass(kFs, nodes[j].high, design::kButterworthQ), design::lowPass(kFs, nodes[j].high, design::kButterworthQ) };
+            for (size_t k = 0; k < nodes.size(); ++k)
+                if (k != j)
+                {
+                    sections.push_back(design::allPass(kFs, nodes[k].low, design::kButterworthQ));
+                    sections.push_back(design::allPass(kFs, nodes[k].high, design::kButterworthQ));
+                }
+            const auto band = cascade(ch, sections);
+            sum.addFrom(0, 0, band, 0, 0, sum.getNumSamples(), static_cast<float>(g - 1.0));
+        }
+        y.copyFrom(ch, 0, sum, 0, 0, y.getNumSamples());
+    }
+    return y;
+}
+
 FxSlotParams gainSlot(double db, bool active = true)
 {
     FxSlotParams s;
@@ -398,7 +479,7 @@ int main(int argc, char* argv[])
         const auto farOutside = [&](double f) { return f < minLow / 2.0 || f > maxHigh * 2.0; };
         auto entry = JsonObject().set("id", sc.id).set("description", sc.description);
 
-        for (const juce::String hyp : { "H1", "H1_LR8", "H2", "H3" })
+        for (const juce::String hyp : { "H1", "H1_LR8", "H2", "H3_tree", "H3_engine" })
         {
             if (hyp == "H2" && !sc.contiguous)
             {
@@ -407,9 +488,14 @@ int main(int argc, char* argv[])
             }
             const auto run = [&](const std::vector<FxSlotParams>& slots)
             {
+                std::vector<double> gainsDb;
+                for (const auto& sl : slots)
+                    gainsDb.push_back(sl.active ? static_cast<double>(sl.values[slot::kGainDb]) : 0.0);
                 if (hyp == "H1")
-                    return renderH1(sweep, sc.nodes, slots);
-                if (hyp == "H3")
+                    return renderH1Offline(sweep, sc.nodes, gainsDb, 2);
+                if (hyp == "H3_engine")
+                    return renderEngine(sweep, sc.nodes, slots);
+                if (hyp == "H3_tree")
                     return renderH3(sweep, sc.nodes, [&](int j, juce::AudioBuffer<float>& band)
                     {
                         const auto& sl = slots[static_cast<size_t>(j)];
@@ -417,12 +503,7 @@ int main(int argc, char* argv[])
                             band.applyGain(std::pow(10.0f, sl.values[slot::kGainDb] / 20.0f));
                     });
                 if (hyp == "H1_LR8")
-                {
-                    std::vector<double> gains;
-                    for (const auto& sl : slots)
-                        gains.push_back(sl.active ? static_cast<double>(sl.values[slot::kGainDb]) : 0.0);
-                    return renderH1Offline(sweep, sc.nodes, gains, 4);
-                }
+                    return renderH1Offline(sweep, sc.nodes, gainsDb, 4);
                 return renderH2(sweep, sc.nodes, [&](int j, juce::AudioBuffer<float>& band)
                 {
                     const auto& s = slots[static_cast<size_t>(j)];
@@ -442,12 +523,19 @@ int main(int argc, char* argv[])
             const auto rAll = measureResponse(run(all), sweep);
             const auto rOne = measureResponse(run(one), sweep);
             const auto null = compareAligned(yBypass, sweep);
+            // Passive nodes: present and running, processing at 0 dB (H3: the dry all-pass is heard).
+            const auto yPassive = run(std::vector<FxSlotParams>(sc.nodes.size(), gainSlot(0.0)));
+            const auto rPassive = measureResponse(yPassive, sweep);
+            double passiveGd = 0.0;
+            for (double g : rPassive.groupDelayMs)
+                passiveGd = std::max(passiveGd, std::abs(g));
 
             // Impulse: where does the bypass response peak (time smearing of H2).
             const auto impulse = makeImpulse({ kFs, 1, 0.5, kFixtureSeed }, 0, 1.0f);
-            const auto impulseOut = hyp == "H2" ? renderH2(impulse, sc.nodes, [](int, juce::AudioBuffer<float>&) {})
-                                  : hyp == "H3" ? renderH3(impulse, sc.nodes, [](int, juce::AudioBuffer<float>&) {})
-                                                : renderH1(impulse, sc.nodes, bypass);
+            const auto impulseOut = hyp == "H2"        ? renderH2(impulse, sc.nodes, [](int, juce::AudioBuffer<float>&) {})
+                                  : hyp == "H3_tree"   ? renderH3(impulse, sc.nodes, [](int, juce::AudioBuffer<float>&) {})
+                                  : hyp == "H3_engine" ? renderEngine(impulse, sc.nodes, bypass)
+                                                       : impulse; // H1 at bypass is an exact identity
             int peakIndex = 0;
             for (int i = 0; i < impulseOut.getNumSamples(); ++i)
                 if (std::abs(impulseOut.getSample(0, i)) > std::abs(impulseOut.getSample(0, peakIndex)))
@@ -471,6 +559,9 @@ int main(int argc, char* argv[])
                                .set("bypass_magnitude_max_abs_db", maxAbsWhere(rBypass, [](double) { return true; }))
                                .set("bypass_group_delay_max_ms", gdMax)
                                .set("bypass_impulse_peak_sample", peakIndex)
+                               .set("passive_null_error_db", compareAligned(yPassive, sweep).errorDb)
+                               .set("passive_magnitude_max_abs_db", maxAbsWhere(rPassive, [](double) { return true; }))
+                               .set("passive_group_delay_max_ms", passiveGd)
                                .set("all_minus6_depth_at_node_centres_db", depths)
                                .set("all_minus6_inside_union_max_dev_from_-6.02_db",
                                     maxAbsWhere(rAll, [&](double f) { return f > minLow * 1.25 && f < maxHigh / 1.25; }, -6.0206))
@@ -485,7 +576,8 @@ int main(int argc, char* argv[])
             if (sc.id == "A_1node" || sc.id == "D_5nodes" || sc.id == "E_overlap")
             {
                 const auto colour = hyp == "H1" ? juce::String("#1f77b4") : hyp == "H2" ? juce::String("#d62728")
-                                  : hyp == "H3" ? juce::String("#9467bd") : juce::String("#2ca02c");
+                                  : hyp == "H3_tree" ? juce::String("#ff7f0e")
+                                  : hyp == "H3_engine" ? juce::String("#9467bd") : juce::String("#2ca02c");
                 static std::map<juce::String, std::vector<PlotSeries>> magnitudePlots, delayPlots;
                 magnitudePlots[sc.id].push_back({ hyp + " all nodes -6 dB", colour, curve(rAll, rAll.magnitudeDb) });
                 magnitudePlots[sc.id].push_back({ hyp + " middle node -6 dB", colour, curve(rOne, rOne.magnitudeDb), true });
@@ -499,11 +591,11 @@ int main(int argc, char* argv[])
             }
         }
         {
-            // Cross-check: the engine (H1) against the offline H1 formula with LR4, all nodes -6 dB.
+            // Cross-check: the engine against the offline order-free H3 formula (RBJ cascades), all nodes -6 dB.
             const std::vector<FxSlotParams> all(sc.nodes.size(), gainSlot(-6.0));
-            const auto engine = renderH1(sweep, sc.nodes, all);
-            const auto offline = renderH1Offline(sweep, sc.nodes, std::vector<double>(sc.nodes.size(), -6.0), 2);
-            entry.set("engine_vs_offline_H1_LR4_error_db", compareAligned(engine, offline).errorDb);
+            const auto engine = renderEngine(sweep, sc.nodes, all);
+            const auto offline = renderH3Offline(sweep, sc.nodes, std::vector<double>(sc.nodes.size(), -6.0));
+            entry.set("engine_vs_offline_H3_error_db", compareAligned(engine, offline).errorDb);
         }
         results.append(entry);
     }
@@ -512,7 +604,13 @@ int main(int argc, char* argv[])
     std::cout << "compressor region test\n";
     auto drums = makeSyntheticDrums({ kFs, 2, 4.0, kFixtureSeed });
     const std::vector<Range> regionA { { 250, 700 } };
-    const auto h1Comp = renderH1(drums, regionA, { compressorSlot() });
+    CompressorProcessor h1Compressor;
+    h1Compressor.prepare(kFs);
+    const auto h1Comp = renderH1OfflineBand(drums, regionA.front(), [&](juce::AudioBuffer<float>& band)
+    {
+        h1Compressor.process(band.getArrayOfWritePointers(), band.getNumChannels(), band.getNumSamples(), compressorSlot());
+    });
+    const auto engineComp = renderEngine(drums, regionA, { compressorSlot() });
     CompressorProcessor h2Compressor;
     h2Compressor.prepare(kFs);
     const auto h2Comp = renderH2(drums, regionA, [&](int, juce::AudioBuffer<float>& band)
@@ -530,7 +628,7 @@ int main(int argc, char* argv[])
         return bandPowerDb(y, lo, hi) - bandPowerDb(drums, lo, hi);
     };
     auto compressor = JsonObject();
-    for (const auto& [name, y] : { std::pair<const char*, const juce::AudioBuffer<float>*> { "H1", &h1Comp }, { "H2", &h2Comp }, { "H3", &h3Comp } })
+    for (const auto& [name, y] : { std::pair<const char*, const juce::AudioBuffer<float>*> { "H1", &h1Comp }, { "H2", &h2Comp }, { "H3_tree", &h3Comp }, { "H3_engine", &engineComp } })
         compressor.set(name, JsonObject()
                                  .set("power_change_40_100hz_db", bandDelta(*y, 40, 100))
                                  .set("power_change_300_600hz_db", bandDelta(*y, 300, 600))
@@ -539,7 +637,8 @@ int main(int argc, char* argv[])
     writeFloatWav(out.getChildFile("wav/drums_input.wav"), drums, kFs);
     writeFloatWav(out.getChildFile("wav/drums_H1_compressor_250-700.wav"), h1Comp, kFs);
     writeFloatWav(out.getChildFile("wav/drums_H2_compressor_250-700.wav"), h2Comp, kFs);
-    writeFloatWav(out.getChildFile("wav/drums_H3_compressor_250-700.wav"), h3Comp, kFs);
+    writeFloatWav(out.getChildFile("wav/drums_H3_tree_compressor_250-700.wav"), h3Comp, kFs);
+    writeFloatWav(out.getChildFile("wav/drums_H3_engine_compressor_250-700.wav"), engineComp, kFs);
 
     // CPU on this machine (48 kHz stereo, block 512).
     std::cout << "timing\n";
@@ -547,7 +646,7 @@ int main(int argc, char* argv[])
     {
         LayerSnapshot one;
         one.fx[0].active = true; one.fx[0].lowHz = 250; one.fx[0].highHz = 700; one.fx[0].numSlots = 1; one.fx[0].slots[0] = compressorSlot();
-        cpu.set("H1_1node_compressor", engineTiming(one));
+        cpu.set("H3_engine_1node_compressor", engineTiming(one));
 
         LayerSnapshot five;
         const auto d = scenarios()[3].nodes; // copy: scenarios() returns a temporary
@@ -556,7 +655,7 @@ int main(int argc, char* argv[])
             auto& n = five.fx[i];
             n.active = true; n.lowHz = static_cast<float>(d[i].low); n.highHz = static_cast<float>(d[i].high); n.numSlots = 1; n.slots[0] = compressorSlot();
         }
-        cpu.set("H1_5nodes_compressor", engineTiming(five));
+        cpu.set("H3_engine_5nodes_compressor", engineTiming(five));
 
         LayerSnapshot worst; // 8 nodes x 6 compressors + 24 bells: the per-layer ceiling of D2
         for (int i = 0; i < kMaxEqNodesPerLayer; ++i)
@@ -570,7 +669,7 @@ int main(int argc, char* argv[])
             n.active = true; n.lowHz = 60.0f * std::pow(2.0f, static_cast<float>(i)); n.highHz = n.lowHz * 2.5f; n.numSlots = kMaxFxPerNode;
             for (auto& s : n.slots) s = compressorSlot();
         }
-        cpu.set("H1_worst_24bells_8nodes_x6compressors", engineTiming(worst));
+        cpu.set("H3_engine_worst_24bells_8nodes_x6compressors", engineTiming(worst));
 
         cpu.set("H2_5nodes_gain_split_only", timing([&](juce::AudioBuffer<float>& b)
         {

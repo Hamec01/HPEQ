@@ -3,17 +3,17 @@
 #include <array>
 #include <vector>
 
+#include "DSP/DspConfig.h"
 #include "DSP/LayerSnapshot.h"
 #include "DSP/Processors.h"
 #include "DSP/Ramp.h"
-#include "DSP/RegionSelector.h"
 
 namespace hpeq::dsp
 {
-// One FX node: band selection of xE, a chain of up to 6 processors on the band (DECISIONS D2),
-// and the node's delta added to the layer output:
+// One FX node: a chain of up to 6 processors on the node's band (DECISIONS D2) and the node's delta
+// added to the layer output. The band M comes from the layer's CrossoverTree (H3, DECISIONS D4):
 //
-//   b   = Select(xE)
+//   b   = M (sum of the elementary bands inside [low, high])
 //   s_0 = b;   s_k = s_{k-1} + mix_k * (P_k(s_{k-1}) - s_{k-1})      (mix_k == 1  ->  s_k = P_k(s_{k-1}))
 //   out += nodeMix * (s_K - b)
 //
@@ -27,9 +27,12 @@ public:
     void reset() noexcept;
     void setTargets(const FxNodeParams&) noexcept;
 
-    void process(const float* const* xE, float* const* out, int numChannels, int numSamples, int controlPhase) noexcept;
+    // `band` is this node's band from the tree; out += presence * nodeMix * (chain(band) - band).
+    void process(const float* const* band, const float* presence, float* const* out, int numChannels, int numSamples) noexcept;
 
     bool isRunning() const noexcept { return running; }
+    double targetLowHz() const noexcept { return lowHz; }
+    double targetHighHz() const noexcept { return highHz; }
     float getGainReductionDb(int slotIndex) const noexcept;
 
 private:
@@ -48,10 +51,10 @@ private:
     double sampleRate = 48000.0;
     int mixSteps = 1;
     bool wanted = false, running = false;
+    double lowHz = 250.0, highHz = 700.0; // clamped to [1 Hz, 0.45 fs], low <= high
     LinearRamp nodeMix;
-    RegionSelector selector;
     std::array<Slot, kMaxFxPerNode> slots;
 
-    std::array<std::vector<float>, kMaxChannels> band, chain, work;
+    std::array<std::vector<float>, kMaxChannels> chain, work;
 };
 } // namespace hpeq::dsp

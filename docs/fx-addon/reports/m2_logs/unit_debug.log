@@ -1,4 +1,4 @@
-Random seed: 0x107c83a
+Random seed: 0x794c8b3
 -----------------------------------------------------------------
 Starting tests in: Harness / compareAligned detects a one-ulp change...
 Completed tests in Harness / compareAligned detects a one-ulp change
@@ -47,18 +47,27 @@ Completed tests in State schema v1 / sanitize enforces limits and repairs invali
 Starting tests in: State schema v1 / all ten layers exist with stable indices...
 Completed tests in State schema v1 / all ten layers exist with stable indices
 -----------------------------------------------------------------
-Starting tests in: DSP M2 / T01: EQ off / FX bypass variants are bit-exact copies...
-Completed tests in DSP M2 / T01: EQ off / FX bypass variants are bit-exact copies
+Starting tests in: DSP M2 / T01: 'FX off' is bit-exact; a passive running node equals the documented all-pass result...
+  passive running node vs AP reference, worst: -196.2 dB
+Completed tests in DSP M2 / T01: 'FX off' is bit-exact; a passive running node equals the documented all-pass result
 -----------------------------------------------------------------
-Starting tests in: DSP M2 / T02: 2-8 overlapping disabled/mix-0/bypassed nodes leave exactly the PRE-EQ output...
-Completed tests in DSP M2 / T02: 2-8 overlapping disabled/mix-0/bypassed nodes leave exactly the PRE-EQ output
+Starting tests in: DSP M2 / T02: 2-8 overlapping nodes - disabled: bit-exact PRE-EQ; mix 0 / bypassed: AP(PRE-EQ)...
+  overlapping passive nodes vs AP reference, worst: -128.6 dB; RMS vs AP reference 0.0000 dB; windowed RMS vs PRE-EQ output 0.537 dB
+Completed tests in DSP M2 / T02: 2-8 overlapping nodes - disabled: bit-exact PRE-EQ; mix 0 / bypassed: AP(PRE-EQ)
 -----------------------------------------------------------------
-Starting tests in: DSP M2 / delta math: gain node equals x + (g - 1) * Select(x) from an independent selector...
-  delta vs reference: -157.2 dB
-Completed tests in DSP M2 / delta math: gain node equals x + (g - 1) * Select(x) from an independent selector
+Starting tests in: DSP M2 / delta math: y = AP_hi(AP_lo(x)) + (g - 1) * LP4_hi(HP4_lo(x)), independent reference...
+  engine vs independent H3 reference: -147.0 dB
+Completed tests in DSP M2 / delta math: y = AP_hi(AP_lo(x)) + (g - 1) * LP4_hi(HP4_lo(x)), independent reference
 -----------------------------------------------------------------
-Starting tests in: DSP M2 / MIX-0: after mixing a running compressor out, output is exactly xE again...
-Completed tests in DSP M2 / MIX-0: after mixing a running compressor out, output is exactly xE again
+Starting tests in: DSP M2 / MIX-0: after mixing a running compressor out, output equals the passive-node render exactly...
+Completed tests in DSP M2 / MIX-0: after mixing a running compressor out, output equals the passive-node render exactly
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / FX off again: disabling the last node returns to the bit-exact PRE-EQ output...
+Completed tests in DSP M2 / FX off again: disabling the last node returns to the bit-exact PRE-EQ output
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / topology changes (first node on, second node added, edge order change, all off) are smooth...
+  topology changes: HF > 5 kHz -70.3 dB (floor -114.3 dB), worst dip 0.52 dB
+Completed tests in DSP M2 / topology changes (first node on, second node added, edge order change, all off) are smooth
 -----------------------------------------------------------------
 Starting tests in: DSP M2 / D2 chain: order, bypass of a middle slot, two gains compose...
 Completed tests in DSP M2 / D2 chain: order, bypass of a middle slot, two gains compose
@@ -67,11 +76,11 @@ Starting tests in: DSP M2 / T10: identical render for block sizes 1, 32, 127, 25
 Completed tests in DSP M2 / T10: identical render for block sizes 1, 32, 127, 256, 1024
 -----------------------------------------------------------------
 Starting tests in: DSP M2 / T04: 100k random mutations, random blocks 1..2048, no NaN/Inf, bounded, no allocations...
-  20000 snapshots, 10000 blocks, worst peak 9.5 dBFS
+  20000 snapshots, 10000 blocks, worst peak 10.1 dBFS
 Completed tests in DSP M2 / T04: 100k random mutations, random blocks 1..2048, no NaN/Inf, bounded, no allocations
 -----------------------------------------------------------------
 Starting tests in: DSP M2 / range move during playback is smooth (HF products < -60 dB)...
-  range jump 250-700 -> 800-2000 Hz: HF > 5 kHz at -88.2 dB (metric floor -114.3 dB)
+  range jump 250-700 -> 800-2000 Hz: HF > 5 kHz at -82.1 dB (metric floor -114.3 dB)
 Completed tests in DSP M2 / range move during playback is smooth (HF products < -60 dB)
 -----------------------------------------------------------------
 Starting tests in: DSP M2 / PRE-EQ automation vs HPDG baseline (-95.0 dB HF products, 8th-order metric)...
@@ -89,4 +98,4 @@ Starting tests in: DSP M2 / plugin: bypass with active processing settles to the
 Completed tests in DSP M2 / plugin: bypass with active processing settles to the exact dry signal
 
 allocation probe: crt-debug-hook (malloc + new)
-HPEQ_Tests: 529 expectations passed, 0 failed
+HPEQ_Tests: 526 expectations passed, 0 failed

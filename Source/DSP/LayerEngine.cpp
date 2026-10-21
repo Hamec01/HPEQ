@@ -10,11 +10,30 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize)
 {
     sampleRate = newSampleRate;
     maxBlock = std::max(1, maxBlockSize);
-    for (auto& channel : xeCopy)
-        channel.assign(static_cast<size_t>(maxBlock), 0.0f);
+    const auto size = static_cast<size_t>(maxBlock);
+    for (int ch = 0; ch < kMaxChannels; ++ch)
+    {
+        xeCopy[static_cast<size_t>(ch)].assign(size, 0.0f);
+        dry[static_cast<size_t>(ch)].assign(size, 0.0f);
+        dryPtr[static_cast<size_t>(ch)] = dry[static_cast<size_t>(ch)].data();
+    }
+    for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
+    {
+        for (int ch = 0; ch < kMaxChannels; ++ch)
+        {
+            auto& v = bands[static_cast<size_t>(j)][static_cast<size_t>(ch)];
+            v.assign(size, 0.0f);
+            bandPtr[static_cast<size_t>(j)][static_cast<size_t>(ch)] = v.data();
+        }
+        bandList[static_cast<size_t>(j)] = bandPtr[static_cast<size_t>(j)].data();
+        presence[static_cast<size_t>(j)].assign(size, 0.0f);
+        presencePtr[static_cast<size_t>(j)] = presence[static_cast<size_t>(j)].data();
+    }
+
     preEq.prepare(sampleRate);
     for (auto& node : nodes)
         node.prepare(sampleRate, maxBlock);
+    tree.prepare(sampleRate);
     reset();
 }
 
@@ -24,6 +43,7 @@ void LayerEngine::reset() noexcept
     preEq.reset();
     for (auto& node : nodes)
         node.reset();
+    tree.reset();
     applySnapshot(); // re-apply the current targets so a reset engine resumes the same sound
 }
 
@@ -40,12 +60,26 @@ void LayerEngine::applySnapshot() noexcept
         nodes[i].setTargets(snapshot.fx[i]);
 }
 
+void LayerEngine::updateTree() noexcept
+{
+    std::array<bool, kMaxFxNodesPerLayer> running {};
+    std::array<double, kMaxFxNodesPerLayer> low {}, high {};
+    for (size_t j = 0; j < nodes.size(); ++j)
+    {
+        running[j] = nodes[j].isRunning();
+        low[j] = nodes[j].targetLowHz();
+        high[j] = nodes[j].targetHighHz();
+    }
+    tree.update(running, low, high);
+}
+
 void LayerEngine::process(float* const* channels, int numChannels, int numSamples) noexcept
 {
     juce::ScopedNoDenormals noDenormals;
     numChannels = std::min(numChannels, kMaxChannels);
     if (exchange.acquire())
         applySnapshot();
+    updateTree();
 
     for (int start = 0; start < numSamples; start += maxBlock)
     {
@@ -60,16 +94,17 @@ void LayerEngine::process(float* const* channels, int numChannels, int numSample
 
         preEq.process(chunk, numChannels, n, controlPhase);
 
-        bool anyNode = false;
-        for (const auto& node : nodes)
-            anyNode = anyNode || node.isRunning();
-        if (anyNode)
+        if (tree.isActive())
         {
-            // Every node reads the same xE; deltas accumulate into the output in node order.
             for (int ch = 0; ch < numChannels; ++ch)
                 std::copy(chunk[ch], chunk[ch] + n, xe[ch]);
-            for (auto& node : nodes)
-                node.process(xe, chunk, numChannels, n, controlPhase);
+            tree.process(xe, numChannels, n, controlPhase, dryPtr.data(), bandList.data(), presencePtr.data());
+            for (int ch = 0; ch < numChannels; ++ch)
+                std::copy(dryPtr[static_cast<size_t>(ch)], dryPtr[static_cast<size_t>(ch)] + n, chunk[ch]);
+            for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
+                if (tree.hasBand(j))
+                    nodes[static_cast<size_t>(j)].process(bandList[static_cast<size_t>(j)], presencePtr[static_cast<size_t>(j)],
+                                                          chunk, numChannels, n);
         }
         controlPhase = (controlPhase + n) % kControlInterval;
     }

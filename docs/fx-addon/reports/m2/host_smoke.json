@@ -3,7 +3,7 @@
     "os": "Windows 11",
     "cpu_vendor": "GenuineIntel",
     "cpu_model": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
-    "cpu_mhz": 2472,
+    "cpu_mhz": 2497,
     "logical_cpus": 8,
     "physical_cpus": 4,
     "memory_mb": 16292,
@@ -11,7 +11,7 @@
     "compiler": "MSVC 195035730",
     "build": "Release",
     "allocation_probe": "operator-new-only (malloc not seen)",
-    "utc": "2026-10-21T13:49:42.283+03:00"
+    "utc": "2026-10-21T14:17:33.078+03:00"
   },
   "plugin_path": "E:\\HPEQ\\build\\HPEQ_artefacts\\Release\\VST3\\HPEQ.vst3",
   "hpeq": {

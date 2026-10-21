@@ -11,8 +11,8 @@
 | M1-A | 1 | Insert FX in/out 2ch 44.1/48k | Unity passthrough, отсутствие нового звука | PASS | [M1_REPORT](reports/M1_REPORT.md) |
 | M1-B | 1 | VST3 host scan | Отдельный уникальный plugin ID, загрузка | PASS (JUCE host); pluginval BLOCKED | [M1_REPORT](reports/M1_REPORT.md) |
 | M1-C | 1 | Десятикратные/100× editor open/close | No crash/hang/deadlock, state restore | PASS (in-process + JUCE host); DAW BLOCKED | [M1_REPORT](reports/M1_REPORT.md) |
-| T01 | 2 | Stereo sine/noise, EQ off, FX bypass | Для exact copy равенство samples; для aligned nontrivial paths normalized RMS error ≤ −100 dB ref | PASS (H1 engine) | [M2_REPORT](reports/M2_REPORT.md) |
-| T02 | 2 | 2–8 overlapping regions `[250,700]`, `[450,1200]`, disabled | Нет dry duplication; output = aligned PRE-EQ | PASS (H1 engine) | [M2_REPORT](reports/M2_REPORT.md) |
+| T01 | 2 | Stereo sine/noise, EQ off, FX bypass | Для exact copy равенство samples; для aligned nontrivial paths normalized RMS error ≤ −100 dB ref | PASS (H3 engine; passive nodes vs documented all-pass) | [M2_REPORT](reports/M2_REPORT.md) |
+| T02 | 2 | 2–8 overlapping regions `[250,700]`, `[450,1200]`, disabled | Нет dry duplication; output = aligned PRE-EQ | PASS (H3 engine; passive nodes vs documented all-pass) | [M2_REPORT](reports/M2_REPORT.md) |
 | T03 | 3 | Sweeps/sine grid for 6–96 dB/oct | Actual response matches derived coefficients; slope evaluation with defined valid frequency interval and tolerance ±6 dB/oct target | PLANNED | — |
 | T04 | 2+ | 100 000 deterministic random params & 1..2048 blocks | No NaN/Inf, exceptions, audio callback allocations; no runaway | PASS (M2 params) | [M2_REPORT](reports/M2_REPORT.md) |
 | T05 | 3 | Left-only, Right-only, M-only, S-only, mono | Exact channel-selection semantics; roundtrip M/S within float tolerance | PLANNED | — |

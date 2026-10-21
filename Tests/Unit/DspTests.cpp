@@ -2,13 +2,13 @@
 // math against an independent reference, automation smoothness, compressor law, PRE-EQ -> FX order.
 // Thresholds below are fixed here, before the runs (04 §5.2).
 
+#include <algorithm>
 #include <cmath>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "DSP/LayerEngine.h"
 #include "DSP/Processors.h"
-#include "DSP/RegionSelector.h"
 #include "Harness/AudioMetrics.h"
 #include "Harness/RtAllocationProbe.h"
 #include "Harness/TestSignalFactory.h"
@@ -116,6 +116,50 @@ juce::AudioBuffer<float> slice(const juce::AudioBuffer<float>& a, int start, int
 
 } // namespace
 
+// Independent references for H3 (plain cascades, no suffix trick, double precision).
+juce::AudioBuffer<float> allPassReference(const juce::AudioBuffer<float>& x, std::vector<double> edges, double fs)
+{
+    auto y = x; // one all-pass per node edge, duplicates included (as in the engine)
+    for (int ch = 0; ch < x.getNumChannels(); ++ch)
+    {
+        std::vector<Biquad> chain(edges.size());
+        for (size_t e = 0; e < edges.size(); ++e)
+            chain[e].setCoefficients(design::allPass(fs, edges[e], design::kButterworthQ));
+        for (int i = 0; i < x.getNumSamples(); ++i)
+        {
+            double v = x.getSample(ch, i);
+            for (auto& f : chain)
+                v = f.processSample(0, v);
+            y.setSample(ch, i, static_cast<float>(v));
+        }
+    }
+    return y;
+}
+
+juce::AudioBuffer<float> singleNodeReference(const juce::AudioBuffer<float>& x, double lo, double hi, double gainDb, double fs)
+{
+    const double g = std::pow(10.0, gainDb / 20.0);
+    auto y = x;
+    for (int ch = 0; ch < x.getNumChannels(); ++ch)
+    {
+        Biquad apLo, apHi, hp1, hp2, lp1, lp2;
+        apLo.setCoefficients(design::allPass(fs, lo, design::kButterworthQ));
+        apHi.setCoefficients(design::allPass(fs, hi, design::kButterworthQ));
+        hp1.setCoefficients(design::highPass(fs, lo, design::kButterworthQ));
+        hp2.setCoefficients(design::highPass(fs, lo, design::kButterworthQ));
+        lp1.setCoefficients(design::lowPass(fs, hi, design::kButterworthQ));
+        lp2.setCoefficients(design::lowPass(fs, hi, design::kButterworthQ));
+        for (int i = 0; i < x.getNumSamples(); ++i)
+        {
+            const double v = x.getSample(ch, i);
+            const double dry = apHi.processSample(0, apLo.processSample(0, v));
+            const double band = lp2.processSample(0, lp1.processSample(0, hp2.processSample(0, hp1.processSample(0, v))));
+            y.setSample(ch, i, static_cast<float>(dry + (g - 1.0) * band));
+        }
+    }
+    return y;
+}
+
 class DspTests final : public juce::UnitTest
 {
 public:
@@ -125,62 +169,75 @@ public:
     {
         const auto input = musicLikeInput(kFs, 1.0);
 
-        beginTest("T01: EQ off / FX bypass variants are bit-exact copies");
+        beginTest("T01: 'FX off' is bit-exact; a passive running node equals the documented all-pass result");
         {
-            struct Case { const char* name; LayerSnapshot snapshot; };
+            struct Case { const char* name; LayerSnapshot snapshot; bool bitExact; };
             std::vector<Case> cases;
-            cases.push_back({ "empty layer", {} });
+            cases.push_back({ "empty layer", {}, true });
             {
                 LayerSnapshot s;
                 s.fx[0] = node(250, 700, { compSlot(-30, 4, 6, 5, 80) }, 1.0f, false);
-                cases.push_back({ "node disabled", s });
+                cases.push_back({ "node disabled", s, true });
+            }
+            {
+                LayerSnapshot s;
+                s.eq[0] = bell(1000, 0.0f);
+                cases.push_back({ "bell at 0 dB", s, true });
             }
             {
                 LayerSnapshot s;
                 s.fx[0] = node(250, 700, { compSlot(-30, 4, 6, 5, 80) }, 0.0f);
-                cases.push_back({ "node mix 0", s });
+                cases.push_back({ "node mix 0", s, false });
             }
             {
                 LayerSnapshot s;
                 auto inactive = compSlot(-30, 4, 6, 5, 80);
                 inactive.active = false;
                 s.fx[0] = node(250, 700, { inactive, inactive });
-                cases.push_back({ "all slots bypassed", s });
+                cases.push_back({ "all slots bypassed", s, false });
             }
             {
                 LayerSnapshot s;
                 s.fx[0] = node(250, 700, { compSlot(-30, 4, 6, 5, 80, 0, 0.0f) });
-                cases.push_back({ "slot mix 0", s });
+                cases.push_back({ "slot mix 0", s, false });
             }
             {
                 LayerSnapshot s;
                 s.fx[0] = node(250, 700, { gainSlot(0.0f) });
-                cases.push_back({ "gain 0 dB", s });
+                cases.push_back({ "gain 0 dB", s, false });
             }
             {
                 LayerSnapshot s;
                 s.fx[0] = node(250, 700, { compSlot(0, 4, 0, 5, 80) }); // threshold above any band level
-                cases.push_back({ "compressor never above threshold", s });
-            }
-            {
-                LayerSnapshot s;
-                s.eq[0] = bell(1000, 0.0f);
-                cases.push_back({ "bell at 0 dB", s });
+                cases.push_back({ "compressor never above threshold", s, false });
             }
 
+            double worstAllPassDb = kSilenceDb;
             for (const auto& c : cases)
                 for (double fs : { 44100.0, 48000.0, 96000.0, 192000.0 })
                     for (int block : { 1, 64, 512 })
                     {
                         const auto x = musicLikeInput(fs, 0.3);
                         const auto r = render(c.snapshot, x, block, fs);
-                        expect(compareAligned(r.audio, x).bitExact,
-                               juce::String(c.name) + " fs " + juce::String(fs) + " block " + juce::String(block));
+                        const auto label = juce::String(c.name) + " fs " + juce::String(fs) + " block " + juce::String(block);
                         expectEquals(static_cast<int>(r.allocations), 0);
+                        if (c.bitExact)
+                        {
+                            expect(compareAligned(r.audio, x).bitExact, label);
+                            continue;
+                        }
+                        // 04 §3: compare to the documented expected all-pass result, after the 60 ms
+                        // edge birth glide from 1 Hz at start-up.
+                        const int settled = static_cast<int>(0.1 * fs);
+                        const auto expected = allPassReference(x, { 250.0, 700.0 }, fs);
+                        const auto null = compareAligned(slice(r.audio, settled), slice(expected, settled));
+                        worstAllPassDb = std::max(worstAllPassDb, null.errorDb);
+                        expect(null.errorDb <= -100.0, label + ": " + juce::String(null.errorDb) + " dB");
                     }
+            logMessage("  passive running node vs AP reference, worst: " + juce::String(worstAllPassDb, 1) + " dB");
         }
 
-        beginTest("T02: 2-8 overlapping disabled/mix-0/bypassed nodes leave exactly the PRE-EQ output");
+        beginTest("T02: 2-8 overlapping nodes - disabled: bit-exact PRE-EQ; mix 0 / bypassed: AP(PRE-EQ)");
         {
             LayerSnapshot eqOnly;
             eqOnly.eq[0] = bell(900, 6.0f, 0.8f);
@@ -190,10 +247,13 @@ public:
 
             const float ranges[8][2] { { 250, 700 }, { 450, 1200 }, { 300, 900 }, { 600, 2000 },
                                        { 100, 400 }, { 1000, 5000 }, { 200, 3000 }, { 500, 650 } };
+            const int settled = static_cast<int>(0.1 * kFs);
+            double worstDb = kSilenceDb, worstRmsChange = 0.0, worstWindowShift = 0.0;
             for (int count = 2; count <= 8; ++count)
                 for (int variant = 0; variant < 3; ++variant)
                 {
                     auto s = eqOnly;
+                    std::vector<double> edges;
                     for (int i = 0; i < count; ++i)
                     {
                         auto inactiveSlot = compSlot(-40, 8, 0, 1, 50);
@@ -202,42 +262,48 @@ public:
                                                             variant == 1 ? 0.0f : 1.0f, variant != 0);
                         if (variant == 2)
                             s.fx[static_cast<size_t>(i)].slots[1].active = false;
+                        edges.push_back(ranges[i][0]);
+                        edges.push_back(ranges[i][1]);
                     }
                     const auto r = render(s, input, 256);
-                    const auto null = compareAligned(r.audio, reference);
-                    expect(null.bitExact, juce::String(count) + " nodes, variant " + juce::String(variant)
-                                              + ": error " + juce::String(null.errorDb) + " dB");
-                    expect(measureAll(r.audio).peak <= measureAll(reference).peak, "level rose");
+                    const auto label = juce::String(count) + " nodes, variant " + juce::String(variant);
+                    if (variant == 0)
+                    {
+                        expect(compareAligned(r.audio, reference).bitExact, label);
+                        continue;
+                    }
+                    const auto expected = allPassReference(reference, edges, kFs);
+                    const auto null = compareAligned(slice(r.audio, settled), slice(expected, settled));
+                    worstDb = std::max(worstDb, null.errorDb);
+                    expect(null.errorDb <= -100.0, label + ": " + juce::String(null.errorDb) + " dB");
+                    // No dry doubling: the level equals the all-pass reference's level (a doubled dry would be
+                    // +6 dB). Versus the PRE-EQ output itself the windowed RMS differs slightly because an
+                    // all-pass moves energy in time across the window edges; that is logged, not asserted.
+                    const double rmsChange = measureAll(slice(r.audio, settled)).rmsDbfs - measureAll(slice(expected, settled)).rmsDbfs;
+                    worstRmsChange = std::max(worstRmsChange, std::abs(rmsChange));
+                    expect(std::abs(rmsChange) < 0.01, label + ": level change " + juce::String(rmsChange) + " dB");
+                    worstWindowShift = std::max(worstWindowShift, std::abs(measureAll(slice(r.audio, settled)).rmsDbfs
+                                                                           - measureAll(slice(reference, settled)).rmsDbfs));
                 }
+            logMessage("  overlapping passive nodes vs AP reference, worst: " + juce::String(worstDb, 1)
+                       + " dB; RMS vs AP reference " + juce::String(worstRmsChange, 4) + " dB; windowed RMS vs PRE-EQ output "
+                       + juce::String(worstWindowShift, 3) + " dB");
         }
 
-        beginTest("delta math: gain node equals x + (g - 1) * Select(x) from an independent selector");
+        beginTest("delta math: y = AP_hi(AP_lo(x)) + (g - 1) * LP4_hi(HP4_lo(x)), independent reference");
         {
             LayerSnapshot s;
             s.fx[0] = node(250, 700, { gainSlot(-6.0f) });
             const auto r = render(s, input, 128);
-
-            RegionSelector selector;
-            selector.prepare(kFs);
-            selector.reset(250, 700);
-            auto band = input;
-            const float* in[2] { input.getReadPointer(0), input.getReadPointer(1) };
-            float* out[2] { band.getWritePointer(0), band.getWritePointer(1) };
-            selector.process(in, out, 2, input.getNumSamples(), 0);
-
-            // Fade-in of the node mix (20 ms) is excluded; afterwards mix == 1.
-            const int settled = static_cast<int>(0.05 * kFs);
-            auto expected = input;
-            const double g = std::pow(10.0, -6.0 / 20.0);
-            for (int ch = 0; ch < 2; ++ch)
-                for (int i = 0; i < input.getNumSamples(); ++i)
-                    expected.setSample(ch, i, static_cast<float>(input.getSample(ch, i) + (g - 1.0) * band.getSample(ch, i)));
+            const auto expected = singleNodeReference(input, 250.0, 700.0, -6.0, kFs);
+            // Edge birth glide (60 ms) and presence fade-in (20 ms) are excluded.
+            const int settled = static_cast<int>(0.1 * kFs);
             const auto null = compareAligned(slice(r.audio, settled), slice(expected, settled));
             expect(null.errorDb < -120.0, "error " + juce::String(null.errorDb) + " dB");
-            logMessage("  delta vs reference: " + juce::String(null.errorDb, 1) + " dB");
+            logMessage("  engine vs independent H3 reference: " + juce::String(null.errorDb, 1) + " dB");
         }
 
-        beginTest("MIX-0: after mixing a running compressor out, output is exactly xE again");
+        beginTest("MIX-0: after mixing a running compressor out, output equals the passive-node render exactly");
         {
             LayerEngine engine;
             engine.prepare(kFs, 256);
@@ -261,11 +327,88 @@ public:
             processRange(half, input.getNumSamples());
             expect(engine.getNode(0).getGainReductionDb(0) > 1.0f, "compressor state must still be active");
 
+            auto passive = s;
+            passive.fx[0].slots[0].active = false;
+            passive.fx[0].mix = 1.0f;
+            const auto reference = render(passive, input, 256).audio;
+            const int afterRamp = half + static_cast<int>(0.025 * kFs);
+            expect(compareAligned(slice(y, afterRamp), slice(reference, afterRamp)).bitExact);
+        }
+
+        beginTest("FX off again: disabling the last node returns to the bit-exact PRE-EQ output");
+        {
+            LayerEngine engine;
+            engine.prepare(kFs, 256);
+            LayerSnapshot s;
+            s.eq[0] = bell(150, -3.0f);
+            s.fx[0] = node(250, 700, { compSlot(-40, 6, 0, 1, 100) });
+            s.fx[1] = node(450, 3000, { gainSlot(-6) });
+            engine.publish(s);
+            auto y = input;
+            const int off = 24064;
+            for (int start = 0; start < y.getNumSamples(); start += 256)
+            {
+                if (start == off)
+                {
+                    s.fx[0].active = false;
+                    s.fx[1].active = false;
+                    engine.publish(s);
+                }
+                float* chunk[2] { y.getWritePointer(0) + start, y.getWritePointer(1) + start };
+                engine.process(chunk, 2, juce::jmin(256, y.getNumSamples() - start));
+            }
             LayerSnapshot eqOnly;
             eqOnly.eq[0] = s.eq[0];
             const auto reference = render(eqOnly, input, 256).audio;
-            const int afterRamp = half + static_cast<int>(0.025 * kFs);
-            expect(compareAligned(slice(y, afterRamp), slice(reference, afterRamp)).bitExact);
+            // node fade-out 20 ms + next block + edges parking glide 60 ms + next block
+            const int settled = off + static_cast<int>(0.1 * kFs);
+            expect(compareAligned(slice(y, settled), slice(reference, settled)).bitExact, "not back to bit-exact");
+            expect(!engine.isTreeActive());
+        }
+
+        beginTest("topology changes (first node on, second node added, edge order change, all off) are smooth");
+        {
+            // Thresholds fixed before the run: HF products > 5 kHz below -60 dB (as for edge glides) and
+            // no short-term level dip deeper than 3 dB below the quieter steady state around a change.
+            const auto sine = makeSine({ kFs, 2, 1.2, kFixtureSeed }, 1000.0, -6.0);
+            LayerEngine engine;
+            engine.prepare(kFs, 256);
+            LayerSnapshot s;
+            auto y = sine;
+            const int changes[] { 12032, 24064, 36096, 48128 };
+            for (int start = 0; start < y.getNumSamples(); start += 256)
+            {
+                if (start == changes[0]) { s.fx[0] = node(250, 700, { gainSlot(-6) }); engine.publish(s); }
+                if (start == changes[1]) { s.fx[1] = node(2000, 5000, { gainSlot(-6) }); engine.publish(s); }
+                if (start == changes[2]) { s.fx[0].highHz = 1500.0f; engine.publish(s); }
+                if (start == changes[3]) { s.fx[0].active = false; s.fx[1].active = false; engine.publish(s); }
+                float* chunk[2] { y.getWritePointer(0) + start, y.getWritePointer(1) + start };
+                engine.process(chunk, 2, juce::jmin(256, y.getNumSamples() - start));
+            }
+            const double hf = highBandRelativeDb(y, kFs, 5000.0, 0, 0.1);
+            const double floor = highBandRelativeDb(sine, kFs, 5000.0, 0, 0.1);
+            expect(hf < -60.0, "HF products " + juce::String(hf, 1) + " dB");
+
+            const int window = static_cast<int>(0.0025 * kFs);
+            const auto rmsAt = [&](int from)
+            {
+                double sum = 0.0;
+                for (int i = from; i < from + window; ++i)
+                    sum += static_cast<double>(y.getSample(0, i)) * y.getSample(0, i);
+                return 10.0 * std::log10(sum / window + 1e-30);
+            };
+            double worstDip = 0.0;
+            for (int c : changes)
+            {
+                const double before = rmsAt(c - 2 * window), after = rmsAt(c + static_cast<int>(0.15 * kFs));
+                double lowest = 1e9;
+                for (int i = c; i < c + static_cast<int>(0.12 * kFs); i += window / 2)
+                    lowest = std::min(lowest, rmsAt(i));
+                worstDip = std::max(worstDip, std::min(before, after) - lowest);
+            }
+            expect(worstDip < 3.0, "level dip " + juce::String(worstDip, 2) + " dB");
+            logMessage("  topology changes: HF > 5 kHz " + juce::String(hf, 1) + " dB (floor " + juce::String(floor, 1)
+                       + " dB), worst dip " + juce::String(worstDip, 2) + " dB");
         }
 
         beginTest("D2 chain: order, bypass of a middle slot, two gains compose");
