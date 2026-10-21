@@ -52,7 +52,7 @@ the edit paths they call (`editProject`, undo, inspector rebuilds) are tested. N
 ```bash
 cmake --build build --config Release                         # 0, no warnings
 build/Release/HPEQ_Tests.exe     # 0 — 770 passed, 0 failed
-build/Debug/HPEQ_Tests.exe       # see §7
+build/Debug/HPEQ_Tests.exe       # 0 — 770 passed, 0 failed (CRT hook: malloc + new)
 build/Release/HPEQ_Lab.exe ui --out docs/fx-addon/reports/m5/screenshots   # 0
 build/Release/HPEQ_HostSmoke.exe --plugin …/HPEQ.vst3 --other …/HPDG.vst3     # 0 — 16/16
 ```
@@ -91,7 +91,7 @@ added energy at 3–8 kHz.
 | Gate 5 | **PASS** — T09, screenshots from real data, UI work on the message thread only (lock-free capture, the audio thread never waits), frame cost measured | |
 | DAW / gestures by hand | **BLOCKED** (agent) | owner check in FL Studio suggested |
 
-Debug run with the allocation hook: `reports/m5_logs/unit_debug.log` (summary added on completion).
+Debug run with the CRT allocation hook: 770/770, **0 audio-thread allocations** including the PCM capture (`reports/m5_logs/unit_debug.log`).
 
 ## 8. Existing HPDG
 
