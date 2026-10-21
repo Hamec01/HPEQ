@@ -1,17 +1,21 @@
 #pragma once
 
+#include <array>
 #include <atomic>
+#include <functional>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
+#include "Analysis/AudioCapture.h"
 #include "Core/FxProjectState.h"
 #include "DSP/LayerEngine.h"
 
 namespace hpeq
 {
-// Audio insert. M2: layer 1 runs PRE-EQ (Bell) -> FX nodes (Gain, Compressor) through LayerEngine;
-// layers 2-10 are stored but not processed until M7. Output gain and bypass come after the layer.
-class FxPluginProcessor final : public juce::AudioProcessor
+// Audio insert. Layer 1 runs PRE-EQ -> FX nodes through LayerEngine; layers 2-10 are stored but not
+// processed until M7. Output gain and bypass come after the layer. Project edits from the UI go
+// through editProject() (undoable); every change is broadcast to the editor on the message thread.
+class FxPluginProcessor final : public juce::AudioProcessor, public juce::ChangeBroadcaster
 {
 public:
     FxPluginProcessor();
@@ -50,6 +54,21 @@ public:
     FxProjectState getProject() const;
     void setProject(FxProjectState);
 
+    // Undoable edit of the project (message thread). No-op if `change` leaves the project unchanged.
+    void editProject(const juce::String& actionName, const std::function<void(FxProjectState&)>& change);
+    juce::UndoManager& getUndoManager() noexcept { return undoManager; }
+
+    // A/B comparison of two whole projects (not saved with the state; switching clears undo history).
+    // A slot used for the first time starts as a copy of the current project.
+    int getActiveAB() const noexcept { return activeAB; }
+    void selectAB(int slot);
+    void copyToOtherAB();
+
+    // Real input/output PCM for the analysers (UI thread reads).
+    AudioCapture& getCapture() noexcept { return capture; }
+    double getCurrentSampleRate() const noexcept { return currentSampleRate.load(std::memory_order_relaxed); }
+    const dsp::LayerEngine& getEngine() const noexcept { return engine; }
+
     struct MeterSnapshot
     {
         float inputPeak = 0.0f, inputRms = 0.0f, outputPeak = 0.0f, outputRms = 0.0f;
@@ -74,6 +93,12 @@ private:
     int bypassRampSteps = 1;
 
     std::atomic<double> tailSeconds { 0.0 };
+    std::atomic<double> currentSampleRate { 48000.0 };
+    AudioCapture capture;
+    juce::UndoManager undoManager;
+    std::array<FxProjectState, 2> abStore;
+    std::array<bool, 2> abUsed { true, false };
+    int activeAB = 0;
     std::atomic<float> inputPeak { 0.0f }, inputRms { 0.0f }, outputPeak { 0.0f }, outputRms { 0.0f };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FxPluginProcessor)

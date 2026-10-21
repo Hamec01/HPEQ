@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <memory>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
@@ -8,9 +9,21 @@ namespace hpeq
 {
 class FxPluginProcessor;
 
-// M1 editor: the sketch's frame (header, top strip with meters and 10 layer buttons, workspace,
-// inspector) with only what really works wired up. Later milestones fill the placeholders.
-class FxPluginEditor final : public juce::AudioProcessorEditor, private juce::Timer
+namespace ui
+{
+class AnalysisModel;
+class WaveformPanel;
+class SpectrumWorkspace;
+class NodeList;
+class NodeInspector;
+struct Selection;
+} // namespace ui
+
+// M5 editor, laid out after the owner's sketch: header (name, A/B, undo/redo), top strip (real
+// input/processed waveform, layer buttons 1-10 in two rows, meters), the spectrum workspace, and the
+// node list + inspector of the ONE selected processor. Things without DSP yet are shown disabled and
+// say which milestone brings them; nothing pretends to work.
+class FxPluginEditor final : public juce::AudioProcessorEditor, private juce::Timer, private juce::ChangeListener
 {
 public:
     explicit FxPluginEditor(FxPluginProcessor&);
@@ -19,36 +32,41 @@ public:
     void paint(juce::Graphics&) override;
     void resized() override;
 
-private:
-    class LevelMeter final : public juce::Component
-    {
-    public:
-        explicit LevelMeter(juce::String labelText) : label(std::move(labelText)) {}
-        void setLevels(float peakLinear, float rmsLinear);
-        void paint(juce::Graphics&) override;
+    // For tests and screenshots: pull pending capture and repaint now.
+    void updateAnalysisNow();
+    // Select a node as a click would (fx: FX region, else EQ point), and pick the workspace mode.
+    void selectNode(bool fx, std::uint32_t id, int slot = 0);
+    void showDifference(bool difference);
 
-    private:
-        juce::String label;
-        float peakDb = -100.0f, rmsDb = -100.0f, heldPeakDb = -100.0f;
-    };
+private:
+    class LevelMeter;
 
     void timerCallback() override;
-    void selectLayer(int index);
+    void changeListenerCallback(juce::ChangeBroadcaster*) override;
+    void selectionChanged();
+    void updateHeader();
 
     FxPluginProcessor& processor;
+    std::unique_ptr<ui::Selection> selection;
+    std::unique_ptr<ui::AnalysisModel> analysis;
+    std::unique_ptr<ui::WaveformPanel> waveform;
+    std::unique_ptr<ui::SpectrumWorkspace> workspace;
+    std::unique_ptr<ui::NodeList> nodeList;
+    std::unique_ptr<ui::NodeInspector> inspector;
+    std::unique_ptr<LevelMeter> inputMeter, outputMeter;
 
-    juce::Label title, status, workspaceNote, inspectorNote;
-    LevelMeter inputMeter { "IN" }, outputMeter { "OUT" };
+    juce::Label title, subtitle, unavailable, layerNote;
+    juce::TextButton abA { "A" }, abB { "B" }, copyAB { "A>B" }, undo { "Undo" }, redo { "Redo" };
+    juce::TextButton waveOverlay { "Overlay" }, waveDelta { "Delta" }, freeze { "Freeze" };
+    juce::TextButton tabSpectrum { "Spectrum" }, tabDifference { "Difference" };
+    juce::ComboBox view;
     std::array<juce::TextButton, 10> layerButtons;
     juce::Slider outputGain;
     juce::Label outputGainLabel;
     juce::ToggleButton bypass { "Bypass" };
     juce::TooltipWindow tooltips { this };
-
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> outputGainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> bypassAttachment;
-
-    juce::Rectangle<int> workspaceArea, inspectorArea;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FxPluginEditor)
 };

@@ -463,6 +463,7 @@ juce::var engineTiming(const LayerSnapshot& snapshot, int block = 512)
 
 int runM3Lab(const juce::File& out, const juce::String& commit); // LabM3.cpp
 int runM4Lab(const juce::File& out, const juce::String& commit); // LabM4.cpp
+int runUiSnapshots(const juce::File& out); // LabUi.cpp
 int runBench(const juce::File& out, const juce::String& commit, int reps, int blocks, bool cold); // LabBench.cpp
 
 int main(int argc, char* argv[])
@@ -470,6 +471,11 @@ int main(int argc, char* argv[])
     juce::StringArray args;
     for (int i = 1; i < argc; ++i)
         args.add(argv[i]);
+    if (args.contains("ui"))
+    {
+        const auto o = args.indexOf("--out");
+        return runUiSnapshots(juce::File::getCurrentWorkingDirectory().getChildFile(o >= 0 ? args[o + 1] : "hpeq_ui"));
+    }
     if (args.contains("bench"))
     {
         const auto o = args.indexOf("--out"), c = args.indexOf("--commit"), r = args.indexOf("--reps"), b = args.indexOf("--blocks");

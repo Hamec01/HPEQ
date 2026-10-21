@@ -9,6 +9,20 @@ namespace hpeq
 {
 namespace
 {
+class ProjectEdit final : public juce::UndoableAction
+{
+public:
+    ProjectEdit(FxPluginProcessor& p, FxProjectState beforeEdit, FxProjectState afterEdit)
+        : processor(p), before(std::move(beforeEdit)), after(std::move(afterEdit)) {}
+    bool perform() override { processor.setProject(after); return true; }
+    bool undo() override { processor.setProject(before); return true; }
+    int getSizeInUnits() override { return 1; }
+
+private:
+    FxPluginProcessor& processor;
+    FxProjectState before, after;
+};
+
 const juce::Identifier kStateRoot { "HPEQ" };
 const juce::Identifier kStateSchema { "schemaVersion" };
 const juce::Identifier kParametersTree { "Parameters" };
@@ -36,6 +50,8 @@ FxPluginProcessor::FxPluginProcessor()
 void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamplesPerBlock)
 {
     const int maxBlock = juce::jmax(1, maximumExpectedSamplesPerBlock);
+    currentSampleRate.store(sampleRate, std::memory_order_relaxed);
+    capture.reset();
     engine.prepare(sampleRate, maxBlock);
     dry.setSize(dsp::kMaxChannels, maxBlock);
     bypassRampSteps = dsp::stepsFor(dsp::kMixRampSeconds, sampleRate);
@@ -146,9 +162,44 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
                 juce::FloatVectorOperations::multiply(chunk[ch], g, n);
         }
         // g == 1 and not ramping: untouched, so pass-through and bypass are bit-exact.
+        capture.push(dry.getArrayOfReadPointers(), chunk, channels, n);
     }
 
     measure(buffer, channels, outputPeak, outputRms);
+}
+
+void FxPluginProcessor::editProject(const juce::String& actionName, const std::function<void(FxProjectState&)>& change)
+{
+    auto before = getProject();
+    auto after = before;
+    change(after);
+    sanitize(after);
+    if (toValueTree(after).isEquivalentTo(toValueTree(before)))
+        return;
+    undoManager.perform(new ProjectEdit(*this, std::move(before), std::move(after)), actionName);
+}
+
+void FxPluginProcessor::selectAB(int slot)
+{
+    slot = juce::jlimit(0, 1, slot);
+    if (slot == activeAB)
+        return;
+    abStore[static_cast<size_t>(activeAB)] = getProject();
+    if (!abUsed[static_cast<size_t>(slot)])
+    {
+        abStore[static_cast<size_t>(slot)] = abStore[static_cast<size_t>(activeAB)];
+        abUsed[static_cast<size_t>(slot)] = true;
+    }
+    activeAB = slot;
+    undoManager.clearUndoHistory();
+    setProject(abStore[static_cast<size_t>(slot)]);
+}
+
+void FxPluginProcessor::copyToOtherAB()
+{
+    const int other = 1 - activeAB;
+    abStore[static_cast<size_t>(other)] = getProject();
+    abUsed[static_cast<size_t>(other)] = true;
 }
 
 FxPluginProcessor::MeterSnapshot FxPluginProcessor::getMeters() const noexcept
@@ -179,6 +230,7 @@ void FxPluginProcessor::setProject(FxProjectState newProject)
             if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active && slot.type == FxType::Reverb)
                 tail = std::max(tail, dsp::ReverbProcessor::tailSeconds(slot));
     tailSeconds.store(tail, std::memory_order_relaxed);
+    sendChangeMessage(); // the editor refreshes on the message thread
 }
 
 void FxPluginProcessor::getStateInformation(juce::MemoryBlock& destData)

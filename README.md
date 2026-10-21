@@ -17,9 +17,10 @@ owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECIS
 | M3 PRE-EQ shapes, slopes 6-96 dB/oct, channel modes, M/S | done, Gate 3 passed | [M3_REPORT](docs/fx-addon/reports/M3_REPORT.md) |
 | M4 Compressor (T06), Reverb wet-only send (T07), tails, PDC | done, Gate 4 passed | [M4_REPORT](docs/fx-addon/reports/M4_REPORT.md) |
 | CPU pass (O(N) tree, compressor, reverb) | done, -46...-60 % on heavy layers | [CPU_REPORT](docs/fx-addon/reports/CPU_REPORT.md) |
+| M5 one-layer UI, real waveform/spectrum, undo, A/B | done, Gate 5 passed | [M5_REPORT](docs/fx-addon/reports/M5_REPORT.md) |
 
-Layer 1 processes the full PRE-EQ (9 shapes, cuts 6-96 dB/oct, L/R/M/S) and FX nodes (Gain, Compressor, Reverb send) from saved state; there is no
-node-editing UI yet, and the frequency core is H3 (DECISIONS D4).
+Layer 1 processes the full PRE-EQ (9 shapes, cuts 6-96 dB/oct, L/R/M/S) and FX nodes (Gain, Compressor, Reverb send) from saved state or the editor
+(spectrum workspace, node list, inspector); the frequency core is H3 (DECISIONS D4).
 
 ## Build
 
@@ -44,4 +45,5 @@ ctest --test-dir build -C Release --output-on-failure
 | `HPEQ_Harness selfcheck / fixtures / baseline` | M0 measurement harness: fixtures (WAV + SHA-256 manifest), metrics JSON |
 | `HPEQ_Lab --out <dir>` | M2 frequency-core experiment: H1 / H1-LR8 / H2 / H3-tree / H3-engine, JSON + SVG + WAV |
 | `HPEQ_Lab bench [--cold]` | CPU benchmark of fixed engine configurations (warm-up, repetitions, spikes); compare binaries interleaved |
+| `HPEQ_Lab ui --out <dir>` | Renders the real editor to PNG after real audio; UI frame cost |
 | `HPEQ_HostSmoke --plugin <HPEQ.vst3> [--other <HPDG.vst3>]` | Loads the built .vst3 through JUCE's VST3 host: scan, unity, state, 100 instance/editor cycles |
