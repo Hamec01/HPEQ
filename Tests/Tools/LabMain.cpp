@@ -462,12 +462,19 @@ juce::var engineTiming(const LayerSnapshot& snapshot, int block = 512)
 } // namespace
 
 int runM3Lab(const juce::File& out, const juce::String& commit); // LabM3.cpp
+int runM4Lab(const juce::File& out, const juce::String& commit); // LabM4.cpp
 
 int main(int argc, char* argv[])
 {
     juce::StringArray args;
     for (int i = 1; i < argc; ++i)
         args.add(argv[i]);
+    if (args.contains("m4"))
+    {
+        const auto o = args.indexOf("--out"), c = args.indexOf("--commit");
+        return runM4Lab(juce::File::getCurrentWorkingDirectory().getChildFile(o >= 0 ? args[o + 1] : "hpeq_m4_lab"),
+                        c >= 0 ? args[c + 1] : juce::String("unknown"));
+    }
     if (args.contains("m3"))
     {
         const auto o = args.indexOf("--out"), c = args.indexOf("--commit");

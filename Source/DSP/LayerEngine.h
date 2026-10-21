@@ -35,6 +35,7 @@ public:
     int getLatencySamples() const noexcept { return 0; }
     const FxNodeProcessor& getNode(int index) const noexcept { return nodes[static_cast<size_t>(index)]; }
     bool isTreeActive() const noexcept { return tree.isActive(); }
+    int reverbsInUse() const noexcept { return reverbs.inUse(); }
 
 private:
     void applySnapshot() noexcept;
@@ -47,6 +48,7 @@ private:
     SnapshotExchange<LayerSnapshot> exchange;
     PreEqProcessor preEq;
     std::array<FxNodeProcessor, kMaxFxNodesPerLayer> nodes;
+    ReverbPool reverbs; // delay-line memory for send slots, allocated in prepare()
     CrossoverTree tree;
 
     std::array<std::vector<float>, kMaxChannels> xeCopy, dry;

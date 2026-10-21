@@ -1,0 +1,164 @@
+#include "DSP/ReverbProcessor.h"
+
+#include <algorithm>
+#include <cmath>
+
+namespace hpeq::dsp
+{
+namespace
+{
+constexpr std::array<double, ReverbProcessor::kLines> kBaseDelayMs { 31.3, 37.9, 41.7, 47.3, 53.9, 59.3, 67.1, 73.7 };
+constexpr std::array<double, ReverbProcessor::kLines> kOutLeft { 1, 1, 1, 1, -1, -1, -1, -1 };
+constexpr std::array<double, ReverbProcessor::kLines> kOutRight { 1, -1, 1, -1, 1, -1, 1, -1 };
+constexpr std::array<double, ReverbProcessor::kLines> kInSign { 1, 1, -1, -1, 1, 1, -1, -1 };
+constexpr double kOutputScale = 0.35;   // keeps the wet near the input level for typical decays
+constexpr double kGainSmoothing = 0.05; // s, decay/damping changes
+constexpr double kSizeSmoothing = 0.20; // s, size changes glide the delay lengths
+
+float readInterpolated(const std::vector<float>& line, int writePos, double delay) noexcept
+{
+    const int size = static_cast<int>(line.size());
+    double readPos = writePos - delay;
+    while (readPos < 0.0)
+        readPos += size;
+    const int i0 = static_cast<int>(readPos);
+    const int i1 = (i0 + 1) % size;
+    const double frac = readPos - i0;
+    return static_cast<float>(line[static_cast<size_t>(i0)] + frac * (line[static_cast<size_t>(i1)] - line[static_cast<size_t>(i0)]));
+}
+} // namespace
+
+void ReverbProcessor::prepare(double newSampleRate)
+{
+    sampleRate = newSampleRate;
+    const auto lineSize = static_cast<size_t>(std::ceil(kBaseDelayMs.back() * kMaxSize * 1.0e-3 * sampleRate)) + 4;
+    for (auto& l : lines)
+        l.assign(lineSize, 0.0f);
+    for (auto& p : predelay)
+        p.assign(static_cast<size_t>(std::ceil(kMaxPredelayMs * 1.0e-3 * sampleRate)) + 4, 0.0f);
+    reset();
+}
+
+void ReverbProcessor::reset() noexcept
+{
+    for (auto& l : lines)
+        std::fill(l.begin(), l.end(), 0.0f);
+    for (auto& p : predelay)
+        std::fill(p.begin(), p.end(), 0.0f);
+    writePos = {};
+    absorption = {};
+    lowCutState = {};
+    predelayPos = 0;
+    blockPeak = 0.0f;
+    primed = false;
+}
+
+double ReverbProcessor::tailSeconds(const FxSlotParams& p) noexcept
+{
+    return p.values[slot::kPredelayMs] * 1.0e-3 + p.values[slot::kDecaySeconds];
+}
+
+void ReverbProcessor::updateTargets(const FxSlotParams& p) noexcept
+{
+    const double t60 = std::clamp(static_cast<double>(p.values[slot::kDecaySeconds]), 0.1, 20.0);
+    const double hfRatio = std::clamp(static_cast<double>(p.values[slot::kHfRatio]), 0.05, 1.0);
+    const double size = std::clamp(static_cast<double>(p.values[slot::kSize]), kMinSize, kMaxSize);
+    for (int i = 0; i < kLines; ++i)
+    {
+        // Whole-sample lengths: a fractional read (linear interpolation) low-passes every pass of
+        // the loop and shortened the measured RT60 by ~13 % (M4 T07); lengths only glide fractionally.
+        const double d = std::round(kBaseDelayMs[static_cast<size_t>(i)] * size * 1.0e-3 * sampleRate);
+        lengthTarget[static_cast<size_t>(i)] = d;
+        const double g = std::pow(10.0, -3.0 * d / (t60 * sampleRate));
+        const double gHigh = std::pow(10.0, -3.0 * d / (t60 * hfRatio * sampleRate));
+        const double r = gHigh / g;
+        gainTarget[static_cast<size_t>(i)] = g;
+        poleTarget[static_cast<size_t>(i)] = (1.0 - r) / (1.0 + r);
+    }
+    predelayTarget = std::clamp(static_cast<double>(p.values[slot::kPredelayMs]), 0.0, kMaxPredelayMs) * 1.0e-3 * sampleRate;
+    width = std::clamp(static_cast<double>(p.values[slot::kWidth]), 0.0, 1.5);
+    const double lowCut = std::clamp(static_cast<double>(p.values[slot::kLowCutHz]), 10.0, 1000.0);
+    lowCutCoefficient = 1.0 - std::exp(-2.0 * 3.14159265358979323846 * lowCut / sampleRate);
+
+    if (!primed)
+    {
+        length = lengthTarget;
+        gain = gainTarget;
+        pole = poleTarget;
+        predelaySamples = predelayTarget;
+        primed = true;
+    }
+}
+
+void ReverbProcessor::process(const float* const* in, float* const* wet, int numChannels, int numSamples, const FxSlotParams& p) noexcept
+{
+    updateTargets(p);
+    const double gainK = 1.0 - std::exp(-1.0 / (kGainSmoothing * sampleRate));
+    const double sizeK = 1.0 - std::exp(-1.0 / (kSizeSmoothing * sampleRate));
+    const int predelaySize = static_cast<int>(predelay[0].size());
+    float peak = 0.0f;
+
+    for (int n = 0; n < numSamples; ++n)
+    {
+        for (int i = 0; i < kLines; ++i)
+        {
+            gain[static_cast<size_t>(i)] += gainK * (gainTarget[static_cast<size_t>(i)] - gain[static_cast<size_t>(i)]);
+            pole[static_cast<size_t>(i)] += gainK * (poleTarget[static_cast<size_t>(i)] - pole[static_cast<size_t>(i)]);
+            auto& len = length[static_cast<size_t>(i)];
+            const double target = lengthTarget[static_cast<size_t>(i)];
+            len += sizeK * (target - len);
+            if (std::abs(target - len) < 1.0e-4)
+                len = target; // land on the integer length: no interpolation loss once settled
+        }
+        predelaySamples += sizeK * (predelayTarget - predelaySamples);
+
+        const float inL = in[0][n];
+        const float inR = numChannels > 1 ? in[1][n] : inL;
+        predelay[0][static_cast<size_t>(predelayPos)] = inL;
+        predelay[1][static_cast<size_t>(predelayPos)] = inR;
+        const double pl = readInterpolated(predelay[0], predelayPos, predelaySamples);
+        const double pr = readInterpolated(predelay[1], predelayPos, predelaySamples);
+        predelayPos = (predelayPos + 1) % predelaySize;
+
+        std::array<double, kLines> z {};
+        double sum = 0.0, outL = 0.0, outR = 0.0;
+        for (int i = 0; i < kLines; ++i)
+        {
+            const auto idx = static_cast<size_t>(i);
+            const double y = readInterpolated(lines[idx], writePos[idx], length[idx]);
+            absorption[idx] = gain[idx] * (1.0 - pole[idx]) * y + pole[idx] * absorption[idx];
+            z[idx] = absorption[idx];
+            sum += z[idx];
+            outL += kOutLeft[idx] * z[idx];
+            outR += kOutRight[idx] * z[idx];
+        }
+        const double householder = 2.0 / kLines * sum;
+        for (int i = 0; i < kLines; ++i)
+        {
+            const auto idx = static_cast<size_t>(i);
+            const double input = (i % 2 == 0 ? pl : pr) * kInSign[idx];
+            lines[idx][static_cast<size_t>(writePos[idx])] = static_cast<float>(z[idx] - householder + input);
+            writePos[idx] = (writePos[idx] + 1) % static_cast<int>(lines[idx].size());
+        }
+
+        outL *= kOutputScale;
+        outR *= kOutputScale;
+        const double mid = 0.5 * (outL + outR), side = 0.5 * (outL - outR) * width;
+        double l = mid + side, r = mid - side;
+        lowCutState[0] += lowCutCoefficient * (l - lowCutState[0]);
+        lowCutState[1] += lowCutCoefficient * (r - lowCutState[1]);
+        l -= lowCutState[0];
+        r -= lowCutState[1];
+
+        if (numChannels > 1)
+        {
+            wet[0][n] = static_cast<float>(l);
+            wet[1][n] = static_cast<float>(r);
+        }
+        else
+            wet[0][n] = static_cast<float>(0.5 * (l + r));
+        peak = std::max({ peak, std::abs(static_cast<float>(l)), std::abs(static_cast<float>(r)) });
+    }
+    blockPeak = peak;
+}
+} // namespace hpeq::dsp

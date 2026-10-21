@@ -170,7 +170,15 @@ void FxPluginProcessor::setProject(FxProjectState newProject)
     sanitize(newProject);
     const juce::ScopedLock lock(projectLock);
     project = std::move(newProject);
-    engine.publish(dsp::makeSnapshot(project.layers[0]));
+    const auto snapshot = dsp::makeSnapshot(project.layers[0]);
+    engine.publish(snapshot);
+
+    double tail = 0.0;
+    for (const auto& node : snapshot.fx)
+        for (int k = 0; node.active && k < node.numSlots; ++k)
+            if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active && slot.type == FxType::Reverb)
+                tail = std::max(tail, dsp::ReverbProcessor::tailSeconds(slot));
+    tailSeconds.store(tail, std::memory_order_relaxed);
 }
 
 void FxPluginProcessor::getStateInformation(juce::MemoryBlock& destData)

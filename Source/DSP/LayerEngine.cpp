@@ -31,8 +31,9 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize)
     }
 
     preEq.prepare(sampleRate);
+    reverbs.prepare(sampleRate);
     for (auto& node : nodes)
-        node.prepare(sampleRate, maxBlock);
+        node.prepare(sampleRate, maxBlock, &reverbs);
     tree.prepare(sampleRate);
     reset();
 }

@@ -29,8 +29,15 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kReleaseMs] = juce::jlimit(1.0f, 5000.0f, param(state.parameters, "releaseMs", 120.0f));
             slotParams.values[slot::kMakeupDb] = juce::jlimit(-24.0f, 24.0f, param(state.parameters, "makeupDb", 0.0f));
             break;
-        case FxType::Limiter:
         case FxType::Reverb:
+            slotParams.values[slot::kPredelayMs] = juce::jlimit(0.0f, 250.0f, param(state.parameters, "predelayMs", 10.0f));
+            slotParams.values[slot::kDecaySeconds] = juce::jlimit(0.1f, 20.0f, param(state.parameters, "decaySeconds", 1.8f));
+            slotParams.values[slot::kHfRatio] = juce::jlimit(0.05f, 1.0f, param(state.parameters, "hfDecayRatio", 0.5f));
+            slotParams.values[slot::kSize] = juce::jlimit(0.3f, 1.5f, param(state.parameters, "size", 1.0f));
+            slotParams.values[slot::kWidth] = juce::jlimit(0.0f, 1.5f, param(state.parameters, "width", 1.0f));
+            slotParams.values[slot::kLowCutHz] = juce::jlimit(10.0f, 1000.0f, param(state.parameters, "lowCutHz", 80.0f));
+            break;
+        case FxType::Limiter:
         case FxType::Delay:
         case FxType::TransientShaper:
         case FxType::Saturator:
@@ -50,7 +57,7 @@ bool isEqShapeProcessed(EqShape) noexcept
 
 bool isFxTypeProcessed(FxType type) noexcept
 {
-    return type == FxType::Gain || type == FxType::Compressor; // M4/M6 add the rest
+    return type == FxType::Gain || type == FxType::Compressor || type == FxType::Reverb; // M6 adds the rest
 }
 
 LayerSnapshot makeSnapshot(const LayerState& layer)

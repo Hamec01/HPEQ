@@ -37,6 +37,8 @@ namespace slot
 constexpr int kGainDb = 0;
 // Compressor
 constexpr int kThresholdDb = 0, kRatio = 1, kKneeDb = 2, kAttackMs = 3, kReleaseMs = 4, kMakeupDb = 5;
+// Reverb (wet-only send)
+constexpr int kPredelayMs = 0, kDecaySeconds = 1, kHfRatio = 2, kSize = 3, kWidth = 4, kLowCutHz = 5;
 } // namespace slot
 
 struct FxNodeParams

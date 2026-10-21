@@ -62,6 +62,7 @@ target_sources(HPEQ
         Source/DSP/LayerSnapshot.cpp
         Source/DSP/PreEqProcessor.cpp
         Source/DSP/Processors.cpp
+        Source/DSP/ReverbProcessor.cpp
         Source/DSP/CrossoverTree.cpp
         Source/DSP/EqDesign.cpp
         Source/Plugin/FxPluginProcessor.cpp
@@ -97,7 +98,8 @@ add_executable(HPEQ_Tests
     Tests/Unit/PluginContractTests.cpp
     Tests/Unit/StateTests.cpp
     Tests/Unit/DspTests.cpp
-    Tests/Unit/EqTests.cpp)
+    Tests/Unit/EqTests.cpp
+    Tests/Unit/DynamicsReverbTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_link_libraries(HPEQ_Tests PRIVATE HPEQ)
 add_test(NAME HPEQ_Tests COMMAND HPEQ_Tests)
@@ -106,7 +108,8 @@ add_test(NAME HPEQ_Tests COMMAND HPEQ_Tests)
 add_executable(HPEQ_Lab
     ${HPEQ_HARNESS_SOURCES}
     Tests/Tools/LabMain.cpp
-    Tests/Tools/LabM3.cpp)
+    Tests/Tools/LabM3.cpp
+    Tests/Tools/LabM4.cpp)
 target_include_directories(HPEQ_Lab PRIVATE Tests)
 target_link_libraries(HPEQ_Lab PRIVATE HPEQ)
 

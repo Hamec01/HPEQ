@@ -30,7 +30,8 @@ public:
     bool acceptsMidi() const override { return false; }
     bool producesMidi() const override { return false; }
     bool isMidiEffect() const override { return false; }
-    double getTailLengthSeconds() const override { return 0.0; }
+    // Longest reverb tail of the processed layer (pre-delay + T60), so hosts keep processing after stop.
+    double getTailLengthSeconds() const override { return tailSeconds.load(std::memory_order_relaxed); }
 
     int getNumPrograms() override { return 1; }
     int getCurrentProgram() override { return 0; }
@@ -72,6 +73,7 @@ private:
     dsp::LinearRamp wetAmount;      // 1 = layer output, 0 = bypassed (dry)
     int bypassRampSteps = 1;
 
+    std::atomic<double> tailSeconds { 0.0 };
     std::atomic<float> inputPeak { 0.0f }, inputRms { 0.0f }, outputPeak { 0.0f }, outputRms { 0.0f };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FxPluginProcessor)
