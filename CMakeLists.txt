@@ -29,6 +29,49 @@ set(HPEQ_HPDG_SOURCE_DIR "" CACHE PATH "HPDG Source/ directory for M0 measuremen
 
 enable_testing()
 
+# --- Plugin -----------------------------------------------------------------------------------
+juce_add_plugin(HPEQ
+    COMPANY_NAME "HamloProd"
+    BUNDLE_ID com.hamloprod.hpeq
+    IS_SYNTH FALSE
+    NEEDS_MIDI_INPUT FALSE
+    NEEDS_MIDI_OUTPUT FALSE
+    IS_MIDI_EFFECT FALSE
+    EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+    COPY_PLUGIN_AFTER_BUILD FALSE
+    # Same vendor code as HPDG (BBLB), different plugin code: HPDG is BBG1.
+    PLUGIN_MANUFACTURER_CODE BBLB
+    PLUGIN_CODE HpEq
+    VST3_CATEGORIES Fx EQ
+    FORMATS VST3
+    PRODUCT_NAME "HPEQ")
+
+target_compile_definitions(HPEQ
+    PUBLIC
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0
+        JUCE_VST3_CAN_REPLACE_VST2=0
+        JUCE_DISPLAY_SPLASH_SCREEN=0)
+
+target_sources(HPEQ
+    PRIVATE
+        Source/Core/FxProjectState.cpp
+        Source/Plugin/FxPluginProcessor.cpp
+        Source/Plugin/FxPluginEditor.cpp)
+
+target_include_directories(HPEQ PUBLIC Source)
+
+target_link_libraries(HPEQ
+    PUBLIC
+        # Test executables link the plugin's shared code; these modules are compiled once, here.
+        juce::juce_audio_utils
+        juce::juce_dsp
+        juce::juce_audio_formats
+        juce::juce_cryptography
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags)
+
 # --- Measurement harness (shared by the M0 tool and the unit tests) ----------------------------
 set(HPEQ_HARNESS_SOURCES
     Tests/Harness/TestSignalFactory.cpp
@@ -36,6 +79,17 @@ set(HPEQ_HARNESS_SOURCES
     Tests/Harness/AudioFileIO.cpp
     Tests/Harness/RtAllocationProbe.cpp
     Tests/Harness/MachineInfo.cpp)
+
+# Unit tests: harness self-checks, plugin contract (M1), state schema.
+add_executable(HPEQ_Tests
+    ${HPEQ_HARNESS_SOURCES}
+    Tests/Unit/TestMain.cpp
+    Tests/Unit/HarnessTests.cpp
+    Tests/Unit/PluginContractTests.cpp
+    Tests/Unit/StateTests.cpp)
+target_include_directories(HPEQ_Tests PRIVATE Tests)
+target_link_libraries(HPEQ_Tests PRIVATE HPEQ)
+add_test(NAME HPEQ_Tests COMMAND HPEQ_Tests)
 
 # M0 tool: fixtures, baseline metrics, HPDG block audit.
 add_executable(HPEQ_Harness
@@ -62,3 +116,19 @@ endif()
 
 add_test(NAME HPEQ_Harness_SelfCheck COMMAND HPEQ_Harness selfcheck)
 
+# M1 host smoke: loads built .vst3 binaries through JUCE's VST3 host, as a DAW scan would.
+add_executable(HPEQ_HostSmoke
+    ${HPEQ_HARNESS_SOURCES}
+    Tests/Tools/HostSmokeMain.cpp)
+target_include_directories(HPEQ_HostSmoke PRIVATE Tests)
+target_link_libraries(HPEQ_HostSmoke
+    PRIVATE
+        juce::juce_audio_processors
+        juce::juce_audio_formats
+        juce::juce_cryptography
+        juce::juce_dsp
+        juce::juce_gui_basics
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+target_compile_definitions(HPEQ_HostSmoke PRIVATE
+    JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_PLUGINHOST_VST3=1 JUCE_MODAL_LOOPS_PERMITTED=1)
