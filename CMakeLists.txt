@@ -55,6 +55,7 @@ target_compile_definitions(HPEQ
 
 target_sources(HPEQ
     PRIVATE
+        Source/Analysis/SpectrumAnalyzer.cpp
         Source/Core/FxProjectState.cpp
         Source/DSP/Biquad.cpp
         Source/DSP/FxNodeProcessor.cpp
