@@ -1,0 +1,2104 @@
+{
+  "fixture_set": "fx_addon_v1",
+  "seed": 24681357,
+  "format": "WAV 32-bit float, stereo, 1.0 s",
+  "commit": "e3a67a57a29aea8719d3f9ac6acf2458b06b7982",
+  "machine": {
+    "os": "Windows 11",
+    "cpu_vendor": "GenuineIntel",
+    "cpu_model": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+    "cpu_mhz": 2482,
+    "logical_cpus": 8,
+    "physical_cpus": 4,
+    "memory_mb": 16292,
+    "juce_version": "JUCE v8.0.12",
+    "compiler": "MSVC 195035730",
+    "build": "Release",
+    "allocation_probe": "operator-new-only (malloc not seen)",
+    "utc": "2026-10-21T13:01:41.788+03:00"
+  },
+  "files_written": 104,
+  "not_applicable": 0,
+  "files": [
+    {
+      "name": "silence",
+      "description": "all zeros",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/silence.wav",
+      "sha256_file": "76d3b0d75309dea8c3d3e3da1f919c8c1ae0ad8ce76ee29e202b6cda48c29376",
+      "sha256_pcm": "19f0212a2c85ff556ebeb0e7ec8d5ac64299145a606f207ac650c4aab24bf73c",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 0.0
+    },
+    {
+      "name": "dc",
+      "description": "constant +0.5",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/dc.wav",
+      "sha256_file": "f6183a89a8d7f2c95a269b92e6c9817a1ea87198fc8dd0dfd6d3c8eafa5d8ef7",
+      "sha256_pcm": "677abf000f9b83a729453035753c3c8e23776625a069153e1aa3454d4a176a09",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -6.0206,
+        "dc": 0.5,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 3.735975
+    },
+    {
+      "name": "subnormal",
+      "description": "alternating +/-1e-40 (float subnormal)",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/subnormal.wav",
+      "sha256_file": "463ffb0c8d78e96756bcf4d8448bff41d1ab52258e7131720bb3c648876a6d19",
+      "sha256_pcm": "83c19eac0913354d3b71589bbf814e12c42f93122dcf02ff34220110c758ddc5",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 88200
+      },
+      "spectral_centroid_hz": 22049.26954
+    },
+    {
+      "name": "impulse",
+      "description": "unit impulse at 25% of length",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/impulse.wav",
+      "sha256_file": "c9f6b2c198fac2e9058905b117ecf270fd2cfe929e6471a2354d6802c99bde8c",
+      "sha256_pcm": "4fca86ce7cf708f9cb1ac9b578db51092a807dfde050747e0e28444a2c101fe7",
+      "levels": {
+        "peak_dbfs": 0.0,
+        "rms_dbfs": -46.444386,
+        "dc": 0.000023,
+        "crest_db": 46.444386,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 11025.336456
+    },
+    {
+      "name": "step",
+      "description": "0 -> 0.5 step at 25% of length",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/step.wav",
+      "sha256_file": "ab74ca4d42b197c747bf177cea693730db63244c6151d85ea292058404800046",
+      "sha256_pcm": "e816a6f979c00d45d2dfc586d9d0af13bd7dca3a342262b952456deb2d50e510",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -7.269987,
+        "dc": 0.375,
+        "crest_db": 1.249387,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 3.331842
+    },
+    {
+      "name": "sine_20",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_20.wav",
+      "sha256_file": "304d619247d827e8f1d82493850ec3ed35665b597fa1cb87e89488aab5308b75",
+      "sha256_pcm": "0cb036e189c3733efd24d53196baf6355cf6a804ca7760ef8f307777923ff889",
+      "levels": {
+        "peak_dbfs": -6.000003,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010297,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 19.89874
+    },
+    {
+      "name": "sine_50",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_50.wav",
+      "sha256_file": "6ab0502af267ba2e66b7539c89eb3d1264bafa41f7870ad5b3aa367e509dd540",
+      "sha256_pcm": "e1c8c76d2256e8e2dcc32332c90fddcb0ee5b5e2f2e75de86ec80702b3825485",
+      "levels": {
+        "peak_dbfs": -6.000055,
+        "rms_dbfs": -9.0103,
+        "dc": -1.288966e-18,
+        "crest_db": 3.010245,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 49.898699
+    },
+    {
+      "name": "sine_80",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_80.wav",
+      "sha256_file": "b65427e0f8b3037503e63237d24662562a459384856c75a96e2574fec32e720d",
+      "sha256_pcm": "dca06dc26c2d26c2d917fe6b03e5fcf249f675a806c2b56dc7d6990cf003979b",
+      "levels": {
+        "peak_dbfs": -6.000003,
+        "rms_dbfs": -9.0103,
+        "dc": -1.93345e-18,
+        "crest_db": 3.010297,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 79.898709
+    },
+    {
+      "name": "sine_100",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_100.wav",
+      "sha256_file": "847b2f5186dfc5a7f9821b17cf4243e80d978ce679d1f6b09a746ff227cf5097",
+      "sha256_pcm": "517bbe843ca37b4d7eb3db8bf1ba22cb4204b78245ff18fe45bd954ef464215b",
+      "levels": {
+        "peak_dbfs": -6.000055,
+        "rms_dbfs": -9.0103,
+        "dc": 8.05604e-19,
+        "crest_db": 3.010245,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 99.898721
+    },
+    {
+      "name": "sine_200",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_200.wav",
+      "sha256_file": "b3e494471c398e9fb96db18d6f56cee56af9f0e4dd80452e95853b0fe454a078",
+      "sha256_pcm": "a82487307a1455e05522963398323383624d0080b68ddd328c578dfe2f7a7975",
+      "levels": {
+        "peak_dbfs": -6.000055,
+        "rms_dbfs": -9.0103,
+        "dc": 4.511382e-18,
+        "crest_db": 3.010245,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 199.898819
+    },
+    {
+      "name": "sine_450",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_450.wav",
+      "sha256_file": "77f7a33a6f18a171c1430e03f9befeec259e1f7ab4e4d72a473adfc322b04c85",
+      "sha256_pcm": "9849d2aaf12a53f54f23154e902091fa5ca04463665043f364aa03c7bb927a9c",
+      "levels": {
+        "peak_dbfs": -6.004464,
+        "rms_dbfs": -9.0103,
+        "dc": -2.799474e-18,
+        "crest_db": 3.005836,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 449.899272
+    },
+    {
+      "name": "sine_700",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_700.wav",
+      "sha256_file": "10b0754e30f7aef1a4e1ecf76ea9825675920963b3e147dc5ec5403cd29f8b49",
+      "sha256_pcm": "773344583dc3035748ed53415e69a53954697817044059b4affe69e2545351b3",
+      "levels": {
+        "peak_dbfs": -6.0027,
+        "rms_dbfs": -9.0103,
+        "dc": -2.150077e-15,
+        "crest_db": 3.0076,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 699.899967
+    },
+    {
+      "name": "sine_1000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_1000.wav",
+      "sha256_file": "24cba95f34ec9585807f95667f4d6e29eeb874371d7c62c8528d83d6e73a315d",
+      "sha256_pcm": "c9c158e757729ea63e47542db544200812663cf1fd2d89917ac6e536e36ff7b8",
+      "levels": {
+        "peak_dbfs": -6.000055,
+        "rms_dbfs": -9.0103,
+        "dc": -3.84112e-16,
+        "crest_db": 3.010245,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 999.901064
+    },
+    {
+      "name": "sine_5000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_5000.wav",
+      "sha256_file": "555d90d9cc0c2cb975ca372dcbba9c7b538ed420bf9e2045b0a66267b4aaf6cc",
+      "sha256_pcm": "cb3ab0db21275e52f590957c136db626e199f179e9bbf6d137471f31b06ee2f6",
+      "levels": {
+        "peak_dbfs": -6.000055,
+        "rms_dbfs": -9.0103,
+        "dc": 3.378658e-12,
+        "crest_db": 3.010245,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 4999.931533
+    },
+    {
+      "name": "sine_10000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_10000.wav",
+      "sha256_file": "225982ab236f185101f2146bdef900d002872e2df968f89c73fac668e2a097ab",
+      "sha256_pcm": "27230d19e8165f1fd4f577a025e63b473cb8111e68efa4bbadc885c7271ada67",
+      "levels": {
+        "peak_dbfs": -6.000055,
+        "rms_dbfs": -9.0103,
+        "dc": 6.081525e-12,
+        "crest_db": 3.010245,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 9999.987708
+    },
+    {
+      "name": "sine_15000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/sine_15000.wav",
+      "sha256_file": "07d924af32f5830e36dbc979f1141c318fb47d3b051b9ee11d15f8f7f45f9dc1",
+      "sha256_pcm": "d14e9b03ebadee4108a0046a90245d543151b12235e8f1945ceed41ed716bdee",
+      "levels": {
+        "peak_dbfs": -6.000496,
+        "rms_dbfs": -9.0103,
+        "dc": 2.364998e-11,
+        "crest_db": 3.009804,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 15000.046672
+    },
+    {
+      "name": "exp_sweep",
+      "description": "20 Hz -> 0.45 fs exponential sweep, -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/exp_sweep.wav",
+      "sha256_file": "7b9e3410b948ca89fe08567ab0d83e9e45679d984aa1665e80234d6d8677e5e7",
+      "sha256_pcm": "18a1b0c30530facd7a25ca8c6e402a772e3733de7e627a6cd52c9841bd42c66c",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.026109,
+        "dc": 0.003734,
+        "crest_db": 3.026109,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 2822.02515
+    },
+    {
+      "name": "white_noise",
+      "description": "white, -20 dBFS RMS per channel, decorrelated",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/white_noise.wav",
+      "sha256_file": "f2b98a97af3ad3fcb921e9ab3360934ef27c83adbd7e6b021b22aca30b4b289c",
+      "sha256_pcm": "8b9e92da8dfa8b4179532734b3e46c142f21c49b9d502ba80290e80b5aa9303b",
+      "levels": {
+        "peak_dbfs": -15.225562,
+        "rms_dbfs": -20.0,
+        "dc": 0.000311,
+        "crest_db": 4.774438,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 11034.240047
+    },
+    {
+      "name": "pink_noise",
+      "description": "pink (Kellett), -20 dBFS RMS per channel, decorrelated",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/pink_noise.wav",
+      "sha256_file": "15d9ab8872b8e12aca7b799339bd7d879e9155dfacdd9bbf1f8dd24dd69de12d",
+      "sha256_pcm": "65eed484fc838f276ae320c45aa03aabfd0d235cf7b41ce43d27ef127876a8cc",
+      "levels": {
+        "peak_dbfs": -7.034669,
+        "rms_dbfs": -20.0,
+        "dc": 0.007631,
+        "crest_db": 12.965331,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 2279.913916
+    },
+    {
+      "name": "dual_tone_imd",
+      "description": "SMPTE 60 Hz + 7 kHz 4:1, -6 dBFS peak",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/dual_tone_imd.wav",
+      "sha256_file": "2683cb638e79329e0e0f9105898f902396ed1378f17c0fccff40d2173b35d8e7",
+      "sha256_pcm": "b4ba53ade73b48e32635d5092a665f8018e7d9b89c66110520e9def70be2b4f0",
+      "levels": {
+        "peak_dbfs": -6.008432,
+        "rms_dbfs": -10.685211,
+        "dc": -8.249385e-17,
+        "crest_db": 4.676779,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 468.133842
+    },
+    {
+      "name": "gated_burst",
+      "description": "1 kHz, -40 / -6 dBFS alternating every 250 ms",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/gated_burst.wav",
+      "sha256_file": "dfb24a012a187aaac9e09b26796137ecb37742448ca83b92a0ae2f5f930cf792",
+      "sha256_pcm": "09b7cde86c07abd4cb06295ab11f44558fe0c38b24d09d1c189a13628ad9c17b",
+      "levels": {
+        "peak_dbfs": -6.000055,
+        "rms_dbfs": -12.018871,
+        "dc": -2.625463e-16,
+        "crest_db": 6.018816,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 999.616097
+    },
+    {
+      "name": "stereo_left_only",
+      "description": "pink -20 dBFS RMS in L, R silent",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/stereo_left_only.wav",
+      "sha256_file": "bfa0b27012955c17ee1ab2fe57029bd255cca128c5322f236bc9bb44cec0a793",
+      "sha256_pcm": "97193b0355b94104fb53f2092950b06ad139f7265bf0db44fd087cc821f12c40",
+      "levels": {
+        "peak_dbfs": -8.96986,
+        "rms_dbfs": -23.0103,
+        "dc": 0.005778,
+        "crest_db": 14.04044,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 2482.800092
+    },
+    {
+      "name": "stereo_right_only",
+      "description": "pink -20 dBFS RMS in R, L silent",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/stereo_right_only.wav",
+      "sha256_file": "8fec3792eab824752cb28d8ab6e7900815a7dfcdaeacd274992fba09b677e050",
+      "sha256_pcm": "5f75b5b3a25cba0eb1d9f2e89a372b3d778bffc3e8b0cc141462e3f97f280797",
+      "levels": {
+        "peak_dbfs": -8.96986,
+        "rms_dbfs": -23.0103,
+        "dc": 0.005778,
+        "crest_db": 14.04044,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 0.0
+    },
+    {
+      "name": "stereo_mid_only",
+      "description": "pink, L == R",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/stereo_mid_only.wav",
+      "sha256_file": "65e8c07e764bbcbd9d46a41933f370e5ebc613d265074f33626fc1eb983d00ce",
+      "sha256_pcm": "b0340ec03c016b026cf4c86ced0b3ada4b7dca05025955030ac94497c977946e",
+      "levels": {
+        "peak_dbfs": -8.96986,
+        "rms_dbfs": -20.0,
+        "dc": 0.011557,
+        "crest_db": 11.03014,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 2482.800092
+    },
+    {
+      "name": "stereo_side_only",
+      "description": "pink, L == -R",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/stereo_side_only.wav",
+      "sha256_file": "e19a9f83f5f84e23610db8ca14e78a6c3b565c587c10972aad85ff45cdd11ae6",
+      "sha256_pcm": "a6ee9d83b612efc437c0e217622eabd4d4a7d2dec35f022359dc3b5b5843aaf4",
+      "levels": {
+        "peak_dbfs": -8.96986,
+        "rms_dbfs": -20.0,
+        "dc": 0.0,
+        "crest_db": 11.03014,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 2482.800092
+    },
+    {
+      "name": "synthetic_drums",
+      "description": "kick/snare/hat 16th loop at 120 BPM",
+      "sample_rate": 44100.0,
+      "channels": 2,
+      "samples": 44100,
+      "valid": true,
+      "file": "44100/synthetic_drums.wav",
+      "sha256_file": "1a208af9681260dd6b65a2864f964ede810e57d7e95ae6d46a1aac9292dfd26b",
+      "sha256_pcm": "1cba731326af49926eac510fc9eb87edb53af659ffb1917257b4a3b56c7c6c48",
+      "levels": {
+        "peak_dbfs": -2.561176,
+        "rms_dbfs": -17.06358,
+        "dc": 0.001058,
+        "crest_db": 14.502404,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 756.992448
+    },
+    {
+      "name": "silence",
+      "description": "all zeros",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/silence.wav",
+      "sha256_file": "08d5ced58d562c4b06935bb64c207cd1ec5c12c56070c919bd110b900eb6fcab",
+      "sha256_pcm": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 0.0
+    },
+    {
+      "name": "dc",
+      "description": "constant +0.5",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/dc.wav",
+      "sha256_file": "c7e85e502cb7a2a9cc3d2de2b8ff8bc65c854fc154f6aefa136d84d762d1af1a",
+      "sha256_pcm": "cad5bf7a9e4a53621af13476ae8bcc2c653acacb66cc91af57fd728aaee46e7c",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -6.0206,
+        "dc": 0.5,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 4.514272
+    },
+    {
+      "name": "subnormal",
+      "description": "alternating +/-1e-40 (float subnormal)",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/subnormal.wav",
+      "sha256_file": "2ebb474ceaebb2960b3e7dda7df83e335cff653b09d50c06c3cc370b2fb28c35",
+      "sha256_pcm": "10c8d8795413bd430e630e48b0421639230f3eca5dcfa62cea488e3255a6f9ab",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 96000
+      },
+      "spectral_centroid_hz": 23999.302754
+    },
+    {
+      "name": "impulse",
+      "description": "unit impulse at 25% of length",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/impulse.wav",
+      "sha256_file": "4d9aeba3fd0fca427e41c31096a34cfc4f04e8d81e76bfb056f39484428eece3",
+      "sha256_pcm": "8e848e645aaf2513a904a77c47a21cc00aa51a99e85a49748ebfc9ba486b1493",
+      "levels": {
+        "peak_dbfs": 0.0,
+        "rms_dbfs": -46.812412,
+        "dc": 0.000021,
+        "crest_db": 46.812412,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 12000.366211
+    },
+    {
+      "name": "step",
+      "description": "0 -> 0.5 step at 25% of length",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/step.wav",
+      "sha256_file": "d23d8003a6a864f9a36bbf7bb6afe47a7901255efbeec2065d7d5590e8eb8a0f",
+      "sha256_pcm": "7f3bfc7f405555f942a0c5b0ef573d9af31a1785d04455bae21d2d93c520c65a",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -7.269987,
+        "dc": 0.375,
+        "crest_db": 1.249387,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 3.658198
+    },
+    {
+      "name": "sine_20",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_20.wav",
+      "sha256_file": "16a778114254d6124cafb930dd85903c34467fb3e25729595a510a8d40f5c158",
+      "sha256_pcm": "dd481e4d7dda251bc29d657247c7ec73a4a76903c3f3400ed72474447713d753",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 19.89878
+    },
+    {
+      "name": "sine_50",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_50.wav",
+      "sha256_file": "4d4962f83803f803f500e8916f1d0ef12fd1b6aaddb44ef4c5821f29514a5595",
+      "sha256_pcm": "6e6593427f1fc9b3260f5d5b653e46ee3c404b5feed71400ca9ca639bbc0a2e4",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 49.898704
+    },
+    {
+      "name": "sine_80",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_80.wav",
+      "sha256_file": "de2108970cd4d60e255c9b037e3e10fc09f97b1d8b56a36ecfd2625bdafe26c2",
+      "sha256_pcm": "e7a38aa9aaed9eceda10e7a8440ca93c0fa48c889fb8d608f3c4d2b5e7fa3291",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 1.776357e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 79.898708
+    },
+    {
+      "name": "sine_100",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_100.wav",
+      "sha256_file": "da5a0a229fe069448267ffdae64322437f649c5babc61b07b0bf3d1c654ca8eb",
+      "sha256_pcm": "71bcbc325b3db2a011164707f6332c0869b7c6330094db73aee412aeab0d737c",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -4.440892e-19,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 99.898717
+    },
+    {
+      "name": "sine_200",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_200.wav",
+      "sha256_file": "7aba2d3f0c6be649bae0d47448be05b3fe880d2fc53f2f32a71e15aa35309bfd",
+      "sha256_pcm": "3a369116ef35dc8c4b7d871e3a4fda97099a03b5730f177fa938a9c079a247eb",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -1.125026e-17,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 199.898799
+    },
+    {
+      "name": "sine_450",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_450.wav",
+      "sha256_file": "623cb5e9a490b92b295cd25e6678f72906abd98b33e706509de0278f812c7ce7",
+      "sha256_pcm": "9f4f50896722ce0bd9258ab6198d376c2afe03e1f4b32586586d34793320ed2a",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 1.498801e-17,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 449.89919
+    },
+    {
+      "name": "sine_700",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_700.wav",
+      "sha256_file": "ff459332310686c85b98e0a95a852f6dd90fdf17df075aa97392f1939e989930",
+      "sha256_pcm": "31f8e2246ba1001cef1edc7523ff70a273ad944cb29d6556ec4cae7c6a22e0e5",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -3.330669e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 699.89979
+    },
+    {
+      "name": "sine_1000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_1000.wav",
+      "sha256_file": "a63c92006ccecae467b6b03df36e2c7679cd53b4d4f3e1fa886884e99a2d5af1",
+      "sha256_pcm": "17b9aa9ffe5c771b9caf5b79908e8defb8f06e1b2537b0b3290ab1bdf7d34e23",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -1.228647e-17,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 999.900741
+    },
+    {
+      "name": "sine_5000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_5000.wav",
+      "sha256_file": "0a6285d5d7736677f45336694c83badea84976ba736e5feb33c5b190f6cd2b64",
+      "sha256_pcm": "032629617b00cc855edac43f6f19be8b01075cf17d09a6cbd0a19d38fe2386c7",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 1.314967e-16,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 4999.927553
+    },
+    {
+      "name": "sine_10000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_10000.wav",
+      "sha256_file": "433aa59a40ff7c9ac5270316b3478ed2fe57a9147e4590c954b25e7768ddfed7",
+      "sha256_pcm": "5bee907bee4928866bf42330d9271207d9d940aae149959b48c5a69ebddbf451",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -5.881129e-16,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 9999.978035
+    },
+    {
+      "name": "sine_15000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/sine_15000.wav",
+      "sha256_file": "68f5c71bb97e27078daa6f1c3fa46e88ab30117d3cd502ce35ee41899dcb552b",
+      "sha256_pcm": "9066c96176e9d47eab96ca7931e2400bf9a37f396accb83a2d6cf635a8956bae",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -5.34688e-17,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 15000.032752
+    },
+    {
+      "name": "exp_sweep",
+      "description": "20 Hz -> 0.45 fs exponential sweep, -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/exp_sweep.wav",
+      "sha256_file": "efc198c0683ac5a8c365332dd81d614abe1a05e654177e8e878fe644d0d98f8e",
+      "sha256_pcm": "78702d86606e9fd4987083b73116e4522ccf986e8b97dafa40dcf7a2a079ff0b",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.026149,
+        "dc": 0.003732,
+        "crest_db": 3.026149,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 3033.71324
+    },
+    {
+      "name": "white_noise",
+      "description": "white, -20 dBFS RMS per channel, decorrelated",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/white_noise.wav",
+      "sha256_file": "654973c8c1e8d232d9f7d72047356d1e3f35647859a1895e9fd321bee8c75fa1",
+      "sha256_pcm": "ed6e1bbcfa56b7f43ffa074300c282625348ba4696889c1fce693ce43b6d43ae",
+      "levels": {
+        "peak_dbfs": -15.220351,
+        "rms_dbfs": -20.0,
+        "dc": 0.000402,
+        "crest_db": 4.779649,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 12021.896661
+    },
+    {
+      "name": "pink_noise",
+      "description": "pink (Kellett), -20 dBFS RMS per channel, decorrelated",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/pink_noise.wav",
+      "sha256_file": "fde447bce9173a2859e318c5785ccf3c5f5fa4cd558dbd7cfa4571d70b3e47e1",
+      "sha256_pcm": "d7c09079d05ad89d99c953b8b8144147e38fbfdcd02790a546f471188781111d",
+      "levels": {
+        "peak_dbfs": -7.003091,
+        "rms_dbfs": -20.0,
+        "dc": 0.009261,
+        "crest_db": 12.996909,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 2507.95224
+    },
+    {
+      "name": "dual_tone_imd",
+      "description": "SMPTE 60 Hz + 7 kHz 4:1, -6 dBFS peak",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/dual_tone_imd.wav",
+      "sha256_file": "1b19fb981002c60f4353fe2da8cd0f0b1599814edc957baf7bf17e8fcdf2a4f5",
+      "sha256_pcm": "b928be26791a149a36313b7b694ebc3361f40fdd0936206442c5b098d13780d7",
+      "levels": {
+        "peak_dbfs": -6.00343,
+        "rms_dbfs": -10.685211,
+        "dc": -1.456613e-16,
+        "crest_db": 4.681781,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 468.133456
+    },
+    {
+      "name": "gated_burst",
+      "description": "1 kHz, -40 / -6 dBFS alternating every 250 ms",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/gated_burst.wav",
+      "sha256_file": "923975ceb781d943e4932c54b9c0377aab721a6d80c6989809eff3733c829048",
+      "sha256_pcm": "0dd48765e89d86501e78e98d20bbe585e826a82442e714ed1d706210a6966c29",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -12.018871,
+        "dc": 1.558013e-17,
+        "crest_db": 6.018871,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 999.614842
+    },
+    {
+      "name": "stereo_left_only",
+      "description": "pink -20 dBFS RMS in L, R silent",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/stereo_left_only.wav",
+      "sha256_file": "5c9e93e80197c173c9758d3a2d08b5e805ded57e0c31b03ee6917e5c886b860c",
+      "sha256_pcm": "b3cc92c0b24e0cce8209cfbf5deb974d6f20ac9408794c880bf44ea10c01c69f",
+      "levels": {
+        "peak_dbfs": -8.988156,
+        "rms_dbfs": -23.0103,
+        "dc": 0.004915,
+        "crest_db": 14.022144,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 2683.870714
+    },
+    {
+      "name": "stereo_right_only",
+      "description": "pink -20 dBFS RMS in R, L silent",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/stereo_right_only.wav",
+      "sha256_file": "5a3d3bd6e12023c72f0549f64df1a6beb7c836d7bbecda80a55b50807b2bd393",
+      "sha256_pcm": "26f73beb263cd472a06d7127cea70605ff060ac92d5816fe5c3d3863f7711e45",
+      "levels": {
+        "peak_dbfs": -8.988156,
+        "rms_dbfs": -23.0103,
+        "dc": 0.004915,
+        "crest_db": 14.022144,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 0.0
+    },
+    {
+      "name": "stereo_mid_only",
+      "description": "pink, L == R",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/stereo_mid_only.wav",
+      "sha256_file": "28886e68b0f40bbd6d0e7f569d29b64bac36c662c1025b1e9205b9e01c1a7a9f",
+      "sha256_pcm": "9726e9d69421ae9773b81e38a07358e8b5007240267399d246602d34e16429f9",
+      "levels": {
+        "peak_dbfs": -8.988156,
+        "rms_dbfs": -20.0,
+        "dc": 0.009831,
+        "crest_db": 11.011844,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 2683.870714
+    },
+    {
+      "name": "stereo_side_only",
+      "description": "pink, L == -R",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/stereo_side_only.wav",
+      "sha256_file": "d0764e31ea085c1dca6a80d391ac545c988d362022cb8da0e4671a535dec040f",
+      "sha256_pcm": "9a7762467be0d38adc67d3aa97b317fe56cc91066dbe8e7a62bdae9e9ddf0651",
+      "levels": {
+        "peak_dbfs": -8.988156,
+        "rms_dbfs": -20.0,
+        "dc": 0.0,
+        "crest_db": 11.011844,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 2683.870714
+    },
+    {
+      "name": "synthetic_drums",
+      "description": "kick/snare/hat 16th loop at 120 BPM",
+      "sample_rate": 48000.0,
+      "channels": 2,
+      "samples": 48000,
+      "valid": true,
+      "file": "48000/synthetic_drums.wav",
+      "sha256_file": "ee65868ae997e186182cff26963dc8c8ab61c6d5bf780a27c0d2e4b9cf55533c",
+      "sha256_pcm": "3c709999bb0dc0fa56dcab0d94e44e6db5397ff2f6bb87ba194b8d088356d370",
+      "levels": {
+        "peak_dbfs": -2.427952,
+        "rms_dbfs": -17.033977,
+        "dc": 0.001149,
+        "crest_db": 14.606026,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 823.631544
+    },
+    {
+      "name": "silence",
+      "description": "all zeros",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/silence.wav",
+      "sha256_file": "9bc27834a1282d56f124b422b9b40a7a3283c83a59e04a1bdced6344433c0455",
+      "sha256_pcm": "351a8054b23144894668c6a51d5dbba82f56523ef43cc45b6f4d7060a969c31a",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 0.0
+    },
+    {
+      "name": "dc",
+      "description": "constant +0.5",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/dc.wav",
+      "sha256_file": "4f8841ed2774435d0c29b31a026f2a3b6dcdb8cd159ea509b316a6aa6cc1a370",
+      "sha256_pcm": "8e30c6697f54e3484b8b2ca3cb29c9c8a5ec77341285496671cd1f1462ad50d6",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -6.0206,
+        "dc": 0.5,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 4.776738
+    },
+    {
+      "name": "subnormal",
+      "description": "alternating +/-1e-40 (float subnormal)",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/subnormal.wav",
+      "sha256_file": "b5787b0780579229286c34f4dc1cfb8c58574bad3ef3f79b77772d209fb44015",
+      "sha256_pcm": "0d899393cbf0cd4fe4749ca9b922bae3710b35a6d24ecfea642804fe7ca91a08",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 192000
+      },
+      "spectral_centroid_hz": 47999.262208
+    },
+    {
+      "name": "impulse",
+      "description": "unit impulse at 25% of length",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/impulse.wav",
+      "sha256_file": "b2e4e7435c238df7509ae512cdcf640fcab08096435f879d82038890701abcc1",
+      "sha256_pcm": "3f195fc2976971852670539f7b3679130c58e106b4ab0cdfa7ceaecbfbae08aa",
+      "levels": {
+        "peak_dbfs": 0.0,
+        "rms_dbfs": -49.822712,
+        "dc": 0.00001,
+        "crest_db": 49.822712,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 24000.366211
+    },
+    {
+      "name": "step",
+      "description": "0 -> 0.5 step at 25% of length",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/step.wav",
+      "sha256_file": "33af3a86163153340e922c4d41f6430b26824c91ba3629bed5fea42211eec7ab",
+      "sha256_pcm": "86bbc9005a0897aea07ede1aa9aa7e1babb6bf78f19c5f943d5ab6913f5f69d1",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -7.269987,
+        "dc": 0.375,
+        "crest_db": 1.249387,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 3.865973
+    },
+    {
+      "name": "sine_20",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_20.wav",
+      "sha256_file": "793c0bd4f1dbbcf472636ef8cc167faa0eef18e5fd3ad239b4be453ec9aa8382",
+      "sha256_pcm": "3d9a89839d52ae4f15a91215169b7720f2323d9d6687b9263f3b5b19075b48a6",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 19.898778
+    },
+    {
+      "name": "sine_50",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_50.wav",
+      "sha256_file": "911d39a9e8a217ddbb71859a76aaac9909c56e2694b3ca75b4d137ab0da64980",
+      "sha256_pcm": "844f7ff79ead486dd8519482a025fcf3b39e87f61a855628bd87170769d8e619",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 49.898697
+    },
+    {
+      "name": "sine_80",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_80.wav",
+      "sha256_file": "de474d5f758488fddc662e53570cd613d02a8d595c04d3fb316616af47e04991",
+      "sha256_pcm": "ad1a3796f3fae66f38c7f9b58368ef385f3fe48a2a53ffe435f2f32b89a28801",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 1.776357e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 79.898691
+    },
+    {
+      "name": "sine_100",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_100.wav",
+      "sha256_file": "077eded40da336fb810a8c782fa1af6873008564f15d9a672cc205f0c2197388",
+      "sha256_pcm": "a3061aecb27552865486e112dd29c67a7a0318cc43cd4c344d7b59c7149f9dab",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 1.776357e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 99.898692
+    },
+    {
+      "name": "sine_200",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_200.wav",
+      "sha256_file": "5a2074d5f63fd54f2f443cc9e4aa17a716a8577faf74036279a43beb0bd43b32",
+      "sha256_pcm": "3e5d2a6bdb7347abaa2aad97ac2ce9f517e418684276a1291eafd87c279c28de",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -3.774758e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 199.898714
+    },
+    {
+      "name": "sine_450",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_450.wav",
+      "sha256_file": "f7b1239190ada95571513f308b404320200e7ea3a2948f1fa7910c9800c98ac4",
+      "sha256_pcm": "836bff86c14eee4f2d748346b973e2533abff985de856879627d37e667d39a17",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 7.660539e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 449.898827
+    },
+    {
+      "name": "sine_700",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_700.wav",
+      "sha256_file": "89d4799cd02c13fef1863b1f13cfd659347126a02597dbbe1982cddbd38669bc",
+      "sha256_pcm": "1f625e07b109fe45b9a23d65796e83e7a8f013b49ec9403cfebb07f2bc0e0dc0",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -1.258253e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 699.899006
+    },
+    {
+      "name": "sine_1000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_1000.wav",
+      "sha256_file": "7b1cc361cf3e24629b8bc4a61942fd8551076491fdb1c97ab36a46ae6baeff5c",
+      "sha256_pcm": "214e1df172fe64c8c7428f062c2aef6b48824ad23f8533babac9b8aa7cfbaef4",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -6.615079e-18,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 999.899294
+    },
+    {
+      "name": "sine_5000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_5000.wav",
+      "sha256_file": "f1995e0151727651fcf05a2b4520bd99acdd3f97390e3b6f86f365844e0c9400",
+      "sha256_pcm": "57a00f2f2804f5d6692cb3aea02829d47a4614cac7d6a2e0cf0f8c392e657cae",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 6.578997e-17,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 4999.908298
+    },
+    {
+      "name": "sine_10000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_10000.wav",
+      "sha256_file": "65c4590569e901ca9083fa69eafaca62b289266fea1ac31c24b1f1677af043a5",
+      "sha256_pcm": "05d838f6cda7b93964dff64c229648fc8c93c3d2f815dd217129e6e051e31b92",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -2.938529e-16,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 9999.927553
+    },
+    {
+      "name": "sine_15000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/sine_15000.wav",
+      "sha256_file": "b44ac6a01658d6d300fb1f3b40626dc79275ac0c4372290fd6bd7f8cbfc54d34",
+      "sha256_pcm": "3993de968bc83b707dd4d1e06a61496d7e9254b99d1bf46a534145b20b36ef7d",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -2.706169e-17,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 14999.951551
+    },
+    {
+      "name": "exp_sweep",
+      "description": "20 Hz -> 0.45 fs exponential sweep, -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/exp_sweep.wav",
+      "sha256_file": "247233262e060edd93b78a9444a9272c9110a013ba90bb4b77e516fefa383ff9",
+      "sha256_pcm": "08f8b61c02b06acd19609a494f2c74818317a4f212c08a0fd8cfbc87e3f0943d",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.026154,
+        "dc": 0.003727,
+        "crest_db": 3.026153,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 5510.746244
+    },
+    {
+      "name": "white_noise",
+      "description": "white, -20 dBFS RMS per channel, decorrelated",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/white_noise.wav",
+      "sha256_file": "65e21e5c8b5440d004de2ef8fac377c0f0682e463b948a05bea3fe0044967dce",
+      "sha256_pcm": "af6ff59402662581172972dfad9270fd3f0204135abc485fedbb402de66e933a",
+      "levels": {
+        "peak_dbfs": -15.210227,
+        "rms_dbfs": -20.0,
+        "dc": 0.000447,
+        "crest_db": 4.789773,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 24029.880018
+    },
+    {
+      "name": "pink_noise",
+      "description": "pink (Kellett), -20 dBFS RMS per channel, decorrelated",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/pink_noise.wav",
+      "sha256_file": "adc90a092aa6e3f77ab9c53c874444660abd3a962888925549284e3582ef6f8c",
+      "sha256_pcm": "4db2dd78acf2ceaf73bf9e2be89a1d46692ec36d85e7194a48e2b8cd3af3d510",
+      "levels": {
+        "peak_dbfs": -7.070129,
+        "rms_dbfs": -20.0,
+        "dc": 0.009838,
+        "crest_db": 12.929871,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 4918.390997
+    },
+    {
+      "name": "dual_tone_imd",
+      "description": "SMPTE 60 Hz + 7 kHz 4:1, -6 dBFS peak",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/dual_tone_imd.wav",
+      "sha256_file": "3a1b6f0f83164b04e3dc357b6e26c372aede6926eb7fd09b0b5efdb0f367e54d",
+      "sha256_pcm": "7b30298c1fdb05ef0dcb1ca8ef22475d6c850e637db1681fecbcc81540a9855c",
+      "levels": {
+        "peak_dbfs": -6.00343,
+        "rms_dbfs": -10.685211,
+        "dc": -7.342275e-17,
+        "crest_db": 4.681781,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 468.131162
+    },
+    {
+      "name": "gated_burst",
+      "description": "1 kHz, -40 / -6 dBFS alternating every 250 ms",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/gated_burst.wav",
+      "sha256_file": "934c9aaf965598a603596567a0a02a04830c0fdc8158bb0d20e6de30f3492d7e",
+      "sha256_pcm": "080661e23a0c1b8075a9af4e45cd8b8b281eb5bb3e5b17b392e066493281f167",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -12.018871,
+        "dc": 7.540265e-18,
+        "crest_db": 6.018871,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 999.609229
+    },
+    {
+      "name": "stereo_left_only",
+      "description": "pink -20 dBFS RMS in L, R silent",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/stereo_left_only.wav",
+      "sha256_file": "78a9b71ec8a8ffa79348827474c44c0cf6aa234a489057ea39c14d8e97f281ae",
+      "sha256_pcm": "8f4e38c2a29a6e98e7154deb7b25d59b362d74efa288d69b88e2503adad28444",
+      "levels": {
+        "peak_dbfs": -7.362195,
+        "rms_dbfs": -23.0103,
+        "dc": 0.003134,
+        "crest_db": 15.648104,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 5277.175239
+    },
+    {
+      "name": "stereo_right_only",
+      "description": "pink -20 dBFS RMS in R, L silent",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/stereo_right_only.wav",
+      "sha256_file": "ea2e27184af056d2810df1cff2f179a99a0e585d2cca0f0e379d90e623337b6e",
+      "sha256_pcm": "84672684833b40ab327fb2e2dd8739ad42badc6b4a753778ae7a66c4f1819f69",
+      "levels": {
+        "peak_dbfs": -7.362195,
+        "rms_dbfs": -23.0103,
+        "dc": 0.003134,
+        "crest_db": 15.648104,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 0.0
+    },
+    {
+      "name": "stereo_mid_only",
+      "description": "pink, L == R",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/stereo_mid_only.wav",
+      "sha256_file": "3f214657e339d7438b79a0976c250eb97aaf96d581534c5b592c113137a110df",
+      "sha256_pcm": "2e0aced866fed0e26a06025e826d35ffe8fa65770b93a2b4b60bf4fe08a24d29",
+      "levels": {
+        "peak_dbfs": -7.362195,
+        "rms_dbfs": -20.0,
+        "dc": 0.006268,
+        "crest_db": 12.637805,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 5277.175239
+    },
+    {
+      "name": "stereo_side_only",
+      "description": "pink, L == -R",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/stereo_side_only.wav",
+      "sha256_file": "ee575ca16d04e114c3c50750ef9b795c9d6b526491a67bbb3273d0904823d62b",
+      "sha256_pcm": "554cdabfaf26e85aa40489ac2417b5015d5065210109404dfd5a4298465ffb24",
+      "levels": {
+        "peak_dbfs": -7.362195,
+        "rms_dbfs": -20.0,
+        "dc": 0.0,
+        "crest_db": 12.637805,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 5277.175239
+    },
+    {
+      "name": "synthetic_drums",
+      "description": "kick/snare/hat 16th loop at 120 BPM",
+      "sample_rate": 96000.0,
+      "channels": 2,
+      "samples": 96000,
+      "valid": true,
+      "file": "96000/synthetic_drums.wav",
+      "sha256_file": "ba82c703477d8971748e6d65ab07e185a6e9ce33420ea58c0b2b734db65a4b54",
+      "sha256_pcm": "45feb74d6271b5d199065cc50548449bd3139604388c80e18be5a54227e83527",
+      "levels": {
+        "peak_dbfs": -2.679421,
+        "rms_dbfs": -17.047623,
+        "dc": 0.001192,
+        "crest_db": 14.368203,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 1642.206071
+    },
+    {
+      "name": "silence",
+      "description": "all zeros",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/silence.wav",
+      "sha256_file": "6bdca63829b60f80e1f7b698cee27620f177a6c6bc0ac001e6195875b8d636e2",
+      "sha256_pcm": "626db8bea999709c8faead0ec9d60025604676fcc44130abe6c1168b90989b3b",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 0.0
+    },
+    {
+      "name": "dc",
+      "description": "constant +0.5",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/dc.wav",
+      "sha256_file": "e83265a860f8bd8d2b2128ac8d9b171604ce3723fced06f2e42bfe4a68c805c0",
+      "sha256_pcm": "fc114f31bc9f4d9dcab35b81d0df664c8625fb88cb1ad3a43bc3c08baf41f859",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -6.0206,
+        "dc": 0.5,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 5.039207
+    },
+    {
+      "name": "subnormal",
+      "description": "alternating +/-1e-40 (float subnormal)",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/subnormal.wav",
+      "sha256_file": "0bdbd38a0d30155ba81242d72b43cdeb0195563814f2a28c459176056f8e7b9f",
+      "sha256_pcm": "b550ee3e456abceea39df5d05385229c78dd6a8e695a199a19e58f7e55e94390",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 384000
+      },
+      "spectral_centroid_hz": 95999.221676
+    },
+    {
+      "name": "impulse",
+      "description": "unit impulse at 25% of length",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/impulse.wav",
+      "sha256_file": "8236a54a4b1c0fbc1ca99f4475d53ecf1c24d25065b37879627848c49f781638",
+      "sha256_pcm": "bb41f013c22c96bf95880e49a4e48cd7a76f07eeecaba77bfbabb3471fd16316",
+      "levels": {
+        "peak_dbfs": 0.0,
+        "rms_dbfs": -52.833012,
+        "dc": 5.208333e-6,
+        "crest_db": 52.833012,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 48000.366211
+    },
+    {
+      "name": "step",
+      "description": "0 -> 0.5 step at 25% of length",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/step.wav",
+      "sha256_file": "02a7da342bd398d156926f35f22cbe936eaed040e9b69ecb35216c048f4b7f07",
+      "sha256_pcm": "da340db8003240baeb564a32ae618e906c2a970a334326d62a04cab636e4e493",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -7.269987,
+        "dc": 0.375,
+        "crest_db": 1.249387,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 4.073747
+    },
+    {
+      "name": "sine_20",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_20.wav",
+      "sha256_file": "31b147a3212288be728bd5c63a7e521032aa50f59209f6601a026be8d259a3fb",
+      "sha256_pcm": "68dcdbcdc170cdc70c74f2ebe2b5adc7f771d27e2cec45d358ad5da6f230fa3a",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 19.898778
+    },
+    {
+      "name": "sine_50",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_50.wav",
+      "sha256_file": "943712aea2bd75fdd5ce02e2e52ed88c8de684bf9ca462d13c871a034b70eed5",
+      "sha256_pcm": "3a15c3a0f9f6ab1296a4d4eb9b2b4e9e8d653a595a5b4974bb502ed4975b664b",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 49.898695
+    },
+    {
+      "name": "sine_80",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_80.wav",
+      "sha256_file": "d264d75d8b30d30b17b767fe36f4bf1da8c1799a2ea84ad48139c45ea6666545",
+      "sha256_pcm": "83dcfd5a1e77033dee8b9f8b8fd85855909a531a85965e0fe50c6ea8ac12ca02",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 5.921189e-19,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 79.898687
+    },
+    {
+      "name": "sine_100",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_100.wav",
+      "sha256_file": "2173cefa08b3d909abea8ae6c8b765efb3ef3491c888b6f2a6ee126e55e03558",
+      "sha256_pcm": "db90ff2b372191c87cb42c9973a10711064aa32a2a8e37556c989574b073b1d4",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 99.898685
+    },
+    {
+      "name": "sine_200",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_200.wav",
+      "sha256_file": "9e812c1443235d7acaaa3629f60e3453f0157818ab545c6333e61e01361d609d",
+      "sha256_pcm": "c486c7c6733095cde1bc448e1e78cafee2a5d2c1c34550de465e11f9012b59ea",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 1.480297e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 199.898689
+    },
+    {
+      "name": "sine_450",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_450.wav",
+      "sha256_file": "8727a40149e685ee024ceb8399dd792593149b00ab55498b842fb4940def6f3d",
+      "sha256_pcm": "6bace5a3a92776c5c5c6c5751194ec0ac5ea5e6b561822288466be1249cb4004",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 2.960595e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 449.898721
+    },
+    {
+      "name": "sine_700",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_700.wav",
+      "sha256_file": "f6c09a80a6cdc7830fb436b70c49c580315934bdedf81941851665a0b1680b1a",
+      "sha256_pcm": "2c7b25f1463a217de613904af03c4349c4231fff06127bae79b15663cbb8fb76",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -6.106227e-19,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 699.898773
+    },
+    {
+      "name": "sine_1000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_1000.wav",
+      "sha256_file": "c24b711842ca7af9cca19a30176f27aaec70efd4f457cd6ac9d5075f5b7527fa",
+      "sha256_pcm": "b0d6ce53c1a84ef953251913f5e0edc6c6d217df3ecc636fbacabfb3558ca3c1",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -5.412337e-18,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 999.898858
+    },
+    {
+      "name": "sine_5000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_5000.wav",
+      "sha256_file": "178e7650a5bc87e3fb5c5c76ce50f5df7ea4eaf09dfc9083ea47bc4937c1db35",
+      "sha256_pcm": "41fa8f06766067e32d20713f65b90cea4d5f00caf5fde01c4dbaa44561989c0e",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 3.295281e-17,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 4999.901701
+    },
+    {
+      "name": "sine_10000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_10000.wav",
+      "sha256_file": "f38c5874234cc9226666f4162be3404bfe415c22a622db3401bd53b5b14551c6",
+      "sha256_pcm": "e9d8c8d9252d9fc548f68fb4d95ce310799dbcdf47c3327a421c3c8202deef30",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -1.468409e-16,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 9999.908298
+    },
+    {
+      "name": "sine_15000",
+      "description": "sine -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/sine_15000.wav",
+      "sha256_file": "2459ed64c52d4f70671cf65774dd66f36b367e288b1b1df0b8586f4f340e3942",
+      "sha256_pcm": "e9f6e70e71b47c3692d78a8443d00fdf38d1cbc230d3fd2dbd05e6cc968d02f8",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -1.326254e-17,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 14999.917135
+    },
+    {
+      "name": "exp_sweep",
+      "description": "20 Hz -> 0.45 fs exponential sweep, -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/exp_sweep.wav",
+      "sha256_file": "96f40b726466e75366a2eacada72cb627fb7a6462a7462707d1904257844c7e1",
+      "sha256_pcm": "0d2c04a7d0b3d709ec88358ff9faba503fd2105b3153766bd271f40f1384dabd",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.026181,
+        "dc": 0.003722,
+        "crest_db": 3.026181,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 10089.895202
+    },
+    {
+      "name": "white_noise",
+      "description": "white, -20 dBFS RMS per channel, decorrelated",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/white_noise.wav",
+      "sha256_file": "e920a909cecb2998aa35885af8da64b44a92ed36c61c943f1654f9834f1a8248",
+      "sha256_pcm": "cea49584b2a64ba7a83ebedc398045260b226a021ade4e565d242e4aef77e587",
+      "levels": {
+        "peak_dbfs": -15.220158,
+        "rms_dbfs": -20.0,
+        "dc": 0.000132,
+        "crest_db": 4.779842,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 47973.563276
+    },
+    {
+      "name": "pink_noise",
+      "description": "pink (Kellett), -20 dBFS RMS per channel, decorrelated",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/pink_noise.wav",
+      "sha256_file": "d33934ef9e6b2f3699f3d3c4d83bac80ce39704f6a07538f39062d2a3596c0ac",
+      "sha256_pcm": "f9530af1ede0beb4a33f27f7419e7ffb09ed456e79be3f8fb86a23aef58546b2",
+      "levels": {
+        "peak_dbfs": -6.977767,
+        "rms_dbfs": -20.0,
+        "dc": 0.00377,
+        "crest_db": 13.022233,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 9910.262022
+    },
+    {
+      "name": "dual_tone_imd",
+      "description": "SMPTE 60 Hz + 7 kHz 4:1, -6 dBFS peak",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/dual_tone_imd.wav",
+      "sha256_file": "48bbbe4217d8c14dddc0c9db42f8b853fc388144c3107defdd28bfa5b6867f13",
+      "sha256_pcm": "4dd8bc7694b5a6ead19607cfcd0dc486e22d77a887b1d3a5843cd4293966e5ae",
+      "levels": {
+        "peak_dbfs": -6.001586,
+        "rms_dbfs": -10.685211,
+        "dc": 1.118113e-14,
+        "crest_db": 4.683625,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 468.130518
+    },
+    {
+      "name": "gated_burst",
+      "description": "1 kHz, -40 / -6 dBFS alternating every 250 ms",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/gated_burst.wav",
+      "sha256_file": "ec3688e57fe2fd5d9eed5c68c97c3bd9bfaf1179daae3b6df8c6bdae729a97a3",
+      "sha256_pcm": "e5de1031c75022a2956c167ec7d395b1f2eddb621de081791893db4b6bfcbda9",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -12.018871,
+        "dc": 3.006854e-18,
+        "crest_db": 6.018871,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 999.607535
+    },
+    {
+      "name": "stereo_left_only",
+      "description": "pink -20 dBFS RMS in L, R silent",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/stereo_left_only.wav",
+      "sha256_file": "eae41f9b8ee547d30fe609daf3850a459fa5cad4e3e8876402465b7e427a1904",
+      "sha256_pcm": "dff3adf0d1f8a213ca5a69c5c7200173f2ccbcdbd262f2400dd0005b1ecf0b6d",
+      "levels": {
+        "peak_dbfs": -7.353355,
+        "rms_dbfs": -23.0103,
+        "dc": -0.000274,
+        "crest_db": 15.656945,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 10509.143293
+    },
+    {
+      "name": "stereo_right_only",
+      "description": "pink -20 dBFS RMS in R, L silent",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/stereo_right_only.wav",
+      "sha256_file": "069e3f9a8be16ef2cc4f3dc088353b2a3133fc34ec123d84720d3151f3a10e98",
+      "sha256_pcm": "199c07134b0827d007fe7321667f43533742abfaf9ec34d7c4ab7e1f6871e8db",
+      "levels": {
+        "peak_dbfs": -7.353355,
+        "rms_dbfs": -23.0103,
+        "dc": -0.000274,
+        "crest_db": 15.656945,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 0.0
+    },
+    {
+      "name": "stereo_mid_only",
+      "description": "pink, L == R",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/stereo_mid_only.wav",
+      "sha256_file": "e4720439afe9f26e5b715c6a52f1e5056fedc460f1c189c8448abf08dbfa3b42",
+      "sha256_pcm": "0cc4dfca21cfd59c30db2c29656c686b590d2a6a1b679813332d5377d2e84183",
+      "levels": {
+        "peak_dbfs": -7.353355,
+        "rms_dbfs": -20.0,
+        "dc": -0.000548,
+        "crest_db": 12.646645,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 10509.143293
+    },
+    {
+      "name": "stereo_side_only",
+      "description": "pink, L == -R",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/stereo_side_only.wav",
+      "sha256_file": "4dda668c09c950e0fb932403b685c72a53e3580ad907f59796856a78f56491ae",
+      "sha256_pcm": "30008e203821b6532df50ef1399917fe26a84de5df2dbd1855de1f057a5ce590",
+      "levels": {
+        "peak_dbfs": -7.353355,
+        "rms_dbfs": -20.0,
+        "dc": 0.0,
+        "crest_db": 12.646645,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 10509.143293
+    },
+    {
+      "name": "synthetic_drums",
+      "description": "kick/snare/hat 16th loop at 120 BPM",
+      "sample_rate": 192000.0,
+      "channels": 2,
+      "samples": 192000,
+      "valid": true,
+      "file": "192000/synthetic_drums.wav",
+      "sha256_file": "a8027c7d313b8f57dac5a8ef9de9c48438e2f0e13e886154cea172fdb711aae1",
+      "sha256_pcm": "1b496578fb9a7702923655f0344291ed9862c2e9eafe6487576aa8f680093b3e",
+      "levels": {
+        "peak_dbfs": -2.747945,
+        "rms_dbfs": -17.040012,
+        "dc": 0.000843,
+        "crest_db": 14.292067,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "spectral_centroid_hz": 3191.18348
+    }
+  ]
+}

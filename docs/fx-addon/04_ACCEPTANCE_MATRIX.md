@@ -6,8 +6,8 @@
 
 | Test ID | Milestone | Методика и вход | Критерий / expected | Статус | Evidence path |
 |---|---:|---|---|---|---|
-| M0-A | 0 | SHA, JUCE, CMake, build/log | Протокол исходного HPDG, actual logs | PLANNED | — |
-| M0-B | 0 | Отдельный offline signal generator | Reproducible inputs + fixtures + metrics JSON | PLANNED | — |
+| M0-A | 0 | SHA, JUCE, CMake, build/log | Протокол исходного HPDG, actual logs | PASS | [M0_BASELINE](reports/M0_BASELINE.md) |
+| M0-B | 0 | Отдельный offline signal generator | Reproducible inputs + fixtures + metrics JSON | PASS | [M0_BASELINE](reports/M0_BASELINE.md), `reports/m0/` |
 | M1-A | 1 | Insert FX in/out 2ch 44.1/48k | Unity passthrough, отсутствие нового звука | PLANNED | — |
 | M1-B | 1 | VST3 host scan | Отдельный уникальный plugin ID, загрузка | PLANNED | — |
 | M1-C | 1 | Десятикратные/100× editor open/close | No crash/hang/deadlock, state restore | PLANNED | — |

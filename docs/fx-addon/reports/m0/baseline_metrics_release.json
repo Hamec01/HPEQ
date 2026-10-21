@@ -1,0 +1,973 @@
+{
+  "milestone": "M0",
+  "commit": "e3a67a57a29aea8719d3f9ac6acf2458b06b7982",
+  "machine": {
+    "os": "Windows 11",
+    "cpu_vendor": "GenuineIntel",
+    "cpu_model": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+    "cpu_mhz": 2476,
+    "logical_cpus": 8,
+    "physical_cpus": 4,
+    "memory_mb": 16292,
+    "juce_version": "JUCE v8.0.12",
+    "compiler": "MSVC 195035730",
+    "build": "Release",
+    "allocation_probe": "operator-new-only (malloc not seen)",
+    "utc": "2026-10-21T13:01:32.479+03:00"
+  },
+  "self_checks": [
+    {
+      "name": "determinism_pink_sha256",
+      "measured": 1.0,
+      "expected": 1.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "determinism_drums_sha256",
+      "measured": 1.0,
+      "expected": 1.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "seed_changes_noise",
+      "measured": 1.0,
+      "expected": 1.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "null_identity_bit_exact",
+      "measured": 1.0,
+      "expected": 1.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "null_identity_error_db",
+      "measured": -400.0,
+      "expected": -400.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "null_gain_1e-3_error_db",
+      "measured": -59.999594,
+      "expected": -60.0,
+      "tolerance": 0.01,
+      "pass": true,
+      "note": "20*log10(1e-3) = -60 dB"
+    },
+    {
+      "name": "delay_estimate_samples",
+      "measured": 37.0,
+      "expected": 37.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "null_after_alignment_error_db",
+      "measured": -400.0,
+      "expected": -400.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "transfer_identity_worst_abs_db",
+      "measured": 0.0,
+      "expected": 0.0,
+      "tolerance": 1.0e-6,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "transfer_half_gain_worst_error_db",
+      "measured": 8.672038e-8,
+      "expected": 0.0,
+      "tolerance": 0.001,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "sine_1k_frequency_hz_44100",
+      "measured": 1000.013043,
+      "expected": 1000.0,
+      "tolerance": 0.5,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "sine_-6dBFS_rms_db_44100",
+      "measured": -9.0103,
+      "expected": -9.0103,
+      "tolerance": 0.01,
+      "pass": true,
+      "note": "peak -6 dBFS sine -> RMS -9.03 dBFS"
+    },
+    {
+      "name": "pink_psd_slope_db_per_oct_44100",
+      "measured": -2.829784,
+      "expected": -3.01,
+      "tolerance": 0.5,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "white_rms_dbfs_44100",
+      "measured": -20.0,
+      "expected": -20.0,
+      "tolerance": 0.01,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "sine_1k_frequency_hz_48000",
+      "measured": 1000.061231,
+      "expected": 1000.0,
+      "tolerance": 0.5,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "sine_-6dBFS_rms_db_48000",
+      "measured": -9.0103,
+      "expected": -9.0103,
+      "tolerance": 0.01,
+      "pass": true,
+      "note": "peak -6 dBFS sine -> RMS -9.03 dBFS"
+    },
+    {
+      "name": "pink_psd_slope_db_per_oct_48000",
+      "measured": -2.790601,
+      "expected": -3.01,
+      "tolerance": 0.5,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "white_rms_dbfs_48000",
+      "measured": -20.0,
+      "expected": -20.0,
+      "tolerance": 0.01,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "sine_1k_frequency_hz_96000",
+      "measured": 1000.06123,
+      "expected": 1000.0,
+      "tolerance": 0.5,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "sine_-6dBFS_rms_db_96000",
+      "measured": -9.0103,
+      "expected": -9.0103,
+      "tolerance": 0.01,
+      "pass": true,
+      "note": "peak -6 dBFS sine -> RMS -9.03 dBFS"
+    },
+    {
+      "name": "pink_psd_slope_db_per_oct_96000",
+      "measured": -3.179206,
+      "expected": -3.01,
+      "tolerance": 0.5,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "white_rms_dbfs_96000",
+      "measured": -20.0,
+      "expected": -20.0,
+      "tolerance": 0.01,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "sine_1k_frequency_hz_192000",
+      "measured": 1000.06123,
+      "expected": 1000.0,
+      "tolerance": 0.5,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "sine_-6dBFS_rms_db_192000",
+      "measured": -9.0103,
+      "expected": -9.0103,
+      "tolerance": 0.01,
+      "pass": true,
+      "note": "peak -6 dBFS sine -> RMS -9.03 dBFS"
+    },
+    {
+      "name": "pink_psd_slope_db_per_oct_192000",
+      "measured": -2.862467,
+      "expected": -3.01,
+      "tolerance": 0.5,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "white_rms_dbfs_192000",
+      "measured": -20.0,
+      "expected": -20.0,
+      "tolerance": 0.01,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "na_frequency_above_0.45fs",
+      "measured": 1.0,
+      "expected": 1.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "mid_only_side_rms_db",
+      "measured": -400.0,
+      "expected": -400.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "side_only_mid_rms_db",
+      "measured": -400.0,
+      "expected": -400.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "mid_only_correlation",
+      "measured": 1.0,
+      "expected": 1.0,
+      "tolerance": 1.0e-9,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "side_only_correlation",
+      "measured": -1.0,
+      "expected": -1.0,
+      "tolerance": 1.0e-9,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "left_only_correlation",
+      "measured": 0.0,
+      "expected": 0.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "subnormal_fixture_count",
+      "measured": 480.0,
+      "expected": 480.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "wav_float32_roundtrip_bit_exact",
+      "measured": 1.0,
+      "expected": 1.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": ""
+    },
+    {
+      "name": "alloc_probe_counts_new",
+      "measured": 1.0,
+      "expected": 1.0,
+      "tolerance": 0.0,
+      "pass": true,
+      "note": "operator-new-only (malloc not seen)"
+    }
+  ],
+  "self_check_failures": 0,
+  "fixture_levels_48k": [
+    {
+      "name": "silence",
+      "valid": true,
+      "sha256_pcm": "fec9afb531a8e036eba1d81651896e1b2c1f78b0234dbadc8e7549563f09407b",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -400.0,
+        "side_rms_dbfs": -400.0,
+        "correlation": 0.0
+      }
+    },
+    {
+      "name": "dc",
+      "valid": true,
+      "sha256_pcm": "cad5bf7a9e4a53621af13476ae8bcc2c653acacb66cc91af57fd728aaee46e7c",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -6.0206,
+        "dc": 0.5,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -6.0206,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "subnormal",
+      "valid": true,
+      "sha256_pcm": "10c8d8795413bd430e630e48b0421639230f3eca5dcfa62cea488e3255a6f9ab",
+      "levels": {
+        "peak_dbfs": -400.0,
+        "rms_dbfs": -400.0,
+        "dc": 0.0,
+        "crest_db": 0.0,
+        "all_finite": true,
+        "subnormal_count": 96000
+      },
+      "stereo": {
+        "mid_rms_dbfs": -400.0,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "impulse",
+      "valid": true,
+      "sha256_pcm": "8e848e645aaf2513a904a77c47a21cc00aa51a99e85a49748ebfc9ba486b1493",
+      "levels": {
+        "peak_dbfs": 0.0,
+        "rms_dbfs": -46.812412,
+        "dc": 0.000021,
+        "crest_db": 46.812412,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -46.812412,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "step",
+      "valid": true,
+      "sha256_pcm": "7f3bfc7f405555f942a0c5b0ef573d9af31a1785d04455bae21d2d93c520c65a",
+      "levels": {
+        "peak_dbfs": -6.0206,
+        "rms_dbfs": -7.269987,
+        "dc": 0.375,
+        "crest_db": 1.249387,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -7.269987,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_20",
+      "valid": true,
+      "sha256_pcm": "dd481e4d7dda251bc29d657247c7ec73a4a76903c3f3400ed72474447713d753",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_50",
+      "valid": true,
+      "sha256_pcm": "6e6593427f1fc9b3260f5d5b653e46ee3c404b5feed71400ca9ca639bbc0a2e4",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 0.0,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_80",
+      "valid": true,
+      "sha256_pcm": "e7a38aa9aaed9eceda10e7a8440ca93c0fa48c889fb8d608f3c4d2b5e7fa3291",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 1.776357e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_100",
+      "valid": true,
+      "sha256_pcm": "71bcbc325b3db2a011164707f6332c0869b7c6330094db73aee412aeab0d737c",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -4.440892e-19,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_200",
+      "valid": true,
+      "sha256_pcm": "3a369116ef35dc8c4b7d871e3a4fda97099a03b5730f177fa938a9c079a247eb",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -1.125026e-17,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_450",
+      "valid": true,
+      "sha256_pcm": "9f4f50896722ce0bd9258ab6198d376c2afe03e1f4b32586586d34793320ed2a",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 1.498801e-17,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_700",
+      "valid": true,
+      "sha256_pcm": "31f8e2246ba1001cef1edc7523ff70a273ad944cb29d6556ec4cae7c6a22e0e5",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -3.330669e-18,
+        "crest_db": 3.010299,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_1000",
+      "valid": true,
+      "sha256_pcm": "17b9aa9ffe5c771b9caf5b79908e8defb8f06e1b2537b0b3290ab1bdf7d34e23",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -1.228647e-17,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_5000",
+      "valid": true,
+      "sha256_pcm": "032629617b00cc855edac43f6f19be8b01075cf17d09a6cbd0a19d38fe2386c7",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": 1.314967e-16,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_10000",
+      "valid": true,
+      "sha256_pcm": "5bee907bee4928866bf42330d9271207d9d940aae149959b48c5a69ebddbf451",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -5.881129e-16,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "sine_15000",
+      "valid": true,
+      "sha256_pcm": "9066c96176e9d47eab96ca7931e2400bf9a37f396accb83a2d6cf635a8956bae",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.0103,
+        "dc": -5.34688e-17,
+        "crest_db": 3.0103,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.0103,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "exp_sweep",
+      "valid": true,
+      "sha256_pcm": "78702d86606e9fd4987083b73116e4522ccf986e8b97dafa40dcf7a2a079ff0b",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -9.026149,
+        "dc": 0.003732,
+        "crest_db": 3.026149,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -9.026149,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "white_noise",
+      "valid": true,
+      "sha256_pcm": "ed6e1bbcfa56b7f43ffa074300c282625348ba4696889c1fce693ce43b6d43ae",
+      "levels": {
+        "peak_dbfs": -15.220351,
+        "rms_dbfs": -20.0,
+        "dc": 0.000402,
+        "crest_db": 4.779649,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -23.025068,
+        "side_rms_dbfs": -22.995582,
+        "correlation": -0.003395
+      }
+    },
+    {
+      "name": "pink_noise",
+      "valid": true,
+      "sha256_pcm": "d7c09079d05ad89d99c953b8b8144147e38fbfdcd02790a546f471188781111d",
+      "levels": {
+        "peak_dbfs": -7.003091,
+        "rms_dbfs": -20.0,
+        "dc": 0.009261,
+        "crest_db": 12.996909,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -22.889396,
+        "side_rms_dbfs": -23.134667,
+        "correlation": 0.02823
+      }
+    },
+    {
+      "name": "dual_tone_imd",
+      "valid": true,
+      "sha256_pcm": "b928be26791a149a36313b7b694ebc3361f40fdd0936206442c5b098d13780d7",
+      "levels": {
+        "peak_dbfs": -6.00343,
+        "rms_dbfs": -10.685211,
+        "dc": -1.456613e-16,
+        "crest_db": 4.681781,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -10.685211,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "gated_burst",
+      "valid": true,
+      "sha256_pcm": "0dd48765e89d86501e78e98d20bbe585e826a82442e714ed1d706210a6966c29",
+      "levels": {
+        "peak_dbfs": -6.0,
+        "rms_dbfs": -12.018871,
+        "dc": 1.558013e-17,
+        "crest_db": 6.018871,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -12.018871,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "stereo_left_only",
+      "valid": true,
+      "sha256_pcm": "b3cc92c0b24e0cce8209cfbf5deb974d6f20ac9408794c880bf44ea10c01c69f",
+      "levels": {
+        "peak_dbfs": -8.988156,
+        "rms_dbfs": -23.0103,
+        "dc": 0.004915,
+        "crest_db": 14.022144,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -26.0206,
+        "side_rms_dbfs": -26.0206,
+        "correlation": 0.0
+      }
+    },
+    {
+      "name": "stereo_right_only",
+      "valid": true,
+      "sha256_pcm": "26f73beb263cd472a06d7127cea70605ff060ac92d5816fe5c3d3863f7711e45",
+      "levels": {
+        "peak_dbfs": -8.988156,
+        "rms_dbfs": -23.0103,
+        "dc": 0.004915,
+        "crest_db": 14.022144,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -26.0206,
+        "side_rms_dbfs": -26.0206,
+        "correlation": 0.0
+      }
+    },
+    {
+      "name": "stereo_mid_only",
+      "valid": true,
+      "sha256_pcm": "9726e9d69421ae9773b81e38a07358e8b5007240267399d246602d34e16429f9",
+      "levels": {
+        "peak_dbfs": -8.988156,
+        "rms_dbfs": -20.0,
+        "dc": 0.009831,
+        "crest_db": 11.011844,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -20.0,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    },
+    {
+      "name": "stereo_side_only",
+      "valid": true,
+      "sha256_pcm": "9a7762467be0d38adc67d3aa97b317fe56cc91066dbe8e7a62bdae9e9ddf0651",
+      "levels": {
+        "peak_dbfs": -8.988156,
+        "rms_dbfs": -20.0,
+        "dc": 0.0,
+        "crest_db": 11.011844,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -400.0,
+        "side_rms_dbfs": -20.0,
+        "correlation": -1.0
+      }
+    },
+    {
+      "name": "synthetic_drums",
+      "valid": true,
+      "sha256_pcm": "3c709999bb0dc0fa56dcab0d94e44e6db5397ff2f6bb87ba194b8d088356d370",
+      "levels": {
+        "peak_dbfs": -2.427952,
+        "rms_dbfs": -17.033977,
+        "dc": 0.001149,
+        "crest_db": 14.606026,
+        "all_finite": true,
+        "subnormal_count": 0
+      },
+      "stereo": {
+        "mid_rms_dbfs": -17.033977,
+        "side_rms_dbfs": -400.0,
+        "correlation": 1.0
+      }
+    }
+  ],
+  "timing_floor_copy": [
+    {
+      "block_size": 1,
+      "sample_rate": 48000.0,
+      "budget_us": 20.833333,
+      "blocks": 20000,
+      "p50_us": 0.0,
+      "p95_us": 0.1,
+      "p99_us": 0.1,
+      "max_us": 0.4,
+      "p99_budget_fraction": 0.0048
+    },
+    {
+      "block_size": 16,
+      "sample_rate": 48000.0,
+      "budget_us": 333.333333,
+      "blocks": 20000,
+      "p50_us": 0.0,
+      "p95_us": 0.1,
+      "p99_us": 0.1,
+      "max_us": 0.5,
+      "p99_budget_fraction": 0.0003
+    },
+    {
+      "block_size": 32,
+      "sample_rate": 48000.0,
+      "budget_us": 666.666667,
+      "blocks": 15000,
+      "p50_us": 0.0,
+      "p95_us": 0.1,
+      "p99_us": 0.1,
+      "max_us": 21.9,
+      "p99_budget_fraction": 0.00015
+    },
+    {
+      "block_size": 64,
+      "sample_rate": 48000.0,
+      "budget_us": 1333.333333,
+      "blocks": 7500,
+      "p50_us": 0.0,
+      "p95_us": 0.1,
+      "p99_us": 0.1,
+      "max_us": 30.2,
+      "p99_budget_fraction": 0.000075
+    },
+    {
+      "block_size": 127,
+      "sample_rate": 48000.0,
+      "budget_us": 2645.833333,
+      "blocks": 3779,
+      "p50_us": 0.0,
+      "p95_us": 0.1,
+      "p99_us": 0.2,
+      "max_us": 0.5,
+      "p99_budget_fraction": 0.000076
+    },
+    {
+      "block_size": 256,
+      "sample_rate": 48000.0,
+      "budget_us": 5333.333333,
+      "blocks": 1875,
+      "p50_us": 0.1,
+      "p95_us": 0.1,
+      "p99_us": 0.1,
+      "max_us": 0.5,
+      "p99_budget_fraction": 0.000019
+    },
+    {
+      "block_size": 512,
+      "sample_rate": 48000.0,
+      "budget_us": 10666.666667,
+      "blocks": 937,
+      "p50_us": 0.1,
+      "p95_us": 0.1,
+      "p99_us": 0.1,
+      "max_us": 0.3,
+      "p99_budget_fraction": 9.375e-6
+    },
+    {
+      "block_size": 1024,
+      "sample_rate": 48000.0,
+      "budget_us": 21333.333333,
+      "blocks": 468,
+      "p50_us": 0.1,
+      "p95_us": 0.2,
+      "p99_us": 0.2,
+      "max_us": 0.2,
+      "p99_budget_fraction": 9.375e-6
+    },
+    {
+      "block_size": 2048,
+      "sample_rate": 48000.0,
+      "budget_us": 42666.666667,
+      "blocks": 234,
+      "p50_us": 0.4,
+      "p95_us": 0.4,
+      "p99_us": 0.6,
+      "max_us": 2.8,
+      "p99_budget_fraction": 0.000014
+    }
+  ],
+  "hpdg_block_audit": {
+    "status": "MEASURED",
+    "sample_rate": 48000.0,
+    "prepared_block": 512,
+    "allocation_probe": "operator-new-only (malloc not seen)",
+    "compressor": {
+      "rt_allocations_block256_prepared512": 0,
+      "rt_allocations_block2048_prepared512": 0,
+      "rt_allocation_source": "ensureScratchCapacity -> AudioBuffer::setSize when block > prepared",
+      "static_curve_T-20_R4": [
+        {
+          "input_peak_dbfs": -40.0,
+          "measured_gain_db": -0.001824,
+          "hard_knee_expected_gain_db": 0.0
+        },
+        {
+          "input_peak_dbfs": -35.0,
+          "measured_gain_db": -0.001926,
+          "hard_knee_expected_gain_db": 0.0
+        },
+        {
+          "input_peak_dbfs": -30.0,
+          "measured_gain_db": -0.001991,
+          "hard_knee_expected_gain_db": 0.0
+        },
+        {
+          "input_peak_dbfs": -25.0,
+          "measured_gain_db": -0.002028,
+          "hard_knee_expected_gain_db": 0.0
+        },
+        {
+          "input_peak_dbfs": -20.0,
+          "measured_gain_db": -0.002051,
+          "hard_knee_expected_gain_db": 0.0
+        },
+        {
+          "input_peak_dbfs": -15.0,
+          "measured_gain_db": -3.139521,
+          "hard_knee_expected_gain_db": -3.75
+        },
+        {
+          "input_peak_dbfs": -10.0,
+          "measured_gain_db": -6.889527,
+          "hard_knee_expected_gain_db": -7.5
+        },
+        {
+          "input_peak_dbfs": -5.0,
+          "measured_gain_db": -10.639522,
+          "hard_knee_expected_gain_db": -11.25
+        },
+        {
+          "input_peak_dbfs": 0.0,
+          "measured_gain_db": -14.389533,
+          "hard_knee_expected_gain_db": -15.0
+        }
+      ],
+      "static_curve_worst_deviation_db": 0.610479,
+      "knee_parameter_available": false,
+      "nominal_attack_ms": 10.0,
+      "measured_attack_63pct_ms": 2.0,
+      "nominal_release_ms": 120.0,
+      "measured_release_63pct_ms": 23.0,
+      "note": "Glue character scales attack x0.82 and release x1.12+12 ms; gain reduction for meters is block-peak",
+      "mix0_bit_exact": true,
+      "mix0_error_db": -400.0,
+      "cpu_block256_p50_us": 11.2,
+      "cpu_block256_p99_us": 24.1,
+      "cpu_block256_p99_budget_fraction": 0.004519
+    },
+    "monsta": {
+      "rt_allocations_block256": 750,
+      "blocks_processed": 750,
+      "rt_allocation_source": "per-call std::vector heldCrushSamples in process()",
+      "block_size_invariance": [
+        {
+          "block_size": 32,
+          "error_db_vs_256": -32.793845,
+          "bit_exact": false
+        },
+        {
+          "block_size": 127,
+          "error_db_vs_256": -35.937219,
+          "bit_exact": false
+        },
+        {
+          "block_size": 512,
+          "error_db_vs_256": -44.448577,
+          "bit_exact": false
+        }
+      ],
+      "no_transport_output_rms_dbfs": -18.173481,
+      "no_transport_all_finite": true
+    },
+    "eq_pattern": {
+      "allocations_per_coefficient_update": 1,
+      "zipper_hf_above_2k_rel_db": -52.105846,
+      "zipper_note": "baseline for M3: same sweep with smoothed coefficients must be lower",
+      "low_cut_slope_db_per_oct_25_50hz": 11.9625,
+      "available_shapes": "Bell, LowCut, HighCut (7 bands, cuts 2nd order only)"
+    }
+  }
+}

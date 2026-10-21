@@ -1,0 +1,39 @@
+[PASS] determinism_pink_sha256 measured=1 expected=1 tol=0
+[PASS] determinism_drums_sha256 measured=1 expected=1 tol=0
+[PASS] seed_changes_noise measured=1 expected=1 tol=0
+[PASS] null_identity_bit_exact measured=1 expected=1 tol=0
+[PASS] null_identity_error_db measured=-400 expected=-400 tol=0
+[PASS] null_gain_1e-3_error_db measured=-59.9996 expected=-60 tol=0.01
+[PASS] delay_estimate_samples measured=37 expected=37 tol=0
+[PASS] null_after_alignment_error_db measured=-400 expected=-400 tol=0
+[PASS] transfer_identity_worst_abs_db measured=0 expected=0 tol=1e-06
+[PASS] transfer_half_gain_worst_error_db measured=8.67204e-08 expected=0 tol=0.001
+[PASS] sine_1k_frequency_hz_44100 measured=1000.01 expected=1000 tol=0.5
+[PASS] sine_-6dBFS_rms_db_44100 measured=-9.0103 expected=-9.0103 tol=0.01
+[PASS] pink_psd_slope_db_per_oct_44100 measured=-2.82978 expected=-3.01 tol=0.5
+[PASS] white_rms_dbfs_44100 measured=-20 expected=-20 tol=0.01
+[PASS] sine_1k_frequency_hz_48000 measured=1000.06 expected=1000 tol=0.5
+[PASS] sine_-6dBFS_rms_db_48000 measured=-9.0103 expected=-9.0103 tol=0.01
+[PASS] pink_psd_slope_db_per_oct_48000 measured=-2.7906 expected=-3.01 tol=0.5
+[PASS] white_rms_dbfs_48000 measured=-20 expected=-20 tol=0.01
+[PASS] sine_1k_frequency_hz_96000 measured=1000.06 expected=1000 tol=0.5
+[PASS] sine_-6dBFS_rms_db_96000 measured=-9.0103 expected=-9.0103 tol=0.01
+[PASS] pink_psd_slope_db_per_oct_96000 measured=-3.17921 expected=-3.01 tol=0.5
+[PASS] white_rms_dbfs_96000 measured=-20 expected=-20 tol=0.01
+[PASS] sine_1k_frequency_hz_192000 measured=1000.06 expected=1000 tol=0.5
+[PASS] sine_-6dBFS_rms_db_192000 measured=-9.0103 expected=-9.0103 tol=0.01
+[PASS] pink_psd_slope_db_per_oct_192000 measured=-2.86247 expected=-3.01 tol=0.5
+[PASS] white_rms_dbfs_192000 measured=-20 expected=-20 tol=0.01
+[PASS] na_frequency_above_0.45fs measured=1 expected=1 tol=0
+[PASS] mid_only_side_rms_db measured=-400 expected=-400 tol=0
+[PASS] side_only_mid_rms_db measured=-400 expected=-400 tol=0
+[PASS] mid_only_correlation measured=1 expected=1 tol=1e-09
+[PASS] side_only_correlation measured=-1 expected=-1 tol=1e-09
+[PASS] left_only_correlation measured=0 expected=0 tol=0
+[PASS] subnormal_fixture_count measured=480 expected=480 tol=0
+[PASS] wav_float32_roundtrip_bit_exact measured=1 expected=1 tol=0
+[PASS] alloc_probe_counts_new measured=1 expected=1 tol=0
+35/35 self-checks passed
+measuring timing floor...
+running HPDG block audit...
+baseline -> E:\HPEQ\docs\fx-addon\reports\m0\baseline_metrics_release.json
