@@ -79,7 +79,7 @@ const EnumNames<EqShape, 9> shapeNames { { { { EqShape::Bell, "Bell" },
                                              { EqShape::Tilt, "Tilt" },
                                              { EqShape::AllPass, "AllPass" } } } };
 
-const EnumNames<FxType, 9> fxNames { { { { FxType::Compressor, "Compressor" },
+const EnumNames<FxType, 10> fxNames { { { { FxType::Compressor, "Compressor" },
                                          { FxType::Limiter, "Limiter" },
                                          { FxType::Reverb, "Reverb" },
                                          { FxType::Delay, "Delay" },
@@ -87,7 +87,8 @@ const EnumNames<FxType, 9> fxNames { { { { FxType::Compressor, "Compressor" },
                                          { FxType::Saturator, "Saturator" },
                                          { FxType::MonstaFx, "MonstaFx" },
                                          { FxType::StereoProcessor, "StereoProcessor" },
-                                         { FxType::GateExpander, "GateExpander" } } } };
+                                         { FxType::GateExpander, "GateExpander" },
+                                         { FxType::Gain, "Gain" } } } };
 
 const EnumNames<LayerRouting, 2> routingNames { { { { LayerRouting::Parallel, "Parallel" },
                                                     { LayerRouting::Serial, "Serial" } } } };

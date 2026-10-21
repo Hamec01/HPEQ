@@ -1,0 +1,92 @@
+Random seed: 0x1f080f3
+-----------------------------------------------------------------
+Starting tests in: Harness / compareAligned detects a one-ulp change...
+Completed tests in Harness / compareAligned detects a one-ulp change
+-----------------------------------------------------------------
+Starting tests in: Harness / fixture set is complete and deterministic...
+Completed tests in Harness / fixture set is complete and deterministic
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / identity: audio insert effect, distinct from HPDG...
+Completed tests in Plugin contract (M1) / identity: audio insert effect, distinct from HPDG
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / bus layouts: mono->mono and stereo->stereo only...
+Completed tests in Plugin contract (M1) / bus layouts: mono->mono and stereo->stereo only
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / M1-A: default state is bit-exact pass-through at every rate, block size, mono/stereo...
+  unity cases bit-exact: 72/72
+Completed tests in Plugin contract (M1) / M1-A: default state is bit-exact pass-through at every rate, block size, mono/stereo
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / bypass is bit-exact even with output gain set...
+Completed tests in Plugin contract (M1) / bypass is bit-exact even with output gain set
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / output gain: -6 dB settles exactly, ramp is smooth, no allocations...
+  settled error 0.00000024 dB, max ramp step 0.01250 dB
+Completed tests in Plugin contract (M1) / output gain: -6 dB settles exactly, ramp is smooth, no allocations
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / blocks larger than prepared and empty blocks are handled...
+Completed tests in Plugin contract (M1) / blocks larger than prepared and empty blocks are handled
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / T04 (M1 scope): 100k random parameter mutations, random blocks 1..2048...
+Completed tests in Plugin contract (M1) / T04 (M1 scope): 100k random parameter mutations, random blocks 1..2048
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / M1-C (in-process): 100 editor open/close cycles while audio runs...
+Completed tests in Plugin contract (M1) / M1-C (in-process): 100 editor open/close cycles while audio runs
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / project tree round trip is lossless...
+Completed tests in State schema v1 / project tree round trip is lossless
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / plugin state: parameters, project and sound survive save/restore...
+Completed tests in State schema v1 / plugin state: parameters, project and sound survive save/restore
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / unknown schema versions and garbage are rejected without touching state...
+Completed tests in State schema v1 / unknown schema versions and garbage are rejected without touching state
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / sanitize enforces limits and repairs invalid values...
+Completed tests in State schema v1 / sanitize enforces limits and repairs invalid values
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / all ten layers exist with stable indices...
+Completed tests in State schema v1 / all ten layers exist with stable indices
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / T01: EQ off / FX bypass variants are bit-exact copies...
+Completed tests in DSP M2 / T01: EQ off / FX bypass variants are bit-exact copies
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / T02: 2-8 overlapping disabled/mix-0/bypassed nodes leave exactly the PRE-EQ output...
+Completed tests in DSP M2 / T02: 2-8 overlapping disabled/mix-0/bypassed nodes leave exactly the PRE-EQ output
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / delta math: gain node equals x + (g - 1) * Select(x) from an independent selector...
+  delta vs reference: -157.2 dB
+Completed tests in DSP M2 / delta math: gain node equals x + (g - 1) * Select(x) from an independent selector
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / MIX-0: after mixing a running compressor out, output is exactly xE again...
+Completed tests in DSP M2 / MIX-0: after mixing a running compressor out, output is exactly xE again
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / D2 chain: order, bypass of a middle slot, two gains compose...
+Completed tests in DSP M2 / D2 chain: order, bypass of a middle slot, two gains compose
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / T10: identical render for block sizes 1, 32, 127, 256, 1024...
+Completed tests in DSP M2 / T10: identical render for block sizes 1, 32, 127, 256, 1024
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / T04: 100k random mutations, random blocks 1..2048, no NaN/Inf, bounded, no allocations...
+  20000 snapshots, 10000 blocks, worst peak 9.5 dBFS
+Completed tests in DSP M2 / T04: 100k random mutations, random blocks 1..2048, no NaN/Inf, bounded, no allocations
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / range move during playback is smooth (HF products < -60 dB)...
+  range jump 250-700 -> 800-2000 Hz: HF > 5 kHz at -88.2 dB (metric floor -114.3 dB)
+Completed tests in DSP M2 / range move during playback is smooth (HF products < -60 dB)
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / PRE-EQ automation vs HPDG baseline (-95.0 dB HF products, 8th-order metric)...
+  HPEQ PRE-EQ sweep: -106.9 dB (HPDG pattern: -95.0 dB)
+Completed tests in DSP M2 / PRE-EQ automation vs HPDG baseline (-95.0 dB HF products, 8th-order metric)
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / compressor: static law and time constants as documented...
+Completed tests in DSP M2 / compressor: static law and time constants as documented
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / decision B: PRE-EQ cut reaches the compressor detector (80 Hz, bell -18 dB)...
+  compressor GR without PRE-EQ 14.32 dB, with -18 dB bell 1.25 dB
+Completed tests in DSP M2 / decision B: PRE-EQ cut reaches the compressor detector (80 Hz, bell -18 dB)
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / plugin: bypass with active processing settles to the exact dry signal...
+Completed tests in DSP M2 / plugin: bypass with active processing settles to the exact dry signal
+
+allocation probe: operator-new-only (malloc not seen)
+HPEQ_Tests: 529 expectations passed, 0 failed

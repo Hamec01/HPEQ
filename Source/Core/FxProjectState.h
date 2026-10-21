@@ -24,7 +24,8 @@ constexpr double kMaxFrequencyHz = 40000.0; // clamped further against Nyquist w
 
 enum class ChannelMode { Stereo, Left, Right, Mid, Side, LinkedStereo, DualMono };
 enum class EqShape { Bell, LowShelf, HighShelf, LowCut, HighCut, Notch, BandPass, Tilt, AllPass };
-enum class FxType { Compressor, Limiter, Reverb, Delay, TransientShaper, Saturator, MonstaFx, StereoProcessor, GateExpander };
+// Gain is a utility/reference processor (03 M2.1 "mock processor Gain -6 dB").
+enum class FxType { Compressor, Limiter, Reverb, Delay, TransientShaper, Saturator, MonstaFx, StereoProcessor, GateExpander, Gain };
 enum class LayerRouting { Parallel, Serial };
 
 struct EqNodeState

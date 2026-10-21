@@ -56,6 +56,13 @@ target_compile_definitions(HPEQ
 target_sources(HPEQ
     PRIVATE
         Source/Core/FxProjectState.cpp
+        Source/DSP/Biquad.cpp
+        Source/DSP/FxNodeProcessor.cpp
+        Source/DSP/LayerEngine.cpp
+        Source/DSP/LayerSnapshot.cpp
+        Source/DSP/PreEqProcessor.cpp
+        Source/DSP/Processors.cpp
+        Source/DSP/RegionSelector.cpp
         Source/Plugin/FxPluginProcessor.cpp
         Source/Plugin/FxPluginEditor.cpp)
 
@@ -78,7 +85,8 @@ set(HPEQ_HARNESS_SOURCES
     Tests/Harness/AudioMetrics.cpp
     Tests/Harness/AudioFileIO.cpp
     Tests/Harness/RtAllocationProbe.cpp
-    Tests/Harness/MachineInfo.cpp)
+    Tests/Harness/MachineInfo.cpp
+    Tests/Harness/SvgPlot.cpp)
 
 # Unit tests: harness self-checks, plugin contract (M1), state schema.
 add_executable(HPEQ_Tests
@@ -86,10 +94,18 @@ add_executable(HPEQ_Tests
     Tests/Unit/TestMain.cpp
     Tests/Unit/HarnessTests.cpp
     Tests/Unit/PluginContractTests.cpp
-    Tests/Unit/StateTests.cpp)
+    Tests/Unit/StateTests.cpp
+    Tests/Unit/DspTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_link_libraries(HPEQ_Tests PRIVATE HPEQ)
 add_test(NAME HPEQ_Tests COMMAND HPEQ_Tests)
+
+# M2 lab: H1 vs H2 frequency-core experiment on the real engine (JSON, SVG, WAV).
+add_executable(HPEQ_Lab
+    ${HPEQ_HARNESS_SOURCES}
+    Tests/Tools/LabMain.cpp)
+target_include_directories(HPEQ_Lab PRIVATE Tests)
+target_link_libraries(HPEQ_Lab PRIVATE HPEQ)
 
 # M0 tool: fixtures, baseline metrics, HPDG block audit.
 add_executable(HPEQ_Harness

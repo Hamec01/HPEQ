@@ -285,8 +285,14 @@ juce::var auditEqPattern()
         auto hf = audio;
         for (int i = 0; i < hf.getNumSamples(); ++i)
             hf.setSample(0, i, highPass.processSample(hf.getSample(0, i)));
+        const auto clean = makeSine({ kFs, 1, 1.0, kFixtureSeed }, 100.0, -12.0);
         result.set("zipper_hf_above_2k_rel_db", measureAll(hf).rmsDbfs - measureAll(audio).rmsDbfs)
-            .set("zipper_note", "baseline for M3: same sweep with smoothed coefficients must be lower");
+            .set("zipper_hf_above_2k_rel_db_note",
+                 "FLAWED (found in M2): 2nd-order measuring high-pass lets the 100 Hz tone through at ~-52 dB; "
+                 "this number is the metric's floor, not zipper noise")
+            .set("zipper_hf8_above_2k_rel_db", highBandRelativeDb(audio, kFs, 2000.0))
+            .set("zipper_hf8_metric_floor_clean_sine_db", highBandRelativeDb(clean, kFs, 2000.0))
+            .set("zipper_note", "8th-order measuring high-pass; baseline for HPEQ PRE-EQ automation");
     }
 
     // Cut slope: HPDG LowCut = makeHighPass(f, q) = 2nd order -> ~12 dB/oct; measured 25..50 Hz.

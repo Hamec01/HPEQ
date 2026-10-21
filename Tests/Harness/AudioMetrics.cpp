@@ -1,6 +1,7 @@
 #include "Harness/AudioMetrics.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <complex>
 #include <limits>
@@ -247,6 +248,35 @@ StereoStats measureStereo(const juce::AudioBuffer<float>& buffer)
     stats.sideRmsDbfs = toDb(std::sqrt(ss / n));
     stats.correlation = (ll > 0.0 && rr > 0.0) ? lr / std::sqrt(ll * rr) : 0.0;
     return stats;
+}
+
+double highBandRelativeDb(const juce::AudioBuffer<float>& audio, double sampleRate, double cutoffHz, int channel, double settleSeconds)
+{
+    const double w = 2.0 * juce::MathConstants<double>::pi * cutoffHz / sampleRate;
+    const double alpha = std::sin(w) / (2.0 * 0.70710678118654752440);
+    const double cosW = std::cos(w), a0 = 1.0 + alpha;
+    const double b0 = (1.0 + cosW) * 0.5 / a0, b1 = -(1.0 + cosW) / a0, b2 = b0;
+    const double a1 = -2.0 * cosW / a0, a2 = (1.0 - alpha) / a0;
+
+    std::array<std::array<double, 2>, 4> state {};
+    double hfSquares = 0.0, totalSquares = 0.0;
+    const auto* data = audio.getReadPointer(channel);
+    const int settle = static_cast<int>(settleSeconds * sampleRate);
+    for (int i = 0; i < audio.getNumSamples(); ++i)
+    {
+        double v = data[i];
+        const bool counted = i >= settle;
+        totalSquares += counted ? v * v : 0.0;
+        for (auto& s : state)
+        {
+            const double y = b0 * v + s[0];
+            s[0] = b1 * v - a1 * y + s[1];
+            s[1] = b2 * v - a2 * y;
+            v = y;
+        }
+        hfSquares += counted ? v * v : 0.0;
+    }
+    return toDb(std::sqrt(hfSquares / std::max(totalSquares, 1.0e-300)));
 }
 
 TimingStats summarise(std::vector<double> values)

@@ -65,3 +65,15 @@ implements all processors anew, to a measured quality bar.
 - The milestone order is unchanged: the processors come after the M2 routing gate (EQ in M3,
   Compressor/Reverb in M4, Monsta and the rest in M6).
 - HPDG itself is not changed by this decision; improving HPDG's own Sound Module is a separate task.
+
+## D4 — PROPOSED 2026-10-21 (awaiting owner) — Frequency core H3 instead of H1
+
+**Evidence:** `reports/M2_REPORT.md`. H1 ("delta bands", spec default) is bit-exact at bypass but adds
+up to +2.3 dB (LR8: +3.9 dB) of false boost when a node cuts, because the minimum-phase band rotates
+in phase against the dry signal. H2 has a correct, smooth response but cannot overlap. H3 (one shared
+Linkwitz-Riley tree over all node edges, nodes = sums of elementary bands, deltas added to the
+all-pass dry) keeps H2's response and supports overlap.
+
+**Would override:** `01` §5 "default для перекрывающихся FX Nodes в V1 — H1" and the exact-identity
+reading of T01/T02 for "node bypassed while other nodes are active" (compared to the documented
+all-pass result instead, 04 §3). "All FX off" stays bit-exact: the tree is not run.

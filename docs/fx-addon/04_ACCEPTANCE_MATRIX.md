@@ -11,20 +11,20 @@
 | M1-A | 1 | Insert FX in/out 2ch 44.1/48k | Unity passthrough, отсутствие нового звука | PASS | [M1_REPORT](reports/M1_REPORT.md) |
 | M1-B | 1 | VST3 host scan | Отдельный уникальный plugin ID, загрузка | PASS (JUCE host); pluginval BLOCKED | [M1_REPORT](reports/M1_REPORT.md) |
 | M1-C | 1 | Десятикратные/100× editor open/close | No crash/hang/deadlock, state restore | PASS (in-process + JUCE host); DAW BLOCKED | [M1_REPORT](reports/M1_REPORT.md) |
-| T01 | 2 | Stereo sine/noise, EQ off, FX bypass | Для exact copy равенство samples; для aligned nontrivial paths normalized RMS error ≤ −100 dB ref | PLANNED | — |
-| T02 | 2 | 2–8 overlapping regions `[250,700]`, `[450,1200]`, disabled | Нет dry duplication; output = aligned PRE-EQ | PLANNED | — |
+| T01 | 2 | Stereo sine/noise, EQ off, FX bypass | Для exact copy равенство samples; для aligned nontrivial paths normalized RMS error ≤ −100 dB ref | PASS (H1 engine) | [M2_REPORT](reports/M2_REPORT.md) |
+| T02 | 2 | 2–8 overlapping regions `[250,700]`, `[450,1200]`, disabled | Нет dry duplication; output = aligned PRE-EQ | PASS (H1 engine) | [M2_REPORT](reports/M2_REPORT.md) |
 | T03 | 3 | Sweeps/sine grid for 6–96 dB/oct | Actual response matches derived coefficients; slope evaluation with defined valid frequency interval and tolerance ±6 dB/oct target | PLANNED | — |
-| T04 | 2+ | 100 000 deterministic random params & 1..2048 blocks | No NaN/Inf, exceptions, audio callback allocations; no runaway | PLANNED | — |
+| T04 | 2+ | 100 000 deterministic random params & 1..2048 blocks | No NaN/Inf, exceptions, audio callback allocations; no runaway | PASS (M2 params) | [M2_REPORT](reports/M2_REPORT.md) |
 | T05 | 3 | Left-only, Right-only, M-only, S-only, mono | Exact channel-selection semantics; roundtrip M/S within float tolerance | PLANNED | — |
 | T06 | 4 | Burst/step tones, > and < threshold | Compressor GR and envelope shape follow published detector/ratio rules | PLANNED | — |
 | T07 | 4 | Single impulse then 10 s silence | Reverb/Delay tails audible/quantified and no abrupt cut in normal bypass | PLANNED | — |
 | T08 | 6 | High sine/multitone, 1x and OS4x | Aliasing energy and headroom measured; OS4x target demonstrably better in tested conditions | PLANNED | — |
 | T09 | 5 | Offline PCM vs displayed capture | Waveform input/output/Delta are actual aligned PCM; displayed spectrum corresponds FFT of captures | PLANNED | — |
-| T10 | 2 | Identical input with block 1, 32, 127, 256, 1024 | Offline outputs numerically consistent with documented tolerance | PLANNED | — |
+| T10 | 2 | Identical input with block 1, 32, 127, 256, 1024 | Offline outputs numerically consistent with documented tolerance | PASS (bit-exact) | [M2_REPORT](reports/M2_REPORT.md) |
 | T11 | 8 | pluginval, host reopen, mutate/restore | pluginval level≥5; no crashes/hangs; 100 editor cycles, no state loss | PLANNED | — |
 | T12 | 7–8 | 1/5/10 layers × 1/5 nodes × multiple fs | p50/p95/p99 CPU, peak RSS, latency documented on same host | PLANNED | — |
-| B-ORDER | 3 | 80 Hz input, Pre-EQ HP200 + FX comp 100–250 | Compressor receives PRE-filtered 80 Hz (not original); layer EQ before FX | PLANNED | — |
-| MIX-0 | 2 | FX Node Mix=0, layer Mix=0 | No contribution from node/layer, independent of hidden DSP state | PLANNED | — |
+| B-ORDER | 3 | 80 Hz input, Pre-EQ HP200 + FX comp 100–250 | Compressor receives PRE-filtered 80 Hz (not original); layer EQ before FX | PASS (Bell variant; HP200 in M3) | [M2_REPORT](reports/M2_REPORT.md) |
+| MIX-0 | 2 | FX Node Mix=0, layer Mix=0 | No contribution from node/layer, independent of hidden DSP state | PASS (node) | [M2_REPORT](reports/M2_REPORT.md) |
 | METER | 5 | Signal at known dBFS | Input/output peak & RMS within calibrated accuracy; display never synthetic | PLANNED | — |
 | PDC | 4/8 | Turn on/lookahead/FIR/oversampling | Host latency equals effective processing delay; dry and wet aligned | PLANNED | — |
 | STATE | 1–8 | Save/restore state; automation gesture | Parameters, IDs, sound, selected Layer, nodes fully restore | PASS (M1 scope) | [M1_REPORT](reports/M1_REPORT.md) |

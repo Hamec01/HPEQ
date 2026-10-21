@@ -5,11 +5,12 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "Core/FxProjectState.h"
+#include "DSP/LayerEngine.h"
 
 namespace hpeq
 {
-// M1 skeleton: audio insert with unity pass-through, smoothed output gain, bypass, state, meters.
-// No frequency processing exists yet; nothing here pretends otherwise.
+// Audio insert. M2: layer 1 runs PRE-EQ (Bell) -> FX nodes (Gain, Compressor) through LayerEngine;
+// layers 2-10 are stored but not processed until M7. Output gain and bypass come after the layer.
 class FxPluginProcessor final : public juce::AudioProcessor
 {
 public:
@@ -64,8 +65,12 @@ private:
 
     juce::SmoothedValue<float, juce::ValueSmoothingTypes::Multiplicative> gain { 1.0f };
 
-    mutable juce::CriticalSection projectLock; // never taken by processBlock
+    mutable juce::CriticalSection projectLock; // never taken by processBlock; also serialises publish()
     FxProjectState project;
+    dsp::LayerEngine engine;
+    juce::AudioBuffer<float> dry;   // sized in prepareToPlay; longer host blocks are chunked
+    dsp::LinearRamp wetAmount;      // 1 = layer output, 0 = bypassed (dry)
+    int bypassRampSteps = 1;
 
     std::atomic<float> inputPeak { 0.0f }, inputRms { 0.0f }, outputPeak { 0.0f }, outputRms { 0.0f };
 

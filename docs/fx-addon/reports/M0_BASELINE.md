@@ -92,7 +92,7 @@ All at 48 kHz stereo, prepared block 512. Source: `m0/baseline_metrics_{release,
 | | block-size invariance vs 256 (T10-style) | 32: **−32.8 dB**, 127: −35.9 dB, 512: −44.4 dB error | output depends on host buffer size → fails T10; rewrite must be block-invariant |
 | | no transport (bpm 0, timeline frozen) | finite, −18.2 dBFS RMS | runs, but slicing grid is meaningless without a timeline; HPEQ needs a defined fallback |
 | HPDG EQ pattern | allocations per coefficient update | **1** (Release, `new`) / 2 (Debug) | coefficients must be built off the audio thread |
-| | zipper: bell −12→+12 dB over 1 s, update per 512 samples | HF products > 2 kHz at **−52.1 dB** rel. signal | M3 target: same test, smoothed, lower |
+| | zipper: bell −12→+12 dB over 1 s, update per 512 samples | ~~−52.1 dB~~ **ERRATUM (M2):** that was the floor of the 2nd-order measuring filter. Corrected metric: **−95.0 dB** (floor −154.6 dB), see M2_REPORT §9.1 | M3 target: same test, smoothed, lower |
 | | Low Cut slope 25–50 Hz (cut 200 Hz) | 11.96 dB/oct | only 2nd order; HPEQ adds 6…96 dB/oct |
 
 The attack/release method (63 % of the final gain change in dB, 1 ms windows) is a fixed measurement

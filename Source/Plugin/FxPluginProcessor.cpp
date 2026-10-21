@@ -30,13 +30,19 @@ FxPluginProcessor::FxPluginProcessor()
     outputGainDb = parameters.getRawParameterValue(params::outputGain.getParamID());
     bypassParameter = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter(params::bypass.getParamID()));
     jassert(outputGainDb != nullptr && bypassParameter != nullptr);
+    engine.publish(dsp::makeSnapshot(project.layers[0]));
 }
 
-void FxPluginProcessor::prepareToPlay(double sampleRate, int)
+void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamplesPerBlock)
 {
+    const int maxBlock = juce::jmax(1, maximumExpectedSamplesPerBlock);
+    engine.prepare(sampleRate, maxBlock);
+    dry.setSize(dsp::kMaxChannels, maxBlock);
+    bypassRampSteps = dsp::stepsFor(dsp::kMixRampSeconds, sampleRate);
+    wetAmount.reset(bypassParameter->get() ? 0.0 : 1.0);
     gain.reset(sampleRate, kGainRampSeconds);
     gain.setCurrentAndTargetValue(targetGain(outputGainDb->load(), bypassParameter->get()));
-    setLatencySamples(0);
+    setLatencySamples(engine.getLatencySamples());
 }
 
 void FxPluginProcessor::releaseResources() {}
@@ -87,25 +93,60 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
     const int channels = juce::jmin(numInputs, numOutputs, buffer.getNumChannels());
     measure(buffer, channels, inputPeak, inputRms);
 
-    gain.setTargetValue(targetGain(outputGainDb->load(std::memory_order_relaxed), bypassParameter->get()));
+    const bool bypassed = bypassParameter->get();
+    gain.setTargetValue(targetGain(outputGainDb->load(std::memory_order_relaxed), bypassed));
+    wetAmount.setTarget(bypassed ? 0.0 : 1.0, bypassRampSteps);
 
-    if (gain.isSmoothing())
+    // The layer keeps running while bypassed (warm filter/detector state, no click on return); bypass
+    // crossfades to the dry copy and, once settled, outputs the dry samples exactly.
+    auto* const* data = buffer.getArrayOfWritePointers();
+    const int capacity = dry.getNumSamples();
+    if (capacity <= 0)
+        return; // not prepared yet: leave the input untouched
+    for (int start = 0; start < numSamples; start += capacity)
     {
-        // One gain value per sample frame, identical for every channel.
-        auto* const* data = buffer.getArrayOfWritePointers();
-        for (int i = 0; i < numSamples; ++i)
-        {
-            const float g = gain.getNextValue();
-            for (int ch = 0; ch < channels; ++ch)
-                data[ch][i] *= g;
-        }
-    }
-    else if (const float g = gain.getTargetValue(); g != 1.0f)
-    {
+        const int n = juce::jmin(capacity, numSamples - start);
+        float* chunk[dsp::kMaxChannels] {};
         for (int ch = 0; ch < channels; ++ch)
-            buffer.applyGain(ch, 0, numSamples, g);
+        {
+            chunk[ch] = data[ch] + start;
+            dry.copyFrom(ch, 0, chunk[ch], n);
+        }
+
+        engine.process(chunk, channels, n);
+
+        if (wetAmount.isRamping())
+        {
+            for (int i = 0; i < n; ++i)
+            {
+                const auto w = static_cast<float>(wetAmount.next());
+                for (int ch = 0; ch < channels; ++ch)
+                    chunk[ch][i] = dry.getSample(ch, i) + w * (chunk[ch][i] - dry.getSample(ch, i));
+            }
+        }
+        else if (wetAmount.value() == 0.0)
+        {
+            for (int ch = 0; ch < channels; ++ch)
+                std::copy(dry.getReadPointer(ch), dry.getReadPointer(ch) + n, chunk[ch]);
+        }
+
+        if (gain.isSmoothing())
+        {
+            // One gain value per sample frame, identical for every channel.
+            for (int i = 0; i < n; ++i)
+            {
+                const float g = gain.getNextValue();
+                for (int ch = 0; ch < channels; ++ch)
+                    chunk[ch][i] *= g;
+            }
+        }
+        else if (const float g = gain.getTargetValue(); g != 1.0f)
+        {
+            for (int ch = 0; ch < channels; ++ch)
+                juce::FloatVectorOperations::multiply(chunk[ch], g, n);
+        }
+        // g == 1 and not ramping: untouched, so pass-through and bypass are bit-exact.
     }
-    // g == 1 and not ramping: the buffer is untouched, so pass-through and bypass are bit-exact.
 
     measure(buffer, channels, outputPeak, outputRms);
 }
@@ -129,6 +170,7 @@ void FxPluginProcessor::setProject(FxProjectState newProject)
     sanitize(newProject);
     const juce::ScopedLock lock(projectLock);
     project = std::move(newProject);
+    engine.publish(dsp::makeSnapshot(project.layers[0]));
 }
 
 void FxPluginProcessor::getStateInformation(juce::MemoryBlock& destData)

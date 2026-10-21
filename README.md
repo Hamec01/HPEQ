@@ -13,10 +13,10 @@ owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECIS
 |---|---|---|
 | M0 audit, measurement harness, baseline | done | [M0_BASELINE](docs/fx-addon/reports/M0_BASELINE.md) |
 | M1 VST3 insert skeleton | done (pluginval not run) | [M1_REPORT](docs/fx-addon/reports/M1_REPORT.md) |
-| M2 frequency-node DSP prototype | next | — |
+| M2 frequency-node DSP prototype | invariants pass; Gate 2 blocked on D4 (H1 refuted) | [M2_REPORT](docs/fx-addon/reports/M2_REPORT.md) |
 
-The plugin currently passes audio through unchanged (output gain + bypass only). No EQ or FX
-processing exists yet.
+Layer 1 processes PRE-EQ Bell bands and FX nodes (Gain, Compressor) from saved state; there is no
+node-editing UI yet, and the frequency core is pending decision D4.
 
 ## Build
 
@@ -39,4 +39,5 @@ ctest --test-dir build -C Release --output-on-failure
 |---|---|
 | `HPEQ_Tests` | Unit tests: plugin contract, state schema, harness. Run Debug for full RT-allocation coverage |
 | `HPEQ_Harness selfcheck / fixtures / baseline` | M0 measurement harness: fixtures (WAV + SHA-256 manifest), metrics JSON |
+| `HPEQ_Lab --out <dir>` | M2 frequency-core experiment: H1 / H1-LR8 / H2 / H3, JSON + SVG + WAV |
 | `HPEQ_HostSmoke --plugin <HPEQ.vst3> [--other <HPDG.vst3>]` | Loads the built .vst3 through JUCE's VST3 host: scan, unity, state, 100 instance/editor cycles |

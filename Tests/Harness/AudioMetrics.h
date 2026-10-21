@@ -76,6 +76,12 @@ struct StereoStats
 
 StereoStats measureStereo(const juce::AudioBuffer<float>&);
 
+// Energy above `cutoffHz` relative to the total RMS of one channel, dB. The high-pass is 8th order
+// (four 2nd-order Butterworth sections, 48 dB/oct asymptote), so a tone 2.3 octaves below the cutoff
+// is already ~-110 dB: the metric's own floor must be reported next to every use (see M2 report).
+// Energy is summed from `settleSeconds` on, so the onset of the test signal is not counted.
+double highBandRelativeDb(const juce::AudioBuffer<float>&, double sampleRate, double cutoffHz, int channel = 0, double settleSeconds = 0.05);
+
 struct TimingStats
 {
     double p50 = 0.0, p95 = 0.0, p99 = 0.0, max = 0.0, mean = 0.0;
