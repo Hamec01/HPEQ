@@ -1,0 +1,17 @@
+[PASS] HPEQ.vst3 scan finds exactly one plugin
+[PASS] scanned as an effect, not an instrument
+[PASS] HPDG.vst3 still scans
+[PASS] HPEQ and HPDG UIDs differ
+[PASS] HPEQ and HPDG identifiers differ
+[PASS] instantiate: ok
+[PASS] instance default bus: stereo in / stereo out
+[PASS] instance accepts mono in / mono out
+[PASS] M1-A via VST3 binary: bit-exact pass-through, block 64
+[PASS] M1-A via VST3 binary: bit-exact pass-through, block 512
+[PASS] M1-A via VST3 binary: bit-exact pass-through, block 2048
+[PASS] Output Gain parameter exposed to the host
+[PASS] STATE via VST3 binary: restored instance renders identically
+[PASS] Output Gain -6 dB measured -6.000 dB
+[PASS] M1-C: 100/100 instance cycles
+[PASS] M1-C: 100/100 editor open/close on desktop
+host smoke: all checks passed -> E:\HPEQ\docs\fx-addon\reports\m1\host_smoke.json

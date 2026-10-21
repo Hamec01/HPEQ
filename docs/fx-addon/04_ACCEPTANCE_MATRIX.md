@@ -8,9 +8,9 @@
 |---|---:|---|---|---|---|
 | M0-A | 0 | SHA, JUCE, CMake, build/log | Протокол исходного HPDG, actual logs | PASS | [M0_BASELINE](reports/M0_BASELINE.md) |
 | M0-B | 0 | Отдельный offline signal generator | Reproducible inputs + fixtures + metrics JSON | PASS | [M0_BASELINE](reports/M0_BASELINE.md), `reports/m0/` |
-| M1-A | 1 | Insert FX in/out 2ch 44.1/48k | Unity passthrough, отсутствие нового звука | PLANNED | — |
-| M1-B | 1 | VST3 host scan | Отдельный уникальный plugin ID, загрузка | PLANNED | — |
-| M1-C | 1 | Десятикратные/100× editor open/close | No crash/hang/deadlock, state restore | PLANNED | — |
+| M1-A | 1 | Insert FX in/out 2ch 44.1/48k | Unity passthrough, отсутствие нового звука | PASS | [M1_REPORT](reports/M1_REPORT.md) |
+| M1-B | 1 | VST3 host scan | Отдельный уникальный plugin ID, загрузка | PASS (JUCE host); pluginval BLOCKED | [M1_REPORT](reports/M1_REPORT.md) |
+| M1-C | 1 | Десятикратные/100× editor open/close | No crash/hang/deadlock, state restore | PASS (in-process + JUCE host); DAW BLOCKED | [M1_REPORT](reports/M1_REPORT.md) |
 | T01 | 2 | Stereo sine/noise, EQ off, FX bypass | Для exact copy равенство samples; для aligned nontrivial paths normalized RMS error ≤ −100 dB ref | PLANNED | — |
 | T02 | 2 | 2–8 overlapping regions `[250,700]`, `[450,1200]`, disabled | Нет dry duplication; output = aligned PRE-EQ | PLANNED | — |
 | T03 | 3 | Sweeps/sine grid for 6–96 dB/oct | Actual response matches derived coefficients; slope evaluation with defined valid frequency interval and tolerance ±6 dB/oct target | PLANNED | — |
@@ -27,8 +27,8 @@
 | MIX-0 | 2 | FX Node Mix=0, layer Mix=0 | No contribution from node/layer, independent of hidden DSP state | PLANNED | — |
 | METER | 5 | Signal at known dBFS | Input/output peak & RMS within calibrated accuracy; display never synthetic | PLANNED | — |
 | PDC | 4/8 | Turn on/lookahead/FIR/oversampling | Host latency equals effective processing delay; dry and wet aligned | PLANNED | — |
-| STATE | 1–8 | Save/restore state; automation gesture | Parameters, IDs, sound, selected Layer, nodes fully restore | PLANNED | — |
-| HPDG | all | Build and run unchanged old tests | Original HPDG generator/editor/wav unaffected | PLANNED | — |
+| STATE | 1–8 | Save/restore state; automation gesture | Parameters, IDs, sound, selected Layer, nodes fully restore | PASS (M1 scope) | [M1_REPORT](reports/M1_REPORT.md) |
+| HPDG | all | Build and run unchanged old tests | Original HPDG generator/editor/wav unaffected | PASS (untouched, separate repo) | [M0](reports/M0_BASELINE.md), [M1_REPORT](reports/M1_REPORT.md) |
 
 ## 2. Test signal definitions
 

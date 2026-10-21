@@ -1,0 +1,106 @@
+{
+  "machine": {
+    "os": "Windows 11",
+    "cpu_vendor": "GenuineIntel",
+    "cpu_model": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+    "cpu_mhz": 2504,
+    "logical_cpus": 8,
+    "physical_cpus": 4,
+    "memory_mb": 16292,
+    "juce_version": "JUCE v8.0.12",
+    "compiler": "MSVC 195035730",
+    "build": "Release",
+    "allocation_probe": "operator-new-only (malloc not seen)",
+    "utc": "2026-10-21T13:17:35.787+03:00"
+  },
+  "plugin_path": "E:\\HPEQ\\build\\HPEQ_artefacts\\Release\\VST3\\HPEQ.vst3",
+  "hpeq": {
+    "name": "HPEQ",
+    "manufacturer": "HamloProd",
+    "category": "Fx|EQ",
+    "uid": -1663069447,
+    "identifier": "VST3-HPEQ-2677d61e-9cdf92f9",
+    "is_instrument": false,
+    "inputs": 0,
+    "outputs": 0,
+    "version": "0.0.1"
+  },
+  "other": {
+    "name": "HPDG",
+    "manufacturer": "HamloProd",
+    "category": "Instrument|Synth",
+    "uid": 881007846,
+    "identifier": "VST3-HPDG-cc721422-34831ce6",
+    "is_instrument": true,
+    "inputs": 0,
+    "outputs": 0,
+    "version": "0.1.0"
+  },
+  "checks": [
+    {
+      "check": "HPEQ.vst3 scan finds exactly one plugin",
+      "pass": true
+    },
+    {
+      "check": "scanned as an effect, not an instrument",
+      "pass": true
+    },
+    {
+      "check": "HPDG.vst3 still scans",
+      "pass": true
+    },
+    {
+      "check": "HPEQ and HPDG UIDs differ",
+      "pass": true
+    },
+    {
+      "check": "HPEQ and HPDG identifiers differ",
+      "pass": true
+    },
+    {
+      "check": "instantiate: ok",
+      "pass": true
+    },
+    {
+      "check": "instance default bus: stereo in / stereo out",
+      "pass": true
+    },
+    {
+      "check": "instance accepts mono in / mono out",
+      "pass": true
+    },
+    {
+      "check": "M1-A via VST3 binary: bit-exact pass-through, block 64",
+      "pass": true
+    },
+    {
+      "check": "M1-A via VST3 binary: bit-exact pass-through, block 512",
+      "pass": true
+    },
+    {
+      "check": "M1-A via VST3 binary: bit-exact pass-through, block 2048",
+      "pass": true
+    },
+    {
+      "check": "Output Gain parameter exposed to the host",
+      "pass": true
+    },
+    {
+      "check": "STATE via VST3 binary: restored instance renders identically",
+      "pass": true
+    },
+    {
+      "check": "Output Gain -6 dB measured -6.000 dB",
+      "pass": true
+    },
+    {
+      "check": "M1-C: 100/100 instance cycles",
+      "pass": true
+    },
+    {
+      "check": "M1-C: 100/100 editor open/close on desktop",
+      "pass": true
+    }
+  ],
+  "failures": 0
+}
