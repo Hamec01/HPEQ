@@ -45,7 +45,7 @@ so its wet stays within the band it is fed; the option matters for non-linear FX
 ```bash
 cmake --build build --config Release                         # 0, no warnings
 build/Release/HPEQ_Tests.exe     # 0 — 698 passed, 0 failed
-build/Debug/HPEQ_Tests.exe       # see §7 (CRT allocation hook)
+build/Debug/HPEQ_Tests.exe       # 0 — 698 passed, 0 failed (CRT hook: malloc + new)
 build/Release/HPEQ_Lab.exe m4 --out docs/fx-addon/reports/m4         # 0
 build/Release/HPEQ_Lab.exe --out <tmp>                               # 0, M2 core unchanged
 build/Release/HPEQ_HostSmoke.exe --plugin …/HPEQ.vst3 --other …/HPDG.vst3   # 0 — 16/16
@@ -128,7 +128,7 @@ one run. The p99 of the 8-reverb case is far above its p50 and is not explained 
 | T10 / allocations with reverb | **PASS** | §5.4 |
 | Gate 4 | **PASS** — T06/T07; kick/snare/full-mix behaviour on the synthetic drum fixture; mono/stereo kept | |
 
-Debug run with the allocation hook: see `reports/m4_logs/unit_debug.log` (summary added on completion).
+Debug run with the CRT allocation hook: 698/698, **0 audio-thread allocations** in every probed test, including reverb acquire/release (`reports/m4_logs/unit_debug.log`).
 
 ## 8. Existing HPDG
 
