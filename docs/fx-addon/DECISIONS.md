@@ -87,4 +87,4 @@ the order-free form of H3: each node's band is its own LR4 band times the all-pa
 nodes' edges, the dry is the product of all edge all-passes; band/dry stays real, so the response is
 the same phase-coherent H3 response, and edges are born and retired at 1 Hz (where an all-pass is
 numerically an identity) and glide, so no crossfade is ever needed (worst dip 0.52 dB). Overlap and
-edge crossing need no special handling. Evidence:  §5.
+edge crossing need no special handling. Evidence: `reports/M2_REPORT.md` §5.
