@@ -67,7 +67,7 @@ method is fair.
 
 ## 6. Tests
 
-Release 698/698; Debug with the CRT allocation hook: see `reports/cpu_logs/unit_debug.log`; host smoke 16/16.
+Release 698/698; Debug with the CRT allocation hook 698/698, **0 audio-thread allocations** (`reports/cpu_logs/unit_debug.log`); host smoke 16/16.
 
 ## 7. What is left (T12, M7)
 
