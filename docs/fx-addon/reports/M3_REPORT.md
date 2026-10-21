@@ -44,7 +44,7 @@ Channel modes on PRE-EQ bands and FX nodes: Stereo, Left, Right, Mid, Side, Link
 ```bash
 cmake --build build --config Release                        # 0, no warnings
 build/Release/HPEQ_Tests.exe     # 0 — 644 passed, 0 failed (73 s)
-build/Debug/HPEQ_Tests.exe       # see §7 (CRT allocation hook)
+build/Debug/HPEQ_Tests.exe       # 0 — 644 passed, 0 failed (CRT hook: malloc + new)
 build/Release/HPEQ_Lab.exe m3 --out docs/fx-addon/reports/m3          # 0
 build/Release/HPEQ_Lab.exe --out <tmp>                                # 0, M2 core unchanged (§5.7)
 build/Release/HPEQ_HostSmoke.exe --plugin …/HPEQ.vst3 --other …/HPDG.vst3   # 0 — 16/16
@@ -146,7 +146,7 @@ eq_shapes, all_pass_1k_group_delay}.svg`, `reports/m3/host_smoke.json`, `reports
 | T01/T02/T04/T10/MIX-0 (M2 tests + new full-EQ T04/T10) | **PASS** | unit log |
 | Gate 3 | **PASS** — T03/T05, phase/impulse/sweep evidence, predictable CPU measured | |
 
-Debug (allocation) run: recorded in `reports/m3_logs/unit_debug.log`.
+Debug run with the CRT allocation hook: 644/644, **0 audio-thread allocations** in every test that probes them (`reports/m3_logs/unit_debug.log`).
 
 ## 8. Existing HPDG
 
