@@ -44,8 +44,10 @@ public:
     float getGainReductionDb() const noexcept { return meterGainReductionDb.load(std::memory_order_relaxed); }
 
 private:
+    static constexpr int kChunk = 256; // scratch size; longer calls are processed in chunks
     double sampleRate = 48000.0;
     std::array<double, kMaxChannels> smoothedReductionDb {};
+    std::array<float, kChunk> level {}, target {}, gainDb {}, gain {};
     std::atomic<float> meterGainReductionDb { 0.0f };
 };
 } // namespace hpeq::dsp

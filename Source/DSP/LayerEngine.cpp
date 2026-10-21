@@ -26,6 +26,13 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize)
             bandPtr[static_cast<size_t>(j)][static_cast<size_t>(ch)] = v.data();
         }
         bandList[static_cast<size_t>(j)] = bandPtr[static_cast<size_t>(j)].data();
+        for (int ch = 0; ch < kMaxChannels; ++ch)
+        {
+            auto& v = deltas[static_cast<size_t>(j)][static_cast<size_t>(ch)];
+            v.assign(size, 0.0f);
+            deltaPtr[static_cast<size_t>(j)][static_cast<size_t>(ch)] = v.data();
+        }
+        deltaList[static_cast<size_t>(j)] = deltaPtr[static_cast<size_t>(j)].data();
         presence[static_cast<size_t>(j)].assign(size, 0.0f);
         presencePtr[static_cast<size_t>(j)] = presence[static_cast<size_t>(j)].data();
     }
@@ -34,7 +41,7 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize)
     reverbs.prepare(sampleRate);
     for (auto& node : nodes)
         node.prepare(sampleRate, maxBlock, &reverbs);
-    tree.prepare(sampleRate);
+    tree.prepare(sampleRate, maxBlock);
     reset();
 }
 
@@ -104,8 +111,13 @@ void LayerEngine::process(float* const* channels, int numChannels, int numSample
                 std::copy(dryPtr[static_cast<size_t>(ch)], dryPtr[static_cast<size_t>(ch)] + n, chunk[ch]);
             for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
                 if (tree.hasBand(j))
+                {
+                    for (int ch = 0; ch < numChannels; ++ch)
+                        std::fill(deltaPtr[static_cast<size_t>(j)][static_cast<size_t>(ch)], deltaPtr[static_cast<size_t>(j)][static_cast<size_t>(ch)] + n, 0.0f);
                     nodes[static_cast<size_t>(j)].process(bandList[static_cast<size_t>(j)], presencePtr[static_cast<size_t>(j)],
-                                                          chunk, numChannels, n);
+                                                          deltaPtr[static_cast<size_t>(j)].data(), numChannels, n);
+                }
+            tree.combine(deltaList.data(), chunk, numChannels, n);
         }
         controlPhase = (controlPhase + n) % kControlInterval;
     }

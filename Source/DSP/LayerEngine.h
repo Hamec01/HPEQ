@@ -14,7 +14,7 @@ namespace hpeq::dsp
 //
 //   xE = PRE-EQ(x)
 //   no allocated edge:    y = xE                                       (tree not run: bit-exact)
-//   otherwise:            y = AP(xE) + sum_j presence_j * nodeMix_j * (chain_j(band_j) - band_j)
+//   otherwise:            y = AP(xE) + sum_j S_j( presence_j * nodeMix_j * (chain_j(band'_j) - band'_j) )
 //
 // AP(xE) and band_j come from the layer's CrossoverTree (see there). Node ranges glide; nodes that
 // start or stop have their edges born / parked at 1 Hz, so no structure change ever needs a
@@ -53,6 +53,9 @@ private:
 
     std::array<std::vector<float>, kMaxChannels> xeCopy, dry;
     std::array<std::array<std::vector<float>, kMaxChannels>, kMaxFxNodesPerLayer> bands;
+    std::array<std::array<std::vector<float>, kMaxChannels>, kMaxFxNodesPerLayer> deltas;
+    std::array<std::array<float*, kMaxChannels>, kMaxFxNodesPerLayer> deltaPtr {};
+    std::array<float* const*, kMaxFxNodesPerLayer> deltaList {};
     std::array<std::vector<float>, kMaxFxNodesPerLayer> presence;
     std::array<float*, kMaxChannels> dryPtr {};
     std::array<std::array<float*, kMaxChannels>, kMaxFxNodesPerLayer> bandPtr {};

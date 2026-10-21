@@ -15,16 +15,21 @@ constexpr double kOutputScale = 0.35;   // keeps the wet near the input level fo
 constexpr double kGainSmoothing = 0.05; // s, decay/damping changes
 constexpr double kSizeSmoothing = 0.20; // s, size changes glide the delay lengths
 
-float readInterpolated(const std::vector<float>& line, int writePos, double delay) noexcept
+// Delay-line read without integer division: one conditional wrap. Whole-sample delays (the settled
+// case) skip the interpolation entirely.
+inline float readDelay(const float* line, int size, int writePos, double delay) noexcept
 {
-    const int size = static_cast<int>(line.size());
-    double readPos = writePos - delay;
-    while (readPos < 0.0)
-        readPos += size;
-    const int i0 = static_cast<int>(readPos);
-    const int i1 = (i0 + 1) % size;
-    const double frac = readPos - i0;
-    return static_cast<float>(line[static_cast<size_t>(i0)] + frac * (line[static_cast<size_t>(i1)] - line[static_cast<size_t>(i0)]));
+    const int whole = static_cast<int>(delay);
+    const double frac = delay - whole;
+    int i0 = writePos - whole;
+    if (i0 < 0)
+        i0 += size;
+    if (frac == 0.0)
+        return line[i0];
+    int i1 = i0 - 1; // one sample further back
+    if (i1 < 0)
+        i1 += size;
+    return static_cast<float>(line[i0] + frac * (line[i1] - line[i0]));
 }
 } // namespace
 
@@ -116,16 +121,17 @@ void ReverbProcessor::process(const float* const* in, float* const* wet, int num
         const float inR = numChannels > 1 ? in[1][n] : inL;
         predelay[0][static_cast<size_t>(predelayPos)] = inL;
         predelay[1][static_cast<size_t>(predelayPos)] = inR;
-        const double pl = readInterpolated(predelay[0], predelayPos, predelaySamples);
-        const double pr = readInterpolated(predelay[1], predelayPos, predelaySamples);
-        predelayPos = (predelayPos + 1) % predelaySize;
+        const double pl = readDelay(predelay[0].data(), predelaySize, predelayPos, predelaySamples);
+        const double pr = readDelay(predelay[1].data(), predelaySize, predelayPos, predelaySamples);
+        if (++predelayPos == predelaySize)
+            predelayPos = 0;
 
         std::array<double, kLines> z {};
         double sum = 0.0, outL = 0.0, outR = 0.0;
         for (int i = 0; i < kLines; ++i)
         {
             const auto idx = static_cast<size_t>(i);
-            const double y = readInterpolated(lines[idx], writePos[idx], length[idx]);
+            const double y = readDelay(lines[idx].data(), static_cast<int>(lines[idx].size()), writePos[idx], length[idx]);
             absorption[idx] = gain[idx] * (1.0 - pole[idx]) * y + pole[idx] * absorption[idx];
             z[idx] = absorption[idx];
             sum += z[idx];
@@ -138,7 +144,8 @@ void ReverbProcessor::process(const float* const* in, float* const* wet, int num
             const auto idx = static_cast<size_t>(i);
             const double input = (i % 2 == 0 ? pl : pr) * kInSign[idx];
             lines[idx][static_cast<size_t>(writePos[idx])] = static_cast<float>(z[idx] - householder + input);
-            writePos[idx] = (writePos[idx] + 1) % static_cast<int>(lines[idx].size());
+            if (++writePos[idx] == static_cast<int>(lines[idx].size()))
+                writePos[idx] = 0;
         }
 
         outL *= kOutputScale;

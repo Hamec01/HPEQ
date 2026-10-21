@@ -109,7 +109,8 @@ add_executable(HPEQ_Lab
     ${HPEQ_HARNESS_SOURCES}
     Tests/Tools/LabMain.cpp
     Tests/Tools/LabM3.cpp
-    Tests/Tools/LabM4.cpp)
+    Tests/Tools/LabM4.cpp
+    Tests/Tools/LabBench.cpp)
 target_include_directories(HPEQ_Lab PRIVATE Tests)
 target_link_libraries(HPEQ_Lab PRIVATE HPEQ)
 

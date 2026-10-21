@@ -463,12 +463,20 @@ juce::var engineTiming(const LayerSnapshot& snapshot, int block = 512)
 
 int runM3Lab(const juce::File& out, const juce::String& commit); // LabM3.cpp
 int runM4Lab(const juce::File& out, const juce::String& commit); // LabM4.cpp
+int runBench(const juce::File& out, const juce::String& commit, int reps, int blocks, bool cold); // LabBench.cpp
 
 int main(int argc, char* argv[])
 {
     juce::StringArray args;
     for (int i = 1; i < argc; ++i)
         args.add(argv[i]);
+    if (args.contains("bench"))
+    {
+        const auto o = args.indexOf("--out"), c = args.indexOf("--commit"), r = args.indexOf("--reps"), b = args.indexOf("--blocks");
+        return runBench(juce::File::getCurrentWorkingDirectory().getChildFile(o >= 0 ? args[o + 1] : "bench.json"),
+                        c >= 0 ? args[c + 1] : juce::String("unknown"), r >= 0 ? args[r + 1].getIntValue() : 3,
+                        b >= 0 ? args[b + 1].getIntValue() : 2000, args.contains("--cold"));
+    }
     if (args.contains("m4"))
     {
         const auto o = args.indexOf("--out"), c = args.indexOf("--commit");

@@ -88,3 +88,10 @@ nodes' edges, the dry is the product of all edge all-passes; band/dry stays real
 the same phase-coherent H3 response, and edges are born and retired at 1 Hz (where an all-pass is
 numerically an identity) and glide, so no crossfade is ever needed (worst dip 0.52 dB). Overlap and
 edge crossing need no special handling. Evidence: `reports/M2_REPORT.md` §5.
+
+**Implementation note 2 (CPU pass, 2026-10-21):** the tree became O(N) (Horner recombination: a node
+processes its LR4 band carrying only the earlier nodes' edge all-passes, and its delta is all-passed by
+the later nodes'). The linear response is unchanged (engine vs offline H3 formula -142.7...-155.4 dB).
+For non-linear processors the detector now sees the band with a different all-pass phase than before;
+on drums the first node's peak gain reduction moved from 14.19 to 15.70 dB in the M4 scenario. The
+delta stays phase-coherent with the dry. Evidence: `reports/CPU_REPORT.md`.
