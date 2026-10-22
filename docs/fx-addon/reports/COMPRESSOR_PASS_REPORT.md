@@ -52,7 +52,7 @@ Overlay/Delta or resize); one-second grid lines.
 ```bash
 cmake --build --preset release                     # 0, no warnings
 build/Release/HPEQ_Tests.exe                       # 0 — 1074 passed, 0 failed
-build/Debug/HPEQ_Tests.exe                         # running at commit time; result in the next commit (before the HamloComp page: 1067/1067, 0 allocations)
+build/Debug/HPEQ_Tests.exe                         # 0 — 1074 passed, 0 failed (CRT hook: malloc + new, 0 audio-thread allocations)
 build/Release/HPEQ_Lab.exe ui --out …/compressor_pass/screenshots   # 0
 ```
 
