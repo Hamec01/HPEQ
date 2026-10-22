@@ -89,7 +89,7 @@ void SaturatorProcessor::prepare(double newSampleRate, int maxBlockSize)
     for (int i = 0; i < 2; ++i)
     {
         oversamplers[static_cast<size_t>(i)] = std::make_unique<OS>(kMaxChannels, static_cast<size_t>(i + 1), OS::filterHalfBandFIREquiripple, true, true);
-        oversamplers[static_cast<size_t>(i)]->initProcessing(static_cast<size_t>(maxBlockSize));
+        oversamplers[static_cast<size_t>(i)]->initProcessing(static_cast<size_t>(std::min(maxBlockSize, kOversamplingChunk)));
     }
     dcCoefficient = 1.0 - 2.0 * kPi * 10.0 / sampleRate;
     latencySamples(0); // build the latency table here, never on the audio thread
@@ -147,12 +147,16 @@ void SaturatorProcessor::process(float* const* channels, int numChannels, int nu
             shape(channels[ch], numSamples, g, bias, norm, curve);
     else
     {
-        juce::dsp::AudioBlock<float> block(channels, static_cast<size_t>(numChannels), static_cast<size_t>(numSamples));
         auto& sampler = *oversamplers[static_cast<size_t>(os - 1)];
-        auto up = sampler.processSamplesUp(block);
-        for (size_t ch = 0; ch < up.getNumChannels(); ++ch)
-            shape(up.getChannelPointer(ch), static_cast<int>(up.getNumSamples()), g, bias, norm, curve);
-        sampler.processSamplesDown(block);
+        for (int start = 0; start < numSamples; start += kOversamplingChunk)
+        {
+            const int n = std::min(kOversamplingChunk, numSamples - start);
+            juce::dsp::AudioBlock<float> block(channels, static_cast<size_t>(numChannels), static_cast<size_t>(start), static_cast<size_t>(n));
+            auto up = sampler.processSamplesUp(block);
+            for (size_t ch = 0; ch < up.getNumChannels(); ++ch)
+                shape(up.getChannelPointer(ch), static_cast<int>(up.getNumSamples()), g, bias, norm, curve);
+            sampler.processSamplesDown(block);
+        }
     }
 
     // 10 Hz DC blocker: y = x - x1 + R y1
@@ -259,20 +263,27 @@ void GateProcessor::process(float* const* channels, int numChannels, int numSamp
 }
 
 // ------------------------------------------------------------------------------------- Limiter
+int LimiterProcessor::maxLookaheadSamples(double sampleRate) noexcept
+{
+    return std::clamp(static_cast<int>(std::ceil(kMaxLookaheadMs * 1.0e-3 * sampleRate)) + 1, 2, kMaxLookahead);
+}
+
 int LimiterProcessor::lookaheadSamples(const FxSlotParams& p, double sampleRate) noexcept
 {
-    const double ms = std::clamp(static_cast<double>(p.values[slot::kLookaheadMs]), 0.1, 10.0);
-    return std::clamp(static_cast<int>(std::lround(ms * 1.0e-3 * sampleRate)), 1, kMaxLookahead);
+    const double ms = std::clamp(static_cast<double>(p.values[slot::kLookaheadMs]), 0.1, kMaxLookaheadMs);
+    return std::clamp(static_cast<int>(std::lround(ms * 1.0e-3 * sampleRate)), 1, maxLookaheadSamples(sampleRate));
 }
 
 void LimiterProcessor::prepare(double sampleRate)
 {
     sampleRate_ = sampleRate;
+    const int maxL = maxLookaheadSamples(sampleRate);
     for (auto& a : audio)
-        a.assign(kMaxLookahead + 1, 0.0f);
-    averaged.assign(kMaxLookahead + 1, 1.0);
-    dequeValue.assign(kMaxLookahead + 2, 1.0f);
-    dequeIndex.assign(kMaxLookahead + 2, 0);
+        a.assign(static_cast<size_t>(maxL + 1), 0.0f);
+    averaged.assign(static_cast<size_t>(maxL + 1), 1.0);
+    capacity = maxL + 2;
+    dequeValue.assign(static_cast<size_t>(capacity), 1.0f);
+    dequeIndex.assign(static_cast<size_t>(capacity), 0);
     lookahead = -1;
     reset();
 }
@@ -303,7 +314,6 @@ void LimiterProcessor::process(float* const* channels, int numChannels, int numS
     const float ceiling = std::pow(10.0f, std::clamp(p.values[slot::kCeilingDb], -60.0f, 0.0f) / 20.0f);
     const double releaseCoefficient = coefficientFor(std::max(1.0f, p.values[slot::kLimiterReleaseMs]), sampleRate_);
     const int ring = lookahead + 1;
-    const int capacity = kMaxLookahead + 2;
     float minGain = 1.0f;
 
     for (int i = 0; i < numSamples; ++i)

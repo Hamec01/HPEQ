@@ -1,6 +1,10 @@
 {
   "version": 6,
-  "cmakeMinimumRequired": { "major": 3, "minor": 22, "patch": 0 },
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
   "configurePresets": [
     {
       "name": "vs2026-x64",
@@ -12,14 +16,57 @@
         "HPEQ_JUCE_DIR": "$env{HPEQ_JUCE_DIR}",
         "HPEQ_HPDG_SOURCE_DIR": "$env{HPEQ_HPDG_SOURCE_DIR}"
       }
+    },
+    {
+      "name": "vs2026-x64-asan",
+      "displayName": "Visual Studio 2026 x64, AddressSanitizer (tests only)",
+      "inherits": "vs2026-x64",
+      "binaryDir": "${sourceDir}/build-asan",
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "/DWIN32 /D_WINDOWS /EHsc /fsanitize=address /Zi",
+        "CMAKE_C_FLAGS": "/DWIN32 /D_WINDOWS /fsanitize=address /Zi",
+        "CMAKE_EXE_LINKER_FLAGS": "/INCREMENTAL:NO /DEBUG",
+        "CMAKE_SHARED_LINKER_FLAGS": "/INCREMENTAL:NO /DEBUG",
+        "CMAKE_MODULE_LINKER_FLAGS": "/INCREMENTAL:NO /DEBUG"
+      }
     }
   ],
   "buildPresets": [
-    { "name": "release", "configurePreset": "vs2026-x64", "configuration": "Release" },
-    { "name": "debug", "configurePreset": "vs2026-x64", "configuration": "Debug" }
+    {
+      "name": "release",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Release"
+    },
+    {
+      "name": "debug",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "asan",
+      "configurePreset": "vs2026-x64-asan",
+      "configuration": "Release",
+      "targets": [
+        "HPEQ_Tests"
+      ]
+    }
   ],
   "testPresets": [
-    { "name": "release", "configurePreset": "vs2026-x64", "configuration": "Release", "output": { "outputOnFailure": true } },
-    { "name": "debug", "configurePreset": "vs2026-x64", "configuration": "Debug", "output": { "outputOnFailure": true } }
+    {
+      "name": "release",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "debug",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
   ]
 }

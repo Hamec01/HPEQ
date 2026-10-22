@@ -7,3 +7,4 @@ __pycache__/
 
 # Harness renders are reproducible from the command line; only the manifest/metrics are tracked.
 /docs/fx-addon/reports/**/*.wav
+/dist/

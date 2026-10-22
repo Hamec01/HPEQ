@@ -1,0 +1,17 @@
+HPEQ (beta) - frequency-layer FX, VST3, Windows x64
+
+Install
+  1. Close your DAW.
+  2. Copy the folder "HPEQ.vst3" to:
+       C:\Program Files\Common Files\VST3\
+  3. Start the DAW and rescan plugins (FL Studio: Options > Manage plugins > Find more plugins).
+  4. HPEQ appears as an effect (manufacturer HamloProd). Insert it on a mixer track.
+
+Uninstall
+  Delete C:\Program Files\Common Files\VST3\HPEQ.vst3
+
+Notes
+  - VST3 only, Windows 10/11 x64.
+  - The plugin is not code-signed yet; Windows may show a warning when you open the zip.
+  - The saved state is versioned (schema 1); a build refuses state versions it does not know instead of guessing.
+  - See RELEASE_NOTES.md for what works, what was measured and the known limitations.

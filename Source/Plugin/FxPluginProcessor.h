@@ -8,6 +8,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "Analysis/AudioCapture.h"
+#include "Analysis/LoudnessMeter.h"
 #include "Core/FxProjectState.h"
 #include "DSP/DelayLine.h"
 #include "DSP/ProjectEngine.h"
@@ -84,6 +85,10 @@ public:
     };
     // Levels of the last processed block (linear). Written by the audio thread, lock-free.
     MeterSnapshot getMeters() const noexcept;
+    // BS.1770-4 loudness (input and output) and output true peak, computed on the audio thread.
+    const LoudnessMeter& getInputLoudness() const noexcept { return inputLoudness; }
+    const LoudnessMeter& getOutputLoudness() const noexcept { return outputLoudness; }
+    void resetLoudness() noexcept { inputLoudness.requestReset(); outputLoudness.requestReset(); }
 
 private:
     static void measure(const juce::AudioBuffer<float>&, int numChannels, std::atomic<float>& peak, std::atomic<float>& rms) noexcept;
@@ -107,6 +112,7 @@ private:
     std::atomic<double> hostBpm { 120.0 }; // last tempo seen from the play head (Delay tail estimate)
     void updateLatencyAndTail(const FxProjectState&);
     AudioCapture capture;
+    LoudnessMeter inputLoudness, outputLoudness;
     juce::UndoManager undoManager;
     std::array<FxProjectState, 2> abStore;
     std::array<bool, 2> abUsed { true, false };

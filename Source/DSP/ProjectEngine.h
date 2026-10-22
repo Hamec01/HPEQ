@@ -50,8 +50,8 @@ ProjectSnapshot makeProjectSnapshot(const FxProjectState&);
 class ProjectEngine
 {
 public:
-    static constexpr int kMaxLayerLatency = FxNodeProcessor::kMaxNodeLatency;
-    static constexpr int kMaxLatency = kMaxLayerLatency * kNumLayers;
+    static int maxLayerLatency(double sampleRate) { return FxNodeProcessor::maxNodeLatency(sampleRate); }
+    static int maxLatency(double sampleRate) { return maxLayerLatency(sampleRate) * kNumLayers; }
 
     ProjectEngine();
     void prepare(double sampleRate, int maxBlockSize);
@@ -91,7 +91,7 @@ private:
 
     double sampleRate = 48000.0;
     int maxBlock = 0, rampSteps = 1;
-    int latency = 0;
+    int latency = 0, latencyCap = 1;
     bool freshStart = true; // first block after reset(): controls land on their targets at once
     SnapshotExchange<ProjectSnapshot> exchange;
     LayerRouting routing = LayerRouting::Parallel;

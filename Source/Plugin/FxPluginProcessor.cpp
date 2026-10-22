@@ -52,9 +52,11 @@ void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamp
     const int maxBlock = juce::jmax(1, maximumExpectedSamplesPerBlock);
     currentSampleRate.store(sampleRate, std::memory_order_relaxed);
     capture.reset();
+    inputLoudness.prepare(sampleRate, false);
+    outputLoudness.prepare(sampleRate, true);
     engine.prepare(sampleRate, maxBlock);
     dry.setSize(dsp::kMaxChannels, maxBlock);
-    dryAlign.prepare(dsp::ProjectEngine::kMaxLatency);
+    dryAlign.prepare(dsp::ProjectEngine::maxLatency(sampleRate));
     bypassRampSteps = dsp::stepsFor(dsp::kMixRampSeconds, sampleRate);
     wetAmount.reset(bypassParameter->get() ? 0.0 : 1.0);
     gain.reset(sampleRate, kGainRampSeconds);
@@ -110,6 +112,7 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
 
     const int channels = juce::jmin(numInputs, numOutputs, buffer.getNumChannels());
     measure(buffer, channels, inputPeak, inputRms);
+    inputLoudness.process(buffer.getArrayOfReadPointers(), channels, numSamples);
 
     const bool bypassed = bypassParameter->get();
     gain.setTargetValue(targetGain(outputGainDb->load(std::memory_order_relaxed), bypassed));
@@ -193,6 +196,7 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
     }
 
     measure(buffer, channels, outputPeak, outputRms);
+    outputLoudness.process(buffer.getArrayOfReadPointers(), channels, numSamples);
 }
 
 void FxPluginProcessor::editProject(const juce::String& actionName, const std::function<void(FxProjectState&)>& change)

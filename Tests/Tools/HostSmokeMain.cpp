@@ -3,6 +3,7 @@
 //
 //   HPEQ_HostSmoke --plugin <HPEQ.vst3> [--other <HPDG.vst3>] [--cycles 100] [--out <json>]
 
+#include <cstring>
 #include <iostream>
 
 #include <juce_audio_processors/juce_audio_processors.h>
@@ -67,6 +68,52 @@ juce::AudioBuffer<float> process(juce::AudioPluginInstance& plugin, const juce::
     }
     plugin.releaseResources();
     return audio;
+}
+
+// Renders with a repeating sequence of block sizes at `fs` (T11 fixtures).
+juce::AudioBuffer<float> processWith(juce::AudioPluginInstance& plugin, const juce::AudioBuffer<float>& input, double fs, const juce::Array<juce::var>& blocks)
+{
+    int maxBlock = 1;
+    for (const auto& b : blocks)
+        maxBlock = juce::jmax(maxBlock, static_cast<int>(b));
+    plugin.setPlayConfigDetails(2, 2, fs, maxBlock);
+    plugin.prepareToPlay(fs, maxBlock);
+    auto audio = input;
+    juce::MidiBuffer midi;
+    for (int start = 0, k = 0; start < audio.getNumSamples(); ++k)
+    {
+        const int n = juce::jmin(static_cast<int>(blocks[k % blocks.size()]), audio.getNumSamples() - start);
+        juce::AudioBuffer<float> view(audio.getArrayOfWritePointers(), 2, start, n);
+        plugin.processBlock(view, midi);
+        start += n;
+    }
+    plugin.releaseResources();
+    return audio;
+}
+
+// JUCE's VST3 host keeps a plugin's state as <VST3PluginState><IComponent>base64</IComponent>...: the
+// plugin's own getStateInformation bytes (plus optional JUCE private data appended by the wrapper).
+juce::MemoryBlock wrapForHost(const juce::MemoryBlock& pluginState)
+{
+    juce::XmlElement state("VST3PluginState");
+    state.createNewChildElement("IComponent")->addTextElement(pluginState.toBase64Encoding());
+    juce::MemoryBlock out;
+    juce::AudioProcessor::copyXmlToBinary(state, out);
+    return out;
+}
+
+juce::MemoryBlock componentState(const juce::MemoryBlock& hostState)
+{
+    juce::MemoryBlock mem;
+    if (auto xml = juce::AudioProcessor::getXmlFromBinary(hostState.getData(), static_cast<int>(hostState.getSize())))
+        if (auto* component = xml->getChildByName("IComponent"))
+            mem.fromBase64Encoding(component->getAllSubText());
+    return mem;
+}
+
+bool startsWith(const juce::MemoryBlock& data, const juce::MemoryBlock& prefix)
+{
+    return data.getSize() >= prefix.getSize() && std::memcmp(data.getData(), prefix.getData(), prefix.getSize()) == 0;
 }
 
 juce::AudioProcessorParameter* findParameter(juce::AudioPluginInstance& plugin, const juce::String& name)
@@ -195,6 +242,84 @@ int main(int argc, char* argv[])
         }
         check(created == cycles, "M1-C: " + juce::String(created) + "/" + juce::String(cycles) + " instance cycles", checks);
         check(editors == cycles, "M1-C: " + juce::String(editors) + "/" + juce::String(cycles) + " editor open/close on desktop", checks);
+    }
+
+    // T11: random full projects and the rate x block matrix from `HPEQ_Lab t11` fixtures.
+    if (const juce::File t11(argValue(args, "--t11")); t11.isDirectory())
+    {
+        const auto manifest = juce::JSON::parse(t11.getChildFile("manifest.json"));
+        if (manifest["items"].getArray() == nullptr)
+        {
+            check(false, "T11: manifest.json not readable in " + t11.getFullPathName(), checks);
+            writeJson(outFile, report.set("checks", checks));
+            return 1;
+        }
+        int states = 0, statesOk = 0, renders = 0, rendersOk = 0, reopened = 0, latencyOk = 0;
+        juce::StringArray failed;
+        for (const auto& item : *manifest["items"].getArray())
+        {
+            const juce::String name = item["name"];
+            const double fs = item["fs"];
+            if (args.contains("--verbose"))
+                std::cout << "  t11 " << name << std::endl;
+            juce::MemoryBlock state;
+            t11.getChildFile(name + ".state").loadFileAsData(state);
+            juce::String error;
+            auto plugin = formats.createPluginInstance(description, fs, 512, error);
+            if (plugin == nullptr)
+            {
+                failed.add(name + ": instantiate");
+                continue;
+            }
+            plugin->setPlayConfigDetails(2, 2, fs, 512);
+            plugin->prepareToPlay(fs, 512);
+            const auto wrapped = wrapForHost(state);
+            plugin->setStateInformation(wrapped.getData(), static_cast<int>(wrapped.getSize()));
+            juce::MemoryBlock back;
+            plugin->getStateInformation(back);
+            ++states;
+            const bool same = startsWith(componentState(back), state);
+            statesOk += same ? 1 : 0;
+            if (!same)
+            {
+                failed.add(name + ": state differs after load / save");
+                const auto component = componentState(back);
+                t11.getChildFile(name + ".state.back").replaceWithData(component.getData(), component.getSize());
+            }
+            const bool latencySame = plugin->getLatencySamples() == static_cast<int>(item["latency"]);
+            plugin->releaseResources(); // a host deactivates before changing the block size (processWith re-prepares)
+            latencyOk += latencySame ? 1 : 0;
+            if (!latencySame)
+                failed.add(name + ": latency " + juce::String(plugin->getLatencySamples()) + " vs " + item["latency"].toString());
+            if (static_cast<bool>(item["reference"]))
+            {
+                juce::AudioBuffer<float> fixtureInput, reference;
+                double rate = 0.0;
+                readWav(t11.getChildFile(name + ".in.wav"), fixtureInput, rate);
+                readWav(t11.getChildFile(name + ".ref.wav"), reference, rate);
+                const auto& blocks = *item["blocks"].getArray();
+                ++renders;
+                const auto out = processWith(*plugin, fixtureInput, fs, blocks);
+                const auto null = compareAligned(out, reference);
+                rendersOk += null.bitExact ? 1 : 0;
+                if (!null.bitExact)
+                    failed.add(name + ": render " + juce::String(null.errorDb, 1) + " dB");
+                // Re-open: a fresh instance from the saved state renders the same.
+                auto again = formats.createPluginInstance(description, fs, 512, error);
+                if (again != nullptr)
+                {
+                    again->setStateInformation(back.getData(), static_cast<int>(back.getSize()));
+                    reopened += compareAligned(processWith(*again, fixtureInput, fs, blocks), reference).bitExact ? 1 : 0;
+                }
+            }
+        }
+        for (const auto& f : failed)
+            std::cout << "  " << f << std::endl;
+        check(states > 0 && statesOk == states, "T11: " + juce::String(statesOk) + "/" + juce::String(states) + " project states identical after load + save via the binary", checks);
+        check(latencyOk == states, "T11: " + juce::String(latencyOk) + "/" + juce::String(states) + " reported latencies equal the in-process engine", checks);
+        check(renders > 0 && rendersOk == renders, "T11: " + juce::String(rendersOk) + "/" + juce::String(renders) + " renders bit-exact to in-process (incl. 6 rates x 6 blocks, variable blocks)", checks);
+        check(reopened == renders, "T11: " + juce::String(reopened) + "/" + juce::String(renders) + " re-opened instances render identically", checks);
+        report.set("t11_failed", juce::var(failed));
     }
 
     report.set("checks", checks).set("failures", failures);

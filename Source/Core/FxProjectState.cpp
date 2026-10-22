@@ -1,5 +1,7 @@
 #include "Core/FxProjectState.h"
 
+#include <charconv>
+
 #include <cmath>
 
 namespace hpeq
@@ -110,9 +112,47 @@ int nearestAllowedSlope(int slope)
     return best;
 }
 
+// Exact text -> double (std::from_chars rounds correctly). JUCE's own parser can be one ulp off, so a
+// load + save cycle drifted (found by the M8 T11 host test); JUCE writes enough digits (>= 17).
+double exactDouble(const juce::var& value)
+{
+    if (value.isString())
+    {
+        const auto text = value.toString().trim().toStdString();
+        double result = 0.0;
+        const auto* begin = text.data();
+        const auto* end = text.data() + text.size();
+        if (!text.empty() && text.front() == '+')
+            ++begin;
+        if (const auto r = std::from_chars(begin, end, result); r.ec == std::errc() && r.ptr == end)
+            return result;
+    }
+    return static_cast<double>(value);
+}
+
+// Shortest text that reads back as exactly the same double (std::to_chars). JUCE's writer uses 15-16
+// significant digits in some ranges, which is not enough for an exact save / load cycle.
+juce::var exactText(double value)
+{
+    char buffer[64];
+    const auto r = std::to_chars(buffer, buffer + sizeof(buffer), value);
+    return juce::String(buffer, static_cast<size_t>(r.ptr - buffer));
+}
+
+// A processor parameter as text: integers stay integers (so "2" is saved as "2" again), anything else
+// is an exactly parsed double.
+juce::var exactNumber(const juce::var& value)
+{
+    const auto text = value.toString().trim().toStdString();
+    long long whole = 0;
+    if (const auto r = std::from_chars(text.data(), text.data() + text.size(), whole); !text.empty() && r.ec == std::errc() && r.ptr == text.data() + text.size())
+        return juce::var(static_cast<juce::int64>(whole));
+    return juce::var(exactDouble(value));
+}
+
 double readDouble(const juce::ValueTree& tree, const juce::Identifier& key, double fallback)
 {
-    return tree.hasProperty(key) ? static_cast<double>(tree[key]) : fallback;
+    return tree.hasProperty(key) ? exactDouble(tree[key]) : fallback;
 }
 
 juce::ValueTree slotToTree(const FxSlotState& slot)
@@ -120,10 +160,10 @@ juce::ValueTree slotToTree(const FxSlotState& slot)
     juce::ValueTree tree(ids::slot);
     tree.setProperty(ids::type, fxNames.name(slot.type), nullptr);
     tree.setProperty(ids::enabled, slot.enabled, nullptr);
-    tree.setProperty(ids::mix, slot.mix, nullptr);
+    tree.setProperty(ids::mix, exactText(slot.mix), nullptr);
     juce::ValueTree params(ids::params);
     for (const auto& p : slot.parameters)
-        params.setProperty(p.name, p.value, nullptr);
+        params.setProperty(p.name, p.value.isDouble() ? exactText(static_cast<double>(p.value)) : p.value, nullptr);
     tree.appendChild(params, nullptr);
     return tree;
 }
@@ -138,7 +178,8 @@ FxSlotState slotFromTree(const juce::ValueTree& tree)
     for (int i = 0; i < params.getNumProperties(); ++i)
     {
         const auto key = params.getPropertyName(i);
-        slot.parameters.set(key, params[key]);
+        const auto& value = params[key];
+        slot.parameters.set(key, value.isString() ? exactNumber(value) : value);
     }
     return slot;
 }
@@ -231,10 +272,10 @@ juce::ValueTree toValueTree(const FxProjectState& project)
         lt.setProperty(ids::enabled, layer.enabled, nullptr);
         lt.setProperty(ids::mute, layer.mute, nullptr);
         lt.setProperty(ids::solo, layer.solo, nullptr);
-        lt.setProperty(ids::gainDb, layer.gainDb, nullptr);
-        lt.setProperty(ids::mix, layer.mix, nullptr);
-        lt.setProperty(ids::pan, layer.pan, nullptr);
-        lt.setProperty(ids::width, layer.width, nullptr);
+        lt.setProperty(ids::gainDb, exactText(layer.gainDb), nullptr);
+        lt.setProperty(ids::mix, exactText(layer.mix), nullptr);
+        lt.setProperty(ids::pan, exactText(layer.pan), nullptr);
+        lt.setProperty(ids::width, exactText(layer.width), nullptr);
         lt.setProperty(ids::channel, channelNames.name(layer.channel), nullptr);
 
         for (const auto& node : layer.eqNodes)
@@ -243,9 +284,9 @@ juce::ValueTree toValueTree(const FxProjectState& project)
             nt.setProperty(ids::id, static_cast<juce::int64>(node.id), nullptr);
             nt.setProperty(ids::enabled, node.enabled, nullptr);
             nt.setProperty(ids::shape, shapeNames.name(node.shape), nullptr);
-            nt.setProperty(ids::frequencyHz, node.frequencyHz, nullptr);
-            nt.setProperty(ids::gainDb, node.gainDb, nullptr);
-            nt.setProperty(ids::q, node.q, nullptr);
+            nt.setProperty(ids::frequencyHz, exactText(node.frequencyHz), nullptr);
+            nt.setProperty(ids::gainDb, exactText(node.gainDb), nullptr);
+            nt.setProperty(ids::q, exactText(node.q), nullptr);
             nt.setProperty(ids::slope, node.slopeDbPerOct, nullptr);
             nt.setProperty(ids::channel, channelNames.name(node.channel), nullptr);
             lt.appendChild(nt, nullptr);
@@ -257,9 +298,9 @@ juce::ValueTree toValueTree(const FxProjectState& project)
             nt.setProperty(ids::id, static_cast<juce::int64>(node.id), nullptr);
             nt.setProperty(ids::enabled, node.enabled, nullptr);
             nt.setProperty(ids::solo, node.solo, nullptr);
-            nt.setProperty(ids::lowHz, node.lowHz, nullptr);
-            nt.setProperty(ids::highHz, node.highHz, nullptr);
-            nt.setProperty(ids::mix, node.mix, nullptr);
+            nt.setProperty(ids::lowHz, exactText(node.lowHz), nullptr);
+            nt.setProperty(ids::highHz, exactText(node.highHz), nullptr);
+            nt.setProperty(ids::mix, exactText(node.mix), nullptr);
             nt.setProperty(ids::channel, channelNames.name(node.channel), nullptr);
             for (const auto& slot : node.chain)
                 nt.appendChild(slotToTree(slot), nullptr);

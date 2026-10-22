@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HPEQ VERSION 0.0.1 LANGUAGES C CXX)
+project(HPEQ VERSION 0.1.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -56,6 +56,7 @@ target_compile_definitions(HPEQ
 target_sources(HPEQ
     PRIVATE
         Source/Analysis/SpectrumAnalyzer.cpp
+        Source/Analysis/LoudnessMeter.cpp
         Source/Core/FxProjectState.cpp
         Source/DSP/Biquad.cpp
         Source/DSP/FxNodeProcessor.cpp
@@ -109,8 +110,10 @@ add_executable(HPEQ_Tests
     Tests/Unit/DynamicsReverbTests.cpp
     Tests/Unit/M6Tests.cpp
     Tests/Unit/M7Tests.cpp
+    Tests/Unit/M8Tests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
+target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")
 target_link_libraries(HPEQ_Tests PRIVATE HPEQ)
 add_test(NAME HPEQ_Tests COMMAND HPEQ_Tests)
 
@@ -122,6 +125,7 @@ add_executable(HPEQ_Lab
     Tests/Tools/LabM4.cpp
     Tests/Tools/LabM6.cpp
     Tests/Tools/LabM7.cpp
+    Tests/Tools/LabT11.cpp
     Tests/Tools/LabBench.cpp
     Tests/Tools/LabUi.cpp)
 target_include_directories(HPEQ_Lab PRIVATE Tests)

@@ -14,6 +14,7 @@
 #include <iostream>
 #include <memory>
 
+#include "DSP/ProcessorsM6.h"
 #include "DSP/ProjectEngine.h"
 #include "Harness/AudioFileIO.h"
 #include "Harness/AudioMetrics.h"
@@ -32,6 +33,14 @@ double workingSetMb()
     PROCESS_MEMORY_COUNTERS counters {};
     GetProcessMemoryInfo(GetCurrentProcess(), &counters, sizeof(counters));
     return static_cast<double>(counters.WorkingSetSize) / (1024.0 * 1024.0);
+}
+
+// Committed private memory (independent of which pages happen to be resident).
+double privateMb()
+{
+    PROCESS_MEMORY_COUNTERS_EX counters {};
+    GetProcessMemoryInfo(GetCurrentProcess(), reinterpret_cast<PROCESS_MEMORY_COUNTERS*>(&counters), sizeof(counters));
+    return static_cast<double>(counters.PrivateUsage) / (1024.0 * 1024.0);
 }
 
 double peakWorkingSetMb()
@@ -107,6 +116,36 @@ juce::var timing(const FxProjectState& project, double fs, double seconds = 4.0)
 
 int runM7Lab(const juce::File& out, const juce::String& commit)
 {
+    // HPEQ_MEM_PART=<saturator|limiter|node|layer>: memory of 100 prepared parts at 48 kHz, block 512.
+    if (const auto part = juce::SystemStats::getEnvironmentVariable("HPEQ_MEM_PART", {}); part.isNotEmpty())
+    {
+        const double before = privateMb();
+        std::vector<std::unique_ptr<SaturatorProcessor>> sats;
+        std::vector<std::unique_ptr<LimiterProcessor>> limiters;
+        std::vector<std::unique_ptr<FxNodeProcessor>> nodes;
+        std::vector<std::unique_ptr<LayerEngine>> layers;
+        LayerPools pools;
+        for (int i = 0; i < 100; ++i)
+        {
+            if (part == "saturator") { sats.push_back(std::make_unique<SaturatorProcessor>()); sats.back()->prepare(48000.0, 512); }
+            if (part == "limiter") { limiters.push_back(std::make_unique<LimiterProcessor>()); limiters.back()->prepare(48000.0); }
+            if (part == "node") { nodes.push_back(std::make_unique<FxNodeProcessor>()); nodes.back()->prepare(48000.0, 512, &pools); }
+            if (part == "layer" && i < 10) { layers.push_back(std::make_unique<LayerEngine>()); layers.back()->prepare(48000.0, 512, &pools); }
+        }
+        std::cout << "private_mb_per_item " << part << " " << (privateMb() - before) / (part == "layer" ? 10.0 : 100.0) << std::endl;
+        return 0;
+    }
+    // HPEQ_MEM_FS=<rate>: only the memory of one prepared engine, in a fresh process (M8 method).
+    if (const auto fsText = juce::SystemStats::getEnvironmentVariable("HPEQ_MEM_FS", {}); fsText.isNotEmpty())
+    {
+        const double fs = fsText.getDoubleValue();
+        const double before = privateMb();
+        auto e = std::make_unique<ProjectEngine>();
+        e->prepare(fs, 512);
+        const double after = privateMb();
+        std::cout << "private_mb " << fs << " " << (after - before) << std::endl;
+        return 0;
+    }
     out.createDirectory();
     const std::vector<FxSlotState> one { slotState(FxType::Compressor, { { "thresholdDb", -30.0 } }) };
     const std::vector<FxSlotState> heavy { slotState(FxType::Compressor, { { "thresholdDb", -30.0 } }), slotState(FxType::Saturator, { { "oversampling", 1.0 } }),

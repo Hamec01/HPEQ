@@ -465,6 +465,7 @@ int runM3Lab(const juce::File& out, const juce::String& commit); // LabM3.cpp
 int runM4Lab(const juce::File& out, const juce::String& commit); // LabM4.cpp
 int runM6Lab(const juce::File& out, const juce::String& commit); // LabM6.cpp
 int runM7Lab(const juce::File& out, const juce::String& commit); // LabM7.cpp
+int runT11Fixtures(const juce::File& out, int count); // LabT11.cpp
 int runUiSnapshots(const juce::File& out); // LabUi.cpp
 int runBench(const juce::File& out, const juce::String& commit, int reps, int blocks, bool cold); // LabBench.cpp
 
@@ -484,6 +485,12 @@ int main(int argc, char* argv[])
         return runBench(juce::File::getCurrentWorkingDirectory().getChildFile(o >= 0 ? args[o + 1] : "bench.json"),
                         c >= 0 ? args[c + 1] : juce::String("unknown"), r >= 0 ? args[r + 1].getIntValue() : 3,
                         b >= 0 ? args[b + 1].getIntValue() : 2000, args.contains("--cold"));
+    }
+    if (args.contains("t11"))
+    {
+        const auto o = args.indexOf("--out"), n = args.indexOf("--count");
+        return runT11Fixtures(juce::File::getCurrentWorkingDirectory().getChildFile(o >= 0 ? args[o + 1] : "hpeq_t11"),
+                              n >= 0 ? args[n + 1].getIntValue() : 200);
     }
     if (args.contains("m7"))
     {

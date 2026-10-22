@@ -60,6 +60,7 @@ private:
     std::unique_ptr<ui::LayerControls> layerControls;
 
     juce::Label title, subtitle, unavailable;
+    juce::TextButton loudnessReset { "Reset" };
     juce::TextButton abA { "A" }, abB { "B" }, copyAB { "A>B" }, undo { "Undo" }, redo { "Redo" };
     juce::TextButton waveOverlay { "Overlay" }, waveDelta { "Delta" }, freeze { "Freeze" };
     juce::TextButton tabSpectrum { "Spectrum" }, tabDifference { "Difference" };

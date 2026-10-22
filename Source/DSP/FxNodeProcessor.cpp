@@ -17,12 +17,17 @@ int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
     return 0;
 }
 
+int FxNodeProcessor::maxSlotLatency(double sampleRate)
+{
+    return std::max(LimiterProcessor::maxLookaheadSamples(sampleRate), SaturatorProcessor::latencySamples(2));
+}
+
 int FxNodeProcessor::nodeLatencyFor(const FxNodeParams& p, double sampleRate)
 {
     int total = 0;
     for (int k = 0; k < p.numSlots; ++k)
         total += slotLatency(p.slots[static_cast<size_t>(k)], sampleRate);
-    return std::min(total, kMaxNodeLatency);
+    return std::min(total, maxNodeLatency(sampleRate));
 }
 
 void FxNodeProcessor::prepare(double newSampleRate, int maxBlockSize, LayerPools* layerPools)
@@ -34,10 +39,12 @@ void FxNodeProcessor::prepare(double newSampleRate, int maxBlockSize, LayerPools
     for (auto* group : { &chain, &work, &bandWork, &gated, &wet, &aligned, &bandDelayed })
         for (auto& channel : *group)
             channel.assign(static_cast<size_t>(maxBlockSize), 0.0f);
-    bandAlign.prepare(kMaxNodeLatency);
+    slotLatencyCap = maxSlotLatency(sampleRate);
+    nodeLatencyCap = maxNodeLatency(sampleRate);
+    bandAlign.prepare(nodeLatencyCap);
     for (auto& slot : slots)
     {
-        slot.align.prepare(kMaxSlotLatency);
+        slot.align.prepare(slotLatencyCap);
         slot.gain.prepare(sampleRate);
         slot.compressor.prepare(sampleRate);
         slot.saturator.prepare(sampleRate, maxBlockSize);
@@ -151,10 +158,10 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
     {
         auto& slot = slots[static_cast<size_t>(k)];
         slot.inChain = k < p.numSlots;
-        slot.latency = slot.inChain ? std::min(slotLatency(p.slots[static_cast<size_t>(k)], sampleRate), kMaxSlotLatency) : 0;
+        slot.latency = slot.inChain ? std::min(slotLatency(p.slots[static_cast<size_t>(k)], sampleRate), slotLatencyCap) : 0;
         nodeLatency += slot.latency;
     }
-    nodeLatency = std::min(nodeLatency, kMaxNodeLatency);
+    nodeLatency = std::min(nodeLatency, nodeLatencyCap);
 
     if (!running)
         return;

@@ -30,6 +30,9 @@ public:
     // Integer latency at the base rate for oversampling index 0 (1x) / 1 (2x) / 2 (4x). The first call
     // builds the table (allocates): it is made from prepare() / the message thread.
     static int latencySamples(int oversamplingIndex);
+    // Oversampled processing runs in sub-blocks of this size, so the oversampler buffers stay small
+    // (M8: 49 KB -> about 1/8 per slot); the FIR stages stream, so the output does not change.
+    static constexpr int kOversamplingChunk = 64;
 
 private:
     void shape(float* data, int n, float g, float bias, float norm, int curve) noexcept;
@@ -98,6 +101,9 @@ class LimiterProcessor
 {
 public:
     static constexpr int kMaxLookahead = 2048;
+    static constexpr double kMaxLookaheadMs = 10.0;
+    // Buffer size for this rate: 10 ms (+1), at most kMaxLookahead (M8: memory follows the rate).
+    static int maxLookaheadSamples(double sampleRate) noexcept;
 
     void prepare(double sampleRate); // allocates the look-ahead buffers
     void reset() noexcept;
@@ -114,7 +120,7 @@ private:
     std::vector<double> averaged; // the running sum adds and removes exactly these values (no drift)
     std::vector<float> dequeValue;
     std::vector<long long> dequeIndex;
-    int dequeHead = 0, dequeTail = 0;
+    int dequeHead = 0, dequeTail = 0, capacity = 0;
     long long counter = 0;
     int writePos = 0;
     double released = 1.0, runningSum = 0.0;

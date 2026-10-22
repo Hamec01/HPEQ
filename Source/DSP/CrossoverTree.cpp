@@ -159,6 +159,25 @@ void CrossoverTree::process(const float* const* in, int numChannels, int numSamp
                     f.advance();
         }
 
+        if (numChannels == 2)
+        {
+            // Stereo: both channels through each section at once (bit-identical to the scalar path).
+            __m128d prefix = _mm_set_pd(in[1][i], in[0][i]);
+            for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
+            {
+                auto& e = edges[static_cast<size_t>(j)];
+                if (!e.allocated)
+                    continue;
+                __m128d b = e.highPass[1].processStereo(e.highPass[0].processStereo(prefix));
+                b = e.lowPass[1].processStereo(e.lowPass[0].processStereo(b));
+                bands[j][0][i] = static_cast<float>(_mm_cvtsd_f64(b));
+                bands[j][1][i] = static_cast<float>(_mm_cvtsd_f64(_mm_unpackhi_pd(b, b)));
+                prefix = e.prefixAllPass[1].processStereo(e.prefixAllPass[0].processStereo(prefix));
+            }
+            dry[0][i] = static_cast<float>(_mm_cvtsd_f64(prefix));
+            dry[1][i] = static_cast<float>(_mm_cvtsd_f64(_mm_unpackhi_pd(prefix, prefix)));
+            continue;
+        }
         for (int ch = 0; ch < numChannels; ++ch)
         {
             double prefix = in[ch][i];
@@ -198,6 +217,24 @@ void CrossoverTree::combine(const float* const* const* deltas, float* const* out
                 f.advance();
         }
 
+        if (numChannels == 2)
+        {
+            __m128d acc = _mm_setzero_pd();
+            bool started = false;
+            for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
+            {
+                auto& e = edges[static_cast<size_t>(j)];
+                if (!e.allocated)
+                    continue;
+                if (started)
+                    acc = e.hornerAllPass[1].processStereo(e.hornerAllPass[0].processStereo(acc));
+                acc = _mm_add_pd(acc, _mm_set_pd(deltas[j][1][i], deltas[j][0][i]));
+                started = true;
+            }
+            out[0][i] += static_cast<float>(_mm_cvtsd_f64(acc));
+            out[1][i] += static_cast<float>(_mm_cvtsd_f64(_mm_unpackhi_pd(acc, acc)));
+            continue;
+        }
         for (int ch = 0; ch < numChannels; ++ch)
         {
             double acc = 0.0;

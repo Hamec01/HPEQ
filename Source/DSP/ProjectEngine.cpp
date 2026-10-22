@@ -65,10 +65,11 @@ void ProjectEngine::prepare(double newSampleRate, int maxBlockSize)
     for (auto& layer : layers)
     {
         layer.engine->prepare(sampleRate, maxBlock, pools.get());
-        layer.outAlign.prepare(kMaxLayerLatency);
-        layer.restAlign.prepare(kMaxLayerLatency);
+        layer.outAlign.prepare(maxLayerLatency(sampleRate));
+        layer.restAlign.prepare(maxLayerLatency(sampleRate));
     }
-    inputAlign.prepare(kMaxLayerLatency);
+    inputAlign.prepare(maxLayerLatency(sampleRate));
+    latencyCap = maxLatency(sampleRate);
     for (auto* group : { &dryAligned, &work, &current, &component, &rest })
         for (auto& channel : *group)
             channel.assign(static_cast<size_t>(maxBlock), 0.0f);
@@ -277,7 +278,7 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
         sum += lj[j];
         max = std::max(max, lj[j]);
     }
-    latency = routing == LayerRouting::Serial ? std::min(sum, kMaxLatency) : max;
+    latency = routing == LayerRouting::Serial ? std::min(sum, latencyCap) : max;
     freshStart = false;
 
     for (int start = 0; start < numSamples; start += maxBlock)

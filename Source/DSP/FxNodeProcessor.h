@@ -53,8 +53,9 @@ struct LayerPools
 class FxNodeProcessor
 {
 public:
-    static constexpr int kMaxSlotLatency = LimiterProcessor::kMaxLookahead;
-    static constexpr int kMaxNodeLatency = kMaxSlotLatency * kMaxFxPerNode;
+    // Alignment capacities for a sample rate (largest slot: 10 ms look-ahead or 4x oversampling).
+    static int maxSlotLatency(double sampleRate);
+    static int maxNodeLatency(double sampleRate) { return maxSlotLatency(sampleRate) * kMaxFxPerNode; }
 
     void prepare(double sampleRate, int maxBlockSize, LayerPools* pools);
     void reset() noexcept;
@@ -111,6 +112,7 @@ private:
     double lowHz = 250.0, highHz = 700.0; // clamped to [1 Hz, 0.45 fs], low <= high
     float targetMix = 1.0f;
     int nodeLatency = 0;
+    int slotLatencyCap = 1, nodeLatencyCap = 1;
     // Channel mode: Stereo / Linked Stereo (compressor detector linked), Dual Mono (unlinked),
     // Left / Right / Mid / Side (the chain runs on that component only; its delta is routed back).
     ChannelMode mode = ChannelMode::Stereo, pendingMode = ChannelMode::Stereo;

@@ -83,7 +83,7 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     subtitle.setText("BETA  -  frequency-layer FX  (PRE-EQ > FX regions)", juce::dontSendNotification);
     subtitle.setColour(juce::Label::textColourId, colours::accent);
     subtitle.setFont(juce::FontOptions(11.0f));
-    unavailable.setText("True peak, LUFS: not yet (M8)", juce::dontSendNotification);
+    unavailable.setTooltip("Output loudness (ITU-R BS.1770-4): momentary / short-term / integrated LUFS, and true peak (dBTP, max since reset). In: input integrated LUFS.");
     unavailable.setColour(juce::Label::textColourId, colours::dim);
     unavailable.setJustificationType(juce::Justification::centredRight);
     unavailable.setFont(juce::FontOptions(11.0f));
@@ -96,6 +96,9 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     abA.onClick = [this] { processor.selectAB(0); updateHeader(); selectionChanged(); };
     abB.onClick = [this] { processor.selectAB(1); updateHeader(); selectionChanged(); };
     copyAB.onClick = [this] { processor.copyToOtherAB(); };
+    loudnessReset.setTooltip("Reset integrated loudness and true-peak hold");
+    loudnessReset.onClick = [this] { processor.resetLoudness(); };
+    addAndMakeVisible(loudnessReset);
     undo.onClick = [this] { processor.getUndoManager().undo(); };
     redo.onClick = [this] { processor.getUndoManager().redo(); };
     waveOverlay.onClick = [this] { waveform->mode = WaveformPanel::Mode::Overlay; updateHeader(); };
@@ -238,6 +241,14 @@ void FxPluginEditor::showDifference(bool difference)
 void FxPluginEditor::timerCallback()
 {
     analysis->update();
+    {
+        const auto& out = processor.getOutputLoudness();
+        const auto value = [](double v) { return v <= LoudnessMeter::kSilence + 1.0 ? juce::String("-inf") : juce::String(v, 1); };
+        unavailable.setText("M " + value(out.momentaryLufs()) + "   S " + value(out.shortTermLufs()) + "   I " + value(out.integratedLufs())
+                                + " LUFS    TP " + value(out.truePeakDbtp()) + " dBTP    (in I " + value(processor.getInputLoudness().integratedLufs()) + ")",
+                            juce::dontSendNotification);
+        unavailable.setColour(juce::Label::textColourId, out.truePeakDbtp() > 0.0 ? colours::danger : colours::dim);
+    }
     const auto meters = processor.getMeters();
     inputMeter->setLevels(meters.inputPeak, meters.inputRms);
     outputMeter->setLevels(meters.outputPeak, meters.outputRms);
@@ -264,6 +275,7 @@ void FxPluginEditor::resized()
     header.removeFromLeft(12);
     undo.setBounds(header.removeFromLeft(56).reduced(0, 6));
     redo.setBounds(header.removeFromLeft(56).reduced(2, 6));
+    loudnessReset.setBounds(header.removeFromRight(56).reduced(2, 8));
     unavailable.setBounds(header);
     area.removeFromTop(6);
 

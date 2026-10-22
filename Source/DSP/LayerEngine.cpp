@@ -49,9 +49,9 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize, LayerPools* sh
         ownPools->prepare(sampleRate);
         pools = ownPools.get();
     }
-    dryAlign.prepare(FxNodeProcessor::kMaxNodeLatency);
+    dryAlign.prepare(FxNodeProcessor::maxNodeLatency(sampleRate));
     for (auto& d : deltaAlign)
-        d.prepare(FxNodeProcessor::kMaxNodeLatency);
+        d.prepare(FxNodeProcessor::maxNodeLatency(sampleRate));
     for (auto& node : nodes)
         node.prepare(sampleRate, maxBlock, pools);
     tree.prepare(sampleRate, maxBlock);

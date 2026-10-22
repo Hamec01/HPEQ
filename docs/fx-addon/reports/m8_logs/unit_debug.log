@@ -1,0 +1,380 @@
+Random seed: 0x7460fbe
+-----------------------------------------------------------------
+Starting tests in: Harness / compareAligned detects a one-ulp change...
+Completed tests in Harness / compareAligned detects a one-ulp change
+-----------------------------------------------------------------
+Starting tests in: Harness / fixture set is complete and deterministic...
+Completed tests in Harness / fixture set is complete and deterministic
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / identity: audio insert effect, distinct from HPDG...
+Completed tests in Plugin contract (M1) / identity: audio insert effect, distinct from HPDG
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / bus layouts: mono->mono and stereo->stereo only...
+Completed tests in Plugin contract (M1) / bus layouts: mono->mono and stereo->stereo only
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / M1-A: default state is bit-exact pass-through at every rate, block size, mono/stereo...
+  unity cases bit-exact: 72/72
+Completed tests in Plugin contract (M1) / M1-A: default state is bit-exact pass-through at every rate, block size, mono/stereo
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / bypass is bit-exact even with output gain set...
+Completed tests in Plugin contract (M1) / bypass is bit-exact even with output gain set
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / output gain: -6 dB settles exactly, ramp is smooth, no allocations...
+  settled error 0.00000024 dB, max ramp step 0.01250 dB
+Completed tests in Plugin contract (M1) / output gain: -6 dB settles exactly, ramp is smooth, no allocations
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / blocks larger than prepared and empty blocks are handled...
+Completed tests in Plugin contract (M1) / blocks larger than prepared and empty blocks are handled
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / T04 (M1 scope): 100k random parameter mutations, random blocks 1..2048...
+Completed tests in Plugin contract (M1) / T04 (M1 scope): 100k random parameter mutations, random blocks 1..2048
+-----------------------------------------------------------------
+Starting tests in: Plugin contract (M1) / M1-C (in-process): 100 editor open/close cycles while audio runs...
+Completed tests in Plugin contract (M1) / M1-C (in-process): 100 editor open/close cycles while audio runs
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / project tree round trip is lossless...
+Completed tests in State schema v1 / project tree round trip is lossless
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / plugin state: parameters, project and sound survive save/restore...
+Completed tests in State schema v1 / plugin state: parameters, project and sound survive save/restore
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / unknown schema versions and garbage are rejected without touching state...
+Completed tests in State schema v1 / unknown schema versions and garbage are rejected without touching state
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / sanitize enforces limits and repairs invalid values...
+Completed tests in State schema v1 / sanitize enforces limits and repairs invalid values
+-----------------------------------------------------------------
+Starting tests in: State schema v1 / all ten layers exist with stable indices...
+Completed tests in State schema v1 / all ten layers exist with stable indices
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / T01: 'FX off' is bit-exact; a passive running node equals the documented all-pass result...
+  passive running node vs AP reference, worst: -196.2 dB
+Completed tests in DSP M2 / T01: 'FX off' is bit-exact; a passive running node equals the documented all-pass result
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / T02: 2-8 overlapping nodes - disabled: bit-exact PRE-EQ; mix 0 / bypassed: AP(PRE-EQ)...
+  overlapping passive nodes vs AP reference, worst: -127.5 dB; RMS vs AP reference 0.0000 dB; windowed RMS vs PRE-EQ output 0.537 dB
+Completed tests in DSP M2 / T02: 2-8 overlapping nodes - disabled: bit-exact PRE-EQ; mix 0 / bypassed: AP(PRE-EQ)
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / delta math: y = AP_hi(AP_lo(x)) + (g - 1) * LP4_hi(HP4_lo(x)), independent reference...
+  engine vs independent H3 reference: -147.0 dB
+Completed tests in DSP M2 / delta math: y = AP_hi(AP_lo(x)) + (g - 1) * LP4_hi(HP4_lo(x)), independent reference
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / MIX-0: after mixing a running compressor out, output equals the passive-node render exactly...
+Completed tests in DSP M2 / MIX-0: after mixing a running compressor out, output equals the passive-node render exactly
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / FX off again: disabling the last node returns to the bit-exact PRE-EQ output...
+Completed tests in DSP M2 / FX off again: disabling the last node returns to the bit-exact PRE-EQ output
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / topology changes (first node on, second node added, edge order change, all off) are smooth...
+  topology changes: HF > 5 kHz -93.9 dB (floor -114.3 dB), worst dip 0.55 dB
+Completed tests in DSP M2 / topology changes (first node on, second node added, edge order change, all off) are smooth
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / D2 chain: order, bypass of a middle slot, two gains compose...
+Completed tests in DSP M2 / D2 chain: order, bypass of a middle slot, two gains compose
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / T10: identical render for block sizes 1, 32, 127, 256, 1024...
+Completed tests in DSP M2 / T10: identical render for block sizes 1, 32, 127, 256, 1024
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / T04: 100k random mutations, random blocks 1..2048, no NaN/Inf, bounded, no allocations...
+  20000 snapshots, 10000 blocks, worst peak 11.2 dBFS
+Completed tests in DSP M2 / T04: 100k random mutations, random blocks 1..2048, no NaN/Inf, bounded, no allocations
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / range move during playback is smooth (HF products < -60 dB)...
+  range jump 250-700 -> 800-2000 Hz: HF > 5 kHz at -114.0 dB (metric floor -114.3 dB)
+Completed tests in DSP M2 / range move during playback is smooth (HF products < -60 dB)
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / PRE-EQ automation vs HPDG baseline (-95.0 dB HF products, 8th-order metric)...
+  HPEQ PRE-EQ sweep: -131.6 dB (HPDG pattern: -95.0 dB)
+Completed tests in DSP M2 / PRE-EQ automation vs HPDG baseline (-95.0 dB HF products, 8th-order metric)
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / compressor: static law and time constants as documented...
+Completed tests in DSP M2 / compressor: static law and time constants as documented
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / decision B: PRE-EQ cut reaches the compressor detector (80 Hz, bell -18 dB)...
+  compressor GR without PRE-EQ 14.32 dB, with -18 dB bell 1.25 dB
+Completed tests in DSP M2 / decision B: PRE-EQ cut reaches the compressor detector (80 Hz, bell -18 dB)
+-----------------------------------------------------------------
+Starting tests in: DSP M2 / plugin: bypass with active processing settles to the exact dry signal...
+Completed tests in DSP M2 / plugin: bypass with active processing settles to the exact dry signal
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / SVF designs equal the RBJ cookbook (complex response, 2nd-order shapes)...
+  SVF vs RBJ, worst complex difference: 1.1363e-10
+Completed tests in PRE-EQ M3 / SVF designs equal the RBJ cookbook (complex response, 2nd-order shapes)
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / Butterworth cuts: section count, -3 dB at fc, 96 dB/oct = 16th order...
+  96 dB/oct low cut, 1 octave below 1 kHz: -96.48 dB
+Completed tests in PRE-EQ M3 / Butterworth cuts: section count, -3 dB at fc, 96 dB/oct = 16th order
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / T03: measured response = analytic response of the used coefficients (grid)...
+  460 configurations: worst |measured - analytic| 0.0032 dB (>= -60 dB), 0.315 dB (-60..-100 dB); worst at shape 4 slope 18 fc 1000 fs 48000 at 8797.49 Hz: analytic -59.75 measured -59.75
+Completed tests in PRE-EQ M3 / T03: measured response = analytic response of the used coefficients (grid)
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / T03: asymptotic slopes within +-6 dB/oct of 6.02 N (fit where analytic is -30..-100 dB)...
+  fitted dB/oct: LC6=6.01 LC12=12.04 LC18=18.06 LC24=24.08 LC36=36.13 LC48=48.19 LC72=72.30 LC96=96.42 HC6=7.59 HC12=12.92 HC18=18.59 HC24=24.25 HC36=36.18 HC48=48.20 HC72=72.29 HC96=96.37 
+Completed tests in PRE-EQ M3 / T03: asymptotic slopes within +-6 dB/oct of 6.02 N (fit where analytic is -30..-100 dB)
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / near Nyquist: cuts and bells at/above 0.45 fs stay finite and match the clamped design...
+Completed tests in PRE-EQ M3 / near Nyquist: cuts and bells at/above 0.45 fs stay finite and match the clamped design
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / Tilt: +6 dB tilts the response from -3 dB (lows) to +3 dB (highs)...
+  tilt +6 dB: 20 Hz -3.00, 1 kHz 0.000, 20 kHz 3.00 dB
+Completed tests in PRE-EQ M3 / Tilt: +6 dB tilts the response from -3 dB (lows) to +3 dB (highs)
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / T05: PRE-EQ channel modes (Left / Right / Mid / Side), exact where they must be...
+  Mid mode vs independent M/S reference: -144.2 dB
+Completed tests in PRE-EQ M3 / T05: PRE-EQ channel modes (Left / Right / Mid / Side), exact where they must be
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / T05: FX node channel modes route the delta to L / R / M / S only...
+Completed tests in PRE-EQ M3 / T05: FX node channel modes route the delta to L / R / M / S only
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / T05: Dual Mono compressor keeps channels independent, Linked does not...
+  quiet right channel: passive -43.02, dual mono -43.02, linked -62.95 dBFS
+Completed tests in PRE-EQ M3 / T05: Dual Mono compressor keeps channels independent, Linked does not
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / B-ORDER: Low Cut 200 Hz (24 dB/oct) before a 100-250 Hz compressor; 80 Hz input...
+  compressor 100-250 Hz on 80 Hz: GR 9.22 dB without, 0.07 dB behind Low Cut 200 Hz / 24
+Completed tests in PRE-EQ M3 / B-ORDER: Low Cut 200 Hz (24 dB/oct) before a 100-250 Hz compressor; 80 Hz input
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / transitions: enabling/disabling every shape, slope and mode changes are smooth...
+  worst dip 2.81 dB, worst HF -90.2 dB
+    LowCut 200/24, slope -> 96: dip 2.81 dB, HF -95.9 dB
+    HighCut 5k/24, slope -> 12: dip 0.28 dB, HF -103.7 dB
+    Bell 1k +6, mode -> Mid: dip 0.01 dB, HF -90.2 dB
+    Notch 3k, -> Bell 3k -6: dip 0.00 dB, HF -108.6 dB
+    BandPass 1k, Q 1 -> 0.5: dip 0.01 dB, HF -108.5 dB
+    AllPass 1k, -> 2k: dip 0.73 dB, HF -107.6 dB
+    Tilt +6, -> -6: dip 0.01 dB, HF -98.6 dB
+    LowShelf 300 +6, -> HighShelf 3k -6: dip 0.86 dB, HF -104.4 dB
+Completed tests in PRE-EQ M3 / transitions: enabling/disabling every shape, slope and mode changes are smooth
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / T10 with the full EQ: identical render for block sizes 1, 32, 127, 256, 1024...
+Completed tests in PRE-EQ M3 / T10 with the full EQ: identical render for block sizes 1, 32, 127, 256, 1024
+-----------------------------------------------------------------
+Starting tests in: PRE-EQ M3 / T04 with the full EQ: 50k mutations of shapes/slopes/modes, random blocks, stable...
+  worst peak 29.8 dBFS
+Completed tests in PRE-EQ M3 / T04 with the full EQ: 50k mutations of shapes/slopes/modes, random blocks, stable
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / T06: compressor equals an independent model of its documented law (<= -120 dB)...
+  compressor vs independent law model, worst: -135.3 dB
+Completed tests in Dynamics + Reverb M4 / T06: compressor equals an independent model of its documented law (<= -120 dB)
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / T06: ratio, attack and release time constants as specified...
+  release 200 ms: 63 % recovery at 9600 samples (9600 expected)
+Completed tests in Dynamics + Reverb M4 / T06: ratio, attack and release time constants as specified
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / T07: reverb RT60 from the energy decay curve within +-15 % of the setting...
+  measured RT60: 0.5s/size0.5=0.495 0.5s/size1=0.501 0.5s/size1.5=0.498 1.8s/size0.5=1.797 1.8s/size1=1.788 1.8s/size1.5=1.792 4s/size0.5=3.995 4s/size1=3.995 4s/size1.5=3.990 
+Completed tests in Dynamics + Reverb M4 / T07: reverb RT60 from the energy decay curve within +-15 % of the setting
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / T07: damping shortens the high-frequency decay; width controls L/R correlation...
+  T60 2 s, HF ratio 0.3: 500 Hz 2.004 s, 8 kHz 1.177 s
+  tail L/R correlation: width 1 -> 0.012, width 0 -> 1.000000
+Completed tests in Dynamics + Reverb M4 / T07: damping shortens the high-frequency decay; width controls L/R correlation
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / wet-only send: before the first reflection the node output equals the passive render exactly...
+Completed tests in Dynamics + Reverb M4 / wet-only send: before the first reflection the node output equals the passive render exactly
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / T07: bypassing the reverb slot or the node lets the tail ring out, then frees the reverb...
+  slot bypass: tail unchanged when bypassed after the input; tail RT60 after a bypass during the input 0.978 s (setting 1.0 s)
+  node bypass: tail unchanged when bypassed after the input; tail RT60 after a bypass during the input 0.978 s (setting 1.0 s)
+Completed tests in Dynamics + Reverb M4 / T07: bypassing the reverb slot or the node lets the tail ring out, then frees the reverb
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / M4 scenario: compressor 250-700 Hz and reverb 3-8 kHz at once (+ overlapping), music input...
+  GR 15.70 dB, peak -2.91 dBFS, 2 reverbs running
+Completed tests in Dynamics + Reverb M4 / M4 scenario: compressor 250-700 Hz and reverb 3-8 kHz at once (+ overlapping), music input
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / reverb pool: one reverb more than the pool holds is reported as starved, nothing breaks...
+Completed tests in Dynamics + Reverb M4 / reverb pool: one reverb more than the pool holds is reported as starved, nothing breaks
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / T10 and allocations with reverbs: identical render for blocks 1, 64, 127, 512, 0 allocations...
+Completed tests in Dynamics + Reverb M4 / T10 and allocations with reverbs: identical render for blocks 1, 64, 127, 512, 0 allocations
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / stability: T60 20 s, no damping, size 1.5, 30 s of noise; 20k parameter mutations...
+  T60 20 s steady state on -12 dBFS noise: wet RMS 2.1 dBFS, peak 16.1
+Completed tests in Dynamics + Reverb M4 / stability: T60 20 s, no damping, size 1.5, 30 s of noise; 20k parameter mutations
+-----------------------------------------------------------------
+Starting tests in: Dynamics + Reverb M4 / PDC and host tail: latency 0 for every configuration; tail = pre-delay + T60 of the longest reverb...
+Completed tests in Dynamics + Reverb M4 / PDC and host tail: latency 0 for every configuration; tail = pre-delay + T60 of the longest reverb
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Saturator: small-signal gain is unity with auto gain (every curve, bias, oversampling) within 0.1 dB...
+Completed tests in Processors M6 / Saturator: small-signal gain is unity with auto gain (every curve, bias, oversampling) within 0.1 dB
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Saturator: measured latency equals the reported latency (1x / 2x / 4x)...
+  os 0: reported 0, measured 0
+  os 1: reported 49, measured 49
+  os 2: reported 61, measured 61
+Completed tests in Processors M6 / Saturator: measured latency equals the reported latency (1x / 2x / 4x)
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Saturator: bias adds no DC (|mean| < 1e-3 after 0.5 s)...
+Completed tests in Processors M6 / Saturator: bias adds no DC (|mean| < 1e-3 after 0.5 s)
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / T08: oversampling reduces aliasing (tanh, 12 dB drive, 7.03 kHz at -6 dBFS): 2x >= 12 dB, 4x >= 20 dB better than 1x...
+  alias / fundamental: 1x -28.1 dB, 2x -65.8 dB, 4x -125.4 dB
+Completed tests in Processors M6 / T08: oversampling reduces aliasing (tanh, 12 dB drive, 7.03 kHz at -6 dBFS): 2x >= 12 dB, 4x >= 20 dB better than 1x
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Transient: 0 / 0 dB is bit-exact; attack +12 dB raises crest >= 3 dB; sustain -12 dB lowers the decay (150-250 ms after a hit) >= 6 dB...
+  crest in 14.61 dB, attack +12: 19.14 dB
+  sustain -12 dB: decay 150-250 ms after a hit lowered by 12.00 dB (worst hit)
+Completed tests in Processors M6 / Transient: 0 / 0 dB is bit-exact; attack +12 dB raises crest >= 3 dB; sustain -12 dB lowers the decay (150-250 ms after a hit) >= 6 dB
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Stereo: width 1 / balance 0 bit-exact; width 0 gives L == R; balance follows the linear law...
+Completed tests in Processors M6 / Stereo: width 1 / balance 0 bit-exact; width 0 gives L == R; balance follows the linear law
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Gate: range 0 is bit-exact; closed gate attenuates by the range (+-0.5 dB); hysteresis prevents chatter...
+  closed-gate attenuation 40.00 dB (range 40)
+  state changes over 2 s: hysteresis 4 dB -> 1, hysteresis 0 -> 800
+Completed tests in Processors M6 / Gate: range 0 is bit-exact; closed gate attenuates by the range (+-0.5 dB); hysteresis prevents chatter
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Limiter: output sample peak never exceeds the ceiling (drums +18 dB, 27 settings, blocks 1 and 512 identical)...
+  worst peak relative to the ceiling: 0.0000 dB
+Completed tests in Processors M6 / Limiter: output sample peak never exceeds the ceiling (drums +18 dB, 27 settings, blocks 1 and 512 identical)
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Limiter: below the ceiling the output is the input delayed by the look-ahead, bit-exact...
+Completed tests in Processors M6 / Limiter: below the ceiling the output is the input delayed by the look-ahead, bit-exact
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Delay: synced echo positions (1/4 at 120 bpm, 1/8 D at 90 bpm), feedback ratio, ping-pong sides...
+  ping-pong: echo 1 L 0.0 / R -400.0 dB, echo 2 L -400.0 / R -6.7 dB
+Completed tests in Processors M6 / Delay: synced echo positions (1/4 at 120 bpm, 1/8 D at 90 bpm), feedback ratio, ping-pong sides
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / T07 Delay: after tailSeconds() the echoes are >= 60 dB below the first echo; no runaway at feedback 0.95...
+  feedback 0.3: tail 0.81 s, after it 66.8 dB below the first echo
+  feedback 0.7: tail 2.44 s, after it 72.2 dB below the first echo
+  feedback 0.95: tail 16.28 s, after it 84.0 dB below the first echo
+Completed tests in Processors M6 / T07 Delay: after tailSeconds() the echoes are >= 60 dB below the first echo; no runaway at feedback 0.95
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Monsta: chance 0 is bit-exact; action rate follows chance; seeds differ; T10 (blocks 1/64/127/512, free and playing)...
+  acted-on share at chance 0.35: 0.3495
+Completed tests in Processors M6 / Monsta: chance 0 is bit-exact; action rate follows chance; seeds differ; T10 (blocks 1/64/127/512, free and playing)
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / T10 engine, all M6 types: identical render for blocks 1, 64, 127, 512 and 0 allocations...
+Completed tests in Processors M6 / T10 engine, all M6 types: identical render for blocks 1, 64, 127, 512 and 0 allocations
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / PDC: a layer with look-ahead equals the zero-latency layer delayed by L (<= -120 dB after 1 s); other nodes stay aligned...
+  latency 96 samples, aligned null -400.0 dB
+Completed tests in Processors M6 / PDC: a layer with look-ahead equals the zero-latency layer delayed by L (<= -120 dB after 1 s); other nodes stay aligned
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / PDC in the plugin: reported latency = layer latency; bypassed output = input delayed by it, bit-exact...
+Completed tests in Processors M6 / PDC in the plugin: reported latency = layer latency; bypassed output = input delayed by it, bit-exact
+-----------------------------------------------------------------
+Starting tests in: Processors M6 / Pools: one Delay and one Monsta more than the pools hold are reported as starved, nothing breaks...
+Completed tests in Processors M6 / Pools: one Delay and one Monsta more than the pools hold are reported as starved, nothing breaks
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Gate 7: ten empty layers, and ten bypassed layers with content, give the input bit-exactly (Parallel and Serial)...
+Completed tests in Layers M7 / Gate 7: ten empty layers, and ten bypassed layers with content, give the input bit-exactly (Parallel and Serial)
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / No dry duplication: ten enabled Parallel layers with a 0 dB bell keep the input level (+-0.01 dB, null <= -100 dB)...
+  level change 0.0000 dB, null -400.0 dB (a dry sum would be +20 dB)
+Completed tests in Layers M7 / No dry duplication: ten enabled Parallel layers with a 0 dB bell keep the input level (+-0.01 dB, null <= -100 dB)
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Parallel equals the documented formula y = x + sum w_j (L_j{x} - x) (independent model, <= -120 dB)...
+  parallel vs model: -152.1 dB
+Completed tests in Layers M7 / Parallel equals the documented formula y = x + sum w_j (L_j{x} - x) (independent model, <= -120 dB)
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Serial equals x_{j+1} = x_j + w_j (L_j{x_j} - x_j) in layer order (independent model, <= -120 dB); order matters...
+  serial vs model: -145.0 dB
+  saturate > -12 dB vs -12 dB > saturate: difference -1.9 dB
+Completed tests in Layers M7 / Serial equals x_{j+1} = x_j + w_j (L_j{x_j} - x_j) in layer order (independent model, <= -120 dB); order matters
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Cross-layer latency: Parallel = max, Serial = sum; output = zero-latency project delayed by it (<= -120 dB after 1 s)...
+  Parallel: latency 96, aligned null -400.0 dB
+  Serial: latency 144, aligned null -156.7 dB
+Completed tests in Layers M7 / Cross-layer latency: Parallel = max, Serial = sum; output = zero-latency project delayed by it (<= -120 dB after 1 s)
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Mute, layer Mix 0 and Solo: a muted / mix-0 layer is exactly absent; Solo hears only soloed layers; mutes and solos are not lost...
+Completed tests in Layers M7 / Mute, layer Mix 0 and Solo: a muted / mix-0 layer is exactly absent; Solo hears only soloed layers; mutes and solos are not lost
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Mute keeps the layer running: after un-muting (and the 20 ms fade) the output is bit-exact to never muted...
+Completed tests in Layers M7 / Mute keeps the layer running: after un-muting (and the 20 ms fade) the output is bit-exact to never muted
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Lazy layers: only layers with content are processed; bypassed layers stop after their fade...
+Completed tests in Layers M7 / Lazy layers: only layers with content are processed; bypassed layers stop after their fade
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Layer channel modes: Side layer leaves a mid-only signal exact-ish (<= -120 dB) and boosts the side (+6 +-0.1 dB); Left layer leaves R bit-exact...
+  side tone at 1 kHz: 6.000 dB
+Completed tests in Layers M7 / Layer channel modes: Side layer leaves a mid-only signal exact-ish (<= -120 dB) and boosts the side (+6 +-0.1 dB); Left layer leaves R bit-exact
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / T10 with layers: Parallel and Serial, four layers of mixed types, blocks 1/64/127/512 bit-exact, 0 allocations...
+Completed tests in Layers M7 / T10 with layers: Parallel and Serial, four layers of mixed types, blocks 1/64/127/512 bit-exact, 0 allocations
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Stress: 10 layers x 8 nodes x 6 slots of every type, Serial and Parallel, 2000 control changes: finite, no allocations, starvation reported...
+  Parallel: peak 12.3 dBFS, starved slots 112
+  Serial: peak -0.2 dBFS, starved slots 112
+Completed tests in Layers M7 / Stress: 10 layers x 8 nodes x 6 slots of every type, Serial and Parallel, 2000 control changes: finite, no allocations, starvation reported
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / STATE: a full 10-layer project round-trips (value tree) and the plugin renders identically after restore...
+Completed tests in Layers M7 / STATE: a full 10-layer project round-trips (value tree) and the plugin renders identically after restore
+-----------------------------------------------------------------
+Starting tests in: Layers M7 / Plugin layer operations: copy/paste and duplicate give fresh unique ids; paste is undoable; selectLayer is not an undo step...
+Completed tests in Layers M7 / Plugin layer operations: copy/paste and duplicate give fresh unique ids; paste is undoable; selectLayer is not an undo step
+-----------------------------------------------------------------
+Starting tests in: Validation M8 / Loudness: EBU Tech 3341 cases 1-5 (synthesized 1 kHz stereo sines) at 44.1 / 48 / 96 kHz within +-0.1 LU...
+  44.1 kHz case 1 (-23 dBFS, 20 s): I -22.991, M -22.991, S -22.991
+  44.1 kHz case 2 (-33 dBFS, 20 s): I -32.991, M -32.991, S -32.991
+  44.1 kHz case 3 (-36/-23/-36, 10/60/10 s): I -23.011, M -35.991, S -35.991
+  44.1 kHz case 4 (-72/-36/-23/-36/-72): I -23.011, M -71.991, S -71.991
+  44.1 kHz case 5 (-26/-20/-26, 20/20.1/20 s): I -22.976, M -25.991, S -25.991
+  48.0 kHz case 1 (-23 dBFS, 20 s): I -22.993, M -22.993, S -22.993
+  48.0 kHz case 2 (-33 dBFS, 20 s): I -32.993, M -32.993, S -32.993
+  48.0 kHz case 3 (-36/-23/-36, 10/60/10 s): I -23.014, M -35.993, S -35.993
+  48.0 kHz case 4 (-72/-36/-23/-36/-72): I -23.014, M -71.993, S -71.993
+  48.0 kHz case 5 (-26/-20/-26, 20/20.1/20 s): I -22.979, M -25.993, S -25.993
+  96.0 kHz case 1 (-23 dBFS, 20 s): I -23.011, M -23.011, S -23.011
+  96.0 kHz case 2 (-33 dBFS, 20 s): I -33.011, M -33.011, S -33.011
+  96.0 kHz case 3 (-36/-23/-36, 10/60/10 s): I -23.031, M -36.011, S -36.011
+  96.0 kHz case 4 (-72/-36/-23/-36/-72): I -23.031, M -72.011, S -72.011
+  96.0 kHz case 5 (-26/-20/-26, 20/20.1/20 s): I -22.996, M -26.011, S -26.011
+Completed tests in Validation M8 / Loudness: EBU Tech 3341 cases 1-5 (synthesized 1 kHz stereo sines) at 44.1 / 48 / 96 kHz within +-0.1 LU
+-----------------------------------------------------------------
+Starting tests in: Validation M8 / True peak: fs/4 sine at 45 degrees (samples -3.01 dBFS, true peak 0 dBTP) and sines at -6 dBFS, +0.2 / -0.4 dB; 44.1 / 48 / 96 / 192 kHz...
+  44.1 kHz fs/4 at 45 deg: sample -3.01 dBFS, true 0.111 dBTP (x4)
+  48.0 kHz fs/4 at 45 deg: sample -3.01 dBFS, true 0.111 dBTP (x4)
+  96.0 kHz fs/4 at 45 deg: sample -3.01 dBFS, true 0.111 dBTP (x2)
+  192.0 kHz fs/4 at 45 deg: sample -3.01 dBFS, true -2.971 dBTP (x1)
+Completed tests in Validation M8 / True peak: fs/4 sine at 45 degrees (samples -3.01 dBFS, true peak 0 dBTP) and sines at -6 dBFS, +0.2 / -0.4 dB; 44.1 / 48 / 96 / 192 kHz
+-----------------------------------------------------------------
+Starting tests in: Validation M8 / Meters: no allocations in process(); a reset request clears integrated and true peak...
+Completed tests in Validation M8 / Meters: no allocations in process(); a reset request clears integrated and true peak
+-----------------------------------------------------------------
+Starting tests in: Validation M8 / Host transport: no play head, no tempo, stopped, tempo changes every block: finite output, delay follows the tempo...
+Completed tests in Validation M8 / Host transport: no play head, no tempo, stopped, tempo changes every block: finite output, delay follows the tempo
+-----------------------------------------------------------------
+Starting tests in: Validation M8 / STATE precision: 2000 random doubles survive XML save / load / save exactly (std::from_chars)...
+Completed tests in Validation M8 / STATE precision: 2000 random doubles survive XML save / load / save exactly (std::from_chars)
+-----------------------------------------------------------------
+Starting tests in: Validation M8 / Preset compatibility: the committed v1 state (M8) loads, re-saves identically and renders; a minimal old-style v1 tree loads with defaults...
+Completed tests in Validation M8 / Preset compatibility: the committed v1 state (M8) loads, re-saves identically and renders; a minimal old-style v1 tree loads with defaults
+-----------------------------------------------------------------
+Starting tests in: Validation M8 / 1000 random edits with undo / redo: project stays sane (sanitize idempotent), unique ids, undo returns to the start...
+  1000 edits, 48 nodes at the end, 785 undo steps
+Completed tests in Validation M8 / 1000 random edits with undo / redo: project stays sane (sanitize idempotent), unique ids, undo returns to the start
+-----------------------------------------------------------------
+Starting tests in: UI + analysis M5 / T09: captured input/output are the real, sample-aligned PCM (bit-exact)...
+Completed tests in UI + analysis M5 / T09: captured input/output are the real, sample-aligned PCM (bit-exact)
+-----------------------------------------------------------------
+Starting tests in: UI + analysis M5 / capture under load: a full queue drops analyser frames, never audio...
+  dropped analyser frames with no reader: 78465
+Completed tests in UI + analysis M5 / capture under load: a full queue drops analyser frames, never audio
+-----------------------------------------------------------------
+Starting tests in: UI + analysis M5 / T09: analyser calibration (dBFS) and the displayed spectrum = FFT of the capture...
+  on-bin sine -6 dBFS reads -6.00 dB; worst off-bin reading -7.42 dB
+Completed tests in UI + analysis M5 / T09: analyser calibration (dBFS) and the displayed spectrum = FFT of the capture
+-----------------------------------------------------------------
+Starting tests in: UI + analysis M5 / T09: the drawn PRE-EQ curve equals the measured response of the engine...
+  drawn EQ curve vs measured engine response: worst 0.0001 dB
+Completed tests in UI + analysis M5 / T09: the drawn PRE-EQ curve equals the measured response of the engine
+-----------------------------------------------------------------
+Starting tests in: UI + analysis M5 / T09: difference spectrum shows a +6 dB bell as +6 dB, masks quiet bins...
+  difference spectrum: 1 kHz (bell +6) 6.01 dB, 100 Hz 0.08 dB
+Completed tests in UI + analysis M5 / T09: difference spectrum shows a +6 dB bell as +6 dB, masks quiet bins
+-----------------------------------------------------------------
+Starting tests in: UI + analysis M5 / METER: input/output peak and RMS of a known signal (+-0.01 dB)...
+Completed tests in UI + analysis M5 / METER: input/output peak and RMS of a known signal (+-0.01 dB)
+-----------------------------------------------------------------
+Starting tests in: UI + analysis M5 / undo / redo and A/B restore exact project states...
+Completed tests in UI + analysis M5 / undo / redo and A/B restore exact project states
+-----------------------------------------------------------------
+Starting tests in: UI + analysis M5 / editor: every selection kind, a 6-slot chain, deletes, size limits; 50 cycles while audio runs...
+Completed tests in UI + analysis M5 / editor: every selection kind, a 6-slot chain, deletes, size limits; 50 cycles while audio runs
+
+allocation probe: crt-debug-hook (malloc + new)
+HPEQ_Tests: 1025 expectations passed, 0 failed
