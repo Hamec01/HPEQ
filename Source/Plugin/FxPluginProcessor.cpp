@@ -54,11 +54,13 @@ void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamp
     capture.reset();
     engine.prepare(sampleRate, maxBlock);
     dry.setSize(dsp::kMaxChannels, maxBlock);
+    dryAlign.prepare(dsp::FxNodeProcessor::kMaxNodeLatency);
     bypassRampSteps = dsp::stepsFor(dsp::kMixRampSeconds, sampleRate);
     wetAmount.reset(bypassParameter->get() ? 0.0 : 1.0);
     gain.reset(sampleRate, kGainRampSeconds);
     gain.setCurrentAndTargetValue(targetGain(outputGainDb->load(), bypassParameter->get()));
-    setLatencySamples(engine.getLatencySamples());
+    const juce::ScopedLock lock(projectLock);
+    updateLatencyAndTail(dsp::makeSnapshot(project.layers[0]));
 }
 
 void FxPluginProcessor::releaseResources() {}
@@ -115,6 +117,23 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
 
     // The layer keeps running while bypassed (warm filter/detector state, no click on return); bypass
     // crossfades to the dry copy and, once settled, outputs the dry samples exactly.
+    dsp::Transport transport;
+    if (auto* hostPlayHead = getPlayHead())
+        if (const auto position = hostPlayHead->getPosition())
+        {
+            if (const auto bpm = position->getBpm(); bpm.hasValue() && *bpm > 0.0)
+            {
+                transport.bpm = *bpm;
+                hostBpm.store(*bpm, std::memory_order_relaxed);
+            }
+            transport.playing = position->getIsPlaying();
+            if (const auto ppq = position->getPpqPosition(); ppq.hasValue())
+            {
+                transport.hasPosition = true;
+                transport.ppqAtBlockStart = *ppq;
+            }
+        }
+
     auto* const* data = buffer.getArrayOfWritePointers();
     const int capacity = dry.getNumSamples();
     if (capacity <= 0)
@@ -129,7 +148,15 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
             dry.copyFrom(ch, 0, chunk[ch], n);
         }
 
-        engine.process(chunk, channels, n);
+        if (start > 0 && transport.hasPosition)
+            transport.ppqAtBlockStart += static_cast<double>(capacity) * transport.bpm / (60.0 * currentSampleRate.load(std::memory_order_relaxed));
+        engine.process(chunk, channels, n, transport);
+        // Align the dry copy with the layer output (PDC): bypass and the difference view stay in time.
+        if (const int latency = engine.getLatencySamples(); latency > 0)
+        {
+            auto* const* dryData = dry.getArrayOfWritePointers();
+            dryAlign.process(dryData, dryData, channels, n, latency);
+        }
 
         if (wetAmount.isRamping())
         {
@@ -224,13 +251,27 @@ void FxPluginProcessor::setProject(FxProjectState newProject)
     const auto snapshot = dsp::makeSnapshot(project.layers[0]);
     engine.publish(snapshot);
 
+    updateLatencyAndTail(snapshot);
+    sendChangeMessage(); // the editor refreshes on the message thread
+}
+
+void FxPluginProcessor::updateLatencyAndTail(const dsp::LayerSnapshot& snapshot)
+{
+    const double sampleRate = currentSampleRate.load(std::memory_order_relaxed);
+    const int latency = dsp::LayerEngine::latencyFor(snapshot, sampleRate);
     double tail = 0.0;
     for (const auto& node : snapshot.fx)
         for (int k = 0; node.active && k < node.numSlots; ++k)
-            if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active && slot.type == FxType::Reverb)
-                tail = std::max(tail, dsp::ReverbProcessor::tailSeconds(slot));
-    tailSeconds.store(tail, std::memory_order_relaxed);
-    sendChangeMessage(); // the editor refreshes on the message thread
+            if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active)
+            {
+                if (slot.type == FxType::Reverb)
+                    tail = std::max(tail, dsp::ReverbProcessor::tailSeconds(slot));
+                else if (slot.type == FxType::Delay)
+                    tail = std::max(tail, dsp::DelayProcessor::tailSeconds(slot, hostBpm.load(std::memory_order_relaxed)));
+            }
+    tailSeconds.store(tail + latency / sampleRate, std::memory_order_relaxed);
+    if (latency != getLatencySamples())
+        setLatencySamples(latency);
 }
 
 void FxPluginProcessor::getStateInformation(juce::MemoryBlock& destData)

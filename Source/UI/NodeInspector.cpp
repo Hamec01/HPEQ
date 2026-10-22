@@ -58,16 +58,46 @@ const std::vector<NodeInspector::ParamDef>& NodeInspector::paramsFor(FxType type
         { "hfDecayRatio", "HF decay", 0.05, 1, 0.5, 0.4, "", 2 }, { "size", "Size", 0.3, 1.5, 1, 0.9, "", 2 },
         { "width", "Width", 0, 1.5, 1, 0.75, "", 2 }, { "lowCutHz", "Wet low cut", 10, 1000, 80, 100, " Hz", 0 } };
     static const std::vector<ParamDef> gain { { "gainDb", "Gain", -60, 24, 0, 0, " dB", 1 } };
-    static const std::vector<ParamDef> none;
+    static const std::vector<ParamDef> saturator {
+        { "driveDb", "Drive", 0, 48, 12, 12, " dB", 1 }, { "curve", "Curve", 0, 2, 0, 0, "", 0, "Tanh|Tube|Hard" },
+        { "bias", "Bias", -0.9, 0.9, 0, 0, "", 2 }, { "trimDb", "Trim", -24, 24, 0, 0, " dB", 1 },
+        { "oversampling", "Oversampling", 0, 2, 1, 1, "", 0, "1x|2x|4x" }, { "autoGain", "Auto gain", 0, 1, 1, 1, "", 0, "Off|On" } };
+    static const std::vector<ParamDef> transient {
+        { "attackDb", "Attack", -24, 24, 0, 0, " dB", 1 }, { "sustainDb", "Sustain", -24, 24, 0, 0, " dB", 1 },
+        { "speed", "Speed", 0, 1, 0.5, 0.5, "", 2 } };
+    static const std::vector<ParamDef> delay {
+        { "sync", "Sync", 0, 11, 8, 8, "", 0, "Free (ms)|1/32|1/16|1/16 D|1/8 T|1/8|1/8 D|1/4 T|1/4|1/4 D|1/2|1/1" },
+        { "timeMs", "Time", 1, 2000, 250, 250, " ms", 0 }, { "feedback", "Feedback", 0, 0.95, 0.35, 0.35, "", 2 },
+        { "pingPong", "Ping-pong", 0, 1, 0, 0, "", 0, "Off|On" }, { "dampingHz", "Damping", 500, 20000, 8000, 4000, " Hz", 0 },
+        { "lowCutHz", "Low cut", 10, 2000, 120, 150, " Hz", 0 }, { "width", "Width", 0, 1.5, 1, 0.75, "", 2 } };
+    static const std::vector<ParamDef> monsta {
+        { "division", "Slice", 0, 3, 2, 2, "", 0, "1/4|1/8|1/16|1/32" }, { "chance", "Chance", 0, 1, 0.35, 0.35, "", 2 },
+        { "seed", "Seed", 0, 9999, 1, 100, "", 0 }, { "crushBits", "Crush bits", 0, 16, 0, 8, "", 0 },
+        { "gateDepth", "Gate depth", 0, 1, 0, 0.5, "", 2 }, { "reverseShare", "Reverse share", 0, 1, 0.3, 0.3, "", 2 } };
+    static const std::vector<ParamDef> stereo {
+        { "width", "Width", 0, 2, 1, 1, "", 2 }, { "balance", "Balance", -1, 1, 0, 0, "", 2 } };
+    static const std::vector<ParamDef> gate {
+        { "thresholdDb", "Threshold", -90, 0, -40, -40, " dB", 1 }, { "ratio", "Ratio", 1, 100, 4, 4, ":1", 1 },
+        { "rangeDb", "Range", 0, 90, 40, 30, " dB", 1 }, { "attackMs", "Attack", 0.05, 100, 0.5, 2, " ms", 2 },
+        { "holdMs", "Hold", 0, 500, 20, 30, " ms", 0 }, { "releaseMs", "Release", 1, 2000, 100, 150, " ms", 0 },
+        { "hysteresisDb", "Hysteresis", 0, 24, 4, 4, " dB", 1 } };
+    static const std::vector<ParamDef> limiter {
+        { "ceilingDb", "Ceiling", -60, 0, -1, -6, " dB", 1 }, { "releaseMs", "Release", 1, 2000, 80, 100, " ms", 0 },
+        { "lookaheadMs", "Look-ahead", 0.1, 10, 2, 2, " ms", 2 } };
     switch (type)
     {
         case FxType::Compressor: return compressor;
         case FxType::Reverb: return reverb;
         case FxType::Gain: return gain;
-        case FxType::Limiter: case FxType::Delay: case FxType::TransientShaper: case FxType::Saturator:
-        case FxType::MonstaFx: case FxType::StereoProcessor: case FxType::GateExpander: break;
+        case FxType::Saturator: return saturator;
+        case FxType::TransientShaper: return transient;
+        case FxType::Delay: return delay;
+        case FxType::MonstaFx: return monsta;
+        case FxType::StereoProcessor: return stereo;
+        case FxType::GateExpander: return gate;
+        case FxType::Limiter: return limiter;
     }
-    return none;
+    return gain;
 }
 
 void NodeInspector::beginEdit(const juce::String& name)
@@ -354,12 +384,28 @@ void NodeInspector::rebuild()
         {
             const auto key = juce::String(def.key);
             const int k = selection.slot;
+            const double fallback = def.defaultValue;
+            if (def.choices != nullptr)
+            {
+                auto& combo = addCombo(def.label, juce::StringArray::fromTokens(def.choices, "|", ""), [this, key, k](int index)
+                {
+                    editFx(key, [&](FxNodeState& n) { n.chain[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), index); });
+                });
+                setInfo(combo, 2, kKnobWidth, kRowHeight - 2);
+                refreshers.push_back([this, &combo, key, k, fallback]
+                {
+                    const auto p = processor.getProject();
+                    for (const auto& n : p.layers[0].fxNodes)
+                        if (n.id == selection.id && k < static_cast<int>(n.chain.size()))
+                            combo.setSelectedItemIndex(juce::roundToInt(paramValue(n.chain[static_cast<size_t>(k)], key.toRawUTF8(), fallback)), juce::dontSendNotification);
+                });
+                continue;
+            }
             auto& knob = addKnob(def.label, def.min, def.max, def.midPoint, def.suffix, def.decimals, [this, key, k](double v)
             {
                 editFx(key, [&](FxNodeState& n) { n.chain[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), v); });
             });
             setInfo(knob, 2, kKnobWidth, kKnobHeight);
-            const double fallback = def.defaultValue;
             refreshers.push_back([this, &knob, key, k, fallback]
             {
                 const auto p = processor.getProject();

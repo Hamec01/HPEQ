@@ -39,7 +39,32 @@ constexpr int kGainDb = 0;
 constexpr int kThresholdDb = 0, kRatio = 1, kKneeDb = 2, kAttackMs = 3, kReleaseMs = 4, kMakeupDb = 5;
 // Reverb (wet-only send)
 constexpr int kPredelayMs = 0, kDecaySeconds = 1, kHfRatio = 2, kSize = 3, kWidth = 4, kLowCutHz = 5;
+// Saturator (insert; curve 0 tanh / 1 tube / 2 hard; oversampling 0 = 1x, 1 = 2x, 2 = 4x)
+constexpr int kDriveDb = 0, kCurve = 1, kBias = 2, kTrimDb = 3, kOversampling = 4, kAutoGain = 5;
+// Transient shaper (insert)
+constexpr int kAttackGainDb = 0, kSustainGainDb = 1, kTransientSpeed = 2;
+// Delay (wet-only send; sync 0 = free time, else a note division index)
+constexpr int kDelayTimeMs = 0, kDelaySync = 1, kFeedback = 2, kPingPong = 3, kDampingHz = 4, kDelayLowCutHz = 5, kDelayWidth = 6;
+// Monsta FX (insert; division 0 = 1/4, 1 = 1/8, 2 = 1/16, 3 = 1/32)
+constexpr int kDivision = 0, kChance = 1, kSeed = 2, kCrushBits = 3, kGateDepth = 4, kReverseShare = 5;
+// Stereo (insert; needs a stereo work domain)
+constexpr int kStereoWidth = 0, kStereoBalance = 1;
+// Gate / expander (insert)
+constexpr int kGateThresholdDb = 0, kGateRatio = 1, kGateRangeDb = 2, kGateAttackMs = 3, kGateHoldMs = 4, kGateReleaseMs = 5, kGateHysteresisDb = 6;
+// Band limiter (insert, look-ahead = latency)
+constexpr int kCeilingDb = 0, kLimiterReleaseMs = 1, kLookaheadMs = 2;
 } // namespace slot
+
+// Host transport as seen by the layer for one host block (tempo-synced FX: Delay, Monsta).
+// Without a playing transport the tempo is still the host's (or 120 BPM) and positions come from
+// a free-running sample counter.
+struct Transport
+{
+    double bpm = 120.0;
+    bool playing = false;
+    bool hasPosition = false;
+    double ppqAtBlockStart = 0.0;
+};
 
 struct FxNodeParams
 {

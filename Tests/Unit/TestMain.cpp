@@ -17,14 +17,24 @@ class ConsoleRunner final : public juce::UnitTestRunner
 };
 } // namespace
 
-int main()
+int main(int argc, char** argv)
 {
     juce::ScopedJuceInitialiser_GUI juceInit; // message thread for editor tests
 
     ConsoleRunner runner;
     runner.setAssertOnFailure(false);
     runner.setPassesAreLogged(false);
-    runner.runTestsInCategory("HPEQ");
+    if (argc > 1)
+    {
+        // Optional filter: run only the test classes whose name contains argv[1].
+        juce::Array<juce::UnitTest*> selected;
+        for (auto* test : juce::UnitTest::getTestsInCategory("HPEQ"))
+            if (test->getName().containsIgnoreCase(argv[1]))
+                selected.add(test);
+        runner.runTests(selected);
+    }
+    else
+        runner.runTestsInCategory("HPEQ");
 
     int failures = 0, passes = 0;
     for (int i = 0; i < runner.getNumResults(); ++i)

@@ -14,7 +14,8 @@ namespace hpeq::dsp
 //
 //   xE = PRE-EQ(x)
 //   no allocated edge:    y = xE                                       (tree not run: bit-exact)
-//   otherwise:            y = AP(xE) + sum_j S_j( presence_j * nodeMix_j * (chain_j(band'_j) - band'_j) )
+//   otherwise:            y = D_L(AP(xE)) + sum_j S_j( D_{L-L_j}( presence_j * nodeMix_j * (chain_j(band'_j) - D_{L_j}(band'_j)) ) )
+//   (L = layer latency, L_j = node latency; with L = 0 every D is an exact no-op)
 //
 // AP(xE) and band_j come from the layer's CrossoverTree (see there). Node ranges glide; nodes that
 // start or stop have their edges born / parked at 1 Hz, so no structure change ever needs a
@@ -30,12 +31,17 @@ public:
 
     void publish(const LayerSnapshot&) noexcept;
 
-    void process(float* const* channels, int numChannels, int numSamples) noexcept;
+    void process(float* const* channels, int numChannels, int numSamples, const Transport& transport = {}) noexcept;
 
-    int getLatencySamples() const noexcept { return 0; }
+    // Layer latency = the largest node latency of the snapshot (all nodes present, enabled or not, so
+    // bypassing a node does not change it). The dry path and every node are aligned to it.
+    int getLatencySamples() const noexcept { return layerLatency; }
+    static int latencyFor(const LayerSnapshot&, double sampleRate);
     const FxNodeProcessor& getNode(int index) const noexcept { return nodes[static_cast<size_t>(index)]; }
     bool isTreeActive() const noexcept { return tree.isActive(); }
-    int reverbsInUse() const noexcept { return reverbs.inUse(); }
+    int reverbsInUse() const noexcept { return pools.reverbs.inUse(); }
+    int delaysInUse() const noexcept { return pools.delays.inUse(); }
+    int monstasInUse() const noexcept { return pools.monstas.inUse(); }
 
 private:
     void applySnapshot() noexcept;
@@ -48,7 +54,10 @@ private:
     SnapshotExchange<LayerSnapshot> exchange;
     PreEqProcessor preEq;
     std::array<FxNodeProcessor, kMaxFxNodesPerLayer> nodes;
-    ReverbPool reverbs; // delay-line memory for send slots, allocated in prepare()
+    LayerPools pools; // reverb/delay/monsta memory for pooled slots, allocated in prepare()
+    int layerLatency = 0;
+    AlignmentDelay dryAlign;
+    std::array<AlignmentDelay, kMaxFxNodesPerLayer> deltaAlign;
     CrossoverTree tree;
 
     std::array<std::vector<float>, kMaxChannels> xeCopy, dry;

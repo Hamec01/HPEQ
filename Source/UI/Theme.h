@@ -120,7 +120,7 @@ inline juce::String channelName(ChannelMode m)
 }
 
 // Processors that really process audio in this build; the rest are listed but not selectable.
-inline bool isFxAvailable(FxType t) { return t == FxType::Gain || t == FxType::Compressor || t == FxType::Reverb; }
+inline bool isFxAvailable(FxType) { return true; } // M6: every type is processed
 
 inline juce::String nodeTitle(const FxNodeState& n)
 {

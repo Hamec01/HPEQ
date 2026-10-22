@@ -8,6 +8,7 @@
 
 #include "Analysis/AudioCapture.h"
 #include "Core/FxProjectState.h"
+#include "DSP/DelayLine.h"
 #include "DSP/LayerEngine.h"
 
 namespace hpeq
@@ -89,11 +90,14 @@ private:
     FxProjectState project;
     dsp::LayerEngine engine;
     juce::AudioBuffer<float> dry;   // sized in prepareToPlay; longer host blocks are chunked
+    dsp::AlignmentDelay dryAlign;   // delays the dry copy by the layer latency (bypass, capture)
     dsp::LinearRamp wetAmount;      // 1 = layer output, 0 = bypassed (dry)
     int bypassRampSteps = 1;
 
     std::atomic<double> tailSeconds { 0.0 };
     std::atomic<double> currentSampleRate { 48000.0 };
+    std::atomic<double> hostBpm { 120.0 }; // last tempo seen from the play head (Delay tail estimate)
+    void updateLatencyAndTail(const dsp::LayerSnapshot&);
     AudioCapture capture;
     juce::UndoManager undoManager;
     std::array<FxProjectState, 2> abStore;

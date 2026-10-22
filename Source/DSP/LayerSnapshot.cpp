@@ -1,5 +1,7 @@
 #include "DSP/LayerSnapshot.h"
 
+#include <cmath>
+
 namespace hpeq::dsp
 {
 namespace
@@ -37,13 +39,53 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kWidth] = juce::jlimit(0.0f, 1.5f, param(state.parameters, "width", 1.0f));
             slotParams.values[slot::kLowCutHz] = juce::jlimit(10.0f, 1000.0f, param(state.parameters, "lowCutHz", 80.0f));
             break;
-        case FxType::Limiter:
-        case FxType::Delay:
-        case FxType::TransientShaper:
         case FxType::Saturator:
+            slotParams.values[slot::kDriveDb] = juce::jlimit(0.0f, 48.0f, param(state.parameters, "driveDb", 12.0f));
+            slotParams.values[slot::kCurve] = juce::jlimit(0.0f, 2.0f, param(state.parameters, "curve", 0.0f));
+            slotParams.values[slot::kBias] = juce::jlimit(-0.9f, 0.9f, param(state.parameters, "bias", 0.0f));
+            slotParams.values[slot::kTrimDb] = juce::jlimit(-24.0f, 24.0f, param(state.parameters, "trimDb", 0.0f));
+            slotParams.values[slot::kOversampling] = juce::jlimit(0.0f, 2.0f, param(state.parameters, "oversampling", 1.0f));
+            slotParams.values[slot::kAutoGain] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "autoGain", 1.0f));
+            break;
+        case FxType::TransientShaper:
+            slotParams.values[slot::kAttackGainDb] = juce::jlimit(-24.0f, 24.0f, param(state.parameters, "attackDb", 0.0f));
+            slotParams.values[slot::kSustainGainDb] = juce::jlimit(-24.0f, 24.0f, param(state.parameters, "sustainDb", 0.0f));
+            slotParams.values[slot::kTransientSpeed] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "speed", 0.5f));
+            break;
+        case FxType::Delay:
+            slotParams.values[slot::kDelayTimeMs] = juce::jlimit(1.0f, 2000.0f, param(state.parameters, "timeMs", 250.0f));
+            slotParams.values[slot::kDelaySync] = juce::jlimit(0.0f, 11.0f, param(state.parameters, "sync", 8.0f));
+            slotParams.values[slot::kFeedback] = juce::jlimit(0.0f, 0.95f, param(state.parameters, "feedback", 0.35f));
+            slotParams.values[slot::kPingPong] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "pingPong", 0.0f));
+            slotParams.values[slot::kDampingHz] = juce::jlimit(500.0f, 20000.0f, param(state.parameters, "dampingHz", 8000.0f));
+            slotParams.values[slot::kDelayLowCutHz] = juce::jlimit(10.0f, 2000.0f, param(state.parameters, "lowCutHz", 120.0f));
+            slotParams.values[slot::kDelayWidth] = juce::jlimit(0.0f, 1.5f, param(state.parameters, "width", 1.0f));
+            break;
         case FxType::MonstaFx:
+            slotParams.values[slot::kDivision] = juce::jlimit(0.0f, 3.0f, param(state.parameters, "division", 2.0f));
+            slotParams.values[slot::kChance] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "chance", 0.35f));
+            slotParams.values[slot::kSeed] = juce::jlimit(0.0f, 9999.0f, std::floor(param(state.parameters, "seed", 1.0f)));
+            slotParams.values[slot::kCrushBits] = juce::jlimit(0.0f, 16.0f, param(state.parameters, "crushBits", 0.0f));
+            slotParams.values[slot::kGateDepth] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "gateDepth", 0.0f));
+            slotParams.values[slot::kReverseShare] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "reverseShare", 0.3f));
+            break;
         case FxType::StereoProcessor:
+            slotParams.values[slot::kStereoWidth] = juce::jlimit(0.0f, 2.0f, param(state.parameters, "width", 1.0f));
+            slotParams.values[slot::kStereoBalance] = juce::jlimit(-1.0f, 1.0f, param(state.parameters, "balance", 0.0f));
+            break;
         case FxType::GateExpander:
+            slotParams.values[slot::kGateThresholdDb] = juce::jlimit(-90.0f, 0.0f, param(state.parameters, "thresholdDb", -40.0f));
+            slotParams.values[slot::kGateRatio] = juce::jlimit(1.0f, 100.0f, param(state.parameters, "ratio", 4.0f));
+            slotParams.values[slot::kGateRangeDb] = juce::jlimit(0.0f, 90.0f, param(state.parameters, "rangeDb", 40.0f));
+            slotParams.values[slot::kGateAttackMs] = juce::jlimit(0.05f, 100.0f, param(state.parameters, "attackMs", 0.5f));
+            slotParams.values[slot::kGateHoldMs] = juce::jlimit(0.0f, 500.0f, param(state.parameters, "holdMs", 20.0f));
+            slotParams.values[slot::kGateReleaseMs] = juce::jlimit(1.0f, 2000.0f, param(state.parameters, "releaseMs", 100.0f));
+            slotParams.values[slot::kGateHysteresisDb] = juce::jlimit(0.0f, 24.0f, param(state.parameters, "hysteresisDb", 4.0f));
+            break;
+        case FxType::Limiter:
+            slotParams.values[slot::kCeilingDb] = juce::jlimit(-60.0f, 0.0f, param(state.parameters, "ceilingDb", -1.0f));
+            slotParams.values[slot::kLimiterReleaseMs] = juce::jlimit(1.0f, 2000.0f, param(state.parameters, "releaseMs", 80.0f));
+            slotParams.values[slot::kLookaheadMs] = juce::jlimit(0.1f, 10.0f, param(state.parameters, "lookaheadMs", 2.0f));
             break;
     }
     return slotParams;
@@ -55,9 +97,9 @@ bool isEqShapeProcessed(EqShape) noexcept
     return true; // M3: every shape and slope of the model is implemented
 }
 
-bool isFxTypeProcessed(FxType type) noexcept
+bool isFxTypeProcessed(FxType) noexcept
 {
-    return type == FxType::Gain || type == FxType::Compressor || type == FxType::Reverb; // M6 adds the rest
+    return true; // M6: every FX type of the model is implemented
 }
 
 LayerSnapshot makeSnapshot(const LayerState& layer)

@@ -1,0 +1,62 @@
+T08
+limiter
+delay
+monsta
+cpu
+{
+  "saturator_1x": {
+    "p50_us": 16.100000000000001,
+    "p99_us": 30.899999999999999,
+    "p99_budget_fraction": 0.002896875
+  },
+  "saturator_2x": {
+    "p50_us": 142.800000000000011,
+    "p99_us": 219.699999999999989,
+    "p99_budget_fraction": 0.020596875
+  },
+  "saturator_4x": {
+    "p50_us": 215.699999999999989,
+    "p99_us": 390.399999999999977,
+    "p99_budget_fraction": 0.0366
+  },
+  "transient": {
+    "p50_us": 23.699999999999999,
+    "p99_us": 42.700000000000003,
+    "p99_budget_fraction": 0.004003125
+  },
+  "stereo": {
+    "p50_us": 0.2,
+    "p99_us": 0.3,
+    "p99_budget_fraction": 0.000028125
+  },
+  "gate": {
+    "p50_us": 5.9,
+    "p99_us": 8.800000000000001,
+    "p99_budget_fraction": 0.000825
+  },
+  "limiter_2ms": {
+    "p50_us": 12.5,
+    "p99_us": 23.899999999999999,
+    "p99_budget_fraction": 0.002240625
+  },
+  "delay": {
+    "p50_us": 14.6,
+    "p99_us": 33.200000000000003,
+    "p99_budget_fraction": 0.0031125
+  },
+  "monsta": {
+    "p50_us": 36.100000000000001,
+    "p99_us": 58.399999999999999,
+    "p99_budget_fraction": 0.005475
+  },
+  "layer_two_nodes_mixed_m6": {
+    "p50_us": 261.199999999999989,
+    "p99_us": 468.0,
+    "p99_budget_fraction": 0.043875
+  },
+  "layer_8_nodes_x_6_slots_sat4x": {
+    "p50_us": 2400.900000000000091,
+    "p99_us": 7438.399999999999636,
+    "p99_budget_fraction": 0.69735
+  }
+}

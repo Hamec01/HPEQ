@@ -1,0 +1,268 @@
+{
+  "milestone": "M6",
+  "commit": "00c797f+wip",
+  "machine": {
+    "os": "Windows 11",
+    "cpu_vendor": "GenuineIntel",
+    "cpu_model": "Intel(R) Core(TM) i5-10300H CPU @ 2.50GHz",
+    "cpu_mhz": 2340,
+    "logical_cpus": 8,
+    "physical_cpus": 4,
+    "memory_mb": 16292,
+    "juce_version": "JUCE v8.0.12",
+    "compiler": "MSVC 195035730",
+    "build": "Release",
+    "allocation_probe": "operator-new-only (malloc not seen)",
+    "utc": "2026-10-22T09:13:48.275+03:00"
+  },
+  "t08": [
+    {
+      "curve": "tanh",
+      "oversampling": 1,
+      "alias_to_fundamental_db": -28.098199
+    },
+    {
+      "curve": "hard",
+      "oversampling": 1,
+      "alias_to_fundamental_db": -25.239277
+    },
+    {
+      "curve": "tanh",
+      "oversampling": 2,
+      "alias_to_fundamental_db": -65.817647
+    },
+    {
+      "curve": "hard",
+      "oversampling": 2,
+      "alias_to_fundamental_db": -37.63055
+    },
+    {
+      "curve": "tanh",
+      "oversampling": 4,
+      "alias_to_fundamental_db": -125.360578
+    },
+    {
+      "curve": "hard",
+      "oversampling": 4,
+      "alias_to_fundamental_db": -49.952438
+    }
+  ],
+  "limiter": [
+    {
+      "ceiling_db": -0.1,
+      "lookahead_ms": 0.1,
+      "input_peak_dbfs": 15.572048,
+      "output_peak_dbfs": -0.099999,
+      "latency_samples": 5
+    },
+    {
+      "ceiling_db": -0.1,
+      "lookahead_ms": 2.0,
+      "input_peak_dbfs": 15.572048,
+      "output_peak_dbfs": -0.099999,
+      "latency_samples": 96
+    },
+    {
+      "ceiling_db": -0.1,
+      "lookahead_ms": 10.0,
+      "input_peak_dbfs": 15.572048,
+      "output_peak_dbfs": -0.099999,
+      "latency_samples": 480
+    },
+    {
+      "ceiling_db": -1.0,
+      "lookahead_ms": 0.1,
+      "input_peak_dbfs": 15.572048,
+      "output_peak_dbfs": -1.0,
+      "latency_samples": 5
+    },
+    {
+      "ceiling_db": -1.0,
+      "lookahead_ms": 2.0,
+      "input_peak_dbfs": 15.572048,
+      "output_peak_dbfs": -1.0,
+      "latency_samples": 96
+    },
+    {
+      "ceiling_db": -1.0,
+      "lookahead_ms": 10.0,
+      "input_peak_dbfs": 15.572048,
+      "output_peak_dbfs": -1.0,
+      "latency_samples": 480
+    },
+    {
+      "ceiling_db": -6.0,
+      "lookahead_ms": 0.1,
+      "input_peak_dbfs": 15.572048,
+      "output_peak_dbfs": -6.0,
+      "latency_samples": 5
+    },
+    {
+      "ceiling_db": -6.0,
+      "lookahead_ms": 2.0,
+      "input_peak_dbfs": 15.572048,
+      "output_peak_dbfs": -6.0,
+      "latency_samples": 96
+    },
+    {
+      "ceiling_db": -6.0,
+      "lookahead_ms": 10.0,
+      "input_peak_dbfs": 15.572048,
+      "output_peak_dbfs": -6.0,
+      "latency_samples": 480
+    }
+  ],
+  "gate": [
+    {
+      "hysteresis_db": 0.0,
+      "state_changes_4s": 1600
+    },
+    {
+      "hysteresis_db": 1.0,
+      "state_changes_4s": 504
+    },
+    {
+      "hysteresis_db": 2.0,
+      "state_changes_4s": 24
+    },
+    {
+      "hysteresis_db": 4.0,
+      "state_changes_4s": 1
+    }
+  ],
+  "delay": [
+    {
+      "setting": "1/4 @ 120",
+      "bpm": 120.0,
+      "delay_ms": 500.0,
+      "tail_seconds_minus60": 7.261364
+    },
+    {
+      "setting": "1/8 D @ 90",
+      "bpm": 90.0,
+      "delay_ms": 500.0,
+      "tail_seconds_minus60": 7.261364
+    },
+    {
+      "setting": "1/8 T @ 140",
+      "bpm": 140.0,
+      "delay_ms": 142.857143,
+      "tail_seconds_minus60": 2.074675
+    },
+    {
+      "setting": "333 ms free",
+      "bpm": 333.0,
+      "delay_ms": 333.0,
+      "tail_seconds_minus60": 4.836068
+    }
+  ],
+  "monsta_t10": [
+    {
+      "block": 64,
+      "bit_exact_vs_block_1": true,
+      "null_db": -400.0
+    },
+    {
+      "block": 127,
+      "bit_exact_vs_block_1": true,
+      "null_db": -400.0
+    },
+    {
+      "block": 512,
+      "bit_exact_vs_block_1": true,
+      "null_db": -400.0
+    },
+    {
+      "block": 2048,
+      "bit_exact_vs_block_1": true,
+      "null_db": -400.0
+    }
+  ],
+  "latency": [
+    {
+      "config": "saturator 1x",
+      "samples": 0
+    },
+    {
+      "config": "saturator 2x",
+      "samples": 49
+    },
+    {
+      "config": "saturator 4x",
+      "samples": 61
+    },
+    {
+      "config": "limiter 0.1 ms",
+      "samples": 5
+    },
+    {
+      "config": "limiter 2 ms",
+      "samples": 96
+    },
+    {
+      "config": "limiter 10 ms",
+      "samples": 480
+    },
+    {
+      "config": "layer: node A sat 4x + limiter 2 ms, node B sat 2x",
+      "samples": 157
+    }
+  ],
+  "cpu": {
+    "saturator_1x": {
+      "p50_us": 16.1,
+      "p99_us": 30.9,
+      "p99_budget_fraction": 0.002897
+    },
+    "saturator_2x": {
+      "p50_us": 142.8,
+      "p99_us": 219.7,
+      "p99_budget_fraction": 0.020597
+    },
+    "saturator_4x": {
+      "p50_us": 215.7,
+      "p99_us": 390.4,
+      "p99_budget_fraction": 0.0366
+    },
+    "transient": {
+      "p50_us": 23.7,
+      "p99_us": 42.7,
+      "p99_budget_fraction": 0.004003
+    },
+    "stereo": {
+      "p50_us": 0.2,
+      "p99_us": 0.3,
+      "p99_budget_fraction": 0.000028
+    },
+    "gate": {
+      "p50_us": 5.9,
+      "p99_us": 8.8,
+      "p99_budget_fraction": 0.000825
+    },
+    "limiter_2ms": {
+      "p50_us": 12.5,
+      "p99_us": 23.9,
+      "p99_budget_fraction": 0.002241
+    },
+    "delay": {
+      "p50_us": 14.6,
+      "p99_us": 33.2,
+      "p99_budget_fraction": 0.003113
+    },
+    "monsta": {
+      "p50_us": 36.1,
+      "p99_us": 58.4,
+      "p99_budget_fraction": 0.005475
+    },
+    "layer_two_nodes_mixed_m6": {
+      "p50_us": 261.2,
+      "p99_us": 468.0,
+      "p99_budget_fraction": 0.043875
+    },
+    "layer_8_nodes_x_6_slots_sat4x": {
+      "p50_us": 2400.9,
+      "p99_us": 7438.4,
+      "p99_budget_fraction": 0.69735
+    }
+  }
+}

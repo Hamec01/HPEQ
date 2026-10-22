@@ -34,6 +34,7 @@ private:
         double min, max, defaultValue, midPoint;
         const char* suffix;
         int decimals;
+        const char* choices = nullptr; // "A|B|C": a combo box storing the item index
     };
 
     void timerCallback() override;

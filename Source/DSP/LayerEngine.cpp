@@ -38,9 +38,12 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize)
     }
 
     preEq.prepare(sampleRate);
-    reverbs.prepare(sampleRate);
+    pools.prepare(sampleRate);
+    dryAlign.prepare(FxNodeProcessor::kMaxNodeLatency);
+    for (auto& d : deltaAlign)
+        d.prepare(FxNodeProcessor::kMaxNodeLatency);
     for (auto& node : nodes)
-        node.prepare(sampleRate, maxBlock, &reverbs);
+        node.prepare(sampleRate, maxBlock, &pools);
     tree.prepare(sampleRate, maxBlock);
     reset();
 }
@@ -52,6 +55,9 @@ void LayerEngine::reset() noexcept
     for (auto& node : nodes)
         node.reset();
     tree.reset();
+    dryAlign.reset();
+    for (auto& d : deltaAlign)
+        d.reset();
     applySnapshot(); // re-apply the current targets so a reset engine resumes the same sound
 }
 
@@ -60,12 +66,23 @@ void LayerEngine::publish(const LayerSnapshot& snapshot) noexcept
     exchange.publish(snapshot);
 }
 
+int LayerEngine::latencyFor(const LayerSnapshot& snapshot, double sampleRate)
+{
+    int latency = 0;
+    for (const auto& node : snapshot.fx)
+        latency = std::max(latency, FxNodeProcessor::nodeLatencyFor(node, sampleRate));
+    return latency;
+}
+
 void LayerEngine::applySnapshot() noexcept
 {
     const auto& snapshot = exchange.current();
     preEq.setTargets(snapshot.eq);
     for (size_t i = 0; i < nodes.size(); ++i)
         nodes[i].setTargets(snapshot.fx[i]);
+    layerLatency = 0;
+    for (const auto& node : nodes)
+        layerLatency = std::max(layerLatency, node.latencySamples());
 }
 
 void LayerEngine::updateTree() noexcept
@@ -81,7 +98,7 @@ void LayerEngine::updateTree() noexcept
     tree.update(running, low, high);
 }
 
-void LayerEngine::process(float* const* channels, int numChannels, int numSamples) noexcept
+void LayerEngine::process(float* const* channels, int numChannels, int numSamples, const Transport& transport) noexcept
 {
     juce::ScopedNoDenormals noDenormals;
     numChannels = std::min(numChannels, kMaxChannels);
@@ -107,18 +124,27 @@ void LayerEngine::process(float* const* channels, int numChannels, int numSample
             for (int ch = 0; ch < numChannels; ++ch)
                 std::copy(chunk[ch], chunk[ch] + n, xe[ch]);
             tree.process(xe, numChannels, n, controlPhase, dryPtr.data(), bandList.data(), presencePtr.data());
-            for (int ch = 0; ch < numChannels; ++ch)
-                std::copy(dryPtr[static_cast<size_t>(ch)], dryPtr[static_cast<size_t>(ch)] + n, chunk[ch]);
+            if (layerLatency > 0)
+                dryAlign.process(dryPtr.data(), chunk, numChannels, n, layerLatency);
+            else
+                for (int ch = 0; ch < numChannels; ++ch)
+                    std::copy(dryPtr[static_cast<size_t>(ch)], dryPtr[static_cast<size_t>(ch)] + n, chunk[ch]);
             for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
                 if (tree.hasBand(j))
                 {
+                    auto* delta = deltaPtr[static_cast<size_t>(j)].data();
                     for (int ch = 0; ch < numChannels; ++ch)
-                        std::fill(deltaPtr[static_cast<size_t>(j)][static_cast<size_t>(ch)], deltaPtr[static_cast<size_t>(j)][static_cast<size_t>(ch)] + n, 0.0f);
-                    nodes[static_cast<size_t>(j)].process(bandList[static_cast<size_t>(j)], presencePtr[static_cast<size_t>(j)],
-                                                          deltaPtr[static_cast<size_t>(j)].data(), numChannels, n);
+                        std::fill(delta[ch], delta[ch] + n, 0.0f);
+                    auto& node = nodes[static_cast<size_t>(j)];
+                    node.process(bandList[static_cast<size_t>(j)], presencePtr[static_cast<size_t>(j)], delta, numChannels, n, transport, start);
+                    const int extra = layerLatency - node.latencySamples();
+                    if (extra > 0)
+                        deltaAlign[static_cast<size_t>(j)].process(delta, delta, numChannels, n, extra);
                 }
             tree.combine(deltaList.data(), chunk, numChannels, n);
         }
+        else if (layerLatency > 0)
+            dryAlign.process(chunk, chunk, numChannels, n, layerLatency);
         controlPhase = (controlPhase + n) % kControlInterval;
     }
 }

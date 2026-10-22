@@ -17,16 +17,16 @@
 | T04 | 2+ | 100 000 deterministic random params & 1..2048 blocks | No NaN/Inf, exceptions, audio callback allocations; no runaway | PASS (M2 params) | [M2_REPORT](reports/M2_REPORT.md) |
 | T05 | 3 | Left-only, Right-only, M-only, S-only, mono | Exact channel-selection semantics; roundtrip M/S within float tolerance | PASS | [M3_REPORT](reports/M3_REPORT.md) |
 | T06 | 4 | Burst/step tones, > and < threshold | Compressor GR and envelope shape follow published detector/ratio rules | PASS | [M4_REPORT](reports/M4_REPORT.md) |
-| T07 | 4 | Single impulse then 10 s silence | Reverb/Delay tails audible/quantified and no abrupt cut in normal bypass | PASS (Reverb; Delay in M6); DAW BLOCKED | [M4_REPORT](reports/M4_REPORT.md) |
-| T08 | 6 | High sine/multitone, 1x and OS4x | Aliasing energy and headroom measured; OS4x target demonstrably better in tested conditions | PLANNED | — |
+| T07 | 4 | Single impulse then 10 s silence | Reverb/Delay tails audible/quantified and no abrupt cut in normal bypass | PASS (Reverb M4, Delay M6); DAW BLOCKED | [M4_REPORT](reports/M4_REPORT.md), [M6_REPORT](reports/M6_REPORT.md) |
+| T08 | 6 | High sine/multitone, 1x and OS4x | Aliasing energy and headroom measured; OS4x target demonstrably better in tested conditions | PASS (tanh: 1x −28.1, 2x −65.8, 4x −125.4 dB alias/fundamental) | [M6_REPORT](reports/M6_REPORT.md) |
 | T09 | 5 | Offline PCM vs displayed capture | Waveform input/output/Delta are actual aligned PCM; displayed spectrum corresponds FFT of captures | PASS | [M5_REPORT](reports/M5_REPORT.md) |
-| T10 | 2 | Identical input with block 1, 32, 127, 256, 1024 | Offline outputs numerically consistent with documented tolerance | PASS (bit-exact) | [M2_REPORT](reports/M2_REPORT.md) |
+| T10 | 2 | Identical input with block 1, 32, 127, 256, 1024 | Offline outputs numerically consistent with documented tolerance | PASS (bit-exact; M6: every FX type incl. host-timeline Monsta) | [M2_REPORT](reports/M2_REPORT.md), [M6_REPORT](reports/M6_REPORT.md) |
 | T11 | 8 | pluginval, host reopen, mutate/restore | pluginval level≥5; no crashes/hangs; 100 editor cycles, no state loss | PLANNED | — |
 | T12 | 7–8 | 1/5/10 layers × 1/5 nodes × multiple fs | p50/p95/p99 CPU, peak RSS, latency documented on same host | PLANNED | — |
 | B-ORDER | 3 | 80 Hz input, Pre-EQ HP200 + FX comp 100–250 | Compressor receives PRE-filtered 80 Hz (not original); layer EQ before FX | PASS (LowCut 200 Hz) | [M3_REPORT](reports/M3_REPORT.md) |
 | MIX-0 | 2 | FX Node Mix=0, layer Mix=0 | No contribution from node/layer, independent of hidden DSP state | PASS (node) | [M2_REPORT](reports/M2_REPORT.md) |
 | METER | 5 | Signal at known dBFS | Input/output peak & RMS within calibrated accuracy; display never synthetic | PASS (true peak in M8) | [M5_REPORT](reports/M5_REPORT.md) |
-| PDC | 4/8 | Turn on/lookahead/FIR/oversampling | Host latency equals effective processing delay; dry and wet aligned | PASS (latency 0, wet-only aligned); DAW BLOCKED | [M4_REPORT](reports/M4_REPORT.md) |
+| PDC | 4/8 | Turn on/lookahead/FIR/oversampling | Host latency equals effective processing delay; dry and wet aligned | PASS (M4 latency 0; M6 look-ahead/oversampling: reported = effective, dry and bypass aligned); DAW BLOCKED | [M4_REPORT](reports/M4_REPORT.md), [M6_REPORT](reports/M6_REPORT.md) |
 | STATE | 1–8 | Save/restore state; automation gesture | Parameters, IDs, sound, selected Layer, nodes fully restore | PASS (M1 scope) | [M1_REPORT](reports/M1_REPORT.md) |
 | HPDG | all | Build and run unchanged old tests | Original HPDG generator/editor/wav unaffected | PASS (untouched, separate repo) | [M0](reports/M0_BASELINE.md), [M1_REPORT](reports/M1_REPORT.md) |
 
