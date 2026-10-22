@@ -36,7 +36,7 @@ public:
     // For tests and screenshots: pull pending capture and repaint now.
     void updateAnalysisNow();
     // Select a node as a click would (fx: FX region, else EQ point), and pick the workspace mode.
-    void selectNode(bool fx, std::uint32_t id, int slot = 0);
+    void selectNode(bool fx, std::uint32_t id, int slot = -1); // slot -1 = module grid
     void showDifference(bool difference);
 
 private:

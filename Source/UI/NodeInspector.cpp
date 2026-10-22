@@ -176,12 +176,259 @@ juce::Button& NodeInspector::addButton(const juce::String& text, std::function<v
     return *b;
 }
 
+const std::vector<FxSlotState>* NodeInspector::selectedChain(const FxProjectState& p) const
+{
+    const auto& layer = selectedLayer(p);
+    if (selection.kind == Selection::Kind::Fx)
+        for (const auto& n : layer.fxNodes)
+            if (n.id == selection.id)
+                return &n.chain;
+    if (selection.kind == Selection::Kind::Eq)
+        for (const auto& n : layer.eqNodes)
+            if (n.id == selection.id)
+                return &n.chain;
+    return nullptr;
+}
+
+int NodeInspector::selectedEngineSlot(const FxProjectState& p) const
+{
+    const auto& layer = selectedLayer(p);
+    if (selection.kind == Selection::Kind::Fx)
+        for (const auto& n : layer.fxNodes)
+            if (n.id == selection.id)
+                return n.engineSlot;
+    if (selection.kind == Selection::Kind::Eq)
+        for (const auto& n : layer.eqNodes)
+            if (n.id == selection.id)
+                return n.engineSlot;
+    return -1;
+}
+
+void NodeInspector::editChain(const juce::String& name, const std::function<void(std::vector<FxSlotState>&)>& change)
+{
+    const auto id = selection.id;
+    const bool fx = selection.kind == Selection::Kind::Fx;
+    processor.editProject(name, [&](FxProjectState& p)
+    {
+        auto& layer = selectedLayer(p);
+        if (fx)
+        {
+            for (auto& n : layer.fxNodes)
+                if (n.id == id)
+                    change(n.chain);
+        }
+        else
+            for (auto& n : layer.eqNodes)
+                if (n.id == id)
+                    change(n.chain);
+    });
+}
+
+void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool region)
+{
+    const auto setInfo = [](juce::Component& c, int section, int width, int height, bool newRow = false, bool tile = false)
+    {
+        auto& props = c.getProperties();
+        props.set("section", section);
+        props.set("width", width);
+        props.set("height", height);
+        props.set("newRow", newRow);
+        props.set("tile", tile);
+    };
+    const int count = static_cast<int>(chain.size());
+    if (selection.slot >= count)
+        selection.slot = -1;
+
+    if (selection.slot < 0)
+    {
+        // The grid: modules in processing order, then "+" tiles (D6).
+        showingGrid = true;
+        for (int i = 0; i < kMaxFxPerNode; ++i)
+        {
+            if (i < count)
+            {
+                const auto& m = chain[static_cast<size_t>(i)];
+                auto& tile = addButton(juce::String(i + 1) + "   " + fxName(m.type) + (m.enabled ? "" : "   (off)"), [this, i]
+                {
+                    selection.slot = i;
+                    rebuildAsync();
+                });
+                tile.setColour(juce::TextButton::buttonColourId, m.enabled ? colours::accent.withAlpha(0.28f) : colours::panelRaised);
+                tile.setColour(juce::TextButton::textColourOffId, m.enabled ? colours::text : colours::dim);
+                tile.setTooltip("Open " + fxName(m.type) + " (module " + juce::String(i + 1) + ")");
+                setInfo(tile, 1, 0, 0, false, true);
+            }
+            else
+            {
+                auto& tile = addButton("+", [this, region]
+                {
+                    const auto project = processor.getProject();
+                    const auto* current = selectedChain(project);
+                    const bool needsBand = !region && current != nullptr && current->empty();
+                    juce::PopupMenu menu;
+                    if (needsBand && freeEngineSlots(selectedLayer(project)) <= 0)
+                        menu.addItem(1, "All 8 module bands of this layer are in use", false);
+                    else
+                        for (size_t t = 0; t < kTypes.size(); ++t)
+                            menu.addItem(static_cast<int>(t) + 10, fxName(kTypes[t]));
+                    juce::Component::SafePointer<NodeInspector> safe(this);
+                    menu.showMenuAsync(juce::PopupMenu::Options(), [safe](int result)
+                    {
+                        if (safe == nullptr || result < 10)
+                            return;
+                        safe->addModule(kTypes[static_cast<size_t>(result - 10)]);
+                    });
+                });
+                tile.setTooltip("Add a module (it runs after the ones before it)");
+                setInfo(tile, 1, 0, 0, false, true);
+            }
+        }
+        return;
+    }
+
+    // One module's page, with a way back to the grid.
+    showingGrid = false;
+    const int k = selection.slot;
+    const auto& module = chain[static_cast<size_t>(k)];
+    auto& back = addButton(juce::String::fromUTF8("\xe2\x86\x90  Modules"), [this] { selection.slot = -1; rebuildAsync(); });
+    back.setTooltip("Back to all modules");
+    setInfo(back, 1, 110, kRowHeight - 2, true);
+    juce::StringArray typeNames;
+    for (auto t : kTypes)
+        typeNames.add(fxName(t));
+    auto& type = addCombo({}, typeNames, [this, k](int i)
+    {
+        editChain("Module type", [k, i](std::vector<FxSlotState>& c)
+        {
+            c[static_cast<size_t>(k)].type = kTypes[static_cast<size_t>(i)];
+            c[static_cast<size_t>(k)].parameters.clear();
+        });
+        rebuildAsync();
+    });
+    setInfo(type, 1, 140, kRowHeight - 2);
+    auto& moduleOn = addButton("On", [this, k]
+    {
+        beginEdit("Module on");
+        editChain("Module on", [k](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = !c[static_cast<size_t>(k)].enabled; });
+    }, true);
+    setInfo(moduleOn, 1, 50, kRowHeight - 2, true);
+    auto* moduleMix = new juce::Slider(juce::Slider::LinearHorizontal, juce::Slider::TextBoxRight);
+    moduleMix->setRange(0, 1, 0.01);
+    moduleMix->setTextBoxStyle(juce::Slider::TextBoxRight, false, 44, 18);
+    moduleMix->setTooltip("Module mix");
+    moduleMix->onDragStart = [this] { processor.getUndoManager().beginNewTransaction("Module mix"); dragging = true; };
+    moduleMix->onDragEnd = [this] { dragging = false; };
+    moduleMix->onValueChange = [this, moduleMix, k]
+    {
+        beginEdit("Module mix");
+        const auto v = static_cast<float>(moduleMix->getValue());
+        editChain("Module mix", [k, v](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = v; });
+    };
+    controls.add(moduleMix);
+    addAndMakeVisible(moduleMix);
+    setInfo(*moduleMix, 1, 200, kRowHeight - 2);
+    auto& earlier = addButton("Earlier", [this, k] { moveModule(k, -1); });
+    earlier.setEnabled(k > 0);
+    earlier.setTooltip("Process this module before the previous one");
+    setInfo(earlier, 1, 70, kRowHeight - 2, true);
+    auto& later = addButton("Later", [this, k] { moveModule(k, 1); });
+    later.setEnabled(k + 1 < count);
+    later.setTooltip("Process this module after the next one");
+    setInfo(later, 1, 70, kRowHeight - 2);
+    auto& remove = addButton("Remove", [this, k]
+    {
+        processor.getUndoManager().beginNewTransaction("Remove module");
+        editChain("Remove module", [k](std::vector<FxSlotState>& c) { if (k < static_cast<int>(c.size())) c.erase(c.begin() + k); });
+        selection.slot = -1;
+        rebuildAsync();
+    });
+    remove.setEnabled(!region || count > 1);
+    if (region && count <= 1)
+        remove.setTooltip("An FX region keeps at least one module; delete the region instead");
+    setInfo(remove, 1, 80, kRowHeight - 2);
+    refreshers.push_back([this, &type, &moduleOn, moduleMix, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        if (const auto* c = selectedChain(project); c != nullptr && k < static_cast<int>(c->size()))
+        {
+            const auto& m = (*c)[static_cast<size_t>(k)];
+            type.setSelectedItemIndex(indexOf(kTypes, m.type), juce::dontSendNotification);
+            moduleOn.setToggleState(m.enabled, juce::dontSendNotification);
+            moduleMix->setValue(m.mix, juce::dontSendNotification);
+        }
+    });
+
+    for (const auto& def : paramsFor(module.type))
+    {
+        const auto key = juce::String(def.key);
+        const double fallback = def.defaultValue;
+        if (def.choices != nullptr)
+        {
+            auto& combo = addCombo(def.label, juce::StringArray::fromTokens(def.choices, "|", ""), [this, key, k](int index)
+            {
+                editChain(key, [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), index); });
+            });
+            setInfo(combo, 2, kKnobWidth, kRowHeight - 2);
+            refreshers.push_back([this, &combo, key, k, fallback]
+            {
+                const auto project = processor.getProject(); // keep alive: selectedChain points into it
+                if (const auto* c = selectedChain(project); c != nullptr && k < static_cast<int>(c->size()))
+                    combo.setSelectedItemIndex(juce::roundToInt(paramValue((*c)[static_cast<size_t>(k)], key.toRawUTF8(), fallback)), juce::dontSendNotification);
+            });
+            continue;
+        }
+        auto& knob = addKnob(def.label, def.min, def.max, def.midPoint, def.suffix, def.decimals, [this, key, k](double v)
+        {
+            editChain(key, [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), v); });
+        });
+        setInfo(knob, 2, kKnobWidth, kKnobHeight);
+        refreshers.push_back([this, &knob, key, k, fallback]
+        {
+            const auto project = processor.getProject(); // keep alive: selectedChain points into it
+            if (const auto* c = selectedChain(project); c != nullptr && k < static_cast<int>(c->size()))
+                knob.setValue(paramValue((*c)[static_cast<size_t>(k)], key.toRawUTF8(), fallback), juce::dontSendNotification);
+        });
+    }
+}
+
+void NodeInspector::addModule(FxType type)
+{
+    processor.getUndoManager().beginNewTransaction("Add module");
+    editChain("Add module", [type](std::vector<FxSlotState>& c)
+    {
+        if (c.size() < static_cast<size_t>(kMaxFxPerNode))
+        {
+            FxSlotState m;
+            m.type = type;
+            c.push_back(m);
+        }
+    });
+    const auto project = processor.getProject(); // keep it alive: selectedChain points into it
+    const auto* after = selectedChain(project);
+    selection.slot = after != nullptr && !after->empty() ? static_cast<int>(after->size()) - 1 : -1;
+    rebuildAsync();
+}
+
+void NodeInspector::moveModule(int index, int delta)
+{
+    processor.getUndoManager().beginNewTransaction("Move module");
+    editChain("Move module", [index, delta](std::vector<FxSlotState>& c)
+    {
+        const int to = index + delta;
+        if (to >= 0 && to < static_cast<int>(c.size()))
+            std::swap(c[static_cast<size_t>(index)], c[static_cast<size_t>(to)]);
+    });
+    selection.slot = juce::jlimit(0, kMaxFxPerNode - 1, index + delta);
+    rebuildAsync();
+}
+
 void NodeInspector::rebuild()
 {
     labels.clear();
     controls.clear();
     refreshers.clear();
     nodeIndex = -1;
+    showingGrid = true;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -207,7 +454,9 @@ void NodeInspector::rebuild()
             repaint();
             return;
         }
-        title = "EQ " + juce::String(nodeIndex + 1) + "  /  PRE-EQ (before every FX region)";
+        const auto band = pointModuleBandHz(layer.eqNodes[static_cast<size_t>(nodeIndex)]);
+        title = "EQ " + juce::String(nodeIndex + 1) + "  /  PRE-EQ; modules act on " + juce::String(band.first, 0) + "-"
+              + juce::String(band.second, 0) + " Hz (from frequency and Q)";
         status = {};
 
         auto& on = addButton("On", [this] { beginEdit("Enable"); editEq("Enable", [](EqNodeState& n) { n.enabled = !n.enabled; }); }, true);
@@ -268,6 +517,7 @@ void NodeInspector::rebuild()
                     mode.setSelectedItemIndex(juce::jmin(4, indexOf(kModes, n.channel)), juce::dontSendNotification);
                 }
         });
+        buildModules(layer.eqNodes[static_cast<size_t>(nodeIndex)].chain, false);
     }
     else if (selection.kind == Selection::Kind::Fx)
     {
@@ -281,8 +531,7 @@ void NodeInspector::rebuild()
             return;
         }
         const auto node = layer.fxNodes[static_cast<size_t>(nodeIndex)];
-        selection.slot = juce::jlimit(0, static_cast<int>(node.chain.size()) - 1, selection.slot);
-        title = "FX " + juce::String(nodeIndex + 1) + "  /  region after PRE-EQ, chain of " + juce::String(node.chain.size()) + " (max 6)";
+        title = "FX " + juce::String(nodeIndex + 1) + "  /  region after PRE-EQ, " + juce::String(node.chain.size()) + " of 6 modules";
         status = {};
 
         auto& on = addButton("On", [this] { beginEdit("Enable"); editFx("Enable", [](FxNodeState& n) { n.enabled = !n.enabled; }); }, true);
@@ -312,108 +561,7 @@ void NodeInspector::rebuild()
         });
         setInfo(del, 0, 70, kRowHeight);
 
-        // Chain: one row per slot.
-        juce::StringArray typeNames;
-        for (auto t : kTypes)
-            typeNames.add(fxName(t) + (isFxAvailable(t) ? "" : " (M6)"));
-        for (int k = 0; k < static_cast<int>(node.chain.size()); ++k)
-        {
-            auto& pick = addButton(juce::String(k + 1) + (k == selection.slot ? "  >" : ""), [this, k] { selection.slot = k; rebuildAsync(); });
-            setInfo(pick, 1, 44, kRowHeight - 2, true);
-            auto& type = addCombo({}, typeNames, [this, k](int i)
-            {
-                if (!isFxAvailable(kTypes[static_cast<size_t>(i)]))
-                    return;
-                editFx("Slot type", [k, i](FxNodeState& n) { n.chain[static_cast<size_t>(k)].type = kTypes[static_cast<size_t>(i)]; n.chain[static_cast<size_t>(k)].parameters.clear(); });
-                rebuildAsync();
-            });
-            for (size_t t = 0; t < kTypes.size(); ++t)
-                type.setItemEnabled(static_cast<int>(t) + 1, isFxAvailable(kTypes[t]));
-            setInfo(type, 1, 130, kRowHeight - 2);
-            auto& slotOn = addButton("On", [this, k] { beginEdit("Slot on"); editFx("Slot on", [k](FxNodeState& n) { n.chain[static_cast<size_t>(k)].enabled = !n.chain[static_cast<size_t>(k)].enabled; }); }, true);
-            setInfo(slotOn, 1, 46, kRowHeight - 2);
-            auto* slotMix = new juce::Slider(juce::Slider::LinearHorizontal, juce::Slider::TextBoxRight);
-            slotMix->setRange(0, 1, 0.01);
-            slotMix->setTextBoxStyle(juce::Slider::TextBoxRight, false, 40, 18);
-            slotMix->onDragStart = [this] { processor.getUndoManager().beginNewTransaction("Slot mix"); dragging = true; };
-            slotMix->onDragEnd = [this] { dragging = false; };
-            slotMix->onValueChange = [this, slotMix, k] { beginEdit("Slot mix"); const auto v = static_cast<float>(slotMix->getValue());
-                                                          editFx("Slot mix", [k, v](FxNodeState& n) { n.chain[static_cast<size_t>(k)].mix = v; }); };
-            controls.add(slotMix);
-            addAndMakeVisible(slotMix);
-            setInfo(*slotMix, 1, 130, kRowHeight - 2);
-            refreshers.push_back([this, &type, &slotOn, slotMix, k]
-            {
-                const auto p = processor.getProject();
-                for (const auto& n : selectedLayer(p).fxNodes)
-                    if (n.id == selection.id && k < static_cast<int>(n.chain.size()))
-                    {
-                        const auto& s = n.chain[static_cast<size_t>(k)];
-                        type.setSelectedItemIndex(indexOf(kTypes, s.type), juce::dontSendNotification);
-                        slotOn.setToggleState(s.enabled, juce::dontSendNotification);
-                        slotMix->setValue(s.mix, juce::dontSendNotification);
-                    }
-            });
-        }
-        if (node.chain.size() < static_cast<size_t>(kMaxFxPerNode))
-        {
-            auto& add = addButton("+ slot", [this]
-            {
-                processor.getUndoManager().beginNewTransaction("Add slot");
-                editFx("Add slot", [](FxNodeState& n) { FxSlotState s; s.type = FxType::Gain; n.chain.push_back(s); });
-                rebuildAsync();
-            });
-            setInfo(add, 1, 70, kRowHeight - 2, true);
-        }
-        if (node.chain.size() > 1)
-        {
-            auto& remove = addButton("- slot " + juce::String(selection.slot + 1), [this]
-            {
-                processor.getUndoManager().beginNewTransaction("Remove slot");
-                const int k = selection.slot;
-                editFx("Remove slot", [k](FxNodeState& n) { n.chain.erase(n.chain.begin() + k); });
-                selection.slot = juce::jmax(0, selection.slot - 1);
-                rebuildAsync();
-            });
-            setInfo(remove, 1, 80, kRowHeight - 2);
-        }
-
-        // Parameters of the selected slot.
-        const auto& slotState = node.chain[static_cast<size_t>(selection.slot)];
-        for (const auto& def : paramsFor(slotState.type))
-        {
-            const auto key = juce::String(def.key);
-            const int k = selection.slot;
-            const double fallback = def.defaultValue;
-            if (def.choices != nullptr)
-            {
-                auto& combo = addCombo(def.label, juce::StringArray::fromTokens(def.choices, "|", ""), [this, key, k](int index)
-                {
-                    editFx(key, [&](FxNodeState& n) { n.chain[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), index); });
-                });
-                setInfo(combo, 2, kKnobWidth, kRowHeight - 2);
-                refreshers.push_back([this, &combo, key, k, fallback]
-                {
-                    const auto p = processor.getProject();
-                    for (const auto& n : selectedLayer(p).fxNodes)
-                        if (n.id == selection.id && k < static_cast<int>(n.chain.size()))
-                            combo.setSelectedItemIndex(juce::roundToInt(paramValue(n.chain[static_cast<size_t>(k)], key.toRawUTF8(), fallback)), juce::dontSendNotification);
-                });
-                continue;
-            }
-            auto& knob = addKnob(def.label, def.min, def.max, def.midPoint, def.suffix, def.decimals, [this, key, k](double v)
-            {
-                editFx(key, [&](FxNodeState& n) { n.chain[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), v); });
-            });
-            setInfo(knob, 2, kKnobWidth, kKnobHeight);
-            refreshers.push_back([this, &knob, key, k, fallback]
-            {
-                const auto p = processor.getProject();
-                for (const auto& n : selectedLayer(p).fxNodes)
-                    if (n.id == selection.id && k < static_cast<int>(n.chain.size()))
-                        knob.setValue(paramValue(n.chain[static_cast<size_t>(k)], key.toRawUTF8(), fallback), juce::dontSendNotification);
-            });
-        }
+        buildModules(node.chain, true);
 
         refreshers.push_back([this, &on, &low, &high, &mix, &mode]
         {
@@ -445,21 +593,22 @@ void NodeInspector::timerCallback()
 {
     // Live readouts from the audio engine (atomics, no locks).
     juce::String newStatus;
-    if (selection.kind == Selection::Kind::Fx && nodeIndex >= 0)
+    if (selection.kind != Selection::Kind::None && selection.slot >= 0)
     {
         const auto project = processor.getProject();
-        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(nodeIndex);
-        if (nodeIndex < static_cast<int>(selectedLayer(project).fxNodes.size()))
+        const int engineSlot = selectedEngineSlot(project);
+        const auto* chain = selectedChain(project);
+        if (engineSlot >= 0 && chain != nullptr && selection.slot < static_cast<int>(chain->size()))
         {
-            const auto& chain = selectedLayer(project).fxNodes[static_cast<size_t>(nodeIndex)].chain;
-            const int k = juce::jlimit(0, static_cast<int>(chain.size()) - 1, selection.slot);
-            if (chain[static_cast<size_t>(k)].type == FxType::Compressor)
+            const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+            const int k = selection.slot;
+            if ((*chain)[static_cast<size_t>(k)].type == FxType::Compressor)
                 newStatus = "Gain reduction  " + juce::String(node.getGainReductionDb(k), 1) + " dB";
             if (node.slotStarved(k))
-                newStatus = fxName(chain[static_cast<size_t>(k)].type) + " pool full (shared by all layers): this slot is silent.";
+                newStatus = fxName((*chain)[static_cast<size_t>(k)].type) + " pool full (shared by all layers): this module is silent.";
         }
     }
-    if (newStatus != status && selection.kind == Selection::Kind::Fx)
+    if (newStatus != status && selection.kind != Selection::Kind::None)
     {
         status = newStatus;
         repaint();
@@ -481,14 +630,19 @@ void NodeInspector::paint(juce::Graphics& g)
     g.setFont(juce::FontOptions(13.0f, juce::Font::bold));
     g.drawText(title, area.reduced(12.0f, 6.0f).removeFromTop(18.0f), juce::Justification::centredLeft);
     g.setFont(12.0f);
-    g.setColour(status.startsWith("Reverb pool") ? colours::warning : colours::accent);
+    g.setColour(status.contains("pool full") ? colours::warning : colours::accent);
     g.drawText(status, area.reduced(12.0f, 6.0f).removeFromTop(18.0f), juce::Justification::centredRight);
     if (!chainArea.isEmpty())
     {
         g.setColour(colours::dim);
         g.setFont(11.0f);
-        g.drawText("CHAIN (processed top to bottom)", chainArea.toFloat().removeFromTop(14.0f), juce::Justification::centredLeft);
-        g.drawText("SLOT " + juce::String(selection.slot + 1) + " PARAMETERS", paramArea.toFloat().removeFromTop(14.0f), juce::Justification::centredLeft);
+        if (showingGrid)
+            g.drawText("MODULES (processed left to right, then the next row)", chainArea.toFloat().removeFromTop(14.0f), juce::Justification::centredLeft);
+        else
+        {
+            g.drawText("MODULE " + juce::String(selection.slot + 1), chainArea.toFloat().removeFromTop(14.0f), juce::Justification::centredLeft);
+            g.drawText("PARAMETERS", paramArea.toFloat().removeFromTop(14.0f), juce::Justification::centredLeft);
+        }
     }
 }
 
@@ -496,10 +650,13 @@ void NodeInspector::resized()
 {
     auto area = getLocalBounds().reduced(12, 6);
     area.removeFromTop(22);
-    const bool fx = selection.kind == Selection::Kind::Fx;
+    const bool any = selection.kind != Selection::Kind::None;
     auto top = area.removeFromTop(kKnobHeight + 16);
-    chainArea = fx ? area.removeFromLeft(juce::jmin(380, area.getWidth() / 2)) : juce::Rectangle<int>();
-    paramArea = fx ? area.withTrimmedLeft(16) : juce::Rectangle<int>();
+    chainArea = any ? (showingGrid ? area : area.removeFromLeft(juce::jmin(380, area.getWidth() / 2))) : juce::Rectangle<int>();
+    paramArea = any && !showingGrid ? area.withTrimmedLeft(16) : juce::Rectangle<int>();
+    int tileIndex = 0;
+    const int tileGap = 8, tileWidth = juce::jmin(220, (chainArea.getWidth() - 2 * tileGap) / 3);
+    const int tileHeight = juce::jlimit(28, 56, (chainArea.getHeight() - 18 - tileGap) / 2);
 
     int topX = top.getX();
     int chainY = chainArea.getY() + 16, chainX = chainArea.getX();
@@ -509,6 +666,13 @@ void NodeInspector::resized()
         const auto& props = c->getProperties();
         const int section = props["section"], width = props["width"], height = props["height"];
         const bool newRow = props["newRow"];
+        if (static_cast<bool>(props["tile"]))
+        {
+            const int col = tileIndex % 3, row = tileIndex / 3;
+            c->setBounds(chainArea.getX() + col * (tileWidth + tileGap), chainArea.getY() + 18 + row * (tileHeight + tileGap), tileWidth, tileHeight);
+            ++tileIndex;
+            continue;
+        }
         if (section == 0)
         {
             const int y = height == kKnobHeight ? top.getY() + 16 : top.getY() + 32;

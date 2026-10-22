@@ -122,3 +122,22 @@ Bypass / Mute / Solo mean in a delta mix, nor the latency rule across layers or 
 - Selecting a layer in the editor is saved with the state but is not an undo step.
 
 **Consequences:** M4/M6 pool tests were rewritten for the shared sizes (`kSize + 1` starved).
+
+## D6 — 2026-10-22 — Modules on EQ points; module-grid inspector (owner feedback F1–F3)
+
+**Owner answers:** chain limit stays **6** per point / region (grid 3 × 2); the band of an EQ point's
+modules comes **from the point's frequency and Q**.
+
+**Decision:**
+- An EQ point may carry a chain of 0–6 modules. The point's EQ stays in PRE-EQ (decision B); its modules
+  run like an FX region on the band `[f·(√(1 + 1/(4Q²)) − 1/(2Q)), f·(√(1 + 1/(4Q²)) + 1/(2Q))]` (the
+  edges of a band-pass with that centre and Q; for every shape), on the point's channel component, node
+  mix 1. Turning the point off turns its modules off (tails ring out as for a region).
+- FX regions and points with modules share the layer's 8 engine nodes. Each gets a **stable engine
+  slot** (0–7) stored in the state, so adding or deleting one never moves another's processing state
+  (before D6, deleting region 1 shifted all later regions to other engine nodes). A point with no
+  modules uses no slot. When all 8 are used, adding modules to another point is refused in the UI.
+- Inspector: the chain is a 3 × 2 grid of tiles in processing order (left to right, then the next row);
+  an empty tile is "+" (adds a module at the end). Clicking a tile opens that module's page in the same
+  panel (On, Mix, type, move earlier/later, remove, parameters) with a back arrow to the grid.
+- An FX region keeps at least one module (as before); a point may have none.

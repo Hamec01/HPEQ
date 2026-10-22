@@ -117,19 +117,31 @@ LayerSnapshot makeSnapshot(const LayerState& layer)
         band.slopeDbPerOct = node.slopeDbPerOct;
         band.channel = node.channel;
     }
-    for (size_t i = 0; i < layer.fxNodes.size() && i < snapshot.fx.size(); ++i)
+    // D6: FX regions and EQ points with modules go to their stable engine nodes. The slots of a
+    // sanitized project are kept; an unsanitized layer gets the same assignment on a copy.
+    auto slotted = layer;
+    assignEngineSlots(slotted);
+    const auto fill = [](FxNodeParams& fx, bool active, double lowHz, double highHz, float mix, ChannelMode channel,
+                         const std::vector<FxSlotState>& chain)
     {
-        const auto& node = layer.fxNodes[i];
-        auto& fx = snapshot.fx[i];
-        fx.active = node.enabled;
-        fx.lowHz = static_cast<float>(node.lowHz);
-        fx.highHz = static_cast<float>(node.highHz);
-        fx.mix = node.mix;
-        fx.channel = node.channel;
-        fx.numSlots = static_cast<int>(std::min(node.chain.size(), fx.slots.size()));
+        fx.active = active;
+        fx.lowHz = static_cast<float>(lowHz);
+        fx.highHz = static_cast<float>(highHz);
+        fx.mix = mix;
+        fx.channel = channel;
+        fx.numSlots = static_cast<int>(std::min(chain.size(), fx.slots.size()));
         for (int s = 0; s < fx.numSlots; ++s)
-            fx.slots[static_cast<size_t>(s)] = makeSlot(node.chain[static_cast<size_t>(s)]);
-    }
+            fx.slots[static_cast<size_t>(s)] = makeSlot(chain[static_cast<size_t>(s)]);
+    };
+    for (const auto& node : slotted.fxNodes)
+        if (node.engineSlot >= 0)
+            fill(snapshot.fx[static_cast<size_t>(node.engineSlot)], node.enabled, node.lowHz, node.highHz, node.mix, node.channel, node.chain);
+    for (const auto& node : slotted.eqNodes)
+        if (node.engineSlot >= 0)
+        {
+            const auto [low, high] = pointModuleBandHz(node);
+            fill(snapshot.fx[static_cast<size_t>(node.engineSlot)], node.enabled, low, high, 1.0f, node.channel, node.chain);
+        }
     return snapshot;
 }
 } // namespace hpeq::dsp

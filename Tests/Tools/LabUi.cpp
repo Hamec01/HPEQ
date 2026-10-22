@@ -133,6 +133,30 @@ int runUiSnapshots(const juce::File& out)
         processor->dispatchPendingMessages();
     }
 
+    // D6: modules on an EQ point (grid), a region's grid, one module's page.
+    {
+        auto withModules = processor->getProject();
+        for (auto& n : withModules.layers[0].eqNodes)
+            if (n.id == bellId)
+            {
+                FxSlotState a, b;
+                a.type = FxType::Saturator;
+                b.type = FxType::Compressor;
+                n.chain = { a, b };
+            }
+        processor->setProject(withModules);
+        processor->dispatchPendingMessages();
+        editor->updateAnalysisNow();
+        editor->selectNode(false, bellId, -1);
+        save("hpeq_d6_point_modules_grid.png");
+        editor->selectNode(true, compId, -1);
+        save("hpeq_d6_region_modules_grid.png");
+        editor->selectNode(true, compId, 0);
+        save("hpeq_d6_module_page.png");
+        processor->setProject(project);
+        processor->dispatchPendingMessages();
+    }
+
     // UI frame cost: analysis update (FFT x2) + full repaint at this size, as the 30 Hz timer does.
     editor->showDifference(false);
     editor->selectNode(true, compId);

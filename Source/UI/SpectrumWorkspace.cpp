@@ -115,6 +115,28 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
                    juce::Justification::centredLeft);
     }
 
+    // Module bands of EQ points (D6): where the point's modules act, from its frequency and Q.
+    for (const auto& n : layer.eqNodes)
+    {
+        if (n.chain.empty())
+            continue;
+        const auto [lowHz, highHz] = pointModuleBandHz(n);
+        const float x0 = FrequencyAxis::xFor(lowHz, plot), x1 = FrequencyAxis::xFor(highHz, plot);
+        const bool selected = selection.isEq(n.id);
+        g.setColour(colours::eqNode.withAlpha(n.enabled ? (selected ? 0.16f : 0.08f) : 0.03f));
+        g.fillRect(juce::Rectangle<float>(x0, plot.getY(), x1 - x0, plot.getHeight()));
+        g.setColour(colours::eqNode.withAlpha(n.enabled ? 0.55f : 0.25f));
+        const float dash[] { 4.0f, 4.0f };
+        g.drawDashedLine(juce::Line<float>(x0, plot.getY(), x0, plot.getBottom()), dash, 2);
+        g.drawDashedLine(juce::Line<float>(x1, plot.getY(), x1, plot.getBottom()), dash, 2);
+        juce::StringArray names;
+        for (const auto& m : n.chain)
+            names.add(fxName(m.type));
+        g.setFont(juce::FontOptions(10.5f, selected ? juce::Font::bold : juce::Font::plain));
+        g.drawText(names.joinIntoString(" > "), juce::Rectangle<float>(x0 + 4, plot.getBottom() - 16, juce::jmax(120.0f, x1 - x0), 14),
+                   juce::Justification::centredLeft);
+    }
+
     // Analyser.
     const auto& inDb = analysis.inputSpectrum();
     const auto& outDb = analysis.outputSpectrum();
@@ -224,7 +246,10 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
         g.setColour(colours::panel);
         g.fillEllipse(x - kPointRadius, y - kPointRadius, 2 * kPointRadius, 2 * kPointRadius);
         g.setColour(n.enabled ? colours::eqNode : colours::dim);
+        if (!n.chain.empty())
+            g.fillEllipse(x - kPointRadius, y - kPointRadius, 2 * kPointRadius, 2 * kPointRadius);
         g.drawEllipse(x - kPointRadius, y - kPointRadius, 2 * kPointRadius, 2 * kPointRadius, selected ? 2.5f : 1.5f);
+        g.setColour(!n.chain.empty() ? colours::panel : (n.enabled ? colours::eqNode : colours::dim));
         g.setFont(10.0f);
         g.drawText(juce::String(i + 1), juce::Rectangle<float>(x - kPointRadius, y - kPointRadius, 2 * kPointRadius, 2 * kPointRadius), juce::Justification::centred);
         if (selected)
@@ -283,7 +308,7 @@ void SpectrumWorkspace::select(Selection::Kind kind, std::uint32_t id)
 {
     selection.kind = kind;
     selection.id = id;
-    selection.slot = 0;
+    selection.slot = -1;
     if (onSelectionChanged)
         onSelectionChanged();
     repaint();
@@ -429,12 +454,26 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
     for (size_t i = 0; i < kShapes.size(); ++i)
         eqMenu.addItem(static_cast<int>(100 + i), shapeName(kShapes[i]));
     for (size_t i = 0; i < kFxTypes.size(); ++i)
-        fxMenu.addItem(static_cast<int>(200 + i), fxName(kFxTypes[i]) + (isFxAvailable(kFxTypes[i]) ? "" : "  (M6)"), isFxAvailable(kFxTypes[i]));
+        fxMenu.addItem(static_cast<int>(200 + i), fxName(kFxTypes[i]));
+    const auto project = processor.getProject();
+    const auto& shown = selectedLayer(project);
+    const bool bandFree = freeEngineSlots(shown) > 0;
+    bool pointHasModules = false, pointFull = false;
+    for (const auto& n : shown.eqNodes)
+        if (n.id == hit.id)
+        {
+            pointHasModules = !n.chain.empty();
+            pointFull = n.chain.size() >= static_cast<size_t>(kMaxFxPerNode);
+        }
+    juce::PopupMenu moduleMenu;
+    for (size_t i = 0; i < kFxTypes.size(); ++i)
+        moduleMenu.addItem(static_cast<int>(300 + i), fxName(kFxTypes[i]));
 
     if (hit.drag == Drag::EqPoint)
     {
         menu.addSectionHeader("EQ point");
         menu.addSubMenu("Change shape", eqMenu);
+        menu.addSubMenu("Add module on this point", moduleMenu, !pointFull && (pointHasModules || bandFree));
         menu.addItem(1, "Enable / disable");
         menu.addItem(2, "Delete");
     }
@@ -448,7 +487,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
     {
         menu.addSectionHeader("At " + formatHz(hz));
         menu.addSubMenu("Add EQ point", eqMenu);
-        menu.addSubMenu("Add FX region (one octave)", fxMenu);
+        menu.addSubMenu("Add FX region (one octave)", fxMenu, bandFree);
     }
 
     juce::Component::SafePointer<SpectrumWorkspace> safe(this);
@@ -477,6 +516,14 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
                     if (!isGainShapeUi(it->shape))
                         it->gainDb = 0.0;
                 }
+                else if (result >= 300 && it->chain.size() < static_cast<size_t>(kMaxFxPerNode))
+                {
+                    FxSlotState m;
+                    m.type = kFxTypes[static_cast<size_t>(result - 300)];
+                    it->chain.push_back(m);
+                    newId = it->id;
+                    newKind = Selection::Kind::Eq;
+                }
             }
             else if (hit.drag != Drag::None)
             {
@@ -497,7 +544,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
                 layer.eqNodes.push_back(n);
                 newKind = Selection::Kind::Eq;
             }
-            else if (result >= 200 && layer.fxNodes.size() < static_cast<size_t>(kMaxFxNodesPerLayer))
+            else if (result >= 200 && result < 300 && freeEngineSlots(layer) > 0)
             {
                 FxNodeState n;
                 n.id = newId = p.nextNodeId++;

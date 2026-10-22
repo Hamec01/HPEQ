@@ -233,7 +233,7 @@ public:
 
         beginTest("Preset compatibility: the committed v1 state (M8) loads, re-saves identically and renders; a minimal old-style v1 tree loads with defaults");
         {
-            const auto fixture = juce::File(HPEQ_TEST_FIXTURES_DIR).getChildFile("state_v1_m8.xml");
+            const auto fixture = juce::File(HPEQ_TEST_FIXTURES_DIR).getChildFile("state_v1_d6.xml"); // canonical: written by the current build (D6 adds engine slots, point modules)
             expect(fixture.existsAsFile(), fixture.getFullPathName());
             const auto xml = juce::parseXML(fixture);
             expect(xml != nullptr);
@@ -262,20 +262,22 @@ public:
                     nodes += static_cast<int>(layer.eqNodes.size() + layer.fxNodes.size());
                 expect(nodes > 0, "fixture loaded as an empty project");
             }
-            // The same project as written by the M7 build (JUCE number formatting): loads and renders.
-            if (const auto m7 = juce::parseXML(juce::File(HPEQ_TEST_FIXTURES_DIR).getChildFile("state_v1_m7_writer.xml")))
+            // States written by earlier builds (M7: JUCE number formatting; M8: before engine slots) load.
+            for (const auto* name : { "state_v1_m7_writer.xml", "state_v1_m8_writer.xml" })
             {
+                const auto earlier = juce::parseXML(juce::File(HPEQ_TEST_FIXTURES_DIR).getChildFile(name));
+                expect(earlier != nullptr, juce::String(name) + " missing");
+                if (earlier == nullptr)
+                    continue;
                 juce::MemoryBlock data;
-                juce::AudioProcessor::copyXmlToBinary(*m7, data);
+                juce::AudioProcessor::copyXmlToBinary(*earlier, data);
                 auto plugin = std::make_unique<FxPluginProcessor>();
                 plugin->setStateInformation(data.getData(), static_cast<int>(data.getSize()));
                 int nodes = 0;
                 for (const auto& layer : plugin->getProject().layers)
                     nodes += static_cast<int>(layer.eqNodes.size() + layer.fxNodes.size());
-                expect(nodes > 0, "M7-written state loaded as an empty project");
+                expect(nodes > 0, juce::String(name) + " loaded as an empty project");
             }
-            else
-                expect(false, "state_v1_m7_writer.xml missing");
             // Old-style tree: only the fields an M1-era project wrote (no layer controls, no slot params).
             const auto old = juce::parseXML(R"(<HpeqProject schemaVersion="1" routing="Parallel" selectedLayer="0" nextNodeId="3">
                 <Layer index="0" name="Layer 1" enabled="1"><EqNode id="1" shape="Bell" frequencyHz="1000" gainDb="3"/>

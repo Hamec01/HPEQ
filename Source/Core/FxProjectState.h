@@ -28,6 +28,14 @@ enum class EqShape { Bell, LowShelf, HighShelf, LowCut, HighCut, Notch, BandPass
 enum class FxType { Compressor, Limiter, Reverb, Delay, TransientShaper, Saturator, MonstaFx, StereoProcessor, GateExpander, Gain };
 enum class LayerRouting { Parallel, Serial };
 
+struct FxSlotState
+{
+    FxType type = FxType::Compressor;
+    bool enabled = true;
+    float mix = 1.0f;
+    juce::NamedValueSet parameters; // processor-specific, defined with each processor
+};
+
 struct EqNodeState
 {
     std::uint32_t id = 0;
@@ -38,15 +46,11 @@ struct EqNodeState
     double q = 0.707;
     int slopeDbPerOct = 12; // cuts only; the DSP decides which slopes it really supports
     ChannelMode channel = ChannelMode::Stereo;
+    // D6: optional modules on the point's band (after PRE-EQ), 0..kMaxFxPerNode, processed in order.
+    std::vector<FxSlotState> chain;
+    int engineSlot = -1; // stable engine node 0..7 while the chain is not empty (assignEngineSlots)
 };
 
-struct FxSlotState
-{
-    FxType type = FxType::Compressor;
-    bool enabled = true;
-    float mix = 1.0f;
-    juce::NamedValueSet parameters; // processor-specific, defined with each processor
-};
 
 struct FxNodeState
 {
@@ -58,6 +62,7 @@ struct FxNodeState
     float mix = 1.0f;
     ChannelMode channel = ChannelMode::Stereo;
     std::vector<FxSlotState> chain { FxSlotState{} }; // 1..kMaxFxPerNode, processed in order
+    int engineSlot = -1; // stable engine node 0..7 (assignEngineSlots)
 };
 
 struct LayerState
@@ -92,6 +97,15 @@ inline const LayerState& selectedLayer(const FxProjectState& p) { return p.layer
 // Copies `source` (nodes, EQ, controls, name) into layer `targetIndex`, giving every node a fresh id
 // from nextNodeId so ids stay unique in the project.
 void copyLayerInto(FxProjectState&, const LayerState& source, int targetIndex);
+// D6: band of an EQ point's modules, the edges of a band-pass with the point's frequency and Q.
+std::pair<double, double> pointModuleBandHz(const EqNodeState&);
+// D6: gives every FX region and every EQ point with modules a stable engine node (0..7): valid unique
+// slots are kept, the rest get the lowest free slot (regions first, then points, in list order); points
+// without modules get -1. Points that do not fit lose their modules (the UI prevents that case).
+void assignEngineSlots(LayerState&);
+// Free engine nodes of a layer (after assignEngineSlots semantics).
+int freeEngineSlots(const LayerState&);
+
 // True when the layer has anything that changes the sound (nodes or non-neutral controls).
 bool layerHasContent(const LayerState&);
 

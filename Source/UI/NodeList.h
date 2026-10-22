@@ -55,6 +55,8 @@ public:
             juce::String text = "EQ " + juce::String(i + 1) + "  " + shapeName(n.shape) + "  " + formatHz(n.frequencyHz);
             if (isGainShapeUi(n.shape))
                 text << "  " << juce::String(n.gainDb, 1) << " dB";
+            if (!n.chain.empty())
+                text << "  +" << static_cast<int>(n.chain.size()) << (n.chain.size() == 1 ? " module" : " modules");
             drawRow(colours::eqNode, text, n.enabled, selection.isEq(n.id));
         }
         for (int i = 0; i < static_cast<int>(layer.fxNodes.size()); ++i)
@@ -111,7 +113,7 @@ public:
         {
             selection.kind = isEq ? Selection::Kind::Eq : Selection::Kind::Fx;
             selection.id = id;
-            selection.slot = 0;
+            selection.slot = -1;
         }
         if (onSelectionChanged)
             onSelectionChanged();
@@ -168,7 +170,7 @@ private:
             {
                 safe->selection.kind = eq ? Selection::Kind::Eq : Selection::Kind::Fx;
                 safe->selection.id = newId;
-                safe->selection.slot = 0;
+                safe->selection.slot = -1;
                 if (safe->onSelectionChanged)
                     safe->onSelectionChanged();
             }

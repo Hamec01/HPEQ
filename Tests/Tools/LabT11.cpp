@@ -53,6 +53,14 @@ FxProjectState randomProject(DeterministicRandom& random)
             n.gainDb = random.nextBipolar() * 9.0;
             n.q = 0.4 + unit() * 3.0;
             n.slopeDbPerOct = 12 * (1 + pick(4));
+            if (pick(3) == 0) // D6: modules on the point's band
+                for (int m = 1 + pick(3); m > 0; --m)
+                {
+                    FxSlotState slot;
+                    slot.type = types[pick(10)];
+                    slot.mix = static_cast<float>(unit());
+                    n.chain.push_back(slot);
+                }
             layer.eqNodes.push_back(n);
         }
         for (int f = pick(4); f > 0; --f)

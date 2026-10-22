@@ -40,7 +40,7 @@ struct Selection
     enum class Kind { None, Eq, Fx };
     Kind kind = Kind::None;
     std::uint32_t id = 0;
-    int slot = 0; // FX node: selected chain slot in the inspector
+    int slot = -1; // selected module in the inspector; -1 = the module grid (D6)
 
     bool isEq(std::uint32_t nodeId) const noexcept { return kind == Kind::Eq && id == nodeId; }
     bool isFx(std::uint32_t nodeId) const noexcept { return kind == Kind::Fx && id == nodeId; }

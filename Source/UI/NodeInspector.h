@@ -9,8 +9,8 @@ namespace hpeq::ui
 {
 // Bottom panel: controls of the ONE selected EQ point or FX region (03 "не отображать все ручки всех
 // эффектов"). Values are read from the project on every change; edits go through editProject. Every
-// slider accepts typed values. FX regions show their chain (up to 6 slots, D2) and the parameters of
-// the selected slot, plus live gain reduction (compressor) and reverb-pool starvation.
+// slider accepts typed values. FX regions and EQ points show their modules as a 3 x 2 grid (D2, D6);
+// a tile opens that module's page (a back arrow returns), with live gain reduction and pool starvation.
 class NodeInspector final : public juce::Component, private juce::Timer
 {
 public:
@@ -46,6 +46,14 @@ private:
     void editFx(const juce::String& name, const std::function<void(FxNodeState&)>&);
     void beginEdit(const juce::String& name);
     static const std::vector<ParamDef>& paramsFor(FxType);
+    // D6: the module chain of the selected FX region or EQ point (grid, or one module's page).
+    void buildModules(const std::vector<FxSlotState>& chain, bool region);
+    // Points into the given project: the caller keeps it alive while using the result.
+    const std::vector<FxSlotState>* selectedChain(const FxProjectState&) const;
+    int selectedEngineSlot(const FxProjectState&) const;
+    void editChain(const juce::String& name, const std::function<void(std::vector<FxSlotState>&)>&);
+    void addModule(FxType);
+    void moveModule(int index, int delta);
 
     FxPluginProcessor& processor;
     Selection& selection;
@@ -56,5 +64,6 @@ private:
     juce::String title, status;
     bool dragging = false;
     int nodeIndex = -1;
+    bool showingGrid = true;
 };
 } // namespace hpeq::ui

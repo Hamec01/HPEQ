@@ -19,6 +19,7 @@ const juce::Identifier layer { "Layer" };
 const juce::Identifier eqNode { "EqNode" };
 const juce::Identifier fxNode { "FxNode" };
 const juce::Identifier slot { "FxSlot" };
+const juce::Identifier engineSlot { "engineSlot" };
 const juce::Identifier params { "Params" };
 const juce::Identifier index { "index" };
 const juce::Identifier id { "id" };
@@ -203,6 +204,64 @@ void copyLayerInto(FxProjectState& project, const LayerState& source, int target
         n.id = project.nextNodeId++;
 }
 
+std::pair<double, double> pointModuleBandHz(const EqNodeState& node)
+{
+    const double q = std::max(0.025, node.q);
+    const double half = 1.0 / (2.0 * q);
+    const double root = std::sqrt(1.0 + half * half);
+    return { node.frequencyHz * (root - half), node.frequencyHz * (root + half) };
+}
+
+void assignEngineSlots(LayerState& layer)
+{
+    std::array<bool, kMaxFxNodesPerLayer> used {};
+    const auto keep = [&used](int& slot)
+    {
+        if (slot >= 0 && slot < kMaxFxNodesPerLayer && !used[static_cast<size_t>(slot)])
+            used[static_cast<size_t>(slot)] = true;
+        else
+            slot = -1;
+    };
+    for (auto& n : layer.fxNodes)
+        keep(n.engineSlot);
+    for (auto& n : layer.eqNodes)
+    {
+        if (n.chain.empty())
+            n.engineSlot = -1;
+        else
+            keep(n.engineSlot);
+    }
+    const auto take = [&used]
+    {
+        for (int s = 0; s < kMaxFxNodesPerLayer; ++s)
+            if (!used[static_cast<size_t>(s)])
+            {
+                used[static_cast<size_t>(s)] = true;
+                return s;
+            }
+        return -1;
+    };
+    for (auto& n : layer.fxNodes)
+        if (n.engineSlot < 0)
+            n.engineSlot = take();
+    for (auto& n : layer.eqNodes)
+        if (!n.chain.empty() && n.engineSlot < 0)
+            if ((n.engineSlot = take()) < 0)
+                n.chain.clear();
+}
+
+int freeEngineSlots(const LayerState& layer)
+{
+    auto copy = layer;
+    assignEngineSlots(copy);
+    int used = 0;
+    for (const auto& n : copy.fxNodes)
+        used += n.engineSlot >= 0 ? 1 : 0;
+    for (const auto& n : copy.eqNodes)
+        used += n.engineSlot >= 0 ? 1 : 0;
+    return kMaxFxNodesPerLayer - used;
+}
+
 bool layerHasContent(const LayerState& layer)
 {
     return !layer.eqNodes.empty() || !layer.fxNodes.empty() || layer.gainDb != 0.0f || layer.pan != 0.0f || layer.width != 1.0f
@@ -231,6 +290,10 @@ void sanitize(FxProjectState& project)
             node.gainDb = clampFinite(node.gainDb, -36.0, 36.0, 0.0);
             node.q = clampFinite(node.q, 0.025, 40.0, 0.707);
             node.slopeDbPerOct = nearestAllowedSlope(node.slopeDbPerOct);
+            if (node.chain.size() > static_cast<size_t>(kMaxFxPerNode))
+                node.chain.resize(static_cast<size_t>(kMaxFxPerNode));
+            for (auto& slot : node.chain)
+                slot.mix = clampFinite(slot.mix, 0.0f, 1.0f, 1.0f);
             maxId = std::max(maxId, node.id);
         }
 
@@ -251,6 +314,7 @@ void sanitize(FxProjectState& project)
                 slot.mix = clampFinite(slot.mix, 0.0f, 1.0f, 1.0f);
             maxId = std::max(maxId, node.id);
         }
+        assignEngineSlots(layer);
     }
     project.nextNodeId = std::max(project.nextNodeId, maxId + 1);
 }
@@ -289,6 +353,12 @@ juce::ValueTree toValueTree(const FxProjectState& project)
             nt.setProperty(ids::q, exactText(node.q), nullptr);
             nt.setProperty(ids::slope, node.slopeDbPerOct, nullptr);
             nt.setProperty(ids::channel, channelNames.name(node.channel), nullptr);
+            if (!node.chain.empty())
+            {
+                nt.setProperty(ids::engineSlot, node.engineSlot, nullptr);
+                for (const auto& slot : node.chain)
+                    nt.appendChild(slotToTree(slot), nullptr);
+            }
             lt.appendChild(nt, nullptr);
         }
 
@@ -302,6 +372,7 @@ juce::ValueTree toValueTree(const FxProjectState& project)
             nt.setProperty(ids::highHz, exactText(node.highHz), nullptr);
             nt.setProperty(ids::mix, exactText(node.mix), nullptr);
             nt.setProperty(ids::channel, channelNames.name(node.channel), nullptr);
+            nt.setProperty(ids::engineSlot, node.engineSlot, nullptr);
             for (const auto& slot : node.chain)
                 nt.appendChild(slotToTree(slot), nullptr);
             lt.appendChild(nt, nullptr);
@@ -364,6 +435,10 @@ std::optional<FxProjectState> fromValueTree(const juce::ValueTree& root, juce::S
                 node.q = readDouble(nt, ids::q, 0.707);
                 node.slopeDbPerOct = nt.getProperty(ids::slope, 12);
                 node.channel = channelNames.parse(nt[ids::channel], ChannelMode::Stereo);
+                node.engineSlot = nt.getProperty(ids::engineSlot, -1);
+                for (const auto& st : nt)
+                    if (st.hasType(ids::slot))
+                        node.chain.push_back(slotFromTree(st));
                 layer.eqNodes.push_back(node);
             }
             else if (nt.hasType(ids::fxNode))
@@ -376,6 +451,7 @@ std::optional<FxProjectState> fromValueTree(const juce::ValueTree& root, juce::S
                 node.highHz = readDouble(nt, ids::highHz, 700.0);
                 node.mix = static_cast<float>(readDouble(nt, ids::mix, 1.0));
                 node.channel = channelNames.parse(nt[ids::channel], ChannelMode::Stereo);
+                node.engineSlot = nt.getProperty(ids::engineSlot, -1);
                 node.chain.clear();
                 for (const auto& st : nt)
                     if (st.hasType(ids::slot))
