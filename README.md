@@ -20,7 +20,7 @@ owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECIS
 | M5 one-layer UI, real waveform/spectrum, undo, A/B | done, Gate 5 passed | [M5_REPORT](docs/fx-addon/reports/M5_REPORT.md) |
 | M6 Saturator, Transient, Delay, Monsta FX, Stereo, Gate, Limiter; PDC | done, Gate 6 passed | [M6_REPORT](docs/fx-addon/reports/M6_REPORT.md) |
 | M7 10 layers, Parallel / Serial, layer controls | done, Gate 7 passed | [M7_REPORT](docs/fx-addon/reports/M7_REPORT.md) |
-| M8 validation, loudness / true peak, CPU and memory pass, beta 0.1.0 | done; pluginval and DAW checks BLOCKED | [M8_REPORT](docs/fx-addon/reports/M8_REPORT.md) |
+| M8 validation, loudness / true peak, CPU and memory pass, beta 0.1.0 | done; pluginval 5–10 pass; DAW checks BLOCKED | [M8_REPORT](docs/fx-addon/reports/M8_REPORT.md) |
 
 Ten layers (Parallel delta or Serial), each PRE-EQ (9 shapes, cuts 6-96 dB/oct, L/R/M/S) then up to 8
 frequency-range FX regions with chains of up to 6 processors; the frequency core is H3 (DECISIONS D4),

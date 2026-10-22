@@ -36,6 +36,7 @@ build/Release/HPEQ_HostSmoke.exe --plugin …/HPEQ.vst3 --other …/HPDG.vst3 --
 HPEQ_Lab bench (A/B: dfd8406 vs M8, alternating, 3 rounds × 2 reps × 1500 blocks)   # reports/m8/cpu/ab_*.json
 HPEQ_Lab m7 (T12, both builds)                                   # reports/m8/t12_before, t12_after
 HPEQ_MEM_FS=<fs> HPEQ_Lab m7 (both builds, one process per rate)  # reports/m8/memory_private_mb.txt
+pluginval.exe --strictness-level N --validate build/HPEQ_artefacts/Release/VST3/HPEQ.vst3   # N = 5..10: 0 — SUCCESS each
 powershell -File scripts/package.ps1                             # 0 — dist/HPEQ-0.1.0-beta-win64.zip
 ```
 
@@ -87,6 +88,7 @@ the committed figure for the same build is 102 MB (method corrected here).
 | Preset compatibility: committed M8 v1 state re-saves identically and renders; the same project as written by M7 loads; a minimal M1-style tree loads with defaults | pass |
 | **T11 via the binary** (JUCE VST3 host): 200 random full projects + 36 rate×block items + 1 variable-block item | state identical after load + save **237/237**; latency **237/237**; renders bit-exact to in-process **57/57** (44.1–192 kHz × 32–4096 blocks, random 1–1500 blocks); re-opened instance **57/57** |
 | Instance + editor on desktop, 100 cycles; HPDG.vst3 still scans | pass |
+| **pluginval v1.0.4** (Tracktion, GitHub release, `pluginval_Windows.zip` SHA-256 `c08e61ce…715ab`), strictness 5, 6, 7, 8, 9, 10 | **SUCCESS** at every level: scan, cold/warm open, editor (also while processing), audio processing, non-releasing processing, state and state restoration, automation, parameter thread safety, background-thread state, buses, fuzz parameters. Steinberg's vst3 validator step skipped (validator not available). Logs: `m8/pluginval/` |
 | Release / Debug (CRT allocation hook) / ASan suites | 1025/1025 each; 0 audio-thread allocations incl. loudness meters |
 
 ## 7. Package
@@ -98,7 +100,7 @@ Release notes: [`docs/release/RELEASE_NOTES_0.1.0-beta.md`](../../release/RELEAS
 ## 8. Gate 8 — acceptance matrix
 
 Every row of `04_ACCEPTANCE_MATRIX.md` is now PASS or BLOCKED with evidence. **BLOCKED:**
-pluginval (not installed; downloading it needs the owner's OK), DAW checks (FL Studio / REAPER,
+Steinberg's vst3 validator (pluginval's step; the validator is part of the VST3 SDK, not built), DAW checks (FL Studio / REAPER,
 freeze/render, automation in a host), UBSan/TSan (not available with MSVC). No open high-severity bug
 known.
 
@@ -120,10 +122,12 @@ known.
 6. ASan build: CMake fetched JUCE 8.0.12 from GitHub through the project's FetchContent (same tag),
    because `HPEQ_JUCE_DIR` was not set in that shell — a download not agreed beforehand; the normal build
    uses the local checkout.
-7. Not verified: pluginval, any DAW, mouse gestures of the new controls.
+7. pluginval only exercises host-visible parameters (Output Gain, Bypass); regions and layers are not
+   host-automatable, so its fuzzing covers little of the DSP. That part is covered by T11 (237 random
+   projects through the binary), the M7 stress test and the unit suites.
+8. Not verified: any DAW, mouse gestures of the new controls.
 
 ## 10. Next
 
-Owner checks in FL Studio (the zip). With the owner's OK: download pluginval and run levels 5–10.
-Then the UI rework from the owner's feedback (BACKLOG F1–F3: modules on EQ points, module grid with
+Owner checks in FL Studio (the zip). Then the UI rework from the owner's feedback (BACKLOG F1–F3: modules on EQ points, module grid with
 a back arrow).

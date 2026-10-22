@@ -50,6 +50,6 @@ up to 10 layers, Parallel or Serial.
 - Pools shared by the whole project: 16 reverbs, 8 delays, 8 Monsta FX; an extra one is silent and
   marked in the inspector.
 - Not code-signed. Windows only; no macOS/Linux build.
-- Tested by the developer through the VST3 binary in a JUCE host (state, latency, sound at 6 sample
-  rates × 6 block sizes, 100 open/close cycles). **Not yet validated with pluginval or in DAWs other
-  than the owner's FL Studio check of an earlier build.**
+- Validated with pluginval 1.0.4 at strictness 5–10 (all passed) and through the VST3 binary in a JUCE
+  host (state, latency, sound at 6 sample rates × 6 block sizes, 100 open/close cycles). **Not yet
+  tested in DAWs other than the owner's FL Studio check of an earlier build.**
