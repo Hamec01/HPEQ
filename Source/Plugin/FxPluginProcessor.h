@@ -3,13 +3,14 @@
 #include <array>
 #include <atomic>
 #include <functional>
+#include <optional>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "Analysis/AudioCapture.h"
 #include "Core/FxProjectState.h"
 #include "DSP/DelayLine.h"
-#include "DSP/LayerEngine.h"
+#include "DSP/ProjectEngine.h"
 
 namespace hpeq
 {
@@ -59,6 +60,13 @@ public:
     void editProject(const juce::String& actionName, const std::function<void(FxProjectState&)>& change);
     juce::UndoManager& getUndoManager() noexcept { return undoManager; }
 
+    // The layer the editor shows (saved with the state, not an undoable edit).
+    void selectLayer(int index);
+    // Session clipboard for one layer (Copy / Paste); paste is undoable.
+    void copyLayer(int index);
+    bool canPasteLayer() const noexcept { return layerClipboard.has_value(); }
+    void pasteLayer(int index);
+
     // A/B comparison of two whole projects (not saved with the state; switching clears undo history).
     // A slot used for the first time starts as a copy of the current project.
     int getActiveAB() const noexcept { return activeAB; }
@@ -68,7 +76,7 @@ public:
     // Real input/output PCM for the analysers (UI thread reads).
     AudioCapture& getCapture() noexcept { return capture; }
     double getCurrentSampleRate() const noexcept { return currentSampleRate.load(std::memory_order_relaxed); }
-    const dsp::LayerEngine& getEngine() const noexcept { return engine; }
+    const dsp::ProjectEngine& getEngine() const noexcept { return engine; }
 
     struct MeterSnapshot
     {
@@ -88,7 +96,7 @@ private:
 
     mutable juce::CriticalSection projectLock; // never taken by processBlock; also serialises publish()
     FxProjectState project;
-    dsp::LayerEngine engine;
+    dsp::ProjectEngine engine;
     juce::AudioBuffer<float> dry;   // sized in prepareToPlay; longer host blocks are chunked
     dsp::AlignmentDelay dryAlign;   // delays the dry copy by the layer latency (bypass, capture)
     dsp::LinearRamp wetAmount;      // 1 = layer output, 0 = bypassed (dry)
@@ -97,12 +105,13 @@ private:
     std::atomic<double> tailSeconds { 0.0 };
     std::atomic<double> currentSampleRate { 48000.0 };
     std::atomic<double> hostBpm { 120.0 }; // last tempo seen from the play head (Delay tail estimate)
-    void updateLatencyAndTail(const dsp::LayerSnapshot&);
+    void updateLatencyAndTail(const FxProjectState&);
     AudioCapture capture;
     juce::UndoManager undoManager;
     std::array<FxProjectState, 2> abStore;
     std::array<bool, 2> abUsed { true, false };
     int activeAB = 0;
+    std::optional<LayerState> layerClipboard;
     std::atomic<float> inputPeak { 0.0f }, inputRms { 0.0f }, outputPeak { 0.0f }, outputRms { 0.0f };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FxPluginProcessor)

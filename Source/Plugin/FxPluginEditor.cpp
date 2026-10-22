@@ -3,6 +3,7 @@
 #include "Plugin/FxParameterContract.h"
 #include "Plugin/FxPluginProcessor.h"
 #include "UI/AnalysisModel.h"
+#include "UI/LayerControls.h"
 #include "UI/NodeInspector.h"
 #include "UI/NodeList.h"
 #include "UI/SpectrumWorkspace.h"
@@ -69,9 +70,11 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     inspector = std::make_unique<NodeInspector>(processor, *selection);
     inputMeter = std::make_unique<LevelMeter>("IN");
     outputMeter = std::make_unique<LevelMeter>("OUT");
+    layerControls = std::make_unique<LayerControls>(processor);
+    layerControls->onLayerChanged = [this] { layerSelected(); };
     workspace->onSelectionChanged = [this] { selectionChanged(); };
     nodeList->onSelectionChanged = [this] { selectionChanged(); };
-    for (auto* c : std::initializer_list<juce::Component*> { waveform.get(), workspace.get(), nodeList.get(), inspector.get(), inputMeter.get(), outputMeter.get() })
+    for (auto* c : std::initializer_list<juce::Component*> { waveform.get(), workspace.get(), nodeList.get(), inspector.get(), inputMeter.get(), outputMeter.get(), layerControls.get() })
         addAndMakeVisible(c);
 
     title.setText("HPEQ", juce::dontSendNotification);
@@ -80,15 +83,11 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     subtitle.setText("BETA  -  frequency-layer FX  (PRE-EQ > FX regions)", juce::dontSendNotification);
     subtitle.setColour(juce::Label::textColourId, colours::accent);
     subtitle.setFont(juce::FontOptions(11.0f));
-    unavailable.setText("Oversampling, quality modes, LUFS: not yet (M6/M8)", juce::dontSendNotification);
+    unavailable.setText("True peak, LUFS: not yet (M8)", juce::dontSendNotification);
     unavailable.setColour(juce::Label::textColourId, colours::dim);
     unavailable.setJustificationType(juce::Justification::centredRight);
     unavailable.setFont(juce::FontOptions(11.0f));
-    layerNote.setText("Layer 1 is processed. Layers 2-10, layer gain/mix/pan/width and Serial/Parallel routing arrive in M7.",
-                      juce::dontSendNotification);
-    layerNote.setColour(juce::Label::textColourId, colours::dim);
-    layerNote.setFont(juce::FontOptions(11.0f));
-    for (auto* l : { &title, &subtitle, &unavailable, &layerNote })
+    for (auto* l : { &title, &subtitle, &unavailable })
         addAndMakeVisible(*l);
 
     abA.setTooltip("Project A");
@@ -114,10 +113,7 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     for (int i = 0; i < static_cast<int>(layerButtons.size()); ++i)
     {
         auto& b = layerButtons[static_cast<size_t>(i)];
-        b.setButtonText(juce::String(i + 1));
-        styleTab(b, i == 0);
-        b.setEnabled(i == 0);
-        b.setTooltip(i == 0 ? "Layer 1 (processed)" : "Layer " + juce::String(i + 1) + ": not yet implemented (M7)");
+        b.onClick = [this, i] { processor.selectLayer(i); layerSelected(); };
         addAndMakeVisible(b);
     }
 
@@ -134,6 +130,7 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     bypassAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts, params::bypass.getParamID(), bypass);
 
     processor.addChangeListener(this);
+    updateLayerButtons();
     updateHeader();
     inspector->rebuild();
     setResizable(true, true);
@@ -162,6 +159,42 @@ void FxPluginEditor::updateHeader()
     repaint();
 }
 
+void FxPluginEditor::updateLayerButtons()
+{
+    // Number, then what the layer is doing: "*" has content, "off" bypassed, "M" muted, "S" soloed.
+    const auto project = processor.getProject();
+    for (int i = 0; i < kNumLayers; ++i)
+    {
+        const auto& layer = project.layers[static_cast<size_t>(i)];
+        auto& b = layerButtons[static_cast<size_t>(i)];
+        juce::String text(i + 1);
+        juce::StringArray tip { "Layer " + juce::String(i + 1) };
+        if (layerHasContent(layer))
+        {
+            text << "*";
+            tip.add(juce::String(static_cast<int>(layer.eqNodes.size())) + " EQ, " + juce::String(static_cast<int>(layer.fxNodes.size())) + " FX");
+        }
+        if (!layer.enabled) { text << " off"; tip.add("bypassed"); }
+        if (layer.mute) { text << " M"; tip.add("muted"); }
+        if (layer.solo) { text << " S"; tip.add("solo"); }
+        b.setButtonText(text);
+        b.setTooltip(tip.joinIntoString(", "));
+        styleTab(b, i == project.selectedLayer);
+        b.setAlpha(layer.enabled ? 1.0f : 0.55f);
+    }
+}
+
+void FxPluginEditor::layerSelected()
+{
+    // Node ids belong to one layer: drop the selection when the shown layer changes.
+    selection->kind = Selection::Kind::None;
+    selection->id = 0;
+    lastShownLayer = processor.getProject().selectedLayer;
+    updateLayerButtons();
+    layerControls->refresh();
+    selectionChanged();
+}
+
 void FxPluginEditor::selectionChanged()
 {
     inspector->rebuild();
@@ -171,7 +204,12 @@ void FxPluginEditor::selectionChanged()
 
 void FxPluginEditor::changeListenerCallback(juce::ChangeBroadcaster*)
 {
-    // The project changed (edit, undo/redo, A/B, host state): refresh everything that shows it.
+    // The project changed (edit, undo/redo, A/B, host state, layer selection): refresh what shows it.
+    const int shown = processor.getProject().selectedLayer;
+    if (shown != lastShownLayer)
+        layerSelected();
+    updateLayerButtons();
+    layerControls->refresh();
     inspector->refresh();
     nodeList->repaint();
     workspace->repaint();
@@ -247,10 +285,12 @@ void FxPluginEditor::resized()
     area.removeFromTop(8);
 
     auto footer = area.removeFromBottom(28);
-    layerNote.setBounds(footer.removeFromLeft(footer.getWidth() - 470));
+    footer.removeFromLeft(footer.getWidth() - 470);
     outputGainLabel.setBounds(footer.removeFromLeft(56));
     outputGain.setBounds(footer.removeFromLeft(300));
     bypass.setBounds(footer.removeFromLeft(100).reduced(8, 0));
+    area.removeFromBottom(6);
+    layerControls->setBounds(area.removeFromBottom(32));
     area.removeFromBottom(6);
 
     auto bottom = area.removeFromBottom(juce::jmax(240, area.getHeight() * 36 / 100));

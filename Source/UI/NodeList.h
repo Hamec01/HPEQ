@@ -7,7 +7,7 @@
 
 namespace hpeq::ui
 {
-// Left panel: every EQ point and FX region of layer 1, in processing order (PRE-EQ first, decision B).
+// Left panel: every EQ point and FX region of the selected layer, in processing order (PRE-EQ first, decision B).
 // Click selects; the dot toggles enable; x deletes; "+" adds. Painted, no child components.
 class NodeList final : public juce::Component
 {
@@ -19,14 +19,14 @@ public:
     void paint(juce::Graphics& g) override
     {
         const auto project = processor.getProject();
-        const auto& layer = project.layers[0];
+        const auto& layer = selectedLayer(project);
         auto area = getLocalBounds().toFloat();
         g.setColour(colours::panel);
         g.fillRoundedRectangle(area, 6.0f);
         auto header = area.removeFromTop(kRow + 4.0f).reduced(10.0f, 4.0f);
         g.setColour(colours::text);
         g.setFont(juce::FontOptions(12.5f, juce::Font::bold));
-        g.drawText("NODES  (Layer 1)", header, juce::Justification::centredLeft);
+        g.drawText("NODES  (Layer " + juce::String(project.selectedLayer + 1) + ")", header, juce::Justification::centredLeft);
         g.drawText("+", header.removeFromRight(20.0f), juce::Justification::centred);
 
         int row = 0;
@@ -77,7 +77,7 @@ public:
             return;
         }
         const auto project = processor.getProject();
-        const auto& layer = project.layers[0];
+        const auto& layer = selectedLayer(project);
         const int row = static_cast<int>((e.position.y - (kRow + 6.0f)) / kRow);
         const int eqCount = static_cast<int>(layer.eqNodes.size());
         const int total = eqCount + static_cast<int>(layer.fxNodes.size());
@@ -91,7 +91,7 @@ public:
             processor.getUndoManager().beginNewTransaction("Delete node");
             processor.editProject("Delete node", [&](FxProjectState& p)
             {
-                auto& l = p.layers[0];
+                auto& l = selectedLayer(p);
                 if (isEq) l.eqNodes.erase(l.eqNodes.begin() + row);
                 else l.fxNodes.erase(l.fxNodes.begin() + (row - eqCount));
             });
@@ -102,7 +102,7 @@ public:
             processor.getUndoManager().beginNewTransaction("Enable node");
             processor.editProject("Enable node", [&](FxProjectState& p)
             {
-                auto& l = p.layers[0];
+                auto& l = selectedLayer(p);
                 if (isEq) l.eqNodes[static_cast<size_t>(row)].enabled = !l.eqNodes[static_cast<size_t>(row)].enabled;
                 else l.fxNodes[static_cast<size_t>(row - eqCount)].enabled = !l.fxNodes[static_cast<size_t>(row - eqCount)].enabled;
             });
@@ -143,7 +143,7 @@ private:
             safe->processor.getUndoManager().beginNewTransaction("Add node");
             safe->processor.editProject("Add node", [&](FxProjectState& p)
             {
-                auto& l = p.layers[0];
+                auto& l = selectedLayer(p);
                 if (eq && l.eqNodes.size() < static_cast<size_t>(kMaxEqNodesPerLayer))
                 {
                     EqNodeState n;

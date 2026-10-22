@@ -14,10 +14,11 @@
 
 namespace hpeq::dsp
 {
-// Large processors shared by the slots of one layer (memory allocated once, in prepare()).
-using ReverbPool = SharedPool<ReverbProcessor, 8>;
-using DelayPool = SharedPool<DelayProcessor, 4>;
-using MonstaPool = SharedPool<MonstaProcessor, 4>;
+// Large processors shared by the slots of all layers of a project (memory allocated once, in
+// prepare(); M7: one set per project instead of one per layer, DECISIONS D5).
+using ReverbPool = SharedPool<ReverbProcessor, 16>;
+using DelayPool = SharedPool<DelayProcessor, 8>;
+using MonstaPool = SharedPool<MonstaProcessor, 8>;
 
 struct LayerPools
 {

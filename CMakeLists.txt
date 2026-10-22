@@ -65,12 +65,14 @@ target_sources(HPEQ
         Source/DSP/Processors.cpp
         Source/DSP/ReverbProcessor.cpp
         Source/DSP/ProcessorsM6.cpp
+        Source/DSP/ProjectEngine.cpp
         Source/DSP/CrossoverTree.cpp
         Source/DSP/EqDesign.cpp
         Source/Plugin/FxPluginProcessor.cpp
         Source/Plugin/FxPluginEditor.cpp
         Source/UI/AnalysisModel.cpp
         Source/UI/NodeInspector.cpp
+        Source/UI/LayerControls.cpp
         Source/UI/SpectrumWorkspace.cpp)
 
 target_include_directories(HPEQ PUBLIC Source)
@@ -106,6 +108,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/EqTests.cpp
     Tests/Unit/DynamicsReverbTests.cpp
     Tests/Unit/M6Tests.cpp
+    Tests/Unit/M7Tests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_link_libraries(HPEQ_Tests PRIVATE HPEQ)
@@ -118,6 +121,7 @@ add_executable(HPEQ_Lab
     Tests/Tools/LabM3.cpp
     Tests/Tools/LabM4.cpp
     Tests/Tools/LabM6.cpp
+    Tests/Tools/LabM7.cpp
     Tests/Tools/LabBench.cpp
     Tests/Tools/LabUi.cpp)
 target_include_directories(HPEQ_Lab PRIVATE Tests)

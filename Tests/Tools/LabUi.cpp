@@ -109,6 +109,30 @@ int runUiSnapshots(const juce::File& out)
     editor->showDifference(true);
     save("hpeq_m5_difference.png");
 
+    // M7: more layers, layer 2 selected (a copy of layer 1 with width / pan, Side mode), 3 muted, 4 bypassed.
+    {
+        auto layered = processor->getProject();
+        copyLayerInto(layered, layered.layers[0], 1);
+        layered.layers[1].width = 1.4f;
+        layered.layers[1].pan = -0.2f;
+        layered.layers[1].mix = 0.7f;
+        layered.layers[1].channel = ChannelMode::Side;
+        copyLayerInto(layered, layered.layers[0], 2);
+        layered.layers[2].mute = true;
+        copyLayerInto(layered, layered.layers[0], 3);
+        layered.layers[3].enabled = false;
+        layered.routing = LayerRouting::Serial;
+        processor->setProject(layered);
+        processor->selectLayer(1);
+        processor->dispatchPendingMessages(); // change message -> editor
+        editor->showDifference(false);
+        editor->updateAnalysisNow();
+        save("hpeq_m7_layers.png");
+        processor->setProject(project);
+        processor->selectLayer(0);
+        processor->dispatchPendingMessages();
+    }
+
     // UI frame cost: analysis update (FFT x2) + full repaint at this size, as the 30 Hz timer does.
     editor->showDifference(false);
     editor->selectNode(true, compId);

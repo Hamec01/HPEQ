@@ -13,7 +13,7 @@ constexpr float kEdgeGrab = 6.0f;
 
 EqNodeState* findEq(FxProjectState& p, std::uint32_t id)
 {
-    for (auto& n : p.layers[0].eqNodes)
+    for (auto& n : selectedLayer(p).eqNodes)
         if (n.id == id)
             return &n;
     return nullptr;
@@ -21,7 +21,7 @@ EqNodeState* findEq(FxProjectState& p, std::uint32_t id)
 
 FxNodeState* findFx(FxProjectState& p, std::uint32_t id)
 {
-    for (auto& n : p.layers[0].fxNodes)
+    for (auto& n : selectedLayer(p).fxNodes)
         if (n.id == id)
             return &n;
     return nullptr;
@@ -59,7 +59,7 @@ double SpectrumWorkspace::eqDbForY(float y, juce::Rectangle<float> plot)
 void SpectrumWorkspace::paint(juce::Graphics& g)
 {
     const auto project = processor.getProject();
-    const auto& layer = project.layers[0];
+    const auto& layer = selectedLayer(project);
     const double fs = sampleRate();
     auto area = getLocalBounds().toFloat();
     const auto plot = plotArea();
@@ -252,7 +252,7 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
 SpectrumWorkspace::Hit SpectrumWorkspace::hitTestNodes(juce::Point<float> p) const
 {
     const auto project = processor.getProject();
-    const auto& layer = project.layers[0];
+    const auto& layer = selectedLayer(project);
     const auto plot = plotArea();
     const double fs = sampleRate();
     for (const auto& n : layer.eqNodes)
@@ -380,7 +380,7 @@ void SpectrumWorkspace::mouseDoubleClick(const juce::MouseEvent& e)
     processor.getUndoManager().beginNewTransaction("Add EQ point");
     processor.editProject("Add EQ point", [&](FxProjectState& p)
     {
-        if (p.layers[0].eqNodes.size() >= static_cast<size_t>(kMaxEqNodesPerLayer))
+        if (selectedLayer(p).eqNodes.size() >= static_cast<size_t>(kMaxEqNodesPerLayer))
             return;
         EqNodeState n;
         n.id = newId = p.nextNodeId++;
@@ -388,7 +388,7 @@ void SpectrumWorkspace::mouseDoubleClick(const juce::MouseEvent& e)
         n.frequencyHz = FrequencyAxis::hzFor(e.position.x, plot);
         n.gainDb = std::round(eqDbForY(e.position.y, plot) * 10.0) / 10.0;
         n.q = 1.0;
-        p.layers[0].eqNodes.push_back(n);
+        selectedLayer(p).eqNodes.push_back(n);
     });
     if (newId != 0)
         select(Selection::Kind::Eq, newId);
@@ -463,7 +463,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
         processor.getUndoManager().beginNewTransaction("Edit");
         processor.editProject("Edit", [&](FxProjectState& p)
         {
-            auto& layer = p.layers[0];
+            auto& layer = selectedLayer(p);
             if (hit.drag == Drag::EqPoint)
             {
                 auto it = std::find_if(layer.eqNodes.begin(), layer.eqNodes.end(), [&](const EqNodeState& n) { return n.id == hit.id; });

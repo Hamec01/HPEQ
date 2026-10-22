@@ -95,3 +95,30 @@ the later nodes'). The linear response is unchanged (engine vs offline H3 formul
 For non-linear processors the detector now sees the band with a different all-pass phase than before;
 on drums the first node's peak gain reduction moved from 14.19 to 15.70 dB in the M4 scenario. The
 delta stays phase-coherent with the dry. Evidence: `reports/CPU_REPORT.md`.
+
+## D5 — 2026-10-22 — Layer semantics for M7 (agent decision, owner may revise)
+
+**Context:** `01` §8 defines Parallel (delta) and Serial routing and lists layer controls, but not what
+Bypass / Mute / Solo mean in a delta mix, nor the latency rule across layers or memory sharing.
+
+**Decision:**
+- **Weight** `w_j = mix_j · heard_j`, `heard_j = !mute_j && (no enabled layer soloed || solo_j)`.
+  Parallel `y = D_L(x) + Σ w_j (D_{L−L_j}(L_j{x}) − D_L(x))`; Serial `x_{j+1} = D_{L_j}(x_j) + w_j (L_j{x_j} − D_{L_j}(x_j))`.
+- **Mute / Solo / Mix** only change `w_j` (20 ms ramp); the layer keeps running, so un-muting is seamless
+  (tested bit-exact after the fade). Solo is diagnostic and does not change stored mutes.
+- **Bypass (layer off)** fades `w_j` out and then stops processing the layer (CPU saved). Its tails are
+  cut by that fade; re-enabling resets the layer. (Node bypass still keeps tails.)
+- **Latency:** `L_j` counts whether the layer is on, muted or soloed (same rule as nodes), so toggling
+  never changes the host latency. Parallel `L = max L_j`, Serial `L = Σ L_j` (a bypassed Serial layer is a
+  pure delay).
+- **Lazy layers:** a layer with neutral PRE-EQ, no running node and identity controls is skipped; its
+  delta is exactly 0, so empty / bypassed layers give the input bit-exactly.
+- **Layer channel mode** = which component the layer processes (Stereo / Left / Right / Mid / Side); the
+  rest passes delayed by `L_j`. Linked/Dual Mono are node (detector) concepts and act as Stereo here.
+- **Controls order:** gain → M/S width → linear balance (pan), after the layer engine.
+- **Pools** (Reverb 16, Delay 8, Monsta 8) are shared by the whole project instead of 8/4/4 per layer:
+  per-layer pools would multiply memory by 10. Starvation is reported per slot as before.
+- **Routing change** restarts the alignment lines (the latency changes anyway); not a crossfade.
+- Selecting a layer in the editor is saved with the state but is not an undo step.
+
+**Consequences:** M4/M6 pool tests were rewritten for the shared sizes (`kSize + 1` starved).

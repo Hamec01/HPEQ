@@ -6,7 +6,7 @@
 
 namespace hpeq::dsp
 {
-void LayerEngine::prepare(double newSampleRate, int maxBlockSize)
+void LayerEngine::prepare(double newSampleRate, int maxBlockSize, LayerPools* sharedPools)
 {
     sampleRate = newSampleRate;
     maxBlock = std::max(1, maxBlockSize);
@@ -38,12 +38,22 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize)
     }
 
     preEq.prepare(sampleRate);
-    pools.prepare(sampleRate);
+    if (sharedPools != nullptr)
+    {
+        ownPools.reset();
+        pools = sharedPools;
+    }
+    else
+    {
+        ownPools = std::make_unique<LayerPools>();
+        ownPools->prepare(sampleRate);
+        pools = ownPools.get();
+    }
     dryAlign.prepare(FxNodeProcessor::kMaxNodeLatency);
     for (auto& d : deltaAlign)
         d.prepare(FxNodeProcessor::kMaxNodeLatency);
     for (auto& node : nodes)
-        node.prepare(sampleRate, maxBlock, &pools);
+        node.prepare(sampleRate, maxBlock, pools);
     tree.prepare(sampleRate, maxBlock);
     reset();
 }
@@ -78,6 +88,9 @@ void LayerEngine::applySnapshot() noexcept
 {
     const auto& snapshot = exchange.current();
     preEq.setTargets(snapshot.eq);
+    hasEq = false;
+    for (const auto& band : snapshot.eq)
+        hasEq = hasEq || band.active;
     for (size_t i = 0; i < nodes.size(); ++i)
         nodes[i].setTargets(snapshot.fx[i]);
     layerLatency = 0;
@@ -102,9 +115,7 @@ void LayerEngine::process(float* const* channels, int numChannels, int numSample
 {
     juce::ScopedNoDenormals noDenormals;
     numChannels = std::min(numChannels, kMaxChannels);
-    if (exchange.acquire())
-        applySnapshot();
-    updateTree();
+    update();
 
     for (int start = 0; start < numSamples; start += maxBlock)
     {

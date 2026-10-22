@@ -44,7 +44,7 @@ FxPluginProcessor::FxPluginProcessor()
     outputGainDb = parameters.getRawParameterValue(params::outputGain.getParamID());
     bypassParameter = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter(params::bypass.getParamID()));
     jassert(outputGainDb != nullptr && bypassParameter != nullptr);
-    engine.publish(dsp::makeSnapshot(project.layers[0]));
+    engine.publish(project);
 }
 
 void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamplesPerBlock)
@@ -54,13 +54,13 @@ void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamp
     capture.reset();
     engine.prepare(sampleRate, maxBlock);
     dry.setSize(dsp::kMaxChannels, maxBlock);
-    dryAlign.prepare(dsp::FxNodeProcessor::kMaxNodeLatency);
+    dryAlign.prepare(dsp::ProjectEngine::kMaxLatency);
     bypassRampSteps = dsp::stepsFor(dsp::kMixRampSeconds, sampleRate);
     wetAmount.reset(bypassParameter->get() ? 0.0 : 1.0);
     gain.reset(sampleRate, kGainRampSeconds);
     gain.setCurrentAndTargetValue(targetGain(outputGainDb->load(), bypassParameter->get()));
     const juce::ScopedLock lock(projectLock);
-    updateLatencyAndTail(dsp::makeSnapshot(project.layers[0]));
+    updateLatencyAndTail(project);
 }
 
 void FxPluginProcessor::releaseResources() {}
@@ -206,6 +206,31 @@ void FxPluginProcessor::editProject(const juce::String& actionName, const std::f
     undoManager.perform(new ProjectEdit(*this, std::move(before), std::move(after)), actionName);
 }
 
+void FxPluginProcessor::selectLayer(int index)
+{
+    {
+        const juce::ScopedLock lock(projectLock);
+        index = juce::jlimit(0, kNumLayers - 1, index);
+        if (project.selectedLayer == index)
+            return;
+        project.selectedLayer = index;
+    }
+    sendChangeMessage();
+}
+
+void FxPluginProcessor::copyLayer(int index)
+{
+    layerClipboard = getProject().layers[static_cast<size_t>(juce::jlimit(0, kNumLayers - 1, index))];
+}
+
+void FxPluginProcessor::pasteLayer(int index)
+{
+    if (!layerClipboard)
+        return;
+    const auto source = *layerClipboard;
+    editProject("Paste layer", [&](FxProjectState& p) { copyLayerInto(p, source, index); });
+}
+
 void FxPluginProcessor::selectAB(int slot)
 {
     slot = juce::jlimit(0, 1, slot);
@@ -248,28 +273,38 @@ void FxPluginProcessor::setProject(FxProjectState newProject)
     sanitize(newProject);
     const juce::ScopedLock lock(projectLock);
     project = std::move(newProject);
-    const auto snapshot = dsp::makeSnapshot(project.layers[0]);
-    engine.publish(snapshot);
+    engine.publish(project);
 
-    updateLatencyAndTail(snapshot);
+    updateLatencyAndTail(project);
     sendChangeMessage(); // the editor refreshes on the message thread
 }
 
-void FxPluginProcessor::updateLatencyAndTail(const dsp::LayerSnapshot& snapshot)
+void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
 {
+    // Tail: the longest Reverb / Delay tail of a layer; Serial layers can feed one tail into the next
+    // layer's tail, so their tails add up. Plus the latency.
     const double sampleRate = currentSampleRate.load(std::memory_order_relaxed);
-    const int latency = dsp::LayerEngine::latencyFor(snapshot, sampleRate);
-    double tail = 0.0;
-    for (const auto& node : snapshot.fx)
-        for (int k = 0; node.active && k < node.numSlots; ++k)
-            if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active)
-            {
-                if (slot.type == FxType::Reverb)
-                    tail = std::max(tail, dsp::ReverbProcessor::tailSeconds(slot));
-                else if (slot.type == FxType::Delay)
-                    tail = std::max(tail, dsp::DelayProcessor::tailSeconds(slot, hostBpm.load(std::memory_order_relaxed)));
-            }
-    tailSeconds.store(tail + latency / sampleRate, std::memory_order_relaxed);
+    const int latency = dsp::ProjectEngine::latencyFor(state, sampleRate);
+    double sum = 0.0, max = 0.0;
+    for (const auto& layerState : state.layers)
+    {
+        if (!layerState.enabled)
+            continue;
+        double tail = 0.0;
+        const auto snapshot = dsp::makeSnapshot(layerState);
+        for (const auto& node : snapshot.fx)
+            for (int k = 0; node.active && k < node.numSlots; ++k)
+                if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active)
+                {
+                    if (slot.type == FxType::Reverb)
+                        tail = std::max(tail, dsp::ReverbProcessor::tailSeconds(slot));
+                    else if (slot.type == FxType::Delay)
+                        tail = std::max(tail, dsp::DelayProcessor::tailSeconds(slot, hostBpm.load(std::memory_order_relaxed)));
+                }
+        sum += tail;
+        max = std::max(max, tail);
+    }
+    tailSeconds.store((state.routing == LayerRouting::Serial ? sum : max) + latency / sampleRate, std::memory_order_relaxed);
     if (latency != getLatencySamples())
         setLatencySamples(latency);
 }

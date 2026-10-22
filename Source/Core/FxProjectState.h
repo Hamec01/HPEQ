@@ -85,6 +85,16 @@ struct FxProjectState
     static std::array<LayerState, kNumLayers> makeDefaultLayers();
 };
 
+// The layer the UI shows and edits.
+inline LayerState& selectedLayer(FxProjectState& p) { return p.layers[static_cast<size_t>(juce::jlimit(0, kNumLayers - 1, p.selectedLayer))]; }
+inline const LayerState& selectedLayer(const FxProjectState& p) { return p.layers[static_cast<size_t>(juce::jlimit(0, kNumLayers - 1, p.selectedLayer))]; }
+
+// Copies `source` (nodes, EQ, controls, name) into layer `targetIndex`, giving every node a fresh id
+// from nextNodeId so ids stay unique in the project.
+void copyLayerInto(FxProjectState&, const LayerState& source, int targetIndex);
+// True when the layer has anything that changes the sound (nodes or non-neutral controls).
+bool layerHasContent(const LayerState&);
+
 // Clamps every value into its documented range and enforces the count limits. Idempotent.
 void sanitize(FxProjectState&);
 

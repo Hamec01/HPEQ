@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <memory>
 #include <vector>
 
 #include "DSP/CrossoverTree.h"
@@ -26,10 +27,21 @@ namespace hpeq::dsp
 class LayerEngine
 {
 public:
-    void prepare(double sampleRate, int maxBlockSize);
+    // `sharedPools`: pooled processors shared with other layers (ProjectEngine); null = own pools.
+    void prepare(double sampleRate, int maxBlockSize, LayerPools* sharedPools = nullptr);
     void reset() noexcept;
 
     void publish(const LayerSnapshot&) noexcept;
+    // Picks up a newer snapshot now (process() also does); lets a caller read the latency first.
+    void update() noexcept
+    {
+        if (exchange.acquire())
+            applySnapshot();
+        updateTree();
+    }
+    // False when processing would return the input exactly: PRE-EQ neutral (nothing running or
+    // fading), no allocated tree edge.
+    bool needsProcessing() const noexcept { return hasEq || !preEq.isNeutral() || tree.isActive(); }
 
     void process(float* const* channels, int numChannels, int numSamples, const Transport& transport = {}) noexcept;
 
@@ -39,9 +51,9 @@ public:
     static int latencyFor(const LayerSnapshot&, double sampleRate);
     const FxNodeProcessor& getNode(int index) const noexcept { return nodes[static_cast<size_t>(index)]; }
     bool isTreeActive() const noexcept { return tree.isActive(); }
-    int reverbsInUse() const noexcept { return pools.reverbs.inUse(); }
-    int delaysInUse() const noexcept { return pools.delays.inUse(); }
-    int monstasInUse() const noexcept { return pools.monstas.inUse(); }
+    int reverbsInUse() const noexcept { return pools->reverbs.inUse(); }
+    int delaysInUse() const noexcept { return pools->delays.inUse(); }
+    int monstasInUse() const noexcept { return pools->monstas.inUse(); }
 
 private:
     void applySnapshot() noexcept;
@@ -54,7 +66,9 @@ private:
     SnapshotExchange<LayerSnapshot> exchange;
     PreEqProcessor preEq;
     std::array<FxNodeProcessor, kMaxFxNodesPerLayer> nodes;
-    LayerPools pools; // reverb/delay/monsta memory for pooled slots, allocated in prepare()
+    std::unique_ptr<LayerPools> ownPools; // allocated in prepare() only when no shared pools are given
+    LayerPools* pools = nullptr;
+    bool hasEq = false;
     int layerLatency = 0;
     AlignmentDelay dryAlign;
     std::array<AlignmentDelay, kMaxFxNodesPerLayer> deltaAlign;

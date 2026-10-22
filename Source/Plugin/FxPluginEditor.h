@@ -13,6 +13,7 @@ namespace ui
 {
 class AnalysisModel;
 class WaveformPanel;
+class LayerControls;
 class SpectrumWorkspace;
 class NodeList;
 class NodeInspector;
@@ -45,6 +46,8 @@ private:
     void changeListenerCallback(juce::ChangeBroadcaster*) override;
     void selectionChanged();
     void updateHeader();
+    void updateLayerButtons();
+    void layerSelected();
 
     FxPluginProcessor& processor;
     std::unique_ptr<ui::Selection> selection;
@@ -54,13 +57,15 @@ private:
     std::unique_ptr<ui::NodeList> nodeList;
     std::unique_ptr<ui::NodeInspector> inspector;
     std::unique_ptr<LevelMeter> inputMeter, outputMeter;
+    std::unique_ptr<ui::LayerControls> layerControls;
 
-    juce::Label title, subtitle, unavailable, layerNote;
+    juce::Label title, subtitle, unavailable;
     juce::TextButton abA { "A" }, abB { "B" }, copyAB { "A>B" }, undo { "Undo" }, redo { "Redo" };
     juce::TextButton waveOverlay { "Overlay" }, waveDelta { "Delta" }, freeze { "Freeze" };
     juce::TextButton tabSpectrum { "Spectrum" }, tabDifference { "Difference" };
     juce::ComboBox view;
     std::array<juce::TextButton, 10> layerButtons;
+    int lastShownLayer = -1;
     juce::Slider outputGain;
     juce::Label outputGainLabel;
     juce::ToggleButton bypass { "Bypass" };

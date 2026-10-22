@@ -1,0 +1,88 @@
+T12
+  44100 Hz, 1 layers x 1 nodes: p99 134.3 us
+  44100 Hz, 1 layers x 5 nodes: p99 307.4 us
+  44100 Hz, 5 layers x 1 nodes: p99 482.8 us
+  44100 Hz, 5 layers x 5 nodes: p99 1778.9 us
+  44100 Hz, 10 layers x 1 nodes: p99 900 us
+  44100 Hz, 10 layers x 5 nodes: p99 2919.1 us
+  48000 Hz, 1 layers x 1 nodes: p99 73.9 us
+  48000 Hz, 1 layers x 5 nodes: p99 330.9 us
+  48000 Hz, 5 layers x 1 nodes: p99 565.6 us
+  48000 Hz, 5 layers x 5 nodes: p99 1707.7 us
+  48000 Hz, 10 layers x 1 nodes: p99 794.5 us
+  48000 Hz, 10 layers x 5 nodes: p99 2808.5 us
+  96000 Hz, 1 layers x 1 nodes: p99 98.5 us
+  96000 Hz, 1 layers x 5 nodes: p99 344.6 us
+  96000 Hz, 5 layers x 1 nodes: p99 418.8 us
+  96000 Hz, 5 layers x 5 nodes: p99 1427.1 us
+  96000 Hz, 10 layers x 1 nodes: p99 841.6 us
+  96000 Hz, 10 layers x 5 nodes: p99 3024.3 us
+  192000 Hz, 1 layers x 1 nodes: p99 100.3 us
+  192000 Hz, 1 layers x 5 nodes: p99 312 us
+  192000 Hz, 5 layers x 1 nodes: p99 521.9 us
+  192000 Hz, 5 layers x 5 nodes: p99 1546.7 us
+  192000 Hz, 10 layers x 1 nodes: p99 772.2 us
+  192000 Hz, 10 layers x 5 nodes: p99 2947.9 us
+profiles
+memory
+{
+  "serial_10x5_compressor_48k": {
+    "p50_us": 2249.400000000000091,
+    "p95_us": 2430.400000000000091,
+    "p99_us": 2865.199999999999818,
+    "max_us": 3064.0,
+    "p99_budget_fraction": 0.2686125,
+    "layers_processed": 10,
+    "latency_samples": 0
+  },
+  "parallel_10x5_heavy_48k": {
+    "p50_us": 9163.200000000000728,
+    "p95_us": 10597.200000000000728,
+    "p99_us": 15569.200000000000728,
+    "max_us": 20513.599999999998545,
+    "p99_budget_fraction": 1.4596125,
+    "layers_processed": 10,
+    "latency_samples": 97
+  },
+  "serial_10x5_heavy_48k": {
+    "p50_us": 9010.5,
+    "p95_us": 9560.5,
+    "p99_us": 10235.200000000000728,
+    "max_us": 10362.799999999999272,
+    "p99_budget_fraction": 0.95955,
+    "layers_processed": 10,
+    "latency_samples": 970
+  },
+  "parallel_10x5_heavy_all_bypassed_48k": {
+    "p50_us": 4.2,
+    "p95_us": 4.2,
+    "p99_us": 4.3,
+    "max_us": 34.799999999999997,
+    "p99_budget_fraction": 0.000403125,
+    "layers_processed": 0,
+    "latency_samples": 97
+  },
+  "parallel_10x5_heavy_all_muted_48k": {
+    "p50_us": 9109.200000000000728,
+    "p95_us": 9792.200000000000728,
+    "p99_us": 10669.100000000000364,
+    "max_us": 11179.399999999999636,
+    "p99_budget_fraction": 1.000228125,
+    "layers_processed": 10,
+    "latency_samples": 97
+  },
+  "empty_project_48k": {
+    "p50_us": 4.4,
+    "p95_us": 4.5,
+    "p99_us": 4.5,
+    "max_us": 6.3,
+    "p99_budget_fraction": 0.000421875,
+    "layers_processed": 0,
+    "latency_samples": 0
+  }
+}
+{
+  "prepared_engine_mb_48000": 61.75390625,
+  "prepared_engine_mb_192000": 122.87109375,
+  "process_peak_working_set_mb": 181.0390625
+}

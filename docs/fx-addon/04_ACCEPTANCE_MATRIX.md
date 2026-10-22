@@ -22,12 +22,12 @@
 | T09 | 5 | Offline PCM vs displayed capture | Waveform input/output/Delta are actual aligned PCM; displayed spectrum corresponds FFT of captures | PASS | [M5_REPORT](reports/M5_REPORT.md) |
 | T10 | 2 | Identical input with block 1, 32, 127, 256, 1024 | Offline outputs numerically consistent with documented tolerance | PASS (bit-exact; M6: every FX type incl. host-timeline Monsta) | [M2_REPORT](reports/M2_REPORT.md), [M6_REPORT](reports/M6_REPORT.md) |
 | T11 | 8 | pluginval, host reopen, mutate/restore | pluginval level≥5; no crashes/hangs; 100 editor cycles, no state loss | PLANNED | — |
-| T12 | 7–8 | 1/5/10 layers × 1/5 nodes × multiple fs | p50/p95/p99 CPU, peak RSS, latency documented on same host | PLANNED | — |
+| T12 | 7–8 | 1/5/10 layers × 1/5 nodes × multiple fs | p50/p95/p99 CPU, peak RSS, latency documented on same host | MEASURED (M7; typical mixes within target, heavy 10-layer profiles not) | [M7_REPORT](reports/M7_REPORT.md) |
 | B-ORDER | 3 | 80 Hz input, Pre-EQ HP200 + FX comp 100–250 | Compressor receives PRE-filtered 80 Hz (not original); layer EQ before FX | PASS (LowCut 200 Hz) | [M3_REPORT](reports/M3_REPORT.md) |
-| MIX-0 | 2 | FX Node Mix=0, layer Mix=0 | No contribution from node/layer, independent of hidden DSP state | PASS (node) | [M2_REPORT](reports/M2_REPORT.md) |
+| MIX-0 | 2 | FX Node Mix=0, layer Mix=0 | No contribution from node/layer, independent of hidden DSP state | PASS (node M2, layer M7) | [M2_REPORT](reports/M2_REPORT.md), [M7_REPORT](reports/M7_REPORT.md) |
 | METER | 5 | Signal at known dBFS | Input/output peak & RMS within calibrated accuracy; display never synthetic | PASS (true peak in M8) | [M5_REPORT](reports/M5_REPORT.md) |
 | PDC | 4/8 | Turn on/lookahead/FIR/oversampling | Host latency equals effective processing delay; dry and wet aligned | PASS (M4 latency 0; M6 look-ahead/oversampling: reported = effective, dry and bypass aligned); DAW BLOCKED | [M4_REPORT](reports/M4_REPORT.md), [M6_REPORT](reports/M6_REPORT.md) |
-| STATE | 1–8 | Save/restore state; automation gesture | Parameters, IDs, sound, selected Layer, nodes fully restore | PASS (M1 scope) | [M1_REPORT](reports/M1_REPORT.md) |
+| STATE | 1–8 | Save/restore state; automation gesture | Parameters, IDs, sound, selected Layer, nodes fully restore | PASS (M1 scope; M7: 10 layers, selected layer, bit-exact render) | [M1_REPORT](reports/M1_REPORT.md), [M7_REPORT](reports/M7_REPORT.md) |
 | HPDG | all | Build and run unchanged old tests | Original HPDG generator/editor/wav unaffected | PASS (untouched, separate repo) | [M0](reports/M0_BASELINE.md), [M1_REPORT](reports/M1_REPORT.md) |
 
 ## 2. Test signal definitions

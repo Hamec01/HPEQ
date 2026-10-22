@@ -601,21 +601,29 @@ public:
             expectEquals(p->getLatencySamples(), 0);
         }
 
-        beginTest("Pools: a 5th Delay and a 5th Monsta in one layer are reported as starved, nothing breaks");
+        // M7 (DECISIONS D5): pools are shared by the project (Delay 8, Monsta 8); one more of each.
+        beginTest("Pools: one Delay and one Monsta more than the pools hold are reported as starved, nothing breaks");
         {
             auto e = std::make_unique<LayerEngine>();
             e->prepare(kFs, 256);
             LayerSnapshot s;
-            for (int j = 0; j < 5; ++j)
-                s.fx[static_cast<size_t>(j)] = nodeWith(200.0f + 1000.0f * j, 900.0f + 1000.0f * j, { delaySlot(0, 100.0f, 0.3f, false), monsta(0.5f, static_cast<float>(j)) });
+            const int count = DelayPool::kSize + 1;
+            for (int j = 0; j < count; ++j)
+            {
+                auto& n = s.fx[static_cast<size_t>(j / 2)];
+                if (n.numSlots == 0)
+                    n = nodeWith(200.0f + 1000.0f * (j / 2), 900.0f + 1000.0f * (j / 2), {});
+                n.slots[static_cast<size_t>(n.numSlots++)] = delaySlot(0, 100.0f, 0.3f, false);
+                n.slots[static_cast<size_t>(n.numSlots++)] = monsta(0.5f, static_cast<float>(j));
+            }
             e->publish(s);
             auto y = makeSyntheticDrums({ kFs, 2, 0.5 });
             runInPlace(y, 256, [&](float* const* c, int nc, int n, int) { e->process(c, nc, n); });
-            expectEquals(e->delaysInUse(), 4);
-            expectEquals(e->monstasInUse(), 4);
+            expectEquals(e->delaysInUse(), DelayPool::kSize);
+            expectEquals(e->monstasInUse(), MonstaPool::kSize);
             int starved = 0;
-            for (int j = 0; j < 5; ++j)
-                for (int k = 0; k < 2; ++k)
+            for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
+                for (int k = 0; k < kMaxFxPerNode; ++k)
                     starved += e->getNode(j).slotStarved(k) ? 1 : 0;
             expectEquals(starved, 2);
         }

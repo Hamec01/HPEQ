@@ -18,11 +18,16 @@ void CrossoverTree::prepare(double newSampleRate, int maxBlockSize)
 
 void CrossoverTree::reset() noexcept
 {
+    // Field by field: no temporary NodeEdges, whose std::vector would allocate in MSVC Debug builds
+    // (iterator-debugging proxy) on the audio thread (found by the M7 Debug run).
     for (auto& e : edges)
     {
-        auto retunes = std::move(e.retunes);
-        e = NodeEdges {};
-        e.retunes = std::move(retunes);
+        e.allocated = e.parking = e.birth = false;
+        e.logLow = e.logHigh = e.presence = LinearRamp {};
+        for (auto* group : { &e.prefixAllPass, &e.highPass, &e.lowPass, &e.hornerAllPass })
+            for (auto& f : *group)
+                f = TptSvf {};
+        e.retuneCount = 0;
     }
     anyAllocated = false;
 }

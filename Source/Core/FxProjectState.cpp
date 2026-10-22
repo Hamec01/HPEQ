@@ -152,6 +152,22 @@ std::array<LayerState, kNumLayers> FxProjectState::makeDefaultLayers()
     return layers;
 }
 
+void copyLayerInto(FxProjectState& project, const LayerState& source, int targetIndex)
+{
+    auto& target = project.layers[static_cast<size_t>(juce::jlimit(0, kNumLayers - 1, targetIndex))];
+    target = source;
+    for (auto& n : target.eqNodes)
+        n.id = project.nextNodeId++;
+    for (auto& n : target.fxNodes)
+        n.id = project.nextNodeId++;
+}
+
+bool layerHasContent(const LayerState& layer)
+{
+    return !layer.eqNodes.empty() || !layer.fxNodes.empty() || layer.gainDb != 0.0f || layer.pan != 0.0f || layer.width != 1.0f
+        || layer.channel != ChannelMode::Stereo;
+}
+
 void sanitize(FxProjectState& project)
 {
     project.selectedLayer = juce::jlimit(0, kNumLayers - 1, project.selectedLayer);

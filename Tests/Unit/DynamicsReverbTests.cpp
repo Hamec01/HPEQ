@@ -403,25 +403,32 @@ public:
             logMessage("  GR " + juce::String(gr, 2) + " dB, peak " + juce::String(measureAll(y).peakDbfs, 2) + " dBFS, 2 reverbs running");
         }
 
-        beginTest("reverb pool: a 9th reverb slot is reported as starved, nothing breaks");
+        // M7 (DECISIONS D5): the pool is shared by the project and holds 16; the test fills kSize + 1.
+        beginTest("reverb pool: one reverb more than the pool holds is reported as starved, nothing breaks");
         {
             LayerEngine* engine = nullptr;
             const auto noise = makePinkNoise({ kFs, 2, 0.3, kFixtureSeed }, -20.0);
+            int lastNode = 0, lastSlot = 0;
             renderEngine(noise, 512, [&](LayerEngine& e, int start)
             {
                 if (start != 0)
                     return;
                 LayerSnapshot s;
-                for (int n = 0; n < 2; ++n)
+                int placed = 0;
+                for (int n = 0; placed < ReverbPool::kSize + 1; ++n)
                 {
-                    s.fx[static_cast<size_t>(n)] = nodeWith(200.0f * (n + 1), 2000.0f * (n + 1), {});
-                    for (int k = 0; k < (n == 0 ? 6 : 3); ++k)
+                    s.fx[static_cast<size_t>(n)] = nodeWith(100.0f * (n + 1), 1000.0f * (n + 1), {});
+                    for (int k = 0; k < kMaxFxPerNode && placed < ReverbPool::kSize + 1; ++k, ++placed)
+                    {
                         s.fx[static_cast<size_t>(n)].slots[static_cast<size_t>(s.fx[static_cast<size_t>(n)].numSlots++)] = reverb(1.0f);
+                        lastNode = n;
+                        lastSlot = k;
+                    }
                 }
                 e.publish(s);
             }, &engine);
             expectEquals(engine->reverbsInUse(), ReverbPool::kSize);
-            expect(engine->getNode(1).slotStarved(2), "9th reverb must report starvation");
+            expect(engine->getNode(lastNode).slotStarved(lastSlot), "the reverb past the pool size must report starvation");
         }
 
         beginTest("T10 and allocations with reverbs: identical render for blocks 1, 64, 127, 512, 0 allocations");

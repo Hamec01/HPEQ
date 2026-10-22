@@ -111,7 +111,7 @@ void NodeInspector::editEq(const juce::String& name, const std::function<void(Eq
     const auto id = selection.id;
     processor.editProject(name, [&](FxProjectState& p)
     {
-        for (auto& n : p.layers[0].eqNodes)
+        for (auto& n : selectedLayer(p).eqNodes)
             if (n.id == id)
                 change(n);
     });
@@ -122,7 +122,7 @@ void NodeInspector::editFx(const juce::String& name, const std::function<void(Fx
     const auto id = selection.id;
     processor.editProject(name, [&](FxProjectState& p)
     {
-        for (auto& n : p.layers[0].fxNodes)
+        for (auto& n : selectedLayer(p).fxNodes)
             if (n.id == id)
                 change(n);
     });
@@ -186,7 +186,7 @@ void NodeInspector::rebuild()
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
     const auto project = processor.getProject();
-    const auto& layer = project.layers[0];
+    const auto& layer = selectedLayer(project);
     const auto setInfo = [](juce::Component& c, int section, int width, int height, bool newRow = false)
     {
         auto& props = c.getProperties();
@@ -241,7 +241,7 @@ void NodeInspector::rebuild()
             const auto id = selection.id;
             processor.editProject("Delete EQ", [id](FxProjectState& p)
             {
-                auto& v = p.layers[0].eqNodes;
+                auto& v = selectedLayer(p).eqNodes;
                 v.erase(std::remove_if(v.begin(), v.end(), [id](const EqNodeState& n) { return n.id == id; }), v.end());
             });
             selection = {};
@@ -252,7 +252,7 @@ void NodeInspector::rebuild()
         refreshers.push_back([this, &on, &shape, &freq, &gainKnob, &q, &slope, &mode]
         {
             const auto p = processor.getProject();
-            for (const auto& n : p.layers[0].eqNodes)
+            for (const auto& n : selectedLayer(p).eqNodes)
                 if (n.id == selection.id)
                 {
                     on.setToggleState(n.enabled, juce::dontSendNotification);
@@ -304,7 +304,7 @@ void NodeInspector::rebuild()
             const auto id = selection.id;
             processor.editProject("Delete FX", [id](FxProjectState& p)
             {
-                auto& v = p.layers[0].fxNodes;
+                auto& v = selectedLayer(p).fxNodes;
                 v.erase(std::remove_if(v.begin(), v.end(), [id](const FxNodeState& n) { return n.id == id; }), v.end());
             });
             selection = {};
@@ -345,7 +345,7 @@ void NodeInspector::rebuild()
             refreshers.push_back([this, &type, &slotOn, slotMix, k]
             {
                 const auto p = processor.getProject();
-                for (const auto& n : p.layers[0].fxNodes)
+                for (const auto& n : selectedLayer(p).fxNodes)
                     if (n.id == selection.id && k < static_cast<int>(n.chain.size()))
                     {
                         const auto& s = n.chain[static_cast<size_t>(k)];
@@ -395,7 +395,7 @@ void NodeInspector::rebuild()
                 refreshers.push_back([this, &combo, key, k, fallback]
                 {
                     const auto p = processor.getProject();
-                    for (const auto& n : p.layers[0].fxNodes)
+                    for (const auto& n : selectedLayer(p).fxNodes)
                         if (n.id == selection.id && k < static_cast<int>(n.chain.size()))
                             combo.setSelectedItemIndex(juce::roundToInt(paramValue(n.chain[static_cast<size_t>(k)], key.toRawUTF8(), fallback)), juce::dontSendNotification);
                 });
@@ -409,7 +409,7 @@ void NodeInspector::rebuild()
             refreshers.push_back([this, &knob, key, k, fallback]
             {
                 const auto p = processor.getProject();
-                for (const auto& n : p.layers[0].fxNodes)
+                for (const auto& n : selectedLayer(p).fxNodes)
                     if (n.id == selection.id && k < static_cast<int>(n.chain.size()))
                         knob.setValue(paramValue(n.chain[static_cast<size_t>(k)], key.toRawUTF8(), fallback), juce::dontSendNotification);
             });
@@ -418,7 +418,7 @@ void NodeInspector::rebuild()
         refreshers.push_back([this, &on, &low, &high, &mix, &mode]
         {
             const auto p = processor.getProject();
-            for (const auto& n : p.layers[0].fxNodes)
+            for (const auto& n : selectedLayer(p).fxNodes)
                 if (n.id == selection.id)
                 {
                     on.setToggleState(n.enabled, juce::dontSendNotification);
@@ -447,16 +447,16 @@ void NodeInspector::timerCallback()
     juce::String newStatus;
     if (selection.kind == Selection::Kind::Fx && nodeIndex >= 0)
     {
-        const auto& node = processor.getEngine().getNode(nodeIndex);
         const auto project = processor.getProject();
-        if (nodeIndex < static_cast<int>(project.layers[0].fxNodes.size()))
+        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(nodeIndex);
+        if (nodeIndex < static_cast<int>(selectedLayer(project).fxNodes.size()))
         {
-            const auto& chain = project.layers[0].fxNodes[static_cast<size_t>(nodeIndex)].chain;
+            const auto& chain = selectedLayer(project).fxNodes[static_cast<size_t>(nodeIndex)].chain;
             const int k = juce::jlimit(0, static_cast<int>(chain.size()) - 1, selection.slot);
             if (chain[static_cast<size_t>(k)].type == FxType::Compressor)
                 newStatus = "Gain reduction  " + juce::String(node.getGainReductionDb(k), 1) + " dB";
-            if (chain[static_cast<size_t>(k)].type == FxType::Reverb && node.slotStarved(k))
-                newStatus = "Reverb pool full (8 per layer): this slot is silent.";
+            if (node.slotStarved(k))
+                newStatus = fxName(chain[static_cast<size_t>(k)].type) + " pool full (shared by all layers): this slot is silent.";
         }
     }
     if (newStatus != status && selection.kind == Selection::Kind::Fx)
