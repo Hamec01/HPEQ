@@ -97,6 +97,11 @@ inline const LayerState& selectedLayer(const FxProjectState& p) { return p.layer
 // Copies `source` (nodes, EQ, controls, name) into layer `targetIndex`, giving every node a fresh id
 // from nextNodeId so ids stay unique in the project.
 void copyLayerInto(FxProjectState&, const LayerState& source, int targetIndex);
+// A module as the UI creates it. Compressor (module pass): threshold -30 dB, ratio 4, attack 1 ms,
+// release 80 ms, Punch, auto makeup on; the DSP's own defaults (used when a key is absent, e.g. in
+// older projects) are unchanged. Other types: no explicit parameters.
+FxSlotState defaultModule(FxType);
+
 // D6: band of an EQ point's modules, the edges of a band-pass with the point's frequency and Q.
 std::pair<double, double> pointModuleBandHz(const EqNodeState&);
 // D6: gives every FX region and every EQ point with modules a stable engine node (0..7): valid unique

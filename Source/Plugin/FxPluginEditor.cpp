@@ -101,8 +101,8 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     addAndMakeVisible(loudnessReset);
     undo.onClick = [this] { processor.getUndoManager().undo(); };
     redo.onClick = [this] { processor.getUndoManager().redo(); };
-    waveOverlay.onClick = [this] { waveform->mode = WaveformPanel::Mode::Overlay; updateHeader(); };
-    waveDelta.onClick = [this] { waveform->mode = WaveformPanel::Mode::Delta; updateHeader(); };
+    waveOverlay.onClick = [this] { waveform->setMode(WaveformPanel::Mode::Overlay); updateHeader(); };
+    waveDelta.onClick = [this] { waveform->setMode(WaveformPanel::Mode::Delta); updateHeader(); };
     freeze.onClick = [this] { analysis->frozen = !analysis->frozen; updateHeader(); };
     tabSpectrum.onClick = [this] { workspace->mode = SpectrumWorkspace::Mode::Spectrum; updateHeader(); };
     tabDifference.onClick = [this] { workspace->mode = SpectrumWorkspace::Mode::Difference; updateHeader(); };
@@ -222,6 +222,8 @@ void FxPluginEditor::changeListenerCallback(juce::ChangeBroadcaster*)
 void FxPluginEditor::updateAnalysisNow()
 {
     timerCallback();
+    waveform->tick(true); // tests and screenshots want the current audio, not the last 5 s snapshot
+    inspector->updateLiveReadouts();
 }
 
 void FxPluginEditor::selectNode(bool fx, std::uint32_t id, int slot)
@@ -252,7 +254,7 @@ void FxPluginEditor::timerCallback()
     const auto meters = processor.getMeters();
     inputMeter->setLevels(meters.inputPeak, meters.inputRms);
     outputMeter->setLevels(meters.outputPeak, meters.outputRms);
-    waveform->repaint();
+    waveform->tick(); // repaints only when a new 5 s snapshot is taken
     workspace->repaint();
 }
 
@@ -279,7 +281,7 @@ void FxPluginEditor::resized()
     unavailable.setBounds(header);
     area.removeFromTop(6);
 
-    auto strip = area.removeFromTop(150);
+    auto strip = area.removeFromTop(104);
     auto meters = strip.removeFromRight(90);
     inputMeter->setBounds(meters.removeFromLeft(45));
     outputMeter->setBounds(meters);

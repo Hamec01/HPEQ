@@ -30,6 +30,9 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kAttackMs] = juce::jlimit(0.05f, 500.0f, param(state.parameters, "attackMs", 10.0f));
             slotParams.values[slot::kReleaseMs] = juce::jlimit(1.0f, 5000.0f, param(state.parameters, "releaseMs", 120.0f));
             slotParams.values[slot::kMakeupDb] = juce::jlimit(-24.0f, 24.0f, param(state.parameters, "makeupDb", 0.0f));
+            slotParams.values[slot::kCompDetector] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "detector", 0.0f)));
+            slotParams.values[slot::kCompCharacter] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "character", 0.0f)));
+            slotParams.values[slot::kCompAutoMakeup] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "autoMakeup", 0.0f)));
             break;
         case FxType::Reverb:
             slotParams.values[slot::kPredelayMs] = juce::jlimit(0.0f, 250.0f, param(state.parameters, "predelayMs", 10.0f));

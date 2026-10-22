@@ -25,7 +25,12 @@ void CompressorProcessor::prepare(double newSampleRate) noexcept
 void CompressorProcessor::reset() noexcept
 {
     smoothedReductionDb = {};
+    meanSquare = {};
+    hold = {};
+    autoMakeupDb = {};
     meterGainReductionDb.store(0.0f, std::memory_order_relaxed);
+    meterInputDb.store(-120.0f, std::memory_order_relaxed);
+    meterAutoMakeupDb.store(0.0f, std::memory_order_relaxed);
 }
 
 double CompressorProcessor::staticGainReductionDb(double x, double t, double ratio, double kneeDb) noexcept
@@ -57,8 +62,18 @@ void CompressorProcessor::process(float* const* channels, int numChannels, int n
     const float kneeScale = knee > 0.0f ? -slope / (2.0f * knee) : 0.0f;
     constexpr float kDbToLog2 = 0.16609640474436813f; // log2(10) / 20
     const int detectors = linked ? 1 : numChannels;
+    const bool rms = p.values[slot::kCompDetector] > 0.5f;
+    const int character = static_cast<int>(std::lround(std::clamp(p.values[slot::kCompCharacter], 0.0f, 2.0f)));
+    const bool autoMakeup = p.values[slot::kCompAutoMakeup] > 0.5f;
+    const double rmsCoefficient = std::exp(-1.0 / (0.010 * sampleRate));
+    const double holdCoefficient = std::exp(-1.0 / (1.0 * sampleRate));
+    const double autoCoefficient = std::exp(-1.0 / (2.0 * sampleRate));
+    const double releaseFast = std::exp(-1.0 / (std::max(1.0f, p.values[slot::kReleaseMs]) * 0.25e-3 * sampleRate));
+    const double releaseSlow = std::exp(-1.0 / (std::max(1.0f, p.values[slot::kReleaseMs]) * 2.0e-3 * sampleRate));
 
     double peakReduction = 0.0;
+    float peakLevel = 0.0f;
+    const float punchScale = std::pow(10.0f, threshold / 20.0f);
     for (int start = 0; start < numSamples; start += kChunk)
     {
         const int n = std::min(kChunk, numSamples - start);
@@ -81,6 +96,19 @@ void CompressorProcessor::process(float* const* channels, int numChannels, int n
                 for (int i = 0; i < n; ++i)
                     level[static_cast<size_t>(i)] = std::abs(x[i]);
             }
+            if (rms)
+            {
+                // RMS: one-pole mean square of the (linked) peak square, serial.
+                auto& m = meanSquare[static_cast<size_t>(d)];
+                for (int i = 0; i < n; ++i)
+                {
+                    const double l = level[static_cast<size_t>(i)];
+                    m = l * l + rmsCoefficient * (m - l * l);
+                    level[static_cast<size_t>(i)] = static_cast<float>(std::sqrt(m));
+                }
+            }
+            for (int i = 0; i < n; ++i)
+                peakLevel = std::max(peakLevel, level[static_cast<size_t>(i)]);
 
             // 2. static gain computer in dB (0 below the knee, exactly)
             for (int i = 0; i < n; ++i)
@@ -97,14 +125,30 @@ void CompressorProcessor::process(float* const* channels, int numChannels, int n
 
             // 3. branching attack/release recursion in dB (serial)
             auto& smoothed = smoothedReductionDb[static_cast<size_t>(d)];
+            auto& held = hold[static_cast<size_t>(d)];
+            auto& autoDb = autoMakeupDb[static_cast<size_t>(d)];
             for (int i = 0; i < n; ++i)
             {
                 const double t = target[static_cast<size_t>(i)];
-                smoothed = t + (t > smoothed ? attack : release) * (smoothed - t);
+                double releaseNow = release;
+                if (character == 2)
+                {
+                    // Glue: program-dependent release (see the header).
+                    held = (smoothed > 1.0 ? 1.0 : 0.0) + holdCoefficient * (held - (smoothed > 1.0 ? 1.0 : 0.0));
+                    releaseNow = releaseFast + (releaseSlow - releaseFast) * held;
+                }
+                smoothed = t + (t > smoothed ? attack : releaseNow) * (smoothed - t);
                 if (smoothed < 1.0e-9)
                     smoothed = 0.0; // settle exactly, so a recovered compressor is an identity again
                 peakReduction = std::max(peakReduction, smoothed);
-                gainDb[static_cast<size_t>(i)] = static_cast<float>(makeup - smoothed);
+                reductionDb[static_cast<size_t>(i)] = static_cast<float>(smoothed);
+                if (autoMakeup)
+                {
+                    autoDb = smoothed + autoCoefficient * (autoDb - smoothed);
+                    gainDb[static_cast<size_t>(i)] = static_cast<float>(makeup + autoDb - smoothed);
+                }
+                else
+                    gainDb[static_cast<size_t>(i)] = static_cast<float>(makeup - smoothed);
             }
 
             // 4. dB -> linear gain; 0 dB stays an exact 1
@@ -118,11 +162,22 @@ void CompressorProcessor::process(float* const* channels, int numChannels, int n
             for (int ch = linked ? 0 : d; ch < (linked ? numChannels : d + 1); ++ch)
             {
                 float* x = channels[ch] + start;
+                if (character == 1)
+                    for (int i = 0; i < n; ++i)
+                    {
+                        // Punch: saturation relative to the threshold, before the gain, growing with the
+                        // gain reduction (see the header).
+                        const float m = 0.35f * std::min(1.0f, reductionDb[static_cast<size_t>(i)] * (1.0f / 12.0f));
+                        if (m > 0.0f)
+                            x[i] += m * (punchScale * std::tanh(x[i] / punchScale) - x[i]);
+                    }
                 for (int i = 0; i < n; ++i)
                     x[i] *= gain[static_cast<size_t>(i)];
             }
         }
     }
     meterGainReductionDb.store(static_cast<float>(peakReduction), std::memory_order_relaxed);
+    meterInputDb.store(peakLevel > 0.0f ? 20.0f * std::log10(peakLevel) : -120.0f, std::memory_order_relaxed);
+    meterAutoMakeupDb.store(static_cast<float>(autoMakeup ? autoMakeupDb[0] : 0.0), std::memory_order_relaxed);
 }
 } // namespace hpeq::dsp

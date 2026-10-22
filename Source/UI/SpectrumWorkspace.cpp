@@ -518,9 +518,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
                 }
                 else if (result >= 300 && it->chain.size() < static_cast<size_t>(kMaxFxPerNode))
                 {
-                    FxSlotState m;
-                    m.type = kFxTypes[static_cast<size_t>(result - 300)];
-                    it->chain.push_back(m);
+                    it->chain.push_back(defaultModule(kFxTypes[static_cast<size_t>(result - 300)]));
                     newId = it->id;
                     newKind = Selection::Kind::Eq;
                 }
@@ -550,7 +548,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
                 n.id = newId = p.nextNodeId++;
                 n.lowHz = hz / std::sqrt(2.0);
                 n.highHz = hz * std::sqrt(2.0);
-                n.chain.front().type = kFxTypes[static_cast<size_t>(result - 200)];
+                n.chain.front() = defaultModule(kFxTypes[static_cast<size_t>(result - 200)]);
                 layer.fxNodes.push_back(n);
                 newKind = Selection::Kind::Fx;
             }

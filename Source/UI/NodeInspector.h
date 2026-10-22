@@ -4,6 +4,7 @@
 
 #include "Plugin/FxPluginProcessor.h"
 #include "UI/Theme.h"
+#include "UI/VintageStyle.h"
 
 namespace hpeq::ui
 {
@@ -22,6 +23,8 @@ public:
     void rebuildAsync();
     // Project changed elsewhere (undo, drag in the workspace): refresh values only.
     void refresh();
+    // Live readouts from the engine (status, needles); the timer calls it at 15 Hz, tests directly.
+    void updateLiveReadouts();
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -57,6 +60,7 @@ private:
 
     FxPluginProcessor& processor;
     Selection& selection;
+    vintage::LookAndFeel vintageLook; // declared before the controls that use it (destroyed after them)
     juce::OwnedArray<juce::Component> controls;
     juce::OwnedArray<juce::Label> labels;
     std::vector<std::function<void()>> refreshers;
@@ -64,6 +68,9 @@ private:
     juce::String title, status;
     bool dragging = false;
     int nodeIndex = -1;
-    bool showingGrid = true;
+    bool showingGrid = true, vintagePage = false;
+    juce::Rectangle<int> vintageArea;
+    vintage::NeedleMeter* inputNeedle = nullptr; // owned by controls
+    vintage::NeedleMeter* reductionNeedle = nullptr;
 };
 } // namespace hpeq::ui

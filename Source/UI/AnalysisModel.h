@@ -14,7 +14,7 @@ class AnalysisModel
 {
 public:
     enum class View { Mid, Left, Right, Side };
-    static constexpr int kHistory = 1 << 17;
+    static constexpr int kHistory = 1 << 20; // > 5 s at 192 kHz (waveform snapshot window)
 
     explicit AnalysisModel(AudioCapture& source);
 

@@ -52,7 +52,9 @@ const std::vector<NodeInspector::ParamDef>& NodeInspector::paramsFor(FxType type
     static const std::vector<ParamDef> compressor {
         { "thresholdDb", "Threshold", -60, 0, -18, -20, " dB", 1 }, { "ratio", "Ratio", 1, 20, 4, 4, ":1", 1 },
         { "kneeDb", "Knee", 0, 24, 6, 6, " dB", 1 }, { "attackMs", "Attack", 0.05, 500, 10, 10, " ms", 2 },
-        { "releaseMs", "Release", 1, 5000, 120, 150, " ms", 0 }, { "makeupDb", "Makeup", -24, 24, 0, 0, " dB", 1 } };
+        { "releaseMs", "Release", 1, 5000, 120, 150, " ms", 0 }, { "makeupDb", "Makeup", -24, 24, 0, 0, " dB", 1 },
+        { "detector", "Detector", 0, 1, 0, 0, "", 0, "Peak|RMS" }, { "character", "Character", 0, 2, 0, 0, "", 0, "Clean|Punch|Glue" },
+        { "autoMakeup", "Auto makeup", 0, 1, 0, 0, "", 0, "Off|On" } };
     static const std::vector<ParamDef> reverb {
         { "predelayMs", "Pre-delay", 0, 250, 10, 30, " ms", 0 }, { "decaySeconds", "Decay", 0.1, 20, 1.8, 2, " s", 2 },
         { "hfDecayRatio", "HF decay", 0.05, 1, 0.5, 0.4, "", 2 }, { "size", "Size", 0.3, 1.5, 1, 0.9, "", 2 },
@@ -300,8 +302,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
     {
         editChain("Module type", [k, i](std::vector<FxSlotState>& c)
         {
-            c[static_cast<size_t>(k)].type = kTypes[static_cast<size_t>(i)];
-            c[static_cast<size_t>(k)].parameters.clear();
+            const auto keepOn = c[static_cast<size_t>(k)].enabled;
+            const auto keepMix = c[static_cast<size_t>(k)].mix;
+            c[static_cast<size_t>(k)] = defaultModule(kTypes[static_cast<size_t>(i)]);
+            c[static_cast<size_t>(k)].enabled = keepOn;
+            c[static_cast<size_t>(k)].mix = keepMix;
         });
         rebuildAsync();
     });
@@ -358,6 +363,21 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
         }
     });
 
+    vintagePage = module.type == FxType::Compressor;
+    if (vintagePage)
+    {
+        auto* in = new vintage::NeedleMeter("INPUT", -40.0f, 6.0f, -40.0f, { -40.0f, -20.0f, -10.0f, 0.0f, 6.0f }, 0.0f);
+        auto* gr = new vintage::NeedleMeter("GAIN REDUCTION", -20.0f, 0.0f, 0.0f, { -20.0f, -10.0f, -5.0f, -2.0f, 0.0f }, 1.0f);
+        for (auto* m : { in, gr })
+        {
+            controls.add(m);
+            addAndMakeVisible(m);
+            m->getProperties().set("section", 3);
+        }
+        inputNeedle = in;
+        reductionNeedle = gr;
+    }
+
     for (const auto& def : paramsFor(module.type))
     {
         const auto key = juce::String(def.key);
@@ -369,6 +389,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
                 editChain(key, [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), index); });
             });
             setInfo(combo, 2, kKnobWidth, kRowHeight - 2);
+            if (module.type == FxType::Compressor)
+            {
+                labels.getLast()->setColour(juce::Label::textColourId, vintage::engraving);
+                labels.getLast()->setFont(juce::FontOptions(11.0f, juce::Font::bold));
+            }
             refreshers.push_back([this, &combo, key, k, fallback]
             {
                 const auto project = processor.getProject(); // keep alive: selectedChain points into it
@@ -382,6 +407,12 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
             editChain(key, [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), v); });
         });
         setInfo(knob, 2, kKnobWidth, kKnobHeight);
+        if (module.type == FxType::Compressor)
+        {
+            knob.setLookAndFeel(&vintageLook);
+            labels.getLast()->setColour(juce::Label::textColourId, vintage::engraving);
+            labels.getLast()->setFont(juce::FontOptions(11.0f, juce::Font::bold));
+        }
         refreshers.push_back([this, &knob, key, k, fallback]
         {
             const auto project = processor.getProject(); // keep alive: selectedChain points into it
@@ -397,11 +428,7 @@ void NodeInspector::addModule(FxType type)
     editChain("Add module", [type](std::vector<FxSlotState>& c)
     {
         if (c.size() < static_cast<size_t>(kMaxFxPerNode))
-        {
-            FxSlotState m;
-            m.type = type;
-            c.push_back(m);
-        }
+            c.push_back(defaultModule(type));
     });
     const auto project = processor.getProject(); // keep it alive: selectedChain points into it
     const auto* after = selectedChain(project);
@@ -429,6 +456,8 @@ void NodeInspector::rebuild()
     refreshers.clear();
     nodeIndex = -1;
     showingGrid = true;
+    vintagePage = false;
+    inputNeedle = reductionNeedle = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -591,6 +620,11 @@ void NodeInspector::refresh()
 
 void NodeInspector::timerCallback()
 {
+    updateLiveReadouts();
+}
+
+void NodeInspector::updateLiveReadouts()
+{
     // Live readouts from the audio engine (atomics, no locks).
     juce::String newStatus;
     if (selection.kind != Selection::Kind::None && selection.slot >= 0)
@@ -603,7 +637,17 @@ void NodeInspector::timerCallback()
             const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
             const int k = selection.slot;
             if ((*chain)[static_cast<size_t>(k)].type == FxType::Compressor)
+            {
                 newStatus = "Gain reduction  " + juce::String(node.getGainReductionDb(k), 1) + " dB";
+                const float autoDb = node.getCompressorAutoMakeupDb(k);
+                if (autoDb > 0.05f)
+                    newStatus << "    auto makeup +" << juce::String(autoDb, 1) << " dB";
+                if (inputNeedle != nullptr && reductionNeedle != nullptr)
+                {
+                    inputNeedle->setValueDb(node.getCompressorInputDb(k));
+                    reductionNeedle->setValueDb(-node.getGainReductionDb(k));
+                }
+            }
             if (node.slotStarved(k))
                 newStatus = fxName((*chain)[static_cast<size_t>(k)].type) + " pool full (shared by all layers): this module is silent.";
         }
@@ -620,6 +664,8 @@ void NodeInspector::paint(juce::Graphics& g)
     auto area = getLocalBounds().toFloat();
     g.setColour(colours::panel);
     g.fillRoundedRectangle(area, 6.0f);
+    if (vintagePage && !vintageArea.isEmpty())
+        vintage::drawPlate(g, vintageArea.toFloat());
     const auto accent = selection.kind == Selection::Kind::Fx ? colours::forNode(nodeIndex) : colours::eqNode;
     if (selection.kind != Selection::Kind::None)
     {
@@ -638,11 +684,6 @@ void NodeInspector::paint(juce::Graphics& g)
         g.setFont(11.0f);
         if (showingGrid)
             g.drawText("MODULES (processed left to right, then the next row)", chainArea.toFloat().removeFromTop(14.0f), juce::Justification::centredLeft);
-        else
-        {
-            g.drawText("MODULE " + juce::String(selection.slot + 1), chainArea.toFloat().removeFromTop(14.0f), juce::Justification::centredLeft);
-            g.drawText("PARAMETERS", paramArea.toFloat().removeFromTop(14.0f), juce::Justification::centredLeft);
-        }
     }
 }
 
@@ -651,21 +692,62 @@ void NodeInspector::resized()
     auto area = getLocalBounds().reduced(12, 6);
     area.removeFromTop(22);
     const bool any = selection.kind != Selection::Kind::None;
+    vintageArea = {};
+
+    if (any && !showingGrid)
+    {
+        // One module's page fills the panel (the region / point controls come back with the arrow).
+        auto header = area.removeFromTop(kRowHeight);
+        int x = header.getX();
+        area.removeFromTop(8);
+        chainArea = header;
+        paramArea = area;
+        vintageArea = vintagePage ? area : juce::Rectangle<int>();
+        auto inner = vintagePage ? area.reduced(18, 8) : area;
+        auto meters = vintagePage ? inner.removeFromRight(juce::jmin(420, inner.getWidth() * 2 / 5)) : juce::Rectangle<int>();
+        int knobX = inner.getX(), comboX = inner.getX();
+        int meterIndex = 0;
+        for (auto* c : controls)
+        {
+            const auto& props = c->getProperties();
+            const int section = props["section"], width = props["width"], height = props["height"];
+            c->setVisible(section != 0);
+            if (section == 1)
+            {
+                c->setBounds(x, header.getY(), width, height);
+                x += width + 6;
+            }
+            else if (section == 3)
+            {
+                const int w = (meters.getWidth() - 8) / 2;
+                c->setBounds(meters.getX() + meterIndex * (w + 8), meters.getY() + 4, w, juce::jmin(meters.getHeight() - 8, w * 62 / 100));
+                ++meterIndex;
+            }
+            else if (section == 2 && height == kKnobHeight)
+            {
+                c->setBounds(knobX, inner.getY() + 14, width, height);
+                knobX += width + 8;
+            }
+            else if (section == 2)
+            {
+                c->setBounds(comboX, inner.getY() + 14 + kKnobHeight + 22, juce::jmax(width, 96), height);
+                comboX += juce::jmax(width, 96) + 10;
+            }
+        }
+        return;
+    }
+
     auto top = area.removeFromTop(kKnobHeight + 16);
-    chainArea = any ? (showingGrid ? area : area.removeFromLeft(juce::jmin(380, area.getWidth() / 2))) : juce::Rectangle<int>();
-    paramArea = any && !showingGrid ? area.withTrimmedLeft(16) : juce::Rectangle<int>();
+    chainArea = any ? area : juce::Rectangle<int>();
+    paramArea = {};
     int tileIndex = 0;
     const int tileGap = 8, tileWidth = juce::jmin(220, (chainArea.getWidth() - 2 * tileGap) / 3);
     const int tileHeight = juce::jlimit(28, 56, (chainArea.getHeight() - 18 - tileGap) / 2);
-
     int topX = top.getX();
-    int chainY = chainArea.getY() + 16, chainX = chainArea.getX();
-    int paramX = paramArea.getX();
     for (auto* c : controls)
     {
         const auto& props = c->getProperties();
-        const int section = props["section"], width = props["width"], height = props["height"];
-        const bool newRow = props["newRow"];
+        c->setVisible(true);
         if (static_cast<bool>(props["tile"]))
         {
             const int col = tileIndex % 3, row = tileIndex / 3;
@@ -673,27 +755,10 @@ void NodeInspector::resized()
             ++tileIndex;
             continue;
         }
-        if (section == 0)
-        {
-            const int y = height == kKnobHeight ? top.getY() + 16 : top.getY() + 32;
-            c->setBounds(topX, y, width, height);
-            topX += width + 10;
-        }
-        else if (section == 1)
-        {
-            if (newRow && chainX != chainArea.getX())
-            {
-                chainX = chainArea.getX();
-                chainY += kRowHeight;
-            }
-            c->setBounds(chainX, chainY, width, height);
-            chainX += width + 4;
-        }
-        else
-        {
-            c->setBounds(paramX, paramArea.getY() + 32, width, height);
-            paramX += width + 8;
-        }
+        const int width = props["width"], height = props["height"];
+        const int y = height == kKnobHeight ? top.getY() + 16 : top.getY() + 32;
+        c->setBounds(topX, y, width, height);
+        topX += width + 10;
     }
 }
 } // namespace hpeq::ui

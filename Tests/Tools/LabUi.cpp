@@ -152,6 +152,15 @@ int runUiSnapshots(const juce::File& out)
         editor->selectNode(true, compId, -1);
         save("hpeq_d6_region_modules_grid.png");
         editor->selectNode(true, compId, 0);
+        // Keep audio running so the needles show real values (they move with VU-like inertia).
+        auto more = makeSyntheticDrums({ 48000.0, 2, 1.0, kFixtureSeed });
+        for (int start = 0; start < more.getNumSamples(); start += 512)
+        {
+            juce::AudioBuffer<float> view(more.getArrayOfWritePointers(), 2, start, juce::jmin(512, more.getNumSamples() - start));
+            processor->processBlock(view, midi);
+            if ((start / 512) % 4 == 3)
+                editor->updateAnalysisNow();
+        }
         save("hpeq_d6_module_page.png");
         processor->setProject(project);
         processor->dispatchPendingMessages();

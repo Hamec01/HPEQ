@@ -70,6 +70,9 @@ public:
     double targetHighHz() const noexcept { return highHz; }
     int latencySamples() const noexcept { return nodeLatency; }
     float getGainReductionDb(int slotIndex) const noexcept;
+    // Compressor slot: detector level of the last block (dB) and auto makeup (dB); others: -120 / 0.
+    float getCompressorInputDb(int slotIndex) const noexcept;
+    float getCompressorAutoMakeupDb(int slotIndex) const noexcept;
     bool slotRunning(int slotIndex) const noexcept { return slots[static_cast<size_t>(slotIndex)].running; }
     // A pooled slot (Reverb, Delay, Monsta) that wanted to start but found its pool exhausted.
     bool slotStarved(int slotIndex) const noexcept { return slots[static_cast<size_t>(slotIndex)].starved; }

@@ -28,7 +28,7 @@ struct FxSlotParams
     bool active = false;
     FxType type = FxType::Gain;
     float mix = 1.0f;
-    std::array<float, 8> values {};
+    std::array<float, 10> values {};
 };
 
 namespace slot
@@ -36,7 +36,8 @@ namespace slot
 // Gain
 constexpr int kGainDb = 0;
 // Compressor
-constexpr int kThresholdDb = 0, kRatio = 1, kKneeDb = 2, kAttackMs = 3, kReleaseMs = 4, kMakeupDb = 5;
+constexpr int kThresholdDb = 0, kRatio = 1, kKneeDb = 2, kAttackMs = 3, kReleaseMs = 4, kMakeupDb = 5,
+              kCompDetector = 6, kCompCharacter = 7, kCompAutoMakeup = 8; // detector 0 Peak / 1 RMS; character 0 Clean / 1 Punch / 2 Glue
 // Reverb (wet-only send)
 constexpr int kPredelayMs = 0, kDecaySeconds = 1, kHfRatio = 2, kSize = 3, kWidth = 4, kLowCutHz = 5;
 // Saturator (insert; curve 0 tanh / 1 tube / 2 hard; oversampling 0 = 1x, 1 = 2x, 2 = 4x)

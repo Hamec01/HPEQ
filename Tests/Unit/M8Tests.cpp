@@ -263,10 +263,10 @@ public:
                 expect(nodes > 0, "fixture loaded as an empty project");
             }
             // States written by earlier builds (M7: JUCE number formatting; M8: before engine slots) load.
-            for (const auto* name : { "state_v1_m7_writer.xml", "state_v1_m8_writer.xml" })
+            for (const auto* fixtureName : { "state_v1_m7_writer.xml", "state_v1_m8_writer.xml" })
             {
-                const auto earlier = juce::parseXML(juce::File(HPEQ_TEST_FIXTURES_DIR).getChildFile(name));
-                expect(earlier != nullptr, juce::String(name) + " missing");
+                const auto earlier = juce::parseXML(juce::File(HPEQ_TEST_FIXTURES_DIR).getChildFile(fixtureName));
+                expect(earlier != nullptr, juce::String(fixtureName) + " missing");
                 if (earlier == nullptr)
                     continue;
                 juce::MemoryBlock data;
@@ -276,7 +276,7 @@ public:
                 int nodes = 0;
                 for (const auto& layer : plugin->getProject().layers)
                     nodes += static_cast<int>(layer.eqNodes.size() + layer.fxNodes.size());
-                expect(nodes > 0, juce::String(name) + " loaded as an empty project");
+                expect(nodes > 0, juce::String(fixtureName) + " loaded as an empty project");
             }
             // Old-style tree: only the fields an M1-era project wrote (no layer controls, no slot params).
             const auto old = juce::parseXML(R"(<HpeqProject schemaVersion="1" routing="Parallel" selectedLayer="0" nextNodeId="3">

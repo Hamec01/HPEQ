@@ -204,6 +204,22 @@ void copyLayerInto(FxProjectState& project, const LayerState& source, int target
         n.id = project.nextNodeId++;
 }
 
+FxSlotState defaultModule(FxType type)
+{
+    FxSlotState m;
+    m.type = type;
+    if (type == FxType::Compressor)
+    {
+        m.parameters.set("thresholdDb", -30);
+        m.parameters.set("ratio", 4);
+        m.parameters.set("attackMs", 1); // module pass: 5 ms let drum hits through (band crest -1.1 dB only)
+        m.parameters.set("releaseMs", 80);
+        m.parameters.set("character", 1);
+        m.parameters.set("autoMakeup", 1);
+    }
+    return m;
+}
+
 std::pair<double, double> pointModuleBandHz(const EqNodeState& node)
 {
     const double q = std::max(0.025, node.q);

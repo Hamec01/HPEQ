@@ -451,6 +451,18 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
     }
 }
 
+float FxNodeProcessor::getCompressorInputDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    return slot.running && slot.type == FxType::Compressor ? slot.compressor.getInputLevelDb() : -120.0f;
+}
+
+float FxNodeProcessor::getCompressorAutoMakeupDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    return slot.running && slot.type == FxType::Compressor ? slot.compressor.getAutoMakeupDb() : 0.0f;
+}
+
 float FxNodeProcessor::getGainReductionDb(int slotIndex) const noexcept
 {
     const auto& slot = slots[static_cast<size_t>(slotIndex)];
