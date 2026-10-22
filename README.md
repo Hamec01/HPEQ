@@ -23,6 +23,7 @@ owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECIS
 | M8 validation, loudness / true peak, CPU and memory pass, beta 0.1.0 | done; pluginval 5–10 pass; DAW checks BLOCKED | [M8_REPORT](docs/fx-addon/reports/M8_REPORT.md) |
 | D6 owner feedback: modules on EQ points, module grid inspector | done | [D6_REPORT](docs/fx-addon/reports/D6_REPORT.md) |
 | Module pass 1: compressor (Peak/RMS, auto makeup, Clean/Punch/Glue, vintage page), calmer waveform | done | [COMPRESSOR_PASS_REPORT](docs/fx-addon/reports/COMPRESSOR_PASS_REPORT.md) |
+| Module pass 2: reverb HamloVerb (6 spaces + Classic, colour, VintageVerb / Pro-R function set, CRT page) | done | [REVERB_PASS_REPORT](docs/fx-addon/reports/REVERB_PASS_REPORT.md) |
 
 Ten layers (Parallel delta or Serial), each PRE-EQ (9 shapes, cuts 6-96 dB/oct, L/R/M/S) then up to 8
 frequency-range FX regions with chains of up to 6 processors; the frequency core is H3 (DECISIONS D4),

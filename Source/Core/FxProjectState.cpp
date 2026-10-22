@@ -217,6 +217,19 @@ FxSlotState defaultModule(FxType type)
         m.parameters.set("character", 1);
         m.parameters.set("autoMakeup", 1);
     }
+    else if (type == FxType::Reverb)
+    {
+        // HamloVerb pass: a reverb added from the UI starts in the Hall space (projects without "space"
+        // keep the M4 reverb, Classic).
+        m.parameters.set("space", 3);
+        m.parameters.set("color", 2);
+        m.parameters.set("predelayMs", 20);
+        m.parameters.set("decaySeconds", 2.4);
+        m.parameters.set("size", 1.0);
+        m.parameters.set("hfDecayRatio", 0.5);
+        m.parameters.set("lowCutHz", 80);
+        m.parameters.set("width", 1.0);
+    }
     return m;
 }
 

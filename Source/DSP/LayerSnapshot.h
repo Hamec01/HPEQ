@@ -28,7 +28,7 @@ struct FxSlotParams
     bool active = false;
     FxType type = FxType::Gain;
     float mix = 1.0f;
-    std::array<float, 10> values {};
+    std::array<float, 24> values {};
 };
 
 namespace slot
@@ -38,8 +38,13 @@ constexpr int kGainDb = 0;
 // Compressor
 constexpr int kThresholdDb = 0, kRatio = 1, kKneeDb = 2, kAttackMs = 3, kReleaseMs = 4, kMakeupDb = 5,
               kCompDetector = 6, kCompCharacter = 7, kCompAutoMakeup = 8; // detector 0 Peak / 1 RMS; character 0 Clean / 1 Punch / 2 Glue
-// Reverb (wet-only send)
-constexpr int kPredelayMs = 0, kDecaySeconds = 1, kHfRatio = 2, kSize = 3, kWidth = 4, kLowCutHz = 5;
+// Reverb (wet-only send). 0..5 are the M4 reverb ("Classic"); the rest drive the HamloVerb spaces
+// (space 0 Classic / 1 Room / 2 Chamber / 3 Hall / 4 Plate / 5 Cathedral / 6 Ambience; color 0 1970 /
+// 1 1980 / 2 Now; sync 0 = free pre-delay, else a note division, see verb::syncBeats).
+constexpr int kPredelayMs = 0, kDecaySeconds = 1, kHfRatio = 2, kSize = 3, kWidth = 4, kLowCutHz = 5,
+              kRevSpace = 6, kRevColor = 7, kRevSync = 8, kRevAttack = 9, kRevEarlyDiff = 10, kRevLateDiff = 11,
+              kRevModRate = 12, kRevModDepth = 13, kRevBassMult = 14, kRevBassXover = 15, kRevHighXover = 16,
+              kRevHighCut = 17, kRevDistance = 18, kRevDuck = 19, kRevFreeze = 20;
 // Saturator (insert; curve 0 tanh / 1 tube / 2 hard; oversampling 0 = 1x, 1 = 2x, 2 = 4x)
 constexpr int kDriveDb = 0, kCurve = 1, kBias = 2, kTrimDb = 3, kOversampling = 4, kAutoGain = 5;
 // Transient shaper (insert)

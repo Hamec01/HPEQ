@@ -1,13 +1,16 @@
 #pragma once
 
 #include <array>
+#include <atomic>
 #include <vector>
 
 #include "DSP/DspConfig.h"
+#include "DSP/HamloVerb.h"
 #include "DSP/LayerSnapshot.h"
 
 namespace hpeq::dsp
 {
+// The M4 reverb, kept as the "Classic" space (bit-exact for projects saved before the HamloVerb pass).
 // Wet-only reverb for FX-node send slots (M4, written for HPEQ, DECISIONS D3).
 //
 // Structure: stereo pre-delay -> 8-line feedback delay network (Jot):
@@ -22,7 +25,7 @@ namespace hpeq::dsp
 //    (low cut) on the wet keeps the low end of the dry clean.
 // Output is the reverb only (no dry), so in a node chain it is used as s_k = s + mix * W(s).
 // All memory is allocated in prepare(); process() never allocates.
-class ReverbProcessor
+class ClassicReverb
 {
 public:
     static constexpr int kLines = 8;
@@ -55,5 +58,43 @@ private:
     double width = 1.0;
     float blockPeak = 0.0f;
     bool primed = false;
+};
+
+// The Reverb module: Classic (the M4 FDN above) or a HamloVerb space (REVERB_DESIGN.md). A change of
+// space fades the old engine out (10 ms), clears the new one and fades it in, so nothing clicks and no
+// old tail is played through the new space's delays.
+class ReverbProcessor
+{
+public:
+    static constexpr double kMaxPredelayMs = verb::kMaxPredelayMs;
+
+    void prepare(double sampleRate);
+    void reset() noexcept;
+
+    // wet[ch] = reverb of in[ch] (numChannels 1 or 2). `transport` gives the tempo for a synced pre-delay.
+    void process(const float* const* in, float* const* wet, int numChannels, int numSamples, const FxSlotParams&,
+                 const Transport& transport = {}) noexcept;
+
+    float lastBlockPeak() const noexcept { return blockPeak; }
+    float outputLevelDb() const noexcept { return meterOutDb.load(std::memory_order_relaxed); }
+    float duckingDb() const noexcept { return activeSpace > 0 ? verb.duckingDb() : 0.0f; }
+    int currentSpace() const noexcept { return activeSpace; }
+
+    // Decay to -60 dB plus pre-delay (and build-up), for host tail reporting.
+    static double tailSeconds(const FxSlotParams&, double bpm = 120.0) noexcept;
+
+private:
+    void runEngine(int space, const float* const* in, float* const* wet, int numChannels, int numSamples, const FxSlotParams&,
+                   const Transport&) noexcept;
+
+    double sampleRate = 48000.0;
+    ClassicReverb classic;
+    HamloVerb verb;
+    int activeSpace = -1;   // -1: nothing running yet
+    double fade = 1.0;      // output gain of the active engine
+    bool fadingOut = false;
+    int fadeSamples = 1;
+    float blockPeak = 0.0f;
+    std::atomic<float> meterOutDb { -120.0f };
 };
 } // namespace hpeq::dsp

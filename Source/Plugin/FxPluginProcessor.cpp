@@ -301,7 +301,7 @@ void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
                 if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active)
                 {
                     if (slot.type == FxType::Reverb)
-                        tail = std::max(tail, dsp::ReverbProcessor::tailSeconds(slot));
+                        tail = std::max(tail, dsp::ReverbProcessor::tailSeconds(slot, hostBpm.load(std::memory_order_relaxed)));
                     else if (slot.type == FxType::Delay)
                         tail = std::max(tail, dsp::DelayProcessor::tailSeconds(slot, hostBpm.load(std::memory_order_relaxed)));
                 }

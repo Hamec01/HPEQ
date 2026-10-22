@@ -56,9 +56,19 @@ const std::vector<NodeInspector::ParamDef>& NodeInspector::paramsFor(FxType type
         { "detector", "Detector", 0, 1, 0, 0, "", 0, "Peak|RMS" }, { "character", "Character", 0, 2, 0, 0, "", 0, "Clean|Punch|Glue" },
         { "autoMakeup", "Auto makeup", 0, 1, 0, 0, "", 0, "Off|On" } };
     static const std::vector<ParamDef> reverb {
-        { "predelayMs", "Pre-delay", 0, 250, 10, 30, " ms", 0 }, { "decaySeconds", "Decay", 0.1, 20, 1.8, 2, " s", 2 },
+        { "predelayMs", "Pre-delay", 0, 500, 10, 30, " ms", 0 }, { "decaySeconds", "Decay", 0.1, 30, 1.8, 2, " s", 2 },
         { "hfDecayRatio", "HF decay", 0.05, 1, 0.5, 0.4, "", 2 }, { "size", "Size", 0.3, 1.5, 1, 0.9, "", 2 },
-        { "width", "Width", 0, 1.5, 1, 0.75, "", 2 }, { "lowCutHz", "Wet low cut", 10, 1000, 80, 100, " Hz", 0 } };
+        { "width", "Width", 0, 1.5, 1, 0.75, "", 2 }, { "lowCutHz", "Wet low cut", 10, 1000, 80, 100, " Hz", 0 },
+        // HamloVerb pass (defaults = the DSP's when a key is absent, LayerSnapshot.cpp)
+        { "space", "Space", 0, 6, 0, 0, "", 0, "Classic|Room|Chamber|Hall|Plate|Cathedral|Ambience" },
+        { "color", "Color", 0, 2, 2, 2, "", 0, "1970|1980|Now" },
+        { "predelaySync", "Pre-delay sync", 0, 11, 0, 0, "", 0, "Free|1/64|1/32|1/16T|1/16|1/8T|1/16D|1/8|1/4T|1/8D|1/4|1/2" },
+        { "attack", "Attack", 0, 1, 0.2, 0.5, "", 2 }, { "earlyDiffusion", "Early diffusion", 0, 1, 0.7, 0.5, "", 2 },
+        { "lateDiffusion", "Late diffusion", 0, 1, 0.7, 0.5, "", 2 }, { "modRate", "Mod rate", 0.01, 10, 0.6, 1, " Hz", 2 },
+        { "modDepth", "Mod depth", 0, 1, 0.4, 0.5, "", 2 }, { "bassMult", "Bass mult", 0.25, 4, 1.2, 1, "x", 2 },
+        { "bassXoverHz", "Bass xover", 50, 2000, 300, 300, " Hz", 0 }, { "highXoverHz", "High xover", 1000, 16000, 4000, 4000, " Hz", 0 },
+        { "highCutHz", "High cut", 1000, 20000, 12000, 6000, " Hz", 0 }, { "distance", "Distance", 0, 1, 0.4, 0.5, "", 2 },
+        { "duck", "Duck", 0, 1, 0, 0.5, "", 2 }, { "freeze", "Freeze", 0, 1, 0, 0, "", 0, "Off|On" } };
     static const std::vector<ParamDef> gain { { "gainDb", "Gain", -60, 24, 0, 0, " dB", 1 } };
     static const std::vector<ParamDef> saturator {
         { "driveDb", "Drive", 0, 48, 12, 12, " dB", 1 }, { "curve", "Curve", 0, 2, 0, 0, "", 0, "Tanh|Tube|Hard" },
@@ -435,6 +445,12 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
         return;
     }
 
+    if (module.type == FxType::Reverb)
+    {
+        buildReverbPage(k);
+        return;
+    }
+
     for (const auto& def : paramsFor(module.type))
     {
         const auto key = juce::String(def.key);
@@ -504,6 +520,7 @@ void NodeInspector::rebuild()
     showingGrid = true;
     largePage = false;
     hamloPanel = nullptr;
+    verbPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -671,12 +688,88 @@ void NodeInspector::timerCallback()
     updateLiveReadouts();
 }
 
+void NodeInspector::buildReverbPage(int k)
+{
+    // HamloVerb (module pass 2): one drawn panel in the HamloComp style; it fills the editor body.
+    largePage = true;
+    auto* panel = new HamloVerbPanel();
+    controls.add(panel);
+    addAndMakeVisible(panel);
+    panel->getProperties().set("section", 4);
+    verbPanel = panel;
+    panel->onKnobGestureStart = [this](HamloVerbPanel::Param p)
+    {
+        processor.getUndoManager().beginNewTransaction("Reverb " + juce::String(HamloVerbPanel::keyFor(p)));
+        dragging = true;
+    };
+    panel->onKnobGestureEnd = [this] { dragging = false; };
+    panel->onKnobChange = [this, k](HamloVerbPanel::Param p, double v)
+    {
+        const juce::Identifier key(HamloVerbPanel::keyFor(p));
+        editChain("Reverb", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+    };
+    panel->onSwitchChange = [this, k](HamloVerbPanel::Switch sw, int option)
+    {
+        processor.getUndoManager().beginNewTransaction("Reverb " + juce::String(HamloVerbPanel::keyFor(sw)));
+        const juce::Identifier key(HamloVerbPanel::keyFor(sw));
+        editChain("Reverb switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+    };
+    panel->onPowerChange = [this, k](bool on)
+    {
+        processor.getUndoManager().beginNewTransaction("Module on");
+        editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+    };
+    panel->readMeters = [this, k]() -> std::pair<float, float>
+    {
+        const auto project = processor.getProject();
+        const int engineSlot = selectedEngineSlot(project);
+        if (engineSlot < 0)
+            return { -120.0f, 0.0f };
+        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+        return { node.getReverbOutputDb(k), node.getReverbDuckDb(k) };
+    };
+    refreshers.push_back([this, panel, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        const auto* c = selectedChain(project);
+        if (c == nullptr || k >= static_cast<int>(c->size()))
+            return;
+        const auto& m = (*c)[static_cast<size_t>(k)];
+        HamloVerbPanel::Values v;
+        const auto& defs = paramsFor(FxType::Reverb); // the DSP defaults when a key is absent
+        const auto fallback = [&defs](const char* key)
+        {
+            for (const auto& d : defs)
+                if (juce::String(d.key) == key)
+                    return d.defaultValue;
+            return 0.0;
+        };
+        for (int p = 0; p < HamloVerbPanel::NumKnobs; ++p)
+        {
+            const auto* key = HamloVerbPanel::keyFor(static_cast<HamloVerbPanel::Param>(p));
+            v.knobs[static_cast<size_t>(p)] = paramValue(m, key, fallback(key));
+        }
+        for (int sw = 0; sw < HamloVerbPanel::NumSwitches; ++sw)
+        {
+            const auto* key = HamloVerbPanel::keyFor(static_cast<HamloVerbPanel::Switch>(sw));
+            v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, key, fallback(key)));
+        }
+        v.on = m.enabled;
+        panel->setValues(v);
+    });
+}
+
 void NodeInspector::updateLiveReadouts(bool settle)
 {
     if (settle && hamloPanel != nullptr && hamloPanel->readMeters)
     {
         const auto [inputDb, reductionDb] = hamloPanel->readMeters();
         hamloPanel->settleMeters(inputDb, reductionDb);
+    }
+    if (settle && verbPanel != nullptr && verbPanel->readMeters)
+    {
+        const auto [outputDb, duckDb] = verbPanel->readMeters();
+        verbPanel->settleMeters(outputDb, duckDb);
     }
     // Live readouts from the audio engine (atomics, no locks).
     juce::String newStatus;

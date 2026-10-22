@@ -1,0 +1,179 @@
+{
+  "commit": "5a9669e+reverb-pass",
+  "machine": {
+    "os": "Windows 10",
+    "cpu_vendor": "GenuineIntel",
+    "cpu_model": "Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz",
+    "cpu_mhz": 4017,
+    "logical_cpus": 8,
+    "physical_cpus": 4,
+    "memory_mb": 49072,
+    "juce_version": "JUCE v8.0.12",
+    "compiler": "MSVC 195136231",
+    "build": "Release",
+    "allocation_probe": "operator-new-only (malloc not seen)",
+    "utc": "2026-10-22T22:57:26.477+03:00"
+  },
+  "block": 512,
+  "sample_rate": 48000.0,
+  "reps": 3,
+  "mode": "warm: 200 blocks warm-up, high priority",
+  "blocks_per_run": 2000,
+  "budget_us": 10666.666667,
+  "configs": [
+    {
+      "name": "tree_1node_gain",
+      "p50_us": 27.3,
+      "p95_us": 38.8,
+      "p99_us": 48.1,
+      "max_us": 156.2,
+      "p50_budget_pct": 0.255938,
+      "p99_budget_pct": 0.450938,
+      "spikes_per_run": 2.0,
+      "spike_mean_spacing_blocks": 235.75
+    },
+    {
+      "name": "tree_5nodes_gain",
+      "p50_us": 118.3,
+      "p95_us": 175.2,
+      "p99_us": 184.3,
+      "max_us": 454.3,
+      "p50_budget_pct": 1.109063,
+      "p99_budget_pct": 1.727813,
+      "spikes_per_run": 0.333333,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "tree_8nodes_gain",
+      "p50_us": 186.8,
+      "p95_us": 238.3,
+      "p99_us": 287.5,
+      "max_us": 438.7,
+      "p50_budget_pct": 1.75125,
+      "p99_budget_pct": 2.695312,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "comp_1node",
+      "p50_us": 55.2,
+      "p95_us": 80.6,
+      "p99_us": 86.4,
+      "max_us": 251.5,
+      "p50_budget_pct": 0.5175,
+      "p99_budget_pct": 0.81,
+      "spikes_per_run": 2.666667,
+      "spike_mean_spacing_blocks": 140.5
+    },
+    {
+      "name": "comp_8nodes_x6",
+      "p50_us": 1677.8,
+      "p95_us": 2054.4,
+      "p99_us": 2146.2,
+      "max_us": 2614.8,
+      "p50_budget_pct": 15.729375,
+      "p99_budget_pct": 20.120625,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "reverb_1node",
+      "p50_us": 59.4,
+      "p95_us": 72.9,
+      "p99_us": 105.2,
+      "max_us": 203.0,
+      "p50_budget_pct": 0.556875,
+      "p99_budget_pct": 0.98625,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "reverb_8nodes",
+      "p50_us": 450.5,
+      "p95_us": 783.7,
+      "p99_us": 816.6,
+      "max_us": 960.1,
+      "p50_budget_pct": 4.223438,
+      "p99_budget_pct": 7.655625,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "hamloverb_1node",
+      "p50_us": 250.4,
+      "p95_us": 427.4,
+      "p99_us": 454.5,
+      "max_us": 613.1,
+      "p50_budget_pct": 2.3475,
+      "p99_budget_pct": 4.260937,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "hamloverb_8nodes",
+      "p50_us": 2151.3,
+      "p95_us": 3509.2,
+      "p99_us": 3659.6,
+      "max_us": 4154.3,
+      "p50_budget_pct": 20.168438,
+      "p99_budget_pct": 34.30875,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "hamloverb_plate_1node",
+      "p50_us": 216.6,
+      "p95_us": 366.6,
+      "p99_us": 388.5,
+      "max_us": 645.7,
+      "p50_budget_pct": 2.030625,
+      "p99_budget_pct": 3.642188,
+      "spikes_per_run": 0.333333,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "hamloverb_attack0_1node",
+      "p50_us": 228.8,
+      "p95_us": 404.1,
+      "p99_us": 428.2,
+      "max_us": 544.1,
+      "p50_budget_pct": 2.145,
+      "p99_budget_pct": 4.014375,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "hamloverb_mod0_1node",
+      "p50_us": 212.8,
+      "p95_us": 395.0,
+      "p99_us": 410.5,
+      "max_us": 532.8,
+      "p50_budget_pct": 1.995,
+      "p99_budget_pct": 3.848438,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "eq_24_bells",
+      "p50_us": 161.0,
+      "p95_us": 201.5,
+      "p99_us": 272.6,
+      "max_us": 435.0,
+      "p50_budget_pct": 1.509375,
+      "p99_budget_pct": 2.555625,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    },
+    {
+      "name": "layer_ceiling_24bells_8x6comp",
+      "p50_us": 1870.0,
+      "p95_us": 2342.2,
+      "p99_us": 2436.9,
+      "max_us": 3164.3,
+      "p50_budget_pct": 17.53125,
+      "p99_budget_pct": 22.845938,
+      "spikes_per_run": 0.0,
+      "spike_mean_spacing_blocks": 0.0
+    }
+  ]
+}

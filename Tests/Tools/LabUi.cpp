@@ -13,6 +13,7 @@
 #include "Harness/TestSignalFactory.h"
 #include "Plugin/FxPluginEditor.h"
 #include "Plugin/FxPluginProcessor.h"
+#include "UI/HamloVerbPanel.h"
 
 using namespace hpeq;
 using namespace hpeq::test;
@@ -162,6 +163,89 @@ int runUiSnapshots(const juce::File& out)
                 editor->updateAnalysisNow();
         }
         save("hpeq_d6_module_page.png");
+        processor->setProject(project);
+        processor->dispatchPendingMessages();
+    }
+
+    // Module pass 2: the HamloVerb page (a reverb added from the UI = Hall), DECAY and TIME views,
+    // then Cathedral 1970 with long bass and freeze, then an old project's reverb (Classic).
+    {
+        auto withVerb = processor->getProject();
+        FxNodeState n;
+        n.id = withVerb.nextNodeId++;
+        n.lowHz = 300.0;
+        n.highHz = 9000.0;
+        n.chain = { defaultModule(FxType::Reverb) };
+        auto& rv = n.chain[0].parameters;
+        rv.set("bassMult", 1.4);
+        rv.set("duck", 0.3);
+        const auto verbId = n.id;
+        withVerb.layers[0].fxNodes.push_back(n);
+        processor->setProject(withVerb);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, verbId, 0);
+        auto more = makeSyntheticDrums({ 48000.0, 2, 1.5, kFixtureSeed });
+        for (int start = 0; start < more.getNumSamples(); start += 512)
+        {
+            juce::AudioBuffer<float> view(more.getArrayOfWritePointers(), 2, start, juce::jmin(512, more.getNumSamples() - start));
+            processor->processBlock(view, midi);
+        }
+        const auto findPanel = [&editor]() -> ui::HamloVerbPanel*
+        {
+            juce::Array<juce::Component*> stack { editor.get() };
+            while (!stack.isEmpty())
+            {
+                auto* c = stack.removeAndReturn(stack.size() - 1);
+                for (auto* child : c->getChildren())
+                    stack.add(child);
+                if (auto* v = dynamic_cast<ui::HamloVerbPanel*>(c))
+                    return v;
+            }
+            return nullptr;
+        };
+        editor->updateAnalysisNow();
+        if (auto* panel = findPanel())
+        {
+            panel->settleMeters(-14.0f, 3.2f);
+            save("hpeq_hamloverb_decay.png");
+            {
+                const auto image = panel->createComponentSnapshot(panel->getLocalBounds(), true, 1.0f);
+                auto file = out.getChildFile("hpeq_hamloverb_panel.png");
+                file.deleteFile();
+                juce::FileOutputStream stream(file);
+                juce::PNGImageFormat().writeImageToStream(image, stream);
+            }
+            panel->setDisplayMode(ui::HamloVerbPanel::TimeView);
+            save("hpeq_hamloverb_time.png");
+        }
+        auto cathedral = processor->getProject();
+        auto& m = cathedral.layers[0].fxNodes.back().chain[0].parameters;
+        m.set("space", 5);
+        m.set("color", 0);
+        m.set("decaySeconds", 7.5);
+        m.set("bassMult", 1.8);
+        m.set("hfDecayRatio", 0.3);
+        m.set("predelaySync", 7);
+        m.set("freeze", 1);
+        m.set("highCutHz", 7000.0);
+        processor->setProject(cathedral);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, verbId, 0);
+        if (auto* panel = findPanel())
+        {
+            panel->settleMeters(-9.0f, 0.0f);
+            save("hpeq_hamloverb_cathedral_1970.png");
+        }
+        auto classic = processor->getProject();
+        classic.layers[0].fxNodes.back().chain[0].parameters = rev; // a project saved before this pass
+        processor->setProject(classic);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, verbId, 0);
+        if (auto* panel = findPanel())
+        {
+            panel->settleMeters(-24.0f, 0.0f);
+            save("hpeq_hamloverb_classic.png");
+        }
         processor->setProject(project);
         processor->dispatchPendingMessages();
     }

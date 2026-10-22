@@ -35,12 +35,28 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kCompAutoMakeup] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "autoMakeup", 0.0f)));
             break;
         case FxType::Reverb:
-            slotParams.values[slot::kPredelayMs] = juce::jlimit(0.0f, 250.0f, param(state.parameters, "predelayMs", 10.0f));
-            slotParams.values[slot::kDecaySeconds] = juce::jlimit(0.1f, 20.0f, param(state.parameters, "decaySeconds", 1.8f));
+            slotParams.values[slot::kPredelayMs] = juce::jlimit(0.0f, 500.0f, param(state.parameters, "predelayMs", 10.0f));
+            slotParams.values[slot::kDecaySeconds] = juce::jlimit(0.1f, 30.0f, param(state.parameters, "decaySeconds", 1.8f));
             slotParams.values[slot::kHfRatio] = juce::jlimit(0.05f, 1.0f, param(state.parameters, "hfDecayRatio", 0.5f));
             slotParams.values[slot::kSize] = juce::jlimit(0.3f, 1.5f, param(state.parameters, "size", 1.0f));
             slotParams.values[slot::kWidth] = juce::jlimit(0.0f, 1.5f, param(state.parameters, "width", 1.0f));
             slotParams.values[slot::kLowCutHz] = juce::jlimit(10.0f, 1000.0f, param(state.parameters, "lowCutHz", 80.0f));
+            // Projects saved before the HamloVerb pass have no "space": they keep the M4 reverb (Classic).
+            slotParams.values[slot::kRevSpace] = juce::jlimit(0.0f, 6.0f, std::round(param(state.parameters, "space", 0.0f)));
+            slotParams.values[slot::kRevColor] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "color", 2.0f)));
+            slotParams.values[slot::kRevSync] = juce::jlimit(0.0f, 11.0f, std::round(param(state.parameters, "predelaySync", 0.0f)));
+            slotParams.values[slot::kRevAttack] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "attack", 0.2f));
+            slotParams.values[slot::kRevEarlyDiff] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "earlyDiffusion", 0.7f));
+            slotParams.values[slot::kRevLateDiff] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "lateDiffusion", 0.7f));
+            slotParams.values[slot::kRevModRate] = juce::jlimit(0.01f, 10.0f, param(state.parameters, "modRate", 0.6f));
+            slotParams.values[slot::kRevModDepth] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "modDepth", 0.4f));
+            slotParams.values[slot::kRevBassMult] = juce::jlimit(0.25f, 4.0f, param(state.parameters, "bassMult", 1.2f));
+            slotParams.values[slot::kRevBassXover] = juce::jlimit(50.0f, 2000.0f, param(state.parameters, "bassXoverHz", 300.0f));
+            slotParams.values[slot::kRevHighXover] = juce::jlimit(1000.0f, 16000.0f, param(state.parameters, "highXoverHz", 4000.0f));
+            slotParams.values[slot::kRevHighCut] = juce::jlimit(1000.0f, 20000.0f, param(state.parameters, "highCutHz", 12000.0f));
+            slotParams.values[slot::kRevDistance] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "distance", 0.4f));
+            slotParams.values[slot::kRevDuck] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "duck", 0.0f));
+            slotParams.values[slot::kRevFreeze] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "freeze", 0.0f)));
             break;
         case FxType::Saturator:
             slotParams.values[slot::kDriveDb] = juce::jlimit(0.0f, 48.0f, param(state.parameters, "driveDb", 12.0f));

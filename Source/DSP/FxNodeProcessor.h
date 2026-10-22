@@ -73,6 +73,9 @@ public:
     // Compressor slot: detector level of the last block (dB) and auto makeup (dB); others: -120 / 0.
     float getCompressorInputDb(int slotIndex) const noexcept;
     float getCompressorAutoMakeupDb(int slotIndex) const noexcept;
+    // Reverb slot: wet output level of the last block (dB) and ducking (dB >= 0); others: -120 / 0.
+    float getReverbOutputDb(int slotIndex) const noexcept;
+    float getReverbDuckDb(int slotIndex) const noexcept;
     bool slotRunning(int slotIndex) const noexcept { return slots[static_cast<size_t>(slotIndex)].running; }
     // A pooled slot (Reverb, Delay, Monsta) that wanted to start but found its pool exhausted.
     bool slotStarved(int slotIndex) const noexcept { return slots[static_cast<size_t>(slotIndex)].starved; }

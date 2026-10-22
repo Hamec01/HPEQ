@@ -5,6 +5,7 @@
 #include "Plugin/FxPluginProcessor.h"
 #include "UI/Theme.h"
 #include "UI/HamloCompPanel.h"
+#include "UI/HamloVerbPanel.h"
 
 namespace hpeq::ui
 {
@@ -23,11 +24,11 @@ public:
     void rebuildAsync();
     // Project changed elsewhere (undo, drag in the workspace): refresh values only.
     void refresh();
-    // True while a module page needs the whole editor body (the compressor's HamloComp panel).
+    // True while a module page needs the whole editor body (HamloComp, HamloVerb).
     bool wantsLargeView() const noexcept { return largePage && !showingGrid; }
     std::function<void()> onLayoutChange;
     // Live readouts from the engine (status, needles); the timer calls it at 15 Hz, tests directly.
-    // settle = put the compressor needles on the current readings at once (tests, screenshots).
+    // settle = put the compressor / reverb needles on the current readings at once (tests, screenshots).
     void updateLiveReadouts(bool settle = false);
 
     void paint(juce::Graphics&) override;
@@ -61,6 +62,7 @@ private:
     void editChain(const juce::String& name, const std::function<void(std::vector<FxSlotState>&)>&);
     void addModule(FxType);
     void moveModule(int index, int delta);
+    void buildReverbPage(int k);
 
     FxPluginProcessor& processor;
     Selection& selection;
@@ -73,5 +75,6 @@ private:
     int nodeIndex = -1;
     bool showingGrid = true, largePage = false;
     HamloCompPanel* hamloPanel = nullptr; // owned by controls
+    HamloVerbPanel* verbPanel = nullptr;  // owned by controls
 };
 } // namespace hpeq::ui

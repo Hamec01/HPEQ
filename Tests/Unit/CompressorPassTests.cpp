@@ -302,7 +302,7 @@ public:
             expect(static_cast<double>(m.parameters["thresholdDb"]) == -30.0 && static_cast<double>(m.parameters["ratio"]) == 4.0
                    && static_cast<double>(m.parameters["attackMs"]) == 1.0);
             expect(static_cast<int>(m.parameters["character"]) == 1 && static_cast<int>(m.parameters["autoMakeup"]) == 1);
-            expect(defaultModule(FxType::Reverb).parameters.isEmpty());
+            expect(defaultModule(FxType::Gain).parameters.isEmpty()); // the reverb has its own defaults since the HamloVerb pass
         }
     }
 };

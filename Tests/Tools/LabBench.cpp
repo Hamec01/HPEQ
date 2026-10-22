@@ -64,6 +64,25 @@ FxSlotParams reverbSlot()
     return s;
 }
 
+// HamloVerb pass: the UI default (Hall, NOW, modulation 0.4, attack 0.2) - what a new reverb costs.
+FxSlotParams hamloVerbSlot()
+{
+    auto s = reverbSlot();
+    s.values[slot::kRevSpace] = 3.0f;
+    s.values[slot::kRevColor] = 2.0f;
+    s.values[slot::kRevAttack] = 0.2f;
+    s.values[slot::kRevEarlyDiff] = 0.7f;
+    s.values[slot::kRevLateDiff] = 0.7f;
+    s.values[slot::kRevModRate] = 0.6f;
+    s.values[slot::kRevModDepth] = 0.4f;
+    s.values[slot::kRevBassMult] = 1.2f;
+    s.values[slot::kRevBassXover] = 300.0f;
+    s.values[slot::kRevHighXover] = 4000.0f;
+    s.values[slot::kRevHighCut] = 12000.0f;
+    s.values[slot::kRevDistance] = 0.4f;
+    return s;
+}
+
 FxNodeParams node(float lo, float hi, std::initializer_list<FxSlotParams> chain)
 {
     FxNodeParams n;
@@ -103,6 +122,11 @@ std::vector<Config> configs()
         { "comp_8nodes_x6", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { compSlot(), compSlot(), compSlot(), compSlot(), compSlot(), compSlot() }); return s; } },
         { "reverb_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { reverbSlot() }); return s; } },
         { "reverb_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { reverbSlot() }); return s; } },
+        { "hamloverb_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloVerbSlot() }); return s; } },
+        { "hamloverb_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { hamloVerbSlot() }); return s; } },
+        { "hamloverb_plate_1node", [] { LayerSnapshot s; auto v = hamloVerbSlot(); v.values[slot::kRevSpace] = 4.0f; s.fx[0] = node(200, 10000, { v }); return s; } },
+        { "hamloverb_attack0_1node", [] { LayerSnapshot s; auto v = hamloVerbSlot(); v.values[slot::kRevAttack] = 0.0f; s.fx[0] = node(200, 10000, { v }); return s; } },
+        { "hamloverb_mod0_1node", [] { LayerSnapshot s; auto v = hamloVerbSlot(); v.values[slot::kRevModDepth] = 0.0f; s.fx[0] = node(200, 10000, { v }); return s; } },
         { "eq_24_bells", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i); return s; } },
         { "layer_ceiling_24bells_8x6comp", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i);
                                                 for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { compSlot(), compSlot(), compSlot(), compSlot(), compSlot(), compSlot() }); return s; } },

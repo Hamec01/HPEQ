@@ -324,7 +324,7 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
             if (slot.type == FxType::Reverb)
             {
                 auto& reverb = pools->reverbs.get(slot.pooled);
-                reverb.process(workPtr, wetPtr, workChannels, numSamples, slot.params);
+                reverb.process(workPtr, wetPtr, workChannels, numSamples, slot.params, transport);
                 peak = reverb.lastBlockPeak();
             }
             else
@@ -473,5 +473,21 @@ float FxNodeProcessor::getGainReductionDb(int slotIndex) const noexcept
     if (slot.type == FxType::Limiter)
         return slot.limiter.lastGainReductionDb();
     return 0.0f;
+}
+
+float FxNodeProcessor::getReverbOutputDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (!slot.running || slot.type != FxType::Reverb || slot.pooled < 0 || pools == nullptr)
+        return -120.0f;
+    return pools->reverbs.get(slot.pooled).outputLevelDb();
+}
+
+float FxNodeProcessor::getReverbDuckDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (!slot.running || slot.type != FxType::Reverb || slot.pooled < 0 || pools == nullptr)
+        return 0.0f;
+    return pools->reverbs.get(slot.pooled).duckingDb();
 }
 } // namespace hpeq::dsp

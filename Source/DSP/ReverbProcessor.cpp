@@ -7,10 +7,10 @@ namespace hpeq::dsp
 {
 namespace
 {
-constexpr std::array<double, ReverbProcessor::kLines> kBaseDelayMs { 31.3, 37.9, 41.7, 47.3, 53.9, 59.3, 67.1, 73.7 };
-constexpr std::array<double, ReverbProcessor::kLines> kOutLeft { 1, 1, 1, 1, -1, -1, -1, -1 };
-constexpr std::array<double, ReverbProcessor::kLines> kOutRight { 1, -1, 1, -1, 1, -1, 1, -1 };
-constexpr std::array<double, ReverbProcessor::kLines> kInSign { 1, 1, -1, -1, 1, 1, -1, -1 };
+constexpr std::array<double, ClassicReverb::kLines> kBaseDelayMs { 31.3, 37.9, 41.7, 47.3, 53.9, 59.3, 67.1, 73.7 };
+constexpr std::array<double, ClassicReverb::kLines> kOutLeft { 1, 1, 1, 1, -1, -1, -1, -1 };
+constexpr std::array<double, ClassicReverb::kLines> kOutRight { 1, -1, 1, -1, 1, -1, 1, -1 };
+constexpr std::array<double, ClassicReverb::kLines> kInSign { 1, 1, -1, -1, 1, 1, -1, -1 };
 constexpr double kOutputScale = 0.35;   // keeps the wet near the input level for typical decays
 constexpr double kGainSmoothing = 0.05; // s, decay/damping changes
 constexpr double kSizeSmoothing = 0.20; // s, size changes glide the delay lengths
@@ -33,7 +33,7 @@ inline float readDelay(const float* line, int size, int writePos, double delay) 
 }
 } // namespace
 
-void ReverbProcessor::prepare(double newSampleRate)
+void ClassicReverb::prepare(double newSampleRate)
 {
     sampleRate = newSampleRate;
     const auto lineSize = static_cast<size_t>(std::ceil(kBaseDelayMs.back() * kMaxSize * 1.0e-3 * sampleRate)) + 4;
@@ -44,7 +44,7 @@ void ReverbProcessor::prepare(double newSampleRate)
     reset();
 }
 
-void ReverbProcessor::reset() noexcept
+void ClassicReverb::reset() noexcept
 {
     for (auto& l : lines)
         std::fill(l.begin(), l.end(), 0.0f);
@@ -58,12 +58,12 @@ void ReverbProcessor::reset() noexcept
     primed = false;
 }
 
-double ReverbProcessor::tailSeconds(const FxSlotParams& p) noexcept
+double ClassicReverb::tailSeconds(const FxSlotParams& p) noexcept
 {
     return p.values[slot::kPredelayMs] * 1.0e-3 + p.values[slot::kDecaySeconds];
 }
 
-void ReverbProcessor::updateTargets(const FxSlotParams& p) noexcept
+void ClassicReverb::updateTargets(const FxSlotParams& p) noexcept
 {
     const double t60 = std::clamp(static_cast<double>(p.values[slot::kDecaySeconds]), 0.1, 20.0);
     const double hfRatio = std::clamp(static_cast<double>(p.values[slot::kHfRatio]), 0.05, 1.0);
@@ -95,7 +95,7 @@ void ReverbProcessor::updateTargets(const FxSlotParams& p) noexcept
     }
 }
 
-void ReverbProcessor::process(const float* const* in, float* const* wet, int numChannels, int numSamples, const FxSlotParams& p) noexcept
+void ClassicReverb::process(const float* const* in, float* const* wet, int numChannels, int numSamples, const FxSlotParams& p) noexcept
 {
     updateTargets(p);
     const double gainK = 1.0 - std::exp(-1.0 / (kGainSmoothing * sampleRate));
@@ -167,5 +167,101 @@ void ReverbProcessor::process(const float* const* in, float* const* wet, int num
         peak = std::max({ peak, std::abs(static_cast<float>(l)), std::abs(static_cast<float>(r)) });
     }
     blockPeak = peak;
+}
+
+void ReverbProcessor::prepare(double newSampleRate)
+{
+    sampleRate = newSampleRate;
+    classic.prepare(sampleRate);
+    verb.prepare(sampleRate);
+    fadeSamples = std::max(1, static_cast<int>(std::lround(0.010 * sampleRate)));
+    reset();
+}
+
+void ReverbProcessor::reset() noexcept
+{
+    classic.reset();
+    verb.reset();
+    activeSpace = -1;
+    fade = 1.0;
+    fadingOut = false;
+    blockPeak = 0.0f;
+    meterOutDb.store(-120.0f, std::memory_order_relaxed);
+}
+
+double ReverbProcessor::tailSeconds(const FxSlotParams& p, double bpm) noexcept
+{
+    if (std::lround(p.values[slot::kRevSpace]) <= 0)
+        return ClassicReverb::tailSeconds(p);
+    return HamloVerb::tailSeconds(p, bpm);
+}
+
+void ReverbProcessor::runEngine(int space, const float* const* in, float* const* wet, int numChannels, int numSamples,
+                                const FxSlotParams& p, const Transport& transport) noexcept
+{
+    if (space == verb::Classic)
+        classic.process(in, wet, numChannels, numSamples, p);
+    else
+    {
+        auto q = p; // an engine fading out keeps its own space
+        q.values[slot::kRevSpace] = static_cast<float>(space);
+        verb.process(in, wet, numChannels, numSamples, q, transport);
+    }
+}
+
+void ReverbProcessor::process(const float* const* in, float* const* wet, int numChannels, int numSamples, const FxSlotParams& p,
+                              const Transport& transport) noexcept
+{
+    const int wanted = std::clamp(static_cast<int>(std::lround(p.values[slot::kRevSpace])), 0, verb::NumSpaces - 1);
+    if (activeSpace < 0)
+    {
+        activeSpace = wanted;
+        fade = 1.0;
+    }
+    else if (wanted != activeSpace && !fadingOut)
+        fadingOut = true;
+    else if (wanted == activeSpace && fadingOut)
+        fadingOut = false; // changed back before the fade ended: fade in again
+
+    if (fadingOut && fade <= 0.0)
+    {
+        // the old engine is silent: start the new one from a clean state
+        if (activeSpace == verb::Classic)
+            classic.reset();
+        else
+            verb.reset();
+        activeSpace = wanted;
+        if (activeSpace == verb::Classic)
+            classic.reset();
+        else
+            verb.reset();
+        fadingOut = false;
+    }
+
+    runEngine(activeSpace, in, wet, numChannels, numSamples, p, transport);
+
+    const double step = 1.0 / fadeSamples;
+    float peak = 0.0f;
+    double energy = 0.0;
+    const bool settled = !fadingOut && fade >= 1.0;
+    for (int n = 0; n < numSamples; ++n)
+    {
+        if (!settled)
+        {
+            fade = std::clamp(fade + (fadingOut ? -step : step), 0.0, 1.0);
+            for (int ch = 0; ch < numChannels; ++ch)
+                wet[ch][n] = static_cast<float>(wet[ch][n] * fade);
+        }
+        for (int ch = 0; ch < numChannels; ++ch)
+        {
+            peak = std::max(peak, std::abs(wet[ch][n]));
+            energy += static_cast<double>(wet[ch][n]) * wet[ch][n];
+        }
+    }
+    // settled: the engine's own peak (Classic: exactly the M4 spill-over behaviour)
+    blockPeak = settled ? (activeSpace == verb::Classic ? classic.lastBlockPeak() : verb.lastBlockPeak()) : peak;
+    if (numSamples > 0)
+        meterOutDb.store(static_cast<float>(10.0 * std::log10(energy / (numSamples * std::max(1, numChannels)) + 1.0e-12)),
+                         std::memory_order_relaxed);
 }
 } // namespace hpeq::dsp
