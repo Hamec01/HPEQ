@@ -13,6 +13,7 @@
 #include "Harness/TestSignalFactory.h"
 #include "Plugin/FxPluginEditor.h"
 #include "Plugin/FxPluginProcessor.h"
+#include "UI/HamloEchoPanel.h"
 #include "UI/HamloVerbPanel.h"
 
 using namespace hpeq;
@@ -245,6 +246,99 @@ int runUiSnapshots(const juce::File& out)
         {
             panel->settleMeters(-24.0f, 0.0f);
             save("hpeq_hamloverb_classic.png");
+        }
+        processor->setProject(project);
+        processor->dispatchPendingMessages();
+    }
+
+    // Module pass 3: the HamloEcho page (a delay added from the UI = Tape 1/4), ECHO and FILTER views,
+    // then BBD frozen with pitch, then an old project's delay (Classic).
+    {
+        auto withEcho = processor->getProject();
+        FxNodeState n;
+        n.id = withEcho.nextNodeId++;
+        n.lowHz = 300.0;
+        n.highHz = 9000.0;
+        n.chain = { defaultModule(FxType::Delay) };
+        auto& dv = n.chain[0].parameters;
+        dv.set("feedback", 0.55);
+        dv.set("link", 0);
+        dv.set("syncR", 6);
+        dv.set("cross", 0.35);
+        dv.set("highRes", 0.45);
+        dv.set("dampingHz", 6500.0);
+        dv.set("bandHz", 1800.0);
+        dv.set("bandGainDb", 4.0);
+        dv.set("lowCutHz", 180.0);
+        dv.set("lowRes", 0.2);
+        const auto echoId = n.id;
+        withEcho.layers[0].fxNodes.push_back(n);
+        processor->setProject(withEcho);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, echoId, 0);
+        auto more = makeSyntheticDrums({ 48000.0, 2, 1.5, kFixtureSeed });
+        for (int start = 0; start < more.getNumSamples(); start += 512)
+        {
+            juce::AudioBuffer<float> view(more.getArrayOfWritePointers(), 2, start, juce::jmin(512, more.getNumSamples() - start));
+            processor->processBlock(view, midi);
+        }
+        const auto findPanel = [&editor]() -> ui::HamloEchoPanel*
+        {
+            juce::Array<juce::Component*> stack { editor.get() };
+            while (!stack.isEmpty())
+            {
+                auto* c = stack.removeAndReturn(stack.size() - 1);
+                for (auto* child : c->getChildren())
+                    stack.add(child);
+                if (auto* v = dynamic_cast<ui::HamloEchoPanel*>(c))
+                    return v;
+            }
+            return nullptr;
+        };
+        editor->updateAnalysisNow();
+        if (auto* panel = findPanel())
+        {
+            panel->settleMeters(-16.0f, 0.0f);
+            save("hpeq_hamloecho_echo.png");
+            {
+                const auto image = panel->createComponentSnapshot(panel->getLocalBounds(), true, 1.0f);
+                auto file = out.getChildFile("hpeq_hamloecho_panel.png");
+                file.deleteFile();
+                juce::FileOutputStream stream(file);
+                juce::PNGImageFormat().writeImageToStream(image, stream);
+            }
+            panel->setDisplayMode(ui::HamloEchoPanel::FilterView);
+            save("hpeq_hamloecho_filter.png");
+        }
+        auto bbd = processor->getProject();
+        auto& m = bbd.layers[0].fxNodes.back().chain[0].parameters;
+        m.set("character", 3);
+        m.set("pitch", 7.0);
+        m.set("pingPong", 1);
+        m.set("cross", 1.0);
+        m.set("diffusion", 0.4);
+        m.set("timeMode", 1);
+        processor->setProject(bbd);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, echoId, 0);
+        if (auto* panel = findPanel())
+        {
+            panel->settleMeters(-12.0f, 0.0f);
+            save("hpeq_hamloecho_bbd_pitch.png");
+        }
+        auto classic = processor->getProject();
+        juce::NamedValueSet old;
+        old.set("timeMs", 320.0);
+        old.set("sync", 0);
+        old.set("feedback", 0.45);
+        classic.layers[0].fxNodes.back().chain[0].parameters = old; // a project saved before this pass
+        processor->setProject(classic);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, echoId, 0);
+        if (auto* panel = findPanel())
+        {
+            panel->settleMeters(-24.0f, 0.0f);
+            save("hpeq_hamloecho_classic.png");
         }
         processor->setProject(project);
         processor->dispatchPendingMessages();

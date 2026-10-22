@@ -490,4 +490,20 @@ float FxNodeProcessor::getReverbDuckDb(int slotIndex) const noexcept
         return 0.0f;
     return pools->reverbs.get(slot.pooled).duckingDb();
 }
+
+float FxNodeProcessor::getDelayOutputDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (!slot.running || slot.type != FxType::Delay || slot.pooled < 0 || pools == nullptr)
+        return -120.0f;
+    return pools->delays.get(slot.pooled).outputLevelDb();
+}
+
+float FxNodeProcessor::getDelayDuckDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (!slot.running || slot.type != FxType::Delay || slot.pooled < 0 || pools == nullptr)
+        return 0.0f;
+    return pools->delays.get(slot.pooled).duckingDb();
+}
 } // namespace hpeq::dsp

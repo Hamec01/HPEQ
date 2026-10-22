@@ -83,6 +83,38 @@ FxSlotParams hamloVerbSlot()
     return s;
 }
 
+// HamloEcho pass: the UI default (Tape, 1/4 linked, feedback 0.35, drive 3 dB, wobble 0.3).
+FxSlotParams hamloEchoSlot(float pitch = 0.0f)
+{
+    FxSlotParams s;
+    s.active = true;
+    s.type = FxType::Delay;
+    s.values[slot::kDelayTimeMs] = 250.0f;
+    s.values[slot::kDelaySync] = 8.0f;
+    s.values[slot::kFeedback] = 0.35f;
+    s.values[slot::kDampingHz] = 8000.0f;
+    s.values[slot::kDelayLowCutHz] = 120.0f;
+    s.values[slot::kDelayWidth] = 1.0f;
+    s.values[slot::kDlyCharacter] = 2.0f;
+    s.values[slot::kDlyTimeRMs] = 375.0f;
+    s.values[slot::kDlySyncR] = 6.0f;
+    s.values[slot::kDlyLink] = 1.0f;
+    s.values[slot::kDlyDriveDb] = 3.0f;
+    s.values[slot::kDlyModRate] = 0.5f;
+    s.values[slot::kDlyModDepth] = 0.3f;
+    s.values[slot::kDlyBandHz] = 1000.0f;
+    s.values[slot::kDlyBandQ] = 1.0f;
+    s.values[slot::kDlyPitch] = pitch;
+    return s;
+}
+
+FxSlotParams classicDelaySlot()
+{
+    auto s = hamloEchoSlot();
+    s.values[slot::kDlyCharacter] = 0.0f;
+    return s;
+}
+
 FxNodeParams node(float lo, float hi, std::initializer_list<FxSlotParams> chain)
 {
     FxNodeParams n;
@@ -127,6 +159,10 @@ std::vector<Config> configs()
         { "hamloverb_plate_1node", [] { LayerSnapshot s; auto v = hamloVerbSlot(); v.values[slot::kRevSpace] = 4.0f; s.fx[0] = node(200, 10000, { v }); return s; } },
         { "hamloverb_attack0_1node", [] { LayerSnapshot s; auto v = hamloVerbSlot(); v.values[slot::kRevAttack] = 0.0f; s.fx[0] = node(200, 10000, { v }); return s; } },
         { "hamloverb_mod0_1node", [] { LayerSnapshot s; auto v = hamloVerbSlot(); v.values[slot::kRevModDepth] = 0.0f; s.fx[0] = node(200, 10000, { v }); return s; } },
+        { "delay_classic_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { classicDelaySlot() }); return s; } },
+        { "hamloecho_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloEchoSlot() }); return s; } },
+        { "hamloecho_pitch_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloEchoSlot(7.0f) }); return s; } },
+        { "hamloecho_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { hamloEchoSlot() }); return s; } },
         { "eq_24_bells", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i); return s; } },
         { "layer_ceiling_24bells_8x6comp", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i);
                                                 for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { compSlot(), compSlot(), compSlot(), compSlot(), compSlot(), compSlot() }); return s; } },

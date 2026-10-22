@@ -461,4 +461,128 @@ void meterNeedle(juce::Graphics& g, const Meter& m)
     g.fillRect(0.0f, 0.0f, W, H);
     g.restoreState();
 }
+
+void crtBezel(juce::Graphics& g, juce::Rectangle<float> b, juce::Rectangle<float> screen, const juce::String& label, float labelY)
+{
+    g.setColour(juce::Colours::black.withAlpha(0.8f));
+    g.fillRoundedRectangle(b.translated(0, 10).expanded(2), 12.0f);
+    juce::ColourGradient metal(juce::Colour(0xff5a5c58), b.getX(), b.getY(), juce::Colour(0xff1d1e1c), b.getRight(), b.getBottom(), false);
+    metal.addColour(0.35, juce::Colour(0xff3a3c39));
+    metal.addColour(0.6, juce::Colour(0xff2a2b29));
+    g.setColour(juce::Colours::black);
+    g.fillRoundedRectangle(b.expanded(2), 12.0f);
+    g.setGradientFill(metal);
+    g.fillRoundedRectangle(b, 11.0f);
+    juce::Random r(77);
+    for (int i = 0; i < 260; ++i)
+    {
+        g.setColour(rgba(220, 220, 210, 0.03f + r.nextFloat() * 0.06f));
+        const float x = b.getX() + r.nextFloat() * b.getWidth(), y = b.getY() + r.nextFloat() * b.getHeight();
+        g.drawLine(x, y, x + 4.0f + r.nextFloat() * 18.0f, y + (r.nextFloat() - 0.5f) * 2.0f, 0.5f);
+    }
+    for (auto c : { juce::Point<float>(b.getX() + 10, b.getY() + 10), juce::Point<float>(b.getRight() - 10, b.getY() + 10),
+                    juce::Point<float>(b.getX() + 10, b.getBottom() - 10), juce::Point<float>(b.getRight() - 10, b.getBottom() - 10) })
+    {
+        juce::ColourGradient screw(juce::Colour(0xffd8d8d0), c.x - 2, c.y - 3, juce::Colour(0xff2a2a28), c.x + 5, c.y + 5, true);
+        g.setGradientFill(screw);
+        g.fillEllipse(c.x - 5.0f, c.y - 5.0f, 10.0f, 10.0f);
+        g.setColour(juce::Colour(0xff1a1a19));
+        g.drawLine(c.x - 3.5f, c.y + 1.5f, c.x + 3.5f, c.y - 1.5f, 1.2f);
+    }
+    const auto recess = screen.expanded(5.0f);
+    g.setColour(juce::Colour(0xff050505));
+    g.fillRoundedRectangle(recess, 14.0f);
+    g.setColour(juce::Colours::white.withAlpha(0.08f));
+    g.drawRoundedRectangle(recess.translated(0, 1.5f), 14.0f, 1.2f);
+    engraved(g, label, juce::Rectangle<float>(b.getX() + 20.0f, labelY, 130.0f, 18.0f), 12.0f, stencilDim, juce::Justification::centredLeft, 0.2f);
+}
+
+void crtBegin(juce::Graphics& g, juce::Rectangle<float> s)
+{
+    g.saveState();
+    juce::Path glass;
+    glass.addRoundedRectangle(s, 12.0f);
+    g.reduceClipRegion(glass);
+    juce::ColourGradient tube(juce::Colour(0xff0a1f12), s.getCentreX(), s.getCentreY(), juce::Colour(0xff010703), s.getRight() + 40.0f,
+                              s.getCentreY(), true);
+    g.setGradientFill(tube);
+    g.fillRect(s);
+}
+
+void crtEnd(juce::Graphics& g, juce::Rectangle<float> s)
+{
+    g.setColour(juce::Colours::black.withAlpha(0.16f));
+    for (float y = s.getY(); y < s.getBottom(); y += 3.0f)
+        g.fillRect(s.getX(), y, s.getWidth(), 1.0f);
+    juce::ColourGradient edge(juce::Colours::transparentBlack, s.getCentreX(), s.getCentreY(), juce::Colours::black.withAlpha(0.65f),
+                              s.getRight() + 30.0f, s.getBottom() + 30.0f, true);
+    edge.addColour(0.62, juce::Colours::transparentBlack);
+    g.setGradientFill(edge);
+    g.fillRect(s);
+    juce::Path sheen;
+    sheen.startNewSubPath(s.getX(), s.getY());
+    sheen.lineTo(s.getX() + s.getWidth() * 0.55f, s.getY());
+    sheen.quadraticTo(s.getX() + s.getWidth() * 0.25f, s.getY() + s.getHeight() * 0.25f, s.getX(), s.getY() + s.getHeight() * 0.62f);
+    sheen.closeSubPath();
+    juce::ColourGradient glare(juce::Colours::white.withAlpha(0.09f), s.getX(), s.getY(), juce::Colours::white.withAlpha(0.0f),
+                               s.getX() + s.getWidth() * 0.35f, s.getY() + s.getHeight() * 0.35f, false);
+    g.setGradientFill(glare);
+    g.fillPath(sheen);
+    g.restoreState();
+    g.setColour(juce::Colours::black.withAlpha(0.9f));
+    g.drawRoundedRectangle(s, 12.0f, 2.0f);
+}
+
+void crtButton(juce::Graphics& g, juce::Rectangle<float> r, const juce::String& text, bool lit)
+{
+    g.setColour(juce::Colour(0xff0b0c0b));
+    g.fillRoundedRectangle(r.expanded(1.5f), 4.0f);
+    juce::ColourGradient cap(lit ? juce::Colour(0xff2d6b43) : juce::Colour(0xff2e302d), r.getX(), r.getY(),
+                             lit ? juce::Colour(0xff123a22) : juce::Colour(0xff161716), r.getX(), r.getBottom(), false);
+    g.setGradientFill(cap);
+    g.fillRoundedRectangle(r, 3.0f);
+    if (lit)
+    {
+        juce::ColourGradient halo(phosphor.withAlpha(0.35f), r.getCentreX(), r.getCentreY(), phosphor.withAlpha(0.0f), r.getRight() + 16.0f,
+                                  r.getCentreY(), true);
+        g.setGradientFill(halo);
+        g.fillRoundedRectangle(r.expanded(10.0f, 6.0f), 8.0f);
+    }
+    g.setFont(stencilFont(12.5f).withKerningFactor(0.15f));
+    g.setColour(lit ? phosphor : stencilDim);
+    g.drawText(text, r, juce::Justification::centred);
+}
+
+void glow(juce::Graphics& g, const juce::Path& p, juce::Colour c, float width, float intensity)
+{
+    for (const auto& [w, a] : { std::pair { 9.0f, 0.05f }, std::pair { 5.0f, 0.10f }, std::pair { 2.6f, 0.24f } })
+    {
+        g.setColour(c.withAlpha(a * intensity));
+        g.strokePath(p, juce::PathStrokeType(width * w, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+    }
+    g.setColour(c.withAlpha(0.95f * intensity));
+    g.strokePath(p, juce::PathStrokeType(width * 1.1f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+    g.setColour(juce::Colours::white.withAlpha(0.55f * intensity));
+    g.strokePath(p, juce::PathStrokeType(width * 0.45f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+}
+
+void glowDot(juce::Graphics& g, juce::Point<float> c, float r, juce::Colour col, float intensity)
+{
+    juce::ColourGradient halo(col.withAlpha(0.45f * intensity), c.x, c.y, col.withAlpha(0.0f), c.x + r * 3.2f, c.y, true);
+    g.setGradientFill(halo);
+    g.fillEllipse(c.x - r * 3.2f, c.y - r * 3.2f, r * 6.4f, r * 6.4f);
+    g.setColour(col.withAlpha(intensity));
+    g.drawEllipse(c.x - r, c.y - r, 2 * r, 2 * r, 1.6f);
+    g.setColour(juce::Colours::white.withAlpha(0.8f * intensity));
+    g.fillEllipse(c.x - r * 0.35f, c.y - r * 0.35f, r * 0.7f, r * 0.7f);
+}
+
+void crtText(juce::Graphics& g, const juce::String& t, juce::Rectangle<float> r, float size, juce::Justification j, float alpha)
+{
+    g.setFont(monoFont(size));
+    g.setColour(phosphor.withAlpha(alpha * 0.35f));
+    g.drawText(t, r.expanded(1.0f), j, false);
+    g.setColour(phosphor.withAlpha(alpha));
+    g.drawText(t, r, j, false);
+}
 } // namespace hpeq::ui::steel

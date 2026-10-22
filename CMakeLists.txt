@@ -66,6 +66,7 @@ target_sources(HPEQ
         Source/DSP/Processors.cpp
         Source/DSP/ReverbProcessor.cpp
         Source/DSP/HamloVerb.cpp
+        Source/DSP/HamloEcho.cpp
         Source/DSP/ProcessorsM6.cpp
         Source/DSP/ProjectEngine.cpp
         Source/DSP/CrossoverTree.cpp
@@ -78,6 +79,7 @@ target_sources(HPEQ
         Source/UI/HamloCompPanel.cpp
         Source/UI/BlackSteel.cpp
         Source/UI/HamloVerbPanel.cpp
+        Source/UI/HamloEchoPanel.cpp
         Source/UI/SpectrumWorkspace.cpp)
 
 target_include_directories(HPEQ PUBLIC Source)
@@ -118,6 +120,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/D6Tests.cpp
     Tests/Unit/CompressorPassTests.cpp
     Tests/Unit/ReverbPassTests.cpp
+    Tests/Unit/DelayPassTests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")

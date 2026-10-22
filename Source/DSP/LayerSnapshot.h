@@ -28,7 +28,7 @@ struct FxSlotParams
     bool active = false;
     FxType type = FxType::Gain;
     float mix = 1.0f;
-    std::array<float, 24> values {};
+    std::array<float, 32> values {};
 };
 
 namespace slot
@@ -49,8 +49,13 @@ constexpr int kPredelayMs = 0, kDecaySeconds = 1, kHfRatio = 2, kSize = 3, kWidt
 constexpr int kDriveDb = 0, kCurve = 1, kBias = 2, kTrimDb = 3, kOversampling = 4, kAutoGain = 5;
 // Transient shaper (insert)
 constexpr int kAttackGainDb = 0, kSustainGainDb = 1, kTransientSpeed = 2;
-// Delay (wet-only send; sync 0 = free time, else a note division index)
-constexpr int kDelayTimeMs = 0, kDelaySync = 1, kFeedback = 2, kPingPong = 3, kDampingHz = 4, kDelayLowCutHz = 5, kDelayWidth = 6;
+// Delay (wet-only send; sync 0 = free time, else a note division index). 0..6 are the M6 delay
+// ("Classic"; damping = the high cut); the rest drive the HamloEcho characters (character 0 Classic /
+// 1 Clean / 2 Tape / 3 BBD / 4 Lo-Fi; time mode 0 Tape / 1 Fade; resonance 0..1; band gain in dB).
+constexpr int kDelayTimeMs = 0, kDelaySync = 1, kFeedback = 2, kPingPong = 3, kDampingHz = 4, kDelayLowCutHz = 5, kDelayWidth = 6,
+              kDlyCharacter = 7, kDlyTimeRMs = 8, kDlySyncR = 9, kDlyLink = 10, kDlyCross = 11, kDlyDriveDb = 12,
+              kDlyModRate = 13, kDlyModDepth = 14, kDlyDiffusion = 15, kDlyPitch = 16, kDlyLowRes = 17, kDlyHighRes = 18,
+              kDlyBandHz = 19, kDlyBandGainDb = 20, kDlyBandQ = 21, kDlyDuck = 22, kDlyFreeze = 23, kDlyLofi = 24, kDlyTimeMode = 25;
 // Monsta FX (insert; division 0 = 1/4, 1 = 1/8, 2 = 1/16, 3 = 1/32)
 constexpr int kDivision = 0, kChance = 1, kSeed = 2, kCrushBits = 3, kGateDepth = 4, kReverseShare = 5;
 // Stereo (insert; needs a stereo work domain)

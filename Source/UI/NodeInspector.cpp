@@ -79,9 +79,21 @@ const std::vector<NodeInspector::ParamDef>& NodeInspector::paramsFor(FxType type
         { "speed", "Speed", 0, 1, 0.5, 0.5, "", 2 } };
     static const std::vector<ParamDef> delay {
         { "sync", "Sync", 0, 11, 8, 8, "", 0, "Free (ms)|1/32|1/16|1/16 D|1/8 T|1/8|1/8 D|1/4 T|1/4|1/4 D|1/2|1/1" },
-        { "timeMs", "Time", 1, 2000, 250, 250, " ms", 0 }, { "feedback", "Feedback", 0, 0.95, 0.35, 0.35, "", 2 },
+        { "timeMs", "Time", 1, 4000, 250, 250, " ms", 0 }, { "feedback", "Feedback", 0, 0.98, 0.35, 0.35, "", 2 },
         { "pingPong", "Ping-pong", 0, 1, 0, 0, "", 0, "Off|On" }, { "dampingHz", "Damping", 500, 20000, 8000, 4000, " Hz", 0 },
-        { "lowCutHz", "Low cut", 10, 2000, 120, 150, " Hz", 0 }, { "width", "Width", 0, 1.5, 1, 0.75, "", 2 } };
+        { "lowCutHz", "Low cut", 10, 2000, 120, 150, " Hz", 0 }, { "width", "Width", 0, 1.5, 1, 0.75, "", 2 },
+        // HamloEcho pass (defaults = the DSP's when a key is absent, LayerSnapshot.cpp)
+        { "character", "Character", 0, 4, 0, 0, "", 0, "Classic|Clean|Tape|BBD|Lo-Fi" },
+        { "timeRMs", "Time R", 1, 4000, 375, 375, " ms", 0 },
+        { "syncR", "Sync R", 0, 11, 6, 6, "", 0, "Free (ms)|1/32|1/16|1/16 D|1/8 T|1/8|1/8 D|1/4 T|1/4|1/4 D|1/2|1/1" },
+        { "link", "Link", 0, 1, 1, 1, "", 0, "Off|On" }, { "cross", "Cross", 0, 1, 0, 0.5, "", 2 },
+        { "driveDb", "Drive", 0, 24, 3, 6, " dB", 1 }, { "modRate", "Mod rate", 0.05, 10, 0.5, 1, " Hz", 2 },
+        { "modDepth", "Mod depth", 0, 1, 0.3, 0.5, "", 2 }, { "diffusion", "Diffusion", 0, 1, 0, 0.5, "", 2 },
+        { "pitch", "Pitch", -12, 12, 0, 0, " st", 1 }, { "lowRes", "Low res", 0, 1, 0, 0.5, "", 2 },
+        { "highRes", "High res", 0, 1, 0, 0.5, "", 2 }, { "bandHz", "Band freq", 100, 10000, 1000, 1000, " Hz", 0 },
+        { "bandGainDb", "Band gain", -18, 12, 0, 0, " dB", 1 }, { "bandQ", "Band Q", 0.3, 6, 1, 1, "", 2 },
+        { "duck", "Duck", 0, 1, 0, 0.5, "", 2 }, { "freeze", "Freeze", 0, 1, 0, 0, "", 0, "Off|On" },
+        { "lofi", "Lo-Fi", 0, 1, 0, 0.5, "", 2 }, { "timeMode", "Time mode", 0, 1, 0, 0, "", 0, "Tape|Fade" } };
     static const std::vector<ParamDef> monsta {
         { "division", "Slice", 0, 3, 2, 2, "", 0, "1/4|1/8|1/16|1/32" }, { "chance", "Chance", 0, 1, 0.35, 0.35, "", 2 },
         { "seed", "Seed", 0, 9999, 1, 100, "", 0 }, { "crushBits", "Crush bits", 0, 16, 0, 8, "", 0 },
@@ -450,6 +462,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
         buildReverbPage(k);
         return;
     }
+    if (module.type == FxType::Delay)
+    {
+        buildDelayPage(k);
+        return;
+    }
 
     for (const auto& def : paramsFor(module.type))
     {
@@ -521,6 +538,7 @@ void NodeInspector::rebuild()
     largePage = false;
     hamloPanel = nullptr;
     verbPanel = nullptr;
+    echoPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -759,6 +777,78 @@ void NodeInspector::buildReverbPage(int k)
     });
 }
 
+void NodeInspector::buildDelayPage(int k)
+{
+    // HamloEcho (module pass 3): one drawn panel in the HamloComp style; it fills the editor body.
+    largePage = true;
+    auto* panel = new HamloEchoPanel();
+    controls.add(panel);
+    addAndMakeVisible(panel);
+    panel->getProperties().set("section", 4);
+    echoPanel = panel;
+    panel->onKnobGestureStart = [this](HamloEchoPanel::Param p)
+    {
+        processor.getUndoManager().beginNewTransaction("Delay " + juce::String(HamloEchoPanel::keyFor(p)));
+        dragging = true;
+    };
+    panel->onKnobGestureEnd = [this] { dragging = false; };
+    panel->onKnobChange = [this, k](HamloEchoPanel::Param p, double v)
+    {
+        const juce::Identifier key(HamloEchoPanel::keyFor(p));
+        editChain("Delay", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+    };
+    panel->onSwitchChange = [this, k](HamloEchoPanel::Switch sw, int option)
+    {
+        processor.getUndoManager().beginNewTransaction("Delay " + juce::String(HamloEchoPanel::keyFor(sw)));
+        const juce::Identifier key(HamloEchoPanel::keyFor(sw));
+        editChain("Delay switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+    };
+    panel->onPowerChange = [this, k](bool on)
+    {
+        processor.getUndoManager().beginNewTransaction("Module on");
+        editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+    };
+    panel->readMeters = [this, k]() -> std::pair<float, float>
+    {
+        const auto project = processor.getProject();
+        const int engineSlot = selectedEngineSlot(project);
+        if (engineSlot < 0)
+            return { -120.0f, 0.0f };
+        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+        return { node.getDelayOutputDb(k), node.getDelayDuckDb(k) };
+    };
+    panel->readTempo = [this] { return processor.getHostBpm(); };
+    refreshers.push_back([this, panel, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        const auto* c = selectedChain(project);
+        if (c == nullptr || k >= static_cast<int>(c->size()))
+            return;
+        const auto& m = (*c)[static_cast<size_t>(k)];
+        HamloEchoPanel::Values v;
+        const auto& defs = paramsFor(FxType::Delay); // the DSP defaults when a key is absent
+        const auto fallback = [&defs](const char* key)
+        {
+            for (const auto& d : defs)
+                if (juce::String(d.key) == key)
+                    return d.defaultValue;
+            return 0.0;
+        };
+        for (int p = 0; p < HamloEchoPanel::NumParams; ++p)
+        {
+            const auto* key = HamloEchoPanel::keyFor(static_cast<HamloEchoPanel::Param>(p));
+            v.knobs[static_cast<size_t>(p)] = paramValue(m, key, fallback(key));
+        }
+        for (int sw = 0; sw < HamloEchoPanel::NumSwitches; ++sw)
+        {
+            const auto* key = HamloEchoPanel::keyFor(static_cast<HamloEchoPanel::Switch>(sw));
+            v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, key, fallback(key)));
+        }
+        v.on = m.enabled;
+        panel->setValues(v);
+    });
+}
+
 void NodeInspector::updateLiveReadouts(bool settle)
 {
     if (settle && hamloPanel != nullptr && hamloPanel->readMeters)
@@ -770,6 +860,11 @@ void NodeInspector::updateLiveReadouts(bool settle)
     {
         const auto [outputDb, duckDb] = verbPanel->readMeters();
         verbPanel->settleMeters(outputDb, duckDb);
+    }
+    if (settle && echoPanel != nullptr && echoPanel->readMeters)
+    {
+        const auto [outputDb, duckDb] = echoPanel->readMeters();
+        echoPanel->settleMeters(outputDb, duckDb);
     }
     // Live readouts from the audio engine (atomics, no locks).
     juce::String newStatus;

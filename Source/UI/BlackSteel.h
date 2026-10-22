@@ -49,4 +49,19 @@ struct Meter
 };
 void meterFace(juce::Graphics&, const Meter&);
 void meterNeedle(juce::Graphics&, const Meter&);
+
+// Green phosphor CRT in a gunmetal bezel (HamloVerb, HamloEcho).
+const juce::Colour phosphor { 0xff6dff9a }, phosphorDim { 0xff2f8a52 };
+// Static part: bezel with screws, the recess around `screen`, an engraved label at `labelY`.
+void crtBezel(juce::Graphics&, juce::Rectangle<float> bezel, juce::Rectangle<float> screen, const juce::String& label, float labelY);
+// crtBegin clips to the glass and fills the tube; draw the picture; crtEnd adds scanlines, edge
+// falloff and glare, and restores the clip.
+void crtBegin(juce::Graphics&, juce::Rectangle<float> screen);
+void crtEnd(juce::Graphics&, juce::Rectangle<float> screen);
+// An illuminated push button on the bezel.
+void crtButton(juce::Graphics&, juce::Rectangle<float>, const juce::String& text, bool lit);
+// Phosphor strokes: bloom passes, a bright core and a white-hot centre line.
+void glow(juce::Graphics&, const juce::Path&, juce::Colour, float width, float intensity = 1.0f);
+void glowDot(juce::Graphics&, juce::Point<float> c, float r, juce::Colour, float intensity = 1.0f);
+void crtText(juce::Graphics&, const juce::String&, juce::Rectangle<float>, float size, juce::Justification, float alpha = 0.8f);
 } // namespace hpeq::ui::steel

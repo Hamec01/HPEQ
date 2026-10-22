@@ -230,6 +230,18 @@ FxSlotState defaultModule(FxType type)
         m.parameters.set("lowCutHz", 80);
         m.parameters.set("width", 1.0);
     }
+    else if (type == FxType::Delay)
+    {
+        // HamloEcho pass: a delay added from the UI starts as a tape echo, 1/4 synced (projects without
+        // "character" keep the M6 delay, Classic).
+        m.parameters.set("character", 2);
+        m.parameters.set("sync", 8);
+        m.parameters.set("timeMs", 250.0);
+        m.parameters.set("feedback", 0.35);
+        m.parameters.set("dampingHz", 8000.0);
+        m.parameters.set("lowCutHz", 120.0);
+        m.parameters.set("width", 1.0);
+    }
     return m;
 }
 

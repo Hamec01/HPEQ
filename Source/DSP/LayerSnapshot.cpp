@@ -72,13 +72,33 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kTransientSpeed] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "speed", 0.5f));
             break;
         case FxType::Delay:
-            slotParams.values[slot::kDelayTimeMs] = juce::jlimit(1.0f, 2000.0f, param(state.parameters, "timeMs", 250.0f));
+            slotParams.values[slot::kDelayTimeMs] = juce::jlimit(1.0f, 4000.0f, param(state.parameters, "timeMs", 250.0f));
             slotParams.values[slot::kDelaySync] = juce::jlimit(0.0f, 11.0f, param(state.parameters, "sync", 8.0f));
-            slotParams.values[slot::kFeedback] = juce::jlimit(0.0f, 0.95f, param(state.parameters, "feedback", 0.35f));
+            slotParams.values[slot::kFeedback] = juce::jlimit(0.0f, 0.98f, param(state.parameters, "feedback", 0.35f));
             slotParams.values[slot::kPingPong] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "pingPong", 0.0f));
             slotParams.values[slot::kDampingHz] = juce::jlimit(500.0f, 20000.0f, param(state.parameters, "dampingHz", 8000.0f));
             slotParams.values[slot::kDelayLowCutHz] = juce::jlimit(10.0f, 2000.0f, param(state.parameters, "lowCutHz", 120.0f));
             slotParams.values[slot::kDelayWidth] = juce::jlimit(0.0f, 1.5f, param(state.parameters, "width", 1.0f));
+            // Projects saved before the HamloEcho pass have no "character": they keep the M6 delay (Classic).
+            slotParams.values[slot::kDlyCharacter] = juce::jlimit(0.0f, 4.0f, std::round(param(state.parameters, "character", 0.0f)));
+            slotParams.values[slot::kDlyTimeRMs] = juce::jlimit(1.0f, 4000.0f, param(state.parameters, "timeRMs", 375.0f));
+            slotParams.values[slot::kDlySyncR] = juce::jlimit(0.0f, 11.0f, std::round(param(state.parameters, "syncR", 6.0f)));
+            slotParams.values[slot::kDlyLink] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "link", 1.0f)));
+            slotParams.values[slot::kDlyCross] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "cross", 0.0f));
+            slotParams.values[slot::kDlyDriveDb] = juce::jlimit(0.0f, 24.0f, param(state.parameters, "driveDb", 3.0f));
+            slotParams.values[slot::kDlyModRate] = juce::jlimit(0.05f, 10.0f, param(state.parameters, "modRate", 0.5f));
+            slotParams.values[slot::kDlyModDepth] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "modDepth", 0.3f));
+            slotParams.values[slot::kDlyDiffusion] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "diffusion", 0.0f));
+            slotParams.values[slot::kDlyPitch] = juce::jlimit(-12.0f, 12.0f, param(state.parameters, "pitch", 0.0f));
+            slotParams.values[slot::kDlyLowRes] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "lowRes", 0.0f));
+            slotParams.values[slot::kDlyHighRes] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "highRes", 0.0f));
+            slotParams.values[slot::kDlyBandHz] = juce::jlimit(100.0f, 10000.0f, param(state.parameters, "bandHz", 1000.0f));
+            slotParams.values[slot::kDlyBandGainDb] = juce::jlimit(-18.0f, 12.0f, param(state.parameters, "bandGainDb", 0.0f));
+            slotParams.values[slot::kDlyBandQ] = juce::jlimit(0.3f, 6.0f, param(state.parameters, "bandQ", 1.0f));
+            slotParams.values[slot::kDlyDuck] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "duck", 0.0f));
+            slotParams.values[slot::kDlyFreeze] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "freeze", 0.0f)));
+            slotParams.values[slot::kDlyLofi] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "lofi", 0.0f));
+            slotParams.values[slot::kDlyTimeMode] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "timeMode", 0.0f)));
             break;
         case FxType::MonstaFx:
             slotParams.values[slot::kDivision] = juce::jlimit(0.0f, 3.0f, param(state.parameters, "division", 2.0f));

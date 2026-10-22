@@ -5,6 +5,7 @@
 #include "Plugin/FxPluginProcessor.h"
 #include "UI/Theme.h"
 #include "UI/HamloCompPanel.h"
+#include "UI/HamloEchoPanel.h"
 #include "UI/HamloVerbPanel.h"
 
 namespace hpeq::ui
@@ -24,7 +25,7 @@ public:
     void rebuildAsync();
     // Project changed elsewhere (undo, drag in the workspace): refresh values only.
     void refresh();
-    // True while a module page needs the whole editor body (HamloComp, HamloVerb).
+    // True while a module page needs the whole editor body (HamloComp, HamloVerb, HamloEcho).
     bool wantsLargeView() const noexcept { return largePage && !showingGrid; }
     std::function<void()> onLayoutChange;
     // Live readouts from the engine (status, needles); the timer calls it at 15 Hz, tests directly.
@@ -63,6 +64,7 @@ private:
     void addModule(FxType);
     void moveModule(int index, int delta);
     void buildReverbPage(int k);
+    void buildDelayPage(int k);
 
     FxPluginProcessor& processor;
     Selection& selection;
@@ -76,5 +78,6 @@ private:
     bool showingGrid = true, largePage = false;
     HamloCompPanel* hamloPanel = nullptr; // owned by controls
     HamloVerbPanel* verbPanel = nullptr;  // owned by controls
+    HamloEchoPanel* echoPanel = nullptr;  // owned by controls
 };
 } // namespace hpeq::ui

@@ -78,6 +78,8 @@ public:
     AudioCapture& getCapture() noexcept { return capture; }
     double getCurrentSampleRate() const noexcept { return currentSampleRate.load(std::memory_order_relaxed); }
     const dsp::ProjectEngine& getEngine() const noexcept { return engine; }
+    // Last host tempo seen from the play head (120 until a host reports one).
+    double getHostBpm() const noexcept { return hostBpm.load(std::memory_order_relaxed); }
 
     struct MeterSnapshot
     {

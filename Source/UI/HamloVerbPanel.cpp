@@ -59,7 +59,7 @@ const juce::Point<float> kLamp { 932.0f, 400.0f }, kFreezeLever { 1056.0f, 412.0
 constexpr float kColorX = 56.0f, kColorW = 250.0f, kColorTop = 46.0f;
 constexpr float kLargeY = 535.0f, kLargeLabelY = 462.0f, kLargeReadoutY = 604.0f, kSyncY = 623.0f;
 constexpr float kSmallY = 692.0f, kSmallLabelY = 646.0f, kSmallReadoutY = 733.0f;
-const juce::Colour kPhosphor { 0xff6dff9a }, kPhosphorDim { 0xff2f8a52 };
+const juce::Colour kPhosphor = phosphor, kPhosphorDim = phosphorDim;
 
 float spaceAngle(int i) { return (-135.0f + 45.0f * static_cast<float>(i)) * kPi / 180.0f; }
 
@@ -80,39 +80,6 @@ float colorOptionX(int i) { return kColorX + kColorW * (0.12f + 0.76f * static_c
 juce::String hz(double v)
 {
     return v >= 1000.0 ? juce::String(v / 1000.0, v >= 10000.0 ? 1 : 2) + " kHz" : juce::String(juce::roundToInt(v)) + " Hz";
-}
-
-void glow(juce::Graphics& g, const juce::Path& p, juce::Colour c, float width, float intensity = 1.0f)
-{
-    for (const auto& [w, a] : { std::pair { 9.0f, 0.05f }, std::pair { 5.0f, 0.10f }, std::pair { 2.6f, 0.24f } })
-    {
-        g.setColour(c.withAlpha(a * intensity));
-        g.strokePath(p, juce::PathStrokeType(width * w, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
-    }
-    g.setColour(c.withAlpha(0.95f * intensity));
-    g.strokePath(p, juce::PathStrokeType(width * 1.1f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
-    g.setColour(juce::Colours::white.withAlpha(0.55f * intensity));
-    g.strokePath(p, juce::PathStrokeType(width * 0.45f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
-}
-
-void glowDot(juce::Graphics& g, juce::Point<float> c, float r, juce::Colour col, float intensity = 1.0f)
-{
-    juce::ColourGradient halo(col.withAlpha(0.45f * intensity), c.x, c.y, col.withAlpha(0.0f), c.x + r * 3.2f, c.y, true);
-    g.setGradientFill(halo);
-    g.fillEllipse(c.x - r * 3.2f, c.y - r * 3.2f, r * 6.4f, r * 6.4f);
-    g.setColour(col.withAlpha(intensity));
-    g.drawEllipse(c.x - r, c.y - r, 2 * r, 2 * r, 1.6f);
-    g.setColour(juce::Colours::white.withAlpha(0.8f * intensity));
-    g.fillEllipse(c.x - r * 0.35f, c.y - r * 0.35f, r * 0.7f, r * 0.7f);
-}
-
-void crtText(juce::Graphics& g, const juce::String& t, juce::Rectangle<float> r, float size, juce::Justification j, float alpha = 0.8f)
-{
-    g.setFont(monoFont(size));
-    g.setColour(kPhosphor.withAlpha(alpha * 0.35f));
-    g.drawText(t, r.expanded(1.0f), j, false);
-    g.setColour(kPhosphor.withAlpha(alpha));
-    g.drawText(t, r, j, false);
 }
 
 double niceCeiling(double v)
@@ -379,42 +346,7 @@ void HamloVerbPanel::renderStatic(juce::Graphics& g) const
     g.setColour(juce::Colours::black);
     g.fillEllipse(kSelector.x - 61.0f, kSelector.y - 61.0f, 122.0f, 122.0f);
 
-    // CRT bezel: gunmetal frame, screws, recess
-    {
-        const auto b = kBezel;
-        g.setColour(juce::Colours::black.withAlpha(0.8f));
-        g.fillRoundedRectangle(b.translated(0, 10).expanded(2), 12.0f);
-        juce::ColourGradient metal(juce::Colour(0xff5a5c58), b.getX(), b.getY(), juce::Colour(0xff1d1e1c), b.getRight(), b.getBottom(), false);
-        metal.addColour(0.35, juce::Colour(0xff3a3c39));
-        metal.addColour(0.6, juce::Colour(0xff2a2b29));
-        g.setColour(juce::Colours::black);
-        g.fillRoundedRectangle(b.expanded(2), 12.0f);
-        g.setGradientFill(metal);
-        g.fillRoundedRectangle(b, 11.0f);
-        juce::Random r(77);
-        for (int i = 0; i < 260; ++i)
-        {
-            g.setColour(rgba(220, 220, 210, 0.03f + r.nextFloat() * 0.06f));
-            const float x = b.getX() + r.nextFloat() * b.getWidth(), y = b.getY() + r.nextFloat() * b.getHeight();
-            g.drawLine(x, y, x + 4.0f + r.nextFloat() * 18.0f, y + (r.nextFloat() - 0.5f) * 2.0f, 0.5f);
-        }
-        for (auto c : { juce::Point<float>(b.getX() + 10, b.getY() + 10), juce::Point<float>(b.getRight() - 10, b.getY() + 10),
-                        juce::Point<float>(b.getX() + 10, b.getBottom() - 10), juce::Point<float>(b.getRight() - 10, b.getBottom() - 10) })
-        {
-            juce::ColourGradient screw(juce::Colour(0xffd8d8d0), c.x - 2, c.y - 3, juce::Colour(0xff2a2a28), c.x + 5, c.y + 5, true);
-            g.setGradientFill(screw);
-            g.fillEllipse(c.x - 5.0f, c.y - 5.0f, 10.0f, 10.0f);
-            g.setColour(juce::Colour(0xff1a1a19));
-            g.drawLine(c.x - 3.5f, c.y + 1.5f, c.x + 3.5f, c.y - 1.5f, 1.2f);
-        }
-        const auto recess = kScreen.expanded(5.0f);
-        g.setColour(juce::Colour(0xff050505));
-        g.fillRoundedRectangle(recess, 14.0f);
-        g.setColour(juce::Colours::white.withAlpha(0.08f));
-        g.drawRoundedRectangle(recess.translated(0, 1.5f), 14.0f, 1.2f);
-        engraved(g, juce::String::fromUTF8("\xd0\xad\xd0\x9a\xd0\xa0\xd0\x90\xd0\x9d \xc2\xb7 \xd0\xa1\xd0\x9a\xd0\x9e"), // ЭКРАН · СКО
-                 juce::Rectangle<float>(b.getX() + 20.0f, 420.0f, 130.0f, 18.0f), 12.0f, stencilDim, juce::Justification::centredLeft, 0.2f);
-    }
+    crtBezel(g, kBezel, kScreen, juce::String::fromUTF8("\xd0\xad\xd0\x9a\xd0\xa0\xd0\x90\xd0\x9d \xc2\xb7 \xd0\xa1\xd0\x9a\xd0\x9e"), 420.0f); // ЭКРАН · СКО
 
     // OUTPUT meter face, lamp and freeze labels
     meterFace(g, meter->meter);
@@ -828,14 +760,7 @@ void HamloVerbPanel::drawTimeView(juce::Graphics& g, juce::Rectangle<float> s) c
 void HamloVerbPanel::drawCrt(juce::Graphics& g) const
 {
     const auto s = kScreen;
-    g.saveState();
-    juce::Path glass;
-    glass.addRoundedRectangle(s, 12.0f);
-    g.reduceClipRegion(glass);
-    juce::ColourGradient tube(juce::Colour(0xff0a1f12), s.getCentreX(), s.getCentreY(), juce::Colour(0xff010703), s.getRight() + 40.0f,
-                              s.getCentreY(), true);
-    g.setGradientFill(tube);
-    g.fillRect(s);
+    crtBegin(g, s);
 
     // persistence of the previous frames (screen pixels), then this frame's traces
     if (phosphor.isValid())
@@ -851,50 +776,11 @@ void HamloVerbPanel::drawCrt(juce::Graphics& g) const
     else
         drawTimeView(g, s);
 
-    // scanlines, curved-glass glare, edge falloff
-    g.setColour(juce::Colours::black.withAlpha(0.16f));
-    for (float y = s.getY(); y < s.getBottom(); y += 3.0f)
-        g.fillRect(s.getX(), y, s.getWidth(), 1.0f);
-    juce::ColourGradient edge(juce::Colours::transparentBlack, s.getCentreX(), s.getCentreY(), juce::Colours::black.withAlpha(0.65f),
-                              s.getRight() + 30.0f, s.getBottom() + 30.0f, true);
-    edge.addColour(0.62, juce::Colours::transparentBlack);
-    g.setGradientFill(edge);
-    g.fillRect(s);
-    juce::Path sheen;
-    sheen.startNewSubPath(s.getX(), s.getY());
-    sheen.lineTo(s.getX() + s.getWidth() * 0.55f, s.getY());
-    sheen.quadraticTo(s.getX() + s.getWidth() * 0.25f, s.getY() + s.getHeight() * 0.25f, s.getX(), s.getY() + s.getHeight() * 0.62f);
-    sheen.closeSubPath();
-    juce::ColourGradient glare(juce::Colours::white.withAlpha(0.09f), s.getX(), s.getY(), juce::Colours::white.withAlpha(0.0f),
-                               s.getX() + s.getWidth() * 0.35f, s.getY() + s.getHeight() * 0.35f, false);
-    g.setGradientFill(glare);
-    g.fillPath(sheen);
-    g.restoreState();
-    g.setColour(juce::Colours::black.withAlpha(0.9f));
-    g.drawRoundedRectangle(s, 12.0f, 2.0f);
+    crtEnd(g, s);
 
     // mode buttons on the bezel
-    for (int i = 0; i < 2; ++i)
-    {
-        const auto r = i == 0 ? kTabDecay : kTabTime;
-        const bool lit = (i == 0) == (mode == DecayView);
-        g.setColour(juce::Colour(0xff0b0c0b));
-        g.fillRoundedRectangle(r.expanded(1.5f), 4.0f);
-        juce::ColourGradient cap(lit ? juce::Colour(0xff2d6b43) : juce::Colour(0xff2e302d), r.getX(), r.getY(),
-                                 lit ? juce::Colour(0xff123a22) : juce::Colour(0xff161716), r.getX(), r.getBottom(), false);
-        g.setGradientFill(cap);
-        g.fillRoundedRectangle(r, 3.0f);
-        if (lit)
-        {
-            juce::ColourGradient halo(kPhosphor.withAlpha(0.35f), r.getCentreX(), r.getCentreY(), kPhosphor.withAlpha(0.0f), r.getRight() + 16.0f,
-                                      r.getCentreY(), true);
-            g.setGradientFill(halo);
-            g.fillRoundedRectangle(r.expanded(10.0f, 6.0f), 8.0f);
-        }
-        g.setFont(stencilFont(12.5f).withKerningFactor(0.15f));
-        g.setColour(lit ? kPhosphor : stencilDim);
-        g.drawText(i == 0 ? "DECAY" : "TIME", r, juce::Justification::centred);
-    }
+    crtButton(g, kTabDecay, "DECAY", mode == DecayView);
+    crtButton(g, kTabTime, "TIME", mode == TimeView);
 }
 
 void HamloVerbPanel::paint(juce::Graphics& g)
