@@ -74,6 +74,7 @@ target_sources(HPEQ
         Source/UI/AnalysisModel.cpp
         Source/UI/NodeInspector.cpp
         Source/UI/LayerControls.cpp
+        Source/UI/HamloCompPanel.cpp
         Source/UI/SpectrumWorkspace.cpp)
 
 target_include_directories(HPEQ PUBLIC Source)

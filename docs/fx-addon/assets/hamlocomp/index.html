@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HamloComp — Soviet Dynamics Compressor</title>
+<meta name="description" content="HamloComp: a working Soviet-style analog compressor with threshold, ratio, knee, attack, release, makeup, detector, character, auto makeup and VU meters.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="rough" x="-2%" y="-2%" width="104%" height="104%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="1.6"/>
+  </filter>
+</svg>
+
+<div class="stage" id="stage">
+  <main class="panel" id="panel">
+    <canvas class="wear" id="wear" width="1148" height="668" aria-hidden="true"></canvas>
+    <i class="bolt tl"></i><i class="bolt tr"></i><i class="bolt bl"></i><i class="bolt br"></i>
+
+    <header class="top">
+      <div class="source" role="group" aria-label="Input source">
+        <span class="engr">Source</span>
+        <button id="src-demo" class="chip active" data-src="demo">Demo</button>
+        <button id="src-file" class="chip" data-src="file">File…</button>
+        <button id="src-mic" class="chip" data-src="mic">Mic</button>
+        <input type="file" id="file-input" accept="audio/*" hidden>
+        <button id="play" class="chip play">▶ Play</button>
+      </div>
+
+      <div class="nameplate">
+        <i class="rivet l"></i><i class="rivet r"></i>
+        <h1>HamloComp</h1>
+        <div class="np-row">
+          <span>MODEL SK-1</span>
+          <svg class="star" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,6 61,38 95,38 67,58 78,92 50,71 22,92 33,58 5,38 39,38" fill="#b3261e"/></svg>
+          <span class="no">№ 0419</span>
+        </div>
+        <div class="np-sub">MADE IN USSR</div>
+      </div>
+
+      <div class="lcd" id="gr-readout">GR 0.0 dB</div>
+    </header>
+
+    <section class="knobs" id="knobs" aria-label="Compressor controls"></section>
+
+    <section class="lower">
+      <div class="switches" id="switches"></div>
+      <div class="meters">
+        <div class="meter"><canvas id="m-in" width="300" height="200"></canvas></div>
+        <div class="meter"><canvas id="m-gr" width="300" height="200"></canvas></div>
+      </div>
+      <button id="bypass" class="power on" aria-pressed="true" title="Compressor on / bypass">
+        <span class="lamp"></span>
+        <span class="engr">On</span>
+        <span class="toggle-sw"><i></i></span>
+      </button>
+    </section>
+  </main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

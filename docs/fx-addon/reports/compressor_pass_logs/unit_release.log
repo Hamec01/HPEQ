@@ -1,4 +1,4 @@
-Random seed: 0xf5c8a8
+Random seed: 0x7c38a44
 -----------------------------------------------------------------
 Starting tests in: Harness / compareAligned detects a one-ulp change...
 Completed tests in Harness / compareAligned detects a one-ulp change
@@ -396,6 +396,9 @@ Starting tests in: Compressor pass / Old vs new default compressor on drums, reg
   band 60-250 Hz: peak -17.7 dBFS; crest input 17.30, old default 17.25, new default 14.16 dB; band RMS -34.99 / -35.07 / -38.78 dBFS
 Completed tests in Compressor pass / Old vs new default compressor on drums, region 60-250 Hz: inside the band (after 0.5 s) the new one cuts the crest factor >= 2 dB more
 -----------------------------------------------------------------
+Starting tests in: Compressor pass / HamloComp page: fills the editor body; knob, switch and ON edit the project; values come back from it; the grid restores the layout...
+Completed tests in Compressor pass / HamloComp page: fills the editor body; knob, switch and ON edit the project; values come back from it; the grid restores the layout
+-----------------------------------------------------------------
 Starting tests in: Compressor pass / UI default compressor (defaultModule): threshold -30, ratio 4, attack 1, release 80, Punch, auto makeup on...
 Completed tests in Compressor pass / UI default compressor (defaultModule): threshold -30, ratio 4, attack 1, release 80, Punch, auto makeup on
 -----------------------------------------------------------------
@@ -428,4 +431,4 @@ Starting tests in: UI + analysis M5 / editor: every selection kind, a 6-slot cha
 Completed tests in UI + analysis M5 / editor: every selection kind, a 6-slot chain, deletes, size limits; 50 cycles while audio runs
 
 allocation probe: operator-new-only (malloc not seen)
-HPEQ_Tests: 1067 expectations passed, 0 failed
+HPEQ_Tests: 1074 expectations passed, 0 failed

@@ -67,6 +67,7 @@ private:
     juce::ComboBox view;
     std::array<juce::TextButton, 10> layerButtons;
     int lastShownLayer = -1;
+    bool largeLayout = false;
     juce::Slider outputGain;
     juce::Label outputGainLabel;
     juce::ToggleButton bypass { "Bypass" };

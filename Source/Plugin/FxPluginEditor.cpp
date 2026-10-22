@@ -72,6 +72,14 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     outputMeter = std::make_unique<LevelMeter>("OUT");
     layerControls = std::make_unique<LayerControls>(processor);
     layerControls->onLayerChanged = [this] { layerSelected(); };
+    inspector->onLayoutChange = [this]
+    {
+        if (inspector->wantsLargeView() != largeLayout)
+        {
+            largeLayout = inspector->wantsLargeView();
+            resized();
+        }
+    };
     workspace->onSelectionChanged = [this] { selectionChanged(); };
     nodeList->onSelectionChanged = [this] { selectionChanged(); };
     for (auto* c : std::initializer_list<juce::Component*> { waveform.get(), workspace.get(), nodeList.get(), inspector.get(), inputMeter.get(), outputMeter.get(), layerControls.get() })
@@ -223,7 +231,7 @@ void FxPluginEditor::updateAnalysisNow()
 {
     timerCallback();
     waveform->tick(true); // tests and screenshots want the current audio, not the last 5 s snapshot
-    inspector->updateLiveReadouts();
+    inspector->updateLiveReadouts(true);
 }
 
 void FxPluginEditor::selectNode(bool fx, std::uint32_t id, int slot)
@@ -307,6 +315,14 @@ void FxPluginEditor::resized()
     layerControls->setBounds(area.removeFromBottom(32));
     area.removeFromBottom(6);
 
+    const bool large = inspector->wantsLargeView();
+    for (auto* c : std::initializer_list<juce::Component*> { workspace.get(), nodeList.get(), &tabSpectrum, &tabDifference, &view })
+        c->setVisible(!large);
+    if (large)
+    {
+        inspector->setBounds(area); // the module page takes the workspace and the bottom panel
+        return;
+    }
     auto bottom = area.removeFromBottom(juce::jmax(240, area.getHeight() * 36 / 100));
     nodeList->setBounds(bottom.removeFromLeft(300));
     bottom.removeFromLeft(8);

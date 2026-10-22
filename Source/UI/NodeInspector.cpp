@@ -363,19 +363,76 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
         }
     });
 
-    vintagePage = module.type == FxType::Compressor;
-    if (vintagePage)
+    if (module.type == FxType::Compressor)
     {
-        auto* in = new vintage::NeedleMeter("INPUT", -40.0f, 6.0f, -40.0f, { -40.0f, -20.0f, -10.0f, 0.0f, 6.0f }, 0.0f);
-        auto* gr = new vintage::NeedleMeter("GAIN REDUCTION", -20.0f, 0.0f, 0.0f, { -20.0f, -10.0f, -5.0f, -2.0f, 0.0f }, 1.0f);
-        for (auto* m : { in, gr })
+        // The owner's HamloComp design: one drawn panel instead of generic knobs (it fills the editor body).
+        largePage = true;
+        auto* panel = new HamloCompPanel();
+        controls.add(panel);
+        addAndMakeVisible(panel);
+        panel->getProperties().set("section", 4);
+        hamloPanel = panel;
+        panel->onKnobGestureStart = [this](HamloCompPanel::Param p)
         {
-            controls.add(m);
-            addAndMakeVisible(m);
-            m->getProperties().set("section", 3);
-        }
-        inputNeedle = in;
-        reductionNeedle = gr;
+            processor.getUndoManager().beginNewTransaction("Compressor " + juce::String(HamloCompPanel::keyFor(p)));
+            dragging = true;
+        };
+        panel->onKnobGestureEnd = [this] { dragging = false; };
+        panel->onKnobChange = [this, k](HamloCompPanel::Param p, double v)
+        {
+            const juce::Identifier key(HamloCompPanel::keyFor(p));
+            editChain("Compressor", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+        };
+        panel->onSwitchChange = [this, k](HamloCompPanel::Switch sw, int option)
+        {
+            processor.getUndoManager().beginNewTransaction("Compressor switch");
+            const juce::Identifier key(HamloCompPanel::keyFor(sw));
+            editChain("Compressor switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+        };
+        panel->onPowerChange = [this, k](bool on)
+        {
+            processor.getUndoManager().beginNewTransaction("Module on");
+            editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+        };
+        panel->readMeters = [this, k]() -> std::pair<float, float>
+        {
+            const auto project = processor.getProject();
+            const int engineSlot = selectedEngineSlot(project);
+            if (engineSlot < 0)
+                return { -60.0f, 0.0f };
+            const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+            return { node.getCompressorInputDb(k), node.getGainReductionDb(k) };
+        };
+        refreshers.push_back([this, panel, k]
+        {
+            const auto project = processor.getProject(); // keep alive: selectedChain points into it
+            const auto* c = selectedChain(project);
+            if (c == nullptr || k >= static_cast<int>(c->size()))
+                return;
+            const auto& m = (*c)[static_cast<size_t>(k)];
+            HamloCompPanel::Values v;
+            const auto& defs = paramsFor(FxType::Compressor); // the DSP defaults when a key is absent
+            const auto fallback = [&defs](const char* key)
+            {
+                for (const auto& d : defs)
+                    if (juce::String(d.key) == key)
+                        return d.defaultValue;
+                return 0.0;
+            };
+            for (int p = 0; p < HamloCompPanel::NumKnobs; ++p)
+            {
+                const auto* key = HamloCompPanel::keyFor(static_cast<HamloCompPanel::Param>(p));
+                v.knobs[static_cast<size_t>(p)] = paramValue(m, key, fallback(key));
+            }
+            for (int sw = 0; sw < HamloCompPanel::NumSwitches; ++sw)
+            {
+                const auto* key = HamloCompPanel::keyFor(static_cast<HamloCompPanel::Switch>(sw));
+                v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, key, fallback(key)));
+            }
+            v.on = m.enabled;
+            panel->setValues(v);
+        });
+        return;
     }
 
     for (const auto& def : paramsFor(module.type))
@@ -389,11 +446,6 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
                 editChain(key, [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), index); });
             });
             setInfo(combo, 2, kKnobWidth, kRowHeight - 2);
-            if (module.type == FxType::Compressor)
-            {
-                labels.getLast()->setColour(juce::Label::textColourId, vintage::engraving);
-                labels.getLast()->setFont(juce::FontOptions(11.0f, juce::Font::bold));
-            }
             refreshers.push_back([this, &combo, key, k, fallback]
             {
                 const auto project = processor.getProject(); // keep alive: selectedChain points into it
@@ -407,12 +459,6 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
             editChain(key, [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(juce::Identifier(key), v); });
         });
         setInfo(knob, 2, kKnobWidth, kKnobHeight);
-        if (module.type == FxType::Compressor)
-        {
-            knob.setLookAndFeel(&vintageLook);
-            labels.getLast()->setColour(juce::Label::textColourId, vintage::engraving);
-            labels.getLast()->setFont(juce::FontOptions(11.0f, juce::Font::bold));
-        }
         refreshers.push_back([this, &knob, key, k, fallback]
         {
             const auto project = processor.getProject(); // keep alive: selectedChain points into it
@@ -456,8 +502,8 @@ void NodeInspector::rebuild()
     refreshers.clear();
     nodeIndex = -1;
     showingGrid = true;
-    vintagePage = false;
-    inputNeedle = reductionNeedle = nullptr;
+    largePage = false;
+    hamloPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -610,6 +656,8 @@ void NodeInspector::rebuild()
     refresh();
     resized();
     repaint();
+    if (onLayoutChange)
+        onLayoutChange();
 }
 
 void NodeInspector::refresh()
@@ -623,8 +671,13 @@ void NodeInspector::timerCallback()
     updateLiveReadouts();
 }
 
-void NodeInspector::updateLiveReadouts()
+void NodeInspector::updateLiveReadouts(bool settle)
 {
+    if (settle && hamloPanel != nullptr && hamloPanel->readMeters)
+    {
+        const auto [inputDb, reductionDb] = hamloPanel->readMeters();
+        hamloPanel->settleMeters(inputDb, reductionDb);
+    }
     // Live readouts from the audio engine (atomics, no locks).
     juce::String newStatus;
     if (selection.kind != Selection::Kind::None && selection.slot >= 0)
@@ -642,11 +695,6 @@ void NodeInspector::updateLiveReadouts()
                 const float autoDb = node.getCompressorAutoMakeupDb(k);
                 if (autoDb > 0.05f)
                     newStatus << "    auto makeup +" << juce::String(autoDb, 1) << " dB";
-                if (inputNeedle != nullptr && reductionNeedle != nullptr)
-                {
-                    inputNeedle->setValueDb(node.getCompressorInputDb(k));
-                    reductionNeedle->setValueDb(-node.getGainReductionDb(k));
-                }
             }
             if (node.slotStarved(k))
                 newStatus = fxName((*chain)[static_cast<size_t>(k)].type) + " pool full (shared by all layers): this module is silent.";
@@ -664,8 +712,6 @@ void NodeInspector::paint(juce::Graphics& g)
     auto area = getLocalBounds().toFloat();
     g.setColour(colours::panel);
     g.fillRoundedRectangle(area, 6.0f);
-    if (vintagePage && !vintageArea.isEmpty())
-        vintage::drawPlate(g, vintageArea.toFloat());
     const auto accent = selection.kind == Selection::Kind::Fx ? colours::forNode(nodeIndex) : colours::eqNode;
     if (selection.kind != Selection::Kind::None)
     {
@@ -692,7 +738,6 @@ void NodeInspector::resized()
     auto area = getLocalBounds().reduced(12, 6);
     area.removeFromTop(22);
     const bool any = selection.kind != Selection::Kind::None;
-    vintageArea = {};
 
     if (any && !showingGrid)
     {
@@ -702,11 +747,8 @@ void NodeInspector::resized()
         area.removeFromTop(8);
         chainArea = header;
         paramArea = area;
-        vintageArea = vintagePage ? area : juce::Rectangle<int>();
-        auto inner = vintagePage ? area.reduced(18, 8) : area;
-        auto meters = vintagePage ? inner.removeFromRight(juce::jmin(420, inner.getWidth() * 2 / 5)) : juce::Rectangle<int>();
+        auto inner = area;
         int knobX = inner.getX(), comboX = inner.getX();
-        int meterIndex = 0;
         for (auto* c : controls)
         {
             const auto& props = c->getProperties();
@@ -717,12 +759,8 @@ void NodeInspector::resized()
                 c->setBounds(x, header.getY(), width, height);
                 x += width + 6;
             }
-            else if (section == 3)
-            {
-                const int w = (meters.getWidth() - 8) / 2;
-                c->setBounds(meters.getX() + meterIndex * (w + 8), meters.getY() + 4, w, juce::jmin(meters.getHeight() - 8, w * 62 / 100));
-                ++meterIndex;
-            }
+            else if (section == 4)
+                c->setBounds(area);
             else if (section == 2 && height == kKnobHeight)
             {
                 c->setBounds(knobX, inner.getY() + 14, width, height);

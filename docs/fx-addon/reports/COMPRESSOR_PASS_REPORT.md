@@ -27,22 +27,32 @@ law bit-for-bit, so existing projects sound the same):
 A compressor added from the UI now starts at **threshold −30 dB, ratio 4:1, attack 1 ms, release 80 ms,
 Punch, auto makeup on** (`defaultModule`). Projects that already have a compressor keep their values.
 
-**Compressor page:** grey hammertone plate with screws, black bakelite knobs with fluted skirt and a
-white index line over an engraved scale, two cream-faced needle meters (INPUT −40…+6 dB with a red zone,
-GAIN REDUCTION −20…0 dB) with VU-like inertia; Detector / Character / Auto makeup selectors. A module page
-now uses the whole panel (region controls come back with the arrow). Drawn as vectors, no bitmaps.
+**Compressor page = the owner's HamloComp design** (`hamlocomp.zip`, style "v2 Black Steel"; prototype
+and chosen reference kept in `docs/fx-addon/assets/hamlocomp/`). `Source/UI/HamloCompPanel.*` draws it in
+the design's own coordinates (1180 × 700, scaled to fit) from `style.css` / `app.js`: worn black steel with
+rust, chips, scratches and pitting (same procedure and seed as `drawWear`), hexagon bolts, the nameplate
+"HamloComp · MODEL SK-1 · № 0419 · MADE IN USSR", amber GR display, six brass knobs with knurled skirts and
+engraved 21-tick scales, chrome toggle switches (Detector, Character, Auto Makeup), brass-bezel needle
+meters with aged dial paper, red zone, needle shadow, tremor and scratched glass (design ballistics), red
+ON lamp with toggle (= module on). Knobs: vertical drag (Shift = fine), wheel, double-click = default,
+click on a value to type it. The page fills the editor body; "← Modules" returns.
+
+Differences from the prototype, on purpose: the font is Windows' Bahnschrift instead of Oswald (no font
+download); the Character switch is Clean / Punch / Glue (the tested DSP above) instead of the prototype's
+Web-Audio Clean / Warm / Tube; the prototype's Source / Play chips are not needed in a plugin. An earlier
+interim style of this pass (grey plate, bakelite knobs) was replaced by this design.
 
 **Waveform strip:** about 30 % lower; shows the last 5 s and takes a new picture every 5 s (or at once on
 Overlay/Delta or resize); one-second grid lines.
 
-![Compressor page](compressor_pass/screenshots/hpeq_compressor_page.png)
+![HamloComp page](compressor_pass/screenshots/hpeq_hamlocomp_page.png)
 
 ## 3. Commands and exit codes
 
 ```bash
 cmake --build --preset release                     # 0, no warnings
-build/Release/HPEQ_Tests.exe                       # 0 — 1067 passed, 0 failed
-build/Debug/HPEQ_Tests.exe                         # 0 — 1067 passed, 0 failed (CRT hook: malloc + new, 0 audio-thread allocations)
+build/Release/HPEQ_Tests.exe                       # 0 — 1074 passed, 0 failed
+build/Debug/HPEQ_Tests.exe                         # running at commit time; result in the next commit (before the HamloComp page: 1067/1067, 0 allocations)
 build/Release/HPEQ_Lab.exe ui --out …/compressor_pass/screenshots   # 0
 ```
 
@@ -56,6 +66,7 @@ build/Release/HPEQ_Lab.exe ui --out …/compressor_pass/screenshots   # 0
 | Auto makeup: level after 10 s of steady compression within 0.5 dB | −0.08 dB (GR 14.1, makeup 14.0) |
 | Punch: identity without reduction; 3rd harmonic > Clean + 20 dB at 18 dB GR | identity; −37.2 vs −62.9 dB |
 | Glue: GR 150 ms after a 30 ms burst lower than Clean; after 3 s higher | 0.07 vs 4.00 dB; 6.60 vs 3.97 dB |
+| HamloComp page wiring (real editor): fills the body; knob / switch / ON edit the project; rebuilt page shows them; grid restores the layout | pass |
 | Old vs new default on drums, region 60–250 Hz, crest factor inside the band (after 0.5 s): new cuts ≥ 2 dB more | input 17.30, old 17.25 (−0.05), **new 14.16 (−3.14)** |
 
 Survey for the default attack (Punch, auto makeup on, same measurement): 0.5 ms → band crest 13.97,
@@ -74,6 +85,11 @@ Survey for the default attack (Punch, auto makeup on, same measurement): 0.5 ms 
 3. In a 3 s test file the band RMS is still 3.8 dB lower with auto makeup on: the 2 s makeup is still
    rising there (it settles on steady material, §4).
 
+4. A test of the panel wiring first read the project through a reference into a temporary copy
+   (`plugin->getProject().layers…`) and saw zeros; the test was fixed (the same class of bug as D6's
+   dangling pointer, this time in the test).
+
 ## 6. Not verified
 
-Listening in FL Studio (owner). The vintage style is on the compressor page only so far.
+Listening and mouse use in FL Studio (owner). Other modules keep the generic page until their designs
+arrive.

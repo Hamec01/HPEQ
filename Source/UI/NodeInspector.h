@@ -4,7 +4,7 @@
 
 #include "Plugin/FxPluginProcessor.h"
 #include "UI/Theme.h"
-#include "UI/VintageStyle.h"
+#include "UI/HamloCompPanel.h"
 
 namespace hpeq::ui
 {
@@ -23,8 +23,12 @@ public:
     void rebuildAsync();
     // Project changed elsewhere (undo, drag in the workspace): refresh values only.
     void refresh();
+    // True while a module page needs the whole editor body (the compressor's HamloComp panel).
+    bool wantsLargeView() const noexcept { return largePage && !showingGrid; }
+    std::function<void()> onLayoutChange;
     // Live readouts from the engine (status, needles); the timer calls it at 15 Hz, tests directly.
-    void updateLiveReadouts();
+    // settle = put the compressor needles on the current readings at once (tests, screenshots).
+    void updateLiveReadouts(bool settle = false);
 
     void paint(juce::Graphics&) override;
     void resized() override;
@@ -60,7 +64,6 @@ private:
 
     FxPluginProcessor& processor;
     Selection& selection;
-    vintage::LookAndFeel vintageLook; // declared before the controls that use it (destroyed after them)
     juce::OwnedArray<juce::Component> controls;
     juce::OwnedArray<juce::Label> labels;
     std::vector<std::function<void()>> refreshers;
@@ -68,9 +71,7 @@ private:
     juce::String title, status;
     bool dragging = false;
     int nodeIndex = -1;
-    bool showingGrid = true, vintagePage = false;
-    juce::Rectangle<int> vintageArea;
-    vintage::NeedleMeter* inputNeedle = nullptr; // owned by controls
-    vintage::NeedleMeter* reductionNeedle = nullptr;
+    bool showingGrid = true, largePage = false;
+    HamloCompPanel* hamloPanel = nullptr; // owned by controls
 };
 } // namespace hpeq::ui

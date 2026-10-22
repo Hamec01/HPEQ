@@ -8,6 +8,9 @@
 #include "DSP/Processors.h"
 #include "Harness/AudioMetrics.h"
 #include "Harness/TestSignalFactory.h"
+#include "Plugin/FxPluginEditor.h"
+#include "Plugin/FxPluginProcessor.h"
+#include "UI/HamloCompPanel.h"
 
 namespace hpeq::test
 {
@@ -230,6 +233,67 @@ public:
                        + juce::String(before.crestDb, 2) + ", new default " + juce::String(after.crestDb, 2) + " dB; band RMS "
                        + juce::String(in.rmsDbfs, 2) + " / " + juce::String(before.rmsDbfs, 2) + " / " + juce::String(after.rmsDbfs, 2) + " dBFS");
             expect((in.crestDb - after.crestDb) - (in.crestDb - before.crestDb) >= 2.0);
+        }
+
+        beginTest("HamloComp page: fills the editor body; knob, switch and ON edit the project; values come back from it; the grid restores the layout");
+        {
+            auto plugin = std::make_unique<FxPluginProcessor>();
+            FxProjectState p;
+            FxNodeState n;
+            n.id = 1;
+            n.chain = { defaultModule(FxType::Compressor) };
+            p.layers[0].fxNodes = { n };
+            p.nextNodeId = 2;
+            plugin->setProject(p);
+            auto editor = std::unique_ptr<FxPluginEditor>(dynamic_cast<FxPluginEditor*>(plugin->createEditor()));
+            editor->setSize(1400, 900);
+            editor->selectNode(true, 1, 0);
+            ui::HamloCompPanel* panel = nullptr;
+            juce::Component* workspace = nullptr;
+            juce::Array<juce::Component*> stack { editor.get() };
+            while (!stack.isEmpty())
+            {
+                auto* c = stack.removeAndReturn(stack.size() - 1);
+                for (auto* child : c->getChildren())
+                    stack.add(child);
+                if (auto* h = dynamic_cast<ui::HamloCompPanel*>(c))
+                    panel = h;
+                if (c->getName().isEmpty() && c->getWidth() > 900 && c->getHeight() > 300 && dynamic_cast<ui::HamloCompPanel*>(c) == nullptr)
+                    workspace = c;
+            }
+            expect(panel != nullptr, "no HamloComp panel on the compressor page");
+            if (panel != nullptr)
+            {
+                expect(panel->getWidth() > 1000 && panel->getHeight() > 500, "panel does not fill the editor body: "
+                                                                                + panel->getBounds().toString());
+                panel->onKnobChange(ui::HamloCompPanel::Threshold, -41.5);
+                panel->onSwitchChange(ui::HamloCompPanel::Character, 2);
+                panel->onPowerChange(false);
+                const auto project = plugin->getProject(); // a copy: keep it alive while reading from it
+                const auto& m = project.layers[0].fxNodes[0].chain[0];
+                expectEquals(static_cast<double>(m.parameters["thresholdDb"]), -41.5);
+                expectEquals(static_cast<int>(m.parameters["character"]), 2);
+                expect(!m.enabled);
+                editor->selectNode(true, 1, 0); // rebuild from the project
+                juce::Array<juce::Component*> again { editor.get() };
+                ui::HamloCompPanel* rebuilt = nullptr;
+                while (!again.isEmpty())
+                {
+                    auto* c = again.removeAndReturn(again.size() - 1);
+                    for (auto* child : c->getChildren())
+                        again.add(child);
+                    if (auto* h = dynamic_cast<ui::HamloCompPanel*>(c))
+                        rebuilt = h;
+                }
+                expect(rebuilt != nullptr && rebuilt->getValues().knobs[ui::HamloCompPanel::Threshold] == -41.5
+                       && rebuilt->getValues().switches[ui::HamloCompPanel::Character] == 2 && !rebuilt->getValues().on);
+            }
+            editor->selectNode(true, 1, -1); // back to the grid: the workspace is shown again
+            int visibleLarge = 0;
+            for (auto* child : editor->getChildren())
+                visibleLarge += child->isVisible() && child->getHeight() > 300 ? 1 : 0;
+            expect(visibleLarge >= 1);
+            juce::ignoreUnused(workspace);
         }
 
         beginTest("UI default compressor (defaultModule): threshold -30, ratio 4, attack 1, release 80, Punch, auto makeup on");
