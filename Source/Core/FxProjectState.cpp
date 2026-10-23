@@ -20,6 +20,7 @@ const juce::Identifier eqNode { "EqNode" };
 const juce::Identifier fxNode { "FxNode" };
 const juce::Identifier slot { "FxSlot" };
 const juce::Identifier engineSlot { "engineSlot" };
+const juce::Identifier mixChain { "MixChain" };
 const juce::Identifier params { "Params" };
 const juce::Identifier index { "index" };
 const juce::Identifier id { "id" };
@@ -208,6 +209,19 @@ FxSlotState defaultModule(FxType type)
 {
     FxSlotState m;
     m.type = type;
+    if (type == FxType::Limiter)
+    {
+        // HamloRedWall as the UI creates it: true peak and auto release on, a safe ceiling.
+        m.parameters.set("thresholdDb", 0);
+        m.parameters.set("ceilingDb", -1);
+        m.parameters.set("releaseMs", 60);
+        m.parameters.set("lookaheadMs", 2);
+        m.parameters.set("truePeak", 1);
+        m.parameters.set("autoRelease", 1);
+        m.parameters.set("style", 0);
+        m.parameters.set("link", 1);
+        m.parameters.set("monitor", 0);
+    }
     if (type == FxType::Compressor)
     {
         m.parameters.set("thresholdDb", -30);
@@ -314,7 +328,7 @@ int freeEngineSlots(const LayerState& layer)
 
 bool layerHasContent(const LayerState& layer)
 {
-    return !layer.eqNodes.empty() || !layer.fxNodes.empty() || layer.gainDb != 0.0f || layer.pan != 0.0f || layer.width != 1.0f
+    return !layer.eqNodes.empty() || !layer.fxNodes.empty() || !layer.mixChain.empty() || layer.gainDb != 0.0f || layer.pan != 0.0f || layer.width != 1.0f
         || layer.channel != ChannelMode::Stereo;
 }
 
@@ -364,6 +378,10 @@ void sanitize(FxProjectState& project)
                 slot.mix = clampFinite(slot.mix, 0.0f, 1.0f, 1.0f);
             maxId = std::max(maxId, node.id);
         }
+        if (layer.mixChain.size() > static_cast<size_t>(kMaxFxPerNode))
+            layer.mixChain.resize(static_cast<size_t>(kMaxFxPerNode));
+        for (auto& slot : layer.mixChain)
+            slot.mix = clampFinite(slot.mix, 0.0f, 1.0f, 1.0f);
         assignEngineSlots(layer);
     }
     project.nextNodeId = std::max(project.nextNodeId, maxId + 1);
@@ -426,6 +444,13 @@ juce::ValueTree toValueTree(const FxProjectState& project)
             for (const auto& slot : node.chain)
                 nt.appendChild(slotToTree(slot), nullptr);
             lt.appendChild(nt, nullptr);
+        }
+        if (!layer.mixChain.empty())
+        {
+            juce::ValueTree mt(ids::mixChain);
+            for (const auto& slot : layer.mixChain)
+                mt.appendChild(slotToTree(slot), nullptr);
+            lt.appendChild(mt, nullptr);
         }
         root.appendChild(lt, nullptr);
     }
@@ -507,6 +532,12 @@ std::optional<FxProjectState> fromValueTree(const juce::ValueTree& root, juce::S
                     if (st.hasType(ids::slot))
                         node.chain.push_back(slotFromTree(st));
                 layer.fxNodes.push_back(std::move(node));
+            }
+            else if (nt.hasType(ids::mixChain))
+            {
+                for (const auto& st : nt)
+                    if (st.hasType(ids::slot))
+                        layer.mixChain.push_back(slotFromTree(st));
             }
         }
     }

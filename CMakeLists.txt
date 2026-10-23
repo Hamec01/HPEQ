@@ -69,6 +69,7 @@ target_sources(HPEQ
         Source/DSP/HamloEcho.cpp
         Source/DSP/HamloMag.cpp
         Source/DSP/ProcessorsM6.cpp
+        Source/DSP/HamloRedWall.cpp
         Source/DSP/ProjectEngine.cpp
         Source/DSP/CrossoverTree.cpp
         Source/DSP/EqDesign.cpp
@@ -82,6 +83,7 @@ target_sources(HPEQ
         Source/UI/HamloVerbPanel.cpp
         Source/UI/HamloEchoPanel.cpp
         Source/UI/HamloMagPanel.cpp
+        Source/UI/HamloRedWallPanel.cpp
         Source/UI/SpectrumWorkspace.cpp)
 
 target_include_directories(HPEQ PUBLIC Source)
@@ -121,6 +123,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/M8Tests.cpp
     Tests/Unit/D6Tests.cpp
     Tests/Unit/CompressorPassTests.cpp
+    Tests/Unit/LimiterPassTests.cpp
     Tests/Unit/ReverbPassTests.cpp
     Tests/Unit/DelayPassTests.cpp
     Tests/Unit/SaturatorPassTests.cpp

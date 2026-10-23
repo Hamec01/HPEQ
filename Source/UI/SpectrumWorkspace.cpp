@@ -488,6 +488,10 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
         menu.addSectionHeader("At " + formatHz(hz));
         menu.addSubMenu("Add EQ point", eqMenu);
         menu.addSubMenu("Add FX region (one octave)", fxMenu, bandFree);
+        juce::PopupMenu mixMenu; // D7: a module on the whole layer
+        for (size_t i = 0; i < kFxTypes.size(); ++i)
+            mixMenu.addItem(static_cast<int>(400 + i), fxName(kFxTypes[i]));
+        menu.addSubMenu("Add module on the whole layer", mixMenu, shown.mixChain.size() < static_cast<size_t>(kMaxFxPerNode));
     }
 
     juce::Component::SafePointer<SpectrumWorkspace> safe(this);
@@ -541,6 +545,12 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
                 n.slopeDbPerOct = 24;
                 layer.eqNodes.push_back(n);
                 newKind = Selection::Kind::Eq;
+            }
+            else if (result >= 400 && layer.mixChain.size() < static_cast<size_t>(kMaxFxPerNode))
+            {
+                layer.mixChain.push_back(defaultModule(kFxTypes[static_cast<size_t>(result - 400)]));
+                newKind = Selection::Kind::Mix;
+                newId = 1; // any non-zero: the selection is the layer's MIX chain
             }
             else if (result >= 200 && result < 300 && freeEngineSlots(layer) > 0)
             {

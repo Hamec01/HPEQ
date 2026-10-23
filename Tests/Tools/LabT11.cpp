@@ -63,6 +63,8 @@ FxProjectState randomProject(DeterministicRandom& random)
                 }
             layer.eqNodes.push_back(n);
         }
+        for (int m = pick(4) == 0 ? 1 + pick(3) : 0; m > 0; --m) // D7: modules on the whole layer
+            layer.mixChain.push_back(defaultModule(types[pick(10)]));
         for (int f = pick(4); f > 0; --f)
         {
             FxNodeState n;

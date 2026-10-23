@@ -41,15 +41,17 @@ public:
     }
     // False when processing would return the input exactly: PRE-EQ neutral (nothing running or
     // fading), no allocated tree edge.
-    bool needsProcessing() const noexcept { return hasEq || !preEq.isNeutral() || tree.isActive(); }
+    bool needsProcessing() const noexcept { return hasEq || !preEq.isNeutral() || tree.isActive() || mixNode.isRunning(); }
 
     void process(float* const* channels, int numChannels, int numSamples, const Transport& transport = {}) noexcept;
 
     // Layer latency = the largest node latency of the snapshot (all nodes present, enabled or not, so
     // bypassing a node does not change it). The dry path and every node are aligned to it.
-    int getLatencySamples() const noexcept { return layerLatency; }
+    int getLatencySamples() const noexcept { return layerLatency + mixNode.latencySamples(); }
     static int latencyFor(const LayerSnapshot&, double sampleRate);
     const FxNodeProcessor& getNode(int index) const noexcept { return nodes[static_cast<size_t>(index)]; }
+    // D7: the whole-layer chain's node.
+    const FxNodeProcessor& getMixNode() const noexcept { return mixNode; }
     bool isTreeActive() const noexcept { return tree.isActive(); }
     int reverbsInUse() const noexcept { return pools->reverbs.inUse(); }
     int delaysInUse() const noexcept { return pools->delays.inUse(); }
@@ -66,6 +68,10 @@ private:
     SnapshotExchange<LayerSnapshot> exchange;
     PreEqProcessor preEq;
     std::array<FxNodeProcessor, kMaxFxNodesPerLayer> nodes;
+    FxNodeProcessor mixNode; // D7: whole-layer chain, after the frequency nodes
+    AlignmentDelay mixDryAlign;
+    std::array<std::vector<float>, kMaxChannels> mixBand, mixDelta;
+    std::vector<float> mixPresence;
     std::unique_ptr<LayerPools> ownPools; // allocated in prepare() only when no shared pools are given
     LayerPools* pools = nullptr;
     bool hasEq = false;

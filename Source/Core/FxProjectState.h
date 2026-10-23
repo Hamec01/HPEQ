@@ -78,6 +78,8 @@ struct LayerState
     ChannelMode channel = ChannelMode::Stereo;
     std::vector<EqNodeState> eqNodes;
     std::vector<FxNodeState> fxNodes;
+    // D7: modules on the whole layer, after the frequency nodes and before the layer controls (0..6).
+    std::vector<FxSlotState> mixChain;
 };
 
 struct FxProjectState

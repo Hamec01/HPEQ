@@ -70,6 +70,8 @@ public:
     double targetHighHz() const noexcept { return highHz; }
     int latencySamples() const noexcept { return nodeLatency; }
     float getGainReductionDb(int slotIndex) const noexcept;
+    // Limiter slot: output sample peak of the last block (dB); others -120.
+    float getLimiterOutputDb(int slotIndex) const noexcept;
     // Compressor slot: detector level of the last block (dB) and auto makeup (dB); others: -120 / 0.
     float getCompressorInputDb(int slotIndex) const noexcept;
     float getCompressorAutoMakeupDb(int slotIndex) const noexcept;

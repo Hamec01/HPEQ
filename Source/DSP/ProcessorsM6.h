@@ -10,6 +10,8 @@
 #include "DSP/DspConfig.h"
 #include "DSP/HamloEcho.h"
 #include "DSP/HamloMag.h"
+#include "DSP/HamloRedWall.h"
+#include "DSP/HamloRedWall.h"
 #include "DSP/LayerSnapshot.h"
 
 namespace hpeq::dsp
@@ -119,8 +121,13 @@ public:
     void reset() noexcept;
     void process(float* const* channels, int numChannels, int numSamples, const FxSlotParams&) noexcept;
 
+    // Latency: the look-ahead, + 8 samples with TRUE PEAK (HamloRedWall).
     static int lookaheadSamples(const FxSlotParams&, double sampleRate) noexcept;
-    float lastGainReductionDb() const noexcept { return meter.load(std::memory_order_relaxed); }
+    static int baseLookaheadSamples(const FxSlotParams&, double sampleRate) noexcept;
+    // True when any HamloRedWall option is set (otherwise the M6 law runs, bit-exact).
+    static bool usesRedWall(const FxSlotParams&) noexcept;
+    float lastGainReductionDb() const noexcept { return redWallActive ? core.lastGainReductionDb() : meter.load(std::memory_order_relaxed); }
+    float lastOutputPeakDb() const noexcept { return redWallActive ? core.lastOutputPeakDb() : meterOutput.load(std::memory_order_relaxed); }
 
 private:
     double sampleRate_ = 48000.0;
@@ -134,7 +141,9 @@ private:
     long long counter = 0;
     int writePos = 0;
     double released = 1.0, runningSum = 0.0;
-    std::atomic<float> meter { 0.0f };
+    std::atomic<float> meter { 0.0f }, meterOutput { -120.0f };
+    RedWallCore core;
+    bool redWallActive = false;
 };
 
 // The M6 delay, kept as the "Classic" character (bit-exact for projects saved before the HamloEcho pass).

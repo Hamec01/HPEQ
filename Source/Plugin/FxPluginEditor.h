@@ -37,6 +37,8 @@ public:
     void updateAnalysisNow();
     // Select a node as a click would (fx: FX region, else EQ point), and pick the workspace mode.
     void selectNode(bool fx, std::uint32_t id, int slot = -1); // slot -1 = module grid
+    // The layer's MIX chain (D7), as a click on its row would select it.
+    void selectMix(int slot = -1);
     void showDifference(bool difference);
 
 private:

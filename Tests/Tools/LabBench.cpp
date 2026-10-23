@@ -164,6 +164,22 @@ EqBandParams bell(int i)
     return b;
 }
 
+FxSlotParams limiterSlot(float truePeak, float style, float autoRelease, float link = 1.0f, float threshold = 0.0f)
+{
+    FxSlotParams l;
+    l.active = true;
+    l.type = FxType::Limiter;
+    l.values[slot::kCeilingDb] = -1.0f;
+    l.values[slot::kLimiterReleaseMs] = 60.0f;
+    l.values[slot::kLookaheadMs] = 2.0f;
+    l.values[slot::kLimThresholdDb] = threshold;
+    l.values[slot::kLimTruePeak] = truePeak;
+    l.values[slot::kLimAutoRelease] = autoRelease;
+    l.values[slot::kLimStyle] = style;
+    l.values[slot::kLimLink] = link;
+    return l;
+}
+
 struct Config
 {
     const char* name;
@@ -195,6 +211,11 @@ std::vector<Config> configs()
         { "hamlomag_tape_4x", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloMagSlot(1, 2) }); return s; } },
         { "hamlomag_tube_2x", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloMagSlot(2, 1) }); return s; } },
         { "hamlomag_tape_2x_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { hamloMagSlot(1, 1) }); return s; } },
+        { "limiter_m6_1node", [] { LayerSnapshot s; s.fx[0] = node(40, 160, { limiterSlot(0, 0, 0) }); return s; } },
+        { "redwall_glasnost_1node", [] { LayerSnapshot s; s.fx[0] = node(40, 160, { limiterSlot(0, 0, 1, 1, -6) }); return s; } },
+        { "redwall_truepeak_1node", [] { LayerSnapshot s; s.fx[0] = node(40, 160, { limiterSlot(1, 0, 1, 1, -6) }); return s; } },
+        { "redwall_october_tp_link50_1node", [] { LayerSnapshot s; s.fx[0] = node(40, 160, { limiterSlot(1, 2, 1, 0.5f, -6) }); return s; } },
+        { "redwall_truepeak_mix", [] { LayerSnapshot s; s.mix = node(20, 20000, { limiterSlot(1, 0, 1, 1, -6) }); return s; } },
         { "eq_24_bells", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i); return s; } },
         { "layer_ceiling_24bells_8x6comp", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i);
                                                 for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { compSlot(), compSlot(), compSlot(), compSlot(), compSlot(), compSlot() }); return s; } },

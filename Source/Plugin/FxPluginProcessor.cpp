@@ -296,7 +296,10 @@ void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
             continue;
         double tail = 0.0;
         const auto snapshot = dsp::makeSnapshot(layerState);
-        for (const auto& node : snapshot.fx)
+        std::array<dsp::FxNodeParams, kMaxFxNodesPerLayer + 1> all {};
+        std::copy(snapshot.fx.begin(), snapshot.fx.end(), all.begin());
+        all.back() = snapshot.mix;
+        for (const auto& node : all)
             for (int k = 0; node.active && k < node.numSlots; ++k)
                 if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active)
                 {

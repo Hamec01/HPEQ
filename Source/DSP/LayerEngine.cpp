@@ -54,6 +54,14 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize, LayerPools* sh
         d.prepare(FxNodeProcessor::maxNodeLatency(sampleRate));
     for (auto& node : nodes)
         node.prepare(sampleRate, maxBlock, pools);
+    mixNode.prepare(sampleRate, maxBlock, pools);
+    mixDryAlign.prepare(FxNodeProcessor::maxNodeLatency(sampleRate));
+    for (int ch = 0; ch < kMaxChannels; ++ch)
+    {
+        mixBand[static_cast<size_t>(ch)].assign(size, 0.0f);
+        mixDelta[static_cast<size_t>(ch)].assign(size, 0.0f);
+    }
+    mixPresence.assign(size, 1.0f);
     tree.prepare(sampleRate, maxBlock);
     reset();
 }
@@ -64,6 +72,8 @@ void LayerEngine::reset() noexcept
     preEq.reset();
     for (auto& node : nodes)
         node.reset();
+    mixNode.reset();
+    mixDryAlign.reset();
     tree.reset();
     dryAlign.reset();
     for (auto& d : deltaAlign)
@@ -81,7 +91,7 @@ int LayerEngine::latencyFor(const LayerSnapshot& snapshot, double sampleRate)
     int latency = 0;
     for (const auto& node : snapshot.fx)
         latency = std::max(latency, FxNodeProcessor::nodeLatencyFor(node, sampleRate));
-    return latency;
+    return latency + FxNodeProcessor::nodeLatencyFor(snapshot.mix, sampleRate);
 }
 
 void LayerEngine::applySnapshot() noexcept
@@ -93,6 +103,7 @@ void LayerEngine::applySnapshot() noexcept
         hasEq = hasEq || band.active;
     for (size_t i = 0; i < nodes.size(); ++i)
         nodes[i].setTargets(snapshot.fx[i]);
+    mixNode.setTargets(snapshot.mix);
     layerLatency = 0;
     for (const auto& node : nodes)
         layerLatency = std::max(layerLatency, node.latencySamples());
@@ -156,6 +167,29 @@ void LayerEngine::process(float* const* channels, int numChannels, int numSample
         }
         else if (layerLatency > 0)
             dryAlign.process(chunk, chunk, numChannels, n, layerLatency);
+
+        // D7: the whole-layer chain on the layer signal: y = D_m(y) + delta (delta = mix (chain - D_m)).
+        const int mixLatency = mixNode.latencySamples();
+        if (mixNode.isRunning())
+        {
+            float* band[kMaxChannels] {};
+            float* delta[kMaxChannels] {};
+            for (int ch = 0; ch < numChannels; ++ch)
+            {
+                band[ch] = mixBand[static_cast<size_t>(ch)].data();
+                delta[ch] = mixDelta[static_cast<size_t>(ch)].data();
+                std::copy(chunk[ch], chunk[ch] + n, band[ch]);
+                std::fill(delta[ch], delta[ch] + n, 0.0f);
+            }
+            mixNode.process(band, mixPresence.data(), delta, numChannels, n, transport, start);
+            if (mixLatency > 0)
+                mixDryAlign.process(chunk, chunk, numChannels, n, mixLatency);
+            for (int ch = 0; ch < numChannels; ++ch)
+                for (int i = 0; i < n; ++i)
+                    chunk[ch][i] += delta[ch][i];
+        }
+        else if (mixLatency > 0)
+            mixDryAlign.process(chunk, chunk, numChannels, n, mixLatency);
         controlPhase = (controlPhase + n) % kControlInterval;
     }
 }

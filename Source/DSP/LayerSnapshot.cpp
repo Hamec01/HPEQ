@@ -142,6 +142,12 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kCeilingDb] = juce::jlimit(-60.0f, 0.0f, param(state.parameters, "ceilingDb", -1.0f));
             slotParams.values[slot::kLimiterReleaseMs] = juce::jlimit(1.0f, 2000.0f, param(state.parameters, "releaseMs", 80.0f));
             slotParams.values[slot::kLookaheadMs] = juce::jlimit(0.1f, 10.0f, param(state.parameters, "lookaheadMs", 2.0f));
+            slotParams.values[slot::kLimThresholdDb] = juce::jlimit(-30.0f, 0.0f, param(state.parameters, "thresholdDb", 0.0f));
+            slotParams.values[slot::kLimTruePeak] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "truePeak", 0.0f)));
+            slotParams.values[slot::kLimAutoRelease] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "autoRelease", 0.0f)));
+            slotParams.values[slot::kLimStyle] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "style", 0.0f)));
+            slotParams.values[slot::kLimLink] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "link", 1.0f));
+            slotParams.values[slot::kLimMonitor] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "monitor", 0.0f)));
             break;
     }
     return slotParams;
@@ -198,6 +204,7 @@ LayerSnapshot makeSnapshot(const LayerState& layer)
             const auto [low, high] = pointModuleBandHz(node);
             fill(snapshot.fx[static_cast<size_t>(node.engineSlot)], node.enabled, low, high, 1.0f, node.channel, node.chain);
         }
+    fill(snapshot.mix, !layer.mixChain.empty(), 20.0, 20000.0, 1.0f, ChannelMode::Stereo, layer.mixChain);
     return snapshot;
 }
 } // namespace hpeq::dsp

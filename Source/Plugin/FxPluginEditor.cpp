@@ -242,6 +242,14 @@ void FxPluginEditor::selectNode(bool fx, std::uint32_t id, int slot)
     selectionChanged();
 }
 
+void FxPluginEditor::selectMix(int slot)
+{
+    selection->kind = Selection::Kind::Mix;
+    selection->id = 0;
+    selection->slot = slot;
+    selectionChanged();
+}
+
 void FxPluginEditor::showDifference(bool difference)
 {
     workspace->mode = difference ? SpectrumWorkspace::Mode::Difference : SpectrumWorkspace::Mode::Spectrum;

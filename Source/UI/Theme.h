@@ -37,7 +37,7 @@ inline juce::Colour forNode(int index)
 // What the workspace, list and inspector have selected (by stable node id).
 struct Selection
 {
-    enum class Kind { None, Eq, Fx };
+    enum class Kind { None, Eq, Fx, Mix }; // Mix: the whole-layer chain (D7)
     Kind kind = Kind::None;
     std::uint32_t id = 0;
     int slot = -1; // selected module in the inspector; -1 = the module grid (D6)

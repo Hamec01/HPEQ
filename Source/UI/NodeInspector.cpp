@@ -220,7 +220,18 @@ const std::vector<FxSlotState>* NodeInspector::selectedChain(const FxProjectStat
         for (const auto& n : layer.eqNodes)
             if (n.id == selection.id)
                 return &n.chain;
+    if (selection.kind == Selection::Kind::Mix)
+        return &layer.mixChain;
     return nullptr;
+}
+
+const dsp::FxNodeProcessor* NodeInspector::selectedNodeProcessor(const FxProjectState& p) const
+{
+    const auto& layerEngine = processor.getEngine().getLayer(p.selectedLayer);
+    if (selection.kind == Selection::Kind::Mix)
+        return &layerEngine.getMixNode();
+    const int engineSlot = selectedEngineSlot(p);
+    return engineSlot >= 0 ? &layerEngine.getNode(engineSlot) : nullptr;
 }
 
 int NodeInspector::selectedEngineSlot(const FxProjectState& p) const
@@ -241,10 +252,13 @@ void NodeInspector::editChain(const juce::String& name, const std::function<void
 {
     const auto id = selection.id;
     const bool fx = selection.kind == Selection::Kind::Fx;
+    const bool mix = selection.kind == Selection::Kind::Mix;
     processor.editProject(name, [&](FxProjectState& p)
     {
         auto& layer = selectedLayer(p);
-        if (fx)
+        if (mix)
+            change(layer.mixChain);
+        else if (fx)
         {
             for (auto& n : layer.fxNodes)
                 if (n.id == id)
@@ -257,8 +271,9 @@ void NodeInspector::editChain(const juce::String& name, const std::function<void
     });
 }
 
-void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool region)
+void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKind kind)
 {
+    const bool region = kind == ChainKind::Region; // a region keeps at least one module
     const auto setInfo = [](juce::Component& c, int section, int width, int height, bool newRow = false, bool tile = false)
     {
         auto& props = c.getProperties();
@@ -293,11 +308,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
             }
             else
             {
-                auto& tile = addButton("+", [this, region]
+                auto& tile = addButton("+", [this, kind]
                 {
                     const auto project = processor.getProject();
                     const auto* current = selectedChain(project);
-                    const bool needsBand = !region && current != nullptr && current->empty();
+                    const bool needsBand = kind == ChainKind::Point && current != nullptr && current->empty();
                     juce::PopupMenu menu;
                     if (needsBand && freeEngineSlots(selectedLayer(project)) <= 0)
                         menu.addItem(1, "All 8 module bands of this layer are in use", false);
@@ -428,10 +443,10 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
         panel->readMeters = [this, k]() -> std::pair<float, float>
         {
             const auto project = processor.getProject();
-            const int engineSlot = selectedEngineSlot(project);
-            if (engineSlot < 0)
+            const auto* nodePtr = selectedNodeProcessor(project);
+            if (nodePtr == nullptr)
                 return { -60.0f, 0.0f };
-            const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+            const auto& node = *nodePtr;
             return { node.getCompressorInputDb(k), node.getGainReductionDb(k) };
         };
         refreshers.push_back([this, panel, k]
@@ -479,6 +494,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
     if (module.type == FxType::Saturator)
     {
         buildSaturatorPage(k);
+        return;
+    }
+    if (module.type == FxType::Limiter)
+    {
+        buildLimiterPage(k);
         return;
     }
 
@@ -554,6 +574,7 @@ void NodeInspector::rebuild()
     verbPanel = nullptr;
     echoPanel = nullptr;
     magPanel = nullptr;
+    wallPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -642,7 +663,15 @@ void NodeInspector::rebuild()
                     mode.setSelectedItemIndex(juce::jmin(4, indexOf(kModes, n.channel)), juce::dontSendNotification);
                 }
         });
-        buildModules(layer.eqNodes[static_cast<size_t>(nodeIndex)].chain, false);
+        buildModules(layer.eqNodes[static_cast<size_t>(nodeIndex)].chain, ChainKind::Point);
+    }
+    else if (selection.kind == Selection::Kind::Mix)
+    {
+        title = "MIX  /  whole layer " + juce::String(project.selectedLayer + 1) + " (after the regions and points), "
+              + juce::String(static_cast<int>(layer.mixChain.size())) + " of 6 modules";
+        status = {};
+        nodeIndex = 0;
+        buildModules(layer.mixChain, ChainKind::Mix);
     }
     else if (selection.kind == Selection::Kind::Fx)
     {
@@ -686,7 +715,7 @@ void NodeInspector::rebuild()
         });
         setInfo(del, 0, 70, kRowHeight);
 
-        buildModules(node.chain, true);
+        buildModules(node.chain, ChainKind::Region);
 
         refreshers.push_back([this, &on, &low, &high, &mix, &mode]
         {
@@ -755,10 +784,10 @@ void NodeInspector::buildReverbPage(int k)
     panel->readMeters = [this, k]() -> std::pair<float, float>
     {
         const auto project = processor.getProject();
-        const int engineSlot = selectedEngineSlot(project);
-        if (engineSlot < 0)
+        const auto* nodePtr = selectedNodeProcessor(project);
+        if (nodePtr == nullptr)
             return { -120.0f, 0.0f };
-        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+        const auto& node = *nodePtr;
         return { node.getReverbOutputDb(k), node.getReverbDuckDb(k) };
     };
     refreshers.push_back([this, panel, k]
@@ -826,10 +855,10 @@ void NodeInspector::buildDelayPage(int k)
     panel->readMeters = [this, k]() -> std::pair<float, float>
     {
         const auto project = processor.getProject();
-        const int engineSlot = selectedEngineSlot(project);
-        if (engineSlot < 0)
+        const auto* nodePtr = selectedNodeProcessor(project);
+        if (nodePtr == nullptr)
             return { -120.0f, 0.0f };
-        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+        const auto& node = *nodePtr;
         return { node.getDelayOutputDb(k), node.getDelayDuckDb(k) };
     };
     panel->readTempo = [this] { return processor.getHostBpm(); };
@@ -857,6 +886,78 @@ void NodeInspector::buildDelayPage(int k)
         for (int sw = 0; sw < HamloEchoPanel::NumSwitches; ++sw)
         {
             const auto* key = HamloEchoPanel::keyFor(static_cast<HamloEchoPanel::Switch>(sw));
+            v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, key, fallback(key)));
+        }
+        v.on = m.enabled;
+        panel->setValues(v);
+    });
+}
+
+void NodeInspector::buildLimiterPage(int k)
+{
+    // HamloRedWall (module pass 5): one drawn panel in the Black Steel style; it fills the editor body.
+    largePage = true;
+    auto* panel = new HamloRedWallPanel();
+    controls.add(panel);
+    addAndMakeVisible(panel);
+    panel->getProperties().set("section", 4);
+    wallPanel = panel;
+    panel->onKnobGestureStart = [this](HamloRedWallPanel::Param p)
+    {
+        processor.getUndoManager().beginNewTransaction("Limiter " + juce::String(HamloRedWallPanel::keyFor(p)));
+        dragging = true;
+    };
+    panel->onKnobGestureEnd = [this] { dragging = false; };
+    panel->onKnobChange = [this, k](HamloRedWallPanel::Param p, double v)
+    {
+        const juce::Identifier key(HamloRedWallPanel::keyFor(p));
+        editChain("Limiter", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+    };
+    panel->onSwitchChange = [this, k](HamloRedWallPanel::Switch sw, int option)
+    {
+        processor.getUndoManager().beginNewTransaction("Limiter " + juce::String(HamloRedWallPanel::keyFor(sw)));
+        const juce::Identifier key(HamloRedWallPanel::keyFor(sw));
+        editChain("Limiter switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+    };
+    panel->onPowerChange = [this, k](bool on)
+    {
+        processor.getUndoManager().beginNewTransaction("Module on");
+        editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+    };
+    panel->readMeters = [this, k]() -> std::pair<float, float>
+    {
+        const auto project = processor.getProject();
+        const auto* nodePtr = selectedNodeProcessor(project);
+        if (nodePtr == nullptr)
+            return { -120.0f, 0.0f };
+        return { nodePtr->getLimiterOutputDb(k), nodePtr->getGainReductionDb(k) };
+    };
+    refreshers.push_back([this, panel, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        const auto* c = selectedChain(project);
+        if (c == nullptr || k >= static_cast<int>(c->size()))
+            return;
+        const auto& m = (*c)[static_cast<size_t>(k)];
+        // the DSP's own defaults when a key is absent (LayerSnapshot): older limiters keep the M6 law
+        const auto fallback = [](const char* key)
+        {
+            const juce::String name(key);
+            if (name == "ceilingDb") return -1.0;
+            if (name == "releaseMs") return 80.0;
+            if (name == "lookaheadMs") return 2.0;
+            if (name == "link") return 1.0;
+            return 0.0;
+        };
+        HamloRedWallPanel::Values v;
+        for (int p = 0; p < HamloRedWallPanel::NumKnobs; ++p)
+        {
+            const auto* key = HamloRedWallPanel::keyFor(static_cast<HamloRedWallPanel::Param>(p));
+            v.knobs[static_cast<size_t>(p)] = paramValue(m, key, fallback(key));
+        }
+        for (int sw = 0; sw < HamloRedWallPanel::NumSwitches; ++sw)
+        {
+            const auto* key = HamloRedWallPanel::keyFor(static_cast<HamloRedWallPanel::Switch>(sw));
             v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, key, fallback(key)));
         }
         v.on = m.enabled;
@@ -903,10 +1004,10 @@ void NodeInspector::buildSaturatorPage(int k)
     panel->readMeters = [this, k]() -> std::pair<float, float>
     {
         const auto project = processor.getProject();
-        const int engineSlot = selectedEngineSlot(project);
-        if (engineSlot < 0)
+        const auto* nodePtr = selectedNodeProcessor(project);
+        if (nodePtr == nullptr)
             return { -120.0f, -120.0f };
-        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+        const auto& node = *nodePtr;
         return { node.getSaturatorInputDb(k), node.getSaturatorOutputDb(k) };
     };
     refreshers.push_back([this, panel, k]
@@ -957,6 +1058,11 @@ void NodeInspector::updateLiveReadouts(bool settle)
         const auto [outputDb, duckDb] = echoPanel->readMeters();
         echoPanel->settleMeters(outputDb, duckDb);
     }
+    if (settle && wallPanel != nullptr && wallPanel->readMeters)
+    {
+        const auto [outputDb, reductionDb] = wallPanel->readMeters();
+        wallPanel->settleMeters(outputDb, reductionDb);
+    }
     if (settle && magPanel != nullptr && magPanel->readMeters)
     {
         const auto [inputDb, outputDb] = magPanel->readMeters();
@@ -967,11 +1073,11 @@ void NodeInspector::updateLiveReadouts(bool settle)
     if (selection.kind != Selection::Kind::None && selection.slot >= 0)
     {
         const auto project = processor.getProject();
-        const int engineSlot = selectedEngineSlot(project);
+        const auto* nodePtr = selectedNodeProcessor(project);
         const auto* chain = selectedChain(project);
-        if (engineSlot >= 0 && chain != nullptr && selection.slot < static_cast<int>(chain->size()))
+        if (nodePtr != nullptr && chain != nullptr && selection.slot < static_cast<int>(chain->size()))
         {
-            const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+            const auto& node = *nodePtr;
             const int k = selection.slot;
             if ((*chain)[static_cast<size_t>(k)].type == FxType::Compressor)
             {

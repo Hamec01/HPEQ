@@ -141,3 +141,13 @@ modules comes **from the point's frequency and Q**.
   an empty tile is "+" (adds a module at the end). Clicking a tile opens that module's page in the same
   panel (On, Mix, type, move earlier/later, remove, parameters) with a back arrow to the grid.
 - An FX region keeps at least one module (as before); a point may have none.
+
+## D7 — 2026-10-23 — Modules on the whole layer (owner)
+
+**Owner:** every module must work in three places: on an EQ point, on a frequency range, and on the
+whole mix of the layer.
+
+**Decision:** each layer gets a MIX chain (0–6 modules) after its frequency nodes and before the layer
+controls (`PRE-EQ -> nodes -> MIX chain -> gain / width / pan`), on its own engine node outside the 8
+frequency nodes. Its latency adds to the layer's. State: `MixChain` (additive; older projects unchanged).
+The "+" and workspace menus list every module for all three places. Details: `LIMITER_DESIGN.md` §1.

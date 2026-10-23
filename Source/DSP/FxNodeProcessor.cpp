@@ -19,7 +19,7 @@ int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
 
 int FxNodeProcessor::maxSlotLatency(double sampleRate)
 {
-    return std::max(LimiterProcessor::maxLookaheadSamples(sampleRate),
+    return std::max(LimiterProcessor::maxLookaheadSamples(sampleRate) + RedWallCore::kTruePeakDelay,
                     SaturatorProcessor::latencySamples(2) + static_cast<int>(std::lround(mag::kWowBaseSeconds * sampleRate)));
 }
 
@@ -462,6 +462,12 @@ float FxNodeProcessor::getCompressorAutoMakeupDb(int slotIndex) const noexcept
 {
     const auto& slot = slots[static_cast<size_t>(slotIndex)];
     return slot.running && slot.type == FxType::Compressor ? slot.compressor.getAutoMakeupDb() : 0.0f;
+}
+
+float FxNodeProcessor::getLimiterOutputDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    return slot.running && slot.type == FxType::Limiter ? slot.limiter.lastOutputPeakDb() : -120.0f;
 }
 
 float FxNodeProcessor::getGainReductionDb(int slotIndex) const noexcept

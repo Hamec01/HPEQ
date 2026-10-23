@@ -7,8 +7,10 @@
 
 namespace hpeq::ui
 {
-// Left panel: every EQ point and FX region of the selected layer, in processing order (PRE-EQ first, decision B).
-// Click selects; the dot toggles enable; x deletes; "+" adds. Painted, no child components.
+// Left panel: every EQ point and FX region of the selected layer, in processing order (PRE-EQ first,
+// decision B), then the layer's MIX chain (D7: modules on the whole layer). Click selects; the dot
+// toggles enable; x deletes; "+" adds an EQ point, an FX region or a module on the whole layer, each
+// with the full list. Painted, no child components.
 class NodeList final : public juce::Component
 {
 public:
@@ -31,7 +33,7 @@ public:
 
         int row = 0;
         g.setFont(12.0f);
-        const auto drawRow = [&](juce::Colour colour, const juce::String& text, bool enabled, bool selected)
+        const auto drawRow = [&](juce::Colour colour, const juce::String& text, bool enabled, bool selected, bool controls)
         {
             auto r = rowArea(row++);
             if (selected)
@@ -44,7 +46,9 @@ public:
             g.setColour(enabled ? colour : colours::dim.withAlpha(0.4f));
             g.fillEllipse(r.getX() + 6, r.getCentreY() - 5, 10, 10);
             g.setColour(enabled ? colours::text : colours::dim);
-            g.drawText(text, r.withTrimmedLeft(24).withTrimmedRight(44), juce::Justification::centredLeft);
+            g.drawText(text, r.withTrimmedLeft(24.0f).withTrimmedRight(controls ? 44.0f : 6.0f), juce::Justification::centredLeft);
+            if (!controls)
+                return;
             g.setColour(colours::dim);
             g.drawText(enabled ? "on" : "off", r.withLeft(r.getRight() - 44).withWidth(22), juce::Justification::centred);
             g.drawText("x", r.withLeft(r.getRight() - 20), juce::Justification::centred);
@@ -57,18 +61,18 @@ public:
                 text << "  " << juce::String(n.gainDb, 1) << " dB";
             if (!n.chain.empty())
                 text << "  +" << static_cast<int>(n.chain.size()) << (n.chain.size() == 1 ? " module" : " modules");
-            drawRow(colours::eqNode, text, n.enabled, selection.isEq(n.id));
+            drawRow(colours::eqNode, text, n.enabled, selection.isEq(n.id), true);
         }
         for (int i = 0; i < static_cast<int>(layer.fxNodes.size()); ++i)
         {
             const auto& n = layer.fxNodes[static_cast<size_t>(i)];
-            drawRow(colours::forNode(i), "FX " + juce::String(i + 1) + "  " + nodeTitle(n), n.enabled, selection.isFx(n.id));
+            drawRow(colours::forNode(i), "FX " + juce::String(i + 1) + "  " + nodeTitle(n), n.enabled, selection.isFx(n.id), true);
         }
-        if (row == 0)
-        {
-            g.setColour(colours::dim);
-            g.drawText("No nodes yet.", rowArea(0), juce::Justification::centred);
-        }
+        juce::StringArray names;
+        for (const auto& m : layer.mixChain)
+            names.add(fxName(m.type));
+        drawRow(colours::accent, "MIX  whole layer" + (names.isEmpty() ? juce::String("  (empty)") : ":  " + names.joinIntoString(" > ")),
+                !layer.mixChain.empty(), selection.kind == Selection::Kind::Mix, false);
     }
 
     void mouseDown(const juce::MouseEvent& e) override
@@ -83,7 +87,17 @@ public:
         const int row = static_cast<int>((e.position.y - (kRow + 6.0f)) / kRow);
         const int eqCount = static_cast<int>(layer.eqNodes.size());
         const int total = eqCount + static_cast<int>(layer.fxNodes.size());
-        if (row < 0 || row >= total)
+        if (row == total)
+        {
+            selection.kind = Selection::Kind::Mix;
+            selection.id = 0;
+            selection.slot = -1;
+            if (onSelectionChanged)
+                onSelectionChanged();
+            repaint();
+            return;
+        }
+        if (row < 0 || row > total)
             return;
         const bool isEq = row < eqCount;
         const auto id = isEq ? layer.eqNodes[static_cast<size_t>(row)].id : layer.fxNodes[static_cast<size_t>(row - eqCount)].id;
@@ -120,8 +134,64 @@ public:
         repaint();
     }
 
+    // The menu "+" opens (also used by tests): ids 100 + shape, 200 + module (region), 300 + module (whole layer).
+    static juce::PopupMenu buildAddMenu(const LayerState& layer)
+    {
+        juce::PopupMenu eq, region, mix, menu;
+        for (size_t i = 0; i < kAllShapes.size(); ++i)
+            eq.addItem(static_cast<int>(100 + i), shapeName(kAllShapes[i]));
+        for (size_t i = 0; i < kAllModules.size(); ++i)
+        {
+            region.addItem(static_cast<int>(200 + i), fxName(kAllModules[i]));
+            mix.addItem(static_cast<int>(300 + i), fxName(kAllModules[i]));
+        }
+        menu.addSubMenu("EQ point at 1 kHz", eq, layer.eqNodes.size() < static_cast<size_t>(kMaxEqNodesPerLayer));
+        menu.addSubMenu("FX region 250 - 700 Hz", region, freeEngineSlots(layer) > 0);
+        menu.addSubMenu("Module on the whole layer", mix, layer.mixChain.size() < static_cast<size_t>(kMaxFxPerNode));
+        return menu;
+    }
+
+    // Applies a result of buildAddMenu; returns what to select.
+    static Selection applyAddMenu(FxProjectState& p, int result)
+    {
+        Selection next;
+        auto& l = selectedLayer(p);
+        if (result >= 100 && result < 200 && l.eqNodes.size() < static_cast<size_t>(kMaxEqNodesPerLayer))
+        {
+            EqNodeState n;
+            n.id = p.nextNodeId++;
+            n.shape = kAllShapes[static_cast<size_t>(result - 100)];
+            n.frequencyHz = 1000.0;
+            n.gainDb = isGainShapeUi(n.shape) ? 3.0 : 0.0;
+            n.slopeDbPerOct = 24;
+            l.eqNodes.push_back(n);
+            next = { Selection::Kind::Eq, n.id, -1 };
+        }
+        else if (result >= 200 && result < 300 && freeEngineSlots(l) > 0)
+        {
+            FxNodeState n;
+            n.id = p.nextNodeId++;
+            n.lowHz = 250.0;
+            n.highHz = 700.0;
+            n.chain.front() = defaultModule(kAllModules[static_cast<size_t>(result - 200)]);
+            l.fxNodes.push_back(n);
+            next = { Selection::Kind::Fx, n.id, -1 };
+        }
+        else if (result >= 300 && l.mixChain.size() < static_cast<size_t>(kMaxFxPerNode))
+        {
+            l.mixChain.push_back(defaultModule(kAllModules[static_cast<size_t>(result - 300)]));
+            next = { Selection::Kind::Mix, 0, static_cast<int>(l.mixChain.size()) - 1 };
+        }
+        return next;
+    }
+
 private:
     static constexpr float kRow = 24.0f;
+    static inline const std::array<EqShape, 9> kAllShapes { EqShape::Bell, EqShape::LowShelf, EqShape::HighShelf, EqShape::LowCut, EqShape::HighCut,
+                                                            EqShape::Notch, EqShape::BandPass, EqShape::Tilt, EqShape::AllPass };
+    static inline const std::array<FxType, 10> kAllModules { FxType::Compressor, FxType::Limiter, FxType::Reverb, FxType::Delay, FxType::Saturator,
+                                                             FxType::TransientShaper, FxType::GateExpander, FxType::StereoProcessor, FxType::MonstaFx,
+                                                             FxType::Gain };
 
     juce::Rectangle<float> rowArea(int row) const
     {
@@ -130,47 +200,19 @@ private:
 
     void showAddMenu()
     {
-        juce::PopupMenu menu;
-        menu.addItem(1, "Add EQ Bell at 1 kHz");
-        menu.addItem(2, "Add EQ Low Cut at 80 Hz");
-        menu.addItem(3, "Add FX Compressor 250 - 700 Hz");
-        menu.addItem(4, "Add FX Reverb 3 - 8 kHz");
+        const auto project = processor.getProject();
+        auto menu = buildAddMenu(selectedLayer(project));
         juce::Component::SafePointer<NodeList> safe(this);
         menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [safe](int result)
         {
             if (safe == nullptr || result == 0)
                 return;
-            std::uint32_t newId = 0;
-            bool eq = result <= 2;
-            safe->processor.getUndoManager().beginNewTransaction("Add node");
-            safe->processor.editProject("Add node", [&](FxProjectState& p)
+            Selection next;
+            safe->processor.getUndoManager().beginNewTransaction("Add");
+            safe->processor.editProject("Add", [&](FxProjectState& p) { next = applyAddMenu(p, result); });
+            if (next.kind != Selection::Kind::None)
             {
-                auto& l = selectedLayer(p);
-                if (eq && l.eqNodes.size() < static_cast<size_t>(kMaxEqNodesPerLayer))
-                {
-                    EqNodeState n;
-                    n.id = newId = p.nextNodeId++;
-                    n.shape = result == 1 ? EqShape::Bell : EqShape::LowCut;
-                    n.frequencyHz = result == 1 ? 1000.0 : 80.0;
-                    n.gainDb = result == 1 ? 3.0 : 0.0;
-                    n.slopeDbPerOct = 24;
-                    l.eqNodes.push_back(n);
-                }
-                else if (!eq && l.fxNodes.size() < static_cast<size_t>(kMaxFxNodesPerLayer))
-                {
-                    FxNodeState n;
-                    n.id = newId = p.nextNodeId++;
-                    n.lowHz = result == 3 ? 250.0 : 3000.0;
-                    n.highHz = result == 3 ? 700.0 : 8000.0;
-                    n.chain.front().type = result == 3 ? FxType::Compressor : FxType::Reverb;
-                    l.fxNodes.push_back(n);
-                }
-            });
-            if (newId != 0)
-            {
-                safe->selection.kind = eq ? Selection::Kind::Eq : Selection::Kind::Fx;
-                safe->selection.id = newId;
-                safe->selection.slot = -1;
+                safe->selection = next;
                 if (safe->onSelectionChanged)
                     safe->onSelectionChanged();
             }

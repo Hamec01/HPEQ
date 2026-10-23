@@ -7,6 +7,7 @@
 #include "UI/HamloCompPanel.h"
 #include "UI/HamloEchoPanel.h"
 #include "UI/HamloMagPanel.h"
+#include "UI/HamloRedWallPanel.h"
 #include "UI/HamloVerbPanel.h"
 
 namespace hpeq::ui
@@ -57,7 +58,10 @@ private:
     void beginEdit(const juce::String& name);
     static const std::vector<ParamDef>& paramsFor(FxType);
     // D6: the module chain of the selected FX region or EQ point (grid, or one module's page).
-    void buildModules(const std::vector<FxSlotState>& chain, bool region);
+    enum class ChainKind { Region, Point, Mix };
+    void buildModules(const std::vector<FxSlotState>& chain, ChainKind);
+    // The engine node of the selection (a region's or point's slot, or the layer's MIX node).
+    const dsp::FxNodeProcessor* selectedNodeProcessor(const FxProjectState&) const;
     // Points into the given project: the caller keeps it alive while using the result.
     const std::vector<FxSlotState>* selectedChain(const FxProjectState&) const;
     int selectedEngineSlot(const FxProjectState&) const;
@@ -67,6 +71,7 @@ private:
     void buildReverbPage(int k);
     void buildDelayPage(int k);
     void buildSaturatorPage(int k);
+    void buildLimiterPage(int k);
 
     FxPluginProcessor& processor;
     Selection& selection;
@@ -82,5 +87,6 @@ private:
     HamloVerbPanel* verbPanel = nullptr;  // owned by controls
     HamloEchoPanel* echoPanel = nullptr;  // owned by controls
     HamloMagPanel* magPanel = nullptr;    // owned by controls
+    HamloRedWallPanel* wallPanel = nullptr; // owned by controls
 };
 } // namespace hpeq::ui

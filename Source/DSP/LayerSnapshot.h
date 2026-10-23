@@ -68,7 +68,10 @@ constexpr int kStereoWidth = 0, kStereoBalance = 1;
 // Gate / expander (insert)
 constexpr int kGateThresholdDb = 0, kGateRatio = 1, kGateRangeDb = 2, kGateAttackMs = 3, kGateHoldMs = 4, kGateReleaseMs = 5, kGateHysteresisDb = 6;
 // Band limiter (insert, look-ahead = latency)
-constexpr int kCeilingDb = 0, kLimiterReleaseMs = 1, kLookaheadMs = 2;
+constexpr int kCeilingDb = 0, kLimiterReleaseMs = 1, kLookaheadMs = 2,
+              // HamloRedWall (module pass 5): threshold dB; true peak 0/1; auto release 0/1;
+              // style 0 GLASNOST / 1 STAKHANOV / 2 OCTOBER; link 0..1 (absent = 1); monitor 0 normal / 1 unity / 2 delta
+              kLimThresholdDb = 3, kLimTruePeak = 4, kLimAutoRelease = 5, kLimStyle = 6, kLimLink = 7, kLimMonitor = 8;
 } // namespace slot
 
 // Host transport as seen by the layer for one host block (tempo-synced FX: Delay, Monsta).
@@ -97,6 +100,7 @@ struct LayerSnapshot
 {
     std::array<EqBandParams, kMaxEqNodesPerLayer> eq {};
     std::array<FxNodeParams, kMaxFxNodesPerLayer> fx {};
+    FxNodeParams mix {}; // D7: the whole-layer chain (band unused)
 };
 
 static_assert(std::is_trivially_copyable_v<LayerSnapshot>);

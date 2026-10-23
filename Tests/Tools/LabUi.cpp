@@ -434,6 +434,37 @@ int runUiSnapshots(const juce::File& out)
         processor->dispatchPendingMessages();
     }
 
+    // Module pass 5: HamloRedWall on a low region pushed 6 dB, and the layer's MIX chain (D7).
+    {
+        auto wall = processor->getProject();
+        FxNodeState n;
+        n.id = wall.nextNodeId++;
+        n.lowHz = 40.0;
+        n.highHz = 160.0;
+        auto limiter = defaultModule(FxType::Limiter);
+        limiter.parameters.set("thresholdDb", -6.0);
+        limiter.parameters.set("style", 1);
+        n.chain = { limiter };
+        wall.layers[0].fxNodes.push_back(n);
+        wall.layers[0].mixChain = { defaultModule(FxType::Compressor), defaultModule(FxType::Limiter) };
+        processor->setProject(wall);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, n.id, 0);
+        auto more = makeSyntheticDrums({ 48000.0, 2, 1.0, kFixtureSeed });
+        for (int start = 0; start < more.getNumSamples(); start += 512)
+        {
+            juce::AudioBuffer<float> view(more.getArrayOfWritePointers(), 2, start, juce::jmin(512, more.getNumSamples() - start));
+            processor->processBlock(view, midi);
+            if ((start / 512) % 4 == 3)
+                editor->updateAnalysisNow();
+        }
+        save("hpeq_hamloredwall_page.png");
+        editor->selectMix(-1);
+        save("hpeq_mix_chain_grid.png");
+        processor->setProject(project);
+        processor->dispatchPendingMessages();
+    }
+
     // UI frame cost: analysis update (FFT x2) + full repaint at this size, as the 30 Hz timer does.
     editor->showDifference(false);
     editor->selectNode(true, compId);
