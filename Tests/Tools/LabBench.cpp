@@ -108,6 +108,33 @@ FxSlotParams hamloEchoSlot(float pitch = 0.0f)
     return s;
 }
 
+// HamloMag pass: the UI default (TAPE 19 cm/s, drive 6 dB, 2x, hiss 15 %, wow 15 %) and a busy setting.
+FxSlotParams hamloMagSlot(int model, int oversampling)
+{
+    FxSlotParams s;
+    s.active = true;
+    s.type = FxType::Saturator;
+    s.values[slot::kDriveDb] = 6.0f;
+    s.values[slot::kOversampling] = static_cast<float>(oversampling);
+    s.values[slot::kAutoGain] = 1.0f;
+    s.values[slot::kSatModel] = static_cast<float>(model);
+    s.values[slot::kSatLowCutHz] = 20.0f;
+    s.values[slot::kSatHighCutHz] = 20000.0f;
+    s.values[slot::kSatHarmonics] = 0.5f;
+    s.values[slot::kSatTapeBias] = 0.5f;
+    s.values[slot::kSatWow] = 0.15f;
+    s.values[slot::kSatHiss] = 0.15f;
+    s.values[slot::kSatNoiseFollow] = 1.0f;
+    return s;
+}
+
+FxSlotParams classicSaturatorSlot()
+{
+    auto s = hamloMagSlot(0, 1);
+    s.values[slot::kCurve] = 0.0f;
+    return s;
+}
+
 FxSlotParams classicDelaySlot()
 {
     auto s = hamloEchoSlot();
@@ -163,6 +190,11 @@ std::vector<Config> configs()
         { "hamloecho_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloEchoSlot() }); return s; } },
         { "hamloecho_pitch_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloEchoSlot(7.0f) }); return s; } },
         { "hamloecho_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { hamloEchoSlot() }); return s; } },
+        { "saturator_classic_2x", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { classicSaturatorSlot() }); return s; } },
+        { "hamlomag_tape_2x", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloMagSlot(1, 1) }); return s; } },
+        { "hamlomag_tape_4x", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloMagSlot(1, 2) }); return s; } },
+        { "hamlomag_tube_2x", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { hamloMagSlot(2, 1) }); return s; } },
+        { "hamlomag_tape_2x_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { hamloMagSlot(1, 1) }); return s; } },
         { "eq_24_bells", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i); return s; } },
         { "layer_ceiling_24bells_8x6comp", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i);
                                                 for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { compSlot(), compSlot(), compSlot(), compSlot(), compSlot(), compSlot() }); return s; } },

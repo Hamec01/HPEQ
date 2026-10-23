@@ -82,6 +82,11 @@ int SaturatorProcessor::latencySamples(int oversamplingIndex)
     return table[static_cast<size_t>(std::clamp(oversamplingIndex, 0, 2))];
 }
 
+int SaturatorProcessor::latencySamples(const FxSlotParams& p, double sampleRate)
+{
+    return latencySamples(static_cast<int>(std::lround(p.values[slot::kOversampling]))) + MagProcessor::latencySamples(p, sampleRate);
+}
+
 void SaturatorProcessor::prepare(double newSampleRate, int maxBlockSize)
 {
     sampleRate = newSampleRate;
@@ -93,6 +98,8 @@ void SaturatorProcessor::prepare(double newSampleRate, int maxBlockSize)
     }
     dcCoefficient = 1.0 - 2.0 * kPi * 10.0 / sampleRate;
     latencySamples(0); // build the latency table here, never on the audio thread
+    mag.prepare(sampleRate, 1);
+    magFactor = 1;
     reset();
 }
 
@@ -103,6 +110,7 @@ void SaturatorProcessor::reset() noexcept
             os->reset();
     dcIn = {};
     dcOut = {};
+    mag.reset();
 }
 
 void SaturatorProcessor::shape(float* data, int n, float g, float bias, float norm, int curve) noexcept
@@ -123,6 +131,44 @@ void SaturatorProcessor::shape(float* data, int n, float g, float bias, float no
 
 void SaturatorProcessor::process(float* const* channels, int numChannels, int numSamples, const FxSlotParams& p) noexcept
 {
+    if (std::lround(p.values[slot::kSatModel]) > 0)
+    {
+        const int os = std::clamp(static_cast<int>(std::lround(p.values[slot::kOversampling])), 0, 2);
+        if (os != activeOversampling)
+        {
+            if (os > 0)
+                oversamplers[static_cast<size_t>(os - 1)]->reset();
+            activeOversampling = os;
+        }
+        const int factor = 1 << os;
+        mag.beginBlock(p, factor);
+        if (factor != magFactor)
+        {
+            mag.prepareCores(sampleRate * factor); // coefficients only, no allocation
+            magFactor = factor;
+        }
+        for (int ch = 0; ch < numChannels; ++ch)
+            mag.pre(channels[ch], numSamples, ch);
+        if (os == 0)
+            for (int ch = 0; ch < numChannels; ++ch)
+                mag.core(channels[ch], numSamples, ch);
+        else
+        {
+            auto& sampler = *oversamplers[static_cast<size_t>(os - 1)];
+            for (int start = 0; start < numSamples; start += kOversamplingChunk)
+            {
+                const int n = std::min(kOversamplingChunk, numSamples - start);
+                juce::dsp::AudioBlock<float> block(channels, static_cast<size_t>(numChannels), static_cast<size_t>(start), static_cast<size_t>(n));
+                auto up = sampler.processSamplesUp(block);
+                for (size_t ch = 0; ch < up.getNumChannels(); ++ch)
+                    mag.core(up.getChannelPointer(ch), static_cast<int>(up.getNumSamples()), static_cast<int>(ch));
+                sampler.processSamplesDown(block);
+            }
+        }
+        mag.post(channels, numChannels, numSamples);
+        return;
+    }
+
     const float g = std::pow(10.0f, std::clamp(p.values[slot::kDriveDb], 0.0f, 48.0f) / 20.0f);
     const int curve = std::clamp(static_cast<int>(std::lround(p.values[slot::kCurve])), 0, 2);
     const float bias = std::clamp(p.values[slot::kBias], -0.9f, 0.9f);

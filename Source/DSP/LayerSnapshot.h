@@ -45,8 +45,13 @@ constexpr int kPredelayMs = 0, kDecaySeconds = 1, kHfRatio = 2, kSize = 3, kWidt
               kRevSpace = 6, kRevColor = 7, kRevSync = 8, kRevAttack = 9, kRevEarlyDiff = 10, kRevLateDiff = 11,
               kRevModRate = 12, kRevModDepth = 13, kRevBassMult = 14, kRevBassXover = 15, kRevHighXover = 16,
               kRevHighCut = 17, kRevDistance = 18, kRevDuck = 19, kRevFreeze = 20;
-// Saturator (insert; curve 0 tanh / 1 tube / 2 hard; oversampling 0 = 1x, 1 = 2x, 2 = 4x)
-constexpr int kDriveDb = 0, kCurve = 1, kBias = 2, kTrimDb = 3, kOversampling = 4, kAutoGain = 5;
+// Saturator (insert; curve 0 tanh / 1 tube / 2 hard; oversampling 0 = 1x, 1 = 2x, 2 = 4x). 0..5 are the M6
+// saturator ("Classic"); the rest drive the HamloMag models (model 0 Classic / 1 Tape / 2 Tube / 3 Iron /
+// 4 Germanium / 5 Vinyl; speed 0..2 = 19 / 9.5 / 4.76 cm/s or 33 / 45 / 78 rpm; tone and even/odd -1..1).
+constexpr int kDriveDb = 0, kCurve = 1, kBias = 2, kTrimDb = 3, kOversampling = 4, kAutoGain = 5,
+              kSatModel = 6, kSatPunish = 7, kSatTone = 8, kSatLowCutHz = 9, kSatHighCutHz = 10, kSatThump = 11, kSatSteep = 12,
+              kSatHarmonics = 13, kSatEvenOdd = 14, kSatTapeBias = 15, kSatSpeed = 16, kSatWow = 17, kSatHiss = 18, kSatHum = 19,
+              kSatCrackle = 20, kSatNoiseFollow = 21;
 // Transient shaper (insert)
 constexpr int kAttackGainDb = 0, kSustainGainDb = 1, kTransientSpeed = 2;
 // Delay (wet-only send; sync 0 = free time, else a note division index). 0..6 are the M6 delay

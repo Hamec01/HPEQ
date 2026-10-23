@@ -230,6 +230,15 @@ FxSlotState defaultModule(FxType type)
         m.parameters.set("lowCutHz", 80);
         m.parameters.set("width", 1.0);
     }
+    else if (type == FxType::Saturator)
+    {
+        // HamloMag pass: a saturator added from the UI starts as a tape machine at 19 cm/s, 2x oversampled
+        // (projects without "model" keep the M6 saturator, Classic).
+        m.parameters.set("model", 1);
+        m.parameters.set("driveDb", 6.0);
+        m.parameters.set("oversampling", 1);
+        m.parameters.set("autoGain", 1);
+    }
     else if (type == FxType::Delay)
     {
         // HamloEcho pass: a delay added from the UI starts as a tape echo, 1/4 synced (projects without

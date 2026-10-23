@@ -65,6 +65,23 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kTrimDb] = juce::jlimit(-24.0f, 24.0f, param(state.parameters, "trimDb", 0.0f));
             slotParams.values[slot::kOversampling] = juce::jlimit(0.0f, 2.0f, param(state.parameters, "oversampling", 1.0f));
             slotParams.values[slot::kAutoGain] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "autoGain", 1.0f));
+            // Projects saved before the HamloMag pass have no "model": they keep the M6 saturator (Classic).
+            slotParams.values[slot::kSatModel] = juce::jlimit(0.0f, 5.0f, std::round(param(state.parameters, "model", 0.0f)));
+            slotParams.values[slot::kSatPunish] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "punish", 0.0f)));
+            slotParams.values[slot::kSatTone] = juce::jlimit(-1.0f, 1.0f, param(state.parameters, "tone", 0.0f));
+            slotParams.values[slot::kSatLowCutHz] = juce::jlimit(10.0f, 1000.0f, param(state.parameters, "satLowCutHz", 20.0f));
+            slotParams.values[slot::kSatHighCutHz] = juce::jlimit(1000.0f, 20000.0f, param(state.parameters, "satHighCutHz", 20000.0f));
+            slotParams.values[slot::kSatThump] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "thump", 0.0f)));
+            slotParams.values[slot::kSatSteep] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "steep", 0.0f)));
+            slotParams.values[slot::kSatHarmonics] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "harmonics", 0.5f));
+            slotParams.values[slot::kSatEvenOdd] = juce::jlimit(-1.0f, 1.0f, param(state.parameters, "evenOdd", 0.0f));
+            slotParams.values[slot::kSatTapeBias] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "tapeBias", 0.5f));
+            slotParams.values[slot::kSatSpeed] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "speed", 0.0f)));
+            slotParams.values[slot::kSatWow] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "wow", 0.15f));
+            slotParams.values[slot::kSatHiss] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "hiss", 0.15f));
+            slotParams.values[slot::kSatHum] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "hum", 0.0f));
+            slotParams.values[slot::kSatCrackle] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "crackle", 0.0f));
+            slotParams.values[slot::kSatNoiseFollow] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "noiseFollow", 1.0f)));
             break;
         case FxType::TransientShaper:
             slotParams.values[slot::kAttackGainDb] = juce::jlimit(-24.0f, 24.0f, param(state.parameters, "attackDb", 0.0f));

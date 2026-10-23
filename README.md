@@ -25,6 +25,7 @@ owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECIS
 | Module pass 1: compressor (Peak/RMS, auto makeup, Clean/Punch/Glue, vintage page), calmer waveform | done | [COMPRESSOR_PASS_REPORT](docs/fx-addon/reports/COMPRESSOR_PASS_REPORT.md) |
 | Module pass 2: reverb HamloVerb (6 spaces + Classic, colour, VintageVerb / Pro-R function set, CRT page) | done | [REVERB_PASS_REPORT](docs/fx-addon/reports/REVERB_PASS_REPORT.md) |
 | Module pass 3: delay HamloEcho (Clean / Tape / BBD / Lo-Fi + Classic, Timeless function set, CRT page) | done | [DELAY_PASS_REPORT](docs/fx-addon/reports/DELAY_PASS_REPORT.md) |
+| Module pass 4: saturator HamloMag (Tape / Tube / Iron / Germanium / Vinyl + Classic, HamloLaw harmonics, Soviet noises, reels page) | done | [SATURATOR_PASS_REPORT](docs/fx-addon/reports/SATURATOR_PASS_REPORT.md) |
 
 Ten layers (Parallel delta or Serial), each PRE-EQ (9 shapes, cuts 6-96 dB/oct, L/R/M/S) then up to 8
 frequency-range FX regions with chains of up to 6 processors; the frequency core is H3 (DECISIONS D4),

@@ -73,7 +73,16 @@ const std::vector<NodeInspector::ParamDef>& NodeInspector::paramsFor(FxType type
     static const std::vector<ParamDef> saturator {
         { "driveDb", "Drive", 0, 48, 12, 12, " dB", 1 }, { "curve", "Curve", 0, 2, 0, 0, "", 0, "Tanh|Tube|Hard" },
         { "bias", "Bias", -0.9, 0.9, 0, 0, "", 2 }, { "trimDb", "Trim", -24, 24, 0, 0, " dB", 1 },
-        { "oversampling", "Oversampling", 0, 2, 1, 1, "", 0, "1x|2x|4x" }, { "autoGain", "Auto gain", 0, 1, 1, 1, "", 0, "Off|On" } };
+        { "oversampling", "Oversampling", 0, 2, 1, 1, "", 0, "1x|2x|4x" }, { "autoGain", "Auto gain", 0, 1, 1, 1, "", 0, "Off|On" },
+        // HamloMag pass (defaults = the DSP's when a key is absent, LayerSnapshot.cpp)
+        { "model", "Model", 0, 5, 0, 0, "", 0, "Classic|Tape|Tube|Iron|Germanium|Vinyl" },
+        { "punish", "Punish", 0, 1, 0, 0, "", 0, "Off|On" }, { "tone", "Tone", -1, 1, 0, 0, "", 2 },
+        { "satLowCutHz", "Low cut", 10, 1000, 20, 100, " Hz", 0 }, { "satHighCutHz", "High cut", 1000, 20000, 20000, 6000, " Hz", 0 },
+        { "thump", "Thump", 0, 1, 0, 0, "", 0, "Off|On" }, { "steep", "Steep", 0, 1, 0, 0, "", 0, "Off|On" },
+        { "harmonics", "Harmonics", 0, 1, 0.5, 0.5, "", 2 }, { "evenOdd", "Even / odd", -1, 1, 0, 0, "", 2 },
+        { "tapeBias", "Bias", 0, 1, 0.5, 0.5, "", 2 }, { "speed", "Speed", 0, 2, 0, 0, "", 0, "1|2|3" },
+        { "wow", "Wow", 0, 1, 0.15, 0.5, "", 2 }, { "hiss", "Hiss", 0, 1, 0.15, 0.5, "", 2 }, { "hum", "Hum", 0, 1, 0, 0.5, "", 2 },
+        { "crackle", "Crackle", 0, 1, 0, 0.5, "", 2 }, { "noiseFollow", "Noise", 0, 1, 1, 1, "", 0, "Always|Follow" } };
     static const std::vector<ParamDef> transient {
         { "attackDb", "Attack", -24, 24, 0, 0, " dB", 1 }, { "sustainDb", "Sustain", -24, 24, 0, 0, " dB", 1 },
         { "speed", "Speed", 0, 1, 0.5, 0.5, "", 2 } };
@@ -467,6 +476,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, bool reg
         buildDelayPage(k);
         return;
     }
+    if (module.type == FxType::Saturator)
+    {
+        buildSaturatorPage(k);
+        return;
+    }
 
     for (const auto& def : paramsFor(module.type))
     {
@@ -539,6 +553,7 @@ void NodeInspector::rebuild()
     hamloPanel = nullptr;
     verbPanel = nullptr;
     echoPanel = nullptr;
+    magPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -849,6 +864,82 @@ void NodeInspector::buildDelayPage(int k)
     });
 }
 
+void NodeInspector::buildSaturatorPage(int k)
+{
+    // HamloMag (module pass 4): one drawn panel in the HamloComp style; it fills the editor body.
+    largePage = true;
+    auto* panel = new HamloMagPanel();
+    controls.add(panel);
+    addAndMakeVisible(panel);
+    panel->getProperties().set("section", 4);
+    magPanel = panel;
+    panel->onKnobGestureStart = [this](HamloMagPanel::Param p)
+    {
+        processor.getUndoManager().beginNewTransaction("Saturator " + juce::String(HamloMagPanel::keyFor(p)));
+        dragging = true;
+    };
+    panel->onKnobGestureEnd = [this] { dragging = false; };
+    panel->onKnobChange = [this, k](HamloMagPanel::Param p, double v)
+    {
+        if (p == HamloMagPanel::Mix) // the page's Mix is the module's mix
+        {
+            editChain("Module mix", [k, v](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+            return;
+        }
+        const juce::Identifier key(HamloMagPanel::keyFor(p));
+        editChain("Saturator", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+    };
+    panel->onSwitchChange = [this, k](HamloMagPanel::Switch sw, int option)
+    {
+        processor.getUndoManager().beginNewTransaction("Saturator " + juce::String(HamloMagPanel::keyFor(sw)));
+        const juce::Identifier key(HamloMagPanel::keyFor(sw));
+        editChain("Saturator switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+    };
+    panel->onPowerChange = [this, k](bool on)
+    {
+        processor.getUndoManager().beginNewTransaction("Module on");
+        editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+    };
+    panel->readMeters = [this, k]() -> std::pair<float, float>
+    {
+        const auto project = processor.getProject();
+        const int engineSlot = selectedEngineSlot(project);
+        if (engineSlot < 0)
+            return { -120.0f, -120.0f };
+        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+        return { node.getSaturatorInputDb(k), node.getSaturatorOutputDb(k) };
+    };
+    refreshers.push_back([this, panel, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        const auto* c = selectedChain(project);
+        if (c == nullptr || k >= static_cast<int>(c->size()))
+            return;
+        const auto& m = (*c)[static_cast<size_t>(k)];
+        HamloMagPanel::Values v;
+        const auto& defs = paramsFor(FxType::Saturator); // the DSP defaults when a key is absent
+        const auto fallback = [&defs](const char* key)
+        {
+            for (const auto& d : defs)
+                if (juce::String(d.key) == key)
+                    return d.defaultValue;
+            return 0.0;
+        };
+        for (int p = 0; p < HamloMagPanel::NumParams; ++p)
+        {
+            const auto* key = HamloMagPanel::keyFor(static_cast<HamloMagPanel::Param>(p));
+            v.knobs[static_cast<size_t>(p)] = p == HamloMagPanel::Mix ? static_cast<double>(m.mix) : paramValue(m, key, fallback(key));
+        }
+        for (int sw = 0; sw < HamloMagPanel::NumSwitches; ++sw)
+        {
+            const auto* key = HamloMagPanel::keyFor(static_cast<HamloMagPanel::Switch>(sw));
+            v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, key, fallback(key)));
+        }
+        v.on = m.enabled;
+        panel->setValues(v);
+    });
+}
+
 void NodeInspector::updateLiveReadouts(bool settle)
 {
     if (settle && hamloPanel != nullptr && hamloPanel->readMeters)
@@ -865,6 +956,11 @@ void NodeInspector::updateLiveReadouts(bool settle)
     {
         const auto [outputDb, duckDb] = echoPanel->readMeters();
         echoPanel->settleMeters(outputDb, duckDb);
+    }
+    if (settle && magPanel != nullptr && magPanel->readMeters)
+    {
+        const auto [inputDb, outputDb] = magPanel->readMeters();
+        magPanel->settleMeters(inputDb, outputDb);
     }
     // Live readouts from the audio engine (atomics, no locks).
     juce::String newStatus;

@@ -14,6 +14,7 @@
 #include "Plugin/FxPluginEditor.h"
 #include "Plugin/FxPluginProcessor.h"
 #include "UI/HamloEchoPanel.h"
+#include "UI/HamloMagPanel.h"
 #include "UI/HamloVerbPanel.h"
 
 using namespace hpeq;
@@ -339,6 +340,95 @@ int runUiSnapshots(const juce::File& out)
         {
             panel->settleMeters(-24.0f, 0.0f);
             save("hpeq_hamloecho_classic.png");
+        }
+        processor->setProject(project);
+        processor->dispatchPendingMessages();
+    }
+
+    // Module pass 4: the HamloMag page (a saturator added from the UI = TAPE 19 cm/s), CURVE and
+    // HARMONICS views, then TUBE with hum and VINYL 78 rpm with crackle, then an old project (Classic).
+    {
+        auto withMag = processor->getProject();
+        FxNodeState n;
+        n.id = withMag.nextNodeId++;
+        n.lowHz = 80.0;
+        n.highHz = 6000.0;
+        n.chain = { defaultModule(FxType::Saturator) };
+        auto& sv = n.chain[0].parameters;
+        sv.set("driveDb", 14.0);
+        sv.set("tapeBias", 0.25);
+        sv.set("hiss", 0.3);
+        const auto magId = n.id;
+        withMag.layers[0].fxNodes.push_back(n);
+        processor->setProject(withMag);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, magId, 0);
+        auto more = makeSyntheticDrums({ 48000.0, 2, 1.5, kFixtureSeed });
+        for (int start = 0; start < more.getNumSamples(); start += 512)
+        {
+            juce::AudioBuffer<float> view(more.getArrayOfWritePointers(), 2, start, juce::jmin(512, more.getNumSamples() - start));
+            processor->processBlock(view, midi);
+        }
+        const auto findPanel = [&editor]() -> ui::HamloMagPanel*
+        {
+            juce::Array<juce::Component*> stack { editor.get() };
+            while (!stack.isEmpty())
+            {
+                auto* c = stack.removeAndReturn(stack.size() - 1);
+                for (auto* child : c->getChildren())
+                    stack.add(child);
+                if (auto* v = dynamic_cast<ui::HamloMagPanel*>(c))
+                    return v;
+            }
+            return nullptr;
+        };
+        editor->updateAnalysisNow();
+        if (auto* panel = findPanel())
+        {
+            panel->settleMeters(-14.0f, -9.0f);
+            save("hpeq_hamlomag_curve.png");
+            {
+                const auto image = panel->createComponentSnapshot(panel->getLocalBounds(), true, 1.0f);
+                auto file = out.getChildFile("hpeq_hamlomag_panel.png");
+                file.deleteFile();
+                juce::FileOutputStream stream(file);
+                juce::PNGImageFormat().writeImageToStream(image, stream);
+            }
+            panel->setDisplayMode(ui::HamloMagPanel::HarmonicsView);
+            save("hpeq_hamlomag_harmonics.png");
+        }
+        for (const auto& [model, file] : { std::pair { 2, "hpeq_hamlomag_tube_hum.png" }, std::pair { 5, "hpeq_hamlomag_vinyl78.png" } })
+        {
+            auto next = processor->getProject();
+            auto& m = next.layers[0].fxNodes.back().chain[0].parameters;
+            m.set("model", model);
+            m.set("hum", model == 2 ? 0.5 : 0.0);
+            m.set("crackle", model == 5 ? 0.6 : 0.0);
+            m.set("speed", model == 5 ? 2 : 0);
+            m.set("punish", model == 2 ? 1 : 0);
+            m.set("evenOdd", model == 2 ? 0.6 : 0.0);
+            processor->setProject(next);
+            processor->dispatchPendingMessages();
+            editor->selectNode(true, magId, 0);
+            if (auto* panel = findPanel())
+            {
+                panel->settleMeters(-12.0f, -8.0f);
+                panel->setDisplayMode(model == 2 ? ui::HamloMagPanel::HarmonicsView : ui::HamloMagPanel::CurveView);
+                save(file);
+            }
+        }
+        auto classic = processor->getProject();
+        juce::NamedValueSet old;
+        old.set("driveDb", 18.0);
+        old.set("curve", 1);
+        classic.layers[0].fxNodes.back().chain[0].parameters = old; // a project saved before this pass
+        processor->setProject(classic);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, magId, 0);
+        if (auto* panel = findPanel())
+        {
+            panel->settleMeters(-14.0f, -10.0f);
+            save("hpeq_hamlomag_classic.png");
         }
         processor->setProject(project);
         processor->dispatchPendingMessages();

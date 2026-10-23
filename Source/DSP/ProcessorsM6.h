@@ -9,6 +9,7 @@
 
 #include "DSP/DspConfig.h"
 #include "DSP/HamloEcho.h"
+#include "DSP/HamloMag.h"
 #include "DSP/LayerSnapshot.h"
 
 namespace hpeq::dsp
@@ -21,6 +22,8 @@ namespace hpeq::dsp
 //   n = g f'(b) when auto gain is on (small signals keep unity gain), else 1.
 // Oversampling 2x / 4x: JUCE half-band FIR (equiripple, max quality) with integer latency, so the
 // node can align its dry path exactly. Latency per setting: latencySamples().
+// Model 0 is that law ("Classic", bit-exact for projects saved before the HamloMag pass); models 1..5
+// run HamloMag (HamloMag.h) around the same oversamplers.
 class SaturatorProcessor
 {
 public:
@@ -31,6 +34,10 @@ public:
     // Integer latency at the base rate for oversampling index 0 (1x) / 1 (2x) / 2 (4x). The first call
     // builds the table (allocates): it is made from prepare() / the message thread.
     static int latencySamples(int oversamplingIndex);
+    // The whole slot: oversampling + the HamloMag wow delay (TAPE, VINYL).
+    static int latencySamples(const FxSlotParams&, double sampleRate);
+    float inputLevelDb() const noexcept { return mag.inputLevelDb(); }
+    float outputLevelDb() const noexcept { return mag.outputLevelDb(); }
     // Oversampled processing runs in sub-blocks of this size, so the oversampler buffers stay small
     // (M8: 49 KB -> about 1/8 per slot); the FIR stages stream, so the output does not change.
     static constexpr int kOversamplingChunk = 64;
@@ -43,6 +50,8 @@ private:
     int activeOversampling = 0;
     std::array<double, kMaxChannels> dcIn {}, dcOut {};
     double dcCoefficient = 0.999;
+    MagProcessor mag;
+    int magFactor = 0; // oversampling factor the HamloMag cores are prepared for
 };
 
 // Transient shaper (insert). Linked peak envelopes: fast (attack 0.5 ms, release 20 ms * s) and slow

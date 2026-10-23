@@ -9,7 +9,7 @@ int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
 {
     switch (p.type)
     {
-        case FxType::Saturator: return SaturatorProcessor::latencySamples(static_cast<int>(std::lround(p.values[slot::kOversampling])));
+        case FxType::Saturator: return SaturatorProcessor::latencySamples(p, sampleRate);
         case FxType::Limiter:   return LimiterProcessor::lookaheadSamples(p, sampleRate);
         case FxType::Gain: case FxType::Compressor: case FxType::Reverb: case FxType::Delay: case FxType::TransientShaper:
         case FxType::MonstaFx: case FxType::StereoProcessor: case FxType::GateExpander: break;
@@ -19,7 +19,8 @@ int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
 
 int FxNodeProcessor::maxSlotLatency(double sampleRate)
 {
-    return std::max(LimiterProcessor::maxLookaheadSamples(sampleRate), SaturatorProcessor::latencySamples(2));
+    return std::max(LimiterProcessor::maxLookaheadSamples(sampleRate),
+                    SaturatorProcessor::latencySamples(2) + static_cast<int>(std::lround(mag::kWowBaseSeconds * sampleRate)));
 }
 
 int FxNodeProcessor::nodeLatencyFor(const FxNodeParams& p, double sampleRate)
@@ -505,5 +506,17 @@ float FxNodeProcessor::getDelayDuckDb(int slotIndex) const noexcept
     if (!slot.running || slot.type != FxType::Delay || slot.pooled < 0 || pools == nullptr)
         return 0.0f;
     return pools->delays.get(slot.pooled).duckingDb();
+}
+
+float FxNodeProcessor::getSaturatorInputDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    return slot.running && slot.type == FxType::Saturator ? slot.saturator.inputLevelDb() : -120.0f;
+}
+
+float FxNodeProcessor::getSaturatorOutputDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    return slot.running && slot.type == FxType::Saturator ? slot.saturator.outputLevelDb() : -120.0f;
 }
 } // namespace hpeq::dsp
