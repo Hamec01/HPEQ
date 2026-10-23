@@ -70,8 +70,9 @@ constexpr int kGateThresholdDb = 0, kGateRatio = 1, kGateRangeDb = 2, kGateAttac
 // Band limiter (insert, look-ahead = latency)
 constexpr int kCeilingDb = 0, kLimiterReleaseMs = 1, kLookaheadMs = 2,
               // HamloRedWall (module pass 5): threshold dB; true peak 0/1; auto release 0/1;
-              // style 0 GLASNOST / 1 STAKHANOV / 2 OCTOBER; link 0..1 (absent = 1); monitor 0 normal / 1 unity / 2 delta
-              kLimThresholdDb = 3, kLimTruePeak = 4, kLimAutoRelease = 5, kLimStyle = 6, kLimLink = 7, kLimMonitor = 8;
+              // style 0 GLASNOST / 1 STAKHANOV / 2 OCTOBER; link 0..1 (absent = 1); monitor 0 normal / 1 unity / 2 delta;
+              // output dB (-24..0, after the limiter)
+              kLimThresholdDb = 3, kLimTruePeak = 4, kLimAutoRelease = 5, kLimStyle = 6, kLimLink = 7, kLimMonitor = 8, kLimOutputDb = 9;
 } // namespace slot
 
 // Host transport as seen by the layer for one host block (tempo-synced FX: Delay, Monsta).

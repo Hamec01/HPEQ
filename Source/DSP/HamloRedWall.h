@@ -24,6 +24,8 @@ namespace hpeq::dsp
 //   between 0.25 x and 6 x the release by a 0.3 s hold follower of [reduction > 1 dB]; STAKHANOV: release
 //   halved), moving average over Le, audio delayed by Le  ->  y_c (sample peak <= ceiling)
 //   MONITOR: UNITY y * 10^(T/20); DELTA (delayed core input) - y
+//   OUTPUT O (-24 .. 0 dB): out = (monitored y) * 10^(O/20), last. With O <= 0 the output sample peak is
+//   <= ceiling * 10^(O/20), i.e. LIMIT + OUTPUT in dB, and the loudness moves by exactly O dB.
 // Latency = L (+ 8 with TRUE PEAK).
 class RedWallCore
 {

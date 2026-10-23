@@ -328,7 +328,8 @@ int LimiterProcessor::lookaheadSamples(const FxSlotParams& p, double sampleRate)
 bool LimiterProcessor::usesRedWall(const FxSlotParams& p) noexcept
 {
     return p.values[slot::kLimThresholdDb] != 0.0f || p.values[slot::kLimTruePeak] > 0.5f || p.values[slot::kLimAutoRelease] > 0.5f
-        || std::lround(p.values[slot::kLimStyle]) != 0 || p.values[slot::kLimLink] != 1.0f || std::lround(p.values[slot::kLimMonitor]) != 0;
+        || std::lround(p.values[slot::kLimStyle]) != 0 || p.values[slot::kLimLink] != 1.0f || std::lround(p.values[slot::kLimMonitor]) != 0
+        || p.values[slot::kLimOutputDb] != 0.0f;
 }
 
 void LimiterProcessor::prepare(double sampleRate)

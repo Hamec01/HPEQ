@@ -24,7 +24,7 @@ namespace
 constexpr double kFs = 48000.0;
 
 FxSlotParams lim(float ceilingDb, float releaseMs, float lookMs, float threshold = 0, float truePeak = 0, float autoRelease = 0, float style = 0,
-                 float link = 1, float monitor = 0)
+                 float link = 1, float monitor = 0, float outputDb = 0)
 {
     FxSlotParams s;
     s.active = true;
@@ -38,6 +38,7 @@ FxSlotParams lim(float ceilingDb, float releaseMs, float lookMs, float threshold
     s.values[slot::kLimStyle] = style;
     s.values[slot::kLimLink] = link;
     s.values[slot::kLimMonitor] = monitor;
+    s.values[slot::kLimOutputDb] = outputDb;
     return s;
 }
 
@@ -338,6 +339,29 @@ public:
                 allocations += probe.counts().allocations;
             }
             expectEquals(static_cast<int>(allocations), 0);
+        }
+
+        beginTest("13. OUTPUT (after the limiter): peak <= LIMIT + OUTPUT; output = the 0 dB output x 10^(O/20) (1e-6); loudness moves by O (+-0.01 LU)");
+        {
+            for (float o : { -0.5f, -6.0f, -18.0f })
+            {
+                const auto ref = run(hot, lim(-1, 60, 2, -6, 1, 1, 0));
+                const auto out = run(hot, lim(-1, 60, 2, -6, 1, 1, 0, 1, 0, o));
+                const double g = std::pow(10.0, o / 20.0);
+                double worst = 0.0;
+                for (int ch = 0; ch < 2; ++ch)
+                    for (int i = 0; i < hot.getNumSamples(); ++i)
+                        worst = std::max(worst, std::abs(out.getSample(ch, i) - ref.getSample(ch, i) * g));
+                const double peakOver = measureAll(out).peakDbfs - (-1.0 + o);
+                const double lufsShift = integratedLufs(out) - integratedLufs(ref);
+                logMessage("  output " + juce::String(o) + " dB: peak over LIMIT+OUTPUT " + juce::String(peakOver, 5) + " dB, loudness shift "
+                           + juce::String(lufsShift, 3) + " LU, worst sample error " + juce::String(worst));
+                expect(peakOver <= 1.0e-4);
+                expect(worst <= 1.0e-6);
+                expect(std::abs(lufsShift - o) <= 0.01);
+            }
+            expect(!LimiterProcessor::usesRedWall(lim(-1, 80, 2))); // output 0 dB: older projects keep the M6 path
+            expect(LimiterProcessor::usesRedWall(lim(-1, 80, 2, 0, 0, 0, 0, 1, 0, -3)));
         }
 
         beginTest("12. HamloRedWall page (real editor): fills the body; knobs and levers edit the project; an older limiter shows the M6 defaults");

@@ -148,6 +148,7 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kLimStyle] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "style", 0.0f)));
             slotParams.values[slot::kLimLink] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "link", 1.0f));
             slotParams.values[slot::kLimMonitor] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "monitor", 0.0f)));
+            slotParams.values[slot::kLimOutputDb] = juce::jlimit(-24.0f, 0.0f, param(state.parameters, "outputDb", 0.0f));
             break;
     }
     return slotParams;

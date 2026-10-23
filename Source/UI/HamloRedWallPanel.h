@@ -18,12 +18,13 @@ namespace hpeq::ui
 class HamloRedWallPanel final : public juce::Component, private juce::Timer
 {
 public:
-    enum Param { Threshold, Ceiling, Release, Lookahead, Link, Style, NumKnobs };
+    // Threshold is labelled LOUDNESS (push), Ceiling LIMIT; Output is the gain after the limiter.
+    enum Param { Threshold, Ceiling, Release, Lookahead, Link, Output, Style, NumKnobs };
     enum Switch { TruePeak, AutoRelease, Monitor, NumSwitches };
 
     struct Values
     {
-        std::array<double, NumKnobs> knobs { 0.0, -1.0, 60.0, 2.0, 1.0, 0.0 };
+        std::array<double, NumKnobs> knobs { 0.0, -1.0, 60.0, 2.0, 1.0, 0.0, 0.0 };
         std::array<int, NumSwitches> switches { 1, 1, 0 };
         bool on = true;
     };

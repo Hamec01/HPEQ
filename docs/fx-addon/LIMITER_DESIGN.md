@@ -57,6 +57,10 @@ being output, so the output sample peak never exceeds c.
 - LINK `λ`: per-channel targets `t_ch`; `t'_ch = λ · min(t_L, t_R) + (1 − λ) · t_ch`; λ = 1 is the M6 linked law.
 - MONITOR UNITY: output · 10^(T/20) (back to the input level); DELTA: `D_L(x') − y` (what the limiter
   removed, at the pushed level).
+- OUTPUT O (owner, after the first page): `out = y · 10^(O/20)`, O ∈ [−24, 0] dB, applied last. Since
+  |y| ≤ c, |out| ≤ c · 10^(O/20): the output peak is at most LIMIT + OUTPUT (dB), and every level
+  measure (peak, RMS, LUFS) moves by exactly O. O > 0 is not offered: it would break the ceiling
+  guarantee (louder = LOUDNESS). On the page THRESHOLD is labelled **LOUDNESS** and CEILING **LIMIT**.
 
 ## 4. Page (HamloRedWall, Black Steel)
 

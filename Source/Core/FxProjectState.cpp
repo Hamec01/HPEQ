@@ -221,6 +221,7 @@ FxSlotState defaultModule(FxType type)
         m.parameters.set("style", 0);
         m.parameters.set("link", 1);
         m.parameters.set("monitor", 0);
+        m.parameters.set("outputDb", 0);
     }
     if (type == FxType::Compressor)
     {

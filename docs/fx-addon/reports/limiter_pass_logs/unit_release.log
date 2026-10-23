@@ -1,4 +1,4 @@
-Random seed: 0x2584463
+Random seed: 0x2b82556
 -----------------------------------------------------------------
 Starting tests in: Harness / compareAligned detects a one-ulp change...
 Completed tests in Harness / compareAligned detects a one-ulp change
@@ -443,6 +443,12 @@ Completed tests in Limiter pass / 9. MONITOR: UNITY keeps small signals at the i
 Starting tests in: Limiter pass / 10. Latency reported = measured (true peak on/off, styles); blocks 1/64/512 identical; 0 allocations...
 Completed tests in Limiter pass / 10. Latency reported = measured (true peak on/off, styles); blocks 1/64/512 identical; 0 allocations
 -----------------------------------------------------------------
+Starting tests in: Limiter pass / 13. OUTPUT (after the limiter): peak <= LIMIT + OUTPUT; output = the 0 dB output x 10^(O/20) (1e-6); loudness moves by O (+-0.01 LU)...
+  output -0.5 dB: peak over LIMIT+OUTPUT -0.00000 dB, loudness shift -0.500 LU, worst sample error 4.24728e-08
+  output -6 dB: peak over LIMIT+OUTPUT -0.00000 dB, loudness shift -6.000 LU, worst sample error 4.00851e-08
+  output -18 dB: peak over LIMIT+OUTPUT 0.00000 dB, loudness shift -18.000 LU, worst sample error 1.13566e-08
+Completed tests in Limiter pass / 13. OUTPUT (after the limiter): peak <= LIMIT + OUTPUT; output = the 0 dB output x 10^(O/20) (1e-6); loudness moves by O (+-0.01 LU)
+-----------------------------------------------------------------
 Starting tests in: Limiter pass / 12. HamloRedWall page (real editor): fills the body; knobs and levers edit the project; an older limiter shows the M6 defaults...
 Completed tests in Limiter pass / 12. HamloRedWall page (real editor): fills the body; knobs and levers edit the project; an older limiter shows the M6 defaults
 -----------------------------------------------------------------
@@ -734,4 +740,4 @@ Starting tests in: UI + analysis M5 / editor: every selection kind, a 6-slot cha
 Completed tests in UI + analysis M5 / editor: every selection kind, a 6-slot chain, deletes, size limits; 50 cycles while audio runs
 
 allocation probe: operator-new-only (malloc not seen)
-HPEQ_Tests: 1265 expectations passed, 0 failed
+HPEQ_Tests: 1276 expectations passed, 0 failed

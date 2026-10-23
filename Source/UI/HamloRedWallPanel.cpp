@@ -23,8 +23,9 @@ struct MapInfo
 };
 // THRESHOLD turns right to push harder (0 -> -30 dB); STYLE has three detents.
 constexpr std::array<MapInfo, HamloRedWallPanel::NumKnobs> kMaps { { { 0.0, -30.0, false }, { -20.0, 0.0, false }, { 1.0, 1000.0, true },
-                                                                      { 0.1, 10.0, true }, { 0.0, 1.0, false }, { 0.0, 2.0, false } } };
-constexpr std::array<const char*, HamloRedWallPanel::NumKnobs> kLabels { "Threshold", "Ceiling", "Release", "Lookahead", "Link", "Style" };
+                                                                      { 0.1, 10.0, true }, { 0.0, 1.0, false }, { -24.0, 0.0, false },
+                                                                      { 0.0, 2.0, false } } };
+constexpr std::array<const char*, HamloRedWallPanel::NumKnobs> kLabels { "Loudness", "Limit", "Release", "Lookahead", "Link", "Output", "Style" };
 const std::array<juce::StringArray, HamloRedWallPanel::NumSwitches> kSwitchOptions { juce::StringArray { "Off", "On" },
                                                                                      juce::StringArray { "Manual", "Auto" },
                                                                                      juce::StringArray { "Normal", "Unity", "Delta" } };
@@ -39,7 +40,7 @@ const juce::StringArray& HamloRedWallPanel::styleNames()
 
 const char* HamloRedWallPanel::keyFor(Param p)
 {
-    static constexpr const char* keys[] { "thresholdDb", "ceilingDb", "releaseMs", "lookaheadMs", "link", "style" };
+    static constexpr const char* keys[] { "thresholdDb", "ceilingDb", "releaseMs", "lookaheadMs", "link", "outputDb", "style" };
     return keys[p];
 }
 
@@ -51,7 +52,7 @@ const char* HamloRedWallPanel::keyFor(Switch s)
 
 double HamloRedWallPanel::defaultFor(Param p)
 {
-    static constexpr double d[] { 0.0, -1.0, 60.0, 2.0, 1.0, 0.0 }; // = defaultModule(Limiter)
+    static constexpr double d[] { 0.0, -1.0, 60.0, 2.0, 1.0, 0.0, 0.0 }; // = defaultModule(Limiter)
     return d[p];
 }
 
@@ -59,7 +60,8 @@ juce::String HamloRedWallPanel::format(Param p, double v)
 {
     switch (p)
     {
-        case Threshold: case Ceiling: return juce::String(v, 1) + " dB";
+        case Threshold: return (v < 0.0 ? "+" + juce::String(-v, 1) : juce::String(0.0, 1)) + " dB"; // the push
+        case Ceiling: case Output: return juce::String(v, 1) + " dB";
         case Release: return juce::String(juce::roundToInt(v)) + " ms";
         case Lookahead: return juce::String(v, 2) + " ms";
         case Link: return juce::String(juce::roundToInt(v * 100.0)) + " %";
@@ -71,8 +73,8 @@ juce::String HamloRedWallPanel::format(Param p, double v)
 
 HamloRedWallPanel::HamloRedWallPanel()
 {
-    for (int i = 0; i < NumKnobs; ++i)
-        centres[static_cast<size_t>(i)] = { 56.0f + static_cast<float>(i) * (174.67f + 4.0f) + 87.3f, kKnobY };
+    for (int i = 0; i < NumKnobs; ++i) // seven columns over the content width 56 .. 1124
+        centres[static_cast<size_t>(i)] = { 56.0f + (static_cast<float>(i) + 0.5f) * (1068.0f / NumKnobs), kKnobY };
     grMeter.bezel = { 751.0f, 385.0f, 248.0f, 238.0f };
     grMeter.min = -20.0f;
     grMeter.max = 0.0f;
@@ -153,9 +155,10 @@ void HamloRedWallPanel::renderStatic(juce::Graphics& g) const
     for (int i = 0; i < NumKnobs; ++i)
     {
         const auto c = centres[static_cast<size_t>(i)];
-        steel::engraved(g, juce::String(kLabels[static_cast<size_t>(i)]).toUpperCase(), { c.x - 87.0f, kLabelY - 17.0f, 174.0f, 34.0f }, 24.0f,
-                        i == Style ? juce::Colour(0xffd9483c) : steel::stencil, juce::Justification::centred, 0.1f);
-        steel::knobScale(g, c, 1.0f);
+        if (i != Style) // the STYLE knob is titled with the chosen style itself (paint)
+            steel::engraved(g, juce::String(kLabels[static_cast<size_t>(i)]).toUpperCase(), { c.x - 76.0f, kLabelY - 17.0f, 152.0f, 34.0f }, 22.0f,
+                            steel::stencil, juce::Justification::centred, 0.1f);
+        steel::knobScale(g, c, 0.92f);
     }
     // STYLE detents: the two end names beside the scale (the selected one is the red readout)
     for (int k : { 0, 2 })
@@ -163,7 +166,7 @@ void HamloRedWallPanel::renderStatic(juce::Graphics& g) const
         const float a = (-135.0f + 135.0f * static_cast<float>(k)) * kPi / 180.0f;
         const auto c = centres[Style];
         const juce::Point<float> p(c.x + std::sin(a) * 84.0f, c.y - std::cos(a) * 84.0f);
-        steel::engraved(g, styleNames()[k], { p.x - 50.0f, p.y + 2.0f, 100.0f, 16.0f }, 11.0f, steel::stencilDim);
+        steel::engraved(g, styleNames()[k], { p.x - 46.0f, p.y + 2.0f, 92.0f, 16.0f }, 10.5f, steel::stencilDim);
     }
     for (int i = 0; i < NumSwitches; ++i)
     {
@@ -220,13 +223,19 @@ void HamloRedWallPanel::paint(juce::Graphics& g)
         const auto c = centres[static_cast<size_t>(i)];
         const auto p = static_cast<Param>(i);
         float angle = (-135.0f + static_cast<float>(normFor(p)) * 270.0f) * kPi / 180.0f;
-        steel::brassKnob(g, c, angle, 1.0f);
-        const auto r = juce::Rectangle<float>(c.x - 80.0f, kReadoutY - 16.0f, 160.0f, 32.0f);
+        steel::brassKnob(g, c, angle, 0.92f);
         const auto text = format(p, values.knobs[static_cast<size_t>(i)]);
-        g.setFont(steel::stencilFont(p == Style ? 20.0f : 25.0f));
+        if (p == Style)
+        {
+            // owner: the chosen style is the knob's title, no separate readout
+            steel::engraved(g, text, { c.x - 76.0f, kLabelY - 17.0f, 152.0f, 34.0f }, 22.0f, steel::stencil, juce::Justification::centred, 0.1f);
+            continue;
+        }
+        const auto r = juce::Rectangle<float>(c.x - 74.0f, kReadoutY - 16.0f, 148.0f, 32.0f);
+        g.setFont(steel::stencilFont(23.0f));
         g.setColour(juce::Colours::black);
         g.drawText(text, r.translated(0.0f, 1.0f), juce::Justification::centred);
-        g.setColour(p == Style ? juce::Colour(0xffe9675a) : steel::stencil);
+        g.setColour(steel::stencil);
         g.drawText(text, r, juce::Justification::centred);
     }
     for (int sw = 0; sw < NumSwitches; ++sw)
@@ -284,7 +293,7 @@ void HamloRedWallPanel::settleMeters(float out, float reductionDb)
 int HamloRedWallPanel::knobAt(juce::Point<float> d) const
 {
     for (int i = 0; i < NumKnobs; ++i)
-        if (d.getDistanceFrom(centres[static_cast<size_t>(i)]) <= 60.0f)
+        if (d.getDistanceFrom(centres[static_cast<size_t>(i)]) <= 56.0f)
             return i;
     return -1;
 }
@@ -348,7 +357,7 @@ void HamloRedWallPanel::mouseDown(const juce::MouseEvent& e)
         return;
     }
     for (int i = 0; i < NumKnobs; ++i)
-        if (i != Style && juce::Rectangle<float>(centres[static_cast<size_t>(i)].x - 80.0f, kReadoutY - 16.0f, 160.0f, 32.0f).contains(d))
+        if (i != Style && juce::Rectangle<float>(centres[static_cast<size_t>(i)].x - 74.0f, kReadoutY - 16.0f, 148.0f, 32.0f).contains(d))
         {
             editReadout(static_cast<Param>(i));
             return;
@@ -408,7 +417,7 @@ void HamloRedWallPanel::editReadout(Param p)
     typing->setJustification(juce::Justification::centred);
     typing->setColour(juce::TextEditor::backgroundColourId, juce::Colour(0xff120b04));
     typing->setColour(juce::TextEditor::textColourId, juce::Colour(0xffffb347));
-    const double shown = p == Link ? values.knobs[Link] * 100.0 : values.knobs[static_cast<size_t>(p)];
+    const double shown = p == Link ? values.knobs[Link] * 100.0 : p == Threshold ? -values.knobs[Threshold] : values.knobs[static_cast<size_t>(p)];
     typing->setText(juce::String(shown, p == Lookahead ? 2 : 1), false);
     typing->selectAll();
     juce::Component::SafePointer<HamloRedWallPanel> self(this);
@@ -420,6 +429,8 @@ void HamloRedWallPanel::editReadout(Param p)
         double v = typing->getText().retainCharacters("-0123456789.").getDoubleValue();
         if (p == Link)
             v /= 100.0;
+        if (p == Threshold)
+            v = -std::abs(v); // typed as the push: "6" = +6 dB louder
         const auto& m = kMaps[static_cast<size_t>(p)];
         if (onKnobGestureStart)
             onKnobGestureStart(p);

@@ -30,20 +30,25 @@ runs, bit-exact):
 - A limiter added from the UI starts with true peak and auto release on, ceiling −1 dB, release 60 ms.
 
 **Page (Black Steel):** nameplate "HamloRedWall · MODEL OGR-1 · № 1917", amber LCDs (output peak in dB or
-dBTP, gain reduction), brass knobs THRESHOLD, CEILING, RELEASE, LOOKAHEAD, LINK, STYLE (three detents, the
-choice in red), levers TRUE PEAK / RELEASE MANUAL–AUTO / MONITOR, green CRT with the gain-reduction history
+dBTP, gain reduction), brass knobs **LOUDNESS** (the push, shown as +dB), **LIMIT** (the ceiling), RELEASE,
+LOOKAHEAD, LINK, **OUTPUT**, and the style knob titled with the chosen style (GLASNOST / STAKHANOV /
+OCTOBER; owner: no red labels, the style name on top), levers TRUE PEAK / RELEASE MANUAL–AUTO / MONITOR, green CRT with the gain-reduction history
 of the last 4 s, GAIN REDUCTION needle meter, ON lamp and toggle.
 
 ![HamloRedWall](limiter_pass/screenshots/hpeq_hamloredwall_page.png)
 
 ![MIX chain of a layer](limiter_pass/screenshots/hpeq_mix_chain_grid.png)
 
+**OUTPUT** (owner, after the first page: "a knob for the volume"): `out = y · 10^(O/20)`, O ∈ [−24, 0] dB,
+applied last. Since |y| ≤ c, the output peak is ≤ LIMIT + OUTPUT and every level measure moves by exactly
+O; O > 0 is not offered (it would break the ceiling guarantee; louder = LOUDNESS).
+
 ## 3. Commands and exit codes
 
 ```bash
 cmake --build --preset release                     # 0, no warnings
-build/Release/HPEQ_Tests.exe                       # 0 — 1265 passed, 0 failed
-build/Debug/HPEQ_Tests.exe                         # 0 — 1265 passed, 0 failed (CRT hook: malloc + new, 0 audio-thread allocations)
+build/Release/HPEQ_Tests.exe                       # 0 — 1276 passed, 0 failed
+build/Debug/HPEQ_Tests.exe                         # 0 — 1276 passed, 0 failed (CRT hook: malloc + new, 0 audio-thread allocations)
 HPEQ_Lab bench --reps 2 --blocks 1000              # reports/limiter_pass/bench.json
 HPEQ_Lab t11 + HPEQ_HostSmoke --t11 (random projects now with MIX chains)   # 0 — 20/20
 HPEQ_Lab ui                                        # screenshots
@@ -64,6 +69,7 @@ HPEQ_Lab ui                                        # screenshots
 | 9 | MONITOR: UNITY level change ±0.5 dB; DELTA = delayed input − output | 0.000 dB; < 1e−5 |
 | 10 | Latency reported = measured (TP on/off, styles); blocks 1 / 64 / 512 identical; 0 allocations | pass |
 | 11 | MIX chain: compressor on the MIX chain = the compressor on the input (≤ −120 dB); layer latency = nodes + mix; state round trip; "+" menu lists 9 shapes + 10 + 10 modules | **−141.3 dB**; 104 + 104; pass; pass |
+| 13 | OUTPUT −0.5 / −6 / −18 dB: peak ≤ LIMIT + OUTPUT; output = 0 dB output × 10^(O/20) (≤ 1e−6); loudness shift = O ± 0.01 LU | peak over **0.00000 dB**; worst error 4.2e−8; shifts −0.500 / −6.000 / −18.000 LU |
 | 12 | Page in the real editor: fills the body; knobs / levers edit the project; an older limiter shows the M6 defaults | pass |
 | — | T11 through the VST3 binary (random projects with MIX chains) | 237/237 states and latencies, 57/57 bit-exact renders and re-opens |
 

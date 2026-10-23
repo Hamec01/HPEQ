@@ -112,6 +112,7 @@ void RedWallCore::process(float* const* channels, int numChannels, int numSample
     const double releaseFast = coefficientFor(releaseMs * 0.25, sampleRate), releaseSlow = coefficientFor(releaseMs * 6.0, sampleRate);
     const double holdCoefficient = std::exp(-1.0 / (0.3 * sampleRate));
     const float unity = std::pow(10.0f, thresholdDb / 20.0f);
+    const float outputGain = std::pow(10.0f, std::clamp(p.values[slot::kLimOutputDb], -24.0f, 0.0f) / 20.0f);
     const int ring = le + 1, dequeCapacity = capacity + 1;
 
     float minGain = 1.0f, outPeak = 0.0f;
@@ -201,11 +202,13 @@ void RedWallCore::process(float* const* channels, int numChannels, int numSample
             const float delayed = s.audio[static_cast<size_t>((corePos + 1) % ring)];
             s.audio[static_cast<size_t>(corePos)] = v[static_cast<size_t>(c)];
             float y = delayed * gain;
-            outPeak = std::max(outPeak, std::abs(y));
             if (monitor == 1)
                 y *= unity;
             else if (monitor == 2)
                 y = delayed - y;
+            if (outputGain != 1.0f)
+                y *= outputGain;
+            outPeak = std::max(outPeak, std::abs(y));
             channels[c][i] = y;
         }
         corePos = (corePos + 1) % ring;
