@@ -9,6 +9,7 @@
 #include "UI/HamloMagPanel.h"
 #include "UI/HamloRedWallPanel.h"
 #include "UI/HamloUdarnikPanel.h"
+#include "UI/HamloZastavaPanel.h"
 #include "UI/HamloVerbPanel.h"
 
 namespace hpeq::ui
@@ -74,6 +75,7 @@ private:
     void buildSaturatorPage(int k);
     void buildLimiterPage(int k);
     void buildTransientPage(int k);
+    void buildGatePage(int k);
 
     FxPluginProcessor& processor;
     Selection& selection;
@@ -91,5 +93,6 @@ private:
     HamloMagPanel* magPanel = nullptr;    // owned by controls
     HamloRedWallPanel* wallPanel = nullptr; // owned by controls
     HamloUdarnikPanel* udarnikPanel = nullptr; // owned by controls
+    HamloZastavaPanel* zastavaPanel = nullptr; // owned by controls
 };
 } // namespace hpeq::ui

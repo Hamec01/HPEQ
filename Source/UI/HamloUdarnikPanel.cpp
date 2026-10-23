@@ -278,7 +278,7 @@ void HamloUdarnikPanel::paint(juce::Graphics& g)
             g.drawText(options[i].toUpperCase(), juce::Rectangle<float>(x - 44.0f, dialTop, 88.0f, 18.0f), juce::Justification::centred);
         }
         const float a = (-38.0f + 38.0f * static_cast<float>(selected)) * kPi / 180.0f;
-        steel::lever(g, { kSwitchDialX + kSwitchDialW * 0.5f, dialTop + 48.0f }, a, 1.0f);
+        steel::lever(g, { kSwitchDialX + kSwitchDialW * 0.5f, dialTop + 54.0f }, a, 0.85f); // clear of the option names
     }
     drawCrt(g);
     steel::meterNeedle(g, impactMeter);

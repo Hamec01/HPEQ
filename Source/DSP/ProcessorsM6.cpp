@@ -293,8 +293,38 @@ void StereoProcessor::process(float* const* channels, int numChannels, int numSa
 }
 
 // ------------------------------------------------------------------------------------- Gate
+bool GateProcessor::usesZastava(const FxSlotParams& p) noexcept
+{
+    for (int k : { slot::kGateStyle, slot::kGateLookahead, slot::kGateKeyHpHz, slot::kGateKeyLpHz, slot::kGateKeyListen, slot::kGateFlip, slot::kGateOutputDb })
+        if (p.values[static_cast<size_t>(k)] != 0.0f)
+            return true;
+    return false;
+}
+
+int GateProcessor::lookaheadSamples(const FxSlotParams& p, double sampleRate) noexcept
+{
+    return usesZastava(p) ? ZastavaCore::lookaheadSamples(static_cast<int>(std::lround(p.values[slot::kGateLookahead])), sampleRate) : 0;
+}
+
 void GateProcessor::process(float* const* channels, int numChannels, int numSamples, const FxSlotParams& p) noexcept
 {
+    if (usesZastava(p))
+    {
+        if (!coreActive)
+        {
+            core.reset();
+            coreActive = true;
+        }
+        core.process(channels, numChannels, numSamples, p);
+        return;
+    }
+    if (coreActive)
+    {
+        coreActive = false;
+        open = false;
+        holdLeft = 0;
+        attenuationDb = detector = 0.0;
+    }
     const double threshold = std::clamp(p.values[slot::kGateThresholdDb], -90.0f, 0.0f);
     const double ratio = std::clamp(p.values[slot::kGateRatio], 1.0f, 100.0f);
     const double range = std::clamp(p.values[slot::kGateRangeDb], 0.0f, 90.0f);

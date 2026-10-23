@@ -146,6 +146,17 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kGateHoldMs] = juce::jlimit(0.0f, 500.0f, param(state.parameters, "holdMs", 20.0f));
             slotParams.values[slot::kGateReleaseMs] = juce::jlimit(1.0f, 2000.0f, param(state.parameters, "releaseMs", 100.0f));
             slotParams.values[slot::kGateHysteresisDb] = juce::jlimit(0.0f, 24.0f, param(state.parameters, "hysteresisDb", 4.0f));
+            // Projects saved before the HamloZastava pass have none of these keys: they keep the M6 gate.
+            slotParams.values[slot::kGateStyle] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "style", 0.0f)));
+            slotParams.values[slot::kGateLookahead] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "lookahead", 0.0f)));
+            {
+                const float hpHz = param(state.parameters, "keyHpHz", 20.0f), lpHz = param(state.parameters, "keyLpHz", 20000.0f);
+                slotParams.values[slot::kGateKeyHpHz] = hpHz <= 20.0f ? 0.0f : juce::jmin(10000.0f, hpHz);  // 20 Hz = off
+                slotParams.values[slot::kGateKeyLpHz] = lpHz >= 20000.0f ? 0.0f : juce::jmax(200.0f, lpHz); // 20 kHz = off
+            }
+            slotParams.values[slot::kGateKeyListen] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "keyListen", 0.0f)));
+            slotParams.values[slot::kGateFlip] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "flip", 0.0f)));
+            slotParams.values[slot::kGateOutputDb] = juce::jlimit(-24.0f, 12.0f, param(state.parameters, "outputDb", 0.0f));
             break;
         case FxType::Limiter:
             slotParams.values[slot::kCeilingDb] = juce::jlimit(-60.0f, 0.0f, param(state.parameters, "ceilingDb", -1.0f));

@@ -85,6 +85,15 @@ FxProjectState randomProject(DeterministicRandom& random)
                     slot.parameters.set("lookaheadMs", 0.1 + unit() * 5.0);
                 if (slot.type == FxType::Delay)
                     slot.parameters.set("sync", pick(12));
+                if (slot.type == FxType::GateExpander && pick(2) == 0) // HamloZastava (module pass 7)
+                {
+                    slot.parameters.set("thresholdDb", -60.0 + unit() * 50.0);
+                    slot.parameters.set("style", pick(3));
+                    slot.parameters.set("lookahead", pick(3));
+                    slot.parameters.set("keyHpHz", 20.0 * std::pow(50.0, unit()));
+                    slot.parameters.set("keyLpHz", 20000.0 / std::pow(20.0, unit()));
+                    slot.parameters.set("flip", pick(4) == 0 ? 1 : 0);
+                }
                 if (slot.type == FxType::TransientShaper && pick(2) == 0) // HamloUdarnik (module pass 6)
                 {
                     slot.parameters.set("attackDb", random.nextBipolar() * 9.0);

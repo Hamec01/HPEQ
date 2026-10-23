@@ -12,8 +12,9 @@ int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
         case FxType::Saturator: return SaturatorProcessor::latencySamples(p, sampleRate);
         case FxType::Limiter:   return LimiterProcessor::lookaheadSamples(p, sampleRate);
         case FxType::TransientShaper: return TransientProcessor::lookaheadSamples(p, sampleRate);
+        case FxType::GateExpander: return GateProcessor::lookaheadSamples(p, sampleRate);
         case FxType::Gain: case FxType::Compressor: case FxType::Reverb: case FxType::Delay:
-        case FxType::MonstaFx: case FxType::StereoProcessor: case FxType::GateExpander: break;
+        case FxType::MonstaFx: case FxType::StereoProcessor: break;
     }
     return 0;
 }
@@ -469,6 +470,14 @@ float FxNodeProcessor::getLimiterOutputDb(int slotIndex) const noexcept
 {
     const auto& slot = slots[static_cast<size_t>(slotIndex)];
     return slot.running && slot.type == FxType::Limiter ? slot.limiter.lastOutputPeakDb() : -120.0f;
+}
+
+ZastavaCore::Meters FxNodeProcessor::getGateMeters(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (slot.running && slot.type == FxType::GateExpander && slot.gateFx.zastavaActive())
+        return slot.gateFx.zastava().meters();
+    return {};
 }
 
 UdarnikCore::Meters FxNodeProcessor::getTransientMeters(int slotIndex) const noexcept

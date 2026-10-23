@@ -196,6 +196,24 @@ FxSlotParams transientSlot(float snap, float style, float lookahead, float riseL
     return t;
 }
 
+FxSlotParams gateSlot(float style, float lookahead, float keyHp)
+{
+    FxSlotParams g;
+    g.active = true;
+    g.type = FxType::GateExpander;
+    g.values[slot::kGateThresholdDb] = -30.0f;
+    g.values[slot::kGateRatio] = 4.0f;
+    g.values[slot::kGateRangeDb] = 40.0f;
+    g.values[slot::kGateAttackMs] = 0.5f;
+    g.values[slot::kGateHoldMs] = 20.0f;
+    g.values[slot::kGateReleaseMs] = 100.0f;
+    g.values[slot::kGateHysteresisDb] = 4.0f;
+    g.values[slot::kGateStyle] = style;
+    g.values[slot::kGateLookahead] = lookahead;
+    g.values[slot::kGateKeyHpHz] = keyHp;
+    return g;
+}
+
 struct Config
 {
     const char* name;
@@ -238,6 +256,10 @@ std::vector<Config> configs()
         { "udarnik_perestroika_soyuz_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { transientSlot(0, 2, 2, -0.5f, 0.5f) }); return s; } },
         { "udarnik_udarnik_soyuz_mix", [] { LayerSnapshot s; s.mix = node(20, 20000, { transientSlot(6, 1, 2) }); return s; } },
         { "udarnik_perestroika_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { transientSlot(3, 2, 2, -0.5f, 0.5f) }); return s; } },
+        { "gate_m6_1node", [] { LayerSnapshot s; s.fx[0] = node(40, 400, { gateSlot(0, 0, 0) }); return s; } },
+        { "zastava_vostok_keyhp_1node", [] { LayerSnapshot s; s.fx[0] = node(40, 400, { gateSlot(0, 1, 120) }); return s; } },
+        { "zastava_trevoga_soyuz_mix", [] { LayerSnapshot s; s.mix = node(20, 20000, { gateSlot(2, 2, 120) }); return s; } },
+        { "zastava_patrul_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { gateSlot(1, 1, 0) }); return s; } },
         { "eq_24_bells", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i); return s; } },
         { "layer_ceiling_24bells_8x6comp", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i);
                                                 for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { compSlot(), compSlot(), compSlot(), compSlot(), compSlot(), compSlot() }); return s; } },

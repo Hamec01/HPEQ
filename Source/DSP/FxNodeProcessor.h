@@ -43,7 +43,7 @@ struct LayerPools
 //   send slot:    s_k = s_{k-1} + mix_k * W_k(inGate_k * s_{k-1})               (W wet-only: Reverb, Delay)
 //   out += presence * nodeMix * (s_K - D_node(b))
 //
-// Latency (PDC): Saturator oversampling and the Limiter / Transient look-ahead delay their slot; every slot
+// Latency (PDC): Saturator oversampling and the Limiter / Transient / Gate look-ahead delay their slot; every slot
 // present in the chain keeps its delay even while bypassed, so the node latency (the sum) only changes
 // when the chain or those settings change. The layer aligns all nodes and the dry signal to the
 // largest node latency and reports it to the host.
@@ -84,6 +84,8 @@ public:
     // Saturator slot (HamloMag models): input peak and output peak of the last block, dB.
     float getSaturatorInputDb(int slotIndex) const noexcept;
     float getSaturatorOutputDb(int slotIndex) const noexcept;
+    // Gate slot (HamloZastava core running): meters.
+    ZastavaCore::Meters getGateMeters(int slotIndex) const noexcept;
     // Transient slot (HamloUdarnik core running): meters, and the last hit's envelopes (returns its sequence, 0 = none).
     UdarnikCore::Meters getTransientMeters(int slotIndex) const noexcept;
     int getTransientLastHit(int slotIndex, std::array<float, UdarnikCore::kGraphPoints>& in,

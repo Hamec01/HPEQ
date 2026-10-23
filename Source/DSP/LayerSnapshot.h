@@ -71,7 +71,10 @@ constexpr int kDivision = 0, kChance = 1, kSeed = 2, kCrushBits = 3, kGateDepth 
 // Stereo (insert; needs a stereo work domain)
 constexpr int kStereoWidth = 0, kStereoBalance = 1;
 // Gate / expander (insert)
-constexpr int kGateThresholdDb = 0, kGateRatio = 1, kGateRangeDb = 2, kGateAttackMs = 3, kGateHoldMs = 4, kGateReleaseMs = 5, kGateHysteresisDb = 6;
+constexpr int kGateThresholdDb = 0, kGateRatio = 1, kGateRangeDb = 2, kGateAttackMs = 3, kGateHoldMs = 4, kGateReleaseMs = 5, kGateHysteresisDb = 6,
+              // HamloZastava (module pass 7): style 0 ZASTAVA / 1 PATRUL / 2 TREVOGA; look-ahead 0 / 1 / 2 (0 / 2 / 5 ms);
+              // key HP / LP Hz (0 = off); key listen 0/1; flip 0/1; output dB. Every value 0 = the M6 gate.
+              kGateStyle = 7, kGateLookahead = 8, kGateKeyHpHz = 9, kGateKeyLpHz = 10, kGateKeyListen = 11, kGateFlip = 12, kGateOutputDb = 13;
 // Band limiter (insert, look-ahead = latency)
 constexpr int kCeilingDb = 0, kLimiterReleaseMs = 1, kLookaheadMs = 2,
               // HamloRedWall (module pass 5): threshold dB; true peak 0/1; auto release 0/1;

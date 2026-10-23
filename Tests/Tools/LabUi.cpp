@@ -19,6 +19,7 @@
 #include "UI/HamloRedWallPanel.h"
 #include "UI/HamloUdarnikPanel.h"
 #include "UI/HamloVerbPanel.h"
+#include "UI/HamloZastavaPanel.h"
 
 using namespace hpeq;
 using namespace hpeq::test;
@@ -509,6 +510,41 @@ int runUiSnapshots(const juce::File& out)
         processor->dispatchPendingMessages();
     }
 
+    // Module pass 7: HamloZastava on the drums' low band, key HP 120 Hz, VOSTOK; and TREVOGA (duck).
+    {
+        auto gated = processor->getProject();
+        FxNodeState n;
+        n.id = gated.nextNodeId++;
+        n.lowHz = 40.0;
+        n.highHz = 400.0;
+        auto gate = defaultModule(FxType::GateExpander);
+        gate.parameters.set("thresholdDb", -30.0);
+        gate.parameters.set("keyHpHz", 120.0);
+        n.chain = { gate };
+        gated.layers[0].fxNodes.push_back(n);
+        for (const auto& [style, file] : { std::pair { 0, "hpeq_hamlozastava_zastava.png" }, std::pair { 2, "hpeq_hamlozastava_trevoga.png" } })
+        {
+            auto next = gated;
+            next.layers[0].fxNodes.back().chain[0].parameters.set("style", style);
+            if (style == 2)
+                next.layers[0].fxNodes.back().chain[0].parameters.set("rangeDb", 12.0);
+            processor->setProject(next);
+            processor->dispatchPendingMessages();
+            editor->selectNode(true, n.id, 0);
+            auto more = makeSyntheticDrums({ 48000.0, 2, 1.0, kFixtureSeed });
+            for (int start = 0; start < more.getNumSamples(); start += 512)
+            {
+                juce::AudioBuffer<float> view(more.getArrayOfWritePointers(), 2, start, juce::jmin(512, more.getNumSamples() - start));
+                processor->processBlock(view, midi);
+                if ((start / 512) % 3 == 2)
+                    editor->updateAnalysisNow();
+            }
+            save(file);
+        }
+        processor->setProject(project);
+        processor->dispatchPendingMessages();
+    }
+
     // Every Black Steel page on its own at its design size (scratched pictures, panel layout checks).
     {
         const auto shoot = [&](juce::Component& c, int w, int h, const juce::String& name)
@@ -533,6 +569,8 @@ int runUiSnapshots(const juce::File& out)
         shoot(wall, 1180, 700, "hpeq_panel_hamloredwall.png");
         ui::HamloUdarnikPanel udarnik;
         shoot(udarnik, 1180, 700, "hpeq_panel_hamloudarnik.png");
+        ui::HamloZastavaPanel zastava;
+        shoot(zastava, 1180, 780, "hpeq_panel_hamlozastava.png");
     }
 
     // UI frame cost: analysis update (FFT x2) + full repaint at this size, as the 30 Hz timer does.

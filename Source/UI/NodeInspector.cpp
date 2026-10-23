@@ -506,6 +506,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
         buildTransientPage(k);
         return;
     }
+    if (module.type == FxType::GateExpander)
+    {
+        buildGatePage(k);
+        return;
+    }
 
     for (const auto& def : paramsFor(module.type))
     {
@@ -581,6 +586,7 @@ void NodeInspector::rebuild()
     magPanel = nullptr;
     wallPanel = nullptr;
     udarnikPanel = nullptr;
+    zastavaPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -1050,6 +1056,73 @@ void NodeInspector::buildTransientPage(int k)
     });
 }
 
+void NodeInspector::buildGatePage(int k)
+{
+    // HamloZastava (module pass 7): one drawn panel in the Black Steel style; it fills the editor body.
+    largePage = true;
+    auto* panel = new HamloZastavaPanel();
+    controls.add(panel);
+    addAndMakeVisible(panel);
+    panel->getProperties().set("section", 4);
+    zastavaPanel = panel;
+    panel->onKnobGestureStart = [this](HamloZastavaPanel::Param p)
+    {
+        processor.getUndoManager().beginNewTransaction("Gate " + juce::String(HamloZastavaPanel::keyFor(p)));
+        dragging = true;
+    };
+    panel->onKnobGestureEnd = [this] { dragging = false; };
+    panel->onKnobChange = [this, k](HamloZastavaPanel::Param p, double v)
+    {
+        if (p == HamloZastavaPanel::Mix) // MIX is the slot's own mix
+        {
+            editChain("Gate mix", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+            return;
+        }
+        const juce::Identifier key(HamloZastavaPanel::keyFor(p));
+        editChain("Gate", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+    };
+    panel->onSwitchChange = [this, k](HamloZastavaPanel::Switch sw, int option)
+    {
+        processor.getUndoManager().beginNewTransaction("Gate " + juce::String(HamloZastavaPanel::keyFor(sw)));
+        const juce::Identifier key(HamloZastavaPanel::keyFor(sw));
+        editChain("Gate switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+    };
+    panel->onPowerChange = [this, k](bool on)
+    {
+        processor.getUndoManager().beginNewTransaction("Module on");
+        editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+    };
+    panel->readMeters = [this, k]() -> HamloZastavaPanel::Reading
+    {
+        const auto project = processor.getProject();
+        const auto* nodePtr = selectedNodeProcessor(project);
+        if (nodePtr == nullptr)
+            return {};
+        const auto m = nodePtr->getGateMeters(k);
+        return { m.attenuationDb, m.maxAttenuationDb, m.keyDb, m.open, m.openings };
+    };
+    refreshers.push_back([this, panel, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        const auto* c = selectedChain(project);
+        if (c == nullptr || k >= static_cast<int>(c->size()))
+            return;
+        const auto& m = (*c)[static_cast<size_t>(k)];
+        HamloZastavaPanel::Values v;
+        for (int p = 0; p < HamloZastavaPanel::NumKnobs; ++p)
+        {
+            const auto param = static_cast<HamloZastavaPanel::Param>(p);
+            // the DSP's own defaults when a key is absent (LayerSnapshot): older gates keep the M6 law
+            v.knobs[static_cast<size_t>(p)] = param == HamloZastavaPanel::Mix ? static_cast<double>(m.mix)
+                                                                              : paramValue(m, HamloZastavaPanel::keyFor(param), HamloZastavaPanel::defaultFor(param));
+        }
+        for (int sw = 0; sw < HamloZastavaPanel::NumSwitches; ++sw)
+            v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, HamloZastavaPanel::keyFor(static_cast<HamloZastavaPanel::Switch>(sw)), 0.0));
+        v.on = m.enabled;
+        panel->setValues(v);
+    });
+}
+
 void NodeInspector::buildSaturatorPage(int k)
 {
     // HamloMag (module pass 4): one drawn panel in the HamloComp style; it fills the editor body.
@@ -1148,6 +1221,8 @@ void NodeInspector::updateLiveReadouts(bool settle)
         const auto [outputDb, reductionDb] = wallPanel->readMeters();
         wallPanel->settleMeters(outputDb, reductionDb);
     }
+    if (settle && zastavaPanel != nullptr && zastavaPanel->readMeters)
+        zastavaPanel->settleMeters(zastavaPanel->readMeters());
     if (settle && udarnikPanel != nullptr && udarnikPanel->readMeters)
         udarnikPanel->settleMeters(udarnikPanel->readMeters());
     if (settle && magPanel != nullptr && magPanel->readMeters)

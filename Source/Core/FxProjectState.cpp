@@ -223,6 +223,24 @@ FxSlotState defaultModule(FxType type)
         m.parameters.set("monitor", 0);
         m.parameters.set("outputDb", 0);
     }
+    if (type == FxType::GateExpander)
+    {
+        // HamloZastava as the UI creates it: the M6 gate settings with VOSTOK look-ahead (2 ms).
+        m.parameters.set("thresholdDb", -40);
+        m.parameters.set("ratio", 4);
+        m.parameters.set("rangeDb", 40);
+        m.parameters.set("attackMs", 0.5);
+        m.parameters.set("holdMs", 20);
+        m.parameters.set("releaseMs", 100);
+        m.parameters.set("hysteresisDb", 4);
+        m.parameters.set("style", 0);
+        m.parameters.set("lookahead", 1);
+        m.parameters.set("keyHpHz", 20);
+        m.parameters.set("keyLpHz", 20000);
+        m.parameters.set("keyListen", 0);
+        m.parameters.set("flip", 0);
+        m.parameters.set("outputDb", 0);
+    }
     if (type == FxType::TransientShaper)
     {
         // HamloUdarnik as the UI creates it: PRAVDA, VOSTOK look-ahead (2 ms), groove kept; neutral otherwise.
