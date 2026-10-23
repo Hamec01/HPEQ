@@ -222,8 +222,35 @@ void SaturatorProcessor::process(float* const* channels, int numChannels, int nu
 }
 
 // ------------------------------------------------------------------------------------- Transient
+bool TransientProcessor::usesUdarnik(const FxSlotParams& p) noexcept
+{
+    return std::lround(p.values[slot::kTrStyle]) != 0 || std::lround(p.values[slot::kTrLookahead]) != 0 || p.values[slot::kTrRiseLog2] != 0.0f
+        || p.values[slot::kTrDecayLog2] != 0.0f || p.values[slot::kTrStrictness] != 0.0f || p.values[slot::kTrPreserve] != 0.0f
+        || std::lround(p.values[slot::kTrListen]) != 0 || p.values[slot::kTrOutputDb] != 0.0f;
+}
+
+int TransientProcessor::lookaheadSamples(const FxSlotParams& p, double sampleRate) noexcept
+{
+    return usesUdarnik(p) ? UdarnikCore::lookaheadSamples(static_cast<int>(std::lround(p.values[slot::kTrLookahead])), sampleRate) : 0;
+}
+
 void TransientProcessor::process(float* const* channels, int numChannels, int numSamples, const FxSlotParams& p) noexcept
 {
+    if (usesUdarnik(p))
+    {
+        if (!coreActive)
+        {
+            core.reset();
+            coreActive = true;
+        }
+        core.process(channels, numChannels, numSamples, p);
+        return;
+    }
+    if (coreActive)
+    {
+        coreActive = false;
+        fast = slow = 0.0;
+    }
     const double attackDb = std::clamp(p.values[slot::kAttackGainDb], -24.0f, 24.0f);
     const double sustainDb = std::clamp(p.values[slot::kSustainGainDb], -24.0f, 24.0f);
     const double s = 0.5 + std::clamp(p.values[slot::kTransientSpeed], 0.0f, 1.0f);

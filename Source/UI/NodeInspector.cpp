@@ -501,6 +501,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
         buildLimiterPage(k);
         return;
     }
+    if (module.type == FxType::TransientShaper)
+    {
+        buildTransientPage(k);
+        return;
+    }
 
     for (const auto& def : paramsFor(module.type))
     {
@@ -575,6 +580,7 @@ void NodeInspector::rebuild()
     echoPanel = nullptr;
     magPanel = nullptr;
     wallPanel = nullptr;
+    udarnikPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -965,6 +971,85 @@ void NodeInspector::buildLimiterPage(int k)
     });
 }
 
+void NodeInspector::buildTransientPage(int k)
+{
+    // HamloUdarnik (module pass 6): one drawn panel in the Black Steel style; it fills the editor body.
+    largePage = true;
+    auto* panel = new HamloUdarnikPanel();
+    controls.add(panel);
+    addAndMakeVisible(panel);
+    panel->getProperties().set("section", 4);
+    udarnikPanel = panel;
+    panel->onKnobGestureStart = [this](HamloUdarnikPanel::Param p)
+    {
+        processor.getUndoManager().beginNewTransaction("Transient " + juce::String(HamloUdarnikPanel::keyFor(p)));
+        dragging = true;
+    };
+    panel->onKnobGestureEnd = [this] { dragging = false; };
+    panel->onKnobChange = [this, k](HamloUdarnikPanel::Param p, double v)
+    {
+        if (p == HamloUdarnikPanel::Mix) // MIX is the slot's own mix
+        {
+            editChain("Transient mix", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+            return;
+        }
+        const juce::Identifier key(HamloUdarnikPanel::keyFor(p));
+        editChain("Transient", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+    };
+    panel->onSwitchChange = [this, k](HamloUdarnikPanel::Switch sw, int option)
+    {
+        processor.getUndoManager().beginNewTransaction("Transient " + juce::String(HamloUdarnikPanel::keyFor(sw)));
+        const juce::Identifier key(HamloUdarnikPanel::keyFor(sw));
+        editChain("Transient switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+    };
+    panel->onPowerChange = [this, k](bool on)
+    {
+        processor.getUndoManager().beginNewTransaction("Module on");
+        editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+    };
+    panel->readMeters = [this, k]() -> HamloUdarnikPanel::Reading
+    {
+        const auto project = processor.getProject();
+        const auto* nodePtr = selectedNodeProcessor(project);
+        if (nodePtr == nullptr)
+            return {};
+        const auto m = nodePtr->getTransientMeters(k);
+        return { m.impactDb, m.gainMinDb, m.gainMaxDb, m.events, m.confidence, m.strengthDb };
+    };
+    panel->readLastHit = [this, k](std::array<float, HamloUdarnikPanel::kHitPoints>& in, std::array<float, HamloUdarnikPanel::kHitPoints>& out)
+    {
+        const auto project = processor.getProject();
+        const auto* nodePtr = selectedNodeProcessor(project);
+        return nodePtr != nullptr ? nodePtr->getTransientLastHit(k, in, out) : 0;
+    };
+    refreshers.push_back([this, panel, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        const auto* c = selectedChain(project);
+        if (c == nullptr || k >= static_cast<int>(c->size()))
+            return;
+        const auto& m = (*c)[static_cast<size_t>(k)];
+        // the DSP's own defaults when a key is absent (LayerSnapshot): older transients keep the M6 law
+        const auto fallback = [](const char* key)
+        {
+            const juce::String name(key);
+            if (name == "speed") return 0.5;
+            if (name == "rise" || name == "decay" || name == "sensitivity") return 1.0;
+            return 0.0;
+        };
+        HamloUdarnikPanel::Values v;
+        for (int p = 0; p < HamloUdarnikPanel::NumKnobs; ++p)
+        {
+            const auto* key = HamloUdarnikPanel::keyFor(static_cast<HamloUdarnikPanel::Param>(p));
+            v.knobs[static_cast<size_t>(p)] = p == HamloUdarnikPanel::Mix ? static_cast<double>(m.mix) : paramValue(m, key, fallback(key));
+        }
+        for (int sw = 0; sw < HamloUdarnikPanel::NumSwitches; ++sw)
+            v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, HamloUdarnikPanel::keyFor(static_cast<HamloUdarnikPanel::Switch>(sw)), 0.0));
+        v.on = m.enabled;
+        panel->setValues(v);
+    });
+}
+
 void NodeInspector::buildSaturatorPage(int k)
 {
     // HamloMag (module pass 4): one drawn panel in the HamloComp style; it fills the editor body.
@@ -1063,6 +1148,8 @@ void NodeInspector::updateLiveReadouts(bool settle)
         const auto [outputDb, reductionDb] = wallPanel->readMeters();
         wallPanel->settleMeters(outputDb, reductionDb);
     }
+    if (settle && udarnikPanel != nullptr && udarnikPanel->readMeters)
+        udarnikPanel->settleMeters(udarnikPanel->readMeters());
     if (settle && magPanel != nullptr && magPanel->readMeters)
     {
         const auto [inputDb, outputDb] = magPanel->readMeters();

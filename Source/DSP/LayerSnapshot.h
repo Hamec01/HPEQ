@@ -52,8 +52,13 @@ constexpr int kDriveDb = 0, kCurve = 1, kBias = 2, kTrimDb = 3, kOversampling = 
               kSatModel = 6, kSatPunish = 7, kSatTone = 8, kSatLowCutHz = 9, kSatHighCutHz = 10, kSatThump = 11, kSatSteep = 12,
               kSatHarmonics = 13, kSatEvenOdd = 14, kSatTapeBias = 15, kSatSpeed = 16, kSatWow = 17, kSatHiss = 18, kSatHum = 19,
               kSatCrackle = 20, kSatNoiseFollow = 21;
-// Transient shaper (insert)
-constexpr int kAttackGainDb = 0, kSustainGainDb = 1, kTransientSpeed = 2;
+// Transient shaper (insert). 0..2 are the M6 shaper; the rest drive HamloUdarnik (module pass 6):
+// style 0 PRAVDA / 1 UDARNIK / 2 PERESTROIKA; look-ahead 0 SPUTNIK 0 ms / 1 VOSTOK 2 ms / 2 SOYUZ 5 ms;
+// rise and decay as log2 of the factor (-1..1, 0 = x1); strictness = 1 - sensitivity (0 = every front counts);
+// preserve 0..1; listen 0 full / 1 attack / 2 body; output dB (-24..+12). Every value 0 = the M6 shaper.
+constexpr int kAttackGainDb = 0, kSustainGainDb = 1, kTransientSpeed = 2,
+              kTrStyle = 3, kTrLookahead = 4, kTrRiseLog2 = 5, kTrDecayLog2 = 6, kTrStrictness = 7, kTrPreserve = 8, kTrListen = 9,
+              kTrOutputDb = 10;
 // Delay (wet-only send; sync 0 = free time, else a note division index). 0..6 are the M6 delay
 // ("Classic"; damping = the high cut); the rest drive the HamloEcho characters (character 0 Classic /
 // 1 Clean / 2 Tape / 3 BBD / 4 Lo-Fi; time mode 0 Tape / 1 Fade; resonance 0..1; band gain in dB).

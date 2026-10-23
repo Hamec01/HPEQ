@@ -180,6 +180,22 @@ FxSlotParams limiterSlot(float truePeak, float style, float autoRelease, float l
     return l;
 }
 
+FxSlotParams transientSlot(float snap, float style, float lookahead, float riseLog2 = 0.0f, float decayLog2 = 0.0f)
+{
+    FxSlotParams t;
+    t.active = true;
+    t.type = FxType::TransientShaper;
+    t.values[slot::kAttackGainDb] = snap;
+    t.values[slot::kSustainGainDb] = -3.0f;
+    t.values[slot::kTransientSpeed] = 0.5f;
+    t.values[slot::kTrStyle] = style;
+    t.values[slot::kTrLookahead] = lookahead;
+    t.values[slot::kTrRiseLog2] = riseLog2;
+    t.values[slot::kTrDecayLog2] = decayLog2;
+    t.values[slot::kTrPreserve] = style > 0.0f ? 1.0f : 0.0f;
+    return t;
+}
+
 struct Config
 {
     const char* name;
@@ -216,6 +232,12 @@ std::vector<Config> configs()
         { "redwall_truepeak_1node", [] { LayerSnapshot s; s.fx[0] = node(40, 160, { limiterSlot(1, 0, 1, 1, -6) }); return s; } },
         { "redwall_october_tp_link50_1node", [] { LayerSnapshot s; s.fx[0] = node(40, 160, { limiterSlot(1, 2, 1, 0.5f, -6) }); return s; } },
         { "redwall_truepeak_mix", [] { LayerSnapshot s; s.mix = node(20, 20000, { limiterSlot(1, 0, 1, 1, -6) }); return s; } },
+        { "transient_m6_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { transientSlot(6, 0, 0) }); return s; } },
+        { "udarnik_pravda_vostok_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { transientSlot(6, 0, 1) }); return s; } },
+        { "udarnik_udarnik_soyuz_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { transientSlot(6, 1, 2) }); return s; } },
+        { "udarnik_perestroika_soyuz_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { transientSlot(0, 2, 2, -0.5f, 0.5f) }); return s; } },
+        { "udarnik_udarnik_soyuz_mix", [] { LayerSnapshot s; s.mix = node(20, 20000, { transientSlot(6, 1, 2) }); return s; } },
+        { "udarnik_perestroika_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { transientSlot(3, 2, 2, -0.5f, 0.5f) }); return s; } },
         { "eq_24_bells", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i); return s; } },
         { "layer_ceiling_24bells_8x6comp", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i);
                                                 for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { compSlot(), compSlot(), compSlot(), compSlot(), compSlot(), compSlot() }); return s; } },

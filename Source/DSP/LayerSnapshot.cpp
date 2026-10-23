@@ -87,6 +87,15 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kAttackGainDb] = juce::jlimit(-24.0f, 24.0f, param(state.parameters, "attackDb", 0.0f));
             slotParams.values[slot::kSustainGainDb] = juce::jlimit(-24.0f, 24.0f, param(state.parameters, "sustainDb", 0.0f));
             slotParams.values[slot::kTransientSpeed] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "speed", 0.5f));
+            // Projects saved before the HamloUdarnik pass have none of these keys: they keep the M6 shaper.
+            slotParams.values[slot::kTrStyle] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "style", 0.0f)));
+            slotParams.values[slot::kTrLookahead] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "lookahead", 0.0f)));
+            slotParams.values[slot::kTrRiseLog2] = std::log2(juce::jlimit(0.5f, 2.0f, param(state.parameters, "rise", 1.0f)));
+            slotParams.values[slot::kTrDecayLog2] = std::log2(juce::jlimit(0.5f, 2.0f, param(state.parameters, "decay", 1.0f)));
+            slotParams.values[slot::kTrStrictness] = 1.0f - juce::jlimit(0.0f, 1.0f, param(state.parameters, "sensitivity", 1.0f));
+            slotParams.values[slot::kTrPreserve] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "preserve", 0.0f));
+            slotParams.values[slot::kTrListen] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "listen", 0.0f)));
+            slotParams.values[slot::kTrOutputDb] = juce::jlimit(-24.0f, 12.0f, param(state.parameters, "outputDb", 0.0f));
             break;
         case FxType::Delay:
             slotParams.values[slot::kDelayTimeMs] = juce::jlimit(1.0f, 4000.0f, param(state.parameters, "timeMs", 250.0f));

@@ -85,6 +85,16 @@ FxProjectState randomProject(DeterministicRandom& random)
                     slot.parameters.set("lookaheadMs", 0.1 + unit() * 5.0);
                 if (slot.type == FxType::Delay)
                     slot.parameters.set("sync", pick(12));
+                if (slot.type == FxType::TransientShaper && pick(2) == 0) // HamloUdarnik (module pass 6)
+                {
+                    slot.parameters.set("attackDb", random.nextBipolar() * 9.0);
+                    slot.parameters.set("style", pick(3));
+                    slot.parameters.set("lookahead", pick(3));
+                    slot.parameters.set("rise", std::pow(2.0, random.nextBipolar()));
+                    slot.parameters.set("decay", std::pow(2.0, random.nextBipolar()));
+                    slot.parameters.set("sensitivity", unit());
+                    slot.parameters.set("preserve", unit());
+                }
                 n.chain.push_back(slot);
             }
             layer.fxNodes.push_back(n);

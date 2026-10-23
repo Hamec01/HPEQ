@@ -11,7 +11,8 @@ int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
     {
         case FxType::Saturator: return SaturatorProcessor::latencySamples(p, sampleRate);
         case FxType::Limiter:   return LimiterProcessor::lookaheadSamples(p, sampleRate);
-        case FxType::Gain: case FxType::Compressor: case FxType::Reverb: case FxType::Delay: case FxType::TransientShaper:
+        case FxType::TransientShaper: return TransientProcessor::lookaheadSamples(p, sampleRate);
+        case FxType::Gain: case FxType::Compressor: case FxType::Reverb: case FxType::Delay:
         case FxType::MonstaFx: case FxType::StereoProcessor: case FxType::GateExpander: break;
     }
     return 0;
@@ -468,6 +469,23 @@ float FxNodeProcessor::getLimiterOutputDb(int slotIndex) const noexcept
 {
     const auto& slot = slots[static_cast<size_t>(slotIndex)];
     return slot.running && slot.type == FxType::Limiter ? slot.limiter.lastOutputPeakDb() : -120.0f;
+}
+
+UdarnikCore::Meters FxNodeProcessor::getTransientMeters(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (slot.running && slot.type == FxType::TransientShaper && slot.transient.udarnikActive())
+        return slot.transient.udarnik().meters();
+    return {};
+}
+
+int FxNodeProcessor::getTransientLastHit(int slotIndex, std::array<float, UdarnikCore::kGraphPoints>& in,
+                                          std::array<float, UdarnikCore::kGraphPoints>& out) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (slot.running && slot.type == FxType::TransientShaper && slot.transient.udarnikActive())
+        return slot.transient.udarnik().lastHit(in, out);
+    return 0;
 }
 
 float FxNodeProcessor::getGainReductionDb(int slotIndex) const noexcept

@@ -465,6 +465,47 @@ int runUiSnapshots(const juce::File& out)
         processor->dispatchPendingMessages();
     }
 
+    // Module pass 6: HamloUdarnik on the drums' click band, UDARNIK (peak-neutral punch) and PERESTROIKA.
+    {
+        auto punch = processor->getProject();
+        FxNodeState n;
+        n.id = punch.nextNodeId++;
+        n.lowHz = 120.0;
+        n.highHz = 6000.0;
+        auto t = defaultModule(FxType::TransientShaper);
+        t.parameters.set("style", 1);
+        t.parameters.set("attackDb", 6.0);
+        t.parameters.set("lookahead", 2);
+        n.chain = { t };
+        punch.layers[0].fxNodes.push_back(n);
+        for (const auto& [style, file] : { std::pair { 1, "hpeq_hamloudarnik_udarnik.png" }, std::pair { 2, "hpeq_hamloudarnik_perestroika.png" } })
+        {
+            auto next = punch;
+            auto& m = next.layers[0].fxNodes.back().chain[0].parameters;
+            m.set("style", style);
+            if (style == 2)
+            {
+                m.set("attackDb", 3.0);
+                m.set("rise", 0.7);
+                m.set("decay", 1.6);
+            }
+            processor->setProject(next);
+            processor->dispatchPendingMessages();
+            editor->selectNode(true, n.id, 0);
+            auto more = makeSyntheticDrums({ 48000.0, 2, 1.0, kFixtureSeed });
+            for (int start = 0; start < more.getNumSamples(); start += 512)
+            {
+                juce::AudioBuffer<float> view(more.getArrayOfWritePointers(), 2, start, juce::jmin(512, more.getNumSamples() - start));
+                processor->processBlock(view, midi);
+                if ((start / 512) % 3 == 2)
+                    editor->updateAnalysisNow();
+            }
+            save(file);
+        }
+        processor->setProject(project);
+        processor->dispatchPendingMessages();
+    }
+
     // UI frame cost: analysis update (FFT x2) + full repaint at this size, as the 30 Hz timer does.
     editor->showDifference(false);
     editor->selectNode(true, compId);

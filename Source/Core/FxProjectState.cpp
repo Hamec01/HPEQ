@@ -223,6 +223,21 @@ FxSlotState defaultModule(FxType type)
         m.parameters.set("monitor", 0);
         m.parameters.set("outputDb", 0);
     }
+    if (type == FxType::TransientShaper)
+    {
+        // HamloUdarnik as the UI creates it: PRAVDA, VOSTOK look-ahead (2 ms), groove kept; neutral otherwise.
+        m.parameters.set("attackDb", 0);
+        m.parameters.set("sustainDb", 0);
+        m.parameters.set("speed", 0.5);
+        m.parameters.set("style", 0);
+        m.parameters.set("lookahead", 1);
+        m.parameters.set("rise", 1);
+        m.parameters.set("decay", 1);
+        m.parameters.set("sensitivity", 1);
+        m.parameters.set("preserve", 1);
+        m.parameters.set("listen", 0);
+        m.parameters.set("outputDb", 0);
+    }
     if (type == FxType::Compressor)
     {
         m.parameters.set("thresholdDb", -30);
