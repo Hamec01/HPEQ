@@ -275,8 +275,27 @@ void TransientProcessor::process(float* const* channels, int numChannels, int nu
 }
 
 // ------------------------------------------------------------------------------------- Stereo
+bool StereoProcessor::usesShirota(const FxSlotParams& p) noexcept
+{
+    for (int k = slot::kStStyle; k <= slot::kStOutputDb; ++k)
+        if (p.values[static_cast<size_t>(k)] != 0.0f)
+            return true;
+    return false;
+}
+
 void StereoProcessor::process(float* const* channels, int numChannels, int numSamples, const FxSlotParams& p) noexcept
 {
+    if (usesShirota(p))
+    {
+        if (!coreActive)
+        {
+            core.reset();
+            coreActive = true;
+        }
+        core.process(channels, numChannels, numSamples, p);
+        return;
+    }
+    coreActive = false;
     const float width = std::clamp(p.values[slot::kStereoWidth], 0.0f, 2.0f);
     const float balance = std::clamp(p.values[slot::kStereoBalance], -1.0f, 1.0f);
     if (numChannels < 2 || (width == 1.0f && balance == 0.0f))

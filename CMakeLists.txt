@@ -72,6 +72,7 @@ target_sources(HPEQ
         Source/DSP/HamloRedWall.cpp
         Source/DSP/HamloUdarnik.cpp
         Source/DSP/HamloZastava.cpp
+        Source/DSP/HamloShirota.cpp
         Source/DSP/ProjectEngine.cpp
         Source/DSP/CrossoverTree.cpp
         Source/DSP/EqDesign.cpp
@@ -88,6 +89,7 @@ target_sources(HPEQ
         Source/UI/HamloRedWallPanel.cpp
         Source/UI/HamloUdarnikPanel.cpp
         Source/UI/HamloZastavaPanel.cpp
+        Source/UI/HamloShirotaPanel.cpp
         Source/UI/SpectrumWorkspace.cpp)
 
 target_include_directories(HPEQ PUBLIC Source)
@@ -135,6 +137,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/LimiterPassTests.cpp
     Tests/Unit/TransientPassTests.cpp
     Tests/Unit/GatePassTests.cpp
+    Tests/Unit/StereoPassTests.cpp
     Tests/Unit/ReverbPassTests.cpp
     Tests/Unit/DelayPassTests.cpp
     Tests/Unit/SaturatorPassTests.cpp

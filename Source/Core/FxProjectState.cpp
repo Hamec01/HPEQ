@@ -223,6 +223,20 @@ FxSlotState defaultModule(FxType type)
         m.parameters.set("monitor", 0);
         m.parameters.set("outputDb", 0);
     }
+    if (type == FxType::StereoProcessor)
+    {
+        // HamloShirota as the UI creates it: EDINSTVO, neutral width, SAFE on (the mono sum never falls apart).
+        m.parameters.set("style", 0);
+        m.parameters.set("width", 1.0);
+        m.parameters.set("balance", 0.0);
+        m.parameters.set("stereoize", 0.5);
+        m.parameters.set("space", 0.5);
+        m.parameters.set("monoBassHz", 0);
+        m.parameters.set("rotation", 0.0);
+        m.parameters.set("safe", 1);
+        m.parameters.set("monoListen", 0);
+        m.parameters.set("outputDb", 0);
+    }
     if (type == FxType::GateExpander)
     {
         // HamloZastava as the UI creates it: the M6 gate settings with VOSTOK look-ahead (2 ms).

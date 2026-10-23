@@ -13,8 +13,9 @@ int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
         case FxType::Limiter:   return LimiterProcessor::lookaheadSamples(p, sampleRate);
         case FxType::TransientShaper: return TransientProcessor::lookaheadSamples(p, sampleRate);
         case FxType::GateExpander: return GateProcessor::lookaheadSamples(p, sampleRate);
+        case FxType::StereoProcessor: return StereoProcessor::latencySamples(p, sampleRate);
         case FxType::Gain: case FxType::Compressor: case FxType::Reverb: case FxType::Delay:
-        case FxType::MonstaFx: case FxType::StereoProcessor: break;
+        case FxType::MonstaFx: break;
     }
     return 0;
 }
@@ -470,6 +471,24 @@ float FxNodeProcessor::getLimiterOutputDb(int slotIndex) const noexcept
 {
     const auto& slot = slots[static_cast<size_t>(slotIndex)];
     return slot.running && slot.type == FxType::Limiter ? slot.limiter.lastOutputPeakDb() : -120.0f;
+}
+
+ShirotaCore::Meters FxNodeProcessor::getStereoMeters(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (slot.running && slot.type == FxType::StereoProcessor && slot.stereo.shirotaActive())
+        return slot.stereo.shirota().meters();
+    return {};
+}
+
+bool FxNodeProcessor::getStereoScope(int slotIndex, std::array<float, ShirotaCore::kScopePoints>& left,
+                                     std::array<float, ShirotaCore::kScopePoints>& right) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (!slot.running || slot.type != FxType::StereoProcessor || !slot.stereo.shirotaActive())
+        return false;
+    slot.stereo.shirota().scope(left, right);
+    return true;
 }
 
 ZastavaCore::Meters FxNodeProcessor::getGateMeters(int slotIndex) const noexcept

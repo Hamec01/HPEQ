@@ -137,6 +137,18 @@ FxSlotParams makeSlot(const FxSlotState& state)
         case FxType::StereoProcessor:
             slotParams.values[slot::kStereoWidth] = juce::jlimit(0.0f, 2.0f, param(state.parameters, "width", 1.0f));
             slotParams.values[slot::kStereoBalance] = juce::jlimit(-1.0f, 1.0f, param(state.parameters, "balance", 0.0f));
+            // Projects saved before the HamloShirota pass have none of these keys: they keep the M6 law.
+            slotParams.values[slot::kStStyle] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "style", 0.0f)));
+            slotParams.values[slot::kStStereoize] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "stereoize", 0.0f));
+            slotParams.values[slot::kStSpace] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "space", 0.0f));
+            {
+                const float bassHz = param(state.parameters, "monoBassHz", 0.0f);
+                slotParams.values[slot::kStMonoBassHz] = bassHz < 20.0f ? 0.0f : juce::jmin(500.0f, bassHz); // under 20 Hz = off
+            }
+            slotParams.values[slot::kStRotation] = juce::jlimit(-45.0f, 45.0f, param(state.parameters, "rotation", 0.0f));
+            slotParams.values[slot::kStSafe] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "safe", 0.0f)));
+            slotParams.values[slot::kStMonoListen] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "monoListen", 0.0f)));
+            slotParams.values[slot::kStOutputDb] = juce::jlimit(-24.0f, 12.0f, param(state.parameters, "outputDb", 0.0f));
             break;
         case FxType::GateExpander:
             slotParams.values[slot::kGateThresholdDb] = juce::jlimit(-90.0f, 0.0f, param(state.parameters, "thresholdDb", -40.0f));

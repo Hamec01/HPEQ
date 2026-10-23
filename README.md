@@ -29,6 +29,7 @@ owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECIS
 | Module pass 5: HamloRedWall limiter; modules on the whole layer (D7) | done | [LIMITER_PASS_REPORT](docs/fx-addon/reports/LIMITER_PASS_REPORT.md) |
 | Module pass 6: HamloUdarnik transient shaper (PRAVDA / UDARNIK / PERESTROIKA) | done | [TRANSIENT_PASS_REPORT](docs/fx-addon/reports/TRANSIENT_PASS_REPORT.md) |
 | Module pass 7: HamloZastava gate / expander (ZASTAVA / PATRUL / TREVOGA, key filter, look-ahead, flip) | done | [GATE_PASS_REPORT](docs/fx-addon/reports/GATE_PASS_REPORT.md) |
+| Module pass 8: HamloShirota stereo (EDINSTVO / PROSTOR / KOSMOS, stereoize, mono bass, SAFE, vectorscope) | done | [STEREO_PASS_REPORT](docs/fx-addon/reports/STEREO_PASS_REPORT.md) |
 
 Ten layers (Parallel delta or Serial), each PRE-EQ (9 shapes, cuts 6-96 dB/oct, L/R/M/S) then up to 8
 frequency-range FX regions with chains of up to 6 processors; the frequency core is H3 (DECISIONS D4),

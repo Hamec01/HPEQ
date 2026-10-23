@@ -231,6 +231,9 @@ void HamloRedWallPanel::paint(juce::Graphics& g)
         {
             // owner: the chosen style is the knob's title, no separate readout
             steel::engraved(g, text, { c.x - 76.0f, kLabelY - 17.0f, 152.0f, 34.0f }, 22.0f, steel::stencil, juce::Justification::centred, 0.1f);
+            static const juce::StringArray characters { "TRANSPARENT", "FAST, LESS DUCKING", "SOFT CLIP, LOUDER" };
+            steel::engraved(g, characters[juce::jlimit(0, 2, juce::roundToInt(values.knobs[Style]))], { c.x - 80.0f, kReadoutY - 14.0f, 160.0f, 28.0f },
+                            12.0f, steel::stencilDim, juce::Justification::centred, 0.05f);
             continue;
         }
         const auto r = juce::Rectangle<float>(c.x - 74.0f, kReadoutY - 16.0f, 148.0f, 32.0f);

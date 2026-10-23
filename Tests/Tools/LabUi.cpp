@@ -20,6 +20,7 @@
 #include "UI/HamloUdarnikPanel.h"
 #include "UI/HamloVerbPanel.h"
 #include "UI/HamloZastavaPanel.h"
+#include "UI/HamloShirotaPanel.h"
 
 using namespace hpeq;
 using namespace hpeq::test;
@@ -545,6 +546,42 @@ int runUiSnapshots(const juce::File& out)
         processor->dispatchPendingMessages();
     }
 
+    // Module pass 8: HamloShirota on the whole layer (KOSMOS, stereoize) and on a Mid node (OSHIBKA).
+    {
+        auto wide = processor->getProject();
+        auto st = defaultModule(FxType::StereoProcessor);
+        st.parameters.set("style", 2);
+        st.parameters.set("width", 1.6);
+        st.parameters.set("stereoize", 0.7);
+        st.parameters.set("space", 0.6);
+        st.parameters.set("monoBassHz", 120.0);
+        wide.layers[0].mixChain = { st };
+        FxNodeState n;
+        n.id = wide.nextNodeId++;
+        n.lowHz = 300.0;
+        n.highHz = 3000.0;
+        n.channel = ChannelMode::Mid;
+        n.chain = { defaultModule(FxType::StereoProcessor) };
+        wide.layers[0].fxNodes.push_back(n);
+        processor->setProject(wide);
+        processor->dispatchPendingMessages();
+        editor->selectMix(0);
+        auto more = makeSyntheticDrums({ 48000.0, 2, 1.0, kFixtureSeed });
+        for (int start = 0; start < more.getNumSamples(); start += 512)
+        {
+            juce::AudioBuffer<float> view(more.getArrayOfWritePointers(), 2, start, juce::jmin(512, more.getNumSamples() - start));
+            processor->processBlock(view, midi);
+            if ((start / 512) % 3 == 2)
+                editor->updateAnalysisNow();
+        }
+        save("hpeq_hamloshirota_kosmos.png");
+        editor->selectNode(true, n.id, 0);
+        editor->updateAnalysisNow();
+        save("hpeq_hamloshirota_oshibka.png");
+        processor->setProject(project);
+        processor->dispatchPendingMessages();
+    }
+
     // Every Black Steel page on its own at its design size (scratched pictures, panel layout checks).
     {
         const auto shoot = [&](juce::Component& c, int w, int h, const juce::String& name)
@@ -571,6 +608,8 @@ int runUiSnapshots(const juce::File& out)
         shoot(udarnik, 1180, 700, "hpeq_panel_hamloudarnik.png");
         ui::HamloZastavaPanel zastava;
         shoot(zastava, 1180, 780, "hpeq_panel_hamlozastava.png");
+        ui::HamloShirotaPanel shirota;
+        shoot(shirota, 1180, 780, "hpeq_panel_hamloshirota.png");
     }
 
     // UI frame cost: analysis update (FFT x2) + full repaint at this size, as the 30 Hz timer does.

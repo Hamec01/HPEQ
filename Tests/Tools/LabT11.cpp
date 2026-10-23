@@ -85,6 +85,16 @@ FxProjectState randomProject(DeterministicRandom& random)
                     slot.parameters.set("lookaheadMs", 0.1 + unit() * 5.0);
                 if (slot.type == FxType::Delay)
                     slot.parameters.set("sync", pick(12));
+                if (slot.type == FxType::StereoProcessor && pick(2) == 0) // HamloShirota (module pass 8)
+                {
+                    slot.parameters.set("width", 2.0 * unit());
+                    slot.parameters.set("style", pick(3));
+                    slot.parameters.set("stereoize", unit());
+                    slot.parameters.set("space", unit());
+                    slot.parameters.set("monoBassHz", pick(2) == 0 ? 0.0 : 40.0 + unit() * 200.0);
+                    slot.parameters.set("rotation", random.nextBipolar() * 30.0);
+                    slot.parameters.set("safe", pick(2));
+                }
                 if (slot.type == FxType::GateExpander && pick(2) == 0) // HamloZastava (module pass 7)
                 {
                     slot.parameters.set("thresholdDb", -60.0 + unit() * 50.0);

@@ -10,6 +10,7 @@
 #include "UI/HamloRedWallPanel.h"
 #include "UI/HamloUdarnikPanel.h"
 #include "UI/HamloZastavaPanel.h"
+#include "UI/HamloShirotaPanel.h"
 #include "UI/HamloVerbPanel.h"
 
 namespace hpeq::ui
@@ -76,6 +77,7 @@ private:
     void buildLimiterPage(int k);
     void buildTransientPage(int k);
     void buildGatePage(int k);
+    void buildStereoPage(int k);
 
     FxPluginProcessor& processor;
     Selection& selection;
@@ -94,5 +96,6 @@ private:
     HamloRedWallPanel* wallPanel = nullptr; // owned by controls
     HamloUdarnikPanel* udarnikPanel = nullptr; // owned by controls
     HamloZastavaPanel* zastavaPanel = nullptr; // owned by controls
+    HamloShirotaPanel* shirotaPanel = nullptr; // owned by controls
 };
 } // namespace hpeq::ui

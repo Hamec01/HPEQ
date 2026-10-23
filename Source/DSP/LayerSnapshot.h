@@ -69,7 +69,10 @@ constexpr int kDelayTimeMs = 0, kDelaySync = 1, kFeedback = 2, kPingPong = 3, kD
 // Monsta FX (insert; division 0 = 1/4, 1 = 1/8, 2 = 1/16, 3 = 1/32)
 constexpr int kDivision = 0, kChance = 1, kSeed = 2, kCrushBits = 3, kGateDepth = 4, kReverseShare = 5;
 // Stereo (insert; needs a stereo work domain)
-constexpr int kStereoWidth = 0, kStereoBalance = 1;
+constexpr int kStereoWidth = 0, kStereoBalance = 1,
+              // HamloShirota (module pass 8): style 0 EDINSTVO / 1 PROSTOR / 2 KOSMOS; stereoize 0..1; space 0..1;
+              // mono bass Hz (0 = off); rotation degrees; safe 0/1; mono listen 0/1; output dB. Every value 0 = the M6 law.
+              kStStyle = 2, kStStereoize = 3, kStSpace = 4, kStMonoBassHz = 5, kStRotation = 6, kStSafe = 7, kStMonoListen = 8, kStOutputDb = 9;
 // Gate / expander (insert)
 constexpr int kGateThresholdDb = 0, kGateRatio = 1, kGateRangeDb = 2, kGateAttackMs = 3, kGateHoldMs = 4, kGateReleaseMs = 5, kGateHysteresisDb = 6,
               // HamloZastava (module pass 7): style 0 ZASTAVA / 1 PATRUL / 2 TREVOGA; look-ahead 0 / 1 / 2 (0 / 2 / 5 ms);

@@ -84,6 +84,10 @@ public:
     // Saturator slot (HamloMag models): input peak and output peak of the last block, dB.
     float getSaturatorInputDb(int slotIndex) const noexcept;
     float getSaturatorOutputDb(int slotIndex) const noexcept;
+    // Stereo slot (HamloShirota core running): meters, and the newest output points for the vectorscope.
+    ShirotaCore::Meters getStereoMeters(int slotIndex) const noexcept;
+    bool getStereoScope(int slotIndex, std::array<float, ShirotaCore::kScopePoints>& left,
+                        std::array<float, ShirotaCore::kScopePoints>& right) const noexcept;
     // Gate slot (HamloZastava core running): meters.
     ZastavaCore::Meters getGateMeters(int slotIndex) const noexcept;
     // Transient slot (HamloUdarnik core running): meters, and the last hit's envelopes (returns its sequence, 0 = none).

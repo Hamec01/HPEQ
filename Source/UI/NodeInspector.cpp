@@ -511,6 +511,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
         buildGatePage(k);
         return;
     }
+    if (module.type == FxType::StereoProcessor)
+    {
+        buildStereoPage(k);
+        return;
+    }
 
     for (const auto& def : paramsFor(module.type))
     {
@@ -587,6 +592,7 @@ void NodeInspector::rebuild()
     wallPanel = nullptr;
     udarnikPanel = nullptr;
     zastavaPanel = nullptr;
+    shirotaPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -1056,6 +1062,91 @@ void NodeInspector::buildTransientPage(int k)
     });
 }
 
+void NodeInspector::buildStereoPage(int k)
+{
+    // HamloShirota (module pass 8): one drawn panel in the Black Steel style; it fills the editor body.
+    largePage = true;
+    auto* panel = new HamloShirotaPanel();
+    controls.add(panel);
+    addAndMakeVisible(panel);
+    panel->getProperties().set("section", 4);
+    shirotaPanel = panel;
+    panel->onKnobGestureStart = [this](HamloShirotaPanel::Param p)
+    {
+        processor.getUndoManager().beginNewTransaction("Stereo " + juce::String(HamloShirotaPanel::keyFor(p)));
+        dragging = true;
+    };
+    panel->onKnobGestureEnd = [this] { dragging = false; };
+    panel->onKnobChange = [this, k](HamloShirotaPanel::Param p, double v)
+    {
+        if (p == HamloShirotaPanel::Mix) // MIX is the slot's own mix
+        {
+            editChain("Stereo mix", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+            return;
+        }
+        const juce::Identifier key(HamloShirotaPanel::keyFor(p));
+        editChain("Stereo", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+    };
+    panel->onSwitchChange = [this, k](HamloShirotaPanel::Switch sw, int option)
+    {
+        processor.getUndoManager().beginNewTransaction("Stereo " + juce::String(HamloShirotaPanel::keyFor(sw)));
+        const juce::Identifier key(HamloShirotaPanel::keyFor(sw));
+        editChain("Stereo switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+    };
+    panel->onPowerChange = [this, k](bool on)
+    {
+        processor.getUndoManager().beginNewTransaction("Module on");
+        editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+    };
+    panel->readMeters = [this, k]() -> HamloShirotaPanel::Reading
+    {
+        const auto project = processor.getProject();
+        const auto* nodePtr = selectedNodeProcessor(project);
+        if (nodePtr == nullptr)
+            return {};
+        const auto m = nodePtr->getStereoMeters(k);
+        return { m.correlation, m.guardDb, m.oneChannel };
+    };
+    panel->readScope = [this, k](std::array<float, HamloShirotaPanel::kScopePoints>& left, std::array<float, HamloShirotaPanel::kScopePoints>& right)
+    {
+        const auto project = processor.getProject();
+        const auto* nodePtr = selectedNodeProcessor(project);
+        return nodePtr != nullptr && nodePtr->getStereoScope(k, left, right);
+    };
+    refreshers.push_back([this, panel, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        const auto* c = selectedChain(project);
+        if (c == nullptr || k >= static_cast<int>(c->size()))
+            return;
+        const auto& m = (*c)[static_cast<size_t>(k)];
+        HamloShirotaPanel::Values v;
+        for (int p = 0; p < HamloShirotaPanel::NumKnobs; ++p)
+        {
+            const auto param = static_cast<HamloShirotaPanel::Param>(p);
+            // the DSP's own defaults when a key is absent (LayerSnapshot): older stereo modules keep the M6 law
+            double fallback = param == HamloShirotaPanel::Width ? 1.0 : param == HamloShirotaPanel::MonoBass ? 10.0 : 0.0;
+            v.knobs[static_cast<size_t>(p)] = param == HamloShirotaPanel::Mix ? static_cast<double>(m.mix) : paramValue(m, HamloShirotaPanel::keyFor(param), fallback);
+        }
+        for (int sw = 0; sw < HamloShirotaPanel::NumSwitches; ++sw)
+            v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, HamloShirotaPanel::keyFor(static_cast<HamloShirotaPanel::Switch>(sw)), 0.0));
+        v.on = m.enabled;
+        // a node on one channel (Mid / Side / Left / Right) has no stereo to widen: the page shows OSHIBKA
+        auto channel = ChannelMode::Stereo;
+        const auto& layer = selectedLayer(project);
+        if (selection.kind == Selection::Kind::Fx)
+            for (const auto& n : layer.fxNodes)
+                if (n.id == selection.id)
+                    channel = n.channel;
+        if (selection.kind == Selection::Kind::Eq)
+            for (const auto& n : layer.eqNodes)
+                if (n.id == selection.id)
+                    channel = n.channel;
+        v.stereoNode = channel == ChannelMode::Stereo || channel == ChannelMode::LinkedStereo || channel == ChannelMode::DualMono;
+        panel->setValues(v);
+    });
+}
+
 void NodeInspector::buildGatePage(int k)
 {
     // HamloZastava (module pass 7): one drawn panel in the Black Steel style; it fills the editor body.
@@ -1221,6 +1312,8 @@ void NodeInspector::updateLiveReadouts(bool settle)
         const auto [outputDb, reductionDb] = wallPanel->readMeters();
         wallPanel->settleMeters(outputDb, reductionDb);
     }
+    if (settle && shirotaPanel != nullptr && shirotaPanel->readMeters)
+        shirotaPanel->settleMeters(shirotaPanel->readMeters());
     if (settle && zastavaPanel != nullptr && zastavaPanel->readMeters)
         zastavaPanel->settleMeters(zastavaPanel->readMeters());
     if (settle && udarnikPanel != nullptr && udarnikPanel->readMeters)

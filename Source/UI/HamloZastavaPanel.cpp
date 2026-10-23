@@ -264,6 +264,9 @@ void HamloZastavaPanel::paint(juce::Graphics& g)
         if (p == Mode)
         {
             steel::engraved(g, text, { c.x - kColumn * 0.5f, kBigLabelY - 17.0f, kColumn, 34.0f }, 22.0f, steel::stencil, juce::Justification::centred, 0.1f);
+            static const juce::StringArray characters { "GATE", "SOFT EXPANDER", "DUCKER" };
+            steel::engraved(g, characters[juce::jlimit(0, 2, juce::roundToInt(values.knobs[Mode]))], readoutArea(i), 12.0f, steel::stencilDim,
+                            juce::Justification::centred, 0.05f);
             continue;
         }
         const auto r = readoutArea(i);

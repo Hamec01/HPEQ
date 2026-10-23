@@ -214,6 +214,20 @@ FxSlotParams gateSlot(float style, float lookahead, float keyHp)
     return g;
 }
 
+FxSlotParams stereoSlot(float style, float width, float stereoize, float space, float monoBass, float safe)
+{
+    FxSlotParams s;
+    s.active = true;
+    s.type = FxType::StereoProcessor;
+    s.values[slot::kStereoWidth] = width;
+    s.values[slot::kStStyle] = style;
+    s.values[slot::kStStereoize] = stereoize;
+    s.values[slot::kStSpace] = space;
+    s.values[slot::kStMonoBassHz] = monoBass;
+    s.values[slot::kStSafe] = safe;
+    return s;
+}
+
 struct Config
 {
     const char* name;
@@ -260,6 +274,10 @@ std::vector<Config> configs()
         { "zastava_vostok_keyhp_1node", [] { LayerSnapshot s; s.fx[0] = node(40, 400, { gateSlot(0, 1, 120) }); return s; } },
         { "zastava_trevoga_soyuz_mix", [] { LayerSnapshot s; s.mix = node(20, 20000, { gateSlot(2, 2, 120) }); return s; } },
         { "zastava_patrul_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { gateSlot(1, 1, 0) }); return s; } },
+        { "stereo_m6_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { stereoSlot(0, 1.5f, 0, 0, 0, 0) }); return s; } },
+        { "shirota_prostor_safe_1node", [] { LayerSnapshot s; s.fx[0] = node(200, 10000, { stereoSlot(1, 1.5f, 0.7f, 0, 0, 1) }); return s; } },
+        { "shirota_kosmos_monobass_mix", [] { LayerSnapshot s; s.mix = node(20, 20000, { stereoSlot(2, 1.6f, 0.7f, 0.6f, 120, 1) }); return s; } },
+        { "shirota_kosmos_8nodes", [] { LayerSnapshot s; for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { stereoSlot(2, 1.6f, 0.7f, 0.6f, 0, 1) }); return s; } },
         { "eq_24_bells", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i); return s; } },
         { "layer_ceiling_24bells_8x6comp", [] { LayerSnapshot s; for (int i = 0; i < 24; ++i) s.eq[static_cast<size_t>(i)] = bell(i);
                                                 for (int i = 0; i < 8; ++i) s.fx[static_cast<size_t>(i)] = node(60.0f * std::pow(2.0f, static_cast<float>(i)), 150.0f * std::pow(2.0f, static_cast<float>(i)), { compSlot(), compSlot(), compSlot(), compSlot(), compSlot(), compSlot() }); return s; } },

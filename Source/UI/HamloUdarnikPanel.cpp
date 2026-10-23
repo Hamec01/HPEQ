@@ -256,6 +256,9 @@ void HamloUdarnikPanel::paint(juce::Graphics& g)
             // owner (pass 5): the chosen mode is the knob's title, no separate readout
             steel::engraved(g, text, { c.x - kColumn * 0.75f, kLabelY - 14.0f, kColumn * 1.5f, 28.0f }, 15.0f, steel::stencil,
                             juce::Justification::centred, 0.05f);
+            static const juce::StringArray characters { "CLASSIC SHAPER", "PEAK-NEUTRAL PUNCH", "TRANSIENT MORPH" };
+            steel::engraved(g, characters[juce::jlimit(0, 2, juce::roundToInt(values.knobs[Mode]))],
+                            { c.x - kColumn * 0.75f, kReadoutY - 14.0f, kColumn * 1.5f, 28.0f }, 10.5f, steel::stencilDim, juce::Justification::centred, 0.03f);
             continue;
         }
         const auto r = juce::Rectangle<float>(c.x - kColumn * 0.5f, kReadoutY - 14.0f, kColumn, 28.0f);

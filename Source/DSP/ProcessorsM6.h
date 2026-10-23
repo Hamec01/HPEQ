@@ -13,6 +13,7 @@
 #include "DSP/HamloRedWall.h"
 #include "DSP/HamloUdarnik.h"
 #include "DSP/HamloZastava.h"
+#include "DSP/HamloShirota.h"
 #include "DSP/LayerSnapshot.h"
 
 namespace hpeq::dsp
@@ -86,9 +87,23 @@ private:
 class StereoProcessor
 {
 public:
-    void prepare(double) noexcept {}
-    void reset() noexcept {}
+    void prepare(double sampleRate) { core.prepare(sampleRate); } // allocates (SAFE rings)
+    void reset() noexcept { core.reset(); }
     void process(float* const* channels, int numChannels, int numSamples, const FxSlotParams&) noexcept;
+
+    // HamloShirota (HamloShirota.h): runs instead of the M6 law when any of its options is set.
+    static bool usesShirota(const FxSlotParams&) noexcept;
+    // Latency: the SAFE look-ahead (2.5 ms) when SAFE is on, else 0.
+    static int latencySamples(const FxSlotParams& p, double sampleRate) noexcept
+    {
+        return usesShirota(p) && p.values[slot::kStSafe] != 0.0f ? ShirotaCore::safeLookaheadSamples(sampleRate) : 0;
+    }
+    const ShirotaCore& shirota() const noexcept { return core; }
+    bool shirotaActive() const noexcept { return coreActive; }
+
+private:
+    ShirotaCore core;
+    bool coreActive = false;
 };
 
 // Gate / downward expander (insert). Level x (dB) = linked peak detector (instant attack, 10 ms release). The gate opens above T and
