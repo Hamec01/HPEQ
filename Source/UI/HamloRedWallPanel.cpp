@@ -147,6 +147,8 @@ void HamloRedWallPanel::resized()
 void HamloRedWallPanel::renderStatic(juce::Graphics& g) const
 {
     steel::panel(g, kW, kH, 1917);
+    steel::scratches(g, { { 2, { 256.0f, 14.0f, 82.0f, 122.0f }, -4.0f }, { 15, { 834.0f, 14.0f, 82.0f, 122.0f }, 4.0f },
+                          { 12, { 236.0f, 598.0f, 64.0f, 92.0f }, 3.0f } });
     steel::nameplate(g, { 590.0f - 185.0f, 41.0f, 370.0f, 92.0f }, "HamloRedWall", "MODEL OGR-1", juce::String::fromUTF8("\xe2\x84\x96 1917"));
     steel::lcdWindow(g, kLcdLeft);
     steel::lcdWindow(g, kLcdRight);

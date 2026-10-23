@@ -90,8 +90,13 @@ target_sources(HPEQ
 
 target_include_directories(HPEQ PUBLIC Source)
 
+# Owner's scratched USSR pictures (alpha masks), engraved into the Black Steel pages.
+file(GLOB HPEQ_SCRATCH_PICTURES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/scratches/*.png)
+juce_add_binary_data(HPEQ_Assets NAMESPACE HpeqAssets SOURCES ${HPEQ_SCRATCH_PICTURES})
+
 target_link_libraries(HPEQ
     PUBLIC
+        HPEQ_Assets
         # Test executables link the plugin's shared code; these modules are compiled once, here.
         juce::juce_audio_utils
         juce::juce_dsp

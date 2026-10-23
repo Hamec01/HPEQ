@@ -1,5 +1,7 @@
 #include "UI/BlackSteel.h"
 
+#include <BinaryData.h>
+
 #include <cmath>
 
 namespace hpeq::ui::steel
@@ -584,5 +586,32 @@ void crtText(juce::Graphics& g, const juce::String& t, juce::Rectangle<float> r,
     g.drawText(t, r.expanded(1.0f), j, false);
     g.setColour(phosphor.withAlpha(alpha));
     g.drawText(t, r, j, false);
+}
+
+int numScratchPictures()
+{
+    return 24;
+}
+
+void scratches(juce::Graphics& g, std::initializer_list<Scratch> list, float strength)
+{
+    for (const auto& s : list)
+    {
+        const auto name = "ussr_" + juce::String(juce::jlimit(0, numScratchPictures() - 1, s.picture)).paddedLeft('0', 2) + "_png";
+        int size = 0;
+        const char* data = HpeqAssets::getNamedResource(name.toRawUTF8(), size);
+        if (data == nullptr)
+            continue;
+        const auto picture = juce::ImageCache::getFromMemory(data, size);
+        if (!picture.isValid())
+            continue;
+        juce::Graphics::ScopedSaveState state(g);
+        g.addTransform(juce::AffineTransform::rotation(juce::degreesToRadians(s.degrees), s.area.getCentreX(), s.area.getCentreY()));
+        // groove: dark, shifted up-left; edge: pale steel catching the light
+        g.setColour(juce::Colours::black.withAlpha(0.55f * strength));
+        g.drawImage(picture, s.area.translated(-1.0f, -1.0f), juce::RectanglePlacement::centred, true);
+        g.setColour(juce::Colour(0xffd8d4c8).withAlpha(0.26f * strength));
+        g.drawImage(picture, s.area, juce::RectanglePlacement::centred, true);
+    }
 }
 } // namespace hpeq::ui::steel

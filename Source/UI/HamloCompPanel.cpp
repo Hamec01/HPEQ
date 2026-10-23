@@ -1,4 +1,5 @@
 #include "UI/HamloCompPanel.h"
+#include "UI/BlackSteel.h"
 
 #include <cmath>
 
@@ -295,6 +296,10 @@ void HamloCompPanel::renderStatic(juce::Graphics& g) const
         g.setColour(juce::Colour(0xff1a1a19));
         g.fillEllipse(c.x - 5.5f, c.y - 5.5f, 11.0f, 11.0f);
     }
+
+    // owner's scratched pictures in free corners of the steel
+    steel::scratches(g, { { 1, { 255.0f, 16.0f, 82.0f, 120.0f }, -5.0f }, { 21, { 832.0f, 16.0f, 82.0f, 120.0f }, 4.0f },
+                          { 10, { 236.0f, 598.0f, 64.0f, 92.0f }, -3.0f } });
 
     // nameplate
     {

@@ -320,6 +320,7 @@ void HamloVerbPanel::resized()
 void HamloVerbPanel::renderStatic(juce::Graphics& g) const
 {
     panel(g, kW, kH, 2025);
+    steel::scratches(g, { { 3, { 304.0f, 14.0f, 82.0f, 122.0f }, 4.0f }, { 18, { 836.0f, 14.0f, 82.0f, 122.0f }, -4.0f } });
     nameplate(g, kPlate, "HamloVerb", juce::String::fromUTF8("MODEL \xd0\xa0\xd0\x92-1"), juce::String::fromUTF8("\xe2\x84\x96 0420"));
 
     // COLOR switch label

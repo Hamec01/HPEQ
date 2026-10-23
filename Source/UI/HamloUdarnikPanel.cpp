@@ -147,6 +147,8 @@ void HamloUdarnikPanel::resized()
 void HamloUdarnikPanel::renderStatic(juce::Graphics& g) const
 {
     steel::panel(g, kW, kH, 1961);
+    steel::scratches(g, { { 19, { 256.0f, 14.0f, 82.0f, 122.0f }, 4.0f }, { 11, { 834.0f, 14.0f, 82.0f, 122.0f }, -4.0f },
+                          { 5, { 236.0f, 590.0f, 66.0f, 96.0f }, -3.0f } });
     steel::nameplate(g, { 590.0f - 185.0f, 41.0f, 370.0f, 92.0f }, "HamloUdarnik", "MODEL UD-1", juce::String::fromUTF8("\xe2\x84\x96 1961"));
     steel::lcdWindow(g, kLcdLeft);
     steel::lcdWindow(g, kLcdRight);

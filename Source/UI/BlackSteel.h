@@ -36,6 +36,17 @@ void lamp(juce::Graphics&, juce::Point<float> c, bool on, float s, juce::Colour 
 void lcdWindow(juce::Graphics&, juce::Rectangle<float>);
 void lcdText(juce::Graphics&, juce::Rectangle<float>, const juce::String&, float size, juce::Justification = juce::Justification::centred);
 
+// Scratched pictures (owner's USSR set, Assets/scratches): `picture` 0..numScratchPictures()-1 is cut into
+// the steel inside `area` (fitted, kept in proportion), turned by `degrees`: a dark groove and a pale edge.
+struct Scratch
+{
+    int picture;
+    juce::Rectangle<float> area;
+    float degrees = 0.0f;
+};
+int numScratchPictures();
+void scratches(juce::Graphics&, std::initializer_list<Scratch>, float strength = 1.0f);
+
 // Brass-bezel needle meter with aged dial paper (HamloComp's meters).
 struct Meter
 {

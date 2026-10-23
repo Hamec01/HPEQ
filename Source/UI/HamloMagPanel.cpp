@@ -288,6 +288,8 @@ void HamloMagPanel::resized()
 void HamloMagPanel::renderStatic(juce::Graphics& g) const
 {
     panel(g, kW, kH, 2027);
+    steel::scratches(g, { { 6, { 372.0f, 138.0f, 68.0f, 94.0f }, -4.0f }, { 13, { 762.0f, 138.0f, 68.0f, 94.0f }, 3.0f },
+                          { 20, { 16.0f, 244.0f, 70.0f, 98.0f }, -6.0f } });
     nameplate(g, kPlate, "HamloMag", juce::String::fromUTF8("MODEL \xd0\x9c\xd0\x90\xd0\x93-4"), juce::String::fromUTF8("\xe2\x84\x96 0422"));
     lcdWindow(g, kLcd);
 

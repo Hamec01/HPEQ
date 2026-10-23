@@ -345,6 +345,7 @@ void HamloEchoPanel::resized()
 void HamloEchoPanel::renderStatic(juce::Graphics& g) const
 {
     panel(g, kW, kH, 2026);
+    steel::scratches(g, { { 9, { 304.0f, 14.0f, 82.0f, 122.0f }, -4.0f }, { 22, { 836.0f, 14.0f, 82.0f, 122.0f }, 5.0f } });
     nameplate(g, kPlate, "HamloEcho", juce::String::fromUTF8("MODEL \xd0\xad\xd0\xa5\xd0\x9e-2"), juce::String::fromUTF8("\xe2\x84\x96 0421"));
     engraved(g, "TIME MODE", juce::Rectangle<float>(kModeX, kModeTop, kModeW, 22.0f), 16.0f);
     lcdWindow(g, kLcd);

@@ -13,8 +13,11 @@
 #include "Harness/TestSignalFactory.h"
 #include "Plugin/FxPluginEditor.h"
 #include "Plugin/FxPluginProcessor.h"
+#include "UI/HamloCompPanel.h"
 #include "UI/HamloEchoPanel.h"
 #include "UI/HamloMagPanel.h"
+#include "UI/HamloRedWallPanel.h"
+#include "UI/HamloUdarnikPanel.h"
 #include "UI/HamloVerbPanel.h"
 
 using namespace hpeq;
@@ -504,6 +507,32 @@ int runUiSnapshots(const juce::File& out)
         }
         processor->setProject(project);
         processor->dispatchPendingMessages();
+    }
+
+    // Every Black Steel page on its own at its design size (scratched pictures, panel layout checks).
+    {
+        const auto shoot = [&](juce::Component& c, int w, int h, const juce::String& name)
+        {
+            c.setSize(w, h);
+            const auto image = c.createComponentSnapshot(c.getLocalBounds(), true, 1.0f);
+            auto file = out.getChildFile(name);
+            file.deleteFile();
+            juce::FileOutputStream stream(file);
+            juce::PNGImageFormat().writeImageToStream(image, stream);
+            std::cout << file.getFullPathName() << "\n";
+        };
+        ui::HamloCompPanel compPanel;
+        shoot(compPanel, 1180, 700, "hpeq_panel_hamlocomp.png");
+        ui::HamloVerbPanel verb;
+        shoot(verb, 1180, 760, "hpeq_panel_hamloverb.png");
+        ui::HamloEchoPanel echo;
+        shoot(echo, 1180, 760, "hpeq_panel_hamloecho.png");
+        ui::HamloMagPanel mag;
+        shoot(mag, 1180, 820, "hpeq_panel_hamlomag.png");
+        ui::HamloRedWallPanel wall;
+        shoot(wall, 1180, 700, "hpeq_panel_hamloredwall.png");
+        ui::HamloUdarnikPanel udarnik;
+        shoot(udarnik, 1180, 700, "hpeq_panel_hamloudarnik.png");
     }
 
     // UI frame cost: analysis update (FFT x2) + full repaint at this size, as the 30 Hz timer does.
