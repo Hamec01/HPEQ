@@ -253,7 +253,7 @@ void HamloShirotaPanel::paint(juce::Graphics& g)
         const auto c = centres[static_cast<size_t>(i)];
         const auto p = static_cast<Param>(i);
         const float angle = (-135.0f + static_cast<float>(normFor(p)) * 270.0f) * kPi / 180.0f;
-        steel::brassKnob(g, c, angle, knobScaleFor(i));
+        steel::brassKnob(g, c, angle, knobScaleFor(i), 1.0f, steel::KnobAsset::AluminumBrassInsert, steel::PointerAsset::WhiteEnamel);
         const auto text = format(p, values.knobs[static_cast<size_t>(i)]);
         if (p == Mode)
         {
@@ -288,7 +288,7 @@ void HamloShirotaPanel::paint(juce::Graphics& g)
     drawCrt(g);
     steel::meterNeedle(g, correlationMeter);
     steel::lamp(g, kLamp, values.on, 1.0f);
-    steel::lever(g, kToggle, values.on ? 0.0f : kPi, 1.15f);
+    steel::lever(g, kToggle, values.on ? 0.0f : kPi, 1.15f, values.on ? steel::LeverPosition::Up : steel::LeverPosition::Down);
     steel::lcdText(g, kLcdLeft, showsError() ? juce::String("----") : (reading.correlation >= 0.0f ? "+" : "") + juce::String(reading.correlation, 2), 21.0f);
     const auto right = reading.guardDb < -0.1f && values.on ? "SAFE " + juce::String(reading.guardDb, 1) + " dB"
                                                             : juce::String(juce::roundToInt(values.knobs[Width] * 100.0)) + " %";

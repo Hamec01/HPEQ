@@ -249,7 +249,7 @@ void HamloUdarnikPanel::paint(juce::Graphics& g)
         const auto c = centres[static_cast<size_t>(i)];
         const auto p = static_cast<Param>(i);
         const float angle = (-135.0f + static_cast<float>(normFor(p)) * 270.0f) * kPi / 180.0f;
-        steel::brassKnob(g, c, angle, kKnobScale);
+        steel::brassKnob(g, c, angle, kKnobScale, 1.0f, steel::KnobAsset::AluminumBrassInsert, steel::PointerAsset::WhiteEnamel);
         const auto text = format(p, values.knobs[static_cast<size_t>(i)]);
         if (p == Mode)
         {
@@ -286,7 +286,7 @@ void HamloUdarnikPanel::paint(juce::Graphics& g)
     drawCrt(g);
     steel::meterNeedle(g, impactMeter);
     steel::lamp(g, kLamp, values.on, 1.0f);
-    steel::lever(g, kToggle, values.on ? 0.0f : kPi, 1.15f);
+    steel::lever(g, kToggle, values.on ? 0.0f : kPi, 1.15f, values.on ? steel::LeverPosition::Up : steel::LeverPosition::Down);
     steel::lcdText(g, kLcdLeft, (impactText >= 0.0f ? "+" : "") + juce::String(impactText, 1) + " dB", 21.0f);
     steel::lcdText(g, kLcdRight, reading.events > 0 ? juce::String(juce::roundToInt(reading.confidence * 100.0f)) + "%  " + juce::String(juce::roundToInt(reading.strengthDb)) + " dB"
                                                     : juce::String("NO HIT"), 19.0f);

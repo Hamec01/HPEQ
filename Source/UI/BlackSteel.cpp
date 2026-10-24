@@ -9,6 +9,71 @@ namespace hpeq::ui::steel
 namespace
 {
 constexpr float kPi = juce::MathConstants<float>::pi;
+
+juce::Image loadHardwareImage(const char* name)
+{
+    int size = 0;
+    const char* data = HpeqAssets::getNamedResource(name, size);
+    return data != nullptr ? juce::ImageCache::getFromMemory(data, size) : juce::Image();
+}
+
+struct HardwareImages
+{
+    juce::Image knobAluminum { loadHardwareImage("knob_aluminum_brass_insert_png") };
+    juce::Image knobBakelite { loadHardwareImage("knob_bakelite_ribbed_png") };
+    juce::Image knobIron { loadHardwareImage("knob_chipped_iron_dark_png") };
+    juce::Image knobLathe { loadHardwareImage("knob_lathe_steel_rust_png") };
+    juce::Image pointerWhite { loadHardwareImage("pointer_white_enamel_png") };
+    juce::Image pointerRed { loadHardwareImage("pointer_red_tip_brass_collar_png") };
+    juce::Image pointerBrass { loadHardwareImage("pointer_brass_wedge_png") };
+    juce::Image pointerBlack { loadHardwareImage("pointer_black_instrument_png") };
+    juce::Image togglePlate { loadHardwareImage("toggle_switch_plate_png") };
+    juce::Image toggleLeverUp { loadHardwareImage("toggle_switch_lever_up_png") };
+    juce::Image toggleLeverDown { loadHardwareImage("toggle_switch_lever_down_png") };
+    juce::Image lampOff { loadHardwareImage("lamp_panel_red_off_png") };
+    juce::Image lampOn { loadHardwareImage("lamp_panel_red_on_png") };
+};
+
+// Function-local static construction is thread-safe and happens on the message thread on first
+// paint. The audio processor never calls any of these UI drawing functions.
+const HardwareImages& hardwareImages()
+{
+    static const HardwareImages images;
+    return images;
+}
+
+const juce::Image& knobImage(const HardwareImages& images, KnobAsset asset)
+{
+    switch (asset)
+    {
+        case KnobAsset::BakeliteRibbed: return images.knobBakelite;
+        case KnobAsset::ChippedIronDark: return images.knobIron;
+        case KnobAsset::LatheSteelRust: return images.knobLathe;
+        case KnobAsset::AluminumBrassInsert:
+        default: return images.knobAluminum;
+    }
+}
+
+const juce::Image& pointerImage(const HardwareImages& images, PointerAsset asset)
+{
+    switch (asset)
+    {
+        case PointerAsset::RedTipBrassCollar: return images.pointerRed;
+        case PointerAsset::BrassWedge: return images.pointerBrass;
+        case PointerAsset::BlackInstrument: return images.pointerBlack;
+        case PointerAsset::WhiteEnamel:
+        default: return images.pointerWhite;
+    }
+}
+
+void drawCenteredImage(juce::Graphics& g, const juce::Image& image, juce::Point<float> centre, float width, float height)
+{
+    if (!image.isValid())
+        return;
+
+    g.drawImage(image, juce::Rectangle<float>(centre.x - width * 0.5f, centre.y - height * 0.5f, width, height),
+                juce::RectanglePlacement::stretchToFit, false);
+}
 }
 
 juce::FontOptions stencilFont(float size, bool bold)
@@ -222,77 +287,74 @@ void knobScale(juce::Graphics& g, juce::Point<float> c, float s)
     g.fillEllipse(c.x - 49.0f * s, c.y - 49.0f * s, 98.0f * s, 98.0f * s);
 }
 
-void brassKnob(juce::Graphics& g, juce::Point<float> c, float angle, float s, float alpha)
+void brassKnob(juce::Graphics& g, juce::Point<float> c, float angle, float s, float alpha, KnobAsset knob, PointerAsset pointer)
 {
+    const auto& images = hardwareImages();
     g.saveState();
-    g.addTransform(juce::AffineTransform::scale(s, s, c.x, c.y));
     if (alpha < 1.0f)
-        g.beginTransparencyLayer(alpha);
-    juce::Path wedge;
-    for (int i = 0; i < 144; i += 2)
-    {
-        const float a0 = angle + static_cast<float>(i) * 2.5f * kPi / 180.0f, a1 = a0 + 2.5f * kPi / 180.0f;
-        wedge.startNewSubPath(c);
-        wedge.addCentredArc(c.x, c.y, 45.0f, 45.0f, 0.0f, a0, a1, false);
-        wedge.closeSubPath();
-    }
-    g.setColour(juce::Colour(0xff0c0c0b));
-    g.fillEllipse(c.x - 45, c.y - 45, 90, 90);
-    g.setColour(juce::Colour(0xff2a2a27));
-    g.fillPath(wedge);
-    juce::Path rim;
-    rim.addEllipse(c.x - 45, c.y - 45, 90, 90);
-    rim.addEllipse(c.x - 40.7f, c.y - 40.7f, 81.4f, 81.4f);
-    rim.setUsingNonZeroWinding(false);
-    g.setColour(juce::Colours::black);
-    g.fillPath(rim);
-    g.setColour(juce::Colour(0xff0a0a09));
-    g.fillEllipse(c.x - 33, c.y - 33, 66, 66);
-    juce::ColourGradient brass(juce::Colour(0xfffff3c4), c.x - 30 + 60 * 0.36f, c.y - 30 + 60 * 0.30f, juce::Colour(0xff4f3912), c.x + 30, c.y + 30, true);
-    brass.addColour(0.22, juce::Colour(0xffe2c06c));
-    brass.addColour(0.55, juce::Colour(0xffa47d2f));
-    g.setGradientFill(brass);
-    g.fillEllipse(c.x - 30, c.y - 30, 60, 60);
-    g.setColour(juce::Colours::black.withAlpha(0.06f));
-    for (float rr = 3.0f; rr < 30.0f; rr += 3.0f)
-        g.drawEllipse(c.x - rr, c.y - rr, 2 * rr, 2 * rr, 1.0f);
-    juce::Path pointer;
-    pointer.addRoundedRectangle(-2.5f, -41.0f, 5.0f, 16.0f, 2.0f);
-    g.setColour(juce::Colour(0x66fff6d8));
-    g.fillPath(pointer, juce::AffineTransform::scale(1.6f, 1.05f).rotated(angle).translated(c));
-    g.setColour(juce::Colour(0xfff4ead0));
-    g.fillPath(pointer, juce::AffineTransform::rotation(angle).translated(c));
-    juce::ColourGradient gloss(juce::Colours::white.withAlpha(0.18f), c.x - 45 + 90 * 0.38f, c.y - 45 + 90 * 0.20f, juce::Colours::transparentWhite,
-                               c.x - 45 + 90 * 0.38f + 34.0f, c.y - 45 + 90 * 0.20f, true);
-    g.setGradientFill(gloss);
-    g.fillEllipse(c.x - 45, c.y - 45, 90, 90);
+        g.beginTransparencyLayer(juce::jlimit(0.0f, 1.0f, alpha));
+
+    const float size = 108.0f * s;
+    g.setColour(juce::Colours::black.withAlpha(0.62f));
+    g.fillEllipse(c.x - size * 0.5f + 1.5f * s, c.y - size * 0.5f + 3.0f * s, size, size);
+    g.setImageResamplingQuality(juce::Graphics::highResamplingQuality);
+    drawCenteredImage(g, knobImage(images, knob), c, size, size);
+
+    g.saveState();
+    g.addTransform(juce::AffineTransform::rotation(angle, c.x, c.y));
+    drawCenteredImage(g, pointerImage(images, pointer), c, size, size);
+    g.restoreState();
+
     if (alpha < 1.0f)
         g.endTransparencyLayer();
     g.restoreState();
 }
 
-void lever(juce::Graphics& g, juce::Point<float> base, float a, float s)
+void lever(juce::Graphics& g, juce::Point<float> base, float a, float s, LeverPosition position)
 {
-    hexagon(g, base, 36.0f * s, 36.0f * s, juce::Colour(0xff9a9a92), juce::Colour(0xff1b1b19));
-    const auto t = juce::AffineTransform::scale(s).rotated(a).translated(base);
-    juce::Path body;
-    body.addRoundedRectangle(-6.0f, -34.0f, 12.0f, 36.0f, 5.0f);
-    g.setColour(juce::Colours::black.withAlpha(0.5f));
-    g.fillPath(body, t.translated(0, 4 * s));
-    juce::ColourGradient chrome(juce::Colour(0xff74746c), juce::Point<float>(-6, 0).transformedBy(t), juce::Colour(0xffc9c9c1),
-                                juce::Point<float>(6, 0).transformedBy(t), false);
-    chrome.addColour(0.42, juce::Colour(0xfff4f4ee));
-    chrome.addColour(0.72, juce::Colour(0xff7a7a72));
-    g.setGradientFill(chrome);
-    g.fillPath(body, t);
-    const auto ball = juce::Point<float>(0.0f, -30.0f).transformedBy(t);
-    juce::ColourGradient ballGrad(juce::Colour(0xfffafaf4), ball.x - 2 * s, ball.y - 3 * s, juce::Colour(0xff46463f), ball.x + 8 * s, ball.y + 8 * s, true);
-    g.setGradientFill(ballGrad);
-    g.fillEllipse(ball.x - 8 * s, ball.y - 8 * s, 16 * s, 16 * s);
+    const auto& images = hardwareImages();
+    auto state = position;
+    if (state == LeverPosition::Auto)
+        state = a < -0.18f ? LeverPosition::Up : a > 0.18f ? LeverPosition::Down : LeverPosition::Neutral;
+
+    // The source pack uses one shared 285x380 coordinate system for the plate and both lever
+    // overlays. Keeping one destination rectangle makes the pivot exact at every UI scale.
+    const float width = 44.0f * s, height = width * 380.0f / 285.0f;
+    const juce::Rectangle<float> dst(base.x - width * 0.5f, base.y - height * (202.0f / 380.0f), width, height);
+    g.saveState();
+    g.setImageResamplingQuality(juce::Graphics::highResamplingQuality);
+    drawCenteredImage(g, images.togglePlate, { dst.getCentreX(), dst.getY() + height * 0.5f }, width, height);
+    if (state == LeverPosition::Up)
+        drawCenteredImage(g, images.toggleLeverUp, { dst.getCentreX(), dst.getY() + height * 0.5f }, width, height);
+    else if (state == LeverPosition::Down)
+        drawCenteredImage(g, images.toggleLeverDown, { dst.getCentreX(), dst.getY() + height * 0.5f }, width, height);
+    g.restoreState();
 }
 
 void lamp(juce::Graphics& g, juce::Point<float> c, bool on, float s, juce::Colour colour)
 {
+    const auto& images = hardwareImages();
+
+    // FREEZE uses the old cyan lamp treatment; the owner's red lamp pack is used for all normal
+    // red pilot lamps and keeps the exact on/off bezel and glow in one cached image.
+    if (colour.getRed() >= colour.getBlue() * 1.2f)
+    {
+        const float size = 68.0f * s;
+        if (on)
+        {
+            const float halo = 62.0f * s;
+            juce::ColourGradient glow(colour.withAlpha(0.26f), c.x, c.y, colour.withAlpha(0.0f), c.x + halo, c.y, true);
+            g.setGradientFill(glow);
+            g.fillEllipse(c.x - halo, c.y - halo, 2.0f * halo, 2.0f * halo);
+        }
+        g.saveState();
+        g.setImageResamplingQuality(juce::Graphics::highResamplingQuality);
+        drawCenteredImage(g, on ? images.lampOn : images.lampOff, c, size, size);
+        g.restoreState();
+        return;
+    }
+
+    // Preserve the established coloured-lamp rendering for the blue FREEZE indicator.
     g.setColour(juce::Colour(0xff111111));
     g.fillEllipse(c.x - 34 * s, c.y - 34 * s, 68 * s, 68 * s);
     g.setColour(juce::Colour(0xff8d8d85));

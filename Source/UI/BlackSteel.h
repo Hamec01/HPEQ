@@ -26,10 +26,37 @@ void nameplate(juce::Graphics&, juce::Rectangle<float> plate, const juce::String
                const juce::String& number);
 // Engraved 21-tick scale (270 degrees) and the recessed ring a knob sits in.
 void knobScale(juce::Graphics&, juce::Point<float> c, float s);
-// Knurled black skirt, brass cap with grooves, cream pointer, gloss. `angle` in radians (0 = up).
-void brassKnob(juce::Graphics&, juce::Point<float> c, float angle, float s, float alpha = 1.0f);
-// Chrome toggle lever on a hexagon nut; `angle` in radians.
-void lever(juce::Graphics&, juce::Point<float> base, float angle, float s);
+
+enum class KnobAsset
+{
+    AluminumBrassInsert,
+    BakeliteRibbed,
+    ChippedIronDark,
+    LatheSteelRust
+};
+
+enum class PointerAsset
+{
+    WhiteEnamel,
+    RedTipBrassCollar,
+    BrassWedge,
+    BlackInstrument
+};
+
+enum class LeverPosition
+{
+    Auto,
+    Up,
+    Neutral,
+    Down
+};
+
+// Owner-supplied knob body and pointer. `angle` is in radians (0 = up), `s` scales around the
+// centre, and `alpha` keeps the old dimmed/bypassed appearance. Defaults retain the old call sites.
+void brassKnob(juce::Graphics&, juce::Point<float> c, float angle, float s, float alpha = 1.0f,
+               KnobAsset knob = KnobAsset::AluminumBrassInsert, PointerAsset pointer = PointerAsset::WhiteEnamel);
+// Owner-supplied TP1-2 plate plus up/neutral/down lever; `angle` in radians for automatic state selection.
+void lever(juce::Graphics&, juce::Point<float> base, float angle, float s, LeverPosition position = LeverPosition::Auto);
 // Red pilot lamp in a grey bezel.
 void lamp(juce::Graphics&, juce::Point<float> c, bool on, float s, juce::Colour colour = juce::Colour(0xffff3b2d));
 // Amber LCD window and its text.

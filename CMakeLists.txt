@@ -50,8 +50,7 @@ target_compile_definitions(HPEQ
     PUBLIC
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
-        JUCE_VST3_CAN_REPLACE_VST2=0
-        JUCE_DISPLAY_SPLASH_SCREEN=0)
+        JUCE_VST3_CAN_REPLACE_VST2=0)
 
 target_sources(HPEQ
     PRIVATE
@@ -96,7 +95,12 @@ target_include_directories(HPEQ PUBLIC Source)
 
 # Owner's scratched USSR pictures (alpha masks), engraved into the Black Steel pages.
 file(GLOB HPEQ_SCRATCH_PICTURES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/scratches/*.png)
-juce_add_binary_data(HPEQ_Assets NAMESPACE HpeqAssets SOURCES ${HPEQ_SCRATCH_PICTURES})
+# The complete owner-supplied hardware pack is embedded in the same binary-data library, so the
+# plugin never depends on files next to the installed .vst3 bundle.
+file(GLOB_RECURSE HPEQ_HARDWARE_PICTURES CONFIGURE_DEPENDS
+     ${CMAKE_CURRENT_SOURCE_DIR}/docs/fx-addon/assets/soviet_hardware_pack/*.png)
+juce_add_binary_data(HPEQ_Assets NAMESPACE HpeqAssets
+                     SOURCES ${HPEQ_SCRATCH_PICTURES} ${HPEQ_HARDWARE_PICTURES})
 
 target_link_libraries(HPEQ
     PUBLIC

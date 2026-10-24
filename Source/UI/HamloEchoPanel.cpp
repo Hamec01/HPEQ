@@ -398,7 +398,7 @@ void HamloEchoPanel::drawKnob(juce::Graphics& g, const Knob& k) const
     const bool linkedR = k.param == TimeR && values.switches[Link] > 0 && values.switches[Character] != echo::Classic;
     const auto shown = linkedR ? TimeL : k.param; // a linked right time follows the left one
     const float angle = (-135.0f + static_cast<float>(normFor(shown)) * 270.0f) * kPi / 180.0f;
-    brassKnob(g, k.centre, angle, k.scale, active ? 1.0f : 0.45f);
+    brassKnob(g, k.centre, angle, k.scale, active ? 1.0f : 0.45f, KnobAsset::LatheSteelRust, PointerAsset::WhiteEnamel);
     const bool large = k.param < kLarge;
     const auto r = juce::Rectangle<float>(k.centre.x - (large ? 80.0f : 48.0f), (large ? kLargeReadoutY : kSmallReadoutY) - 12.0f,
                                           large ? 160.0f : 96.0f, 24.0f);
@@ -475,7 +475,7 @@ void HamloEchoPanel::drawSelector(juce::Graphics& g) const
         g.drawText(text, r, just);
     }
     const float a = characterAngle(selected);
-    brassKnob(g, kSelector, a, 1.15f);
+    brassKnob(g, kSelector, a, 1.15f, 1.0f, KnobAsset::LatheSteelRust, PointerAsset::WhiteEnamel);
     juce::Path head;
     head.startNewSubPath(-11.0f, 18.0f);
     head.lineTo(-6.0f, -52.0f);
@@ -525,7 +525,7 @@ void HamloEchoPanel::drawLevers(juce::Graphics& g) const
     lamp(g, kLamp, values.on, 0.62f);
     for (const auto& [centre, on] : { std::pair { kPingLever, values.switches[PingPong] > 0 }, std::pair { kFreezeLever, values.switches[Freeze] > 0 } })
     {
-        lever(g, centre, on ? 0.0f : kPi, 0.8f);
+        lever(g, centre, on ? 0.0f : kPi, 0.8f, on ? LeverPosition::Up : LeverPosition::Down);
         g.setFont(stencilFont(10.5f).withKerningFactor(0.15f));
         g.setColour(stencilDim);
         g.drawText("ON", juce::Rectangle<float>(centre.x - 52.0f, centre.y - 30.0f, 30.0f, 13.0f), juce::Justification::centred);

@@ -259,7 +259,7 @@ void HamloZastavaPanel::paint(juce::Graphics& g)
         const auto c = centres[static_cast<size_t>(i)];
         const auto p = static_cast<Param>(i);
         const float angle = (-135.0f + static_cast<float>(normFor(p)) * 270.0f) * kPi / 180.0f;
-        steel::brassKnob(g, c, angle, knobScaleFor(i));
+        steel::brassKnob(g, c, angle, knobScaleFor(i), 1.0f, steel::KnobAsset::AluminumBrassInsert, steel::PointerAsset::WhiteEnamel);
         const auto text = format(p, values.knobs[static_cast<size_t>(i)]);
         if (p == Mode)
         {
@@ -295,7 +295,7 @@ void HamloZastavaPanel::paint(juce::Graphics& g)
     drawCrt(g);
     steel::meterNeedle(g, attenuationMeter);
     steel::lamp(g, kLamp, values.on, 1.0f);
-    steel::lever(g, kToggle, values.on ? 0.0f : kPi, 1.15f);
+    steel::lever(g, kToggle, values.on ? 0.0f : kPi, 1.15f, values.on ? steel::LeverPosition::Up : steel::LeverPosition::Down);
     steel::lcdText(g, kLcdLeft, reading.keyDb <= -90.0f ? juce::String("-inf dB") : juce::String(reading.keyDb, 1) + " dB", 21.0f);
     const auto state = values.switches[Flip] == 1 ? juce::String("FLIP") : (reading.attenuationDb < 1.0f ? juce::String("OPEN") : "SHUT -" + juce::String(juce::roundToInt(reading.attenuationDb)) + " dB");
     steel::lcdText(g, kLcdRight, values.on ? state : juce::String("OFF"), 20.0f);

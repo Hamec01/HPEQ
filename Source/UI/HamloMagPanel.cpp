@@ -462,7 +462,7 @@ void HamloMagPanel::drawKnob(juce::Graphics& g, const Knob& k) const
 {
     const bool active = isActive(k.param);
     const float angle = (-135.0f + static_cast<float>(normFor(k.param)) * 270.0f) * kPi / 180.0f;
-    brassKnob(g, k.centre, angle, k.scale, active ? 1.0f : 0.45f);
+    brassKnob(g, k.centre, angle, k.scale, active ? 1.0f : 0.45f, KnobAsset::ChippedIronDark, PointerAsset::WhiteEnamel);
     const bool large = k.param < kLarge;
     const auto r = juce::Rectangle<float>(k.centre.x - (large ? 80.0f : 60.0f), (large ? kLargeReadoutY : kSmallReadoutY) - 12.0f,
                                           large ? 160.0f : 120.0f, 24.0f);
@@ -496,7 +496,7 @@ void HamloMagPanel::drawSelector(juce::Graphics& g) const
         g.drawText(text, r, just);
     }
     const float a = modelAngle(selected);
-    brassKnob(g, kSelector, a, 1.15f);
+    brassKnob(g, kSelector, a, 1.15f, 1.0f, KnobAsset::ChippedIronDark, PointerAsset::WhiteEnamel);
     juce::Path head;
     head.startNewSubPath(-11.0f, 18.0f);
     head.lineTo(-6.0f, -52.0f);
@@ -556,7 +556,7 @@ void HamloMagPanel::drawToggles(juce::Graphics& g) const
     {
         const bool on = values.switches[which[static_cast<size_t>(i)]] > 0;
         const auto c = toggleCentre(i);
-        lever(g, c, on ? 0.0f : kPi, 0.62f);
+        lever(g, c, on ? 0.0f : kPi, 0.62f, on ? LeverPosition::Up : LeverPosition::Down);
         const bool usable = !classic || which[static_cast<size_t>(i)] == Auto;
         if (on && usable)
         {
@@ -566,7 +566,7 @@ void HamloMagPanel::drawToggles(juce::Graphics& g) const
     }
     // NOISE: ALWAYS / FOLLOW
     const bool follow = values.switches[NoiseFollow] > 0;
-    lever(g, kNoiseToggle, follow ? 0.0f : kPi, 0.62f);
+    lever(g, kNoiseToggle, follow ? 0.0f : kPi, 0.62f, follow ? LeverPosition::Up : LeverPosition::Down);
     g.setFont(stencilFont(11.0f).withKerningFactor(0.1f));
     g.setColour(follow ? juce::Colour(0xfffff6d0) : stencilDim);
     g.drawText("FOLLOW", juce::Rectangle<float>(kNoiseToggle.x + 14.0f, kNoiseToggle.y - 26.0f, 60.0f, 14.0f), juce::Justification::centredLeft);

@@ -379,7 +379,7 @@ void HamloVerbPanel::drawKnob(juce::Graphics& g, const Knob& k) const
 {
     const bool active = isActive(k.param);
     const float angle = (-135.0f + static_cast<float>(normFor(k.param)) * 270.0f) * kPi / 180.0f;
-    brassKnob(g, k.centre, angle, k.scale, active ? 1.0f : 0.45f);
+    brassKnob(g, k.centre, angle, k.scale, active ? 1.0f : 0.45f, KnobAsset::BakeliteRibbed, PointerAsset::WhiteEnamel);
     const bool large = k.param < kLarge;
     const auto r = juce::Rectangle<float>(k.centre.x - (large ? 80.0f : 48.0f), (large ? kLargeReadoutY : kSmallReadoutY) - 12.0f,
                                           large ? 160.0f : 96.0f, 24.0f);
@@ -436,7 +436,7 @@ void HamloVerbPanel::drawSpaceSelector(juce::Graphics& g) const
     }
     // the knob: a large bakelite chicken-head on a brass skirt
     const float a = spaceAngle(selected);
-    brassKnob(g, kSelector, a, 1.15f);
+    brassKnob(g, kSelector, a, 1.15f, 1.0f, KnobAsset::BakeliteRibbed, PointerAsset::WhiteEnamel);
     juce::Path head;
     head.startNewSubPath(-11.0f, 18.0f);
     head.lineTo(-6.0f, -52.0f);
@@ -484,7 +484,7 @@ void HamloVerbPanel::drawColorSwitch(juce::Graphics& g) const
 void HamloVerbPanel::drawFreeze(juce::Graphics& g) const
 {
     const bool on = values.switches[Freeze] > 0;
-    lever(g, kFreezeLever, on ? 0.0f : kPi, 0.85f);
+    lever(g, kFreezeLever, on ? 0.0f : kPi, 0.85f, on ? LeverPosition::Up : LeverPosition::Down);
     g.setFont(stencilFont(11.0f).withKerningFactor(0.15f));
     g.setColour(stencilDim);
     g.drawText("ON", juce::Rectangle<float>(kFreezeLever.x - 70.0f, kFreezeLever.y - 30.0f, 40.0f, 14.0f), juce::Justification::centred);

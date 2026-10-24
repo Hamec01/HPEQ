@@ -477,48 +477,7 @@ void HamloCompPanel::drawKnob(juce::Graphics& g, const Knob& k) const
 {
     const float angle = (-135.0f + static_cast<float>(normFor(k.param)) * 270.0f) * kPi / 180.0f;
     const auto c = k.centre;
-    // knurled body (conic stripes every 2.5 degrees), black rim
-    juce::Path wedge;
-    for (int i = 0; i < 144; i += 2)
-    {
-        const float a0 = angle + static_cast<float>(i) * 2.5f * kPi / 180.0f, a1 = a0 + 2.5f * kPi / 180.0f;
-        wedge.startNewSubPath(c);
-        wedge.addCentredArc(c.x, c.y, 45.0f, 45.0f, 0.0f, a0, a1, false);
-        wedge.closeSubPath();
-    }
-    g.setColour(juce::Colour(0xff0c0c0b));
-    g.fillEllipse(c.x - 45, c.y - 45, 90, 90);
-    g.setColour(juce::Colour(0xff2a2a27));
-    g.fillPath(wedge);
-    juce::Path rim;
-    rim.addEllipse(c.x - 45, c.y - 45, 90, 90);
-    rim.addEllipse(c.x - 40.7f, c.y - 40.7f, 81.4f, 81.4f);
-    rim.setUsingNonZeroWinding(false);
-    g.setColour(juce::Colours::black);
-    g.fillPath(rim);
-    // brass cap with grooves
-    g.setColour(juce::Colour(0xff0a0a09));
-    g.fillEllipse(c.x - 33, c.y - 33, 66, 66);
-    juce::ColourGradient brass(juce::Colour(0xfffff3c4), c.x - 30 + 60 * 0.36f, c.y - 30 + 60 * 0.30f, juce::Colour(0xff4f3912), c.x + 30, c.y + 30, true);
-    brass.addColour(0.22, juce::Colour(0xffe2c06c));
-    brass.addColour(0.55, juce::Colour(0xffa47d2f));
-    g.setGradientFill(brass);
-    g.fillEllipse(c.x - 30, c.y - 30, 60, 60);
-    g.setColour(juce::Colours::black.withAlpha(0.06f));
-    for (float rr = 3.0f; rr < 30.0f; rr += 3.0f)
-        g.drawEllipse(c.x - rr, c.y - rr, 2 * rr, 2 * rr, 1.0f);
-    // pointer (cream bar near the rim, turning with the knob)
-    juce::Path pointer;
-    pointer.addRoundedRectangle(-2.5f, -41.0f, 5.0f, 16.0f, 2.0f);
-    g.setColour(juce::Colour(0x66fff6d8));
-    g.fillPath(pointer, juce::AffineTransform::scale(1.6f, 1.05f).rotated(angle).translated(c));
-    g.setColour(juce::Colour(0xfff4ead0));
-    g.fillPath(pointer, juce::AffineTransform::rotation(angle).translated(c));
-    // gloss
-    juce::ColourGradient gloss(juce::Colours::white.withAlpha(0.18f), c.x - 45 + 90 * 0.38f, c.y - 45 + 90 * 0.20f, juce::Colours::transparentWhite,
-                               c.x - 45 + 90 * 0.38f + 34.0f, c.y - 45 + 90 * 0.20f, true);
-    g.setGradientFill(gloss);
-    g.fillEllipse(c.x - 45, c.y - 45, 90, 90);
+    steel::brassKnob(g, c, angle, 1.0f, 1.0f, steel::KnobAsset::AluminumBrassInsert, steel::PointerAsset::WhiteEnamel);
 
     // readout
     g.setFont(stencilFont(25.0f));
@@ -534,7 +493,6 @@ void HamloCompPanel::drawSwitch(juce::Graphics& g, int which) const
     const auto& options = kSwitchOptions[static_cast<size_t>(which)];
     const int n = options.size(), selected = juce::jlimit(0, n - 1, values.switches[static_cast<size_t>(which)]);
     const float dialTop = switchTop(which) + 22.0f;
-    const float spread = n == 2 ? 34.0f : 38.0f;
     for (int i = 0; i < n; ++i)
     {
         const float x = kSwitchDialX + kSwitchDialW * (0.12f + 0.76f * static_cast<float>(i) / static_cast<float>(n - 1));
@@ -551,61 +509,15 @@ void HamloCompPanel::drawSwitch(juce::Graphics& g, int which) const
         g.drawText(options[i].toUpperCase(), r, juce::Justification::centred);
     }
     const juce::Point<float> base(kSwitchDialX + kSwitchDialW * 0.5f, dialTop + 46.0f);
-    hexagon(g, base, 36.0f, 36.0f, juce::Colour(0xff9a9a92), juce::Colour(0xff1b1b19));
-    const float a = (n == 1 ? 0.0f : -spread + 2.0f * spread / static_cast<float>(n - 1) * static_cast<float>(selected)) * kPi / 180.0f;
-    const auto t = juce::AffineTransform::rotation(a).translated(base);
-    juce::Path lever;
-    lever.addRoundedRectangle(-6.0f, -34.0f, 12.0f, 36.0f, 5.0f);
-    g.setColour(juce::Colours::black.withAlpha(0.5f));
-    g.fillPath(lever, t.translated(0, 4));
-    juce::ColourGradient chrome(juce::Colour(0xff74746c), juce::Point<float>(-6, 0).transformedBy(t), juce::Colour(0xffc9c9c1),
-                                juce::Point<float>(6, 0).transformedBy(t), false);
-    chrome.addColour(0.42, juce::Colour(0xfff4f4ee));
-    chrome.addColour(0.72, juce::Colour(0xff7a7a72));
-    g.setGradientFill(chrome);
-    g.fillPath(lever, t);
-    const auto ball = juce::Point<float>(0.0f, -30.0f).transformedBy(t);
-    juce::ColourGradient ballGrad(juce::Colour(0xfffafaf4), ball.x - 2, ball.y - 3, juce::Colour(0xff46463f), ball.x + 8, ball.y + 8, true);
-    g.setGradientFill(ballGrad);
-    g.fillEllipse(ball.x - 8, ball.y - 8, 16, 16);
+    const float a = (n == 1 ? 0.0f : (-38.0f + 76.0f / static_cast<float>(n - 1) * static_cast<float>(selected))) * kPi / 180.0f;
+    steel::lever(g, base, a, 1.0f);
 }
 
 void HamloCompPanel::drawPower(juce::Graphics& g) const
 {
-    const auto c = kLamp;
-    g.setColour(juce::Colour(0xff111111));
-    g.fillEllipse(c.x - 34, c.y - 34, 68, 68);
-    g.setColour(juce::Colour(0xff8d8d85));
-    g.fillEllipse(c.x - 32, c.y - 32, 64, 64);
-    if (values.on)
-    {
-        for (float rr : { 60.0f, 44.0f })
-        {
-            juce::ColourGradient glow(juce::Colour(0xffff3b2d).withAlpha(rr > 50 ? 0.25f : 0.45f), c.x, c.y, juce::Colour(0x00ff3b2d), c.x + rr, c.y, true);
-            g.setGradientFill(glow);
-            g.fillEllipse(c.x - rr, c.y - rr, 2 * rr, 2 * rr);
-        }
-        juce::ColourGradient lamp(juce::Colour(0xfffff3f0), c.x - 26 + 52 * 0.35f, c.y - 26 + 52 * 0.30f, juce::Colour(0xffa1160e), c.x + 26, c.y + 26, true);
-        lamp.addColour(0.32, juce::Colour(0xffff4a3a));
-        g.setGradientFill(lamp);
-    }
-    else
-    {
-        juce::ColourGradient lamp(juce::Colour(0xff555555), c.x - 26 + 52 * 0.35f, c.y - 26 + 52 * 0.30f, juce::Colour(0xff0a0a09), c.x + 26, c.y + 26, true);
-        lamp.addColour(0.6, juce::Colour(0xff1c1c1b));
-        g.setGradientFill(lamp);
-    }
-    g.fillEllipse(c.x - 26, c.y - 26, 52, 52);
-
-    hexagon(g, kToggle, 40.0f, 56.0f, juce::Colour(0xff9a9a92), juce::Colour(0xff1b1b19));
-    juce::Path lever;
-    lever.addRoundedRectangle(-5.5f, -26.0f, 11.0f, 34.0f, 5.0f);
-    const auto t = juce::AffineTransform::rotation(values.on ? 0.0f : kPi).translated(kToggle.x, kToggle.y + (values.on ? 0.0f : 0.0f));
-    juce::ColourGradient chrome(juce::Colour(0xff74746c), juce::Point<float>(-5.5f, 0).transformedBy(t), juce::Colour(0xffc9c9c1),
-                                juce::Point<float>(5.5f, 0).transformedBy(t), false);
-    chrome.addColour(0.42, juce::Colour(0xfff4f4ee));
-    g.setGradientFill(chrome);
-    g.fillPath(lever, t);
+    steel::lamp(g, kLamp, values.on, 1.0f);
+    steel::lever(g, kToggle, values.on ? 0.0f : kPi, 1.15f,
+                 values.on ? steel::LeverPosition::Up : steel::LeverPosition::Down);
 }
 
 void HamloCompPanel::drawMeterDynamic(juce::Graphics& g, const Meter& m) const
