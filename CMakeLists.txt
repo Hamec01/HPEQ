@@ -114,6 +114,133 @@ target_link_libraries(HPEQ
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
 
+# --- Standalone module plug-ins ---------------------------------------------------------------
+# These targets are additive: HPEQ above keeps its processor, editor, identity and source list.
+# Common module code is compiled once and linked into eight small variant targets.
+add_library(HPEQ_ModuleShared STATIC
+    Source/DSP/Biquad.cpp
+    Source/DSP/FxNodeProcessor.cpp
+    Source/DSP/LayerEngine.cpp
+    Source/DSP/PreEqProcessor.cpp
+    Source/DSP/Processors.cpp
+    Source/DSP/ReverbProcessor.cpp
+    Source/DSP/HamloVerb.cpp
+    Source/DSP/HamloEcho.cpp
+    Source/DSP/HamloMag.cpp
+    Source/DSP/ProcessorsM6.cpp
+    Source/DSP/HamloRedWall.cpp
+    Source/DSP/HamloUdarnik.cpp
+    Source/DSP/HamloZastava.cpp
+    Source/DSP/HamloShirota.cpp
+    Source/DSP/CrossoverTree.cpp
+    Source/DSP/EqDesign.cpp
+    Source/UI/BlackSteel.cpp
+    Source/UI/HamloCompPanel.cpp
+    Source/UI/HamloVerbPanel.cpp
+    Source/UI/HamloEchoPanel.cpp
+    Source/UI/HamloMagPanel.cpp
+    Source/UI/HamloRedWallPanel.cpp
+    Source/UI/HamloUdarnikPanel.cpp
+    Source/UI/HamloZastavaPanel.cpp
+    Source/UI/HamloShirotaPanel.cpp
+    Source/Standalone/ModuleVariant.cpp
+    Source/Standalone/ModulePluginProcessor.cpp
+    Source/Standalone/ModulePluginEditor.cpp)
+target_include_directories(HPEQ_ModuleShared
+    PUBLIC Source
+    PRIVATE
+        "${juce_SOURCE_DIR}/modules"
+        "${CMAKE_CURRENT_BINARY_DIR}/juce_binarydata_HPEQ_Assets/JuceLibraryCode")
+target_compile_definitions(HPEQ_ModuleShared
+    PUBLIC
+        JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0
+        JUCE_VST3_CAN_REPLACE_VST2=0)
+target_link_libraries(HPEQ_ModuleShared
+    PRIVATE
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+
+function(hpeq_add_module_plugin target product bundle_id plugin_code kind)
+    juce_add_plugin(${target}
+        COMPANY_NAME "HamloProd"
+        BUNDLE_ID ${bundle_id}
+        IS_SYNTH FALSE
+        NEEDS_MIDI_INPUT FALSE
+        NEEDS_MIDI_OUTPUT FALSE
+        IS_MIDI_EFFECT FALSE
+        EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+        COPY_PLUGIN_AFTER_BUILD TRUE
+        VST3_COPY_DIR "${CMAKE_BINARY_DIR}/HamloModules/$<CONFIG>"
+        PLUGIN_MANUFACTURER_CODE BBLB
+        PLUGIN_CODE ${plugin_code}
+        VST3_CATEGORIES Fx
+        FORMATS VST3
+        PRODUCT_NAME ${product})
+    target_sources(${target} PRIVATE Source/Standalone/ModulePluginEntry.cpp)
+    target_include_directories(${target} PRIVATE Source)
+    target_compile_definitions(${target} PRIVATE
+        HPEQ_MODULE_KIND=${kind}
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0
+        JUCE_VST3_CAN_REPLACE_VST2=0)
+    target_link_libraries(${target}
+        PRIVATE
+            HPEQ_ModuleShared
+            HPEQ_Assets
+            juce::juce_audio_utils
+            juce::juce_dsp
+            juce::juce_audio_formats
+            juce::juce_cryptography
+            juce::juce_recommended_config_flags
+            juce::juce_recommended_warning_flags)
+    set_target_properties(${target} PROPERTIES FOLDER "Standalone Modules")
+    set_target_properties(${target}_VST3 PROPERTIES FOLDER "Standalone Modules")
+endfunction()
+
+hpeq_add_module_plugin(HamloComp HamloComp com.hamloprod.hamlocomp HmCp 0)
+hpeq_add_module_plugin(HamloVerb HamloVerb com.hamloprod.hamloverb HmVb 1)
+hpeq_add_module_plugin(HamloEcho HamloEcho com.hamloprod.hamloecho HmEc 2)
+hpeq_add_module_plugin(HamloMag HamloMag com.hamloprod.hamlomag HmMg 3)
+hpeq_add_module_plugin(HamloRedWall HamloRedWall com.hamloprod.hamloredwall HmRw 4)
+hpeq_add_module_plugin(HamloUdarnik HamloUdarnik com.hamloprod.hamloudarnik HmUd 5)
+hpeq_add_module_plugin(HamloZastava HamloZastava com.hamloprod.hamlozastava HmZa 6)
+hpeq_add_module_plugin(HamloShirota HamloShirota com.hamloprod.hamloshirota HmSh 7)
+
+add_custom_target(HPEQ_ModuleVSTs
+    DEPENDS HamloComp_VST3 HamloVerb_VST3 HamloEcho_VST3 HamloMag_VST3
+            HamloRedWall_VST3 HamloUdarnik_VST3 HamloZastava_VST3 HamloShirota_VST3)
+set_target_properties(HPEQ_ModuleVSTs PROPERTIES FOLDER "Standalone Modules")
+
+add_executable(HPEQ_ModuleTests
+    Tests/Unit/ModuleTestMain.cpp
+    Tests/Unit/ModulePluginTests.cpp)
+target_link_libraries(HPEQ_ModuleTests
+    PRIVATE
+        HPEQ_ModuleShared
+        HPEQ_Assets
+        juce::juce_audio_utils
+        juce::juce_dsp
+        juce::juce_audio_formats
+        juce::juce_cryptography
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+add_test(NAME HPEQ_ModuleTests COMMAND HPEQ_ModuleTests)
+
+add_executable(HPEQ_ModuleHostSmoke Tests/Tools/ModuleHostSmokeMain.cpp)
+target_link_libraries(HPEQ_ModuleHostSmoke
+    PRIVATE
+        juce::juce_audio_processors
+        juce::juce_audio_formats
+        juce::juce_cryptography
+        juce::juce_dsp
+        juce::juce_gui_basics
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+target_compile_definitions(HPEQ_ModuleHostSmoke PRIVATE
+    JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_PLUGINHOST_VST3=1 JUCE_MODAL_LOOPS_PERMITTED=1)
+
 # --- Measurement harness (shared by the M0 tool and the unit tests) ----------------------------
 set(HPEQ_HARNESS_SOURCES
     Tests/Harness/TestSignalFactory.cpp

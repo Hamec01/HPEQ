@@ -1,0 +1,35 @@
+#pragma once
+
+#include <functional>
+#include <memory>
+
+#include <juce_gui_basics/juce_gui_basics.h>
+
+#include "Standalone/ModulePluginProcessor.h"
+
+namespace hpeq::standalone
+{
+class ModulePluginEditor final : public juce::AudioProcessorEditor, private juce::Timer
+{
+public:
+    explicit ModulePluginEditor(ModulePluginProcessor&);
+    ~ModulePluginEditor() override;
+
+    void resized() override;
+
+private:
+    template <typename Panel>
+    void installPanel(std::unique_ptr<Panel>);
+    void beginGesture(const juce::String& id);
+    void endGesture();
+    void setImmediate(const juce::String& id, double value);
+    void timerCallback() override;
+
+    ModulePluginProcessor& processor;
+    std::unique_ptr<juce::Component> panel;
+    std::function<void()> refreshPanel;
+    juce::RangedAudioParameter* activeGesture = nullptr;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulePluginEditor)
+};
+} // namespace hpeq::standalone
