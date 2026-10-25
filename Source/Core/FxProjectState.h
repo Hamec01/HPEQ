@@ -52,6 +52,10 @@ struct EqNodeState
     bool solo = false;
     bool dynamic = false;
     double thresholdDb = -30.0, ratio = 3.0, attackMs = 10.0, releaseMs = 120.0, rangeDb = -6.0;
+    // DETECT (de-esser on the point, owner 2026-10-26): 0 BAND = the point's own region; 1 VOICE = the
+    // region against the voice body (300 Hz - 3 kHz): it reacts to how far the "s" stands out over the
+    // voice, not to how loud the voice is.
+    int detect = 0;
     // D6: optional modules on the point's band (after PRE-EQ), 0..kMaxFxPerNode, processed in order.
     std::vector<FxSlotState> chain;
     int engineSlot = -1; // stable engine node 0..7 while the chain is not empty (assignEngineSlots)

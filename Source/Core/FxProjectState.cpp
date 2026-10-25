@@ -45,6 +45,7 @@ const juce::Identifier dynRatio { "dynRatio" };
 const juce::Identifier dynAttackMs { "dynAttackMs" };
 const juce::Identifier dynReleaseMs { "dynReleaseMs" };
 const juce::Identifier dynRangeDb { "dynRangeDb" };
+const juce::Identifier dynDetect { "dynDetect" };
 const juce::Identifier lowHz { "lowHz" };
 const juce::Identifier highHz { "highHz" };
 const juce::Identifier type { "type" };
@@ -525,7 +526,7 @@ juce::ValueTree toValueTree(const FxProjectState& project)
                 nt.setProperty(ids::solo, true, nullptr);
             const EqNodeState plain;
             if (node.dynamic || node.thresholdDb != plain.thresholdDb || node.ratio != plain.ratio || node.attackMs != plain.attackMs
-                || node.releaseMs != plain.releaseMs || node.rangeDb != plain.rangeDb)
+                || node.releaseMs != plain.releaseMs || node.rangeDb != plain.rangeDb || node.detect != plain.detect)
             {
                 nt.setProperty(ids::dynamic, node.dynamic, nullptr);
                 nt.setProperty(ids::dynThresholdDb, exactText(node.thresholdDb), nullptr);
@@ -533,6 +534,8 @@ juce::ValueTree toValueTree(const FxProjectState& project)
                 nt.setProperty(ids::dynAttackMs, exactText(node.attackMs), nullptr);
                 nt.setProperty(ids::dynReleaseMs, exactText(node.releaseMs), nullptr);
                 nt.setProperty(ids::dynRangeDb, exactText(node.rangeDb), nullptr);
+                if (node.detect != 0)
+                    nt.setProperty(ids::dynDetect, node.detect, nullptr);
             }
             if (!node.chain.empty())
             {
@@ -634,6 +637,7 @@ std::optional<FxProjectState> fromValueTree(const juce::ValueTree& root, juce::S
                 node.attackMs = readDouble(nt, ids::dynAttackMs, 10.0);
                 node.releaseMs = readDouble(nt, ids::dynReleaseMs, 120.0);
                 node.rangeDb = readDouble(nt, ids::dynRangeDb, -6.0);
+                node.detect = juce::jlimit(0, 1, static_cast<int>(nt.getProperty(ids::dynDetect, 0)));
                 node.engineSlot = nt.getProperty(ids::engineSlot, -1);
                 for (const auto& st : nt)
                     if (st.hasType(ids::slot))

@@ -110,3 +110,29 @@ nameplate and scratched pictures.
   picture at every editor tick instead of every 5 s; FREEZE holds it).
 
 ![The module tiles](eq_pass/screenshots/hpeq_module_icons.png)
+
+---
+
+## 7. De-esser on the point (owner, 2026-10-26: "put the de-esser on the point itself")
+
+Instead of a separate module, the EQ point's DYNAMIC got a second detector and a one-press setting:
+
+- **DETECT BAND / VOICE** (`dynDetect`, saved only when VOICE). VOICE compares the point's region with the
+  voice body (band pass 1 kHz, Q 0.6: 300 Hz – 3 kHz), same attack / release: the detector level is
+  region − voice − 20 dB, so the THRESH scale reads as before (−28 dB = the region 8 dB under the voice);
+  below −60 dBFS in the region nothing triggers. It reacts to how far an "s" stands out over the voice, not
+  to how loud the singer is.
+- **DE-ESS** (button on the point page): bell 7 kHz, Q 0.8 (sibilance spreads over ~4.5–11 kHz), static gain
+  0, DYNAMIC on, VOICE, THRESH −28 dB, RATIO 4, RANGE −9 dB, ATTACK 0.5 ms, RELEASE 40 ms. Every value stays
+  editable; SOLO on the point listens to the region.
+- Not on the point: look-ahead (the PRE-EQ has no latency; the 0.5 ms attack catches the "s") and a wide
+  (whole-signal) mode — the reduction is the point's band, as a split de-esser.
+
+| Test (synthetic voice: a vowel 180 Hz with formants 700 / 1200 / 2600 Hz; an "s" = noise around 7 kHz; the vowel +6 dB) | Threshold | Result |
+|---|---|---|
+| "s" | ≥ 4 dB down | −5.52 dB |
+| vowel / vowel 6 dB louder | ±0.5 dB | 0.000 / 0.000 dB |
+| DETECT round-trips; the DE-ESS button sets the point | pass | pass |
+
+Disclosed: the first DE-ESS setting (bell 6.5 kHz, Q 1.5) took the "s" down only 3.69 dB — too narrow for
+sibilance; widened to 7 kHz, Q 0.8 (the threshold unchanged).

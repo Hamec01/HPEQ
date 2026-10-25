@@ -15,7 +15,8 @@ namespace hpeq::ui
 // CHANNEL windows, ON lamp, SOLO (headphones: hear only this point's region, as FabFilter's listen),
 // DELETE. Middle: FREQ, GAIN, Q; the GAIN knob carries a ring for the dynamic range and the gain the
 // dynamics add right now. Right: DYNAMIC lever and lamp, THRESH, RATIO, RANGE, ATTACK, RELEASE, and an
-// LCD with the current dynamic gain. The point's modules stay in the grid next to the page.
+// LCD with the current dynamic gain, DETECT (BAND / VOICE: the region against the voice body) and DE-ESS
+// (one press makes the point a de-esser). The point's modules stay in the grid next to the page.
 class HamloTochkaPanel final : public juce::Component, private juce::Timer
 {
 public:
@@ -50,6 +51,8 @@ public:
     void chooseShape(EqShape);
     void pressSolo();
     void setDynamic(bool);
+    void setDetect(int);  // 0 BAND, 1 VOICE
+    void pressDeEss();    // the point as a de-esser: bell 7 kHz, Q 0.8, VOICE, range -9, 0.5 / 40 ms
     void openShapes(bool open);
     void settleDynamicGain(float db);
 

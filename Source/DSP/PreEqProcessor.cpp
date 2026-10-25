@@ -147,6 +147,7 @@ void PreEqProcessor::prepare(double newSampleRate) noexcept
 {
     sampleRate = newSampleRate;
     rampSteps = stepsFor(kParameterRampSeconds, sampleRate / kControlInterval);
+    voiceG = std::tan(3.14159265358979323846 * 1000.0 / sampleRate);
     birthSteps = stepsFor(kBirthSeconds, sampleRate / kControlInterval);
     mixSteps = stepsFor(kMixRampSeconds, sampleRate);
     crossfadeSteps = stepsFor(kStructureCrossfadeSeconds, sampleRate);
@@ -305,6 +306,25 @@ void PreEqProcessor::detect(Band& b, double l, double r, int numChannels) noexce
         }
     const double c = level > b.env ? b.attackCoef : b.releaseCoef;
     b.env = level + c * (b.env - level);
+    if (b.target.detect == 1)
+    {
+        // the voice body, linked the same way; same attack / release, so the ratio follows syllables
+        const auto voice = [&](int ch, double x) { return std::abs(svf(b.voiceState[static_cast<size_t>(ch)], voiceG, 1.0 / 0.6, 0, x)); };
+        double v = 0.0;
+        if (numChannels == 1)
+            v = voice(0, l);
+        else
+            switch (b.target.channel)
+            {
+                case ChannelMode::Left:  v = voice(0, l); break;
+                case ChannelMode::Right: v = voice(1, r); break;
+                case ChannelMode::Mid:   v = voice(0, 0.5 * (l + r)); break;
+                case ChannelMode::Side:  v = voice(0, 0.5 * (l - r)); break;
+                default:                 v = std::max(voice(0, l), voice(1, r)); break;
+            }
+        const double cv = v > b.voiceEnv ? b.attackCoef : b.releaseCoef;
+        b.voiceEnv = v + cv * (b.voiceEnv - v);
+    }
 }
 
 void PreEqProcessor::advanceControl(Band& b, size_t index) noexcept
@@ -331,7 +351,9 @@ void PreEqProcessor::advanceControl(Band& b, size_t index) noexcept
         }
         b.attackCoef = std::exp(-1.0 / (std::max(0.1, static_cast<double>(t.attackMs)) * 1.0e-3 * sampleRate));
         b.releaseCoef = std::exp(-1.0 / (std::max(5.0, static_cast<double>(t.releaseMs)) * 1.0e-3 * sampleRate));
-        const double over = 20.0 * std::log10(b.env + 1.0e-9) - t.thresholdDb;
+        const double bandDb = 20.0 * std::log10(b.env + 1.0e-9);
+        const double detectDb = t.detect == 1 ? (bandDb < -60.0 ? -200.0 : bandDb - 20.0 * std::log10(b.voiceEnv + 1.0e-9) - 20.0) : bandDb;
+        const double over = detectDb - t.thresholdDb;
         const double knee = over <= -3.0 ? 0.0 : over < 3.0 ? (over + 3.0) * (over + 3.0) / 12.0 : over;
         const double amount = std::min(std::abs(static_cast<double>(t.rangeDb)), knee * (1.0 - 1.0 / std::max(1.0, static_cast<double>(t.ratio))));
         offset = t.rangeDb < 0.0f ? -amount : amount;

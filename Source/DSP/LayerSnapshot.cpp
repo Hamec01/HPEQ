@@ -262,6 +262,7 @@ LayerSnapshot makeSnapshot(const LayerState& layer)
         band.attackMs = static_cast<float>(node.attackMs);
         band.releaseMs = static_cast<float>(node.releaseMs);
         band.rangeDb = static_cast<float>(node.rangeDb);
+        band.detect = node.detect;
     }
     // D6: FX regions and EQ points with modules go to their stable engine nodes. The slots of a
     // sanitized project are kept; an unsanitized layer gets the same assignment on a copy.

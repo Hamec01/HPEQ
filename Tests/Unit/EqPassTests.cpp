@@ -274,6 +274,85 @@ public:
             plugin->editorBeingDeleted(editor.get());
         }
 
+        beginTest("De-esser on the point (DE-ESS, VOICE): an \"s\" loses >= 4 dB; a vowel, also 6 dB louder, changes <= 0.5 dB; DETECT round-trips; the page button sets the point");
+        {
+            // a synthetic voice: a vowel (180 Hz with formants near 700 / 1200 / 2600 Hz), then an "s" (noise
+            // band-passed around 7 kHz), then the vowel 6 dB louder
+            const int segment = 24000;
+            juce::AudioBuffer<float> x(2, 3 * segment);
+            juce::Random r(7);
+            double z1 = 0.0, z2 = 0.0;
+            const double w = 2.0 * juce::MathConstants<double>::pi * 7000.0 / kFs, alpha = std::sin(w) / 2.0, a0 = 1.0 + alpha;
+            const double b0 = alpha / a0, b2 = -alpha / a0, a1 = -2.0 * std::cos(w) / a0, a2 = (1.0 - alpha) / a0;
+            for (int i = 0; i < x.getNumSamples(); ++i)
+            {
+                double v = 0.0;
+                const int seg = i / segment;
+                if (seg != 1)
+                {
+                    for (int h = 1; h * 180.0 < 4000.0; ++h)
+                    {
+                        const double f = h * 180.0;
+                        const double formant = std::exp(-std::pow((f - 700.0) / 250.0, 2.0)) + 0.7 * std::exp(-std::pow((f - 1200.0) / 300.0, 2.0))
+                                               + 0.35 * std::exp(-std::pow((f - 2600.0) / 400.0, 2.0)) + 0.02;
+                        v += 0.05 * formant * std::sin(2.0 * juce::MathConstants<double>::pi * f * i / kFs);
+                    }
+                    if (seg == 2)
+                        v *= 2.0;
+                }
+                else
+                {
+                    const double n = 2.0 * r.nextDouble() - 1.0;
+                    const double y = b0 * n + z1;
+                    z1 = -a1 * y + z2;
+                    z2 = b2 * n - a2 * y;
+                    v = 0.6 * y;
+                }
+                x.setSample(0, i, static_cast<float>(v));
+                x.setSample(1, i, static_cast<float>(v));
+            }
+            EqNodeState p;
+            p.id = 1;
+            p.shape = EqShape::Bell;
+            p.frequencyHz = 7000.0;
+            p.q = 0.8;
+            p.dynamic = true;
+            p.detect = 1;
+            p.thresholdDb = -28.0;
+            p.ratio = 4.0;
+            p.rangeDb = -9.0;
+            p.attackMs = 0.5;
+            p.releaseMs = 40.0;
+            const auto y = renderEq(x, { p });
+            const auto rmsDb = [](const juce::AudioBuffer<float>& b, int from, int count)
+            {
+                double e = 0.0;
+                for (int i = from; i < from + count; ++i)
+                    e += static_cast<double>(b.getSample(0, i)) * b.getSample(0, i);
+                return 10.0 * std::log10(e / count + 1.0e-20);
+            };
+            const int skip = 4800; // past the attack / release around each change
+            const double vowel = rmsDb(y, skip, segment - skip) - rmsDb(x, skip, segment - skip);
+            const double ess = rmsDb(y, segment + skip, segment - skip) - rmsDb(x, segment + skip, segment - skip);
+            const double loud = rmsDb(y, 2 * segment + skip, segment - skip) - rmsDb(x, 2 * segment + skip, segment - skip);
+            logMessage("  vowel " + juce::String(vowel, 3) + " dB, s " + juce::String(ess, 2) + " dB, vowel +6 dB " + juce::String(loud, 3) + " dB");
+            expect(ess <= -4.0 && std::abs(vowel) <= 0.5 && std::abs(loud) <= 0.5);
+
+            FxProjectState project;
+            project.layers[0].eqNodes = { p };
+            project.nextNodeId = 2;
+            sanitize(project);
+            const auto back = fromValueTree(juce::ValueTree::fromXml(*toValueTree(project).createXml()));
+            expect(back.has_value() && back->layers[0].eqNodes[0].detect == 1);
+
+            ui::HamloTochkaPanel page;
+            page.setSize(1100, 340);
+            EqNodeState sent;
+            page.onChange = [&](const EqNodeState& n, const juce::String&) { sent = n; };
+            page.pressDeEss();
+            expect(sent.dynamic && sent.detect == 1 && sent.shape == EqShape::Bell && sent.frequencyHz == 7000.0 && sent.rangeDb == -9.0 && sent.attackMs == 0.5);
+        }
+
         beginTest("Steel style: the window and its menus use SteelLookAndFeel while open; the default goes back when the last window closes");
         {
             auto plugin = std::make_unique<FxPluginProcessor>();

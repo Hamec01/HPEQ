@@ -22,6 +22,8 @@ const juce::Point<float> kOnLamp { 52.0f, 296.0f }, kSolo { 146.0f, 296.0f };
 const juce::Rectangle<float> kDelete { 208.0f, 278.0f, 82.0f, 36.0f };
 const juce::Point<float> kDynLever { 742.0f, 64.0f }, kDynLamp { 786.0f, 50.0f };
 const juce::Rectangle<float> kGainLcd { 928.0f, 24.0f, 152.0f, 52.0f };
+const juce::Point<float> kDetectLever { 852.0f, 64.0f };
+const juce::Rectangle<float> kDeEss { 928.0f, 84.0f, 152.0f, 24.0f };
 const juce::Rectangle<float> kChooser { 18.0f, 14.0f, 1064.0f, 312.0f };
 
 struct KnobInfo
@@ -229,6 +231,37 @@ void HamloTochkaPanel::setDynamic(bool on)
         onGestureEnd();
 }
 
+void HamloTochkaPanel::setDetect(int d)
+{
+    if (onGestureStart)
+        onGestureStart("Detect");
+    values.node.detect = juce::jlimit(0, 1, d);
+    change("Detect");
+    if (onGestureEnd)
+        onGestureEnd();
+}
+
+void HamloTochkaPanel::pressDeEss()
+{
+    if (onGestureStart)
+        onGestureStart("De-ess");
+    auto& n = values.node;
+    n.shape = EqShape::Bell;
+    n.frequencyHz = 7000.0;
+    n.q = 0.8; // wide: sibilance spreads over 4.5 - 11 kHz
+    n.gainDb = 0.0;
+    n.dynamic = true;
+    n.detect = 1;
+    n.thresholdDb = -28.0;
+    n.ratio = 4.0;
+    n.rangeDb = -9.0;
+    n.attackMs = 0.5;
+    n.releaseMs = 40.0;
+    change("De-ess");
+    if (onGestureEnd)
+        onGestureEnd();
+}
+
 void HamloTochkaPanel::openShapes(bool open)
 {
     shapesOpen = open;
@@ -272,6 +305,9 @@ void HamloTochkaPanel::renderStatic(juce::Graphics& g) const
     engraved(g, "ON", { kOnLamp.x - 30.0f, kOnLamp.y + 22.0f, 60.0f, 14.0f }, 11.0f);
     engraved(g, "SOLO", { kSolo.x - 30.0f, kSolo.y + 22.0f, 60.0f, 14.0f }, 11.0f);
     engraved(g, "DYNAMIC", { 700.0f, 10.0f, 150.0f, 18.0f }, 14.0f);
+    engraved(g, "VOICE", { kDetectLever.x - 40.0f, 10.0f, 80.0f, 14.0f }, 10.0f);
+    engraved(g, "BAND", { kDetectLever.x - 40.0f, 100.0f, 80.0f, 14.0f }, 10.0f);
+    engraved(g, "DETECT", { kDetectLever.x + 18.0f, 52.0f, 60.0f, 14.0f }, 9.5f, stencilDim, juce::Justification::centredLeft);
     // a groove between the point and the dynamics
     g.setColour(juce::Colours::black);
     g.drawVerticalLine(712, 20.0f, kH - 20.0f);
@@ -370,6 +406,9 @@ void HamloTochkaPanel::paint(juce::Graphics& g)
     g.setColour(juce::Colours::white);
     lever(g, kDynLever, 0.0f, 1.0f, n.dynamic ? LeverPosition::Up : LeverPosition::Down);
     lamp(g, kDynLamp, n.dynamic && isGain(n.shape), 0.3f, kInk);
+    g.setColour(juce::Colours::white);
+    lever(g, kDetectLever, 0.0f, 0.8f, n.detect == 1 ? LeverPosition::Up : LeverPosition::Down);
+    crtButton(g, kDeEss, "DE-ESS", n.dynamic && n.detect == 1 && isGain(n.shape));
     juce::String line1 = "DYN", line2;
     if (!isGain(n.shape))
         line2 = "GAIN SHAPES";
@@ -460,6 +499,10 @@ void HamloTochkaPanel::mouseDown(const juce::MouseEvent& e)
     }
     if (juce::Rectangle<float>(kDynLever.x - 24.0f, kDynLever.y - 34.0f, 72.0f, 60.0f).contains(d))
         return setDynamic(!n.dynamic);
+    if (juce::Rectangle<float>(kDetectLever.x - 24.0f, kDetectLever.y - 34.0f, 48.0f, 60.0f).contains(d))
+        return setDetect(n.detect == 1 ? 0 : 1);
+    if (kDeEss.contains(d))
+        return pressDeEss();
     if (const int k = knobAt(d); k >= 0 && enabledFor(n, static_cast<Param>(k)))
     {
         dragKnob = k;

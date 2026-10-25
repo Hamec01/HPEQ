@@ -27,7 +27,10 @@ namespace hpeq::dsp
 // (band pass at the point for Bell, low / high pass at f for the shelves, broadband for Tilt; channels
 // linked by the larger level): level over threshold, 6 dB soft knee, (1 - 1/ratio), limited to |range|,
 // down for a negative range, up for a positive one; attack / release on the detector. The offset rides
-// on the control clock like the gain itself. SOLO: after all bands the signal goes through a filter on
+// on the control clock like the gain itself. DETECT VOICE (a de-esser on the point): the detector level is
+// the region's level over the voice body's (band pass 1 kHz, Q 0.6: 300 Hz - 3 kHz) minus 20 dB, so the
+// threshold reads the same way (-30 dB = the region 10 dB under the voice), with a floor at -60 dBFS so
+// quiet hiss never triggers it. SOLO: after all bands the signal goes through a filter on
 // the soloed point (band pass at f and Q; low pass for a low shelf / low cut, high pass for a high shelf /
 // high cut), crossfaded in and out over 10 ms. Without either, the processing is unchanged.
 class PreEqProcessor
@@ -93,6 +96,8 @@ private:
         LinearRamp wet, crossfade;          // sample rate
         // DYNAMIC: detector filter (TPT SVF) and envelope, the gain offset in dB
         double env = 0.0, dynOffset = 0.0, detG = 0.0, detK = 1.0, detF = -1.0, detQ = -1.0, attackCoef = 0.0, releaseCoef = 0.0;
+        double voiceEnv = 0.0; // VOICE detection: the voice body's level (300 Hz - 3 kHz)
+        std::array<std::array<double, 2>, kMaxChannels> voiceState {};
         int detType = 0; // 0 band pass, 1 low pass, 2 high pass, 3 broadband
         std::array<std::array<double, 2>, kMaxChannels> detState {};
     };
@@ -113,7 +118,7 @@ private:
 
     // SOLO (listen)
     int soloBand = -1, soloType = 0;
-    double soloMix = 0.0, soloG = 0.0, soloK = 1.0;
+    double soloMix = 0.0, soloG = 0.0, soloK = 1.0, voiceG = 0.0;
     std::array<std::array<double, 2>, kMaxChannels> soloState {};
 };
 } // namespace hpeq::dsp
