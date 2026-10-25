@@ -21,6 +21,7 @@ int wrap(long long k, int count) noexcept
     return static_cast<int>(r < 0 ? r + count : r);
 }
 double raisedCos(double x) noexcept { return 0.5 - 0.5 * std::cos(kPiD * std::clamp(x, 0.0, 1.0)); }
+double princarg(double phase) noexcept { return phase - 2.0 * kPiD * std::floor((phase + kPiD) / (2.0 * kPiD)); }
 
 // The humanize offsets: SplitMix64 of (seed, step), fixed so a project renders the same everywhere.
 double unitHash(std::uint32_t seed, long long k) noexcept
@@ -53,6 +54,17 @@ float RevolutionEngine::Tape::at(int ch, long long age) const noexcept
     return data[ch][index];
 }
 
+void RevolutionEngine::Tape::copy(int ch, long long age, int count, float* dst) const noexcept
+{
+    long long index = head - age;
+    if (index < 0)
+        index += size;
+    const auto first = static_cast<int>(std::min<long long>(count, size - index));
+    std::copy(data[ch] + index, data[ch] + index + first, dst);
+    if (first < count)
+        std::copy(data[ch], data[ch] + (count - first), dst + first);
+}
+
 bool RevolutionEngine::Segment::same(const Segment& o) const noexcept
 {
     if (valid != o.valid)
@@ -65,6 +77,15 @@ bool RevolutionEngine::Segment::same(const Segment& o) const noexcept
 }
 
 // ------------------------------------------------------------------------------------- lifecycle
+RevolutionEngine::RevolutionEngine() = default;
+RevolutionEngine::~RevolutionEngine() = default;
+
+void RevolutionEngine::getFeel(std::array<float, kFeelSteps>& out) const noexcept
+{
+    for (size_t i = 0; i < out.size(); ++i)
+        out[i] = feel[i].load(std::memory_order_relaxed);
+}
+
 void RevolutionEngine::prepare(double newSampleRate, std::array<std::vector<float>, 2>& glitchStorage)
 {
     sampleRate = newSampleRate;
@@ -96,6 +117,40 @@ void RevolutionEngine::prepare(double newSampleRate, std::array<std::vector<floa
     }
     for (auto& h : halfband)
         h = static_cast<float>(h / sum);
+
+    // Stretch frames: RHYTHM about 21 ms (WSOLA, hop 1/2), CLEAN twice that (phase vocoder, hop 1/4).
+    frameW = 1 << static_cast<int>(std::lround(std::log2(0.0213 * sampleRate)));
+    frameP = 2 * frameW;
+    fft.prepare(frameP);
+    const auto hann = [](std::vector<float>& w, int size)
+    {
+        w.resize(static_cast<size_t>(size));
+        for (int i = 0; i < size; ++i)
+            w[static_cast<size_t>(i)] = static_cast<float>(0.5 - 0.5 * std::cos(2.0 * kPiD * i / size)); // periodic
+    };
+    hann(windowW, frameW);
+    hann(windowP, frameP);
+    const auto bins = static_cast<size_t>(frameP / 2 + 1);
+    specIn.assign(static_cast<size_t>(frameP), {});
+    specOut.assign(static_cast<size_t>(frameP), {});
+    for (auto* v : { &specL, &specR, &specRef, &peakRot })
+        v->assign(bins, {});
+    peakMag.assign(bins, 0.0f);
+    for (auto* v : { &spanL, &spanR })
+        v->assign(static_cast<size_t>(frameP + frameW + 16), 0.0f);
+    for (auto* v : { &naturalL, &naturalR })
+        v->assign(static_cast<size_t>(frameW), 0.0f);
+    nearestPeak.assign(bins, -1);
+    for (auto& v : voices)
+    {
+        for (auto& o : v.ola)
+            o.assign(static_cast<size_t>(frameP), 0.0f);
+        v.prevRef.assign(bins, {});
+        v.rot.assign(bins, { 1.0f, 0.0f });
+    }
+    feelFrame = std::max(16, static_cast<int>(std::lround(64.0 * sampleRate / 48000.0)));
+    for (auto& f : feel)
+        f.store(0.0f, std::memory_order_relaxed);
     reset();
 }
 
@@ -125,6 +180,15 @@ void RevolutionEngine::newEpoch() noexcept
     ic2 = {};
     held = {};
     svfG = 0.0;
+    for (auto& v : voices)
+        v.active = false;
+    voiceCur = voicePrev = voiceNext = -1;
+    upcomingFor = -1.0;
+    feelFill = 0;
+    feelEnergy = 0.0;
+    feelHistoryCount = 0;
+    feelLastStep = -1;
+    stepPeak = {};
     epochs.fetch_add(1, std::memory_order_relaxed);
 }
 
@@ -135,7 +199,8 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
     // What changes a head's formula (not mixes, on, order or the MOTION target): a new stamp makes the
     // next segment a different one, so the change is crossfaded instead of jumping.
     static constexpr int formula[] { slot::kRevGrid, slot::kRevTriplet, slot::kRevSwing, slot::kRevSteps, slot::kRevFree, slot::kRevFreeMs,
-                                     slot::kRevHumanize, slot::kRevHumanSeed, slot::kTimeDepth, slot::kGlitchDepth, slot::kRevFadeMs };
+                                     slot::kRevHumanize, slot::kRevHumanSeed, slot::kTimeDepth, slot::kGlitchDepth, slot::kRevFadeMs,
+                                     slot::kTimeStretch };
     bool changed = false;
     for (int i : formula)
         changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
@@ -157,6 +222,8 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
     fadeSamples = std::max(1.0, std::clamp(static_cast<double>(v[slot::kRevFadeMs]), 0.5, 8.0) * 1.0e-3 * sampleRate);
     smooth = std::clamp(static_cast<double>(v[slot::kMotionSmooth]), 0.0, 1.0);
     motionTarget = std::clamp(static_cast<int>(std::lround(v[slot::kMotionTarget])), 0, rev::kMotionTargets - 1);
+    stretchMode = std::clamp(static_cast<int>(std::lround(v[slot::kTimeStretch])), 0, 2);
+    smartJoin = v[slot::kRevSmartJoin] >= 0.5f;
     static constexpr int base[3] { slot::kTimeOn, slot::kGlitchOn, slot::kMotionOn };
     for (int e = 0; e < 3; ++e)
     {
@@ -255,7 +322,13 @@ int RevolutionEngine::value(int engine, long long k) const noexcept
 long long RevolutionEngine::maxAge(int engine, int action, double w, double wStep, long long loop) const noexcept
 {
     double age = 0.0;
-    if (engine == rev::Time)
+    if (engine == rev::Time && stretchMode > 0 && (action == rev::Half || action == rev::Double))
+    {
+        // a stretch voice reads whole grains 1.5 frames (+ the WSOLA search) behind its source position
+        const double frame = stretchMode == 1 ? frameW : frameP;
+        age = (action == rev::Half ? 0.5 * depth[0] * w : w) + 2.75 * frame + 16.0;
+    }
+    else if (engine == rev::Time)
         switch (action)
         {
             case rev::Half: age = 0.5 * depth[0] * w + 5.0; break;
@@ -342,30 +415,40 @@ float RevolutionEngine::readHalfband(const Tape& t, int ch, long long age) const
     return sum;
 }
 
-void RevolutionEngine::head(int engine, const Segment& s, const float* in, float* out, int numChannels) const noexcept
+bool RevolutionEngine::headAt(int engine, const Segment& s, long long nn, long long ahead, const float* in, float* out, int numChannels) const noexcept
 {
-    const auto dry = [&] { for (int ch = 0; ch < numChannels; ++ch) out[ch] = in[ch]; };
-    if (!s.valid || s.action == 0)
+    // `ahead` > 0 (C-ATD looking at the next samples): the tape still ends at n, so every age is read
+    // `ahead` samples younger, and the stage input itself is not known yet.
+    const auto dry = [&]
     {
-        dry();
-        return;
-    }
+        if (ahead > 0)
+            return false;
+        for (int ch = 0; ch < numChannels; ++ch)
+            out[ch] = in[ch];
+        return true;
+    };
+    if (!s.valid || s.action == 0)
+        return dry();
     const auto& t = tapes[static_cast<size_t>(engine)];
-    const double u = std::max(0.0, static_cast<double>(n) - s.b);
-    const long long uI = std::max(0LL, n - static_cast<long long>(std::ceil(s.b - kEps)));
+    const double u = std::max(0.0, static_cast<double>(nn) - s.b);
+    const long long uI = std::max(0LL, nn - static_cast<long long>(std::ceil(s.b - kEps)));
     const auto integer = [&](long long age, float gain)
     {
+        age -= ahead;
         if (age < 0 || !t.holds(static_cast<double>(age)))
             return dry();
         for (int ch = 0; ch < numChannels; ++ch)
             out[ch] = gain * t.at(ch, age);
+        return true;
     };
     const auto fractional = [&](double age, float gain)
     {
+        age -= static_cast<double>(ahead);
         if (age < 1.0 || !t.holds(age + 2.0))
             return dry();
         for (int ch = 0; ch < numChannels; ++ch)
             out[ch] = gain * readFrac(t, ch, age);
+        return true;
     };
     // Repeats of a short loop (STUTTER, RATCHET): a click-free envelope at each loop edge.
     const auto loopEnvelope = [&](long long phase, long long loop, bool firstPass)
@@ -389,16 +472,16 @@ void RevolutionEngine::head(int engine, const Segment& s, const float* in, float
                 return integer(2 * uI + 1, 1.0f);
             case rev::Freeze: // a short loop of what came just before the run, seams crossfaded
             {
-                const long long loop = s.loop, phase = uI % loop, age = uI + loop - phase;
+                const long long loop = s.loop, phase = uI % loop, age = uI + loop - phase - ahead;
                 const long long seam = std::clamp(std::llround(fadeSamples), 1LL, loop / 4);
                 if (phase < loop - seam)
-                    return integer(age, 1.0f);
-                if (!t.holds(static_cast<double>(age + loop)))
+                    return integer(age + ahead, 1.0f);
+                if (age < 0 || !t.holds(static_cast<double>(age + loop)))
                     return dry();
                 const float w = static_cast<float>(raisedCos(static_cast<double>(phase - (loop - seam) + 1) / static_cast<double>(seam + 1)));
                 for (int ch = 0; ch < numChannels; ++ch)
                     out[ch] = t.at(ch, age) + w * (t.at(ch, age + loop) - t.at(ch, age));
-                return;
+                return true;
             }
             case rev::TapeStop: // speed and level fall to zero over the run
             {
@@ -409,12 +492,12 @@ void RevolutionEngine::head(int engine, const Segment& s, const float* in, float
             }
             case rev::Double: // the window before the run and the run itself at twice the speed
             {
-                const long long age = std::max(8LL, std::llround(s.w) - uI + 8);
-                if (!t.holds(static_cast<double>(age + 7)))
+                const long long age = std::max(8LL, std::llround(s.w) - uI + 8) - ahead;
+                if (age < 7 || !t.holds(static_cast<double>(age + 7)))
                     return dry();
                 for (int ch = 0; ch < numChannels; ++ch)
                     out[ch] = readHalfband(t, ch, age);
-                return;
+                return true;
             }
             default: return dry();
         }
@@ -427,23 +510,19 @@ void RevolutionEngine::head(int engine, const Segment& s, const float* in, float
         case rev::Stutter: // the start of the step before the run, looped
         {
             const long long loop = s.loop, phase = uI % loop;
-            const long long age = std::llround(s.wStep) + uI - phase;
-            const float g = loopEnvelope(phase, loop, false);
-            integer(age, g);
-            return;
+            return integer(std::llround(s.wStep) + uI - phase, loopEnvelope(phase, loop, false));
         }
         case rev::Ratchet: // the run's own start, retriggered
         {
             const long long loop = s.loop, phase = uI % loop;
-            integer(uI - phase, loopEnvelope(phase, loop, uI < loop));
-            return;
+            return integer(uI - phase, loopEnvelope(phase, loop, uI < loop));
         }
         case rev::GlitchReverse:
             return integer(2 * uI + 1, 1.0f);
         case rev::Gap:
             for (int ch = 0; ch < numChannels; ++ch)
                 out[ch] = 0.0f;
-            return;
+            return true;
         case rev::Jump: // the window two runs back
             return integer(2 * std::llround(s.w), 1.0f);
         case rev::Scratch: // back and forth around the run (signed speed 1 - pi/2 .. 1 + pi/2 at full depth)
@@ -453,6 +532,319 @@ void RevolutionEngine::head(int engine, const Segment& s, const float* in, float
         }
         default: return dry();
     }
+}
+
+bool RevolutionEngine::isStretch(int engine, const Segment& s) const noexcept
+{
+    return engine == rev::Time && s.valid && stretchMode > 0 && (s.action == rev::Half || s.action == rev::Double);
+}
+
+void RevolutionEngine::startVoice(int index, const Segment& s) noexcept
+{
+    // Frames sit on a grid of hops ending at the run start: started early (the next run, one frame ahead)
+    // they are computed one per hop as their time comes; started late, the missing ones are done at once.
+    auto& v = voices[static_cast<size_t>(index)];
+    v.active = true;
+    v.fallback = false;
+    v.havePrev = false;
+    v.segment = s;
+    v.mode = stretchMode;
+    v.size = stretchMode == 1 ? frameW : frameP;
+    v.hop = stretchMode == 1 ? v.size / 2 : v.size / 4;
+    v.base = static_cast<long long>(std::ceil(s.b - kEps));
+    v.rate = s.action == rev::Half ? 1.0 - 0.5 * depth[0] : 2.0;
+    v.start = s.action == rev::Half ? static_cast<double>(v.base) : static_cast<double>(v.base) - (v.rate - 1.0) * s.w;
+    v.delay = 1.5 * v.size + (stretchMode == 1 ? v.hop / 2 : 0) + 8.0;
+    const long long t = n - v.base;
+    v.outPos = std::max(0LL, t);
+    v.nextFrame = std::max(t, 0LL) - v.size + v.hop;
+    for (auto& o : v.ola)
+        std::fill(o.begin(), o.begin() + v.size, 0.0f);
+}
+
+void RevolutionEngine::advanceVoice(StretchVoice& v) noexcept
+{
+    const long long t = n - v.base;
+    while (v.active && !v.fallback && v.nextFrame <= t)
+    {
+        voiceFrame(v, v.nextFrame);
+        v.nextFrame += v.hop;
+    }
+}
+
+void RevolutionEngine::voiceFrame(StretchVoice& v, long long t) noexcept
+{
+    const auto& tape = tapes[0];
+    const int size = v.size, hop = v.hop;
+    const double centre = v.start + v.rate * (static_cast<double>(t) + 0.5 * size) - v.delay;
+    const auto readable = [&](long long first, long long last) { return last <= n && tape.holds(static_cast<double>(n - first)); };
+
+    if (v.mode == 1)
+    {
+        // RHYTHM: WSOLA. The grain moves by up to half a hop so that its start continues the previous
+        // grain's natural continuation (normalised cross-correlation of both channels over the overlap);
+        // coarse lags every 4 samples on every 2nd sample, the 3 best refined +-3 at full resolution.
+        const long long nominal = std::llround(centre - 0.5 * size);
+        const int search = hop / 2, overlap = size - hop, margin = search + 3, span = size + 2 * margin;
+        long long p = nominal;
+        if (!readable(nominal - margin, nominal - margin + span - 1))
+        {
+            v.fallback = true;
+            return;
+        }
+        // every candidate grain lies in one contiguous copy: candidate d starts at span index margin + d
+        tape.copy(0, n - (nominal - margin), span, spanL.data());
+        tape.copy(1, n - (nominal - margin), span, spanR.data());
+        if (v.havePrev && readable(v.prevGrain + hop, v.prevGrain + hop + overlap - 1))
+        {
+            tape.copy(0, n - (v.prevGrain + hop), overlap, naturalL.data());
+            tape.copy(1, n - (v.prevGrain + hop), overlap, naturalR.data());
+            float naturalEnergy = 0.0f;
+            for (int i = 0; i < overlap; ++i)
+                naturalEnergy += naturalL[static_cast<size_t>(i)] * naturalL[static_cast<size_t>(i)] + naturalR[static_cast<size_t>(i)] * naturalR[static_cast<size_t>(i)];
+            if (naturalEnergy > 1.0e-9f * overlap)
+            {
+                const float* aL = spanL.data();
+                const float* aR = spanR.data();
+                const float* bL = naturalL.data();
+                const float* bR = naturalR.data();
+                const auto score = [&](long long candidate, int stride)
+                {
+                    const auto offset = static_cast<int>(candidate - nominal) + margin;
+                    float num = 0.0f, ea = 0.0f, eb = 0.0f;
+                    for (int i = 0; i < overlap; i += stride)
+                    {
+                        const float l = aL[offset + i], r = aR[offset + i], ml = bL[i], mr = bR[i];
+                        num += l * ml + r * mr;
+                        ea += l * l + r * r;
+                        eb += ml * ml + mr * mr;
+                    }
+                    return static_cast<double>(num) / std::sqrt((static_cast<double>(ea) + 1.0e-12) * (static_cast<double>(eb) + 1.0e-12));
+                };
+                // shortlist: the 3 best coarse lags more than 4 apart (ties: the smaller shift)
+                std::array<std::pair<double, int>, 3> best { { { -2.0, 0 }, { -2.0, 0 }, { -2.0, 0 } } };
+                for (int d = -search; d <= search; d += 4)
+                {
+                    const double sc = score(nominal + d, 2);
+                    bool merged = false;
+                    for (auto& b : best)
+                        if (b.first > -2.0 && std::abs(b.second - d) <= 4)
+                        {
+                            if (sc > b.first)
+                                b = { sc, d };
+                            merged = true;
+                            break;
+                        }
+                    if (merged)
+                        continue;
+                    for (size_t i = 0; i < best.size(); ++i)
+                        if (sc > best[i].first || (sc == best[i].first && std::abs(d) < std::abs(best[i].second)))
+                        {
+                            for (size_t j = best.size() - 1; j > i; --j)
+                                best[j] = best[j - 1];
+                            best[i] = { sc, d };
+                            break;
+                        }
+                }
+                double top = score(nominal, 1); // the expected position is always a candidate
+                int shift = 0;
+                for (const auto& b : best)
+                    if (b.first > -2.0)
+                        for (int r = -3; r <= 3; ++r)
+                        {
+                            const int d = std::clamp(b.second + r, -search, search);
+                            const double sc = score(nominal + d, 1);
+                            if (sc > top + 1.0e-12 || (sc >= top - 1.0e-12 && std::abs(d) < std::abs(shift)))
+                            {
+                                top = sc;
+                                shift = d;
+                            }
+                        }
+                p = nominal + shift;
+            }
+        }
+        v.prevGrain = p;
+        v.havePrev = true;
+        const auto offset = static_cast<size_t>(p - nominal + margin);
+        for (int i = 0; i < size; ++i)
+        {
+            const long long pos = t + i;
+            if (pos < v.outPos)
+                continue;
+            const float w = windowW[static_cast<size_t>(i)];
+            const auto k = static_cast<size_t>(pos % size);
+            v.ola[0][k] += w * spanL[offset + static_cast<size_t>(i)];
+            v.ola[1][k] += w * spanR[offset + static_cast<size_t>(i)];
+        }
+        return;
+    }
+
+    // CLEAN: phase vocoder, both channels in one complex FFT (L + iR). Each peak's phase advances by its
+    // measured frequency over the real analysis hop; the bins around a peak turn with it (identity phase
+    // locking), so a region needs one rotation; both channels get the same rotation, so their phase
+    // difference stays. Trigonometry only at the peaks; one complex FFT each way.
+    const long long c = std::llround(centre);
+    const long long first = c - size / 2;
+    if (!readable(first, first + size - 1))
+    {
+        v.fallback = true;
+        return;
+    }
+    using C = std::complex<float>;
+    const int bins = size / 2 + 1;
+    tape.copy(0, n - first, size, spanL.data());
+    tape.copy(1, n - first, size, spanR.data());
+    for (int i = 0; i < size; ++i)
+    {
+        const auto j = static_cast<size_t>(i);
+        const float w = windowP[j];
+        specIn[j] = C(w * spanL[j], w * spanR[j]);
+    }
+    fft.perform(specIn.data(), specOut.data(), false);
+    for (int k = 0; k < bins; ++k)
+    {
+        const auto i = static_cast<size_t>(k);
+        const C zk = specOut[i], zn = std::conj(specOut[static_cast<size_t>((size - k) % size)]);
+        const C l = 0.5f * (zk + zn), d = zk - zn, r(0.5f * d.imag(), -0.5f * d.real());
+        specL[i] = l;
+        specR[i] = r;
+        const C sum = l + r;
+        const float el = std::norm(l), er = std::norm(r);
+        specRef[i] = std::norm(sum) >= 0.125f * (el + er) ? sum : (el >= er ? l : r);
+        peakMag[i] = el + er;
+    }
+    // peaks, and for every bin the nearest one
+    int lastPeak = -1, peaks = 0;
+    std::fill(nearestPeak.begin(), nearestPeak.begin() + bins, -1);
+    for (int k = 2; k < bins - 2; ++k)
+    {
+        const auto m = peakMag[static_cast<size_t>(k)];
+        if (m > 1.0e-18f && m > peakMag[static_cast<size_t>(k - 1)] && m >= peakMag[static_cast<size_t>(k + 1)] && m > peakMag[static_cast<size_t>(k - 2)]
+            && m >= peakMag[static_cast<size_t>(k + 2)])
+        {
+            const int from = lastPeak < 0 ? 0 : (lastPeak + k) / 2 + 1;
+            if (lastPeak >= 0)
+                for (int j = lastPeak + 1; j < from; ++j)
+                    nearestPeak[static_cast<size_t>(j)] = lastPeak;
+            for (int j = from; j <= k; ++j)
+                nearestPeak[static_cast<size_t>(j)] = k;
+            lastPeak = k;
+            ++peaks;
+        }
+    }
+    if (lastPeak >= 0)
+        for (int j = lastPeak + 1; j < bins; ++j)
+            nearestPeak[static_cast<size_t>(j)] = lastPeak;
+
+    // rotation per bin: e^{i (synthesis phase - analysis phase)}
+    const double ha = static_cast<double>(c - v.prevCentre);
+    if (!v.havePrev)
+        std::fill(v.rot.begin(), v.rot.begin() + bins, C(1.0f, 0.0f));
+    else if (peaks > 0)
+    {
+        for (int k = 2; k < bins - 2; ++k)
+        {
+            const auto i = static_cast<size_t>(k);
+            if (nearestPeak[i] != k)
+                continue;
+            const double omega = 2.0 * kPiD * k / size;
+            const C turn = specRef[i] * std::conj(v.prevRef[i]);
+            const double moved = std::norm(turn) > 1.0e-30f ? std::atan2(turn.imag(), turn.real()) : omega * ha; // analysis phase advance
+            const double inst = ha != 0.0 ? omega + princarg(moved - omega * ha) / ha : omega;
+            const double a = hop * inst - moved;
+            C rot = v.rot[i] * C(static_cast<float>(std::cos(a)), static_cast<float>(std::sin(a)));
+            rot /= std::max(1.0e-12f, std::abs(rot));
+            peakRot[i] = rot;
+        }
+        for (int k = 0; k < bins; ++k)
+        {
+            const auto i = static_cast<size_t>(k);
+            v.rot[i] = peakRot[static_cast<size_t>(nearestPeak[i])];
+        }
+    }
+    v.rot[0] = v.rot[static_cast<size_t>(bins - 1)] = C(1.0f, 0.0f); // DC and Nyquist stay real
+    std::copy(specRef.begin(), specRef.begin() + bins, v.prevRef.begin());
+    v.prevCentre = c;
+    v.havePrev = true;
+
+    // back: W = Y_L + i Y_R over the whole spectrum (each Y Hermitian), one inverse FFT
+    for (int k = 0; k < size; ++k)
+    {
+        const int b = k <= size / 2 ? k : size - k;
+        const auto i = static_cast<size_t>(b);
+        C yl = specL[i] * v.rot[i], yr = specR[i] * v.rot[i];
+        if (k > size / 2)
+        {
+            yl = std::conj(yl);
+            yr = std::conj(yr);
+        }
+        specIn[static_cast<size_t>(k)] = C(yl.real() - yr.imag(), yl.imag() + yr.real());
+    }
+    fft.perform(specIn.data(), specOut.data(), true);
+    constexpr float norm = 1.0f / 1.5f; // periodic Hann analysis x synthesis at a quarter-frame hop sums to 1.5
+    for (int i = 0; i < size; ++i)
+    {
+        const long long pos = t + i;
+        if (pos < v.outPos)
+            continue;
+        const float w = norm * windowP[static_cast<size_t>(i)];
+        const auto k = static_cast<size_t>(pos % size);
+        v.ola[0][k] += w * specOut[static_cast<size_t>(i)].real();
+        v.ola[1][k] += w * specOut[static_cast<size_t>(i)].imag();
+    }
+}
+
+void RevolutionEngine::voiceOut(StretchVoice& v, const float* in, float* out, int numChannels) noexcept
+{
+    const long long t = n - v.base;
+    advanceVoice(v);
+    if (!v.active || v.fallback)
+    {
+        for (int ch = 0; ch < numChannels; ++ch)
+            out[ch] = in[ch];
+        return;
+    }
+    for (; v.outPos < t; ++v.outPos) // samples this voice was not asked for (engine mix at 0)
+    {
+        const auto k = static_cast<size_t>(v.outPos % v.size);
+        v.ola[0][k] = v.ola[1][k] = 0.0f;
+    }
+    const auto k = static_cast<size_t>(t % v.size);
+    for (int ch = 0; ch < numChannels; ++ch)
+        out[ch] = v.ola[static_cast<size_t>(ch)][k];
+    v.ola[0][k] = v.ola[1][k] = 0.0f;
+    v.outPos = t + 1;
+}
+
+void RevolutionEngine::estimateJoin(int engine, Stage& st, bool prevStretch, bool curStretch, int numChannels) noexcept
+{
+    // C-ATD: the energies of the outgoing and incoming heads over the fade and their correlation. A head
+    // that cannot be evaluated ahead (the live input, a stretch voice) is estimated by the stage's input
+    // over the last fade length (already written: nothing from the future is used).
+    const auto& tape = tapes[static_cast<size_t>(engine)];
+    double ea = 0.0, eb = 0.0, c = 0.0;
+    for (int i = 0; i < st.fadeLength; ++i)
+    {
+        const long long age = st.fadeLength - 1 - i;
+        float proxy[2] {}, a[2] {}, b[2] {};
+        if (tape.holds(static_cast<double>(age)))
+            for (int ch = 0; ch < numChannels; ++ch)
+                proxy[ch] = tape.at(ch, age);
+        if (prevStretch || !headAt(engine, st.prev, n + i, i, proxy, a, numChannels))
+            std::copy(proxy, proxy + numChannels, a);
+        if (curStretch || !headAt(engine, st.cur, n + i, i, proxy, b, numChannels))
+            std::copy(proxy, proxy + numChannels, b);
+        for (int ch = 0; ch < numChannels; ++ch)
+        {
+            ea += static_cast<double>(a[ch]) * a[ch];
+            eb += static_cast<double>(b[ch]) * b[ch];
+            c += static_cast<double>(a[ch]) * b[ch];
+        }
+    }
+    st.joinA = ea;
+    st.joinB = eb;
+    st.joinC = c;
+    st.join = ea + eb > 1.0e-9 * std::max(1, st.fadeLength);
 }
 
 // ---------------------------------------------------------------------------------------- stages
@@ -465,6 +857,7 @@ void RevolutionEngine::tapeStage(int engine, float* x, int numChannels, double q
     const double target = on[static_cast<size_t>(engine)] ? mixTarget[static_cast<size_t>(engine)] : 0.0;
     const double ramp = 1.0 / (0.01 * sampleRate);
     st.mix = st.mix < target ? std::min(target, st.mix + ramp) : std::max(target, st.mix - ramp);
+    const bool timeStage = engine == rev::Time;
 
     if (!st.cur.valid || static_cast<double>(n) + kEps >= st.cur.endN || static_cast<double>(n) + kEps < st.cur.startN || st.cur.stamp != stamp)
     {
@@ -474,25 +867,82 @@ void RevolutionEngine::tapeStage(int engine, float* x, int numChannels, double q
             st.prev = st.cur;
             st.fadeLength = static_cast<int>(std::max(1.0, next.action != 0 ? std::min(fadeSamples, 0.5 * next.wStep) : fadeSamples));
             st.fadePos = 0;
+            const bool prevStretch = timeStage && voiceCur >= 0;
+            if (timeStage)
+            {
+                if (voicePrev >= 0)
+                    voices[static_cast<size_t>(voicePrev)].active = false; // a fade cut short: its voice stops
+                voicePrev = voiceCur;
+                voiceCur = -1;
+                if (voiceNext >= 0 && voices[static_cast<size_t>(voiceNext)].active && voices[static_cast<size_t>(voiceNext)].segment.same(next)
+                    && voices[static_cast<size_t>(voiceNext)].segment.b == next.b)
+                    voiceCur = voiceNext; // started a frame early: no burst at the run start
+                else
+                {
+                    if (voiceNext >= 0)
+                        voices[static_cast<size_t>(voiceNext)].active = false;
+                    if (isStretch(engine, next))
+                    {
+                        voiceCur = 0;
+                        while (voiceCur == voicePrev)
+                            ++voiceCur;
+                        startVoice(voiceCur, next);
+                    }
+                }
+                voiceNext = -1;
+            }
+            st.cur = next;
+            if (smartJoin)
+                estimateJoin(engine, st, prevStretch, timeStage && voiceCur >= 0, numChannels);
+            else
+                st.join = false;
         }
-        st.cur = next;
+        else
+            st.cur = next;
     }
+
+    if (timeStage && stretchMode > 0)
+        lookAhead(st);
+
+    const auto endFade = [&]
+    {
+        if (timeStage && voicePrev >= 0)
+        {
+            voices[static_cast<size_t>(voicePrev)].active = false;
+            voicePrev = -1;
+        }
+    };
     if (st.mix <= 0.0 && target <= 0.0)
     {
-        if (st.fadePos < st.fadeLength)
-            ++st.fadePos;
+        if (st.fadePos < st.fadeLength && ++st.fadePos == st.fadeLength)
+            endFade();
         return;
     }
 
     float wet[2], prev[2];
-    head(engine, st.cur, x, wet, numChannels);
+    if (timeStage && voiceCur >= 0)
+        voiceOut(voices[static_cast<size_t>(voiceCur)], x, wet, numChannels);
+    else
+        headAt(engine, st.cur, n, 0, x, wet, numChannels);
     if (st.fadePos < st.fadeLength)
     {
-        head(engine, st.prev, x, prev, numChannels);
-        const auto w = static_cast<float>(raisedCos(static_cast<double>(st.fadePos + 1) / static_cast<double>(st.fadeLength + 1)));
+        if (timeStage && voicePrev >= 0)
+            voiceOut(voices[static_cast<size_t>(voicePrev)], x, prev, numChannels);
+        else
+            headAt(engine, st.prev, n, 0, x, prev, numChannels);
+        const double w = raisedCos(static_cast<double>(st.fadePos + 1) / static_cast<double>(st.fadeLength + 1));
+        float g = 1.0f;
+        if (st.join)
+        {
+            // keep the mix's expected energy on the line between the two heads' energies (C-ATD, +-3 dB cap)
+            const double mixE = (1.0 - w) * (1.0 - w) * st.joinA + w * w * st.joinB + 2.0 * w * (1.0 - w) * st.joinC;
+            const double wanted = (1.0 - w) * st.joinA + w * st.joinB;
+            g = static_cast<float>(mixE > 1.0e-12 ? std::clamp(std::sqrt(wanted / mixE), 0.70794578, 1.41253754) : 1.0);
+        }
         for (int ch = 0; ch < numChannels; ++ch)
-            wet[ch] = prev[ch] + w * (wet[ch] - prev[ch]);
-        ++st.fadePos;
+            wet[ch] = g * (prev[ch] + static_cast<float>(w) * (wet[ch] - prev[ch]));
+        if (++st.fadePos == st.fadeLength)
+            endFade();
     }
     if (st.mix >= 1.0)
         for (int ch = 0; ch < numChannels; ++ch)
@@ -500,6 +950,69 @@ void RevolutionEngine::tapeStage(int engine, float* x, int numChannels, double q
     else
         for (int ch = 0; ch < numChannels; ++ch)
             x[ch] += static_cast<float>(st.mix) * (wet[ch] - x[ch]);
+}
+
+void RevolutionEngine::lookAhead(const Stage& st) noexcept
+{
+    // The run after this segment: if it is a stretch run, its voice starts one frame before it.
+    if (st.cur.valid && upcomingFor != st.cur.endN)
+    {
+        upcomingFor = st.cur.endN;
+        const double start = std::ceil(st.cur.endN - kEps);
+        upcoming = segmentFor(rev::Time, q0 + (start - static_cast<double>(n0)) * dq);
+        if (voiceNext >= 0)
+        {
+            voices[static_cast<size_t>(voiceNext)].active = false;
+            voiceNext = -1;
+        }
+    }
+    if (!isStretch(rev::Time, upcoming) || upcoming.same(st.cur))
+        return;
+    const int lead = stretchMode == 1 ? frameW : frameP;
+    if (voiceNext < 0 && static_cast<double>(n) >= upcoming.b - lead && static_cast<double>(n) < upcoming.b)
+    {
+        voiceNext = 0;
+        while (voiceNext == voiceCur || voiceNext == voicePrev)
+            ++voiceNext;
+        startVoice(voiceNext, upcoming);
+    }
+    if (voiceNext >= 0)
+        advanceVoice(voices[static_cast<size_t>(voiceNext)]);
+}
+
+void RevolutionEngine::analyse(const float* in, int numChannels, int step) noexcept
+{
+    // Energy novelty per ~1.3 ms frame (the frame's level over the mean of the four before, in dB); each
+    // pattern step keeps its strongest; every finished pattern cycle is averaged into `feel` (18 dB = 1).
+    double e = 0.0;
+    for (int ch = 0; ch < numChannels; ++ch)
+        e += static_cast<double>(in[ch]) * in[ch];
+    feelEnergy += e / numChannels;
+    if (++feelFill < feelFrame)
+        return;
+    const double db = 10.0 * std::log10(feelEnergy / feelFrame + 1.0e-12);
+    feelEnergy = 0.0;
+    feelFill = 0;
+    double novelty = 0.0;
+    if (feelHistoryCount >= static_cast<int>(feelHistory.size()))
+    {
+        double mean = 0.0;
+        for (double h : feelHistory)
+            mean += h;
+        novelty = std::max(0.0, db - mean / static_cast<double>(feelHistory.size()));
+    }
+    feelHistory[static_cast<size_t>(feelHistoryCount % static_cast<int>(feelHistory.size()))] = db;
+    ++feelHistoryCount;
+    if (step < feelLastStep)
+        for (size_t s = 0; s < stepPeak.size(); ++s)
+        {
+            const auto v = static_cast<float>(std::clamp(stepPeak[s] / 18.0, 0.0, 1.0));
+            feel[s].store(0.5f * feel[s].load(std::memory_order_relaxed) + 0.5f * v, std::memory_order_relaxed);
+            stepPeak[s] = 0.0;
+        }
+    feelLastStep = step;
+    auto& peak = stepPeak[static_cast<size_t>(std::clamp(step, 0, kFeelSteps - 1))];
+    peak = std::max(peak, novelty);
 }
 
 double RevolutionEngine::motionLevel(double q) noexcept
@@ -636,6 +1149,7 @@ void RevolutionEngine::process(float* const* channels, int numChannels, int numS
             else
                 tapeStage(e, x, numChannels, q);
         }
+        analyse(in, numChannels, wrap(motionStep.k, steps));
         for (int ch = 0; ch < numChannels; ++ch)
             channels[ch][i] = orderGain >= 1.0 ? x[ch] : in[ch] + static_cast<float>(orderGain) * (x[ch] - in[ch]);
     }

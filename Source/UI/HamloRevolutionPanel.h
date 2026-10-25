@@ -19,17 +19,21 @@ namespace hpeq::ui
 // cells take a level from where they are clicked or dragged; shift-click locks a step (Generate keeps
 // it); right click on a plate: which actions Generate may use, clear, lock / unlock all. Projects saved
 // before this pass show the legacy M6 Monsta with an UPGRADE button (their sound is kept until then).
+// Pass 10b: STRETCH (TAPE / RHYTHM / CLEAN) under the TIME plate; LISTEN under the seed: GENERATE then
+// follows the attacks the engine heard on each step (shown faintly in the TIME cells), and that snapshot
+// is saved with the pattern.
 class HamloRevolutionPanel final : public juce::Component, private juce::Timer
 {
 public:
     enum Param { Mix, Rate, Steps, Swing, Humanize, Fade, TimeMix, TimeDepth, GlitchMix, GlitchDepth, MotionMix, MotionDepth, MotionSmooth, NumParams };
-    enum Switch { Order, Character, Grid, Triplet, Free, TimeOn, GlitchOn, MotionOn, MotionTarget, NumSwitches };
+    enum Switch { Order, Character, Grid, Triplet, Free, TimeOn, GlitchOn, MotionOn, MotionTarget, Stretch, Listen, NumSwitches };
 
     struct Values
     {
         std::array<double, NumParams> knobs { 1.0, 125.0, 16.0, 0.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.6, 0.3 };
-        std::array<int, NumSwitches> switches { 0, 1, 2, 0, 0, 1, 1, 1, 1 };
+        std::array<int, NumSwitches> switches { 0, 1, 2, 0, 0, 1, 1, 1, 1, 1, 0 };
         revolution::Pattern pattern;
+        revolution::Feel feel {}; // the LISTEN snapshot the pattern was generated from (all 0 = none)
         juce::int64 seed = 1;
         bool on = true;
         bool legacy = false; // the slot still runs the M6 Monsta (no "mode")
@@ -38,6 +42,7 @@ public:
     {
         int step = -1;
         bool warming = false;
+        std::array<float, revolution::kSteps> feel {}; // live attack strength per step, 0..1
     };
 
     HamloRevolutionPanel();
@@ -52,7 +57,7 @@ public:
     std::function<void(Switch, int)> onSwitchChange;
     std::function<void(bool)> onPowerChange;
     // A new pattern (and seed), one undo step named `what`.
-    std::function<void(const revolution::Pattern&, juce::int64 seed, const juce::String& what)> onPatternChange;
+    std::function<void(const revolution::Pattern&, juce::int64 seed, const revolution::Feel&, const juce::String& what)> onPatternChange;
     std::function<void()> onUpgrade;
     std::function<Status()> readStatus; // polled at 30 Hz
 
@@ -88,6 +93,7 @@ private:
     int selectorAt(juce::Point<float>) const;
     bool stepAt(juce::Point<float>, int& engine, int& step) const;
     void changePattern(const revolution::Pattern&, juce::int64 seed, const juce::String& what);
+    void generateWith(juce::int64 seed, const juce::String& what);
     void showStepMenu(int engine, int step);
     void showPlateMenu(int engine);
     void renderStatic(juce::Graphics&) const;

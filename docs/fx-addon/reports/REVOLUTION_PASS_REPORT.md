@@ -104,3 +104,88 @@ All tests passed on their first run.
 - The standalone module VST3s (another agent) compile the new DSP file (one line added to
   `HPEQ_ModuleShared` so the shared `ProcessorsM6.cpp` links) but have no HamloRevolution variant.
 - No onset analysis, no EATW-B / C-ATD / MSAV-C (P7): Generate is the seeded constrained generator above.
+
+---
+
+# Pass 10b — HamloRevolution completed: pitch-preserving TIME, C-ATD splices, LISTEN, CPU
+
+## 1. Scope / Date / Base
+
+| | |
+|---|---|
+| Scope | Owner: "HamloRevolution до конца". The task's P5 (pitch-preserving stretch), P6 (optimisation, measured), P7 C-ATD and MSAV-C (Generate that follows the audio), the causal attack analysis (F0 level of section 12) |
+| Date | 2026-10-25 |
+| Base | `cf4d553` on `feature/hpeq-m0-m1` |
+| Not done (and why) | **EATW-B** (constraint time warp of section 8) needs the whole source of a run before it plays; in a live insert the half-time source *is* the run (future audio), so it would need a captured-phrase mode or added latency — neither is in the product. **P8** alternatives (phase-gradient heap, fuzzy bins, HPS, NSGF), spectral freeze, formants, listening panel (section 17.4) |
+
+## 2. What changed
+
+- **STRETCH** for HALF and 2X (`timeStretch`, window under the TIME plate): **TAPE** (as before, pitch moves),
+  **RHYTHM** = WSOLA (21 ms grains, hop 1/2, ±half-hop search on both channels together: coarse every 4 lags
+  on every 2nd sample, the 3 best refined ±3, the expected position always a candidate), **CLEAN** = phase
+  vocoder (43 ms, hop 1/4, identity phase locking around spectral peaks, both channels turned by the same
+  rotation so their phase difference stays). New modules start in RHYTHM; projects saved before keep TAPE.
+  Grains are read 1.5 frames (+ search) behind the source position: a source age, not latency (PDC stays 0).
+  The voice for the next stretch run starts one frame early, so its frames come one per hop instead of all
+  at the run start.
+- **C-ATD splices** (`smartJoin`): at every segment change the outgoing and incoming heads' energies and
+  correlation over the fade are estimated (heads that read the tape are evaluated ahead; the live input and
+  stretch voices are estimated by the last fade length of input), and the crossfade's level is corrected so
+  the expected energy follows the line between the two (cap ±3 dB). New modules on; projects saved before off.
+- **LISTEN**: the engine measures the input's attack strength per pattern step (energy novelty per 1.3 ms
+  frame, the strongest per step, averaged over pattern cycles) and the page shows it in the TIME cells.
+  With LISTEN on, GENERATE / NEW SEED freeze that measurement (saved as `feelA/B`, so the project
+  regenerates the same) and run **Generate following the audio (MSAV-C)**: seeded candidate actions per step,
+  beam search (width 24) with an explainable score — repeats / stutters / ratchets on the hits, gaps between
+  them, TIME events at phrase ends, the character's density and variety, a seeded taste per action; locks,
+  allowed actions and the event limit are hard rules. MOTION's levels are lowered on the hits.
+- **P6**: an own split-array radix-2 FFT for CLEAN (11.9 µs vs 42 µs for `juce::dsp::FFT` at 2048 points on
+  this machine, same result within 1e-5), both channels in one complex FFT each way, rotations instead of
+  per-bin trigonometry; WSOLA and the vocoder read contiguous copies of the tape.
+
+![HamloRevolution 10b](revolution_pass/screenshots/hpeq_panel_hamlorevolution.png)
+
+## 3. Numbers (thresholds fixed before the runs)
+
+| Test | Threshold | Result |
+|---|---|---|
+| A17 HALF 440 Hz, RHYTHM / CLEAN | ≤ 5 cents, level ±1 dB | 1.61 / 0.00 cents, 0.00 / 0.00 dB |
+| HALF TAPE (sanity) | −1200 ± 5 cents | −1200.0 |
+| A17 2X 330 Hz, RHYTHM / CLEAN | ≤ 5 cents | 2.14 / 0.00 cents |
+| A19 CLEAN keeps 30° between channels | ±5° | 30.06° |
+| Source at half speed: clicks every 6000 → | 12000 ± 2 % | RHYTHM 12016, CLEAN 12059 |
+| A03 / A12 / A14 RHYTHM, CLEAN: blocks 1/64/127/512, allocations (order changes, seeks), finite | bit-exact, 0 | bit-exact, 0, finite |
+| C-ATD: splice between uncorrelated heads (noise, 8 ms) | plain ≤ −2 dB, C-ATD ≥ −1 dB | −3.01 / −0.10 dB |
+| C-ATD: equal heads (DC through REPEAT splices) | ≤ 1e-6 | 0 |
+| LISTEN: hits on steps 1/5/9/13 after four cycles | ≥ 0.8 there, ≤ 0.1 elsewhere | 0.88–0.94 / 0.00 |
+| A16 with LISTEN, 2000 seeds × 4 characters | 0 violations; repeats on hits ≥ plain + 0.2; gaps on hits ≤ 0.1 | 0; 0.998 vs 0.243; 0.000 |
+| A15 / A22 feel snapshot saved; the page regenerates from it | exact | exact |
+| P6 own FFT vs JUCE / round trip | ≤ 1e-3 / ≤ 1e-5 | 8.5e-6 / 2.4e-7 |
+| CPU, 48 kHz, 64-sample blocks (1.333 ms), CLEAN + Destruction pattern, 1 instance | p99 ≤ 25 % | p99 10.0 % (p50 1.0 %, max 46.6 %) |
+| … 8 instances in series, identical patterns (frames land in the same blocks) | p99 ≤ 100 % | p99 79.1 % (p50 8.3 %), **max 156.7 %** |
+
+All pass-10 tests still pass. `HPEQ_Tests` 1627 / 1627, `HPEQ_ModuleTests` 73 / 73 (Release).
+
+## 4. Disclosed changes made after first runs
+
+1. **A08** (tape half-time, pass 10) now sets TAPE explicitly: new modules default to RHYTHM.
+2. **Stretch tests started their runs at sample 0**, where no history exists; the voice then plays dry for the
+   whole run, so the first pitch results (0.00 cents) proved nothing. The runs were moved after the history
+   (HALF steps 5–12; 2X steps 13–16), and the tests now also require that the output differs from the input.
+3. **LISTEN analysis**: the very first hit (sample 0) has no earlier level to stand out from; the test feeds
+   four cycles instead of three (threshold unchanged).
+4. **Generate with LISTEN**: 354 of 8000 patterns broke the event limit — free events were placed before a
+   locked one further on. Fixed in the generator (locked events reserve their places); not in the test.
+5. **CPU**: the first runs failed (1 instance p99 42 %, 8 instances 295 %): every stretch run computed 3–4
+   frames at its start and the vocoder frame cost ~4 FFTs + trigonometry per bin. Fixed by the early voice,
+   one complex FFT each way, rotations per peak region and the own FFT (thresholds unchanged).
+
+## 5. Not verified / limits
+
+- Listening in FL Studio (owner). No blind listening test (section 17.4) was run.
+- With 8 identical CLEAN instances the *largest* observed callback was 157 % of a 64-sample deadline (p99 79 %):
+  at 64-sample buffers eight CLEAN instances with the same pattern can click; RHYTHM or larger buffers do not
+  have this. Instances are not staggered (the task allows it only with compensated timing).
+- A stretch run in the first ~70 ms after a start / seek plays dry (its grains need history).
+- RHYTHM smears very sharp transients a little (the test click train lands within 1 %); CLEAN sounds
+  phasey on dense drums at extreme settings (a phase vocoder's known trade-off).

@@ -618,8 +618,13 @@ int runUiSnapshots(const juce::File& out)
             v.pattern = revolution::generate({}, 1917, revolution::Musical);
             v.pattern.locks[revolution::Glitch] = 1u << 6;
             v.seed = 1917;
+            v.switches[ui::HamloRevolutionPanel::Listen] = 1;
+            v.switches[ui::HamloRevolutionPanel::Stretch] = 2;
             revolutionPanel.setValues(v);
-            revolutionPanel.settleStatus({ 5, false });
+            ui::HamloRevolutionPanel::Status status { 5, false, {} };
+            for (int s = 0; s < 16; ++s)
+                status.feel[static_cast<size_t>(s)] = s % 4 == 0 ? 0.95f : s % 2 == 0 ? 0.45f : 0.1f;
+            revolutionPanel.settleStatus(status);
         }
         shoot(revolutionPanel, 1180, 700, "hpeq_panel_hamlorevolution.png");
     }

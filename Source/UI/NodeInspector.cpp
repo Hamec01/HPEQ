@@ -1419,13 +1419,14 @@ void NodeInspector::buildRevolutionPage(int k)
         const juce::Identifier key(HamloRevolutionPanel::keyFor(sw));
         editChain("Revolution switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
     };
-    panel->onPatternChange = [this, k](const revolution::Pattern& pattern, juce::int64 seed, const juce::String& what)
+    panel->onPatternChange = [this, k](const revolution::Pattern& pattern, juce::int64 seed, const revolution::Feel& feel, const juce::String& what)
     {
         processor.getUndoManager().beginNewTransaction("Revolution " + what);
         editChain("Revolution pattern", [&](std::vector<FxSlotState>& c)
         {
             auto& params = c[static_cast<size_t>(k)].parameters;
             revolution::writePattern(params, pattern);
+            revolution::writeFeel(params, feel);
             params.set("revSeed", seed);
         });
     };
@@ -1449,7 +1450,9 @@ void NodeInspector::buildRevolutionPage(int k)
         if (engineSlot < 0)
             return {};
         const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
-        return { node.getRevolutionStep(k), node.isRevolutionWarming(k) };
+        HamloRevolutionPanel::Status s { node.getRevolutionStep(k), node.isRevolutionWarming(k), {} };
+        node.getRevolutionFeel(k, s.feel);
+        return s;
     };
     refreshers.push_back([this, panel, k]
     {
@@ -1471,6 +1474,7 @@ void NodeInspector::buildRevolutionPage(int k)
             v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, HamloRevolutionPanel::keyFor(static_cast<HamloRevolutionPanel::Switch>(sw)),
                                                                               defaults.switches[static_cast<size_t>(sw)]));
         v.pattern = revolution::readPattern(m.parameters);
+        v.feel = revolution::readFeel(m.parameters);
         v.seed = static_cast<juce::int64>(paramValue(m, "revSeed", 1.0));
         v.legacy = paramValue(m, "mode", 0.0) < 0.5;
         v.on = m.enabled;

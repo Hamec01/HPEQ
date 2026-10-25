@@ -590,6 +590,18 @@ bool FxNodeProcessor::isRevolutionWarming(int slotIndex) const noexcept
     return m.runsRevolution() && m.getRevolution().warmingUp();
 }
 
+bool FxNodeProcessor::getRevolutionFeel(int slotIndex, std::array<float, 16>& feel) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (!slot.running || slot.type != FxType::MonstaFx || slot.pooled < 0 || pools == nullptr)
+        return false;
+    const auto& m = pools->monstas.get(slot.pooled);
+    if (!m.runsRevolution())
+        return false;
+    m.getRevolution().getFeel(feel);
+    return true;
+}
+
 float FxNodeProcessor::getFaderInputDb(int slotIndex) const noexcept
 {
     const auto& slot = slots[static_cast<size_t>(slotIndex)];

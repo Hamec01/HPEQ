@@ -85,4 +85,21 @@ double unitOf(std::uint64_t h) noexcept; // [0, 1), the top 53 bits
 Pattern generate(const Pattern& current, std::uint64_t seed, int character);
 int maxEvents(int engine, int character) noexcept;
 std::uint64_t nextSeed(std::uint64_t seed) noexcept; // NEW SEED
+
+// LISTEN (pass 10b): the input's attack strength per step, 0..15, as measured by the engine when GENERATE
+// was pressed. Saved with the pattern ("feelA" steps 0..7, "feelB" 8..15), so a project regenerates the same.
+using Feel = std::array<std::uint8_t, kSteps>;
+const char* feelKey(int half);
+Feel readFeel(const juce::NamedValueSet&);
+void writeFeel(juce::NamedValueSet&, const Feel&);
+Feel feelFrom(const std::array<float, kSteps>& strength); // 0..1 -> 0..15
+bool hasFeel(const Feel&) noexcept;
+
+// Generate that follows the audio (MSAV-C): for TIME and GLITCH each free step gets a small seeded set of
+// candidate actions; a beam search (width 24) picks the pattern with the best explainable score: repeats
+// and retriggers on the hits, gaps between them, TIME events at phrase ends, the character's density and
+// variety, a seeded preference per action; locks, allowed actions and the event limit are hard rules.
+// MOTION's levels are lowered on the hits. Without a feel this is generate().
+constexpr std::uint32_t kFollowingVersion = 2;
+Pattern generateFollowing(const Pattern& current, std::uint64_t seed, int character, const Feel& feel);
 } // namespace hpeq::revolution

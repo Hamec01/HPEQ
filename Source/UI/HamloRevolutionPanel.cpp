@@ -75,6 +75,9 @@ juce::Rectangle<float> plateRect(int engine) { return { 26.0f, kRowY[static_cast
 juce::Point<float> onLever(int engine) { return { 56.0f, kRowY[static_cast<size_t>(engine)] + 74.0f }; }
 juce::Point<float> onLamp(int engine) { return { 108.0f, kRowY[static_cast<size_t>(engine)] + 60.0f }; }
 const juce::Rectangle<float> kTargetWindow { 88.0f, kRowY[2] + 84.0f, 84.0f, 24.0f };
+const juce::Rectangle<float> kStretchWindow { 88.0f, kRowY[0] + 84.0f, 84.0f, 24.0f };
+const juce::Point<float> kListen { 410.0f, 124.0f };
+constexpr std::array<const char*, 3> kStretchNames { "TAPE", "RHYTHM", "CLEAN" };
 
 const juce::Colour kTimeInk { 0xff6dff9a }, kGlitchInk { 0xffffb347 }, kMotionInk { 0xff8fd8ff };
 juce::Colour inkFor(int engine) { return engine == rev::Time ? kTimeInk : engine == rev::Glitch ? kGlitchInk : kMotionInk; }
@@ -128,7 +131,8 @@ const char* HamloRevolutionPanel::keyFor(Param p)
 
 const char* HamloRevolutionPanel::keyFor(Switch s)
 {
-    static constexpr const char* keys[] { "order", "character", "grid", "triplet", "free", "timeOn", "glitchOn", "motionOn", "motionTarget" };
+    static constexpr const char* keys[] { "order", "character", "grid", "triplet", "free", "timeOn", "glitchOn", "motionOn", "motionTarget",
+                                          "timeStretch", "listen" };
     return keys[s];
 }
 
@@ -195,20 +199,32 @@ void HamloRevolutionPanel::changePattern(const rev::Pattern& p, juce::int64 seed
     values.pattern = p;
     values.seed = seed;
     if (onPatternChange)
-        onPatternChange(p, seed, what);
+        onPatternChange(p, seed, values.feel, what);
     repaint();
 }
 
 void HamloRevolutionPanel::pressGenerate()
 {
-    changePattern(rev::generate(values.pattern, static_cast<std::uint64_t>(values.seed), values.switches[Character]), values.seed, "Generate");
-    generateFlash = 10;
+    generateWith(values.seed, "Generate");
 }
 
 void HamloRevolutionPanel::pressNewSeed()
 {
-    const auto seed = static_cast<juce::int64>(rev::nextSeed(static_cast<std::uint64_t>(values.seed)));
-    changePattern(rev::generate(values.pattern, static_cast<std::uint64_t>(seed), values.switches[Character]), seed, "New seed");
+    generateWith(static_cast<juce::int64>(rev::nextSeed(static_cast<std::uint64_t>(values.seed))), "New seed");
+}
+
+void HamloRevolutionPanel::generateWith(juce::int64 seed, const juce::String& what)
+{
+    // LISTEN: freeze what the engine heard on each step now; the pattern is generated from that snapshot
+    if (values.switches[Listen] != 0)
+    {
+        if (readStatus)
+            live = readStatus();
+        values.feel = rev::feelFrom(live.feel);
+    }
+    else
+        values.feel = {};
+    changePattern(rev::generateFollowing(values.pattern, static_cast<std::uint64_t>(seed), values.switches[Character], values.feel), seed, what);
     generateFlash = 10;
 }
 
@@ -326,6 +342,9 @@ void HamloRevolutionPanel::renderStatic(juce::Graphics& g) const
     }
     lcdWindow(g, kTargetWindow);
     engraved(g, "TARGET", { kTargetWindow.getX(), kTargetWindow.getBottom() + 2.0f, kTargetWindow.getWidth(), 14.0f }, 10.0f);
+    lcdWindow(g, kStretchWindow);
+    engraved(g, "STRETCH", { kStretchWindow.getX(), kStretchWindow.getBottom() + 2.0f, kStretchWindow.getWidth(), 14.0f }, 10.0f);
+    engraved(g, "LISTEN", { kListen.x + 16.0f, kListen.y - 9.0f, 70.0f, 18.0f }, 12.0f, stencil, juce::Justification::centredLeft);
 }
 
 void HamloRevolutionPanel::drawSelectors(juce::Graphics& g) const
@@ -398,6 +417,17 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
             const int v = values.pattern.steps[static_cast<size_t>(e)][static_cast<size_t>(s)];
             g.setColour(here ? juce::Colour(0xff17231b) : juce::Colour(0xff0a0d0b));
             g.fillRoundedRectangle(r, 4.0f);
+            if (e == rev::Time)
+            {
+                // what LISTEN hears on this step (live), or the snapshot the pattern was made from
+                const float f = values.switches[Listen] != 0 ? live.feel[static_cast<size_t>(s)] : values.feel[static_cast<size_t>(s)] / 15.0f;
+                if (f > 0.02f)
+                {
+                    const float h = (r.getHeight() - 8.0f) * juce::jlimit(0.0f, 1.0f, f);
+                    g.setColour(kGlitchInk.withAlpha(values.switches[Listen] != 0 ? 0.16f : 0.08f));
+                    g.fillRect(r.getX() + 3.0f, r.getBottom() - 4.0f - h, r.getWidth() - 6.0f, h);
+                }
+            }
             const float alpha = (active ? 1.0f : 0.3f) * (engineOn ? 1.0f : 0.45f);
             if (e == rev::Motion)
             {
@@ -446,6 +476,8 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
         }
     }
     lcdText(g, kTargetWindow, rev::targetName(values.switches[MotionTarget]), 12.0f);
+    lcdText(g, kStretchWindow, kStretchNames[static_cast<size_t>(juce::jlimit(0, 2, values.switches[Stretch]))], 12.0f);
+    lamp(g, kListen, values.switches[Listen] != 0, 0.3f, kGlitchInk);
 }
 
 void HamloRevolutionPanel::drawLegacy(juce::Graphics& g) const
@@ -483,7 +515,8 @@ void HamloRevolutionPanel::timerCallback()
         s = readStatus();
     if (!values.on || values.legacy)
         s = {};
-    const bool changed = s.step != live.step || s.warming != live.warming || generateFlash > 0;
+    const bool changed = s.step != live.step || s.warming != live.warming || generateFlash > 0
+                         || (values.switches[Listen] != 0 && s.feel != live.feel);
     live = s;
     if (generateFlash > 0)
         --generateFlash;
@@ -638,6 +671,10 @@ void HamloRevolutionPanel::mouseDown(const juce::MouseEvent& e)
         if (plateRect(eng).contains(d))
             return showPlateMenu(eng);
     }
+    if (kStretchWindow.contains(d))
+        return setSwitch(Stretch, (values.switches[Stretch] + (e.mods.isPopupMenu() ? 2 : 1)) % 3);
+    if (d.getDistanceFrom(kListen) <= 14.0f || juce::Rectangle<float>(kListen.x + 14.0f, kListen.y - 10.0f, 64.0f, 20.0f).contains(d))
+        return setSwitch(Listen, values.switches[Listen] != 0 ? 0 : 1);
     if (kTargetWindow.contains(d))
         return setSwitch(MotionTarget, (values.switches[MotionTarget] + (e.mods.isPopupMenu() ? rev::kMotionTargets - 1 : 1)) % rev::kMotionTargets);
     if (const int k = knobAt(d); k >= 0)

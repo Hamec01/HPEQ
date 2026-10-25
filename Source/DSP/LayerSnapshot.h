@@ -81,7 +81,9 @@ constexpr int kDivision = 0, kChance = 1, kSeed = 2, kCrushBits = 3, kGateDepth 
               kTimeOn = 16, kTimeMix = 17, kTimeDepth = 18, kTimePattern = 19,         // 19..22
               kGlitchOn = 23, kGlitchMix = 24, kGlitchDepth = 25, kGlitchPattern = 26, // 26..29
               kMotionOn = 30, kMotionMix = 31, kMotionDepth = 32, kMotionPattern = 33, // 33..36
-              kMotionTarget = 37, kMotionSmooth = 38, kRevFadeMs = 39;
+              kMotionTarget = 37, kMotionSmooth = 38, kRevFadeMs = 39,
+              // pass 10b: TIME stretch 0 TAPE / 1 RHYTHM (WSOLA) / 2 CLEAN (phase vocoder); smart join 0/1 (C-ATD)
+              kTimeStretch = 40, kRevSmartJoin = 41;
 // Stereo (insert; needs a stereo work domain)
 constexpr int kStereoWidth = 0, kStereoBalance = 1,
               // HamloShirota (module pass 8): style 0 EDINSTVO / 1 PROSTOR / 2 KOSMOS; stereoize 0..1; space 0..1;

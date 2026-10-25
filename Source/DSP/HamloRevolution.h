@@ -2,9 +2,12 @@
 
 #include <array>
 #include <atomic>
+#include <complex>
+#include <memory>
 #include <vector>
 
 #include "DSP/LayerSnapshot.h"
+#include "DSP/RevolutionFft.h"
 
 namespace hpeq::dsp
 {
@@ -24,10 +27,21 @@ namespace hpeq::dsp
 // signal). A head that would need a sample older than what was written since the epoch, or beyond the
 // capacity, plays the stage's input instead. Reset and a transport jump are O(1): the written count is
 // zeroed, nothing is cleared.
+//
+// Pass 10b: TIME's HALF and 2X can keep the pitch (slot::kTimeStretch): RHYTHM = WSOLA with a bounded
+// coarse-to-fine search (stereo-linked), CLEAN = phase vocoder with identity phase locking that keeps the
+// channels' phase differences. Both read their grains a fixed 1.5 frames (+ search) behind the tape head
+// (a source age, not latency). Splices estimate the two heads' energies and correlation and correct the
+// crossfade's level (C-ATD, cap +3 dB). The input's attack strength per pattern step is measured (cheap
+// energy novelty) for the page and for Generate with LISTEN.
 class RevolutionEngine
 {
 public:
     static constexpr double kTimeHistorySeconds = 4.5;
+    static constexpr int kFeelSteps = 16;
+
+    RevolutionEngine();
+    ~RevolutionEngine();
 
     // `glitchStorage` (owned by MonstaProcessor, shared with the M6 Monsta history) is GLITCH's tape.
     void prepare(double sampleRate, std::array<std::vector<float>, 2>& glitchStorage);
@@ -40,6 +54,11 @@ public:
     int epochCount() const noexcept { return epochs.load(std::memory_order_relaxed); }
     int timeCapacity() const noexcept { return tapes[0].size; }
     int glitchCapacity() const noexcept { return tapes[1].size; }
+    // Attack strength 0..1 per pattern step (averaged over the pattern cycles heard so far).
+    void getFeel(std::array<float, kFeelSteps>&) const noexcept;
+    // Frame sizes of the stretch renderers at this sample rate (RHYTHM, CLEAN).
+    int rhythmFrame() const noexcept { return frameW; }
+    int cleanFrame() const noexcept { return frameP; }
 
 private:
     struct Tape
@@ -49,6 +68,8 @@ private:
         long long written = 0;   // since the epoch (saturates at size)
         void push(const float* x, int numChannels) noexcept;
         float at(int ch, long long age) const noexcept;
+        // `count` samples from `age` (oldest) towards the present into dst (at most two copies)
+        void copy(int ch, long long age, int count, float* dst) const noexcept;
         bool holds(double oldestAge) const noexcept { return oldestAge <= static_cast<double>(std::min<long long>(written, size) - 1); }
     };
     struct Step
@@ -72,6 +93,19 @@ private:
         Segment cur, prev;
         int fadePos = 0, fadeLength = 0;
         double mix = 0.0;
+        double joinA = 0.0, joinB = 0.0, joinC = 0.0; // C-ATD: energies of the two heads and their correlation
+        bool join = false;
+    };
+    struct StretchVoice
+    {
+        bool active = false, fallback = false;
+        Segment segment;
+        int mode = 0, size = 0, hop = 0;
+        long long base = 0, nextFrame = 0, outPos = 0, prevCentre = 0, prevGrain = 0;
+        double start = 0.0, rate = 1.0, delay = 0.0; // source position of synthesis time t: start + rate t - delay
+        bool havePrev = false;
+        std::array<std::vector<float>, 2> ola;
+        std::vector<std::complex<float>> prevRef, rot; // CLEAN: last reference spectrum, rotation per bin
     };
 
     void readParams(const FxSlotParams&) noexcept;
@@ -83,7 +117,17 @@ private:
     int value(int engine, long long k) const noexcept;
     Segment segmentFor(int engine, double q) const noexcept;
     long long maxAge(int engine, int action, double w, double wStep, long long loop) const noexcept;
-    void head(int engine, const Segment&, const float* in, float* out, int numChannels) const noexcept;
+    // The head at sample nn while the tape's newest sample is n (ahead = nn - n >= 0). False when it can
+    // only give the stage's input and that is not known yet (ahead > 0).
+    bool headAt(int engine, const Segment&, long long nn, long long ahead, const float* in, float* out, int numChannels) const noexcept;
+    bool isStretch(int engine, const Segment&) const noexcept;
+    void startVoice(int index, const Segment&) noexcept;
+    void advanceVoice(StretchVoice&) noexcept;
+    void lookAhead(const Stage&) noexcept;
+    void voiceFrame(StretchVoice&, long long t) noexcept;
+    void voiceOut(StretchVoice&, const float* in, float* out, int numChannels) noexcept;
+    void estimateJoin(int engine, Stage&, bool prevStretch, bool curStretch, int numChannels) noexcept;
+    void analyse(const float* in, int numChannels, int step) noexcept;
     float readFrac(const Tape&, int ch, double age) const noexcept;
     float readHalfband(const Tape&, int ch, long long age) const noexcept;
     void tapeStage(int engine, float* x, int numChannels, double q) noexcept;
@@ -95,6 +139,26 @@ private:
     std::array<Tape, 2> tapes; // TIME, GLITCH
     std::array<Stage, 2> stages;
     std::array<float, 15> halfband {};
+
+    // stretch renderers (TIME only): the current head's voice, the one fading out, and the next run's,
+    // started one frame early so its frames come one per hop instead of all at the run start (P6)
+    std::array<StretchVoice, 3> voices;
+    int voiceCur = -1, voicePrev = -1, voiceNext = -1, stretchMode = 0, frameW = 1024, frameP = 2048;
+    bool smartJoin = true;
+    Segment upcoming;              // the segment after the current TIME one (looked up once per segment)
+    double upcomingFor = -1.0;     // ... for the current segment ending here
+    RevolutionFft fft;
+    std::vector<float> windowW, windowP, peakMag, spanL, spanR, naturalL, naturalR; // contiguous copies of the tape
+    std::vector<std::complex<float>> specIn, specOut, specL, specR, specRef, peakRot;
+    std::vector<int> nearestPeak;
+
+    // attack analysis per pattern step
+    int feelFrame = 64, feelFill = 0, feelLastStep = -1;
+    double feelEnergy = 0.0;
+    std::array<double, 4> feelHistory {};
+    int feelHistoryCount = 0;
+    std::array<double, kFeelSteps> stepPeak {};
+    std::array<std::atomic<float>, kFeelSteps> feel {};
 
     // parameters of the current block
     std::array<float, 48> lastValues {};

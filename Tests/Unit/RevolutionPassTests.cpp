@@ -2,12 +2,16 @@
 // an explicit 16-step pattern per engine and Generate -> Edit -> Lock. Thresholds fixed before the runs
 // (HamloRevolution task, section 18: A01-A16, A19).
 
+#include <chrono>
 #include <cmath>
 #include <functional>
 #include <memory>
 
+#include <juce_dsp/juce_dsp.h>
+
 #include "Core/Revolution.h"
 #include "DSP/ProcessorsM6.h"
+#include "DSP/RevolutionFft.h"
 #include "DSP/ProjectEngine.h"
 #include "Harness/AudioMetrics.h"
 #include "Harness/RtAllocationProbe.h"
@@ -270,9 +274,9 @@ public:
             expect(exact);
         }
 
-        beginTest("A08: HALF reads the run's first half at half speed (linear input: exact within 1e-6), never ahead of the writer");
+        beginTest("A08: TAPE HALF reads the run's first half at half speed (linear input: exact within 1e-6), never ahead of the writer");
         {
-            const auto p = revSlot([](FxSlotState&, rev::Pattern& pat) { setStep(pat, rev::Time, 1, rev::Half); setStep(pat, rev::Time, 2, rev::Half); });
+            const auto p = revSlot([](FxSlotState& m, rev::Pattern& pat) { m.parameters.set("timeStretch", 0); setStep(pat, rev::Time, 1, rev::Half); setStep(pat, rev::Time, 2, rev::Half); });
             const auto x = ramp(30000);
             const auto y = run(x, p);
             double worst = 0.0;
@@ -537,7 +541,7 @@ public:
             rev::Pattern sent;
             juce::int64 sentSeed = 0;
             juce::String what;
-            panel.onPatternChange = [&](const rev::Pattern& p, juce::int64 seed, const juce::String& w) { sent = p; sentSeed = seed; what = w; };
+            panel.onPatternChange = [&](const rev::Pattern& p, juce::int64 seed, const rev::Feel&, const juce::String& w) { sent = p; sentSeed = seed; what = w; };
             auto v = panel.getValues();
             v.seed = 123;
             v.switches[ui::HamloRevolutionPanel::Character] = rev::Musical;
@@ -566,4 +570,411 @@ public:
 };
 
 static RevolutionPassTests revolutionPassTests;
+// Pass 10b (owner: "доделываем"): pitch-preserving TIME (RHYTHM = WSOLA, CLEAN = phase vocoder), C-ATD
+// splices, the attack analysis per step and Generate with LISTEN, CPU per callback. Thresholds fixed
+// before the runs (task section 18: A17, A18-A20, A12, A16, A22; section 17.3 CPU).
+namespace
+{
+juce::AudioBuffer<float> sine(double hz, int samples, double phaseR = 0.0, float amp = 0.5f, double fs = kFs)
+{
+    juce::AudioBuffer<float> b(2, samples);
+    for (int i = 0; i < samples; ++i)
+    {
+        const double w = 2.0 * juce::MathConstants<double>::pi * hz * i / fs;
+        b.setSample(0, i, amp * static_cast<float>(std::sin(w)));
+        b.setSample(1, i, amp * static_cast<float>(std::sin(w + phaseR)));
+    }
+    return b;
+}
+
+// Frequency from interpolated rising zero crossings between `from` and `to` (channel 0).
+double crossingHz(const juce::AudioBuffer<float>& y, int from, int to, double fs = kFs)
+{
+    double first = -1.0, last = -1.0;
+    int count = 0;
+    for (int i = from + 1; i < to; ++i)
+    {
+        const float a = y.getSample(0, i - 1), b = y.getSample(0, i);
+        if (a < 0.0f && b >= 0.0f)
+        {
+            const double t = (i - 1) + a / (a - b);
+            if (first < 0.0)
+                first = t;
+            last = t;
+            ++count;
+        }
+    }
+    return count > 1 ? (count - 1) * fs / (last - first) : 0.0;
+}
+
+// Phase of the `hz` component of a channel over [from, to) (projection on sin / cos).
+double phaseAt(const juce::AudioBuffer<float>& y, int ch, double hz, int from, int to)
+{
+    double s = 0.0, c = 0.0;
+    for (int i = from; i < to; ++i)
+    {
+        const double w = 2.0 * juce::MathConstants<double>::pi * hz * i / kFs;
+        s += y.getSample(ch, i) * std::sin(w);
+        c += y.getSample(ch, i) * std::cos(w);
+    }
+    return std::atan2(c, s);
+}
+
+double rmsOf(const juce::AudioBuffer<float>& y, int from, int to)
+{
+    double e = 0.0;
+    for (int ch = 0; ch < y.getNumChannels(); ++ch)
+        for (int i = from; i < to; ++i)
+            e += static_cast<double>(y.getSample(ch, i)) * y.getSample(ch, i);
+    return std::sqrt(e / (y.getNumChannels() * static_cast<double>(to - from)));
+}
+
+double cents(double hz, double reference) { return 1200.0 * std::log2(hz / reference); }
+} // namespace
+
+class RevolutionStretchTests final : public juce::UnitTest
+{
+public:
+    RevolutionStretchTests() : juce::UnitTest("HamloRevolution 10b (stretch, joins, listen)", "HPEQ") {}
+
+    void runTest() override
+    {
+        const auto halfRun = [](int stretch, int action = rev::Half)
+        {
+            return revSlot([=](FxSlotState& m, rev::Pattern& pat)
+            {
+                m.parameters.set("timeStretch", stretch);
+                for (int s = 4; s < 12; ++s) // the run starts after half a second of history
+                    setStep(pat, rev::Time, s, action);
+            });
+        };
+
+        beginTest("A17: HALF keeps the pitch with RHYTHM and CLEAN (440 Hz: <= 5 cents, level +-1 dB); TAPE drops an octave");
+        {
+            const auto x = sine(440.0, 96000, 0.0);
+            for (int stretch : { 1, 2 })
+            {
+                const auto y = run(x, halfRun(stretch));
+                expect(!identical(y, x), "HALF played dry");
+                const double hz = crossingHz(y, 36000, 60000), level = 20.0 * std::log10(rmsOf(y, 36000, 60000) / rmsOf(x, 36000, 60000));
+                logMessage("  " + juce::String(stretch == 1 ? "RHYTHM" : "CLEAN") + ": " + juce::String(cents(hz, 440.0), 2) + " cents, level "
+                           + juce::String(level, 2) + " dB");
+                expect(std::abs(cents(hz, 440.0)) <= 5.0 && std::abs(level) <= 1.0, juce::String(stretch));
+            }
+            const auto tape = run(x, halfRun(0));
+            const double hz = crossingHz(tape, 36000, 60000);
+            logMessage("  TAPE: " + juce::String(cents(hz, 440.0), 1) + " cents");
+            expect(std::abs(cents(hz, 440.0) + 1200.0) <= 5.0);
+        }
+
+        beginTest("A17: 2X keeps the pitch with CLEAN and RHYTHM (<= 5 cents)");
+        {
+            // 2X on steps 13..16: the run plays the window before it (steps 9..12) and itself at twice the speed
+            const auto x = sine(330.0, 100000, 0.0);
+            for (int stretch : { 1, 2 })
+            {
+                const auto p = revSlot([stretch](FxSlotState& m, rev::Pattern& pat)
+                {
+                    m.parameters.set("timeStretch", stretch);
+                    for (int s = 12; s < 16; ++s)
+                        setStep(pat, rev::Time, s, rev::Double);
+                });
+                const auto y = run(x, p);
+                expect(!identical(y, x), "2X played dry");
+                const double c = cents(crossingHz(y, 76000, 94000), 330.0);
+                logMessage("  2X " + juce::String(stretch == 1 ? "RHYTHM" : "CLEAN") + ": " + juce::String(c, 2) + " cents");
+                expect(std::abs(c) <= 5.0, juce::String(stretch));
+            }
+        }
+
+        beginTest("A19: CLEAN keeps the channels' phase difference (30 degrees: +-5)");
+        {
+            const double diff = juce::MathConstants<double>::pi / 6.0;
+            const auto x = sine(440.0, 96000, diff);
+            const auto y = run(x, halfRun(2));
+            double measured = phaseAt(y, 1, 440.0, 44000, 54000) - phaseAt(y, 0, 440.0, 44000, 54000);
+            measured = std::atan2(std::sin(measured), std::cos(measured));
+            logMessage("  phase difference out: " + juce::String(measured * 180.0 / juce::MathConstants<double>::pi, 2) + " degrees");
+            expect(std::abs(measured - diff) * 180.0 / juce::MathConstants<double>::pi <= 5.0);
+        }
+
+        beginTest("Stretch consumes the source at half speed: clicks every 6000 samples come out every 12000 (+-2 %)");
+        {
+            juce::AudioBuffer<float> clicks(2, 96000);
+            clicks.clear();
+            for (int i = 0; i < 96000; i += 6000)
+                for (int ch = 0; ch < 2; ++ch)
+                    for (int k = 0; k < 24; ++k) // a short decaying burst, so WSOLA has something to align
+                        clicks.setSample(ch, i + k, 0.8f * std::exp(-0.15f * k) * (k % 2 == 0 ? 1.0f : -0.6f));
+            for (int stretch : { 1, 2 })
+            {
+                const auto y = run(clicks, halfRun(stretch));
+                std::vector<int> peaks;
+                for (int i = 28000; i < 71000; ++i)
+                {
+                    float m = 0.0f;
+                    for (int k = -300; k <= 300; ++k)
+                        m = std::max(m, std::abs(y.getSample(0, juce::jlimit(0, 95999, i + k))));
+                    if (std::abs(y.getSample(0, i)) == m && m > 0.2f && (peaks.empty() || i - peaks.back() > 3000))
+                        peaks.push_back(i);
+                }
+                double spacing = 0.0;
+                for (size_t i = 1; i < peaks.size(); ++i)
+                    spacing += peaks[i] - peaks[i - 1];
+                spacing /= std::max<size_t>(1, peaks.size() - 1);
+                logMessage("  " + juce::String(stretch == 1 ? "RHYTHM" : "CLEAN") + ": " + juce::String(static_cast<int>(peaks.size())) + " clicks, spacing "
+                           + juce::String(spacing, 1));
+                expect(peaks.size() >= 3 && std::abs(spacing - 12000.0) <= 240.0, juce::String(stretch));
+            }
+        }
+
+        beginTest("A03 / A12 / A14: RHYTHM and CLEAN are block-size invariant, allocation-free and finite (all actions, order changes, seeks)");
+        {
+            const auto drums = makeSyntheticDrums({ kFs, 2, 3.0, kFixtureSeed });
+            for (int stretch : { 1, 2 })
+            {
+                const auto p = revSlot([stretch](FxSlotState& m, rev::Pattern& pat)
+                {
+                    pat = rev::generate({}, 2718, rev::Destruction);
+                    for (int s = 0; s < rev::kSteps; s += 3)
+                        setStep(pat, rev::Time, s, s % 2 == 0 ? rev::Half : rev::Double);
+                    m.parameters.set("timeStretch", stretch);
+                });
+                RunOptions o;
+                o.block = 512;
+                const auto reference = run(drums, p, o);
+                expect(finite(reference));
+                for (int block : { 1, 64, 127 })
+                {
+                    o.block = block;
+                    expect(identical(run(drums, p, o), reference), "stretch " + juce::String(stretch) + " block " + juce::String(block));
+                }
+                std::uint64_t allocations = 0;
+                RunOptions a;
+                a.block = 64;
+                a.allocations = &allocations;
+                a.change = [](FxSlotParams& q, int start) { q.values[slot::kRevOrder] = static_cast<float>((start / 30000) % 6); };
+                a.ppqAt = [](int start) { return (start % 70000) * 120.0 / (60.0 * kFs); };
+                expect(finite(run(drums, p, a)));
+                expectEquals(static_cast<int>(allocations), 0);
+            }
+        }
+
+        beginTest("C-ATD: a splice between uncorrelated heads keeps its level (dip <= 1 dB; plain fade shows >= 2 dB); equal heads stay exact");
+        {
+            const auto noise = makeWhiteNoise({ kFs, 2, 20.0, 11 }, -12.0);
+            const auto jumps = [](int smart)
+            {
+                return revSlot([smart](FxSlotState& m, rev::Pattern& pat)
+                {
+                    m.parameters.set("smartJoin", smart);
+                    m.parameters.set("fadeMs", 8.0);
+                    for (int s = 1; s < rev::kSteps; s += 2)
+                        setStep(pat, rev::Glitch, s, rev::Jump);
+                });
+            };
+            const int fade = static_cast<int>(8.0e-3 * kFs);
+            const auto dip = [&](const juce::AudioBuffer<float>& y)
+            {
+                std::vector<double> profile(static_cast<size_t>(fade), 0.0);
+                double steady = 0.0;
+                int transitions = 0, steadyCount = 0;
+                for (int t = 24000; t + 6000 < y.getNumSamples(); t += 6000, ++transitions)
+                {
+                    for (int i = 0; i < fade; ++i)
+                        for (int ch = 0; ch < 2; ++ch)
+                            profile[static_cast<size_t>(i)] += static_cast<double>(y.getSample(ch, t + i)) * y.getSample(ch, t + i);
+                    for (int i = 2000; i < 4000; ++i, ++steadyCount)
+                        for (int ch = 0; ch < 2; ++ch)
+                            steady += static_cast<double>(y.getSample(ch, t + i)) * y.getSample(ch, t + i);
+                }
+                steady /= steadyCount;
+                double worst = 0.0;
+                for (int i = 16; i + 16 < fade; ++i)
+                {
+                    double e = 0.0;
+                    for (int k = -16; k < 16; ++k)
+                        e += profile[static_cast<size_t>(i + k)];
+                    e /= 32.0 * transitions;
+                    worst = std::min(worst, 10.0 * std::log10(e / steady));
+                }
+                return worst;
+            };
+            const double plain = dip(run(noise, jumps(0))), smart = dip(run(noise, jumps(1)));
+            logMessage("  deepest level in the splice: plain " + juce::String(plain, 2) + " dB, C-ATD " + juce::String(smart, 2) + " dB");
+            expect(plain <= -2.0 && smart >= -1.0);
+
+            const auto dc = run(constant(60000, 0.5f), revSlot([](FxSlotState& m, rev::Pattern& pat)
+            {
+                m.parameters.set("smartJoin", 1);
+                for (int s = 1; s < rev::kSteps; s += 2)
+                    setStep(pat, rev::Glitch, s, rev::Repeat);
+            }));
+            float worst = 0.0f;
+            for (int i = 12000; i < 60000; ++i)
+                worst = std::max(worst, std::abs(dc.getSample(0, i) - 0.5f));
+            logMessage("  equal heads (DC through REPEAT splices): largest error " + juce::String(worst, 8));
+            expect(worst <= 1.0e-6f);
+        }
+
+        beginTest("LISTEN analysis: hits on steps 1, 5, 9, 13 read >= 0.8 there and <= 0.1 elsewhere after four cycles");
+        {
+            juce::AudioBuffer<float> hits(2, 4 * 96000 + 1000); // the first hit (sample 0) has no history to stand out from
+            hits.clear();
+            for (int i = 0; i < hits.getNumSamples() - 600; i += 24000)
+                for (int ch = 0; ch < 2; ++ch)
+                    for (int k = 0; k < 500; ++k)
+                        hits.setSample(ch, i + k, 0.7f * std::exp(-0.01f * k) * static_cast<float>(std::sin(0.3 * k)));
+            auto m = std::make_unique<MonstaProcessor>();
+            m->prepare(kFs);
+            run(hits, revSlot(), {}, m.get());
+            std::array<float, 16> feel {};
+            m->getRevolution().getFeel(feel);
+            juce::String shown;
+            bool good = true;
+            for (int s = 0; s < 16; ++s)
+            {
+                shown << juce::String(feel[static_cast<size_t>(s)], 2) << " ";
+                good = good && (s % 4 == 0 ? feel[static_cast<size_t>(s)] >= 0.8f : feel[static_cast<size_t>(s)] <= 0.1f);
+            }
+            logMessage("  feel: " + shown);
+            expect(good);
+        }
+
+        beginTest("A16 with LISTEN (2000 seeds x 4 characters): constraints hold; repeats land on the hits, gaps avoid them");
+        {
+            rev::Feel feel {};
+            for (int s = 0; s < 16; s += 4)
+                feel[static_cast<size_t>(s)] = 15;
+            rev::Pattern base;
+            setStep(base, rev::Glitch, 6, rev::Scratch);
+            base.locks[rev::Glitch] = 1u << 6;
+            base.allow[rev::Glitch] = static_cast<std::uint16_t>(0xffff & ~(1u << rev::Jump));
+            int violations = 0;
+            double alignedSmart = 0.0, alignedPlain = 0.0, repeatsSmart = 0.0, repeatsPlain = 0.0, gapsOnHits = 0.0, gaps = 0.0;
+            for (std::uint64_t seed = 1; seed <= 2000; ++seed)
+                for (int c = 0; c < rev::kCharacters; ++c)
+                {
+                    const auto g = rev::generateFollowing(base, seed, c, feel);
+                    const auto plain = rev::generate(base, seed, c);
+                    violations += g == rev::generateFollowing(base, seed, c, feel) ? 0 : 1;
+                    violations += g.steps[rev::Glitch][6] == rev::Scratch ? 0 : 1;
+                    for (int e = 0; e < 2; ++e)
+                    {
+                        int events = 0;
+                        for (auto v : g.steps[static_cast<size_t>(e)])
+                            events += v != 0 ? 1 : 0;
+                        violations += events > rev::maxEvents(e, c) ? 1 : 0;
+                    }
+                    for (int s = 0; s < 16; ++s)
+                    {
+                        const auto v = g.steps[rev::Glitch][static_cast<size_t>(s)], w = plain.steps[rev::Glitch][static_cast<size_t>(s)];
+                        violations += v == rev::Jump || v >= rev::kGlitchActions ? 1 : 0;
+                        const bool hit = s % 4 == 0;
+                        const auto isRepeat = [](int a) { return a == rev::Repeat || a == rev::Stutter || a == rev::Ratchet; };
+                        repeatsSmart += isRepeat(v) ? 1.0 : 0.0;
+                        alignedSmart += isRepeat(v) && hit ? 1.0 : 0.0;
+                        repeatsPlain += isRepeat(w) ? 1.0 : 0.0;
+                        alignedPlain += isRepeat(w) && hit ? 1.0 : 0.0;
+                        gaps += v == rev::Gap ? 1.0 : 0.0;
+                        gapsOnHits += v == rev::Gap && hit ? 1.0 : 0.0;
+                    }
+                }
+            const double smart = alignedSmart / std::max(1.0, repeatsSmart), plainShare = alignedPlain / std::max(1.0, repeatsPlain);
+            const double gapShare = gapsOnHits / std::max(1.0, gaps);
+            logMessage("  violations " + juce::String(violations) + "; repeats on hits: LISTEN " + juce::String(smart, 3) + " vs plain "
+                       + juce::String(plainShare, 3) + "; gaps on hits " + juce::String(gapShare, 3));
+            expect(violations == 0 && smart >= plainShare + 0.2 && gapShare <= 0.1);
+        }
+
+        beginTest("A15 / A22: the LISTEN snapshot is saved with the pattern; the page sends it and regenerates the same pattern from it");
+        {
+            rev::Feel feel {};
+            for (int s = 0; s < 16; ++s)
+                feel[static_cast<size_t>(s)] = static_cast<std::uint8_t>((s * 7) % 16);
+            juce::NamedValueSet set;
+            rev::writeFeel(set, feel);
+            expect(rev::readFeel(set) == feel);
+
+            ui::HamloRevolutionPanel panel;
+            panel.setSize(1180, 700);
+            rev::Pattern sent;
+            rev::Feel sentFeel {};
+            panel.onPatternChange = [&](const rev::Pattern& p, juce::int64, const rev::Feel& f, const juce::String&) { sent = p; sentFeel = f; };
+            auto v = panel.getValues();
+            v.switches[ui::HamloRevolutionPanel::Listen] = 1;
+            v.seed = 4242;
+            panel.setValues(v);
+            ui::HamloRevolutionPanel::Status s;
+            for (int i = 0; i < 16; i += 4)
+                s.feel[static_cast<size_t>(i)] = 1.0f;
+            panel.readStatus = [s] { return s; };
+            panel.pressGenerate();
+            expect(sentFeel == rev::feelFrom(s.feel) && sent == rev::generateFollowing(v.pattern, 4242, v.switches[ui::HamloRevolutionPanel::Character], sentFeel));
+        }
+
+        beginTest("P6: the own FFT (CLEAN) matches juce::dsp::FFT (|diff| <= 1e-3 on 2048 points) and inverts (<= 1e-5)");
+        {
+            juce::dsp::FFT reference(11);
+            RevolutionFft own;
+            own.prepare(2048);
+            std::vector<std::complex<float>> x(2048), a(2048), b(2048), back(2048);
+            juce::Random r(3);
+            for (auto& v : x)
+                v = { r.nextFloat() - 0.5f, r.nextFloat() - 0.5f };
+            reference.perform(x.data(), a.data(), false);
+            own.perform(x.data(), b.data(), false);
+            own.perform(b.data(), back.data(), true);
+            double diff = 0.0, trip = 0.0;
+            for (size_t i = 0; i < x.size(); ++i)
+            {
+                diff = std::max(diff, static_cast<double>(std::abs(a[i] - b[i])));
+                trip = std::max(trip, static_cast<double>(std::abs(back[i] - x[i])));
+            }
+            logMessage("  own vs JUCE " + juce::String(diff, 7) + ", round trip " + juce::String(trip, 8));
+            expect(diff <= 1.0e-3 && trip <= 1.0e-5);
+        }
+
+        beginTest("CPU per callback (48 kHz, 64 samples, deadline 1.333 ms): one HamloRevolution (CLEAN, all engines) p99 <= 25 %; eight p99 <= 100 %");
+        {
+            const auto drums = makeSyntheticDrums({ kFs, 2, 6.0, kFixtureSeed });
+            const auto p = revSlot([](FxSlotState& m, rev::Pattern& pat)
+            {
+                pat = rev::generate({}, 99, rev::Destruction);
+                for (int s = 0; s < rev::kSteps; s += 2)
+                    setStep(pat, rev::Time, s, rev::Half);
+                m.parameters.set("timeStretch", 2);
+            });
+            for (int instances : { 1, 8 })
+            {
+                std::vector<std::unique_ptr<MonstaProcessor>> chain;
+                for (int i = 0; i < instances; ++i)
+                {
+                    chain.push_back(std::make_unique<MonstaProcessor>());
+                    chain.back()->prepare(kFs);
+                }
+                auto y = drums;
+                std::vector<double> ms;
+                for (int start = 0; start + 64 <= y.getNumSamples(); start += 64)
+                {
+                    Transport t;
+                    t.playing = t.hasPosition = true;
+                    t.ppqAtBlockStart = start * 120.0 / (60.0 * kFs);
+                    float* c[2] { y.getWritePointer(0) + start, y.getWritePointer(1) + start };
+                    const auto t0 = std::chrono::steady_clock::now();
+                    for (auto& m : chain)
+                        m->process(c, 2, 64, p, t, 0);
+                    ms.push_back(std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - t0).count());
+                }
+                std::sort(ms.begin(), ms.end());
+                const double deadline = 64.0 / kFs * 1000.0, p50 = ms[ms.size() / 2], p99 = ms[ms.size() * 99 / 100], worst = ms.back();
+                logMessage("  " + juce::String(instances) + " instance(s): p50 " + juce::String(100.0 * p50 / deadline, 1) + " %, p99 "
+                           + juce::String(100.0 * p99 / deadline, 1) + " %, max " + juce::String(100.0 * worst / deadline, 1) + " % of the deadline");
+                expect(p99 <= (instances == 1 ? 0.25 : 1.0) * deadline);
+            }
+        }
+    }
+};
+
+static RevolutionStretchTests revolutionStretchTests;
 } // namespace hpeq::test

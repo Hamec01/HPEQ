@@ -173,6 +173,9 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kMotionTarget] = juce::jlimit(0.0f, 4.0f, std::round(param(state.parameters, "motionTarget", 0.0f)));
             slotParams.values[slot::kMotionSmooth] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "motionSmooth", 0.0f));
             slotParams.values[slot::kRevFadeMs] = juce::jlimit(0.5f, 8.0f, param(state.parameters, "fadeMs", 2.0f));
+            // Saved before pass 10b: tape heads and the plain crossfade.
+            slotParams.values[slot::kTimeStretch] = juce::jlimit(0.0f, 2.0f, std::round(param(state.parameters, "timeStretch", 0.0f)));
+            slotParams.values[slot::kRevSmartJoin] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "smartJoin", 0.0f)));
             break;
         case FxType::StereoProcessor:
             slotParams.values[slot::kStereoWidth] = juce::jlimit(0.0f, 2.0f, param(state.parameters, "width", 1.0f));

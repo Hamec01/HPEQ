@@ -282,6 +282,9 @@ FxSlotState defaultModule(FxType type)
         m.parameters.set("motionTarget", static_cast<int>(revolution::LowPass));
         m.parameters.set("motionSmooth", 0.3);
         m.parameters.set("fadeMs", 2.0);
+        m.parameters.set("timeStretch", 1); // RHYTHM: half time keeps the pitch
+        m.parameters.set("smartJoin", 1);
+        m.parameters.set("listen", 0);
         revolution::writePattern(m.parameters, revolution::generate({}, 1, revolution::Musical));
     }
     if (type == FxType::TransientShaper)
