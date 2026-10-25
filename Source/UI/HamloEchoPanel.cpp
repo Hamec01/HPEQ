@@ -28,6 +28,7 @@ constexpr std::array<MapInfo, HamloEchoPanel::NumParams> kMaps { {
     { 0.0, 1.0, Map::Linear },      // Cross
     { 0.0, 24.0, Map::Linear },     // Drive (dB)
     { 0.0, 1.5, Map::Linear },      // Width
+    { 0.0, 1.0, Map::Linear },      // Mix
     { 0.05, 10.0, Map::Log },       // ModRate (Hz)
     { 0.0, 1.0, Map::Linear },      // ModDepth
     { 0.0, 1.0, Map::Linear },      // Diffusion
@@ -42,10 +43,10 @@ constexpr std::array<MapInfo, HamloEchoPanel::NumParams> kMaps { {
     { 0.0, 1.0, Map::Linear },      // LowRes
     { 0.0, 1.0, Map::Linear },      // HighRes
 } };
-constexpr std::array<const char*, HamloEchoPanel::kNumKnobs> kLabels { "Time L", "Time R", "Feedback", "Cross", "Drive", "Width",
+constexpr std::array<const char*, HamloEchoPanel::kNumKnobs> kLabels { "Time L", "Time R", "Feedback", "Cross", "Drive", "Width", "Mix",
                                                                        "Mod rate", "Mod depth", "Diffusion", "Pitch", "Lo-Fi", "Low cut",
                                                                        "High cut", "Band freq", "Band gain", "Band Q", "Duck" };
-constexpr int kLarge = 6;
+constexpr int kLarge = 7;
 
 // Layout (design coordinates): the same frame as HamloVerb.
 const juce::Rectangle<float> kPlate { 405.0f, 41.0f, 370.0f, 92.0f };
@@ -139,11 +140,21 @@ HamloEchoPanel::HamloEchoPanel() : meter(std::make_unique<MeterState>())
     startTimerHz(30);
 }
 
-HamloEchoPanel::~HamloEchoPanel() = default;
+HamloEchoPanel::~HamloEchoPanel()
+{
+    stopTimer();
+    if (typing != nullptr)
+    {
+        typing->onReturnKey = {};
+        typing->onFocusLost = {};
+        typing->onEscapeKey = {};
+        typing.reset();
+    }
+}
 
 const char* HamloEchoPanel::keyFor(Param p)
 {
-    static constexpr const char* keys[] { "timeMs", "timeRMs", "feedback", "cross", "driveDb", "width", "modRate", "modDepth",
+    static constexpr const char* keys[] { "timeMs", "timeRMs", "feedback", "cross", "driveDb", "width", "mix", "modRate", "modDepth",
                                           "diffusion", "pitch", "lofi", "lowCutHz", "dampingHz", "bandHz", "bandGainDb", "bandQ",
                                           "duck", "lowRes", "highRes" };
     return keys[p];
@@ -162,7 +173,7 @@ double HamloEchoPanel::defaultFor(Param p)
 
 bool HamloEchoPanel::usedByClassic(Param p) noexcept
 {
-    return p == TimeL || p == Feedback || p == Width || p == LowCut || p == HighCut;
+    return p == TimeL || p == Feedback || p == Width || p == Mix || p == LowCut || p == HighCut;
 }
 
 bool HamloEchoPanel::isActive(Param p) const noexcept
@@ -189,7 +200,7 @@ juce::String HamloEchoPanel::format(Param p, double v)
     switch (p)
     {
         case TimeL: case TimeR: return v < 1000.0 ? juce::String(juce::roundToInt(v)) + " ms" : juce::String(v / 1000.0, 2) + " s";
-        case Feedback: case Cross: case Width: case ModDepth: case Diffusion: case Lofi: case Duck: case LowRes: case HighRes:
+        case Feedback: case Cross: case Width: case Mix: case ModDepth: case Diffusion: case Lofi: case Duck: case LowRes: case HighRes:
             return juce::String(juce::roundToInt(v * 100.0)) + " %";
         case Drive: case BandGain: return (v > 0.05 ? "+" : "") + juce::String(v, 1) + " dB";
         case ModRate: return juce::String(v, v < 1.0 ? 2 : 1) + " Hz";
@@ -217,6 +228,7 @@ dsp::FxSlotParams HamloEchoPanel::slotParams() const
     p.values[s::kDampingHz] = static_cast<float>(k[HighCut]);
     p.values[s::kDelayLowCutHz] = static_cast<float>(k[LowCut]);
     p.values[s::kDelayWidth] = static_cast<float>(k[Width]);
+    p.mix = static_cast<float>(k[Mix]);
     p.values[s::kDlyCharacter] = static_cast<float>(sw[Character]);
     p.values[s::kDlyTimeRMs] = static_cast<float>(k[TimeR]);
     p.values[s::kDlySyncR] = static_cast<float>(sw[SyncR]);
@@ -377,7 +389,7 @@ void HamloEchoPanel::renderStatic(juce::Graphics& g) const
     {
         const bool large = k.param < kLarge;
         const float labelY = large ? kLargeLabelY : kSmallLabelY;
-        const float w = large ? 170.0f : 96.0f;
+        const float w = large ? 148.0f : 96.0f;
         engraved(g, juce::String(kLabels[static_cast<size_t>(k.param)]).toUpperCase(),
                  juce::Rectangle<float>(k.centre.x - w * 0.5f, labelY - 13.0f, w, 26.0f), large ? 20.0f : 13.0f, stencil,
                  juce::Justification::centred, 0.1f);
@@ -1127,7 +1139,7 @@ void HamloEchoPanel::editReadout(Param p)
                                              large ? 140.0f : 92.0f, 26.0f)
                           .transformedBy(toScreen())
                           .toNearestInt();
-    const bool percent = p == Feedback || p == Cross || p == Width || p == ModDepth || p == Diffusion || p == Lofi || p == Duck;
+    const bool percent = p == Feedback || p == Cross || p == Width || p == Mix || p == ModDepth || p == Diffusion || p == Lofi || p == Duck;
     typing = std::make_unique<juce::TextEditor>();
     typing->setBounds(area);
     typing->setFont(stencilFont((large ? 20.0f : 15.0f) * scale * 1.1f));

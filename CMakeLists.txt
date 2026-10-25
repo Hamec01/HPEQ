@@ -23,6 +23,15 @@ else()
     FetchContent_MakeAvailable(JUCE)
 endif()
 
+# JUCE 8 creates a Direct2D/D3D11 device for every Windows plug-in DLL. FL Studio may unload an
+# individual module while transport is running, and some NVIDIA drivers wait indefinitely while
+# that per-DLL device is torn down. Add opt-in compile switches to the fetched JUCE sources; only
+# the standalone module targets below enable them, leaving the original HPEQ target unchanged.
+if (WIN32 AND NOT HPEQ_JUCE_DIR)
+    include(cmake/PatchJuceWindowsRenderer.cmake)
+    hpeq_patch_juce_windows_renderer("${juce_SOURCE_DIR}")
+endif()
+
 # Read-only HPDG sources: the M0 harness compiles a few HPDG DSP blocks from here to measure them.
 # Nothing is copied into this repository and nothing in HPDG is modified.
 set(HPEQ_HPDG_SOURCE_DIR "" CACHE PATH "HPDG Source/ directory for M0 measurements (optional)")
@@ -182,6 +191,8 @@ function(hpeq_add_module_plugin target product bundle_id plugin_code kind)
     target_include_directories(${target} PRIVATE Source)
     target_compile_definitions(${target} PRIVATE
         HPEQ_MODULE_KIND=${kind}
+        HPEQ_JUCE_DEFAULT_IMAGE_TYPE=SoftwareImageType
+        HPEQ_JUCE_DEFAULT_RENDERING_ENGINE=0
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
         JUCE_VST3_CAN_REPLACE_VST2=0)
@@ -272,6 +283,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/ReverbPassTests.cpp
     Tests/Unit/DelayPassTests.cpp
     Tests/Unit/SaturatorPassTests.cpp
+    Tests/Unit/MixKnobTests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")

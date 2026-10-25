@@ -122,7 +122,17 @@ HamloMagPanel::HamloMagPanel() : meter(std::make_unique<MeterState>())
     startTimerHz(30);
 }
 
-HamloMagPanel::~HamloMagPanel() = default;
+HamloMagPanel::~HamloMagPanel()
+{
+    stopTimer();
+    if (typing != nullptr)
+    {
+        typing->onReturnKey = {};
+        typing->onFocusLost = {};
+        typing->onEscapeKey = {};
+        typing.reset();
+    }
+}
 
 const char* HamloMagPanel::keyFor(Param p)
 {

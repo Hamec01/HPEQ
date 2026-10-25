@@ -90,7 +90,17 @@ HamloUdarnikPanel::HamloUdarnikPanel()
     startTimerHz(30);
 }
 
-HamloUdarnikPanel::~HamloUdarnikPanel() = default;
+HamloUdarnikPanel::~HamloUdarnikPanel()
+{
+    stopTimer();
+    if (typing != nullptr)
+    {
+        typing->onReturnKey = {};
+        typing->onFocusLost = {};
+        typing->onEscapeKey = {};
+        typing.reset();
+    }
+}
 
 double HamloUdarnikPanel::normFor(Param p) const
 {

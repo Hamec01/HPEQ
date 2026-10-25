@@ -20,7 +20,7 @@ class HamloEchoPanel final : public juce::Component, private juce::Timer
 public:
     enum Param
     {
-        TimeL, TimeR, Feedback, Cross, Drive, Width,                                                   // large row
+        TimeL, TimeR, Feedback, Cross, Drive, Width, Mix,                                              // large row (Mix = the module's mix)
         ModRate, ModDepth, Diffusion, Pitch, Lofi, LowCut, HighCut, BandFreq, BandGain, BandQ, Duck,   // small row
         LowRes, HighRes,                                                                               // CRT handles only
         NumParams
@@ -31,7 +31,7 @@ public:
 
     struct Values
     {
-        std::array<double, NumParams> knobs { 250.0, 375.0, 0.35, 0.0, 3.0, 1.0, 0.5, 0.3, 0.0, 0.0, 0.0, 120.0, 8000.0, 1000.0, 0.0, 1.0, 0.0, 0.0, 0.0 };
+        std::array<double, NumParams> knobs { 250.0, 375.0, 0.35, 0.0, 3.0, 1.0, 1.0, 0.5, 0.3, 0.0, 0.0, 0.0, 120.0, 8000.0, 1000.0, 0.0, 1.0, 0.0, 0.0, 0.0 };
         std::array<int, NumSwitches> switches { 2, 0, 8, 6, 1, 0, 0 };
         bool on = true;
     };

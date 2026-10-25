@@ -1,6 +1,8 @@
+#include <atomic>
 #include <cmath>
 #include <iostream>
 #include <set>
+#include <thread>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -72,8 +74,47 @@ int main(int argc, char** argv)
         juce::MemoryBlock state;
         plugin->getStateInformation(state);
         plugin->setStateInformation(state.getData(), static_cast<int>(state.getSize()));
-        std::unique_ptr<juce::AudioProcessorEditor> editor(plugin->createEditorIfNeeded());
-        const bool ok = allFinite(audio) && editor != nullptr && !state.isEmpty();
+        bool editorsOk = true;
+        int processedBlocks = 0;
+        if (description.name == "HamloComp")
+        {
+            std::atomic<bool> processAudio { true };
+            std::atomic<int> liveBlocks { 0 };
+            std::thread audioThread([&]
+            {
+                juce::AudioBuffer<float> liveAudio(2, 512);
+                juce::MidiBuffer liveMidi;
+                while (processAudio.load(std::memory_order_acquire))
+                {
+                    liveAudio.clear();
+                    plugin->processBlock(liveAudio, liveMidi);
+                    liveBlocks.fetch_add(1, std::memory_order_relaxed);
+                }
+            });
+
+            for (int cycle = 0; cycle < 12; ++cycle)
+            {
+                std::unique_ptr<juce::AudioProcessorEditor> editor(plugin->createEditorIfNeeded());
+                editorsOk = editorsOk && editor != nullptr;
+                if (editor == nullptr)
+                    break;
+                editor->addToDesktop(0);
+                editor->setVisible(true);
+                juce::MessageManager::getInstance()->runDispatchLoopUntil(40);
+                editor.reset();
+            }
+            processAudio.store(false, std::memory_order_release);
+            audioThread.join();
+            processedBlocks = liveBlocks.load(std::memory_order_relaxed);
+        }
+        else
+        {
+            std::unique_ptr<juce::AudioProcessorEditor> editor(plugin->createEditorIfNeeded());
+            editorsOk = editorsOk && editor != nullptr;
+            processedBlocks = 1;
+        }
+
+        const bool ok = allFinite(audio) && editorsOk && processedBlocks > 0 && !state.isEmpty();
         std::cout << (ok ? "[PASS] " : "[FAIL] ") << description.name << "  "
                   << plugin->getParameters().size() << " params  latency " << plugin->getLatencySamples() << "\n";
         failures += ok ? 0 : 1;

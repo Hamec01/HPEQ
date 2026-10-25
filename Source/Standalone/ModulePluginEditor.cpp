@@ -163,7 +163,13 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
 
 ModulePluginEditor::~ModulePluginEditor()
 {
+    // FL Studio may close the editor while its audio thread is still running. Timer is a base
+    // class, so relying on Timer::~Timer() would stop it only after refreshPanel and panel had
+    // already been destroyed. Stop it before touching any callback-owned state.
+    stopTimer();
+    refreshPanel = {};
     endGesture();
+    panel.reset();
 }
 
 void ModulePluginEditor::beginGesture(const juce::String& id)
@@ -193,8 +199,31 @@ void ModulePluginEditor::setImmediate(const juce::String& id, double value)
 
 void ModulePluginEditor::timerCallback()
 {
+    selectSoftwareRenderer();
     if (refreshPanel)
         refreshPanel();
+}
+
+void ModulePluginEditor::visibilityChanged()
+{
+    selectSoftwareRenderer();
+}
+
+void ModulePluginEditor::parentHierarchyChanged()
+{
+    selectSoftwareRenderer();
+}
+
+void ModulePluginEditor::selectSoftwareRenderer()
+{
+   #if JUCE_WINDOWS
+    // JUCE 8 defaults every Windows peer to Direct2D. FL Studio can unload an individual VST3
+    // while transport is running; tearing down that per-DLL D3D11 device has been observed to
+    // wait indefinitely inside the NVIDIA driver. These panels are cached bitmap/vector UIs and
+    // do not need a GPU renderer, so select the GDI software backend before the first paint.
+    if (auto* peer = getPeer(); peer != nullptr && peer->getCurrentRenderingEngine() != 0)
+        peer->setCurrentRenderingEngine(0);
+   #endif
 }
 
 void ModulePluginEditor::resized()

@@ -12,19 +12,19 @@ namespace hpeq::ui
 {
 // The limiter page (module pass 5, docs/fx-addon/LIMITER_DESIGN.md §4), Black Steel: nameplate
 // "HamloRedWall · MODEL OGR-1 · № 1917", amber LCDs (gain reduction, output peak), six brass knobs
-// (THRESHOLD, CEILING, RELEASE, LOOKAHEAD, LINK, STYLE with three detents GLASNOST / STAKHANOV / OCTOBER),
+// (THRESHOLD, CEILING, RELEASE, LOOKAHEAD, LINK, OUTPUT, MIX, STYLE with three detents GLASNOST / STAKHANOV / OCTOBER),
 // TRUE PEAK / RELEASE / MONITOR levers, a green CRT with the scrolling gain-reduction history, a GAIN
 // REDUCTION needle meter, ON lamp and toggle. Design coordinates 1180 x 700, scaled to fit.
 class HamloRedWallPanel final : public juce::Component, private juce::Timer
 {
 public:
     // Threshold is labelled LOUDNESS (push), Ceiling LIMIT; Output is the gain after the limiter.
-    enum Param { Threshold, Ceiling, Release, Lookahead, Link, Output, Style, NumKnobs };
+    enum Param { Threshold, Ceiling, Release, Lookahead, Link, Output, Mix, Style, NumKnobs }; // Mix = the module's mix
     enum Switch { TruePeak, AutoRelease, Monitor, NumSwitches };
 
     struct Values
     {
-        std::array<double, NumKnobs> knobs { 0.0, -1.0, 60.0, 2.0, 1.0, 0.0, 0.0 };
+        std::array<double, NumKnobs> knobs { 0.0, -1.0, 60.0, 2.0, 1.0, 0.0, 1.0, 0.0 };
         std::array<int, NumSwitches> switches { 1, 1, 0 };
         bool on = true;
     };

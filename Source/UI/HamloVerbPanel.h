@@ -21,7 +21,7 @@ class HamloVerbPanel final : public juce::Component, private juce::Timer
 public:
     enum Param
     {
-        PreDelay, Size, Decay, Attack, Distance, Width,                                                  // large row
+        PreDelay, Size, Decay, Attack, Distance, Width, Mix,                                             // large row (Mix = the module's mix)
         EarlyDiff, LateDiff, ModRate, ModDepth, BassMult, BassXover, HighMult, HighXover, LowCut, HighCut, Duck, // small row
         NumKnobs
     };
@@ -30,7 +30,7 @@ public:
 
     struct Values
     {
-        std::array<double, NumKnobs> knobs { 20.0, 1.0, 2.4, 0.2, 0.4, 1.0, 0.7, 0.7, 0.6, 0.4, 1.2, 300.0, 0.5, 4000.0, 80.0, 12000.0, 0.0 };
+        std::array<double, NumKnobs> knobs { 20.0, 1.0, 2.4, 0.2, 0.4, 1.0, 1.0, 0.7, 0.7, 0.6, 0.4, 1.2, 300.0, 0.5, 4000.0, 80.0, 12000.0, 0.0 };
         std::array<int, NumSwitches> switches { 3, 2, 0, 0 };
         bool on = true;
     };

@@ -61,8 +61,9 @@ struct MapInfo
     bool logarithmic;
 };
 constexpr std::array<MapInfo, HamloCompPanel::NumKnobs> kMaps { { { -60.0, 0.0, false }, { 1.0, 20.0, true }, { 0.0, 40.0, false },
-                                                                   { 0.1, 100.0, true }, { 10.0, 1000.0, true }, { 0.0, 24.0, false } } };
-constexpr std::array<const char*, HamloCompPanel::NumKnobs> kKnobLabels { "Threshold", "Ratio", "Knee", "Attack", "Release", "Makeup" };
+                                                                   { 0.1, 100.0, true }, { 10.0, 1000.0, true }, { 0.0, 24.0, false }, { 0.0, 1.0, false } } };
+constexpr float kKnobScale = 0.9f; // seven knobs share the 1068 px row
+constexpr std::array<const char*, HamloCompPanel::NumKnobs> kKnobLabels { "Threshold", "Ratio", "Knee", "Attack", "Release", "Makeup", "Mix" };
 const std::array<juce::StringArray, HamloCompPanel::NumSwitches> kSwitchOptions { juce::StringArray { "Peak", "RMS" },
                                                                                   juce::StringArray { "Clean", "Punch", "Glue" },
                                                                                   juce::StringArray { "Off", "On" } };
@@ -78,7 +79,7 @@ const juce::Point<float> kLamp { 1074.0f, 453.0f }, kToggle { 1074.0f, 559.0f };
 HamloCompPanel::HamloCompPanel()
 {
     for (int i = 0; i < NumKnobs; ++i)
-        knobs[static_cast<size_t>(i)] = { static_cast<Param>(i), { 56.0f + static_cast<float>(i) * (174.67f + 4.0f) + 87.3f, kKnobY } };
+        knobs[static_cast<size_t>(i)] = { static_cast<Param>(i), { 56.0f + (static_cast<float>(i) + 0.5f) * (1068.0f / NumKnobs), kKnobY } };
     const auto ticks = [](std::initializer_list<float> all, std::initializer_list<float> labelled)
     {
         std::vector<std::pair<float, bool>> t;
@@ -94,11 +95,21 @@ HamloCompPanel::HamloCompPanel()
     startTimerHz(30);
 }
 
-HamloCompPanel::~HamloCompPanel() = default;
+HamloCompPanel::~HamloCompPanel()
+{
+    stopTimer();
+    if (typing != nullptr)
+    {
+        typing->onReturnKey = {};
+        typing->onFocusLost = {};
+        typing->onEscapeKey = {};
+        typing.reset();
+    }
+}
 
 const char* HamloCompPanel::keyFor(Param p)
 {
-    static constexpr const char* keys[] { "thresholdDb", "ratio", "kneeDb", "attackMs", "releaseMs", "makeupDb" };
+    static constexpr const char* keys[] { "thresholdDb", "ratio", "kneeDb", "attackMs", "releaseMs", "makeupDb", "mix" };
     return keys[p];
 }
 
@@ -110,7 +121,7 @@ const char* HamloCompPanel::keyFor(Switch s)
 
 double HamloCompPanel::defaultFor(Param p)
 {
-    static constexpr double d[] { -30.0, 4.0, 6.0, 1.0, 80.0, 0.0 }; // = defaultModule(Compressor)
+    static constexpr double d[] { -30.0, 4.0, 6.0, 1.0, 80.0, 0.0, 1.0 }; // = defaultModule(Compressor), mix 100 %
     return d[p];
 }
 
@@ -122,6 +133,7 @@ juce::String HamloCompPanel::format(Param p, double v)
         case Ratio: return juce::String(v, 1) + ":1";
         case Attack: return juce::String(v, 2) + " ms";
         case Release: return juce::String(juce::roundToInt(v)) + " ms";
+        case Mix: return juce::String(juce::roundToInt(v * 100.0)) + " %";
         case NumKnobs: break;
     }
     return {};
@@ -346,21 +358,8 @@ void HamloCompPanel::renderStatic(juce::Graphics& g) const
     for (const auto& k : knobs)
     {
         engraved(g, juce::String(kKnobLabels[static_cast<size_t>(k.param)]).toUpperCase(),
-                 juce::Rectangle<float>(k.centre.x - 87.0f, kLabelY - 17.0f, 174.0f, 34.0f), 24.0f, stencil, juce::Justification::centred, 0.1f);
-        for (int i = 0; i < 21; ++i)
-        {
-            const float a = (-135.0f + 270.0f / 20.0f * static_cast<float>(i)) * kPi / 180.0f;
-            const bool major = i % 2 == 0;
-            const float r1 = 62.0f, r2 = major ? 71.0f : 67.0f;
-            g.setColour(juce::Colour(0xffefe3bd));
-            g.drawLine(k.centre.x + std::sin(a) * r1, k.centre.y - std::cos(a) * r1, k.centre.x + std::sin(a) * r2, k.centre.y - std::cos(a) * r2,
-                       major ? 2.4f : 1.4f);
-        }
-        // ring with its drop shadow
-        g.setColour(juce::Colours::black.withAlpha(0.55f));
-        g.fillEllipse(k.centre.x - 50.0f, k.centre.y - 40.0f, 100.0f, 100.0f);
-        g.setColour(juce::Colours::black);
-        g.fillEllipse(k.centre.x - 49.0f, k.centre.y - 49.0f, 98.0f, 98.0f);
+                 juce::Rectangle<float>(k.centre.x - 75.0f, kLabelY - 17.0f, 150.0f, 34.0f), 21.0f, stencil, juce::Justification::centred, 0.1f);
+        steel::knobScale(g, k.centre, kKnobScale); // seven knobs: a little smaller than the six of the original design
     }
 
     // switch labels and separators
@@ -477,11 +476,11 @@ void HamloCompPanel::drawKnob(juce::Graphics& g, const Knob& k) const
 {
     const float angle = (-135.0f + static_cast<float>(normFor(k.param)) * 270.0f) * kPi / 180.0f;
     const auto c = k.centre;
-    steel::brassKnob(g, c, angle, 1.0f, 1.0f, steel::KnobAsset::AluminumBrassInsert, steel::PointerAsset::WhiteEnamel);
+    steel::brassKnob(g, c, angle, kKnobScale, 1.0f, steel::KnobAsset::AluminumBrassInsert, steel::PointerAsset::WhiteEnamel);
 
     // readout
-    g.setFont(stencilFont(25.0f));
-    const auto r = juce::Rectangle<float>(c.x - 80.0f, kReadoutY - 16.0f, 160.0f, 32.0f);
+    g.setFont(stencilFont(22.0f));
+    const auto r = juce::Rectangle<float>(c.x - 72.0f, kReadoutY - 16.0f, 144.0f, 32.0f);
     g.setColour(juce::Colours::black);
     g.drawText(format(k.param, values.knobs[static_cast<size_t>(k.param)]), r.translated(0, 1), juce::Justification::centred);
     g.setColour(stencil);
@@ -620,7 +619,7 @@ void HamloCompPanel::settleMeters(float inputDb, float reductionDb)
 int HamloCompPanel::knobAt(juce::Point<float> d) const
 {
     for (const auto& k : knobs)
-        if (d.getDistanceFrom(k.centre) <= 60.0f)
+        if (d.getDistanceFrom(k.centre) <= 60.0f * kKnobScale)
             return k.param;
     return -1;
 }
@@ -684,7 +683,7 @@ void HamloCompPanel::mouseDown(const juce::MouseEvent& e)
         return;
     }
     for (const auto& k : knobs) // a click on a readout types a value
-        if (juce::Rectangle<float>(k.centre.x - 80.0f, kReadoutY - 16.0f, 160.0f, 32.0f).contains(d))
+        if (juce::Rectangle<float>(k.centre.x - 72.0f, kReadoutY - 16.0f, 144.0f, 32.0f).contains(d))
         {
             editReadout(k.param);
             return;
@@ -744,7 +743,8 @@ void HamloCompPanel::editReadout(Param p)
     typing->setJustification(juce::Justification::centred);
     typing->setColour(juce::TextEditor::backgroundColourId, juce::Colour(0xff120b04));
     typing->setColour(juce::TextEditor::textColourId, juce::Colour(0xffffb347));
-    typing->setText(juce::String(values.knobs[static_cast<size_t>(p)], p == Attack ? 2 : 1), false);
+    typing->setText(p == Mix ? juce::String(juce::roundToInt(values.knobs[static_cast<size_t>(p)] * 100.0))
+                             : juce::String(values.knobs[static_cast<size_t>(p)], p == Attack ? 2 : 1), false);
     typing->selectAll();
     juce::Component::SafePointer<HamloCompPanel> self(this);
     const auto closeEditor = [self] { juce::MessageManager::callAsync([self] { if (self != nullptr) self->typing.reset(); }); };
@@ -752,7 +752,9 @@ void HamloCompPanel::editReadout(Param p)
     {
         if (typing == nullptr)
             return;
-        const double v = typing->getText().retainCharacters("-0123456789.").getDoubleValue();
+        double v = typing->getText().retainCharacters("-0123456789.").getDoubleValue();
+        if (p == Mix)
+            v /= 100.0; // typed in percent
         const auto& m = kMaps[static_cast<size_t>(p)];
         if (onKnobGestureStart)
             onKnobGestureStart(p);

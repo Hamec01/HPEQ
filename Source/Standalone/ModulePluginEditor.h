@@ -16,6 +16,8 @@ public:
     ~ModulePluginEditor() override;
 
     void resized() override;
+    void visibilityChanged() override;
+    void parentHierarchyChanged() override;
 
 private:
     template <typename Panel>
@@ -23,6 +25,7 @@ private:
     void beginGesture(const juce::String& id);
     void endGesture();
     void setImmediate(const juce::String& id, double value);
+    void selectSoftwareRenderer();
     void timerCallback() override;
 
     ModulePluginProcessor& processor;

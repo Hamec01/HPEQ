@@ -102,7 +102,17 @@ HamloShirotaPanel::HamloShirotaPanel()
     startTimerHz(30);
 }
 
-HamloShirotaPanel::~HamloShirotaPanel() = default;
+HamloShirotaPanel::~HamloShirotaPanel()
+{
+    stopTimer();
+    if (typing != nullptr)
+    {
+        typing->onReturnKey = {};
+        typing->onFocusLost = {};
+        typing->onEscapeKey = {};
+        typing.reset();
+    }
+}
 
 double HamloShirotaPanel::normFor(Param p) const
 {

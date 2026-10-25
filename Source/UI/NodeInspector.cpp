@@ -426,6 +426,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
         panel->onKnobGestureEnd = [this] { dragging = false; };
         panel->onKnobChange = [this, k](HamloCompPanel::Param p, double v)
         {
+            if (p == HamloCompPanel::Mix) // the page's Mix is the module's mix
+            {
+                editChain("Module mix", [k, v](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+                return;
+            }
             const juce::Identifier key(HamloCompPanel::keyFor(p));
             editChain("Compressor", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
         };
@@ -468,7 +473,7 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
             for (int p = 0; p < HamloCompPanel::NumKnobs; ++p)
             {
                 const auto* key = HamloCompPanel::keyFor(static_cast<HamloCompPanel::Param>(p));
-                v.knobs[static_cast<size_t>(p)] = paramValue(m, key, fallback(key));
+                v.knobs[static_cast<size_t>(p)] = p == HamloCompPanel::Mix ? static_cast<double>(m.mix) : paramValue(m, key, fallback(key));
             }
             for (int sw = 0; sw < HamloCompPanel::NumSwitches; ++sw)
             {
@@ -785,6 +790,11 @@ void NodeInspector::buildReverbPage(int k)
     panel->onKnobGestureEnd = [this] { dragging = false; };
     panel->onKnobChange = [this, k](HamloVerbPanel::Param p, double v)
     {
+        if (p == HamloVerbPanel::Mix) // the page's Mix is the module's mix
+        {
+            editChain("Module mix", [k, v](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+            return;
+        }
         const juce::Identifier key(HamloVerbPanel::keyFor(p));
         editChain("Reverb", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
     };
@@ -827,7 +837,7 @@ void NodeInspector::buildReverbPage(int k)
         for (int p = 0; p < HamloVerbPanel::NumKnobs; ++p)
         {
             const auto* key = HamloVerbPanel::keyFor(static_cast<HamloVerbPanel::Param>(p));
-            v.knobs[static_cast<size_t>(p)] = paramValue(m, key, fallback(key));
+            v.knobs[static_cast<size_t>(p)] = p == HamloVerbPanel::Mix ? static_cast<double>(m.mix) : paramValue(m, key, fallback(key));
         }
         for (int sw = 0; sw < HamloVerbPanel::NumSwitches; ++sw)
         {
@@ -856,6 +866,11 @@ void NodeInspector::buildDelayPage(int k)
     panel->onKnobGestureEnd = [this] { dragging = false; };
     panel->onKnobChange = [this, k](HamloEchoPanel::Param p, double v)
     {
+        if (p == HamloEchoPanel::Mix) // the page's Mix is the module's mix
+        {
+            editChain("Module mix", [k, v](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+            return;
+        }
         const juce::Identifier key(HamloEchoPanel::keyFor(p));
         editChain("Delay", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
     };
@@ -899,7 +914,7 @@ void NodeInspector::buildDelayPage(int k)
         for (int p = 0; p < HamloEchoPanel::NumParams; ++p)
         {
             const auto* key = HamloEchoPanel::keyFor(static_cast<HamloEchoPanel::Param>(p));
-            v.knobs[static_cast<size_t>(p)] = paramValue(m, key, fallback(key));
+            v.knobs[static_cast<size_t>(p)] = p == HamloEchoPanel::Mix ? static_cast<double>(m.mix) : paramValue(m, key, fallback(key));
         }
         for (int sw = 0; sw < HamloEchoPanel::NumSwitches; ++sw)
         {
@@ -928,6 +943,11 @@ void NodeInspector::buildLimiterPage(int k)
     panel->onKnobGestureEnd = [this] { dragging = false; };
     panel->onKnobChange = [this, k](HamloRedWallPanel::Param p, double v)
     {
+        if (p == HamloRedWallPanel::Mix) // the page's Mix is the module's mix
+        {
+            editChain("Module mix", [k, v](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+            return;
+        }
         const juce::Identifier key(HamloRedWallPanel::keyFor(p));
         editChain("Limiter", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
     };
@@ -971,7 +991,7 @@ void NodeInspector::buildLimiterPage(int k)
         for (int p = 0; p < HamloRedWallPanel::NumKnobs; ++p)
         {
             const auto* key = HamloRedWallPanel::keyFor(static_cast<HamloRedWallPanel::Param>(p));
-            v.knobs[static_cast<size_t>(p)] = paramValue(m, key, fallback(key));
+            v.knobs[static_cast<size_t>(p)] = p == HamloRedWallPanel::Mix ? static_cast<double>(m.mix) : paramValue(m, key, fallback(key));
         }
         for (int sw = 0; sw < HamloRedWallPanel::NumSwitches; ++sw)
         {

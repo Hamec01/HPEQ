@@ -16,12 +16,12 @@ namespace hpeq::ui
 class HamloCompPanel final : public juce::Component, private juce::Timer
 {
 public:
-    enum Param { Threshold, Ratio, Knee, Attack, Release, Makeup, NumKnobs };
+    enum Param { Threshold, Ratio, Knee, Attack, Release, Makeup, Mix, NumKnobs }; // Mix = the module's mix (FxSlotState::mix)
     enum Switch { Detector, Character, AutoMakeup, NumSwitches };
 
     struct Values
     {
-        std::array<double, NumKnobs> knobs { -30.0, 4.0, 6.0, 1.0, 80.0, 0.0 };
+        std::array<double, NumKnobs> knobs { -30.0, 4.0, 6.0, 1.0, 80.0, 0.0, 1.0 };
         std::array<int, NumSwitches> switches { 0, 1, 1 };
         bool on = true;
     };

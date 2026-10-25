@@ -29,6 +29,7 @@ constexpr std::array<MapInfo, HamloVerbPanel::NumKnobs> kMaps { {
     { 0.0, 1.0, Map::Linear, 1.0 },    // Attack
     { 0.0, 1.0, Map::Linear, 1.0 },    // Distance
     { 0.0, 1.5, Map::Linear, 1.0 },    // Width
+    { 0.0, 1.0, Map::Linear, 1.0 },    // Mix
     { 0.0, 1.0, Map::Linear, 1.0 },    // EarlyDiff
     { 0.0, 1.0, Map::Linear, 1.0 },    // LateDiff
     { 0.01, 10.0, Map::Log, 1.0 },     // ModRate (Hz)
@@ -41,10 +42,10 @@ constexpr std::array<MapInfo, HamloVerbPanel::NumKnobs> kMaps { {
     { 1000.0, 20000.0, Map::Log, 1.0 },// HighCut (Hz)
     { 0.0, 1.0, Map::Linear, 1.0 },    // Duck
 } };
-constexpr std::array<const char*, HamloVerbPanel::NumKnobs> kLabels { "Pre-delay", "Size", "Decay", "Attack", "Distance", "Width",
+constexpr std::array<const char*, HamloVerbPanel::NumKnobs> kLabels { "Pre-delay", "Size", "Decay", "Attack", "Distance", "Width", "Mix",
                                                                       "Early diff", "Late diff", "Mod rate", "Mod depth", "Bass x",
                                                                       "Bass xover", "High x", "High xover", "Low cut", "High cut", "Duck" };
-constexpr int kLarge = 6;
+constexpr int kLarge = 7;
 
 // Layout (design coordinates)
 const juce::Rectangle<float> kPlate { 405.0f, 41.0f, 370.0f, 92.0f };
@@ -128,11 +129,21 @@ HamloVerbPanel::HamloVerbPanel() : meter(std::make_unique<MeterState>())
     startTimerHz(30);
 }
 
-HamloVerbPanel::~HamloVerbPanel() = default;
+HamloVerbPanel::~HamloVerbPanel()
+{
+    stopTimer();
+    if (typing != nullptr)
+    {
+        typing->onReturnKey = {};
+        typing->onFocusLost = {};
+        typing->onEscapeKey = {};
+        typing.reset();
+    }
+}
 
 const char* HamloVerbPanel::keyFor(Param p)
 {
-    static constexpr const char* keys[] { "predelayMs", "size", "decaySeconds", "attack", "distance", "width", "earlyDiffusion",
+    static constexpr const char* keys[] { "predelayMs", "size", "decaySeconds", "attack", "distance", "width", "mix", "earlyDiffusion",
                                           "lateDiffusion", "modRate", "modDepth", "bassMult", "bassXoverHz", "hfDecayRatio",
                                           "highXoverHz", "lowCutHz", "highCutHz", "duck" };
     return keys[p];
@@ -151,7 +162,7 @@ double HamloVerbPanel::defaultFor(Param p)
 
 bool HamloVerbPanel::usedByClassic(Param p) noexcept
 {
-    return p == PreDelay || p == Size || p == Decay || p == Width || p == HighMult || p == LowCut;
+    return p == PreDelay || p == Size || p == Decay || p == Width || p == Mix || p == HighMult || p == LowCut;
 }
 
 bool HamloVerbPanel::isActive(Param p) const noexcept
@@ -166,7 +177,7 @@ juce::String HamloVerbPanel::format(Param p, double v)
     {
         case PreDelay: return juce::String(juce::roundToInt(v)) + " ms";
         case Decay: return juce::String(v, v < 10.0 ? 2 : 1) + " s";
-        case Size: case Attack: case Distance: case Width: case EarlyDiff: case LateDiff: case ModDepth: case Duck:
+        case Size: case Attack: case Distance: case Width: case Mix: case EarlyDiff: case LateDiff: case ModDepth: case Duck:
             return juce::String(juce::roundToInt(v * 100.0)) + " %";
         case ModRate: return juce::String(v, v < 1.0 ? 2 : 1) + " Hz";
         case BassMult: case HighMult: return times + juce::String(v, 2);
@@ -190,6 +201,7 @@ dsp::FxSlotParams HamloVerbPanel::slotParams() const
     p.values[s::kSize] = static_cast<float>(k[Size]);
     p.values[s::kWidth] = static_cast<float>(k[Width]);
     p.values[s::kLowCutHz] = static_cast<float>(k[LowCut]);
+    p.mix = static_cast<float>(k[Mix]);
     p.values[s::kRevSpace] = static_cast<float>(values.switches[Space]);
     p.values[s::kRevColor] = static_cast<float>(values.switches[Color]);
     p.values[s::kRevSync] = static_cast<float>(values.switches[Sync]);
@@ -359,7 +371,7 @@ void HamloVerbPanel::renderStatic(juce::Graphics& g) const
     {
         const bool large = k.param < kLarge;
         const float labelY = large ? kLargeLabelY : kSmallLabelY;
-        const float w = large ? 170.0f : 96.0f;
+        const float w = large ? 148.0f : 96.0f;
         engraved(g, juce::String(kLabels[static_cast<size_t>(k.param)]).toUpperCase(),
                  juce::Rectangle<float>(k.centre.x - w * 0.5f, labelY - 13.0f, w, 26.0f), large ? 20.0f : 13.0f, stencil,
                  juce::Justification::centred, 0.1f);
@@ -1080,7 +1092,7 @@ void HamloVerbPanel::editReadout(Param p)
                                              large ? 140.0f : 92.0f, 26.0f)
                           .transformedBy(toScreen())
                           .toNearestInt();
-    const bool percent = p == Size || p == Attack || p == Distance || p == Width || p == EarlyDiff || p == LateDiff || p == ModDepth || p == Duck;
+    const bool percent = p == Size || p == Attack || p == Distance || p == Width || p == Mix || p == EarlyDiff || p == LateDiff || p == ModDepth || p == Duck;
     typing = std::make_unique<juce::TextEditor>();
     typing->setBounds(area);
     typing->setFont(stencilFont((large ? 20.0f : 15.0f) * scale * 1.1f));

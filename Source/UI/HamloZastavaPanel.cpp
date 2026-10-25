@@ -104,7 +104,17 @@ HamloZastavaPanel::HamloZastavaPanel()
     startTimerHz(30);
 }
 
-HamloZastavaPanel::~HamloZastavaPanel() = default;
+HamloZastavaPanel::~HamloZastavaPanel()
+{
+    stopTimer();
+    if (typing != nullptr)
+    {
+        typing->onReturnKey = {};
+        typing->onFocusLost = {};
+        typing->onEscapeKey = {};
+        typing.reset();
+    }
+}
 
 double HamloZastavaPanel::normFor(Param p) const
 {

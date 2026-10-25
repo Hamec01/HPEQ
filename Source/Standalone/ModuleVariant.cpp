@@ -44,13 +44,14 @@ P choice(const char* id, const char* name, int def, int target, std::initializer
 ModuleSpec makeComp()
 {
     namespace s = dsp::slot;
-    return { ModuleKind::Comp, FxType::Compressor, "HamloComp", 1180, 700, 6,
+    return { ModuleKind::Comp, FxType::Compressor, "HamloComp", 1180, 700, 7,
              { knob("thresholdDb", "Threshold", -60, 0, -30, s::kThresholdDb, 1, "dB"),
                knob("ratio", "Ratio", 1, 20, 4, s::kRatio, 0.5f, ":1"),
                knob("kneeDb", "Knee", 0, 40, 6, s::kKneeDb, 1, "dB"),
                knob("attackMs", "Attack", 0.1f, 100, 1, s::kAttackMs, 0.34f, "ms"),
                knob("releaseMs", "Release", 10, 1000, 80, s::kReleaseMs, 0.5f, "ms"),
                knob("makeupDb", "Makeup", 0, 24, 0, s::kMakeupDb, 1, "dB"),
+               knob("mix", "Mix", 0, 1, 1, -1),
                choice("detector", "Detector", 0, s::kCompDetector, { "Peak", "RMS" }),
                choice("character", "Character", 1, s::kCompCharacter, { "Clean", "Punch", "Glue" }),
                choice("autoMakeup", "Auto Makeup", 1, s::kCompAutoMakeup, { "Off", "On" }) } };
@@ -59,13 +60,14 @@ ModuleSpec makeComp()
 ModuleSpec makeVerb()
 {
     namespace s = dsp::slot;
-    return { ModuleKind::Verb, FxType::Reverb, "HamloVerb", 1180, 760, 17,
+    return { ModuleKind::Verb, FxType::Reverb, "HamloVerb", 1180, 760, 18,
              { knob("predelayMs", "Pre-delay", 0, 500, 20, s::kPredelayMs, 2.3f, "ms"),
                knob("size", "Size", 0.3f, 1.5f, 1, s::kSize),
                knob("decaySeconds", "Decay", 0.1f, 30, 2.4f, s::kDecaySeconds, 0.35f, "s"),
                knob("attack", "Attack", 0, 1, 0.2f, s::kRevAttack),
                knob("distance", "Distance", 0, 1, 0.4f, s::kRevDistance),
                knob("width", "Width", 0, 1.5f, 1, s::kWidth),
+               knob("mix", "Mix", 0, 1, 1, -1),
                knob("earlyDiffusion", "Early Diffusion", 0, 1, 0.7f, s::kRevEarlyDiff),
                knob("lateDiffusion", "Late Diffusion", 0, 1, 0.7f, s::kRevLateDiff),
                knob("modRate", "Mod Rate", 0.01f, 10, 0.6f, s::kRevModRate, 0.3f, "Hz"),
@@ -87,13 +89,14 @@ ModuleSpec makeVerb()
 ModuleSpec makeEcho()
 {
     namespace s = dsp::slot;
-    return { ModuleKind::Echo, FxType::Delay, "HamloEcho", 1180, 760, 19,
+    return { ModuleKind::Echo, FxType::Delay, "HamloEcho", 1180, 760, 20,
              { knob("timeMs", "Time L", 1, 4000, 250, s::kDelayTimeMs, 0.32f, "ms"),
                knob("timeRMs", "Time R", 1, 4000, 375, s::kDlyTimeRMs, 0.32f, "ms"),
                knob("feedback", "Feedback", 0, 0.98f, 0.35f, s::kFeedback),
                knob("cross", "Cross", 0, 1, 0, s::kDlyCross),
                knob("driveDb", "Drive", 0, 24, 3, s::kDlyDriveDb, 1, "dB"),
                knob("width", "Width", 0, 1.5f, 1, s::kDelayWidth),
+               knob("mix", "Mix", 0, 1, 1, -1),
                knob("modRate", "Mod Rate", 0.05f, 10, 0.5f, s::kDlyModRate, 0.36f, "Hz"),
                knob("modDepth", "Mod Depth", 0, 1, 0.3f, s::kDlyModDepth),
                knob("diffusion", "Diffusion", 0, 1, 0, s::kDlyDiffusion),
@@ -148,13 +151,14 @@ ModuleSpec makeMag()
 ModuleSpec makeRedWall()
 {
     namespace s = dsp::slot;
-    return { ModuleKind::RedWall, FxType::Limiter, "HamloRedWall", 1180, 700, 7,
+    return { ModuleKind::RedWall, FxType::Limiter, "HamloRedWall", 1180, 700, 8,
              { knob("thresholdDb", "Loudness", -30, 0, 0, s::kLimThresholdDb, 1, "dB"),
                knob("ceilingDb", "Limit", -20, 0, -1, s::kCeilingDb, 1, "dB"),
                knob("releaseMs", "Release", 1, 1000, 60, s::kLimiterReleaseMs, 0.33f, "ms"),
                knob("lookaheadMs", "Lookahead", 0.1f, 10, 2, s::kLookaheadMs, 0.5f, "ms"),
                knob("link", "Link", 0, 1, 1, s::kLimLink),
                knob("outputDb", "Output", -24, 0, 0, s::kLimOutputDb, 1, "dB"),
+               knob("mix", "Mix", 0, 1, 1, -1),
                choice("style", "Style", 0, s::kLimStyle, { "GLASNOST", "STAKHANOV", "OCTOBER" }),
                choice("truePeak", "True Peak", 1, s::kLimTruePeak, { "Off", "On" }),
                choice("autoRelease", "Release", 1, s::kLimAutoRelease, { "Manual", "Auto" }),
