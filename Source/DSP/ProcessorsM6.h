@@ -14,6 +14,7 @@
 #include "DSP/HamloUdarnik.h"
 #include "DSP/HamloZastava.h"
 #include "DSP/HamloShirota.h"
+#include "DSP/HamloRevolution.h"
 #include "DSP/LayerSnapshot.h"
 
 namespace hpeq::dsp
@@ -242,6 +243,10 @@ private:
 // passes. Acted-on slices can be bit-crushed and gated in 4 steps. 64-sample raised-cosine fades at
 // slice edges. Decisions depend only on (seed, slice index, position), so the output does not depend
 // on the host block size (T10), unlike HPDG's Monsta (M0: -33 dB between block sizes).
+//
+// Module pass 10: with mode 1 (slot::kRevMode) the slot runs HamloRevolution (DSP/HamloRevolution.h); the
+// M6 history doubles as GLITCH's tape. Mode 0, as every project saved before, is the M6 Monsta, bit for
+// bit. Reset is O(1) for both (nothing is cleared on the audio thread; unwritten history reads as zero).
 class MonstaProcessor
 {
 public:
@@ -250,6 +255,8 @@ public:
     void prepare(double sampleRate);
     void reset() noexcept;
     void process(float* const* channels, int numChannels, int numSamples, const FxSlotParams&, const Transport&, int blockOffset) noexcept;
+    const RevolutionEngine& getRevolution() const noexcept { return revolution; }
+    bool runsRevolution() const noexcept { return lastMode == 1; }
 
     enum class Action { Pass, Repeat, Reverse, Stutter };
     static Action actionFor(const FxSlotParams&, long long slice) noexcept;
@@ -259,7 +266,9 @@ private:
     double sampleRate = 48000.0;
     std::array<std::vector<float>, 2> history;
     int historySize = 0, writePos = 0;
-    long long freeRunning = 0;
+    long long freeRunning = 0, written = 0;
     bool havePosition = false;
+    int lastMode = -1;
+    RevolutionEngine revolution;
 };
 } // namespace hpeq::dsp

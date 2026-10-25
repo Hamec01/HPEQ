@@ -572,6 +572,24 @@ float FxNodeProcessor::getSaturatorOutputDb(int slotIndex) const noexcept
     return slot.running && slot.type == FxType::Saturator ? slot.saturator.outputLevelDb() : -120.0f;
 }
 
+int FxNodeProcessor::getRevolutionStep(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (!slot.running || slot.type != FxType::MonstaFx || slot.pooled < 0 || pools == nullptr)
+        return -1;
+    const auto& m = pools->monstas.get(slot.pooled);
+    return m.runsRevolution() ? m.getRevolution().currentStep() : -1;
+}
+
+bool FxNodeProcessor::isRevolutionWarming(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (!slot.running || slot.type != FxType::MonstaFx || slot.pooled < 0 || pools == nullptr)
+        return false;
+    const auto& m = pools->monstas.get(slot.pooled);
+    return m.runsRevolution() && m.getRevolution().warmingUp();
+}
+
 float FxNodeProcessor::getFaderInputDb(int slotIndex) const noexcept
 {
     const auto& slot = slots[static_cast<size_t>(slotIndex)];

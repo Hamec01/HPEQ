@@ -66,6 +66,7 @@ target_sources(HPEQ
         Source/Analysis/SpectrumAnalyzer.cpp
         Source/Analysis/LoudnessMeter.cpp
         Source/Core/FxProjectState.cpp
+        Source/Core/Revolution.cpp
         Source/DSP/Biquad.cpp
         Source/DSP/FxNodeProcessor.cpp
         Source/DSP/LayerEngine.cpp
@@ -77,6 +78,7 @@ target_sources(HPEQ
         Source/DSP/HamloEcho.cpp
         Source/DSP/HamloMag.cpp
         Source/DSP/ProcessorsM6.cpp
+        Source/DSP/HamloRevolution.cpp
         Source/DSP/HamloRedWall.cpp
         Source/DSP/HamloUdarnik.cpp
         Source/DSP/HamloZastava.cpp
@@ -99,6 +101,7 @@ target_sources(HPEQ
         Source/UI/HamloUdarnikPanel.cpp
         Source/UI/HamloZastavaPanel.cpp
         Source/UI/HamloShirotaPanel.cpp
+        Source/UI/HamloRevolutionPanel.cpp
         Source/UI/SpectrumWorkspace.cpp)
 
 target_include_directories(HPEQ PUBLIC Source)
@@ -138,6 +141,7 @@ add_library(HPEQ_ModuleShared STATIC
     Source/DSP/HamloEcho.cpp
     Source/DSP/HamloMag.cpp
     Source/DSP/ProcessorsM6.cpp
+    Source/DSP/HamloRevolution.cpp
     Source/DSP/HamloRedWall.cpp
     Source/DSP/HamloUdarnik.cpp
     Source/DSP/HamloZastava.cpp
@@ -286,6 +290,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/SaturatorPassTests.cpp
     Tests/Unit/MixKnobTests.cpp
     Tests/Unit/FaderPassTests.cpp
+    Tests/Unit/RevolutionPassTests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")

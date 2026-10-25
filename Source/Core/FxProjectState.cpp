@@ -1,5 +1,7 @@
 #include "Core/FxProjectState.h"
 
+#include "Core/Revolution.h"
+
 #include <charconv>
 
 #include <cmath>
@@ -254,6 +256,33 @@ FxSlotState defaultModule(FxType type)
         m.parameters.set("keyListen", 0);
         m.parameters.set("flip", 0);
         m.parameters.set("outputDb", 0);
+    }
+    if (type == FxType::MonstaFx)
+    {
+        // HamloRevolution as the UI creates it: sync, 1/16, 16 steps, order T-G-M, a Musical pattern from
+        // seed 1 (projects without "mode" keep the M6 Monsta).
+        m.parameters.set("mode", 1);
+        m.parameters.set("order", 0);
+        m.parameters.set("character", static_cast<int>(revolution::Musical));
+        m.parameters.set("grid", 2);
+        m.parameters.set("triplet", 0);
+        m.parameters.set("swing", 0.0);
+        m.parameters.set("steps", 16);
+        m.parameters.set("free", 0);
+        m.parameters.set("freeMs", 125.0);
+        m.parameters.set("humanize", 0.0);
+        m.parameters.set("revSeed", 1);
+        for (const auto* name : { "time", "glitch", "motion" })
+        {
+            const juce::String e(name);
+            m.parameters.set(e + "On", 1);
+            m.parameters.set(e + "Mix", 1.0);
+            m.parameters.set(e + "Depth", e == "motion" ? 0.6 : 1.0);
+        }
+        m.parameters.set("motionTarget", static_cast<int>(revolution::LowPass));
+        m.parameters.set("motionSmooth", 0.3);
+        m.parameters.set("fadeMs", 2.0);
+        revolution::writePattern(m.parameters, revolution::generate({}, 1, revolution::Musical));
     }
     if (type == FxType::TransientShaper)
     {

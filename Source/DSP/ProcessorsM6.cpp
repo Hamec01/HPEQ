@@ -717,19 +717,33 @@ void MonstaProcessor::prepare(double newSampleRate)
     historySize = static_cast<int>(std::ceil(kHistorySeconds * sampleRate));
     for (auto& h : history)
         h.assign(static_cast<size_t>(historySize), 0.0f);
+    revolution.prepare(sampleRate, history);
     reset();
 }
 
 void MonstaProcessor::reset() noexcept
 {
-    for (auto& h : history)
-        std::fill(h.begin(), h.end(), 0.0f);
+    // O(1): history older than what was written since the reset reads as zero (as the cleared buffer did).
     writePos = 0;
     freeRunning = 0;
+    written = 0;
+    revolution.reset();
 }
 
 void MonstaProcessor::process(float* const* channels, int numChannels, int numSamples, const FxSlotParams& p, const Transport& transport, int blockOffset) noexcept
 {
+    const int mode = p.values[slot::kRevMode] >= 0.5f ? 1 : 0;
+    if (mode != lastMode)
+    {
+        if (lastMode >= 0)
+            reset(); // the two modes share the history
+        lastMode = mode;
+    }
+    if (mode == 1)
+    {
+        revolution.process(channels, numChannels, numSamples, p, transport, blockOffset);
+        return;
+    }
     static constexpr double kBeats[] { 1.0, 0.5, 0.25, 0.125 };
     constexpr int kFade = 64;
     const int division = std::clamp(static_cast<int>(std::lround(p.values[slot::kDivision])), 0, 3);
@@ -747,6 +761,8 @@ void MonstaProcessor::process(float* const* channels, int numChannels, int numSa
 
     const auto historyAt = [&](int ch, long long ago)
     {
+        if (ago > written) // older than the reset
+            return 0.0f;
         long long index = writePos - ago;
         while (index < 0)
             index += historySize;
@@ -792,6 +808,8 @@ void MonstaProcessor::process(float* const* channels, int numChannels, int numSa
         }
         if (++writePos == historySize)
             writePos = 0;
+        if (written < historySize)
+            ++written;
     }
     freeRunning += numSamples;
 }

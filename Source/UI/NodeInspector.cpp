@@ -526,6 +526,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
         buildStereoPage(k);
         return;
     }
+    if (module.type == FxType::MonstaFx)
+    {
+        buildRevolutionPage(k);
+        return;
+    }
 
     for (const auto& def : paramsFor(module.type))
     {
@@ -604,6 +609,7 @@ void NodeInspector::rebuild()
     udarnikPanel = nullptr;
     zastavaPanel = nullptr;
     shirotaPanel = nullptr;
+    revolutionPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -1382,6 +1388,96 @@ void NodeInspector::buildFaderPage(int k)
     });
 }
 
+void NodeInspector::buildRevolutionPage(int k)
+{
+    // HamloRevolution (module pass 10): the Monsta FX slot; one drawn panel that fills the editor body.
+    largePage = true;
+    auto* panel = new HamloRevolutionPanel();
+    controls.add(panel);
+    addAndMakeVisible(panel);
+    panel->getProperties().set("section", 4);
+    revolutionPanel = panel;
+    panel->onKnobGestureStart = [this](HamloRevolutionPanel::Param p)
+    {
+        processor.getUndoManager().beginNewTransaction("Revolution " + juce::String(HamloRevolutionPanel::keyFor(p)));
+        dragging = true;
+    };
+    panel->onKnobGestureEnd = [this] { dragging = false; };
+    panel->onKnobChange = [this, k](HamloRevolutionPanel::Param p, double v)
+    {
+        if (p == HamloRevolutionPanel::Mix) // the page's MIX is the module's mix
+        {
+            editChain("Module mix", [k, v](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+            return;
+        }
+        const juce::Identifier key(HamloRevolutionPanel::keyFor(p));
+        editChain("Revolution", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+    };
+    panel->onSwitchChange = [this, k](HamloRevolutionPanel::Switch sw, int option)
+    {
+        processor.getUndoManager().beginNewTransaction("Revolution " + juce::String(HamloRevolutionPanel::keyFor(sw)));
+        const juce::Identifier key(HamloRevolutionPanel::keyFor(sw));
+        editChain("Revolution switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+    };
+    panel->onPatternChange = [this, k](const revolution::Pattern& pattern, juce::int64 seed, const juce::String& what)
+    {
+        processor.getUndoManager().beginNewTransaction("Revolution " + what);
+        editChain("Revolution pattern", [&](std::vector<FxSlotState>& c)
+        {
+            auto& params = c[static_cast<size_t>(k)].parameters;
+            revolution::writePattern(params, pattern);
+            params.set("revSeed", seed);
+        });
+    };
+    panel->onUpgrade = [this, k]
+    {
+        processor.getUndoManager().beginNewTransaction("Upgrade to HamloRevolution");
+        editChain("Upgrade to HamloRevolution", [k](std::vector<FxSlotState>& c)
+        {
+            c[static_cast<size_t>(k)].parameters = defaultModule(FxType::MonstaFx).parameters;
+        });
+    };
+    panel->onPowerChange = [this, k](bool on)
+    {
+        processor.getUndoManager().beginNewTransaction("Module on");
+        editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+    };
+    panel->readStatus = [this, k]() -> HamloRevolutionPanel::Status
+    {
+        const auto project = processor.getProject();
+        const int engineSlot = selectedEngineSlot(project);
+        if (engineSlot < 0)
+            return {};
+        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+        return { node.getRevolutionStep(k), node.isRevolutionWarming(k) };
+    };
+    refreshers.push_back([this, panel, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        const auto* c = selectedChain(project);
+        if (c == nullptr || k >= static_cast<int>(c->size()))
+            return;
+        const auto& m = (*c)[static_cast<size_t>(k)];
+        HamloRevolutionPanel::Values v;
+        for (int p = 0; p < HamloRevolutionPanel::NumParams; ++p)
+        {
+            const auto param = static_cast<HamloRevolutionPanel::Param>(p);
+            v.knobs[static_cast<size_t>(p)] = param == HamloRevolutionPanel::Mix
+                                                  ? static_cast<double>(m.mix)
+                                                  : paramValue(m, HamloRevolutionPanel::keyFor(param), HamloRevolutionPanel::defaultFor(param));
+        }
+        const HamloRevolutionPanel::Values defaults;
+        for (int sw = 0; sw < HamloRevolutionPanel::NumSwitches; ++sw)
+            v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, HamloRevolutionPanel::keyFor(static_cast<HamloRevolutionPanel::Switch>(sw)),
+                                                                              defaults.switches[static_cast<size_t>(sw)]));
+        v.pattern = revolution::readPattern(m.parameters);
+        v.seed = static_cast<juce::int64>(paramValue(m, "revSeed", 1.0));
+        v.legacy = paramValue(m, "mode", 0.0) < 0.5;
+        v.on = m.enabled;
+        panel->setValues(v);
+    });
+}
+
 void NodeInspector::updateLiveReadouts(bool settle)
 {
     if (settle && hamloPanel != nullptr && hamloPanel->readMeters)
@@ -1417,6 +1513,8 @@ void NodeInspector::updateLiveReadouts(bool settle)
     }
     if (settle && faderPanel != nullptr && faderPanel->readMeters)
         faderPanel->settleMeters(faderPanel->readMeters());
+    if (settle && revolutionPanel != nullptr && revolutionPanel->readStatus)
+        revolutionPanel->settleStatus(revolutionPanel->readStatus());
     // Live readouts from the audio engine (atomics, no locks).
     juce::String newStatus;
     if (selection.kind != Selection::Kind::None && selection.slot >= 0)

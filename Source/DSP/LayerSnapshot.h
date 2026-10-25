@@ -28,7 +28,7 @@ struct FxSlotParams
     bool active = false;
     FxType type = FxType::Gain;
     float mix = 1.0f;
-    std::array<float, 32> values {};
+    std::array<float, 48> values {};
 };
 
 namespace slot
@@ -70,7 +70,18 @@ constexpr int kDelayTimeMs = 0, kDelaySync = 1, kFeedback = 2, kPingPong = 3, kD
               kDlyModRate = 13, kDlyModDepth = 14, kDlyDiffusion = 15, kDlyPitch = 16, kDlyLowRes = 17, kDlyHighRes = 18,
               kDlyBandHz = 19, kDlyBandGainDb = 20, kDlyBandQ = 21, kDlyDuck = 22, kDlyFreeze = 23, kDlyLofi = 24, kDlyTimeMode = 25;
 // Monsta FX (insert; division 0 = 1/4, 1 = 1/8, 2 = 1/16, 3 = 1/32)
-constexpr int kDivision = 0, kChance = 1, kSeed = 2, kCrushBits = 3, kGateDepth = 4, kReverseShare = 5;
+constexpr int kDivision = 0, kChance = 1, kSeed = 2, kCrushBits = 3, kGateDepth = 4, kReverseShare = 5,
+              // HamloRevolution (module pass 10), mode 1; mode 0 = the M6 Monsta above (projects saved before).
+              // order 0..5 (TGM .. MGT, revolution::orderOf); grid 0 = 1/4 .. 3 = 1/32; triplet 0/1; swing 0..1
+              // (0 straight, 1 = 75 %); steps 1..16; free 0 sync / 1 own step length freeMs; humanize 0..1 with its
+              // seed; per engine on 0/1, mix 0..1, depth 0..1 and the pattern as 4 packed floats (revolution::packQuad);
+              // MOTION target (revolution::MotionTarget) and smooth 0..1; splice fade in ms.
+              kRevMode = 6, kRevOrder = 7, kRevGrid = 8, kRevTriplet = 9, kRevSwing = 10, kRevSteps = 11, kRevFree = 12,
+              kRevFreeMs = 13, kRevHumanize = 14, kRevHumanSeed = 15,
+              kTimeOn = 16, kTimeMix = 17, kTimeDepth = 18, kTimePattern = 19,         // 19..22
+              kGlitchOn = 23, kGlitchMix = 24, kGlitchDepth = 25, kGlitchPattern = 26, // 26..29
+              kMotionOn = 30, kMotionMix = 31, kMotionDepth = 32, kMotionPattern = 33, // 33..36
+              kMotionTarget = 37, kMotionSmooth = 38, kRevFadeMs = 39;
 // Stereo (insert; needs a stereo work domain)
 constexpr int kStereoWidth = 0, kStereoBalance = 1,
               // HamloShirota (module pass 8): style 0 EDINSTVO / 1 PROSTOR / 2 KOSMOS; stereoize 0..1; space 0..1;

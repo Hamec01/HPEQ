@@ -1,5 +1,7 @@
 #include "DSP/LayerSnapshot.h"
 
+#include "Core/Revolution.h"
+
 #include <cmath>
 
 namespace hpeq::dsp
@@ -138,6 +140,39 @@ FxSlotParams makeSlot(const FxSlotState& state)
             slotParams.values[slot::kCrushBits] = juce::jlimit(0.0f, 16.0f, param(state.parameters, "crushBits", 0.0f));
             slotParams.values[slot::kGateDepth] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "gateDepth", 0.0f));
             slotParams.values[slot::kReverseShare] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "reverseShare", 0.3f));
+            // Projects saved before the HamloRevolution pass have no "mode": they keep the M6 Monsta.
+            slotParams.values[slot::kRevMode] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "mode", 0.0f)));
+            slotParams.values[slot::kRevOrder] = juce::jlimit(0.0f, 5.0f, std::round(param(state.parameters, "order", 0.0f)));
+            slotParams.values[slot::kRevGrid] = juce::jlimit(0.0f, 3.0f, std::round(param(state.parameters, "grid", 2.0f)));
+            slotParams.values[slot::kRevTriplet] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "triplet", 0.0f)));
+            slotParams.values[slot::kRevSwing] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "swing", 0.0f));
+            slotParams.values[slot::kRevSteps] = juce::jlimit(1.0f, 16.0f, std::round(param(state.parameters, "steps", 16.0f)));
+            slotParams.values[slot::kRevFree] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "free", 0.0f)));
+            slotParams.values[slot::kRevFreeMs] = juce::jlimit(20.0f, 2000.0f, param(state.parameters, "freeMs", 125.0f));
+            slotParams.values[slot::kRevHumanize] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "humanize", 0.0f));
+            {
+                const auto* seed = state.parameters.getVarPointer("revSeed");
+                const auto s = seed != nullptr ? static_cast<juce::int64>(*seed) : 1;
+                slotParams.values[slot::kRevHumanSeed] = static_cast<float>(static_cast<std::uint64_t>(s) & 0xffffffu); // exact in a float
+            }
+            {
+                const auto pattern = revolution::readPattern(state.parameters);
+                static constexpr const char* names[revolution::kEngines] { "time", "glitch", "motion" };
+                static constexpr int base[revolution::kEngines] { slot::kTimeOn, slot::kGlitchOn, slot::kMotionOn };
+                for (int e = 0; e < revolution::kEngines; ++e)
+                {
+                    const juce::String name(names[e]);
+                    const auto b = static_cast<size_t>(base[e]);
+                    slotParams.values[b] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, (name + "On").toRawUTF8(), 1.0f)));
+                    slotParams.values[b + 1] = juce::jlimit(0.0f, 1.0f, param(state.parameters, (name + "Mix").toRawUTF8(), 1.0f));
+                    slotParams.values[b + 2] = juce::jlimit(0.0f, 1.0f, param(state.parameters, (name + "Depth").toRawUTF8(), e == revolution::Motion ? 0.6f : 1.0f));
+                    for (int q = 0; q < 4; ++q)
+                        slotParams.values[b + 3 + static_cast<size_t>(q)] = revolution::packQuad(pattern.steps[static_cast<size_t>(e)], q);
+                }
+            }
+            slotParams.values[slot::kMotionTarget] = juce::jlimit(0.0f, 4.0f, std::round(param(state.parameters, "motionTarget", 0.0f)));
+            slotParams.values[slot::kMotionSmooth] = juce::jlimit(0.0f, 1.0f, param(state.parameters, "motionSmooth", 0.0f));
+            slotParams.values[slot::kRevFadeMs] = juce::jlimit(0.5f, 8.0f, param(state.parameters, "fadeMs", 2.0f));
             break;
         case FxType::StereoProcessor:
             slotParams.values[slot::kStereoWidth] = juce::jlimit(0.0f, 2.0f, param(state.parameters, "width", 1.0f));

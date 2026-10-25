@@ -98,7 +98,7 @@ inline juce::String fxName(FxType t)
         case FxType::Delay: return "HamloEcho";
         case FxType::TransientShaper: return "HamloUdarnik";
         case FxType::Saturator: return "HamloMag";
-        case FxType::MonstaFx: return "Monsta FX";
+        case FxType::MonstaFx: return "HamloRevolution";
         case FxType::StereoProcessor: return "HamloShirota";
         case FxType::GateExpander: return "HamloZastava";
         case FxType::Gain: return "HamloFader";
@@ -116,7 +116,7 @@ inline juce::String fxFunction(FxType t)
         case FxType::Delay: return "Delay";
         case FxType::TransientShaper: return "Transient";
         case FxType::Saturator: return "Saturator";
-        case FxType::MonstaFx: return "Slicer";
+        case FxType::MonstaFx: return "Time / Glitch / Motion";
         case FxType::StereoProcessor: return "Stereo";
         case FxType::GateExpander: return "Gate / Expander";
         case FxType::Gain: return "Band level";

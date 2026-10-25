@@ -16,6 +16,7 @@
 #include "UI/HamloCompPanel.h"
 #include "UI/HamloEchoPanel.h"
 #include "UI/HamloFaderPanel.h"
+#include "UI/HamloRevolutionPanel.h"
 #include "UI/HamloMagPanel.h"
 #include "UI/HamloRedWallPanel.h"
 #include "UI/HamloUdarnikPanel.h"
@@ -611,6 +612,16 @@ int runUiSnapshots(const juce::File& out)
         shoot(zastava, 1180, 780, "hpeq_panel_hamlozastava.png");
         ui::HamloShirotaPanel shirota;
         shoot(shirota, 1180, 780, "hpeq_panel_hamloshirota.png");
+        ui::HamloRevolutionPanel revolutionPanel; // module pass 10: a Musical pattern, step 6 under the play head
+        {
+            auto v = revolutionPanel.getValues();
+            v.pattern = revolution::generate({}, 1917, revolution::Musical);
+            v.pattern.locks[revolution::Glitch] = 1u << 6;
+            v.seed = 1917;
+            revolutionPanel.setValues(v);
+            revolutionPanel.settleStatus({ 5, false });
+        }
+        shoot(revolutionPanel, 1180, 700, "hpeq_panel_hamlorevolution.png");
     }
 
     // Module pass 9: the HamloFader page (Gain): fader at -4.5 dB, left polarity inverted, solo on.

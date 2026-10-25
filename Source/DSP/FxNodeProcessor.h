@@ -85,6 +85,9 @@ public:
     float getSaturatorInputDb(int slotIndex) const noexcept;
     float getSaturatorOutputDb(int slotIndex) const noexcept;
     // Gain slot (HamloFader): band input RMS (300 ms / 3 s) and output RMS (300 ms), dB.
+    // HamloRevolution slot: the pattern step under the play head (-1 when not running), warming up.
+    int getRevolutionStep(int slotIndex) const noexcept;
+    bool isRevolutionWarming(int slotIndex) const noexcept;
     float getFaderInputDb(int slotIndex) const noexcept;
     float getFaderInputLongDb(int slotIndex) const noexcept;
     float getFaderOutputDb(int slotIndex) const noexcept;

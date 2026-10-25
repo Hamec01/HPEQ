@@ -9,6 +9,7 @@
 #include "UI/HamloCompPanel.h"
 #include "UI/HamloEchoPanel.h"
 #include "UI/HamloRedWallPanel.h"
+#include "UI/HamloRevolutionPanel.h"
 #include "UI/HamloVerbPanel.h"
 
 namespace hpeq::test
@@ -73,6 +74,7 @@ public:
         check<ui::HamloVerbPanel>(FxType::Reverb, "HamloVerb");
         check<ui::HamloEchoPanel>(FxType::Delay, "HamloEcho");
         check<ui::HamloRedWallPanel>(FxType::Limiter, "HamloRedWall");
+        check<ui::HamloRevolutionPanel>(FxType::MonstaFx, "HamloRevolution");
     }
 };
 
