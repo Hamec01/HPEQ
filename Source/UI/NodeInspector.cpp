@@ -296,14 +296,14 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
             if (i < count)
             {
                 const auto& m = chain[static_cast<size_t>(i)];
-                auto& tile = addButton(juce::String(i + 1) + "   " + fxName(m.type) + (m.enabled ? "" : "   (off)"), [this, i]
+                auto& tile = addButton(juce::String(i + 1) + "   " + fxFullName(m.type) + (m.enabled ? "" : "   (off)"), [this, i]
                 {
                     selection.slot = i;
                     rebuildAsync();
                 });
                 tile.setColour(juce::TextButton::buttonColourId, m.enabled ? colours::accent.withAlpha(0.28f) : colours::panelRaised);
                 tile.setColour(juce::TextButton::textColourOffId, m.enabled ? colours::text : colours::dim);
-                tile.setTooltip("Open " + fxName(m.type) + " (module " + juce::String(i + 1) + ")");
+                tile.setTooltip("Open " + fxFullName(m.type) + " (module " + juce::String(i + 1) + ")");
                 setInfo(tile, 1, 0, 0, false, true);
             }
             else
@@ -318,7 +318,7 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
                         menu.addItem(1, "All 8 module bands of this layer are in use", false);
                     else
                         for (size_t t = 0; t < kTypes.size(); ++t)
-                            menu.addItem(static_cast<int>(t) + 10, fxName(kTypes[t]));
+                            menu.addItem(static_cast<int>(t) + 10, fxFullName(kTypes[t]));
                     juce::Component::SafePointer<NodeInspector> safe(this);
                     menu.showMenuAsync(juce::PopupMenu::Options(), [safe](int result)
                     {
@@ -343,7 +343,7 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
     setInfo(back, 1, 110, kRowHeight - 2, true);
     juce::StringArray typeNames;
     for (auto t : kTypes)
-        typeNames.add(fxName(t));
+        typeNames.add(fxFullName(t));
     auto& type = addCombo({}, typeNames, [this, k](int i)
     {
         editChain("Module type", [k, i](std::vector<FxSlotState>& c)
@@ -501,6 +501,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
         buildSaturatorPage(k);
         return;
     }
+    if (module.type == FxType::Gain)
+    {
+        buildFaderPage(k);
+        return;
+    }
     if (module.type == FxType::Limiter)
     {
         buildLimiterPage(k);
@@ -594,6 +599,7 @@ void NodeInspector::rebuild()
     verbPanel = nullptr;
     echoPanel = nullptr;
     magPanel = nullptr;
+    faderPanel = nullptr;
     wallPanel = nullptr;
     udarnikPanel = nullptr;
     zastavaPanel = nullptr;
@@ -1310,6 +1316,72 @@ void NodeInspector::buildSaturatorPage(int k)
     });
 }
 
+void NodeInspector::buildFaderPage(int k)
+{
+    // HamloFader (module pass 9): the band level utility; one drawn panel that fills the editor body.
+    largePage = true;
+    auto* panel = new HamloFaderPanel();
+    controls.add(panel);
+    addAndMakeVisible(panel);
+    panel->getProperties().set("section", 4);
+    faderPanel = panel;
+    panel->onKnobGestureStart = [this](HamloFaderPanel::Param p)
+    {
+        processor.getUndoManager().beginNewTransaction("Fader " + juce::String(HamloFaderPanel::keyFor(p)));
+        dragging = true;
+    };
+    panel->onKnobGestureEnd = [this] { dragging = false; };
+    panel->onKnobChange = [this, k](HamloFaderPanel::Param p, double v)
+    {
+        if (p == HamloFaderPanel::Mix) // the page's Mix is the module's mix
+        {
+            editChain("Module mix", [k, v](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].mix = static_cast<float>(v); });
+            return;
+        }
+        const juce::Identifier key(HamloFaderPanel::keyFor(p));
+        editChain("Fader", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, v); });
+    };
+    panel->onSwitchChange = [this, k](HamloFaderPanel::Switch sw, int option)
+    {
+        processor.getUndoManager().beginNewTransaction("Fader " + juce::String(HamloFaderPanel::keyFor(sw)));
+        const juce::Identifier key(HamloFaderPanel::keyFor(sw));
+        editChain("Fader switch", [&](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].parameters.set(key, option); });
+    };
+    panel->onPowerChange = [this, k](bool on)
+    {
+        processor.getUndoManager().beginNewTransaction("Module on");
+        editChain("Module on", [k, on](std::vector<FxSlotState>& c) { c[static_cast<size_t>(k)].enabled = on; });
+    };
+    panel->readMeters = [this, k]() -> HamloFaderPanel::Meters
+    {
+        const auto project = processor.getProject();
+        const int engineSlot = selectedEngineSlot(project);
+        if (engineSlot < 0)
+            return {};
+        const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
+        return { node.getFaderInputDb(k), node.getFaderOutputDb(k), node.getFaderInputLongDb(k) };
+    };
+    refreshers.push_back([this, panel, k]
+    {
+        const auto project = processor.getProject(); // keep alive: selectedChain points into it
+        const auto* c = selectedChain(project);
+        if (c == nullptr || k >= static_cast<int>(c->size()))
+            return;
+        const auto& m = (*c)[static_cast<size_t>(k)];
+        HamloFaderPanel::Values v;
+        for (int p = 0; p < HamloFaderPanel::NumParams; ++p)
+        {
+            const auto param = static_cast<HamloFaderPanel::Param>(p);
+            v.knobs[static_cast<size_t>(p)] = param == HamloFaderPanel::Mix ? static_cast<double>(m.mix)
+                                                                           : paramValue(m, HamloFaderPanel::keyFor(param), HamloFaderPanel::defaultFor(param));
+        }
+        for (int sw = 0; sw < HamloFaderPanel::NumSwitches; ++sw)
+            v.switches[static_cast<size_t>(sw)] = juce::roundToInt(paramValue(m, HamloFaderPanel::keyFor(static_cast<HamloFaderPanel::Switch>(sw)), 0.0));
+        v.on = m.enabled;
+        panel->setValues(v);
+    });
+}
+
 void NodeInspector::updateLiveReadouts(bool settle)
 {
     if (settle && hamloPanel != nullptr && hamloPanel->readMeters)
@@ -1343,6 +1415,8 @@ void NodeInspector::updateLiveReadouts(bool settle)
         const auto [inputDb, outputDb] = magPanel->readMeters();
         magPanel->settleMeters(inputDb, outputDb);
     }
+    if (settle && faderPanel != nullptr && faderPanel->readMeters)
+        faderPanel->settleMeters(faderPanel->readMeters());
     // Live readouts from the audio engine (atomics, no locks).
     juce::String newStatus;
     if (selection.kind != Selection::Kind::None && selection.slot >= 0)

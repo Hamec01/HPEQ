@@ -34,7 +34,10 @@ struct FxSlotParams
 namespace slot
 {
 // Gain
-constexpr int kGainDb = 0;
+// Gain = HamloFader (band level utility). gainDb is the M-era law; the rest: polarity 0 none / 1 left /
+// 2 right / 3 both, delay in ms (0..20, not compensated: it is the point), mute, solo (the layer plays
+// only its soloed bands), targetDb (the level MATCH aims at; read by the page, not the DSP).
+constexpr int kGainDb = 0, kFadPolarity = 1, kFadDelayMs = 2, kFadMute = 3, kFadSolo = 4, kFadTargetDb = 5;
 // Compressor
 constexpr int kThresholdDb = 0, kRatio = 1, kKneeDb = 2, kAttackMs = 3, kReleaseMs = 4, kMakeupDb = 5,
               kCompDetector = 6, kCompCharacter = 7, kCompAutoMakeup = 8; // detector 0 Peak / 1 RMS; character 0 Clean / 1 Punch / 2 Glue

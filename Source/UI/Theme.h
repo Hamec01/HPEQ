@@ -86,7 +86,27 @@ inline juce::String shapeName(EqShape s)
     return {};
 }
 
+// Module names: the owner's own names (HamloVerb, HamloShirota, ...) are what the user sees; the plain
+// function ("Reverb", "Stereo", ...) goes next to them where there is room, so nobody has to guess.
 inline juce::String fxName(FxType t)
+{
+    switch (t)
+    {
+        case FxType::Compressor: return "HamloComp";
+        case FxType::Limiter: return "HamloRedWall";
+        case FxType::Reverb: return "HamloVerb";
+        case FxType::Delay: return "HamloEcho";
+        case FxType::TransientShaper: return "HamloUdarnik";
+        case FxType::Saturator: return "HamloMag";
+        case FxType::MonstaFx: return "Monsta FX";
+        case FxType::StereoProcessor: return "HamloShirota";
+        case FxType::GateExpander: return "HamloZastava";
+        case FxType::Gain: return "HamloFader";
+    }
+    return {};
+}
+
+inline juce::String fxFunction(FxType t)
 {
     switch (t)
     {
@@ -96,12 +116,18 @@ inline juce::String fxName(FxType t)
         case FxType::Delay: return "Delay";
         case FxType::TransientShaper: return "Transient";
         case FxType::Saturator: return "Saturator";
-        case FxType::MonstaFx: return "Monsta FX";
+        case FxType::MonstaFx: return "Slicer";
         case FxType::StereoProcessor: return "Stereo";
-        case FxType::GateExpander: return "Gate/Expander";
-        case FxType::Gain: return "Gain";
+        case FxType::GateExpander: return "Gate / Expander";
+        case FxType::Gain: return "Band level";
     }
     return {};
+}
+
+// "HamloShirota · Stereo": menus, the module list, the grid tiles, tooltips.
+inline juce::String fxFullName(FxType t)
+{
+    return fxName(t) + juce::String::fromUTF8(" \xc2\xb7 ") + fxFunction(t); // " · "
 }
 
 inline juce::String channelName(ChannelMode m)

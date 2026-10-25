@@ -6,6 +6,7 @@
 #include "UI/Theme.h"
 #include "UI/HamloCompPanel.h"
 #include "UI/HamloEchoPanel.h"
+#include "UI/HamloFaderPanel.h"
 #include "UI/HamloMagPanel.h"
 #include "UI/HamloRedWallPanel.h"
 #include "UI/HamloUdarnikPanel.h"
@@ -74,6 +75,7 @@ private:
     void buildReverbPage(int k);
     void buildDelayPage(int k);
     void buildSaturatorPage(int k);
+    void buildFaderPage(int k);
     void buildLimiterPage(int k);
     void buildTransientPage(int k);
     void buildGatePage(int k);
@@ -93,6 +95,7 @@ private:
     HamloVerbPanel* verbPanel = nullptr;  // owned by controls
     HamloEchoPanel* echoPanel = nullptr;  // owned by controls
     HamloMagPanel* magPanel = nullptr;    // owned by controls
+    HamloFaderPanel* faderPanel = nullptr; // owned by controls
     HamloRedWallPanel* wallPanel = nullptr; // owned by controls
     HamloUdarnikPanel* udarnikPanel = nullptr; // owned by controls
     HamloZastavaPanel* zastavaPanel = nullptr; // owned by controls

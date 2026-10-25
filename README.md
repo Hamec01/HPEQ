@@ -26,6 +26,7 @@ owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECIS
 | Module pass 2: reverb HamloVerb (6 spaces + Classic, colour, VintageVerb / Pro-R function set, CRT page) | done | [REVERB_PASS_REPORT](docs/fx-addon/reports/REVERB_PASS_REPORT.md) |
 | Module pass 3: delay HamloEcho (Clean / Tape / BBD / Lo-Fi + Classic, Timeless function set, CRT page) | done | [DELAY_PASS_REPORT](docs/fx-addon/reports/DELAY_PASS_REPORT.md) |
 | Module pass 4: saturator HamloMag (Tape / Tube / Iron / Germanium / Vinyl + Classic, HamloLaw harmonics, Soviet noises, reels page) | done | [SATURATOR_PASS_REPORT](docs/fx-addon/reports/SATURATOR_PASS_REPORT.md) |
+| Module pass 9: Gain = HamloFader (band gain, phase, mute, solo, delay, match, meters); the owner's module names in the plugin | done | [FADER_PASS_REPORT](docs/fx-addon/reports/FADER_PASS_REPORT.md) |
 | Module pass 5: HamloRedWall limiter; modules on the whole layer (D7) | done | [LIMITER_PASS_REPORT](docs/fx-addon/reports/LIMITER_PASS_REPORT.md) |
 | Module pass 6: HamloUdarnik transient shaper (PRAVDA / UDARNIK / PERESTROIKA) | done | [TRANSIENT_PASS_REPORT](docs/fx-addon/reports/TRANSIENT_PASS_REPORT.md) |
 | Module pass 7: HamloZastava gate / expander (ZASTAVA / PATRUL / TREVOGA, key filter, look-ahead, flip) | done | [GATE_PASS_REPORT](docs/fx-addon/reports/GATE_PASS_REPORT.md) |

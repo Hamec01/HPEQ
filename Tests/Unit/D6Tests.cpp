@@ -252,7 +252,7 @@ public:
                         onTicked = onTicked || toggle->getToggleState();
                 }
                 logMessage("  combos on the module page: " + comboTexts.joinIntoString(" | "));
-                expect(comboTexts.contains("Reverb"), "module type not shown");
+                expect(comboTexts.contains(juce::String::fromUTF8("HamloVerb \xc2\xb7 Reverb")), "module type not shown"); // the owner's module names
                 expect(onTicked, "module On not shown");
             }
             expectEquals(buttonsWithText("+", true), 0);

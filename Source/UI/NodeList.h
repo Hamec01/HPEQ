@@ -142,8 +142,8 @@ public:
             eq.addItem(static_cast<int>(100 + i), shapeName(kAllShapes[i]));
         for (size_t i = 0; i < kAllModules.size(); ++i)
         {
-            region.addItem(static_cast<int>(200 + i), fxName(kAllModules[i]));
-            mix.addItem(static_cast<int>(300 + i), fxName(kAllModules[i]));
+            region.addItem(static_cast<int>(200 + i), fxFullName(kAllModules[i]));
+            mix.addItem(static_cast<int>(300 + i), fxFullName(kAllModules[i]));
         }
         menu.addSubMenu("EQ point at 1 kHz", eq, layer.eqNodes.size() < static_cast<size_t>(kMaxEqNodesPerLayer));
         menu.addSubMenu("FX region 250 - 700 Hz", region, freeEngineSlots(layer) > 0);

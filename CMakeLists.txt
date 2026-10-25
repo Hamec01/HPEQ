@@ -94,6 +94,7 @@ target_sources(HPEQ
         Source/UI/HamloVerbPanel.cpp
         Source/UI/HamloEchoPanel.cpp
         Source/UI/HamloMagPanel.cpp
+        Source/UI/HamloFaderPanel.cpp
         Source/UI/HamloRedWallPanel.cpp
         Source/UI/HamloUdarnikPanel.cpp
         Source/UI/HamloZastavaPanel.cpp
@@ -284,6 +285,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/DelayPassTests.cpp
     Tests/Unit/SaturatorPassTests.cpp
     Tests/Unit/MixKnobTests.cpp
+    Tests/Unit/FaderPassTests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")

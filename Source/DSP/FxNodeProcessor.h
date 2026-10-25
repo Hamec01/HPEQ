@@ -84,6 +84,12 @@ public:
     // Saturator slot (HamloMag models): input peak and output peak of the last block, dB.
     float getSaturatorInputDb(int slotIndex) const noexcept;
     float getSaturatorOutputDb(int slotIndex) const noexcept;
+    // Gain slot (HamloFader): band input RMS (300 ms / 3 s) and output RMS (300 ms), dB.
+    float getFaderInputDb(int slotIndex) const noexcept;
+    float getFaderInputLongDb(int slotIndex) const noexcept;
+    float getFaderOutputDb(int slotIndex) const noexcept;
+    // True when an active Gain slot of this node asks for SOLO.
+    static bool wantsSolo(const FxNodeParams&) noexcept;
     // Stereo slot (HamloShirota core running): meters, and the newest output points for the vectorscope.
     ShirotaCore::Meters getStereoMeters(int slotIndex) const noexcept;
     bool getStereoScope(int slotIndex, std::array<float, ShirotaCore::kScopePoints>& left,

@@ -2,6 +2,7 @@
 
 #include <array>
 #include <atomic>
+#include <vector>
 
 #include "DSP/DspConfig.h"
 
@@ -12,13 +13,35 @@ namespace hpeq::dsp
 // Insert ("replace") processors that run on the band signal inside an FX node chain. Each works
 // in place on numChannels x numSamples, is allocation-free and keeps per-channel state only.
 
-// Utility gain: y = g x. 0 dB is an exact identity.
+// HamloFader, the band level utility (module pass 9): y_c = p_c * g * x_c(t - d), with
+//   g = 10^(gainDb / 20) (0 when muted), p_c = -1 for an inverted channel, d = delay (0..20 ms).
+// Unchanged settings with no polarity, delay or mute: exactly the old law y = g x (0 dB = identity),
+// so older projects render bit-exactly. Changes glide: gain 20 ms, mute a linear 10 ms ramp to exactly 0,
+// polarity 10 ms (through 0),
+// delay 50 ms (a short pitch bend, like moving a microphone). Meters: band input RMS (300 ms and 3 s,
+// the long one is what MATCH reads) and output RMS (300 ms). Solo is applied by the layer (LayerEngine).
 class GainProcessor
 {
 public:
-    void prepare(double) noexcept {}
-    void reset() noexcept {}
+    static constexpr double kMaxDelayMs = 20.0;
+
+    void prepare(double sampleRate); // allocates the delay lines
+    void reset() noexcept;
     void process(float* const* channels, int numChannels, int numSamples, const FxSlotParams&) noexcept;
+
+    float inputDb() const noexcept { return meterIn.load(std::memory_order_relaxed); }
+    float inputLongDb() const noexcept { return meterInLong.load(std::memory_order_relaxed); }
+    float outputDb() const noexcept { return meterOut.load(std::memory_order_relaxed); }
+
+private:
+    double sampleRate = 48000.0;
+    std::array<std::vector<float>, kMaxChannels> lines;
+    int writePos = 0;
+    bool primed = false;
+    double gain = 1.0, delay = 0.0, muteGain = 1.0;
+    std::array<double, kMaxChannels> polarity { 1.0, 1.0 };
+    double msIn = 0.0, msInLong = 0.0, msOut = 0.0;
+    std::atomic<float> meterIn { -120.0f }, meterInLong { -120.0f }, meterOut { -120.0f };
 };
 
 // Feed-forward compressor, written for HPEQ (DECISIONS D3), every behaviour documented:

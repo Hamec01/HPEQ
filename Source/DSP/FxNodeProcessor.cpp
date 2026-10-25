@@ -571,4 +571,35 @@ float FxNodeProcessor::getSaturatorOutputDb(int slotIndex) const noexcept
     const auto& slot = slots[static_cast<size_t>(slotIndex)];
     return slot.running && slot.type == FxType::Saturator ? slot.saturator.outputLevelDb() : -120.0f;
 }
+
+float FxNodeProcessor::getFaderInputDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    return slot.running && slot.type == FxType::Gain ? slot.gain.inputDb() : -120.0f;
+}
+
+float FxNodeProcessor::getFaderInputLongDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    return slot.running && slot.type == FxType::Gain ? slot.gain.inputLongDb() : -120.0f;
+}
+
+float FxNodeProcessor::getFaderOutputDb(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    return slot.running && slot.type == FxType::Gain ? slot.gain.outputDb() : -120.0f;
+}
+
+bool FxNodeProcessor::wantsSolo(const FxNodeParams& p) noexcept
+{
+    if (!p.active)
+        return false;
+    for (int k = 0; k < p.numSlots; ++k)
+    {
+        const auto& s = p.slots[static_cast<size_t>(k)];
+        if (s.active && s.type == FxType::Gain && s.values[slot::kFadSolo] >= 0.5f)
+            return true;
+    }
+    return false;
+}
 } // namespace hpeq::dsp

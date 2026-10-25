@@ -90,5 +90,13 @@ private:
     std::array<std::array<float*, kMaxChannels>, kMaxFxNodesPerLayer> bandPtr {};
     std::array<float* const*, kMaxFxNodesPerLayer> bandList {};
     std::array<float*, kMaxFxNodesPerLayer> presencePtr {};
+
+    // SOLO (HamloFader): while any node asks for it, the layer plays only those nodes' processed bands
+    // (band aligned to the layer latency + its delta); 10 ms cross-fades in and out.
+    std::array<bool, kMaxFxNodesPerLayer> solo {};
+    bool anySolo = false;
+    double soloMix = 0.0;
+    std::array<AlignmentDelay, kMaxFxNodesPerLayer> soloBandAlign;
+    std::array<std::vector<float>, kMaxChannels> soloOut, soloBand;
 };
 } // namespace hpeq::dsp

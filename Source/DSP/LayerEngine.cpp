@@ -52,6 +52,13 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize, LayerPools* sh
     dryAlign.prepare(FxNodeProcessor::maxNodeLatency(sampleRate));
     for (auto& d : deltaAlign)
         d.prepare(FxNodeProcessor::maxNodeLatency(sampleRate));
+    for (auto& d : soloBandAlign)
+        d.prepare(FxNodeProcessor::maxNodeLatency(sampleRate));
+    for (int ch = 0; ch < kMaxChannels; ++ch)
+    {
+        soloOut[static_cast<size_t>(ch)].assign(size, 0.0f);
+        soloBand[static_cast<size_t>(ch)].assign(size, 0.0f);
+    }
     for (auto& node : nodes)
         node.prepare(sampleRate, maxBlock, pools);
     mixNode.prepare(sampleRate, maxBlock, pools);
@@ -104,6 +111,12 @@ void LayerEngine::applySnapshot() noexcept
     for (size_t i = 0; i < nodes.size(); ++i)
         nodes[i].setTargets(snapshot.fx[i]);
     mixNode.setTargets(snapshot.mix);
+    anySolo = false;
+    for (size_t i = 0; i < nodes.size(); ++i)
+    {
+        solo[i] = FxNodeProcessor::wantsSolo(snapshot.fx[i]);
+        anySolo = anySolo || solo[i];
+    }
     layerLatency = 0;
     for (const auto& node : nodes)
         layerLatency = std::max(layerLatency, node.latencySamples());
@@ -164,6 +177,48 @@ void LayerEngine::process(float* const* channels, int numChannels, int numSample
                         deltaAlign[static_cast<size_t>(j)].process(delta, delta, numChannels, n, extra);
                 }
             tree.combine(deltaList.data(), chunk, numChannels, n);
+
+            // SOLO: the soloed bands alone (aligned band + delta), cross-faded with the normal output
+            const double soloTarget = anySolo ? 1.0 : 0.0;
+            if (soloMix != soloTarget || anySolo)
+            {
+                float* aligned[kMaxChannels] {};
+                for (int ch = 0; ch < numChannels; ++ch)
+                {
+                    aligned[ch] = soloBand[static_cast<size_t>(ch)].data();
+                    std::fill(soloOut[static_cast<size_t>(ch)].begin(), soloOut[static_cast<size_t>(ch)].begin() + n, 0.0f);
+                }
+                for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
+                {
+                    if (!tree.hasBand(j))
+                        continue;
+                    soloBandAlign[static_cast<size_t>(j)].process(bandList[static_cast<size_t>(j)], aligned, numChannels, n, layerLatency);
+                    if (!solo[static_cast<size_t>(j)])
+                        continue;
+                    const float* presenceJ = presencePtr[static_cast<size_t>(j)];
+                    const auto* delta = deltaPtr[static_cast<size_t>(j)].data();
+                    for (int ch = 0; ch < numChannels; ++ch)
+                        for (int i = 0; i < n; ++i)
+                            soloOut[static_cast<size_t>(ch)][static_cast<size_t>(i)] += presenceJ[i] * aligned[ch][i] + delta[ch][i];
+                }
+                const double step = 1.0 / (0.01 * sampleRate);
+                for (int i = 0; i < n; ++i)
+                {
+                    soloMix = soloTarget > soloMix ? std::min(soloTarget, soloMix + step) : std::max(soloTarget, soloMix - step);
+                    const auto m = static_cast<float>(soloMix);
+                    for (int ch = 0; ch < numChannels; ++ch)
+                        chunk[ch][i] += m * (soloOut[static_cast<size_t>(ch)][static_cast<size_t>(i)] - chunk[ch][i]);
+                }
+            }
+            else
+                for (int j = 0; j < kMaxFxNodesPerLayer; ++j) // keep the solo alignment history current
+                    if (tree.hasBand(j))
+                    {
+                        float* aligned[kMaxChannels] {};
+                        for (int ch = 0; ch < numChannels; ++ch)
+                            aligned[ch] = soloBand[static_cast<size_t>(ch)].data();
+                        soloBandAlign[static_cast<size_t>(j)].process(bandList[static_cast<size_t>(j)], aligned, numChannels, n, layerLatency);
+                    }
         }
         else if (layerLatency > 0)
             dryAlign.process(chunk, chunk, numChannels, n, layerLatency);

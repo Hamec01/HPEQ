@@ -454,7 +454,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
     for (size_t i = 0; i < kShapes.size(); ++i)
         eqMenu.addItem(static_cast<int>(100 + i), shapeName(kShapes[i]));
     for (size_t i = 0; i < kFxTypes.size(); ++i)
-        fxMenu.addItem(static_cast<int>(200 + i), fxName(kFxTypes[i]));
+        fxMenu.addItem(static_cast<int>(200 + i), fxFullName(kFxTypes[i]));
     const auto project = processor.getProject();
     const auto& shown = selectedLayer(project);
     const bool bandFree = freeEngineSlots(shown) > 0;
@@ -467,7 +467,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
         }
     juce::PopupMenu moduleMenu;
     for (size_t i = 0; i < kFxTypes.size(); ++i)
-        moduleMenu.addItem(static_cast<int>(300 + i), fxName(kFxTypes[i]));
+        moduleMenu.addItem(static_cast<int>(300 + i), fxFullName(kFxTypes[i]));
 
     if (hit.drag == Drag::EqPoint)
     {
@@ -490,7 +490,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
         menu.addSubMenu("Add FX region (one octave)", fxMenu, bandFree);
         juce::PopupMenu mixMenu; // D7: a module on the whole layer
         for (size_t i = 0; i < kFxTypes.size(); ++i)
-            mixMenu.addItem(static_cast<int>(400 + i), fxName(kFxTypes[i]));
+            mixMenu.addItem(static_cast<int>(400 + i), fxFullName(kFxTypes[i]));
         menu.addSubMenu("Add module on the whole layer", mixMenu, shown.mixChain.size() < static_cast<size_t>(kMaxFxPerNode));
     }
 

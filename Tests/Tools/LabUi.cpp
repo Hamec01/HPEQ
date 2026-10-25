@@ -15,6 +15,7 @@
 #include "Plugin/FxPluginProcessor.h"
 #include "UI/HamloCompPanel.h"
 #include "UI/HamloEchoPanel.h"
+#include "UI/HamloFaderPanel.h"
 #include "UI/HamloMagPanel.h"
 #include "UI/HamloRedWallPanel.h"
 #include "UI/HamloUdarnikPanel.h"
@@ -610,6 +611,48 @@ int runUiSnapshots(const juce::File& out)
         shoot(zastava, 1180, 780, "hpeq_panel_hamlozastava.png");
         ui::HamloShirotaPanel shirota;
         shoot(shirota, 1180, 780, "hpeq_panel_hamloshirota.png");
+    }
+
+    // Module pass 9: the HamloFader page (Gain): fader at -4.5 dB, left polarity inverted, solo on.
+    {
+        auto withFader = processor->getProject();
+        FxNodeState n;
+        n.id = withFader.nextNodeId++;
+        n.lowHz = 120.0;
+        n.highHz = 900.0;
+        FxSlotState g;
+        g.type = FxType::Gain;
+        g.parameters.set("gainDb", -4.5);
+        g.parameters.set("polarity", 1);
+        g.parameters.set("delayMs", 1.25);
+        const auto faderId = n.id;
+        n.chain = { g };
+        withFader.layers[0].fxNodes.push_back(n);
+        processor->setProject(withFader);
+        processor->dispatchPendingMessages();
+        editor->selectNode(true, faderId, 0);
+        juce::Array<juce::Component*> stack { editor.get() };
+        ui::HamloFaderPanel* panel = nullptr;
+        while (!stack.isEmpty())
+        {
+            auto* c = stack.removeAndReturn(stack.size() - 1);
+            for (auto* child : c->getChildren())
+                stack.add(child);
+            if (auto* f = dynamic_cast<ui::HamloFaderPanel*>(c))
+                panel = f;
+        }
+        if (panel != nullptr)
+        {
+            panel->settleMeters({ -16.0f, -20.5f, -16.5f });
+            save("hpeq_hamlofader_page.png");
+            const auto image = panel->createComponentSnapshot(panel->getLocalBounds(), true, 1.0f);
+            auto file = out.getChildFile("hpeq_hamlofader_panel.png");
+            file.deleteFile();
+            juce::FileOutputStream stream(file);
+            juce::PNGImageFormat().writeImageToStream(image, stream);
+        }
+        processor->setProject(project);
+        processor->dispatchPendingMessages();
     }
 
     // UI frame cost: analysis update (FFT x2) + full repaint at this size, as the 30 Hz timer does.

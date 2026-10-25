@@ -22,6 +22,11 @@ FxSlotParams makeSlot(const FxSlotState& state)
     {
         case FxType::Gain:
             slotParams.values[slot::kGainDb] = juce::jlimit(-60.0f, 24.0f, param(state.parameters, "gainDb", 0.0f));
+            slotParams.values[slot::kFadPolarity] = juce::jlimit(0.0f, 3.0f, std::round(param(state.parameters, "polarity", 0.0f)));
+            slotParams.values[slot::kFadDelayMs] = juce::jlimit(0.0f, 20.0f, param(state.parameters, "delayMs", 0.0f));
+            slotParams.values[slot::kFadMute] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "mute", 0.0f)));
+            slotParams.values[slot::kFadSolo] = juce::jlimit(0.0f, 1.0f, std::round(param(state.parameters, "solo", 0.0f)));
+            slotParams.values[slot::kFadTargetDb] = juce::jlimit(-40.0f, 0.0f, param(state.parameters, "targetDb", -18.0f));
             break;
         case FxType::Compressor:
             slotParams.values[slot::kThresholdDb] = juce::jlimit(-60.0f, 0.0f, param(state.parameters, "thresholdDb", -18.0f));
