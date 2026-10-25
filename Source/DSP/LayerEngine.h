@@ -52,6 +52,8 @@ public:
     const FxNodeProcessor& getNode(int index) const noexcept { return nodes[static_cast<size_t>(index)]; }
     // D7: the whole-layer chain's node.
     const FxNodeProcessor& getMixNode() const noexcept { return mixNode; }
+    // EQ pass: the PRE-EQ (dynamic gain offsets, solo state) for the page.
+    const PreEqProcessor& getPreEq() const noexcept { return preEq; }
     bool isTreeActive() const noexcept { return tree.isActive(); }
     int reverbsInUse() const noexcept { return pools->reverbs.inUse(); }
     int delaysInUse() const noexcept { return pools->delays.inUse(); }

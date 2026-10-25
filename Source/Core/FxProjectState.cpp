@@ -39,6 +39,12 @@ const juce::Identifier shape { "shape" };
 const juce::Identifier frequencyHz { "frequencyHz" };
 const juce::Identifier q { "q" };
 const juce::Identifier slope { "slopeDbPerOct" };
+const juce::Identifier dynamic { "dynamic" };
+const juce::Identifier dynThresholdDb { "dynThresholdDb" };
+const juce::Identifier dynRatio { "dynRatio" };
+const juce::Identifier dynAttackMs { "dynAttackMs" };
+const juce::Identifier dynReleaseMs { "dynReleaseMs" };
+const juce::Identifier dynRangeDb { "dynRangeDb" };
 const juce::Identifier lowHz { "lowHz" };
 const juce::Identifier highHz { "highHz" };
 const juce::Identifier type { "type" };
@@ -434,6 +440,11 @@ void sanitize(FxProjectState& project)
             node.gainDb = clampFinite(node.gainDb, -36.0, 36.0, 0.0);
             node.q = clampFinite(node.q, 0.025, 40.0, 0.707);
             node.slopeDbPerOct = nearestAllowedSlope(node.slopeDbPerOct);
+            node.thresholdDb = clampFinite(node.thresholdDb, -60.0, 0.0, -30.0);
+            node.ratio = clampFinite(node.ratio, 1.0, 20.0, 3.0);
+            node.attackMs = clampFinite(node.attackMs, 0.1, 200.0, 10.0);
+            node.releaseMs = clampFinite(node.releaseMs, 5.0, 2000.0, 120.0);
+            node.rangeDb = clampFinite(node.rangeDb, -24.0, 24.0, -6.0);
             if (node.chain.size() > static_cast<size_t>(kMaxFxPerNode))
                 node.chain.resize(static_cast<size_t>(kMaxFxPerNode));
             for (auto& slot : node.chain)
@@ -501,6 +512,20 @@ juce::ValueTree toValueTree(const FxProjectState& project)
             nt.setProperty(ids::q, exactText(node.q), nullptr);
             nt.setProperty(ids::slope, node.slopeDbPerOct, nullptr);
             nt.setProperty(ids::channel, channelNames.name(node.channel), nullptr);
+            // EQ pass: written only when used, so older projects and their saved state stay as they were
+            if (node.solo)
+                nt.setProperty(ids::solo, true, nullptr);
+            const EqNodeState plain;
+            if (node.dynamic || node.thresholdDb != plain.thresholdDb || node.ratio != plain.ratio || node.attackMs != plain.attackMs
+                || node.releaseMs != plain.releaseMs || node.rangeDb != plain.rangeDb)
+            {
+                nt.setProperty(ids::dynamic, node.dynamic, nullptr);
+                nt.setProperty(ids::dynThresholdDb, exactText(node.thresholdDb), nullptr);
+                nt.setProperty(ids::dynRatio, exactText(node.ratio), nullptr);
+                nt.setProperty(ids::dynAttackMs, exactText(node.attackMs), nullptr);
+                nt.setProperty(ids::dynReleaseMs, exactText(node.releaseMs), nullptr);
+                nt.setProperty(ids::dynRangeDb, exactText(node.rangeDb), nullptr);
+            }
             if (!node.chain.empty())
             {
                 nt.setProperty(ids::engineSlot, node.engineSlot, nullptr);
@@ -590,6 +615,13 @@ std::optional<FxProjectState> fromValueTree(const juce::ValueTree& root, juce::S
                 node.q = readDouble(nt, ids::q, 0.707);
                 node.slopeDbPerOct = nt.getProperty(ids::slope, 12);
                 node.channel = channelNames.parse(nt[ids::channel], ChannelMode::Stereo);
+                node.solo = nt.getProperty(ids::solo, false);
+                node.dynamic = nt.getProperty(ids::dynamic, false);
+                node.thresholdDb = readDouble(nt, ids::dynThresholdDb, -30.0);
+                node.ratio = readDouble(nt, ids::dynRatio, 3.0);
+                node.attackMs = readDouble(nt, ids::dynAttackMs, 10.0);
+                node.releaseMs = readDouble(nt, ids::dynReleaseMs, 120.0);
+                node.rangeDb = readDouble(nt, ids::dynRangeDb, -6.0);
                 node.engineSlot = nt.getProperty(ids::engineSlot, -1);
                 for (const auto& st : nt)
                     if (st.hasType(ids::slot))

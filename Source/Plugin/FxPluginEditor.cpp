@@ -1,4 +1,5 @@
 #include "Plugin/FxPluginEditor.h"
+#include "UI/BlackSteel.h"
 
 #include "Plugin/FxParameterContract.h"
 #include "Plugin/FxPluginProcessor.h"
@@ -50,8 +51,42 @@ private:
     float peakDb = -100.0f, rmsDb = -100.0f, heldPeakDb = -100.0f;
 };
 
+// Output loudness on a narrow green CRT in a gunmetal bezel (owner: as the module pages' scopes).
+class FxPluginEditor::LoudnessScreen final : public juce::Component, public juce::SettableTooltipClient
+{
+public:
+    void set(const juce::String& newText, bool over)
+    {
+        if (newText == text && over == hot)
+            return;
+        text = newText;
+        hot = over;
+        repaint();
+    }
+    void paint(juce::Graphics& g) override
+    {
+        const auto b = getLocalBounds().toFloat();
+        const auto screen = b.withTrimmedLeft(20.0f).withTrimmedRight(20.0f).reduced(0.0f, 7.0f);
+        ui::steel::crtBezel(g, b, screen, {}, 0.0f);
+        ui::steel::crtBegin(g, screen);
+        g.setFont(juce::FontOptions("Consolas", juce::jlimit(10.0f, 13.0f, screen.getHeight() * 0.5f), juce::Font::bold));
+        const auto colour = hot ? colours::danger : colours::phosphor;
+        g.setColour(colour.withAlpha(0.25f));
+        g.drawFittedText(text, screen.reduced(8.0f, 0.0f).translated(0.0f, 0.6f).toNearestInt(), juce::Justification::centred, 1, 0.7f);
+        g.setColour(colour);
+        g.drawFittedText(text, screen.reduced(8.0f, 0.0f).toNearestInt(), juce::Justification::centred, 1, 0.7f);
+        ui::steel::crtEnd(g, screen);
+    }
+
+private:
+    juce::String text;
+    bool hot = false;
+};
+
 namespace
 {
+int openEditors = 0; // message thread only: the steel look stays the default while any HPEQ window is open
+
 void styleTab(juce::TextButton& b, bool on)
 {
     b.setColour(juce::TextButton::buttonColourId, on ? colours::accent.withAlpha(0.35f) : colours::panelRaised);
@@ -62,6 +97,10 @@ void styleTab(juce::TextButton& b, bool on)
 FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     : juce::AudioProcessorEditor(p), processor(p)
 {
+    // EQ pass: every child (and every menu, which uses the default look) in the Black Steel style
+    setLookAndFeel(&steelLook.get());
+    juce::LookAndFeel::setDefaultLookAndFeel(&steelLook.get());
+    ++openEditors;
     selection = std::make_unique<Selection>();
     analysis = std::make_unique<AnalysisModel>(processor.getCapture());
     waveform = std::make_unique<WaveformPanel>(*analysis, [this] { return processor.getCurrentSampleRate(); });
@@ -71,6 +110,9 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     inputMeter = std::make_unique<LevelMeter>("IN");
     outputMeter = std::make_unique<LevelMeter>("OUT");
     layerControls = std::make_unique<LayerControls>(processor);
+    loudnessScreen = std::make_unique<LoudnessScreen>();
+    loudnessScreen->setTooltip("Output loudness (ITU-R BS.1770-4): momentary / short-term / integrated LUFS, and true peak (dBTP, max since reset). In: input integrated LUFS.");
+    addAndMakeVisible(*loudnessScreen);
     layerControls->onLayerChanged = [this] { layerSelected(); };
     inspector->onLayoutChange = [this]
     {
@@ -89,8 +131,9 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     title.setFont(juce::FontOptions(26.0f, juce::Font::bold));
     title.setColour(juce::Label::textColourId, colours::text);
     subtitle.setText("BETA  -  frequency-layer FX  (PRE-EQ > FX regions)", juce::dontSendNotification);
-    subtitle.setColour(juce::Label::textColourId, colours::accent);
-    subtitle.setFont(juce::FontOptions(11.0f));
+    subtitle.setColour(juce::Label::textColourId, ui::steel::stencil);
+    subtitle.setFont(juce::FontOptions(13.0f));
+    subtitle.setText(juce::String::fromUTF8("HAMLOPROD \xc2\xb7 FREQUENCY-LAYER FX"), juce::dontSendNotification);
     unavailable.setTooltip("Output loudness (ITU-R BS.1770-4): momentary / short-term / integrated LUFS, and true peak (dBTP, max since reset). In: input integrated LUFS.");
     unavailable.setColour(juce::Label::textColourId, colours::dim);
     unavailable.setJustificationType(juce::Justification::centredRight);
@@ -141,6 +184,9 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     bypassAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts, params::bypass.getParamID(), bypass);
 
     processor.addChangeListener(this);
+    // The layer shown now: the first project change (e.g. a module added to the MIX chain) is not a
+    // layer change and must not drop the selection.
+    lastShownLayer = processor.getProject().selectedLayer;
     updateLayerButtons();
     updateHeader();
     inspector->rebuild();
@@ -154,6 +200,52 @@ FxPluginEditor::~FxPluginEditor()
 {
     stopTimer();
     processor.removeChangeListener(this);
+    setLookAndFeel(nullptr);
+    if (--openEditors == 0 && &juce::LookAndFeel::getDefaultLookAndFeel() == &steelLook.get())
+        juce::LookAndFeel::setDefaultLookAndFeel(nullptr); // the last HPEQ window: hand the default back before it goes
+}
+
+void FxPluginEditor::renderBackground()
+{
+    background = {};
+    if (getWidth() <= 0 || getHeight() <= 0)
+        return;
+    background = juce::Image(juce::Image::RGB, getWidth(), getHeight(), true);
+    juce::Graphics g(background);
+    ui::steel::panel(g, static_cast<float>(getWidth()), static_cast<float>(getHeight()), 1961);
+    ui::steel::scratches(g, { { 7, { static_cast<float>(getWidth()) - 260.0f, 8.0f, 70.0f, 46.0f }, 3.0f },
+                              { 16, { 18.0f, static_cast<float>(getHeight()) - 64.0f, 60.0f, 52.0f }, -5.0f } }, 0.75f);
+    if (!plateArea.isEmpty())
+    {
+        // the nameplate at its design size (330 x 92), scaled into the header
+        const auto plate = plateArea.toFloat();
+        const float s = juce::jmin(plate.getWidth() / 330.0f, plate.getHeight() / 92.0f);
+        juce::Graphics::ScopedSaveState state(g);
+        g.addTransform(juce::AffineTransform::scale(s).translated(plate.getX(), plate.getY()));
+        ui::steel::nameplate(g, { 0.0f, 0.0f, 330.0f, 92.0f }, "HPEQ", juce::String::fromUTF8("MODEL \xd0\xad\xd0\x9a-1"),
+                             juce::String::fromUTF8("\xe2\x84\x96 0001"));
+    }
+}
+
+void FxPluginEditor::visibilityChanged()
+{
+    selectSoftwareRenderer();
+}
+
+void FxPluginEditor::parentHierarchyChanged()
+{
+    selectSoftwareRenderer();
+}
+
+void FxPluginEditor::selectSoftwareRenderer()
+{
+   #if JUCE_WINDOWS
+    // JUCE 8 gives every Windows peer Direct2D. When FL Studio closed or unloaded HPEQ, tearing down that
+    // DLL's D3D11 device could wait forever inside the GPU driver (the DAW hung). The pages are cached
+    // images and vector drawing: the GDI software renderer is enough (as for the module plug-ins).
+    if (auto* peer = getPeer(); peer != nullptr && peer->getCurrentRenderingEngine() != 0)
+        peer->setCurrentRenderingEngine(0);
+   #endif
 }
 
 void FxPluginEditor::updateHeader()
@@ -230,7 +322,7 @@ void FxPluginEditor::changeListenerCallback(juce::ChangeBroadcaster*)
 void FxPluginEditor::updateAnalysisNow()
 {
     timerCallback();
-    waveform->tick(true); // tests and screenshots want the current audio, not the last 5 s snapshot
+    waveform->tick(true); // tests and screenshots: the current audio even when frozen
     inspector->updateLiveReadouts(true);
 }
 
@@ -240,6 +332,11 @@ void FxPluginEditor::selectNode(bool fx, std::uint32_t id, int slot)
     selection->id = id;
     selection->slot = slot;
     selectionChanged();
+}
+
+bool FxPluginEditor::isMixSelected() const noexcept
+{
+    return selection->kind == Selection::Kind::Mix;
 }
 
 void FxPluginEditor::selectMix(int slot)
@@ -258,6 +355,7 @@ void FxPluginEditor::showDifference(bool difference)
 
 void FxPluginEditor::timerCallback()
 {
+    selectSoftwareRenderer();
     analysis->update();
     {
         const auto& out = processor.getOutputLoudness();
@@ -266,35 +364,52 @@ void FxPluginEditor::timerCallback()
                                 + " LUFS    TP " + value(out.truePeakDbtp()) + " dBTP    (in I " + value(processor.getInputLoudness().integratedLufs()) + ")",
                             juce::dontSendNotification);
         unavailable.setColour(juce::Label::textColourId, out.truePeakDbtp() > 0.0 ? colours::danger : colours::dim);
+        loudnessScreen->set(unavailable.getText().replace("    ", "  ").replace("   ", "  "), out.truePeakDbtp() > 0.0);
     }
     const auto meters = processor.getMeters();
     inputMeter->setLevels(meters.inputPeak, meters.inputRms);
     outputMeter->setLevels(meters.outputPeak, meters.outputRms);
-    waveform->tick(); // repaints only when a new 5 s snapshot is taken
+    waveform->tick(); // live: a new picture every tick (FREEZE holds it)
     workspace->repaint();
 }
 
 void FxPluginEditor::paint(juce::Graphics& g)
 {
-    g.fillAll(colours::background);
+    if (background.isValid())
+        g.drawImageAt(background, 0, 0);
+    else
+        g.fillAll(colours::background);
 }
 
 void FxPluginEditor::resized()
 {
+    struct Background
+    {
+        FxPluginEditor& e;
+        ~Background() { e.renderBackground(); } // every return below still renders the plate
+    } plateGuard { *this };
     auto area = getLocalBounds().reduced(10);
 
-    auto header = area.removeFromTop(40);
-    title.setBounds(header.removeFromLeft(90));
-    subtitle.setBounds(header.removeFromLeft(330));
-    header.removeFromLeft(10);
+    // header: nameplate, A / B, undo / redo, OUTPUT and BYPASS (owner: up here), the loudness CRT, Reset
+    auto header = area.removeFromTop(48);
+    plateArea = header.removeFromLeft(210).withTrimmedBottom(-6).translated(0, -4);
+    title.setVisible(false);    // the nameplate says HPEQ
+    subtitle.setVisible(false); // ... and the room goes to the controls
+    unavailable.setVisible(false);
+    header.removeFromLeft(14);
     abA.setBounds(header.removeFromLeft(36).reduced(0, 6));
     abB.setBounds(header.removeFromLeft(36).reduced(0, 6));
     copyAB.setBounds(header.removeFromLeft(46).reduced(2, 6));
     header.removeFromLeft(12);
     undo.setBounds(header.removeFromLeft(56).reduced(0, 6));
     redo.setBounds(header.removeFromLeft(56).reduced(2, 6));
+    header.removeFromLeft(14);
+    outputGainLabel.setBounds(header.removeFromLeft(52).reduced(0, 10));
+    outputGain.setBounds(header.removeFromLeft(juce::jlimit(150, 240, header.getWidth() / 4)).reduced(0, 10));
+    bypass.setBounds(header.removeFromLeft(92).reduced(6, 10));
     loudnessReset.setBounds(header.removeFromRight(56).reduced(2, 8));
-    unavailable.setBounds(header);
+    header.removeFromRight(6);
+    loudnessScreen->setBounds(header.removeFromRight(juce::jmin(header.getWidth() - 10, 380)).reduced(0, 2));
     area.removeFromTop(6);
 
     auto strip = area.removeFromTop(104);
@@ -314,12 +429,6 @@ void FxPluginEditor::resized()
     waveform->setBounds(strip.withTrimmedTop(2));
     area.removeFromTop(8);
 
-    auto footer = area.removeFromBottom(28);
-    footer.removeFromLeft(footer.getWidth() - 470);
-    outputGainLabel.setBounds(footer.removeFromLeft(56));
-    outputGain.setBounds(footer.removeFromLeft(300));
-    bypass.setBounds(footer.removeFromLeft(100).reduced(8, 0));
-    area.removeFromBottom(6);
     layerControls->setBounds(area.removeFromBottom(32));
     area.removeFromBottom(6);
 

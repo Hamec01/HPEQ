@@ -20,6 +20,8 @@ struct EqBandParams
     float q = 0.707f;
     int slopeDbPerOct = 12;
     ChannelMode channel = ChannelMode::Stereo;
+    bool solo = false, dynamic = false; // EQ pass (EqNodeState)
+    float thresholdDb = -30.0f, ratio = 3.0f, attackMs = 10.0f, releaseMs = 120.0f, rangeDb = -6.0f;
 };
 
 // Processor parameter block. The meaning of `values` depends on `type` (see the k* indices).

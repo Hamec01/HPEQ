@@ -59,7 +59,12 @@ target_compile_definitions(HPEQ
     PUBLIC
         JUCE_WEB_BROWSER=0
         JUCE_USE_CURL=0
-        JUCE_VST3_CAN_REPLACE_VST2=0)
+        JUCE_VST3_CAN_REPLACE_VST2=0
+        # As the module plug-ins: GDI software rendering and software images. With JUCE 8's Direct2D
+        # default, FL Studio hung when it closed / unloaded HPEQ (the per-DLL D3D11 device teardown waits
+        # inside the GPU driver). The editor also switches its peer at runtime (FxPluginEditor).
+        HPEQ_JUCE_DEFAULT_IMAGE_TYPE=SoftwareImageType
+        HPEQ_JUCE_DEFAULT_RENDERING_ENGINE=0)
 
 target_sources(HPEQ
     PRIVATE
@@ -102,6 +107,9 @@ target_sources(HPEQ
         Source/UI/HamloZastavaPanel.cpp
         Source/UI/HamloShirotaPanel.cpp
         Source/UI/HamloRevolutionPanel.cpp
+        Source/UI/HamloTochkaPanel.cpp
+        Source/UI/SteelLookAndFeel.cpp
+        Source/UI/ModuleTile.cpp
         Source/UI/SpectrumWorkspace.cpp)
 
 target_include_directories(HPEQ PUBLIC Source)
@@ -291,6 +299,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/MixKnobTests.cpp
     Tests/Unit/FaderPassTests.cpp
     Tests/Unit/RevolutionPassTests.cpp
+    Tests/Unit/EqPassTests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")

@@ -1,4 +1,6 @@
 #include "UI/SpectrumWorkspace.h"
+#include "UI/EqShapeIcons.h"
+#include "UI/ModuleTile.h"
 
 #include "Analysis/ResponseCurve.h"
 
@@ -6,7 +8,6 @@ namespace hpeq::ui
 {
 namespace
 {
-constexpr double kEqRangeDb = 24.0;
 constexpr double kAnalyserFloorDb = -96.0;
 constexpr float kPointRadius = 7.0f;
 constexpr float kEdgeGrab = 6.0f;
@@ -37,6 +38,28 @@ const std::array<FxType, 10> kFxTypes { FxType::Compressor, FxType::Reverb, FxTy
 SpectrumWorkspace::SpectrumWorkspace(FxPluginProcessor& p, const AnalysisModel& a, Selection& s)
     : processor(p), analysis(a), selection(s)
 {
+    // zoom: frequency in / out / full, and the EQ dB range (also Ctrl + wheel, Alt + wheel, Alt-drag to pan)
+    zoomIn.setButtonText("IN");
+    zoomOut.setButtonText("OUT");
+    zoomFull.setButtonText("FULL");
+    zoomIn.setTooltip("Zoom in (Ctrl + wheel); Alt-drag or the middle button moves the view");
+    zoomOut.setTooltip("Zoom out (Ctrl + wheel)");
+    zoomFull.setTooltip("Show 20 Hz - 20 kHz and +-24 dB");
+    rangeButton.setTooltip("EQ scale: +-3 / 6 / 12 / 24 / 36 dB (Alt + wheel)");
+    zoomIn.onClick = [this] { zoomFrequency(0.6, std::sqrt(viewMinHz * viewMaxHz)); };
+    zoomOut.onClick = [this] { zoomFrequency(1.0 / 0.6, std::sqrt(viewMinHz * viewMaxHz)); };
+    zoomFull.onClick = [this] { resetView(); };
+    rangeButton.onClick = [this]
+    {
+        static constexpr double ranges[] { 24.0, 12.0, 6.0, 3.0, 36.0 };
+        int i = 0;
+        while (i < 5 && std::abs(ranges[i] - eqRange) > 0.01)
+            ++i;
+        setEqRange(ranges[(i + 1) % 5]);
+    };
+    for (auto* b : { &zoomIn, &zoomOut, &zoomFull, &rangeButton })
+        addAndMakeVisible(*b);
+    setEqRange(24.0);
 }
 
 double SpectrumWorkspace::sampleRate() const { return processor.getCurrentSampleRate(); }
@@ -46,14 +69,76 @@ juce::Rectangle<float> SpectrumWorkspace::plotArea() const
     return getLocalBounds().toFloat().reduced(36.0f, 10.0f).withTrimmedBottom(14.0f);
 }
 
-float SpectrumWorkspace::yForEqDb(double db, juce::Rectangle<float> plot)
+float SpectrumWorkspace::xFor(double hz, juce::Rectangle<float> plot) const
 {
-    return plot.getCentreY() - static_cast<float>(juce::jlimit(-kEqRangeDb, kEqRangeDb, db) / kEqRangeDb) * plot.getHeight() * 0.5f;
+    const double u = std::log(juce::jlimit(1.0, 30000.0, hz) / viewMinHz) / std::log(viewMaxHz / viewMinHz);
+    return plot.getX() + static_cast<float>(u) * plot.getWidth();
 }
 
-double SpectrumWorkspace::eqDbForY(float y, juce::Rectangle<float> plot)
+double SpectrumWorkspace::hzFor(float x, juce::Rectangle<float> plot) const
 {
-    return juce::jlimit(-kEqRangeDb, kEqRangeDb, static_cast<double>(plot.getCentreY() - y) / (plot.getHeight() * 0.5) * kEqRangeDb);
+    const double u = juce::jlimit(0.0, 1.0, static_cast<double>((x - plot.getX()) / plot.getWidth()));
+    return viewMinHz * std::pow(viewMaxHz / viewMinHz, u);
+}
+
+void SpectrumWorkspace::zoomFrequency(double factor, double aroundHz)
+{
+    // the span in octaves shrinks / grows by `factor` around `aroundHz`; at least one octave, at most 20 Hz - 20 kHz
+    const double full = std::log2(FrequencyAxis::kMax / FrequencyAxis::kMin);
+    const double lo = std::log2(viewMinHz), hi = std::log2(viewMaxHz), at = std::log2(juce::jlimit(viewMinHz, viewMaxHz, aroundHz));
+    const double span = juce::jlimit(1.0, full, (hi - lo) * factor);
+    const double share = (at - lo) / (hi - lo);
+    double newLo = at - share * span;
+    newLo = juce::jlimit(std::log2(FrequencyAxis::kMin), std::log2(FrequencyAxis::kMax) - span, newLo);
+    viewMinHz = std::exp2(newLo);
+    viewMaxHz = std::exp2(newLo + span);
+    repaint();
+}
+
+void SpectrumWorkspace::panOctaves(double octaves)
+{
+    const double span = std::log2(viewMaxHz / viewMinHz);
+    const double lo = juce::jlimit(std::log2(FrequencyAxis::kMin), std::log2(FrequencyAxis::kMax) - span, std::log2(viewMinHz) + octaves);
+    viewMinHz = std::exp2(lo);
+    viewMaxHz = std::exp2(lo + span);
+    repaint();
+}
+
+void SpectrumWorkspace::setEqRange(double db)
+{
+    eqRange = juce::jlimit(3.0, 36.0, db);
+    rangeButton.setButtonText(juce::String::fromUTF8("\xc2\xb1") + juce::String(juce::roundToInt(eqRange)) + " dB");
+    repaint();
+}
+
+void SpectrumWorkspace::resetView()
+{
+    viewMinHz = FrequencyAxis::kMin;
+    viewMaxHz = FrequencyAxis::kMax;
+    setEqRange(24.0);
+}
+
+void SpectrumWorkspace::resized()
+{
+    const auto plot = plotArea().toNearestInt();
+    int x = plot.getRight() - 4;
+    for (auto* b : { &rangeButton, &zoomFull, &zoomIn, &zoomOut })
+    {
+        const int w = b == &rangeButton ? 62 : 40;
+        x -= w;
+        b->setBounds(x, plot.getY() + 4, w, 20);
+        x -= 4;
+    }
+}
+
+float SpectrumWorkspace::yForEqDb(double db, juce::Rectangle<float> plot) const
+{
+    return plot.getCentreY() - static_cast<float>(juce::jlimit(-eqRange, eqRange, db) / eqRange) * plot.getHeight() * 0.5f;
+}
+
+double SpectrumWorkspace::eqDbForY(float y, juce::Rectangle<float> plot) const
+{
+    return juce::jlimit(-eqRange, eqRange, static_cast<double>(plot.getCentreY() - y) / (plot.getHeight() * 0.5) * eqRange);
 }
 
 void SpectrumWorkspace::paint(juce::Graphics& g)
@@ -69,23 +154,31 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
 
     // Grid and axes.
     g.setFont(10.0f);
-    for (double f : { 20.0, 50.0, 100.0, 200.0, 500.0, 1000.0, 2000.0, 5000.0, 10000.0, 20000.0 })
+    for (double f : { 20.0, 30.0, 50.0, 70.0, 100.0, 150.0, 200.0, 300.0, 500.0, 700.0, 1000.0, 1500.0, 2000.0, 3000.0, 5000.0, 7000.0, 10000.0, 15000.0, 20000.0 })
     {
-        const float x = FrequencyAxis::xFor(f, plot);
+        if (f < viewMinHz * 0.999 || f > viewMaxHz * 1.001)
+            continue;
+        // with the full view only the classic decade labels; zoomed in, the in-between ones too
+        const bool decade = f == 20.0 || f == 50.0 || f == 100.0 || f == 200.0 || f == 500.0 || f == 1000.0 || f == 2000.0 || f == 5000.0
+                            || f == 10000.0 || f == 20000.0;
+        if (!decade && std::log2(viewMaxHz / viewMinHz) > 6.0)
+            continue;
+        const float x = xFor(f, plot);
         g.setColour(colours::grid);
         g.drawVerticalLine(juce::roundToInt(x), plot.getY(), plot.getBottom());
         g.setColour(colours::dim);
         g.drawText(f >= 1000.0 ? juce::String(f / 1000.0) + "k" : juce::String(f), juce::Rectangle<float>(x - 20, plot.getBottom() + 2, 40, 12),
                    juce::Justification::centred);
     }
-    for (double db = -kEqRangeDb; db <= kEqRangeDb; db += 6.0)
+    const double dbStep = eqRange <= 3.0 ? 1.0 : eqRange <= 6.0 ? 2.0 : eqRange <= 12.0 ? 3.0 : 6.0;
+    for (double db = -eqRange; db <= eqRange + 1.0e-9; db += dbStep)
     {
         const float y = yForEqDb(db, plot);
         g.setColour(db == 0.0 ? colours::outline : colours::grid);
         g.drawHorizontalLine(juce::roundToInt(y), plot.getX(), plot.getRight());
         g.setColour(colours::dim);
         g.drawText((db > 0 ? "+" : "") + juce::String(db, 0), juce::Rectangle<float>(area.getX() + 2, y - 6, 30, 12), juce::Justification::centredRight);
-        const double analyserDb = (db + kEqRangeDb) / (2.0 * kEqRangeDb) * (-kAnalyserFloorDb) + kAnalyserFloorDb;
+        const double analyserDb = (db + eqRange) / (2.0 * eqRange) * (-kAnalyserFloorDb) + kAnalyserFloorDb;
         if (mode == Mode::Spectrum)
             g.drawText(juce::String(analyserDb, 0), juce::Rectangle<float>(plot.getRight() + 2, y - 6, 32, 12), juce::Justification::centredLeft);
     }
@@ -95,7 +188,7 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
     {
         const auto& n = layer.fxNodes[static_cast<size_t>(i)];
         const auto colour = colours::forNode(i);
-        const float x0 = FrequencyAxis::xFor(n.lowHz, plot), x1 = FrequencyAxis::xFor(n.highHz, plot);
+        const float x0 = xFor(n.lowHz, plot), x1 = xFor(n.highHz, plot);
         const bool selected = selection.isFx(n.id);
         const float alpha = n.enabled ? (selected ? 0.22f : 0.13f) : 0.05f;
         g.setColour(colour.withAlpha(alpha));
@@ -121,7 +214,7 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
         if (n.chain.empty())
             continue;
         const auto [lowHz, highHz] = pointModuleBandHz(n);
-        const float x0 = FrequencyAxis::xFor(lowHz, plot), x1 = FrequencyAxis::xFor(highHz, plot);
+        const float x0 = xFor(lowHz, plot), x1 = xFor(highHz, plot);
         const bool selected = selection.isEq(n.id);
         g.setColour(colours::eqNode.withAlpha(n.enabled ? (selected ? 0.16f : 0.08f) : 0.03f));
         g.fillRect(juce::Rectangle<float>(x0, plot.getY(), x1 - x0, plot.getHeight()));
@@ -152,8 +245,8 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
         const int columns = static_cast<int>(plot.getWidth());
         for (int c = 0; c <= columns; c += 2)
         {
-            const double f0 = FrequencyAxis::hzFor(plot.getX() + static_cast<float>(c), plot);
-            const double f1 = FrequencyAxis::hzFor(plot.getX() + static_cast<float>(c + 2), plot);
+            const double f0 = hzFor(plot.getX() + static_cast<float>(c), plot);
+            const double f1 = hzFor(plot.getX() + static_cast<float>(c + 2), plot);
             const double bin0 = f0 * analysis.fftSize() / fs, bin1 = f1 * analysis.fftSize() / fs;
             float v = difference ? 0.0f : -1000.0f;
             int count = 0;
@@ -200,7 +293,7 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
         auto inPath = spectrumPath(inDb, false);
         g.setColour(colours::input.withAlpha(0.55f));
         g.strokePath(inPath, juce::PathStrokeType(1.0f));
-        g.setColour(colours::accent.withAlpha(0.8f));
+        g.setColour(colours::phosphor.withAlpha(0.8f));
         g.strokePath(spectrumPath(outDb, false), juce::PathStrokeType(1.2f));
     }
     else if (mode == Mode::Difference && !analysis.differenceSpectrum().empty())
@@ -217,7 +310,7 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
             juce::Path band;
             band.startNewSubPath(plot.getX(), plot.getCentreY());
             for (int c = 0; c <= columns; c += 2)
-                band.lineTo(plot.getX() + static_cast<float>(c), yForEqDb(bandResponseDb(n, fs, FrequencyAxis::hzFor(plot.getX() + static_cast<float>(c), plot)), plot));
+                band.lineTo(plot.getX() + static_cast<float>(c), yForEqDb(bandResponseDb(n, fs, hzFor(plot.getX() + static_cast<float>(c), plot)), plot));
             band.lineTo(plot.getRight(), plot.getCentreY());
             band.closeSubPath();
             g.setColour(colours::eqNode.withAlpha(0.18f));
@@ -227,22 +320,96 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
     for (int c = 0; c <= columns; c += 2)
     {
         const float x = plot.getX() + static_cast<float>(c);
-        const float y = yForEqDb(eqResponseDb(layer, fs, FrequencyAxis::hzFor(x, plot)), plot);
+        const float y = yForEqDb(eqResponseDb(layer, fs, hzFor(x, plot)), plot);
         if (c == 0)
             curve.startNewSubPath(x, y);
         else
             curve.lineTo(x, y);
     }
-    g.setColour(colours::eqCurve.withAlpha(0.9f));
+    // DYNAMIC points: the gain each one adds right now (from the engine), and the curve as it is now
+    std::vector<float> live(layer.eqNodes.size(), 0.0f);
+    bool anyLive = false;
+    {
+        const auto& pre = processor.getEngine().getLayer(project.selectedLayer).getPreEq();
+        for (size_t i = 0; i < layer.eqNodes.size(); ++i)
+            if (layer.eqNodes[i].dynamic && layer.eqNodes[i].enabled && isGainShapeUi(layer.eqNodes[i].shape))
+            {
+                live[i] = pre.dynamicOffsetDb(static_cast<int>(i));
+                anyLive = anyLive || std::abs(live[i]) > 0.05f;
+            }
+    }
+    g.setColour(colours::eqCurve.withAlpha(anyLive ? 0.45f : 0.9f));
     g.strokePath(curve, juce::PathStrokeType(1.8f));
+    if (anyLive)
+    {
+        auto now = layer;
+        for (size_t i = 0; i < now.eqNodes.size(); ++i)
+            now.eqNodes[i].gainDb += live[i];
+        juce::Path moving;
+        for (int c = 0; c <= columns; c += 2)
+        {
+            const float x = plot.getX() + static_cast<float>(c);
+            const float y = yForEqDb(eqResponseDb(now, fs, hzFor(x, plot)), plot);
+            if (c == 0)
+                moving.startNewSubPath(x, y);
+            else
+                moving.lineTo(x, y);
+        }
+        g.setColour(colours::accent.withAlpha(0.25f));
+        g.strokePath(moving, juce::PathStrokeType(5.0f));
+        g.setColour(colours::accent);
+        g.strokePath(moving, juce::PathStrokeType(1.8f));
+    }
 
     // EQ points.
     for (int i = 0; i < static_cast<int>(layer.eqNodes.size()); ++i)
     {
         const auto& n = layer.eqNodes[static_cast<size_t>(i)];
-        const float x = FrequencyAxis::xFor(n.frequencyHz, plot);
+        const float x = xFor(n.frequencyHz, plot);
         const float y = isGainShapeUi(n.shape) ? yForEqDb(n.gainDb, plot) : yForEqDb(eqResponseDb(layer, fs, n.frequencyHz), plot);
         const bool selected = selection.isEq(n.id);
+        // what the point does, on the spectrum: boost / cut in dB (cuts: their slope), a DYNAMIC point also
+        // what it does now, with an arrow from the set gain to the gain of the moment
+        {
+            const float dyn = live[static_cast<size_t>(i)];
+            juce::String value;
+            if (isGainShapeUi(n.shape))
+            {
+                value = (n.gainDb > 0.05 ? "+" : "") + juce::String(n.gainDb, 1);
+                if (n.dynamic)
+                    value << juce::String::fromUTF8(" \xe2\x86\x92 ") << (n.gainDb + dyn > 0.05 ? "+" : "") << juce::String(n.gainDb + dyn, 1);
+                value << " dB";
+            }
+            else if (n.shape == EqShape::LowCut || n.shape == EqShape::HighCut)
+                value = juce::String(n.slopeDbPerOct) + " dB/oct";
+            else if (n.shape == EqShape::Notch)
+                value = "NOTCH";
+            else if (n.shape == EqShape::BandPass)
+                value = "BAND";
+            if (std::abs(dyn) > 0.05f && n.enabled)
+            {
+                const float y2 = yForEqDb(n.gainDb + dyn, plot);
+                g.setColour(colours::accent);
+                g.drawArrow({ x, y, x, y2 }, 2.0f, 8.0f, 7.0f);
+            }
+            if (value.isNotEmpty())
+            {
+                g.setFont(juce::Font(juce::FontOptions("Consolas", 12.0f, juce::Font::bold)));
+                const float w = static_cast<float>(value.length()) * 7.2f + 10.0f;
+                auto box = juce::Rectangle<float>(x - w * 0.5f, y - kPointRadius - 22.0f, w, 16.0f);
+                if (box.getY() < plot.getY() + 2.0f)
+                    box.setY(y + kPointRadius + 6.0f);
+                box.setX(juce::jlimit(plot.getX(), plot.getRight() - w, box.getX()));
+                g.setColour(juce::Colour(0xe0050605));
+                g.fillRoundedRectangle(box, 3.0f);
+                g.setColour(juce::Colours::black);
+                g.drawRoundedRectangle(box, 3.0f, 1.0f);
+                const bool boost = isGainShapeUi(n.shape) && n.gainDb + dyn > 0.05;
+                g.setColour((n.dynamic && isGainShapeUi(n.shape) ? colours::accent : boost ? colours::phosphor : colours::eqNode)
+                                .withMultipliedAlpha(n.enabled ? 1.0f : 0.4f));
+                g.drawText(value, box, juce::Justification::centred);
+            }
+        }
         g.setColour(colours::panel);
         g.fillEllipse(x - kPointRadius, y - kPointRadius, 2 * kPointRadius, 2 * kPointRadius);
         g.setColour(n.enabled ? colours::eqNode : colours::dim);
@@ -256,11 +423,9 @@ void SpectrumWorkspace::paint(juce::Graphics& g)
         {
             g.setFont(11.0f);
             juce::String label = shapeName(n.shape) + "  " + formatHz(n.frequencyHz);
-            if (isGainShapeUi(n.shape))
-                label << "  " << juce::String(n.gainDb, 1) << " dB";
-            if (n.shape == EqShape::LowCut || n.shape == EqShape::HighCut)
-                label << "  " << n.slopeDbPerOct << " dB/oct";
-            g.drawText(label, juce::Rectangle<float>(x + 10, y - 22, 240, 14), juce::Justification::centredLeft);
+            if (n.solo)
+                label << "  SOLO";
+            g.drawText(label, juce::Rectangle<float>(x + 12, y + kPointRadius + 24, 240, 14), juce::Justification::centredLeft);
         }
     }
 
@@ -282,14 +447,14 @@ SpectrumWorkspace::Hit SpectrumWorkspace::hitTestNodes(juce::Point<float> p) con
     const double fs = sampleRate();
     for (const auto& n : layer.eqNodes)
     {
-        const float x = FrequencyAxis::xFor(n.frequencyHz, plot);
+        const float x = xFor(n.frequencyHz, plot);
         const float y = isGainShapeUi(n.shape) ? yForEqDb(n.gainDb, plot) : yForEqDb(eqResponseDb(layer, fs, n.frequencyHz), plot);
         if (p.getDistanceFrom({ x, y }) <= kPointRadius + 3.0f)
             return { Drag::EqPoint, n.id };
     }
     for (auto it = layer.fxNodes.rbegin(); it != layer.fxNodes.rend(); ++it)
     {
-        const float x0 = FrequencyAxis::xFor(it->lowHz, plot), x1 = FrequencyAxis::xFor(it->highHz, plot);
+        const float x0 = xFor(it->lowHz, plot), x1 = xFor(it->highHz, plot);
         if (std::abs(p.x - x0) <= kEdgeGrab)
             return { Drag::FxLow, it->id };
         if (std::abs(p.x - x1) <= kEdgeGrab)
@@ -297,7 +462,7 @@ SpectrumWorkspace::Hit SpectrumWorkspace::hitTestNodes(juce::Point<float> p) con
     }
     for (auto it = layer.fxNodes.rbegin(); it != layer.fxNodes.rend(); ++it)
     {
-        const float x0 = FrequencyAxis::xFor(it->lowHz, plot), x1 = FrequencyAxis::xFor(it->highHz, plot);
+        const float x0 = xFor(it->lowHz, plot), x1 = xFor(it->highHz, plot);
         if (p.x > x0 && p.x < x1 && plot.contains(p))
             return { Drag::FxBody, it->id };
     }
@@ -324,6 +489,13 @@ void SpectrumWorkspace::mouseMove(const juce::MouseEvent& e)
 
 void SpectrumWorkspace::mouseDown(const juce::MouseEvent& e)
 {
+    panning = e.mods.isMiddleButtonDown() || (e.mods.isAltDown() && hitTestNodes(e.position).drag == Drag::None);
+    if (panning)
+    {
+        dragStartX = e.position.x;
+        dragging = {};
+        return;
+    }
     dragging = hitTestNodes(e.position);
     if (e.mods.isPopupMenu())
     {
@@ -355,11 +527,18 @@ void SpectrumWorkspace::mouseDown(const juce::MouseEvent& e)
 
 void SpectrumWorkspace::mouseDrag(const juce::MouseEvent& e)
 {
+    if (panning)
+    {
+        // the view follows the mouse: dragging right shows lower frequencies
+        panOctaves(-(e.position.x - dragStartX) * std::log2(viewMaxHz / viewMinHz) / plotArea().getWidth());
+        dragStartX = e.position.x;
+        return;
+    }
     if (dragging.drag == Drag::None)
         return;
     const auto plot = plotArea();
     const double scale = e.mods.isShiftDown() ? 0.1 : 1.0; // Shift: fine
-    const double octavesPerPixel = std::log2(FrequencyAxis::kMax / FrequencyAxis::kMin) / plot.getWidth();
+    const double octavesPerPixel = std::log2(viewMaxHz / viewMinHz) / plot.getWidth();
     const double dOct = (e.position.x - dragStartX) * octavesPerPixel * scale;
     const double dDb = (eqDbForY(e.position.y, plot) - eqDbForY(dragStartY, plot)) * scale;
     const auto id = dragging.id;
@@ -410,7 +589,7 @@ void SpectrumWorkspace::mouseDoubleClick(const juce::MouseEvent& e)
         EqNodeState n;
         n.id = newId = p.nextNodeId++;
         n.shape = EqShape::Bell;
-        n.frequencyHz = FrequencyAxis::hzFor(e.position.x, plot);
+        n.frequencyHz = hzFor(e.position.x, plot);
         n.gainDb = std::round(eqDbForY(e.position.y, plot) * 10.0) / 10.0;
         n.q = 1.0;
         selectedLayer(p).eqNodes.push_back(n);
@@ -421,6 +600,21 @@ void SpectrumWorkspace::mouseDoubleClick(const juce::MouseEvent& e)
 
 void SpectrumWorkspace::mouseWheelMove(const juce::MouseEvent& e, const juce::MouseWheelDetails& wheel)
 {
+    // Zoom: Ctrl + wheel = frequency around the mouse, Alt + wheel = the EQ dB range
+    if (e.mods.isCtrlDown() || e.mods.isCommandDown())
+    {
+        zoomFrequency(wheel.deltaY > 0 ? 0.8 : 1.25, hzFor(e.position.x, plotArea()));
+        return;
+    }
+    if (e.mods.isAltDown())
+    {
+        static constexpr double ranges[] { 3.0, 6.0, 12.0, 24.0, 36.0 };
+        int i = 0;
+        while (i < 4 && ranges[i] < eqRange - 0.01)
+            ++i;
+        setEqRange(ranges[juce::jlimit(0, 4, i + (wheel.deltaY > 0 ? -1 : 1))]);
+        return;
+    }
     const auto hit = hitTestNodes(e.position);
     if (hit.drag != Drag::EqPoint)
         return;
@@ -448,13 +642,13 @@ void SpectrumWorkspace::mouseWheelMove(const juce::MouseEvent& e, const juce::Mo
 void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
 {
     const auto plot = plotArea();
-    const double hz = FrequencyAxis::hzFor(position.x, plot);
+    const double hz = hzFor(position.x, plot);
     juce::PopupMenu menu;
     juce::PopupMenu eqMenu, fxMenu;
     for (size_t i = 0; i < kShapes.size(); ++i)
-        eqMenu.addItem(static_cast<int>(100 + i), shapeName(kShapes[i]));
+        eqMenu.addItem(static_cast<int>(100 + i), shapeName(kShapes[i]), true, false, eqShapeIcon(kShapes[i], juce::Colour(0xffffb347)));
     for (size_t i = 0; i < kFxTypes.size(); ++i)
-        fxMenu.addItem(static_cast<int>(200 + i), fxFullName(kFxTypes[i]));
+        fxMenu.addItem(static_cast<int>(200 + i), fxFullName(kFxTypes[i]), true, false, moduleIcon(kFxTypes[i]));
     const auto project = processor.getProject();
     const auto& shown = selectedLayer(project);
     const bool bandFree = freeEngineSlots(shown) > 0;
@@ -467,7 +661,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
         }
     juce::PopupMenu moduleMenu;
     for (size_t i = 0; i < kFxTypes.size(); ++i)
-        moduleMenu.addItem(static_cast<int>(300 + i), fxFullName(kFxTypes[i]));
+        moduleMenu.addItem(static_cast<int>(300 + i), fxFullName(kFxTypes[i]), true, false, moduleIcon(kFxTypes[i]));
 
     if (hit.drag == Drag::EqPoint)
     {
@@ -490,7 +684,7 @@ void SpectrumWorkspace::showMenu(juce::Point<float> position, Hit hit)
         menu.addSubMenu("Add FX region (one octave)", fxMenu, bandFree);
         juce::PopupMenu mixMenu; // D7: a module on the whole layer
         for (size_t i = 0; i < kFxTypes.size(); ++i)
-            mixMenu.addItem(static_cast<int>(400 + i), fxFullName(kFxTypes[i]));
+            mixMenu.addItem(static_cast<int>(400 + i), fxFullName(kFxTypes[i]), true, false, moduleIcon(kFxTypes[i]));
         menu.addSubMenu("Add module on the whole layer", mixMenu, shown.mixChain.size() < static_cast<size_t>(kMaxFxPerNode));
     }
 

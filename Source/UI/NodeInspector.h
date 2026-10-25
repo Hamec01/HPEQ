@@ -13,6 +13,7 @@
 #include "UI/HamloUdarnikPanel.h"
 #include "UI/HamloZastavaPanel.h"
 #include "UI/HamloShirotaPanel.h"
+#include "UI/HamloTochkaPanel.h"
 #include "UI/HamloVerbPanel.h"
 
 namespace hpeq::ui
@@ -103,5 +104,6 @@ private:
     HamloZastavaPanel* zastavaPanel = nullptr; // owned by controls
     HamloShirotaPanel* shirotaPanel = nullptr; // owned by controls
     HamloRevolutionPanel* revolutionPanel = nullptr; // owned by controls
+    HamloTochkaPanel* tochkaPanel = nullptr;         // owned by controls (EQ point page)
 };
 } // namespace hpeq::ui

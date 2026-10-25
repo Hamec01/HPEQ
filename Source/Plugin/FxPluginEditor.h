@@ -5,6 +5,9 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
+#include "UI/ModuleTile.h"
+#include "UI/SteelLookAndFeel.h"
+
 namespace hpeq
 {
 class FxPluginProcessor;
@@ -39,13 +42,19 @@ public:
     void selectNode(bool fx, std::uint32_t id, int slot = -1); // slot -1 = module grid
     // The layer's MIX chain (D7), as a click on its row would select it.
     void selectMix(int slot = -1);
+    bool isMixSelected() const noexcept; // tests
     void showDifference(bool difference);
 
 private:
     class LevelMeter;
+    class LoudnessScreen;
 
     void timerCallback() override;
     void changeListenerCallback(juce::ChangeBroadcaster*) override;
+    void visibilityChanged() override;
+    void parentHierarchyChanged() override;
+    void selectSoftwareRenderer();
+    void renderBackground();
     void selectionChanged();
     void updateHeader();
     void updateLayerButtons();
@@ -60,6 +69,7 @@ private:
     std::unique_ptr<ui::NodeInspector> inspector;
     std::unique_ptr<LevelMeter> inputMeter, outputMeter;
     std::unique_ptr<ui::LayerControls> layerControls;
+    std::unique_ptr<LoudnessScreen> loudnessScreen;
 
     juce::Label title, subtitle, unavailable;
     juce::TextButton loudnessReset { "Reset" };
@@ -74,6 +84,10 @@ private:
     juce::Label outputGainLabel;
     juce::ToggleButton bypass { "Bypass" };
     juce::TooltipWindow tooltips { this };
+    juce::SharedResourcePointer<ui::SteelLookAndFeel> steelLook; // EQ pass: the Black Steel style
+    juce::SharedResourcePointer<ui::ModuleThumbnails> thumbnails; // the module pages in miniature, while a window is open
+    juce::Image background;                                      // the worn steel plate, rendered on resize
+    juce::Rectangle<int> plateArea;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> outputGainAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> bypassAttachment;
 

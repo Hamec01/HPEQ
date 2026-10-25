@@ -1,6 +1,7 @@
 #include "DSP/LayerSnapshot.h"
 
 #include "Core/Revolution.h"
+#include "DSP/EqDesign.h"
 
 #include <cmath>
 
@@ -254,6 +255,13 @@ LayerSnapshot makeSnapshot(const LayerState& layer)
         band.q = static_cast<float>(node.q);
         band.slopeDbPerOct = node.slopeDbPerOct;
         band.channel = node.channel;
+        band.solo = node.solo && band.active;
+        band.dynamic = node.dynamic && isGainShape(node.shape);
+        band.thresholdDb = static_cast<float>(node.thresholdDb);
+        band.ratio = static_cast<float>(node.ratio);
+        band.attackMs = static_cast<float>(node.attackMs);
+        band.releaseMs = static_cast<float>(node.releaseMs);
+        band.rangeDb = static_cast<float>(node.rangeDb);
     }
     // D6: FX regions and EQ points with modules go to their stable engine nodes. The slots of a
     // sanitized project are kept; an unsanitized layer gets the same assignment on a copy.

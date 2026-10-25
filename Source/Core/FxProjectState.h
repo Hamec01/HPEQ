@@ -46,6 +46,12 @@ struct EqNodeState
     double q = 0.707;
     int slopeDbPerOct = 12; // cuts only; the DSP decides which slopes it really supports
     ChannelMode channel = ChannelMode::Stereo;
+    // EQ pass: SOLO = hear only this point's band (as FabFilter's listen); DYNAMIC = the gain moves by up
+    // to rangeDb (negative: down when loud, positive: up) as the band's own level passes thresholdDb, with
+    // ratio, attack and release as a compressor's. Gain shapes only (Bell, shelves, Tilt).
+    bool solo = false;
+    bool dynamic = false;
+    double thresholdDb = -30.0, ratio = 3.0, attackMs = 10.0, releaseMs = 120.0, rangeDb = -6.0;
     // D6: optional modules on the point's band (after PRE-EQ), 0..kMaxFxPerNode, processed in order.
     std::vector<FxSlotState> chain;
     int engineSlot = -1; // stable engine node 0..7 while the chain is not empty (assignEngineSlots)

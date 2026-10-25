@@ -17,6 +17,9 @@
 #include "UI/HamloEchoPanel.h"
 #include "UI/HamloFaderPanel.h"
 #include "UI/HamloRevolutionPanel.h"
+#include "UI/HamloTochkaPanel.h"
+#include "UI/ModuleTile.h"
+#include "UI/Theme.h"
 #include "UI/HamloMagPanel.h"
 #include "UI/HamloRedWallPanel.h"
 #include "UI/HamloUdarnikPanel.h"
@@ -116,6 +119,31 @@ int runUiSnapshots(const juce::File& out)
     save("hpeq_m5_compressor_selected.png");
     editor->selectNode(false, bellId);
     save("hpeq_m5_eq_selected.png");
+    // EQ pass: the point page with DYNAMIC on (range -9 dB, now -4.5 dB), the zoomed spectrum
+    processor->editProject("Lab dynamic", [bellId](FxProjectState& p)
+    {
+        for (auto& n : p.layers[0].eqNodes)
+            if (n.id == bellId)
+            {
+                n.dynamic = true;
+                n.rangeDb = -9.0;
+                n.thresholdDb = -28.0;
+            }
+    });
+    processor->dispatchPendingMessages();
+    editor->selectNode(false, bellId);
+    {
+        juce::Array<juce::Component*> stack { editor.get() };
+        while (!stack.isEmpty())
+        {
+            auto* c = stack.removeAndReturn(stack.size() - 1);
+            for (auto* child : c->getChildren())
+                stack.add(child);
+            if (auto* t = dynamic_cast<ui::HamloTochkaPanel*>(c))
+                t->settleDynamicGain(-4.5f);
+        }
+    }
+    save("hpeq_eq_point_page.png");
     editor->showDifference(true);
     save("hpeq_m5_difference.png");
 
@@ -612,6 +640,26 @@ int runUiSnapshots(const juce::File& out)
         shoot(zastava, 1180, 780, "hpeq_panel_hamlozastava.png");
         ui::HamloShirotaPanel shirota;
         shoot(shirota, 1180, 780, "hpeq_panel_hamloshirota.png");
+        {
+            // the module tiles (owner: the page in miniature, darkened, the name over it), a sheet of all of them
+            juce::Image sheet(juce::Image::ARGB, 5 * 270 + 20, 2 * 100 + 20, true);
+            {
+                juce::Graphics g(sheet);
+                g.fillAll(juce::Colour(0xff1a1a17));
+                const FxType types[] { FxType::Compressor, FxType::Limiter, FxType::Reverb, FxType::Delay, FxType::TransientShaper,
+                                       FxType::Saturator, FxType::MonstaFx, FxType::StereoProcessor, FxType::GateExpander, FxType::Gain };
+                for (int i = 0; i < 10; ++i)
+                {
+                    ui::ModuleTile tile("tile", i + 1, types[i], i != 8);
+                    tile.setSize(260, 90);
+                    g.drawImageAt(tile.createComponentSnapshot(tile.getLocalBounds()), 10 + (i % 5) * 270, 10 + (i / 5) * 100);
+                }
+            }
+            auto file = out.getChildFile("hpeq_module_icons.png");
+            file.deleteFile();
+            juce::FileOutputStream stream(file);
+            juce::PNGImageFormat().writeImageToStream(sheet, stream);
+        }
         ui::HamloRevolutionPanel revolutionPanel; // module pass 10: a Musical pattern, step 6 under the play head
         {
             auto v = revolutionPanel.getValues();

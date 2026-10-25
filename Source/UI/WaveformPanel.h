@@ -1,20 +1,20 @@
 #pragma once
 
 #include "UI/AnalysisModel.h"
+#include "UI/BlackSteel.h"
 #include "UI/Theme.h"
 
 namespace hpeq::ui
 {
-// Top strip: real input (grey) and processed output (cyan) PCM of the last `kSeconds`, sample-
-// aligned (no plugin latency), min/max per pixel column. Not live: a snapshot is taken every
-// `kRefreshSeconds` (owner request: a calm, zoomed-out view to compare changes), or at once when the
-// mode or size changes. Delta shows output - input of the same samples. Vertical scale is linear full
-// scale (+-1 = 0 dBFS).
+// Top strip: real input (grey) and processed output (green) PCM of the last `kSeconds`, sample-
+// aligned (no plugin latency), min/max per pixel column, live (owner, EQ pass: real time again; a new
+// picture at every editor tick, about 30 per second; FREEZE holds it). Delta shows output - input of the
+// same samples. Vertical scale is linear full scale (+-1 = 0 dBFS).
 class WaveformPanel final : public juce::Component
 {
 public:
     enum class Mode { Overlay, Delta };
-    static constexpr double kSeconds = 5.0, kRefreshSeconds = 5.0;
+    static constexpr double kSeconds = 5.0;
 
     WaveformPanel(const AnalysisModel& model, std::function<double()> sampleRate) : analysis(model), rate(std::move(sampleRate)) {}
 
@@ -23,13 +23,9 @@ public:
     // Called by the editor's timer: takes a new snapshot when it is due (or forced) and repaints only then.
     void tick(bool force = false)
     {
-        const double now = juce::Time::getMillisecondCounterHiRes();
-        if (!force && !needsSnapshot && now - lastSnapshotMs < kRefreshSeconds * 1000.0)
-            return;
         if (analysis.frozen && !force && !needsSnapshot)
             return;
         takeSnapshot();
-        lastSnapshotMs = now;
         needsSnapshot = false;
         repaint();
     }
@@ -42,19 +38,21 @@ public:
 
     void paint(juce::Graphics& g) override
     {
+        // a green CRT in a gunmetal bezel (owner: as the module pages' scopes)
         auto area = getLocalBounds().toFloat();
-        g.setColour(colours::panel);
-        g.fillRoundedRectangle(area, 6.0f);
+        const auto screen = screenArea();
+        steel::crtBezel(g, area, screen, juce::String::fromUTF8("SIGNAL \xc2\xb7 LAST 5 S"), area.getBottom() - 19.0f);
+        steel::crtBegin(g, screen);
         auto plot = plotArea();
 
         g.setColour(colours::grid);
         g.drawHorizontalLine(juce::roundToInt(plot.getCentreY()), plot.getX(), plot.getRight());
         for (int s = 1; s < static_cast<int>(kSeconds); ++s)
             g.drawVerticalLine(juce::roundToInt(plot.getX() + plot.getWidth() * static_cast<float>(s / kSeconds)), plot.getY(), plot.getBottom());
-        g.setColour(colours::dim);
-        g.setFont(10.0f);
-        g.drawText("1", juce::Rectangle<float>(area.getX() + 4, plot.getY() - 6, 20, 12), juce::Justification::centredLeft);
-        g.drawText("-1", juce::Rectangle<float>(area.getX() + 4, plot.getBottom() - 6, 20, 12), juce::Justification::centredLeft);
+        g.setColour(colours::phosphor.withAlpha(0.45f));
+        g.setFont(juce::FontOptions("Consolas", 10.0f, juce::Font::plain));
+        g.drawText("1", juce::Rectangle<float>(screen.getX() + 3, plot.getY() - 2, 20, 12), juce::Justification::centredLeft);
+        g.drawText("-1", juce::Rectangle<float>(screen.getX() + 3, plot.getBottom() - 10, 20, 12), juce::Justification::centredLeft);
 
         const auto y = [&](float v) { return plot.getCentreY() - juce::jlimit(-1.0f, 1.0f, v) * plot.getHeight() * 0.5f; };
         const auto drawColumns = [&](const std::vector<std::pair<float, float>>& columns, juce::Colour colour)
@@ -67,18 +65,18 @@ public:
         if (mode == Mode::Overlay)
         {
             drawColumns(inputColumns, colours::input.withAlpha(0.85f));
-            drawColumns(outputColumns, colours::accent.withAlpha(0.75f));
+            drawColumns(outputColumns, colours::phosphor.withAlpha(0.75f));
         }
         else
             drawColumns(deltaColumns, colours::warning.withAlpha(0.85f));
 
-        g.setFont(11.0f);
-        auto legend = plot.removeFromTop(14.0f).removeFromLeft(420.0f).translated(6.0f, 1.0f);
+        g.setFont(juce::FontOptions("Consolas", 11.0f, juce::Font::bold));
+        auto legend = plot.removeFromTop(14.0f).removeFromLeft(440.0f).translated(6.0f, 1.0f);
         if (mode == Mode::Overlay)
         {
             g.setColour(colours::input);
             g.drawText("Input", legend.removeFromLeft(44.0f), juce::Justification::centredLeft);
-            g.setColour(colours::accent);
+            g.setColour(colours::phosphor);
             g.drawText("Processed", legend.removeFromLeft(70.0f), juce::Justification::centredLeft);
         }
         else
@@ -86,18 +84,22 @@ public:
             g.setColour(colours::warning);
             g.drawText("Delta = processed - input", legend.removeFromLeft(170.0f), juce::Justification::centredLeft);
         }
-        g.setColour(colours::dim);
-        g.drawText("last " + juce::String(static_cast<int>(kSeconds)) + " s, new picture every " + juce::String(static_cast<int>(kRefreshSeconds)) + " s",
-                   legend, juce::Justification::centredLeft);
+        g.setColour(colours::phosphor.withAlpha(0.45f));
+        g.drawText("REAL TIME", legend, juce::Justification::centredLeft);
         if (analysis.frozen)
         {
             g.setColour(colours::warning);
-            g.drawText("FROZEN", getLocalBounds().toFloat().reduced(8.0f, 4.0f), juce::Justification::topRight);
+            g.drawText("FROZEN", screen.reduced(10.0f, 4.0f), juce::Justification::topRight);
         }
+        steel::crtEnd(g, screen);
     }
 
 private:
-    juce::Rectangle<float> plotArea() const { return getLocalBounds().toFloat().reduced(24.0f, 5.0f); }
+    juce::Rectangle<float> screenArea() const
+    {
+        return getLocalBounds().toFloat().withTrimmedLeft(22.0f).withTrimmedRight(22.0f).withTrimmedTop(9.0f).withTrimmedBottom(22.0f);
+    }
+    juce::Rectangle<float> plotArea() const { return screenArea().reduced(20.0f, 4.0f); }
 
     void takeSnapshot()
     {
@@ -127,7 +129,6 @@ private:
     const AnalysisModel& analysis;
     std::function<double()> rate;
     std::vector<std::pair<float, float>> inputColumns, outputColumns, deltaColumns;
-    double lastSnapshotMs = -1.0e12;
     bool needsSnapshot = true;
 };
 } // namespace hpeq::ui

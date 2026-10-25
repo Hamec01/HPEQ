@@ -1,5 +1,7 @@
 #include "UI/NodeInspector.h"
 
+#include "UI/ModuleTile.h"
+
 namespace hpeq::ui
 {
 namespace
@@ -296,19 +298,26 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
             if (i < count)
             {
                 const auto& m = chain[static_cast<size_t>(i)];
-                auto& tile = addButton(juce::String(i + 1) + "   " + fxFullName(m.type) + (m.enabled ? "" : "   (off)"), [this, i]
+                // the module's picture and name (owner: pictures, not text); the text stays for tests
+                auto* tilePtr = new ModuleTile(juce::String(i + 1) + "   " + fxFullName(m.type) + (m.enabled ? "" : "   (off)"), i + 1, m.type, m.enabled);
+                tilePtr->onClick = [this, i]
                 {
                     selection.slot = i;
                     rebuildAsync();
-                });
-                tile.setColour(juce::TextButton::buttonColourId, m.enabled ? colours::accent.withAlpha(0.28f) : colours::panelRaised);
-                tile.setColour(juce::TextButton::textColourOffId, m.enabled ? colours::text : colours::dim);
+                };
+                controls.add(tilePtr);
+                addAndMakeVisible(tilePtr);
+                auto& tile = *tilePtr;
                 tile.setTooltip("Open " + fxFullName(m.type) + " (module " + juce::String(i + 1) + ")");
                 setInfo(tile, 1, 0, 0, false, true);
             }
             else
             {
-                auto& tile = addButton("+", [this, kind]
+                auto* addPtr = new ModuleTile("+", i + 1, std::nullopt, false);
+                controls.add(addPtr);
+                addAndMakeVisible(addPtr);
+                auto& tile = *addPtr;
+                tile.onClick = [this, kind]
                 {
                     const auto project = processor.getProject();
                     const auto* current = selectedChain(project);
@@ -318,7 +327,7 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
                         menu.addItem(1, "All 8 module bands of this layer are in use", false);
                     else
                         for (size_t t = 0; t < kTypes.size(); ++t)
-                            menu.addItem(static_cast<int>(t) + 10, fxFullName(kTypes[t]));
+                            menu.addItem(static_cast<int>(t) + 10, fxFullName(kTypes[t]), true, false, moduleIcon(kTypes[t]));
                     juce::Component::SafePointer<NodeInspector> safe(this);
                     menu.showMenuAsync(juce::PopupMenu::Options(), [safe](int result)
                     {
@@ -326,7 +335,7 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
                             return;
                         safe->addModule(kTypes[static_cast<size_t>(result - 10)]);
                     });
-                });
+                };
                 tile.setTooltip("Add a module (it runs after the ones before it)");
                 setInfo(tile, 1, 0, 0, false, true);
             }
@@ -610,6 +619,7 @@ void NodeInspector::rebuild()
     zastavaPanel = nullptr;
     shirotaPanel = nullptr;
     revolutionPanel = nullptr;
+    tochkaPanel = nullptr;
     title = "Nothing selected";
     status = "Select an EQ point or FX region in the workspace or the node list.";
 
@@ -640,32 +650,42 @@ void NodeInspector::rebuild()
               + juce::String(band.second, 0) + " Hz (from frequency and Q)";
         status = {};
 
-        auto& on = addButton("On", [this] { beginEdit("Enable"); editEq("Enable", [](EqNodeState& n) { n.enabled = !n.enabled; }); }, true);
-        setInfo(on, 0, 50, kRowHeight);
-        juce::StringArray shapeNames;
-        for (auto s : kShapes)
-            shapeNames.add(shapeName(s));
-        auto& shape = addCombo("Shape", shapeNames, [this](int i) { editEq("Shape", [i](EqNodeState& n)
+        // EQ pass: the point's own page (HamloTochka); its modules stay in the grid next to it
+        auto* panel = new HamloTochkaPanel();
+        controls.add(panel);
+        addAndMakeVisible(panel);
+        panel->getProperties().set("section", 5);
+        tochkaPanel = panel;
+        panel->onGestureStart = [this](const juce::String& what)
         {
-            n.shape = kShapes[static_cast<size_t>(i)];
-            if (!isGainShapeUi(n.shape)) n.gainDb = 0.0;
-        }); });
-        setInfo(shape, 0, 120, kRowHeight);
-        auto& freq = addKnob("Frequency", 10, 22000, 1000, " Hz", 1, [this](double v) { editEq("Frequency", [v](EqNodeState& n) { n.frequencyHz = v; }); });
-        setInfo(freq, 0, kKnobWidth, kKnobHeight);
-        auto& gainKnob = addKnob("Gain", -24, 24, 0, " dB", 1, [this](double v) { editEq("Gain", [v](EqNodeState& n) { n.gainDb = v; }); });
-        setInfo(gainKnob, 0, kKnobWidth, kKnobHeight);
-        auto& q = addKnob("Q", 0.1, 18, 1, "", 2, [this](double v) { editEq("Q", [v](EqNodeState& n) { n.q = v; }); });
-        setInfo(q, 0, kKnobWidth, kKnobHeight);
-        juce::StringArray slopeNames;
-        for (int s : kSlopes)
-            slopeNames.add(juce::String(s) + " dB/oct");
-        auto& slope = addCombo("Slope", slopeNames, [this](int i) { editEq("Slope", [i](EqNodeState& n) { n.slopeDbPerOct = kSlopes[i]; }); });
-        setInfo(slope, 0, 110, kRowHeight);
-        juce::StringArray modeNames { "Stereo", "Left", "Right", "Mid", "Side" };
-        auto& mode = addCombo("Channel", modeNames, [this](int i) { editEq("Channel", [i](EqNodeState& n) { n.channel = kModes[static_cast<size_t>(i)]; }); });
-        setInfo(mode, 0, 100, kRowHeight);
-        auto& del = addButton("Delete", [this]
+            processor.getUndoManager().beginNewTransaction("EQ " + what);
+            dragging = true;
+        };
+        panel->onGestureEnd = [this] { dragging = false; };
+        panel->onChange = [this](const EqNodeState& edited, const juce::String& what)
+        {
+            editEq("EQ " + what, [&edited](EqNodeState& n)
+            {
+                const auto id = n.id;
+                auto chain = std::move(n.chain);
+                const auto slot = n.engineSlot;
+                n = edited;
+                n.id = id;
+                n.chain = std::move(chain);
+                n.engineSlot = slot;
+            });
+        };
+        panel->onSolo = [this](bool on)
+        {
+            processor.getUndoManager().beginNewTransaction("EQ solo");
+            const auto id = selection.id;
+            processor.editProject("EQ solo", [id, on](FxProjectState& p)
+            {
+                for (auto& n : selectedLayer(p).eqNodes) // one point is heard alone at a time
+                    n.solo = on && n.id == id;
+            });
+        };
+        panel->onDelete = [this]
         {
             processor.getUndoManager().beginNewTransaction("Delete EQ");
             const auto id = selection.id;
@@ -676,27 +696,23 @@ void NodeInspector::rebuild()
             });
             selection = {};
             rebuildAsync();
-        });
-        setInfo(del, 0, 70, kRowHeight);
-
-        refreshers.push_back([this, &on, &shape, &freq, &gainKnob, &q, &slope, &mode]
+        };
+        panel->readDynamicGain = [this]() -> float
+        {
+            const auto project = processor.getProject();
+            const auto& l = selectedLayer(project);
+            for (size_t i = 0; i < l.eqNodes.size(); ++i)
+                if (l.eqNodes[i].id == selection.id)
+                    return processor.getEngine().getLayer(project.selectedLayer).getPreEq().dynamicOffsetDb(static_cast<int>(i));
+            return 0.0f;
+        };
+        refreshers.push_back([this, panel]
         {
             const auto p = processor.getProject();
-            for (const auto& n : selectedLayer(p).eqNodes)
-                if (n.id == selection.id)
-                {
-                    on.setToggleState(n.enabled, juce::dontSendNotification);
-                    shape.setSelectedItemIndex(indexOf(kShapes, n.shape), juce::dontSendNotification);
-                    freq.setValue(n.frequencyHz, juce::dontSendNotification);
-                    gainKnob.setValue(n.gainDb, juce::dontSendNotification);
-                    gainKnob.setEnabled(isGainShapeUi(n.shape));
-                    q.setValue(n.q, juce::dontSendNotification);
-                    q.setEnabled(n.shape != EqShape::LowCut && n.shape != EqShape::HighCut && n.shape != EqShape::Tilt);
-                    const auto slopeIndex = std::find(std::begin(kSlopes), std::end(kSlopes), n.slopeDbPerOct) - std::begin(kSlopes);
-                    slope.setSelectedItemIndex(static_cast<int>(slopeIndex), juce::dontSendNotification);
-                    slope.setEnabled(n.shape == EqShape::LowCut || n.shape == EqShape::HighCut);
-                    mode.setSelectedItemIndex(juce::jmin(4, indexOf(kModes, n.channel)), juce::dontSendNotification);
-                }
+            const auto& l = selectedLayer(p);
+            for (size_t i = 0; i < l.eqNodes.size(); ++i)
+                if (l.eqNodes[i].id == selection.id)
+                    panel->setValues({ l.eqNodes[i], static_cast<int>(i) + 1 });
         });
         buildModules(layer.eqNodes[static_cast<size_t>(nodeIndex)].chain, ChainKind::Point);
     }
@@ -1616,12 +1632,35 @@ void NodeInspector::resized()
         return;
     }
 
+    if (tochkaPanel != nullptr && selection.kind == Selection::Kind::Eq)
+    {
+        // EQ point: its page on the left, its modules (two columns) on the right
+        auto tiles = area.removeFromRight(juce::jlimit(220, 340, area.getWidth() / 3));
+        area.removeFromRight(10);
+        chainArea = tiles;
+        paramArea = {};
+        int tileIndex = 0;
+        const int gap = 6, tileW = (tiles.getWidth() - gap) / 2, tileH = juce::jlimit(24, 52, (tiles.getHeight() - 18 - 2 * gap) / 3);
+        for (auto* c : controls)
+        {
+            c->setVisible(true);
+            if (c == tochkaPanel)
+                c->setBounds(area);
+            else if (static_cast<bool>(c->getProperties()["tile"]))
+            {
+                c->setBounds(tiles.getX() + (tileIndex % 2) * (tileW + gap), tiles.getY() + 18 + (tileIndex / 2) * (tileH + gap), tileW, tileH);
+                ++tileIndex;
+            }
+        }
+        return;
+    }
+
     auto top = area.removeFromTop(kKnobHeight + 16);
     chainArea = any ? area : juce::Rectangle<int>();
     paramArea = {};
     int tileIndex = 0;
-    const int tileGap = 8, tileWidth = juce::jmin(220, (chainArea.getWidth() - 2 * tileGap) / 3);
-    const int tileHeight = juce::jlimit(28, 56, (chainArea.getHeight() - 18 - tileGap) / 2);
+    const int tileGap = 8, tileWidth = juce::jmin(280, (chainArea.getWidth() - 2 * tileGap) / 3);
+    const int tileHeight = juce::jlimit(28, 84, (chainArea.getHeight() - 18 - tileGap) / 2);
     int topX = top.getX();
     for (auto* c : controls)
     {

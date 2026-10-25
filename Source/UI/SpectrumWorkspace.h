@@ -34,9 +34,21 @@ public:
     void mouseWheelMove(const juce::MouseEvent&, const juce::MouseWheelDetails&) override;
     void mouseMove(const juce::MouseEvent&) override;
 
+    void resized() override;
+
     juce::Rectangle<float> plotArea() const;
-    static float yForEqDb(double db, juce::Rectangle<float> plot);
-    static double eqDbForY(float y, juce::Rectangle<float> plot);
+    float yForEqDb(double db, juce::Rectangle<float> plot) const;
+    double eqDbForY(float y, juce::Rectangle<float> plot) const;
+    // EQ pass: zoom. The view is a part of 20 Hz - 20 kHz (at least one octave) and an EQ range of +-3 ... 36 dB.
+    float xFor(double hz, juce::Rectangle<float> plot) const;
+    double hzFor(float x, juce::Rectangle<float> plot) const;
+    void zoomFrequency(double factor, double aroundHz);
+    void panOctaves(double octaves);
+    void setEqRange(double db);
+    void resetView();
+    double viewLowHz() const noexcept { return viewMinHz; }
+    double viewHighHz() const noexcept { return viewMaxHz; }
+    double eqRangeDb() const noexcept { return eqRange; }
 
 private:
     enum class Drag { None, EqPoint, FxLow, FxHigh, FxBody };
@@ -58,5 +70,8 @@ private:
     Hit dragging;
     double dragStartHz = 0.0, dragStartLow = 0.0, dragStartHigh = 0.0, dragStartGain = 0.0;
     float dragStartX = 0.0f, dragStartY = 0.0f;
+    bool panning = false;
+    double viewMinHz = FrequencyAxis::kMin, viewMaxHz = FrequencyAxis::kMax, eqRange = 24.0;
+    juce::TextButton zoomIn, zoomOut, zoomFull, rangeButton;
 };
 } // namespace hpeq::ui

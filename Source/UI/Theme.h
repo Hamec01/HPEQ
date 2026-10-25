@@ -9,21 +9,24 @@
 
 namespace hpeq::ui
 {
+// EQ pass: the Black Steel palette for the whole window (steel, stencil cream, amber lamps, the green
+// phosphor of the scopes); the module pages draw their own steel.
 namespace colours
 {
-const juce::Colour background { 0xff0d1117 };
-const juce::Colour panel { 0xff141a23 };
-const juce::Colour panelRaised { 0xff1b2230 };
-const juce::Colour outline { 0xff2a3442 };
-const juce::Colour grid { 0xff1f2732 };
-const juce::Colour text { 0xffdce3ec };
-const juce::Colour dim { 0xff7d8a9b };
-const juce::Colour accent { 0xff3fb8e8 };
-const juce::Colour input { 0xff6b7686 };
-const juce::Colour eqCurve { 0xffeef2f6 };
-const juce::Colour eqNode { 0xffff6b6b };
-const juce::Colour warning { 0xfff0b43c };
-const juce::Colour danger { 0xffe0505a };
+const juce::Colour background { 0xff1a1a17 };  // steel (under the worn plate the editor paints)
+const juce::Colour panel { 0xff0a0d0b };       // black glass of the scopes, lists and LCDs
+const juce::Colour panelRaised { 0xff2a2a25 }; // a steel key
+const juce::Colour outline { 0xff3c3d35 };
+const juce::Colour grid { 0xff15231a };        // phosphor graticule
+const juce::Colour text { 0xffe6d8a6 };        // stencil cream
+const juce::Colour dim { 0xff9a9174 };
+const juce::Colour accent { 0xffffb347 };      // amber
+const juce::Colour phosphor { 0xff6dff9a };    // green CRT trace
+const juce::Colour input { 0xff6e7a6a };
+const juce::Colour eqCurve { 0xfff2ead0 };
+const juce::Colour eqNode { 0xffff5a45 };
+const juce::Colour warning { 0xffffc94a };
+const juce::Colour danger { 0xffff4a3a };
 
 inline juce::Colour forNode(int index)
 {

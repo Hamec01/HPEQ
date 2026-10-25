@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <atomic>
 
 #include "DSP/DspConfig.h"
 #include "DSP/EqDesign.h"
@@ -21,6 +22,14 @@ namespace hpeq::dsp
 //  - a change of shape, slope or channel mode crossfades the old and the new filter over
 //    kStructureCrossfadeSeconds.
 // No running band at all -> bit-exact pass-through (T01).
+//
+// EQ pass: DYNAMIC points (gain shapes) add an offset to their gain from a detector on their own region
+// (band pass at the point for Bell, low / high pass at f for the shelves, broadband for Tilt; channels
+// linked by the larger level): level over threshold, 6 dB soft knee, (1 - 1/ratio), limited to |range|,
+// down for a negative range, up for a positive one; attack / release on the detector. The offset rides
+// on the control clock like the gain itself. SOLO: after all bands the signal goes through a filter on
+// the soloed point (band pass at f and Q; low pass for a low shelf / low cut, high pass for a high shelf /
+// high cut), crossfaded in and out over 10 ms. Without either, the processing is unchanged.
 class PreEqProcessor
 {
 public:
@@ -36,6 +45,9 @@ public:
 
     // Exact response of the band as currently configured (for tests and the M5 display).
     BandDesign currentDesign(int band) const noexcept;
+    // The gain a DYNAMIC point adds right now (dB, 0 when static), for the page's ring (UI thread).
+    float dynamicOffsetDb(int band) const noexcept { return shownOffset[static_cast<size_t>(band)].load(std::memory_order_relaxed); }
+    bool isSoloing() const noexcept { return soloBand >= 0 || soloMix > 0.0; }
 
 private:
     enum class Entry { Gain, Park, Wet };
@@ -79,6 +91,10 @@ private:
         std::array<FilterSet, 2> sets;
         LinearRamp logFrequency, gainDb, q; // control rate
         LinearRamp wet, crossfade;          // sample rate
+        // DYNAMIC: detector filter (TPT SVF) and envelope, the gain offset in dB
+        double env = 0.0, dynOffset = 0.0, detG = 0.0, detK = 1.0, detF = -1.0, detQ = -1.0, attackCoef = 0.0, releaseCoef = 0.0;
+        int detType = 0; // 0 band pass, 1 low pass, 2 high pass, 3 broadband
+        std::array<std::array<double, 2>, kMaxChannels> detState {};
     };
 
     static Entry entryOf(EqShape) noexcept;
@@ -86,10 +102,18 @@ private:
     void configure(FilterSet&, const EqBandParams&) noexcept;
     void updateCoefficients(Band&) noexcept;
     void startStructureChange(Band&) noexcept;
-    void advanceControl(Band&) noexcept;
+    void advanceControl(Band&, size_t index) noexcept;
+    void detect(Band&, double l, double r, int numChannels) noexcept;
+    static double svf(std::array<double, 2>& state, double g, double k, int type, double x) noexcept;
 
     double sampleRate = 48000.0;
     int rampSteps = 1, birthSteps = 1, mixSteps = 1, crossfadeSteps = 1;
     std::array<Band, kMaxEqNodesPerLayer> bands;
+    std::array<std::atomic<float>, kMaxEqNodesPerLayer> shownOffset {};
+
+    // SOLO (listen)
+    int soloBand = -1, soloType = 0;
+    double soloMix = 0.0, soloG = 0.0, soloK = 1.0;
+    std::array<std::array<double, 2>, kMaxChannels> soloState {};
 };
 } // namespace hpeq::dsp
