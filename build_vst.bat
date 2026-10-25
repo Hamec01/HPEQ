@@ -1,7 +1,7 @@
 @echo off
-rem Builds the separate Hamlo module VST3 plug-ins (Release); HPEQ itself is not built here.
+rem Builds the HPEQ VST3 plug-in (Release).
 rem   build_vst.bat           build only
-rem   build_vst.bat install   build, then copy every .vst3 to C:\Program Files\Common Files\VST3
+rem   build_vst.bat install   build, then copy HPEQ.vst3 to C:\Program Files\Common Files\VST3
 rem                           (run as administrator; close the DAW first)
 setlocal
 cd /d "%~dp0"
@@ -19,15 +19,14 @@ if not exist "build\CMakeCache.txt" (
 )
 
 echo.
-echo Building the Hamlo modules (Release)...
-cmake --build --preset release --parallel --target HamloComp_VST3 HamloVerb_VST3 HamloEcho_VST3 HamloMag_VST3 HamloRedWall_VST3 HamloUdarnik_VST3 HamloZastava_VST3 HamloShirota_VST3
+echo Building HPEQ (Release)...
+cmake --build --preset release --parallel --target HPEQ_VST3
 if errorlevel 1 goto :fail
 
-set "MODULES=%~dp0build\HamloModules\Release"
-
+set "HPEQ_VST=%~dp0build\HPEQ_artefacts\Release\VST3\HPEQ.vst3"
 echo.
 echo Done:
-for /d %%M in ("%MODULES%\*.vst3") do echo   %%M
+echo   %HPEQ_VST%
 
 if /i not "%~1"=="install" goto :ok
 
@@ -40,11 +39,9 @@ if errorlevel 1 (
 )
 set "TARGET=C:\Program Files\Common Files\VST3"
 echo Copying to %TARGET% ...
-for /d %%M in ("%MODULES%\*.vst3") do (
-    xcopy "%%M" "%TARGET%\%%~nxM\" /E /I /Y /Q >nul
-    if errorlevel 1 goto :fail
-)
-echo Installed. Start the DAW and rescan plug-ins if new modules do not appear.
+xcopy "%HPEQ_VST%" "%TARGET%\HPEQ.vst3\" /E /I /Y /Q >nul
+if errorlevel 1 goto :fail
+echo Installed. Start the DAW (rescan plug-ins if HPEQ does not appear).
 
 :ok
 echo.
