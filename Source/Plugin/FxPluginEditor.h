@@ -6,6 +6,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "UI/ModuleTile.h"
+#include "UI/TubeButton.h"
 #include "UI/SteelLookAndFeel.h"
 
 namespace hpeq
@@ -70,6 +71,8 @@ private:
     std::unique_ptr<LevelMeter> inputMeter, outputMeter;
     std::unique_ptr<ui::LayerControls> layerControls;
     std::unique_ptr<LoudnessScreen> loudnessScreen;
+    std::unique_ptr<ui::TubeButton> leninButton, stalinButton; // BRING LENIN / STALIN BACK
+    void updateTubeButtons();
 
     juce::Label title, subtitle, unavailable;
     juce::TextButton loudnessReset { "Reset" };

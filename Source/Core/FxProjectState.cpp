@@ -483,6 +483,14 @@ juce::ValueTree toValueTree(const FxProjectState& project)
     juce::ValueTree root(ids::project);
     root.setProperty(ids::schemaVersion, kStateSchemaVersion, nullptr);
     root.setProperty(ids::routing, routingNames.name(project.routing), nullptr);
+    if (project.lenin) // written only when on: older projects and saved states stay as they were
+        root.setProperty("lenin", true, nullptr);
+    if (project.stalin)
+        root.setProperty("stalin", true, nullptr);
+    if (project.leninMix != 1.0)
+        root.setProperty("leninMix", exactText(project.leninMix), nullptr);
+    if (project.stalinMix != 1.0)
+        root.setProperty("stalinMix", exactText(project.stalinMix), nullptr);
     root.setProperty(ids::selectedLayer, project.selectedLayer, nullptr);
     root.setProperty(ids::nextNodeId, static_cast<juce::int64>(project.nextNodeId), nullptr);
 
@@ -581,6 +589,10 @@ std::optional<FxProjectState> fromValueTree(const juce::ValueTree& root, juce::S
 
     FxProjectState project;
     project.routing = routingNames.parse(root[ids::routing], LayerRouting::Parallel);
+    project.lenin = root.getProperty("lenin", false);
+    project.stalin = root.getProperty("stalin", false);
+    project.leninMix = juce::jlimit(0.0, 1.0, readDouble(root, "leninMix", 1.0));
+    project.stalinMix = juce::jlimit(0.0, 1.0, readDouble(root, "stalinMix", 1.0));
     project.selectedLayer = root.getProperty(ids::selectedLayer, 0);
     project.nextNodeId = static_cast<std::uint32_t>(static_cast<juce::int64>(root.getProperty(ids::nextNodeId, 1)));
 

@@ -110,6 +110,25 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     inputMeter = std::make_unique<LevelMeter>("IN");
     outputMeter = std::make_unique<LevelMeter>("OUT");
     layerControls = std::make_unique<LayerControls>(processor);
+    leninButton = std::make_unique<ui::TubeButton>("lenin", "BRING LENIN BACK");
+    stalinButton = std::make_unique<ui::TubeButton>("stalin", "BRING STALIN BACK");
+    leninButton->setTooltip("BRING LENIN BACK: the LOMO UP-25 tube preamp (6Zh32P, 6N3P) on the whole mix. Click: on / off; drag up / down or wheel: MIX; double click: MIX 100 %.");
+    stalinButton->setTooltip("BRING STALIN BACK: the LOMO UP-27 tube preamp (input transformer, 6Zh32P, 6N3P) on the whole mix. Click: on / off; drag up / down or wheel: MIX; double click: MIX 100 %.");
+    for (auto* b : { leninButton.get(), stalinButton.get() })
+    {
+        const bool isLenin = b == leninButton.get();
+        b->onToggle = [this, isLenin](bool on)
+        {
+            processor.getUndoManager().beginNewTransaction(isLenin ? "Bring Lenin back" : "Bring Stalin back");
+            processor.editProject(isLenin ? "Bring Lenin back" : "Bring Stalin back", [isLenin, on](FxProjectState& p) { (isLenin ? p.lenin : p.stalin) = on; });
+        };
+        b->onMixGestureStart = [this, isLenin] { processor.getUndoManager().beginNewTransaction(isLenin ? "Lenin mix" : "Stalin mix"); };
+        b->onMix = [this, isLenin](double m)
+        {
+            processor.editProject(isLenin ? "Lenin mix" : "Stalin mix", [isLenin, m](FxProjectState& p) { (isLenin ? p.leninMix : p.stalinMix) = m; });
+        };
+        addAndMakeVisible(*b);
+    }
     loudnessScreen = std::make_unique<LoudnessScreen>();
     loudnessScreen->setTooltip("Output loudness (ITU-R BS.1770-4): momentary / short-term / integrated LUFS, and true peak (dBTP, max since reset). In: input integrated LUFS.");
     addAndMakeVisible(*loudnessScreen);
@@ -262,6 +281,13 @@ void FxPluginEditor::updateHeader()
     repaint();
 }
 
+void FxPluginEditor::updateTubeButtons()
+{
+    const auto project = processor.getProject();
+    leninButton->setState(project.lenin, project.leninMix);
+    stalinButton->setState(project.stalin, project.stalinMix);
+}
+
 void FxPluginEditor::updateLayerButtons()
 {
     // Number, then what the layer is doing: "*" has content, "off" bypassed, "M" muted, "S" soloed.
@@ -312,6 +338,7 @@ void FxPluginEditor::changeListenerCallback(juce::ChangeBroadcaster*)
     if (shown != lastShownLayer)
         layerSelected();
     updateLayerButtons();
+    updateTubeButtons();
     layerControls->refresh();
     inspector->refresh();
     nodeList->repaint();
@@ -428,6 +455,7 @@ void FxPluginEditor::resized()
     waveOverlay.setBounds(waveButtons.removeFromRight(70).reduced(2, 0));
     waveform->setBounds(strip.withTrimmedTop(2));
     area.removeFromTop(8);
+    const int layersX = layers.getX();
 
     layerControls->setBounds(area.removeFromBottom(32));
     area.removeFromBottom(6);
@@ -446,10 +474,15 @@ void FxPluginEditor::resized()
     inspector->setBounds(bottom);
     area.removeFromBottom(8);
 
-    auto tabs = area.removeFromTop(28);
-    tabSpectrum.setBounds(tabs.removeFromLeft(100).reduced(0, 2));
-    tabDifference.setBounds(tabs.removeFromLeft(100).reduced(4, 2));
-    view.setBounds(tabs.removeFromRight(140).reduced(0, 2));
+    // the spectrum's tab row, taller: the two portrait buttons stand in it, under the layer buttons
+    auto tabs = area.removeFromTop(56);
+    const int tubesTop = tabs.getY() - 30, tubesHeight = tabs.getBottom() - tubesTop - 2;
+    leninButton->setBounds(layersX, tubesTop, 2 * 52 - 4, tubesHeight);
+    stalinButton->setBounds(layersX + 2 * 52, tubesTop, 2 * 52 - 4, tubesHeight);
+    auto tabLine = tabs.removeFromBottom(28);
+    tabSpectrum.setBounds(tabLine.removeFromLeft(100).reduced(0, 2));
+    tabDifference.setBounds(tabLine.removeFromLeft(100).reduced(4, 2));
+    view.setBounds(tabLine.removeFromRight(140).reduced(0, 2));
     area.removeFromTop(4);
     workspace->setBounds(area);
 }

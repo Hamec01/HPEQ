@@ -55,8 +55,9 @@ void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamp
     inputLoudness.prepare(sampleRate, false);
     outputLoudness.prepare(sampleRate, true);
     engine.prepare(sampleRate, maxBlock);
+    tubes.prepare(sampleRate, maxBlock);
     dry.setSize(dsp::kMaxChannels, maxBlock);
-    dryAlign.prepare(dsp::ProjectEngine::maxLatency(sampleRate));
+    dryAlign.prepare(dsp::ProjectEngine::maxLatency(sampleRate) + tubes.latencySamples());
     bypassRampSteps = dsp::stepsFor(dsp::kMixRampSeconds, sampleRate);
     wetAmount.reset(bypassParameter->get() ? 0.0 : 1.0);
     gain.reset(sampleRate, kGainRampSeconds);
@@ -154,8 +155,13 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
         if (start > 0 && transport.hasPosition)
             transport.ppqAtBlockStart += static_cast<double>(capacity) * transport.bpm / (60.0 * currentSampleRate.load(std::memory_order_relaxed));
         engine.process(chunk, channels, n, transport);
+        // BRING LENIN / STALIN BACK: the tube colour of the whole output (its latency only while it runs)
+        tubes.setTargets(tubeLenin.load(std::memory_order_relaxed), tubeStalin.load(std::memory_order_relaxed),
+                         tubeLeninMix.load(std::memory_order_relaxed), tubeStalinMix.load(std::memory_order_relaxed));
+        const int tubeLatency = tubes.isRunning() ? tubes.latencySamples() : 0;
+        tubes.process(chunk, channels, n);
         // Align the dry copy with the layer output (PDC): bypass and the difference view stay in time.
-        if (const int latency = engine.getLatencySamples(); latency > 0)
+        if (const int latency = engine.getLatencySamples() + tubeLatency; latency > 0)
         {
             auto* const* dryData = dry.getArrayOfWritePointers();
             dryAlign.process(dryData, dryData, channels, n, latency);
@@ -278,6 +284,10 @@ void FxPluginProcessor::setProject(FxProjectState newProject)
     const juce::ScopedLock lock(projectLock);
     project = std::move(newProject);
     engine.publish(project);
+    tubeLenin.store(project.lenin, std::memory_order_relaxed);
+    tubeStalin.store(project.stalin, std::memory_order_relaxed);
+    tubeLeninMix.store(project.leninMix, std::memory_order_relaxed);
+    tubeStalinMix.store(project.stalinMix, std::memory_order_relaxed);
 
     updateLatencyAndTail(project);
     sendChangeMessage(); // the editor refreshes on the message thread
@@ -288,7 +298,7 @@ void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
     // Tail: the longest Reverb / Delay tail of a layer; Serial layers can feed one tail into the next
     // layer's tail, so their tails add up. Plus the latency.
     const double sampleRate = currentSampleRate.load(std::memory_order_relaxed);
-    const int latency = dsp::ProjectEngine::latencyFor(state, sampleRate);
+    const int latency = dsp::ProjectEngine::latencyFor(state, sampleRate) + (state.lenin || state.stalin ? tubes.latencySamples() : 0);
     double sum = 0.0, max = 0.0;
     for (const auto& layerState : state.layers)
     {

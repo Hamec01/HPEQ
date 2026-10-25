@@ -91,6 +91,10 @@ struct LayerState
 struct FxProjectState
 {
     LayerRouting routing = LayerRouting::Parallel;
+    // The tube colour of the whole output (owner, 2026-10-26): BRING LENIN BACK (LOMO UP-25) and BRING
+    // STALIN BACK (LOMO UP-27); both = LENIN into STALIN.
+    bool lenin = false, stalin = false;
+    double leninMix = 1.0, stalinMix = 1.0; // how much of each is mixed in (0..1)
     int selectedLayer = 0;
     std::uint32_t nextNodeId = 1;
     std::array<LayerState, kNumLayers> layers = makeDefaultLayers();

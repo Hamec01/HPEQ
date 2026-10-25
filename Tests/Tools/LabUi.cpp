@@ -144,6 +144,12 @@ int runUiSnapshots(const juce::File& out)
         }
     }
     save("hpeq_eq_point_page.png");
+    // BRING LENIN BACK on at MIX 70 %, STALIN off
+    processor->editProject("Lab tubes", [](FxProjectState& p) { p.lenin = true; p.leninMix = 0.7; });
+    processor->dispatchPendingMessages();
+    save("hpeq_tubes.png");
+    processor->editProject("Lab tubes off", [](FxProjectState& p) { p.lenin = false; p.leninMix = 1.0; });
+    processor->dispatchPendingMessages();
     editor->showDifference(true);
     save("hpeq_m5_difference.png");
 

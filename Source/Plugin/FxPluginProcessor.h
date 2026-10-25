@@ -12,6 +12,7 @@
 #include "Core/FxProjectState.h"
 #include "DSP/DelayLine.h"
 #include "DSP/ProjectEngine.h"
+#include "DSP/TubePreamp.h"
 
 namespace hpeq
 {
@@ -104,6 +105,9 @@ private:
     mutable juce::CriticalSection projectLock; // never taken by processBlock; also serialises publish()
     FxProjectState project;
     dsp::ProjectEngine engine;
+    dsp::TubeColour tubes; // BRING LENIN / STALIN BACK: the tube colour of the whole output
+    std::atomic<bool> tubeLenin { false }, tubeStalin { false };
+    std::atomic<double> tubeLeninMix { 1.0 }, tubeStalinMix { 1.0 };
     juce::AudioBuffer<float> dry;   // sized in prepareToPlay; longer host blocks are chunked
     dsp::AlignmentDelay dryAlign;   // delays the dry copy by the layer latency (bypass, capture)
     dsp::LinearRamp wetAmount;      // 1 = layer output, 0 = bypassed (dry)

@@ -84,6 +84,7 @@ target_sources(HPEQ
         Source/DSP/HamloMag.cpp
         Source/DSP/ProcessorsM6.cpp
         Source/DSP/HamloRevolution.cpp
+        Source/DSP/TubePreamp.cpp
         Source/DSP/HamloRedWall.cpp
         Source/DSP/HamloUdarnik.cpp
         Source/DSP/HamloZastava.cpp
@@ -110,6 +111,7 @@ target_sources(HPEQ
         Source/UI/HamloTochkaPanel.cpp
         Source/UI/SteelLookAndFeel.cpp
         Source/UI/ModuleTile.cpp
+        Source/UI/TubeButton.cpp
         Source/UI/SpectrumWorkspace.cpp)
 
 target_include_directories(HPEQ PUBLIC Source)
@@ -120,8 +122,10 @@ file(GLOB HPEQ_SCRATCH_PICTURES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/As
 # plugin never depends on files next to the installed .vst3 bundle.
 file(GLOB_RECURSE HPEQ_HARDWARE_PICTURES CONFIGURE_DEPENDS
      ${CMAKE_CURRENT_SOURCE_DIR}/docs/fx-addon/assets/soviet_hardware_pack/*.png)
+# BRING LENIN / STALIN BACK: the owner's portraits, dark (off) and red (on)
+file(GLOB HPEQ_TUBE_PICTURES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/tubes/*.png)
 juce_add_binary_data(HPEQ_Assets NAMESPACE HpeqAssets
-                     SOURCES ${HPEQ_SCRATCH_PICTURES} ${HPEQ_HARDWARE_PICTURES})
+                     SOURCES ${HPEQ_SCRATCH_PICTURES} ${HPEQ_HARDWARE_PICTURES} ${HPEQ_TUBE_PICTURES})
 
 target_link_libraries(HPEQ
     PUBLIC
@@ -300,6 +304,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/FaderPassTests.cpp
     Tests/Unit/RevolutionPassTests.cpp
     Tests/Unit/EqPassTests.cpp
+    Tests/Unit/TubePassTests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")
