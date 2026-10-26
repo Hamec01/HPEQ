@@ -109,6 +109,26 @@ const std::vector<ModulePreset> kRevolution {
     { "Width Pulse", 1.0f, { { "character", 1 }, { "revSeed", 13 }, { "timeOn", 0 }, { "glitchOn", 0 }, { "motionOn", 1 }, { "motionTarget", 3 }, { "motionDepth", 0.7 } } },
     { "Experimental", 1.0f, { { "character", 2 }, { "revSeed", 21 } } },
     { "Destruction", 0.7f, { { "character", 3 }, { "revSeed", 66 }, { "motionTarget", 4 } } },
+    // Revolution pass (owner 2026-10-26: more Revolution presets, only good ones). Each seed was chosen so the
+    // pattern holds the action the name promises (checked in RevolutionPresetTests); timeStretch 0 Tape / 1 Rhythm /
+    // 2 Clean; order 5 = M-G-T.
+    { "Tape Stop Drops", 1.0f, { { "character", 1 }, { "revSeed", 23 }, { "glitchOn", 0 }, { "motionOn", 0 }, { "timeStretch", 0 } } },
+    { "Half-Time Vocal (Clean)", 1.0f, { { "character", 1 }, { "revSeed", 83 }, { "glitchOn", 0 }, { "motionOn", 0 }, { "timeStretch", 2 } } },
+    { "Reverse Tails", 1.0f, { { "character", 1 }, { "revSeed", 94 }, { "glitchOn", 0 }, { "motionOn", 0 } } },
+    { "Double-Time Rush", 1.0f, { { "character", 2 }, { "revSeed", 53 }, { "glitchOn", 0 }, { "motionOn", 0 }, { "timeStretch", 1 } } },
+    { "Freeze Pads", 0.8f, { { "character", 2 }, { "revSeed", 44 }, { "glitchOn", 0 }, { "motionOn", 1 }, { "motionTarget", 1 }, { "motionDepth", 0.4 }, { "motionSmooth", 0.6 } } },
+    { "Trap Hat Ratchets", 1.0f, { { "character", 1 }, { "revSeed", 62 }, { "timeOn", 0 }, { "motionOn", 0 }, { "glitchDepth", 0.7 } } },
+    { "Triplet Stutter", 1.0f, { { "character", 1 }, { "revSeed", 17 }, { "timeOn", 0 }, { "motionOn", 0 }, { "triplet", 1 } } },
+    { "Scratch DJ", 1.0f, { { "character", 2 }, { "revSeed", 5 }, { "timeOn", 0 }, { "motionOn", 0 } } },
+    { "Gap Chopper", 1.0f, { { "character", 1 }, { "revSeed", 21 }, { "timeOn", 0 }, { "motionOn", 0 } } },
+    { "Boom Bap Swing Chops", 1.0f, { { "character", 1 }, { "revSeed", 16 }, { "motionOn", 0 }, { "swing", 0.33 } } },
+    { "Humanized Glitch", 1.0f, { { "character", 2 }, { "revSeed", 10 }, { "motionOn", 0 }, { "humanize", 0.4 } } },
+    { "Free-Time Drift", 0.8f, { { "character", 2 }, { "revSeed", 79 }, { "motionOn", 0 }, { "free", 1 }, { "freeMs", 180 } } },
+    { "High-Pass Riser", 1.0f, { { "character", 1 }, { "revSeed", 21 }, { "timeOn", 0 }, { "glitchOn", 0 }, { "motionTarget", 2 }, { "motionDepth", 0.7 }, { "motionSmooth", 0.8 } } },
+    { "Lo-Fi Crush Pulse", 1.0f, { { "character", 1 }, { "revSeed", 42 }, { "timeOn", 0 }, { "glitchOn", 0 }, { "motionTarget", 4 }, { "motionDepth", 0.5 }, { "motionSmooth", 0.5 } } },
+    { "Volume Chop 1/16", 1.0f, { { "character", 2 }, { "revSeed", 18 }, { "timeOn", 0 }, { "glitchOn", 0 }, { "motionTarget", 0 }, { "motionDepth", 0.9 }, { "motionSmooth", 0.05 } } },
+    { "Minimal Fills (Mix 40 %)", 0.4f, { { "character", 0 }, { "revSeed", 86 } } },
+    { "Mirror Destruction (M-G-T)", 0.6f, { { "character", 3 }, { "revSeed", 3 }, { "order", 5 }, { "motionTarget", 2 } } },
 };
 
 const std::vector<ModulePreset> kNone;

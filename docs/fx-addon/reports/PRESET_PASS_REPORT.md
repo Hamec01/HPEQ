@@ -45,7 +45,7 @@ Applying a preset:
 - The module's ON state is kept.
 - For HamloRevolution, the pattern is generated from the preset's seed and character.
 
-**66 factory presets** (`Source/Core/ModulePresets.cpp`):
+**66 factory presets** (`Source/Core/ModulePresets.cpp`; 83 since presets pass 3 below):
 
 | Module | Presets |
 |---|---|
@@ -181,3 +181,75 @@ generator itself fails (exit code) when a preset is outside tolerance. "Delay pa
   mixdowns: on other material the limiter works harder or softer (loudness follows the threshold, so the target
   moves with the source). Some loud masters drive the limiter hard (up to 20 dB on the quietest mixdown).
 - Dynamics thresholds depend on the source level; the kick presets were made on a hot, clipped kick stem.
+
+---
+
+# Presets pass 3: 17 more HamloRevolution presets, each checked on a drum loop
+
+Owner, 2026-10-26: "more presets, only good ones, and more presets for Revolution". HamloRevolution's module
+presets go from 7 to **24** (`Source/Core/ModulePresets.cpp`; 83 module presets in all). A "good" preset is one that
+passes the checks below; none of the 17 candidates failed, so none was dropped.
+
+## 1. The new presets
+
+| Preset | Engines on | What the pattern holds |
+|---|---|---|
+| Tape Stop Drops | TIME (TAPE) | tape stops (and a freeze) at phrase ends |
+| Half-Time Vocal (Clean) | TIME (CLEAN) | one HALF run, pitch kept by the phase vocoder |
+| Reverse Tails | TIME | three REVERSE runs |
+| Double-Time Rush | TIME (RHYTHM) | 2X runs |
+| Freeze Pads | TIME + MOTION low pass | FREEZE loops, a slow filter under them (mix 80 %) |
+| Trap Hat Ratchets | GLITCH | RATCHET steps, DEPTH 70 % (finer rolls) |
+| Triplet Stutter | GLITCH, TRIPLET grid | STUTTER steps |
+| Scratch DJ | GLITCH | SCRATCH steps |
+| Gap Chopper | GLITCH | GAP steps |
+| Boom Bap Swing Chops | TIME + GLITCH, swing 58 % | Musical chops on a swung grid |
+| Humanized Glitch | TIME + GLITCH, HUMAN 40 % | Experimental, step offsets |
+| Free-Time Drift | TIME + GLITCH, FREE 180 ms | chops off the tempo grid (mix 80 %) |
+| High-Pass Riser | MOTION high pass | a level ramp over the bar: a filter build |
+| Lo-Fi Crush Pulse | MOTION crush | crush on the grid, smoothed |
+| Volume Chop 1/16 | MOTION volume | a hard 1/16 volume gate |
+| Minimal Fills (Mix 40 %) | all three | Minimal pattern at 40 % |
+| Mirror Destruction (M-G-T) | all three, order M-G-T | Destruction with high-pass motion first (mix 60 %) |
+
+The seeds were picked from the generator's output (seeds 1-120 × 4 characters) so that the action a name
+promises is in the pattern; a preset's pattern is generated from its seed when it is applied, as before.
+
+## 2. Checks (thresholds fixed before the runs, `Tests/Unit/RevolutionPresetTests.cpp`)
+
+| Check | Threshold | Before (7 presets) | After (24 presets) |
+|---|---|---|---|
+| Every engine left on (mix > 0) has events | ≥ 1 non-PASS step | 7 / 7 | 24 / 24 |
+| A preset named after an action has it in its pattern | ≥ 1 step | — | 9 / 9 |
+| No two presets make the same module | all pairs differ | pass | pass |
+| 120 BPM drum loop, bars 5-8: finite | finite | 7 / 7 | 24 / 24 |
+| … level out − in | −6 … +1.5 dB | −4.50 … +0.02 dB | −5.54 … +1.49 dB |
+| … sample peak out − in | ≤ +3 dB | ≤ +0.73 dB | ≤ +0.73 dB |
+| … difference out − in, re input RMS | ≥ −24 dB | −23.2 … +1.4 dB | −23.2 … +1.4 dB |
+| Existing: page keys only, unique names, ≥ 6 per module; noise at −18 dBFS not below −40 dBFS | as before | pass | pass |
+
+Per preset (level / peak / difference, dB): Tape Stop Drops −0.09 / 0.00 / −14.4; Half-Time Vocal (Clean) −0.01 /
+−0.04 / −19.0; Reverse Tails +1.49 / 0.00 / −3.7; Double-Time Rush +0.38 / 0.00 / −2.2; Freeze Pads +0.35 / +0.04 /
+−7.3; Trap Hat Ratchets +0.22 / 0.00 / −8.5; Triplet Stutter +0.19 / −0.02 / −1.2; Scratch DJ +0.86 / 0.00 / −1.3;
+Gap Chopper −1.20 / 0.00 / −5.8; Boom Bap Swing Chops +0.01 / +0.31 / −10.6; Humanized Glitch −1.04 / −0.10 / +1.2;
+Free-Time Drift −1.62 / −0.10 / −1.7; High-Pass Riser −4.53 / −2.02 / +0.4; Lo-Fi Crush Pulse −0.01 / 0.00 / −11.1;
+Volume Chop 1/16 −4.23 / −0.10 / −4.9; Minimal Fills −0.11 / −0.02 / −17.4; Mirror Destruction −5.54 / −3.04 / −3.2.
+
+### Disclosed
+
+1. **The first drum loop was nearly mono** (hats and tone the same in both channels): Width Pulse, a width preset,
+   measured −33.0 dB difference and failed, because a mono loop has no side for WIDTH to move. The test signal was
+   made stereo (hats alternate sides, the tone is 1.5 Hz apart between channels) before any new preset was
+   added; the thresholds were not changed. With it all 7 existing presets pass (Width Pulse −23.2 dB).
+2. Two results sit at a threshold: Reverse Tails' level +1.49 dB (limit +1.5) and Width Pulse's difference
+   −23.2 dB (limit −24). Both pass; they are listed so a later change that moves them is not a surprise.
+
+Full suites (Release): `HPEQ_Tests` 2976 / 2976, `HPEQ_ModuleTests` 105 / 105.
+
+## 3. Not done / limits
+
+- **The factory library (whole-plugin presets) was not extended.** Its calibration (`HPEQ_Lab presets`) runs on the
+  owner's material (vocals, stems, mixdowns), which is not in the repository and was not found on this machine;
+  presets that were not calibrated and checked on it are not added. The Showcase / Revolution category keeps its 6.
+- Listening in FL Studio (owner). The checks are level, peak and "it changes the loop", not taste.
+- A host transport is not simulated: the loop runs at the plug-in's own 120 BPM clock.

@@ -323,6 +323,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/EqPassTests.cpp
     Tests/Unit/TubePassTests.cpp
     Tests/Unit/PresetPassTests.cpp
+    Tests/Unit/RevolutionPresetTests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")
