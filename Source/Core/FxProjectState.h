@@ -134,6 +134,9 @@ bool layerHasContent(const LayerState&);
 void sanitize(FxProjectState&);
 
 juce::ValueTree toValueTree(const FxProjectState&);
+// One module as saved in a project (an "FxSlot" tree): module presets use the same form.
+juce::ValueTree moduleToTree(const FxSlotState&);
+FxSlotState moduleFromTree(const juce::ValueTree&);
 
 // Rejects trees without schemaVersion or with a version this build does not know; `error` says why.
 std::optional<FxProjectState> fromValueTree(const juce::ValueTree&, juce::String* error = nullptr);

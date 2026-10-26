@@ -179,7 +179,7 @@ void Transformer::prepare(double sampleRate, double saturationVolts)
     dt = 1.0 / sampleRate;
     resistance = 600.0;
     inductance = resistance / (2.0 * kPi * 10.0); // the magnetising inductance sets a 10 Hz corner
-    fluxSat = saturationVolts / (2.0 * kPi * 90.0); // a full-scale 90 Hz sine reaches the knee
+    fluxSat = saturationVolts / (2.0 * kPi * 90.0); // a 90 Hz sine of this amplitude reaches the knee
     // leakage inductance with the winding capacitance: a damped resonance near 45 kHz
     const double w = 2.0 * kPi * std::min(45000.0, 0.45 * sampleRate) / sampleRate, q = 0.85;
     const double alpha = std::sin(w) / (2.0 * q), cw = std::cos(w), a0 = 1.0 + alpha;
@@ -261,8 +261,9 @@ void Preamp::prepare(Model m, double oversampledRate)
         }
     }
 
-    // Calibration: small signals at unity; the drive is set where a -6 dBFS sine gives the chain's static
-    // THD: LENIN 1 %, STALIN 4 % (the drive point: a choice, documented in the report).
+    // Calibration: small signals at unity; the drive is set where a -12 dBFS sine gives the chain's static
+    // THD: LENIN 1 %, STALIN 4 % (the drive point: a choice, documented in the report). Owner 2026-10-26:
+    // at -6 dBFS it was barely audible; 6 dB more drive, MIX takes it back down.
     const double small = 1.0e-7;
     const double gain = (staticChain(small) - staticChain(-small)) / (2.0 * small);
     const double target = model == Model::Lenin ? 0.01 : 0.04;
@@ -285,7 +286,7 @@ void Preamp::prepare(Model m, double oversampledRate)
             h += mag(k) * mag(k);
         return std::sqrt(h) / std::max(1.0e-30, mag(1));
     };
-    const double reference = std::pow(10.0, -6.0 / 20.0);
+    const double reference = std::pow(10.0, -12.0 / 20.0);
     double lo = std::log(1.0e-7), hi = std::log(20.0);
     for (int i = 0; i < 60; ++i)
     {
@@ -294,7 +295,7 @@ void Preamp::prepare(Model m, double oversampledRate)
     }
     inScale = std::exp(0.5 * (lo + hi));
     outScale = 1.0 / (gain * inScale); // also undoes an inverting chain
-    transformer.prepare(oversampledRate, inScale);
+    transformer.prepare(oversampledRate, inScale * 2.0 * reference); // the core's knee 6 dB above the drive point
     dcBlockR = std::exp(-2.0 * kPi * 4.0 / oversampledRate);
     reset();
 }

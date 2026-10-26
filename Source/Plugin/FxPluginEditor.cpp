@@ -3,6 +3,7 @@
 
 #include "Plugin/FxParameterContract.h"
 #include "Plugin/FxPluginProcessor.h"
+#include "Plugin/Presets.h"
 #include "UI/AnalysisModel.h"
 #include "UI/LayerControls.h"
 #include "UI/NodeInspector.h"
@@ -174,6 +175,9 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     waveOverlay.onClick = [this] { waveform->setMode(WaveformPanel::Mode::Overlay); updateHeader(); };
     waveDelta.onClick = [this] { waveform->setMode(WaveformPanel::Mode::Delta); updateHeader(); };
     freeze.onClick = [this] { analysis->frozen = !analysis->frozen; updateHeader(); };
+    presetButton.setTooltip("Presets of the whole HPEQ: the factory library and your own (save, load)");
+    presetButton.onClick = [this] { showPresetMenu(); };
+    addAndMakeVisible(presetButton);
     tabSpectrum.onClick = [this] { workspace->mode = SpectrumWorkspace::Mode::Spectrum; updateHeader(); };
     tabDifference.onClick = [this] { workspace->mode = SpectrumWorkspace::Mode::Difference; updateHeader(); };
     view.addItemList({ "View: Mid", "View: Left", "View: Right", "View: Side" }, 1);
@@ -276,9 +280,120 @@ void FxPluginEditor::updateHeader()
     styleTab(freeze, analysis->frozen);
     styleTab(tabSpectrum, workspace->mode == SpectrumWorkspace::Mode::Spectrum);
     styleTab(tabDifference, workspace->mode == SpectrumWorkspace::Mode::Difference);
+    const auto presetName = processor.getPresetName();
+    presetButton.setButtonText(presetName.isEmpty() ? juce::String("Presets") : presetName);
     undo.setEnabled(processor.getUndoManager().canUndo());
     redo.setEnabled(processor.getUndoManager().canRedo());
     repaint();
+}
+
+void FxPluginEditor::showPresetMenu()
+{
+    juce::PopupMenu menu;
+    menu.addItem(1, "Init (empty project)");
+    menu.addSeparator();
+
+    // Factory: pack > category [> group] > preset; item ids 1000 + index in the library.
+    const auto& factory = presets::factoryPresets();
+    juce::PopupMenu factoryMenu, packMenu, categoryMenu, groupMenu;
+    juce::String pack, category, group;
+    const auto closeGroup = [&] { if (group.isNotEmpty()) categoryMenu.addSubMenu(group, groupMenu); groupMenu = {}; group = {}; };
+    const auto closeCategory = [&] { closeGroup(); if (category.isNotEmpty()) packMenu.addSubMenu(category, categoryMenu); categoryMenu = {}; };
+    const auto closePack = [&] { closeCategory(); if (pack.isNotEmpty()) factoryMenu.addSubMenu(pack, packMenu); packMenu = {}; };
+    const auto current = processor.getPresetName();
+    for (size_t i = 0; i < factory.size(); ++i)
+    {
+        const auto& p = factory[i];
+        if (p.pack != pack)
+        {
+            closePack();
+            pack = p.pack;
+            category = {};
+        }
+        if (p.category != category)
+        {
+            closeCategory();
+            category = p.category;
+        }
+        if (p.group != group)
+        {
+            closeGroup();
+            group = p.group;
+        }
+        (group.isEmpty() ? categoryMenu : groupMenu).addItem(1000 + static_cast<int>(i), p.name, true, p.name == current);
+    }
+    closePack();
+    menu.addSubMenu("Factory", factoryMenu, !factory.empty());
+
+    // User: item ids 5000 + index.
+    const auto userFiles = presets::listFiles(presets::userPresetFolder(), "*.hpeq");
+    juce::PopupMenu userMenu;
+    for (int i = 0; i < userFiles.size(); ++i)
+        userMenu.addItem(5000 + i, userFiles[i].getFileNameWithoutExtension(), true, userFiles[i].getFileNameWithoutExtension() == current);
+    if (userFiles.isEmpty())
+        userMenu.addItem(2, "(no presets saved yet)", false);
+    menu.addSubMenu("User", userMenu);
+    menu.addSeparator();
+    menu.addItem(3, "Save preset...");
+    menu.addItem(4, "Open preset folder");
+
+    juce::Component::SafePointer<FxPluginEditor> safe(this);
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(presetButton), [safe, userFiles](int result)
+    {
+        if (safe == nullptr || result == 0)
+            return;
+        auto& proc = safe->processor;
+        if (result == 1)
+        {
+            proc.getUndoManager().beginNewTransaction("Init");
+            proc.editProject("Init", [](FxProjectState& p) { p = FxProjectState {}; });
+            proc.setPresetName({});
+        }
+        else if (result == 3)
+            safe->savePresetAs();
+        else if (result == 4)
+        {
+            const auto folder = presets::userPresetFolder();
+            folder.createDirectory();
+            folder.startAsProcess();
+        }
+        else if (result >= 5000 && result - 5000 < userFiles.size())
+        {
+            juce::MemoryBlock data;
+            const auto& file = userFiles[result - 5000];
+            if (file.loadFileAsData(data))
+                proc.loadPreset(data.getData(), static_cast<int>(data.getSize()), file.getFileNameWithoutExtension());
+        }
+        else if (result >= 1000 && static_cast<size_t>(result - 1000) < presets::factoryPresets().size())
+        {
+            const auto& p = presets::factoryPresets()[static_cast<size_t>(result - 1000)];
+            proc.loadPreset(p.data, p.size, p.name);
+        }
+    });
+}
+
+void FxPluginEditor::savePresetAs()
+{
+    saveDialog = std::make_unique<juce::AlertWindow>("Save preset", "Name of the preset (saved to your HPEQ preset folder):", juce::MessageBoxIconType::NoIcon, this);
+    saveDialog->addTextEditor("name", processor.getPresetName().isEmpty() ? juce::String("My preset") : processor.getPresetName());
+    saveDialog->addButton("Save", 1, juce::KeyPress(juce::KeyPress::returnKey));
+    saveDialog->addButton("Cancel", 0, juce::KeyPress(juce::KeyPress::escapeKey));
+    juce::Component::SafePointer<FxPluginEditor> safe(this);
+    saveDialog->enterModalState(true, juce::ModalCallbackFunction::create([safe](int result)
+    {
+        if (safe == nullptr || safe->saveDialog == nullptr)
+            return;
+        const auto name = presets::safeFileName(safe->saveDialog->getTextEditorContents("name"));
+        safe->saveDialog.reset();
+        if (result != 1)
+            return;
+        const auto file = presets::userPresetFolder().getChildFile(name + ".hpeq");
+        safe->processor.setPresetName(name); // saved inside the preset too
+        juce::MemoryBlock data;
+        safe->processor.getStateInformation(data);
+        if (!file.getParentDirectory().createDirectory() || !file.replaceWithData(data.getData(), data.getSize()))
+            juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "Save preset", "Could not write " + file.getFullPathName());
+    }), false);
 }
 
 void FxPluginEditor::updateTubeButtons()
@@ -453,6 +568,7 @@ void FxPluginEditor::resized()
     freeze.setBounds(waveButtons.removeFromRight(70).reduced(2, 0));
     waveDelta.setBounds(waveButtons.removeFromRight(70).reduced(2, 0));
     waveOverlay.setBounds(waveButtons.removeFromRight(70).reduced(2, 0));
+    presetButton.setBounds(waveButtons.removeFromRight(190).reduced(2, 0));
     waveform->setBounds(strip.withTrimmedTop(2));
     area.removeFromTop(8);
     const int layersX = layers.getX();

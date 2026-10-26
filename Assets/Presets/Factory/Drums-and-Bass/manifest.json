@@ -1,0 +1,1231 @@
+{
+  "format": "HPEQ-JUCE-State",
+  "formatVersion": 1,
+  "pluginStateSchema": 1,
+  "presetCount": 100,
+  "categories": {
+    "Kick": 18,
+    "Snare": 17,
+    "HiHat": 15,
+    "Percussion": 15,
+    "DrumBus": 20,
+    "Bass": 15
+  },
+  "loading": "Each .hpeq file is a JUCE copyXmlToBinary state block and can be passed directly to FxPluginProcessor::setStateInformation.",
+  "designNotes": [
+    "Thresholds are input-level dependent; trim the source before changing the musical timing.",
+    "Broad boosts are modest, resonant cuts are narrow, and every preset leaves output headroom.",
+    "Drum-bus presets use restrained serial compression except presets explicitly tagged parallel or aggressive.",
+    "Bass presets center the low end with monoBassHz while allowing upper harmonics to remain stereo."
+  ],
+  "references": [
+    "https://www.soundonsound.com/techniques/drum-compression",
+    "https://www.soundonsound.com/techniques/mix-tips-kick-bass",
+    "https://www.soundonsound.com/techniques/secrets-mix-engineers-dylan-3d-dresdow",
+    "https://www.izotope.com/en/learn/drum-compression",
+    "https://www.izotope.com/community/blog/drum-bus"
+  ],
+  "presets": [
+    {
+      "id": "factory-001",
+      "name": "Club Foundation",
+      "category": "Kick",
+      "file": "Kick/001-club-foundation.hpeq",
+      "intent": "Firm four-on-the-floor weight with a clean beater edge",
+      "tags": [
+        "house",
+        "club"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-002",
+      "name": "Deep House Pillow",
+      "category": "Kick",
+      "file": "Kick/002-deep-house-pillow.hpeq",
+      "intent": "Rounded low end and softened attack",
+      "tags": [
+        "deep-house",
+        "warm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-003",
+      "name": "Techno Hammer",
+      "category": "Kick",
+      "file": "Kick/003-techno-hammer.hpeq",
+      "intent": "Hard mid punch with short controlled tail",
+      "tags": [
+        "techno",
+        "punch"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-004",
+      "name": "Warehouse Rumble Seed",
+      "category": "Kick",
+      "file": "Kick/004-warehouse-rumble-seed.hpeq",
+      "intent": "Dark kick prepared for a short rumble tail",
+      "tags": [
+        "techno",
+        "rumble"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-005",
+      "name": "909 Clean Drive",
+      "category": "Kick",
+      "file": "Kick/005-909-clean-drive.hpeq",
+      "intent": "Classic electronic knock with restrained tape colour",
+      "tags": [
+        "909",
+        "house"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-006",
+      "name": "808 Short Punch",
+      "category": "Kick",
+      "file": "Kick/006-808-short-punch.hpeq",
+      "intent": "Sub-focused electronic kick with a tighter envelope",
+      "tags": [
+        "808",
+        "trap"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-007",
+      "name": "Boom Bap Dust",
+      "category": "Kick",
+      "file": "Kick/007-boom-bap-dust.hpeq",
+      "intent": "Warm body, woody knock and softened top",
+      "tags": [
+        "boom-bap",
+        "lofi"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-008",
+      "name": "Trap Knock",
+      "category": "Kick",
+      "file": "Kick/008-trap-knock.hpeq",
+      "intent": "Compact low end and audible click for dense arrangements",
+      "tags": [
+        "trap",
+        "modern"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-009",
+      "name": "DnB Needle",
+      "category": "Kick",
+      "file": "Kick/009-dnb-needle.hpeq",
+      "intent": "Short sub, pronounced attack and fast recovery",
+      "tags": [
+        "dnb",
+        "fast"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-010",
+      "name": "Rock Inside Mic",
+      "category": "Kick",
+      "file": "Kick/010-rock-inside-mic.hpeq",
+      "intent": "Beater definition with controlled low-mid boxiness",
+      "tags": [
+        "rock",
+        "acoustic"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-011",
+      "name": "Rock Outside Mic",
+      "category": "Kick",
+      "file": "Kick/011-rock-outside-mic.hpeq",
+      "intent": "Low-end tail and gentler front edge",
+      "tags": [
+        "rock",
+        "acoustic",
+        "body"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-012",
+      "name": "Metal Trigger Seat",
+      "category": "Kick",
+      "file": "Kick/012-metal-trigger-seat.hpeq",
+      "intent": "Very tight low end and cutting beater definition",
+      "tags": [
+        "metal",
+        "tight"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-013",
+      "name": "Indie Soft Felt",
+      "category": "Kick",
+      "file": "Kick/013-indie-soft-felt.hpeq",
+      "intent": "Natural rounded transient and open sustain",
+      "tags": [
+        "indie",
+        "soft"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-014",
+      "name": "Funk Tight Foot",
+      "category": "Kick",
+      "file": "Kick/014-funk-tight-foot.hpeq",
+      "intent": "Dry, articulate and fast without excessive sub",
+      "tags": [
+        "funk",
+        "tight"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-015",
+      "name": "Pop Radio Punch",
+      "category": "Kick",
+      "file": "Kick/015-pop-radio-punch.hpeq",
+      "intent": "Balanced low end, click and consistent envelope",
+      "tags": [
+        "pop",
+        "polished"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-016",
+      "name": "Lo-Fi Cardboard",
+      "category": "Kick",
+      "file": "Kick/016-lo-fi-cardboard.hpeq",
+      "intent": "Mid-forward, bandwidth-limited character",
+      "tags": [
+        "lofi",
+        "character"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-017",
+      "name": "Hardcore Concrete",
+      "category": "Kick",
+      "file": "Kick/017-hardcore-concrete.hpeq",
+      "intent": "Aggressive clipped weight for hard dance",
+      "tags": [
+        "hardcore",
+        "distorted"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-018",
+      "name": "Sub Safe Utility",
+      "category": "Kick",
+      "file": "Kick/018-sub-safe-utility.hpeq",
+      "intent": "Conservative cleanup and level control",
+      "tags": [
+        "utility",
+        "clean"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-019",
+      "name": "Pop Center Crack",
+      "category": "Snare",
+      "file": "Snare/019-pop-center-crack.hpeq",
+      "intent": "Centered crack with polished body",
+      "tags": [
+        "pop",
+        "polished"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-020",
+      "name": "Trap Rim Snap",
+      "category": "Snare",
+      "file": "Snare/020-trap-rim-snap.hpeq",
+      "intent": "Lean body and sharp upper-mid snap",
+      "tags": [
+        "trap",
+        "sharp"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-021",
+      "name": "Boom Bap Wood",
+      "category": "Snare",
+      "file": "Snare/021-boom-bap-wood.hpeq",
+      "intent": "Woody low-mid knock with a dusty top",
+      "tags": [
+        "boom-bap",
+        "warm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-022",
+      "name": "Rock Shell",
+      "category": "Snare",
+      "file": "Snare/022-rock-shell.hpeq",
+      "intent": "Full acoustic shell with forward crack",
+      "tags": [
+        "rock",
+        "acoustic"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-023",
+      "name": "Arena Backbeat",
+      "category": "Snare",
+      "file": "Snare/023-arena-backbeat.hpeq",
+      "intent": "Large snare with bright room-ready attack",
+      "tags": [
+        "rock",
+        "big"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-024",
+      "name": "Metal Rifle",
+      "category": "Snare",
+      "file": "Snare/024-metal-rifle.hpeq",
+      "intent": "Extremely tight, bright and consistent",
+      "tags": [
+        "metal",
+        "tight"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-025",
+      "name": "Indie Tea Towel",
+      "category": "Snare",
+      "file": "Snare/025-indie-tea-towel.hpeq",
+      "intent": "Dry softened snare with shortened sustain",
+      "tags": [
+        "indie",
+        "dry"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-026",
+      "name": "Disco Hand Snap",
+      "category": "Snare",
+      "file": "Snare/026-disco-hand-snap.hpeq",
+      "intent": "Bright controlled snap with light ambience",
+      "tags": [
+        "disco",
+        "bright"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-027",
+      "name": "Neo Soul Pocket",
+      "category": "Snare",
+      "file": "Snare/027-neo-soul-pocket.hpeq",
+      "intent": "Round body and relaxed transient",
+      "tags": [
+        "neo-soul",
+        "warm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-028",
+      "name": "DnB Ghost Cutter",
+      "category": "Snare",
+      "file": "Snare/028-dnb-ghost-cutter.hpeq",
+      "intent": "Fast recovery and articulate ghost notes",
+      "tags": [
+        "dnb",
+        "fast"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-029",
+      "name": "Techno Clap Stack",
+      "category": "Snare",
+      "file": "Snare/029-techno-clap-stack.hpeq",
+      "intent": "Wide bright clap/snare cohesion",
+      "tags": [
+        "techno",
+        "clap"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-030",
+      "name": "Gated Eighties",
+      "category": "Snare",
+      "file": "Snare/030-gated-eighties.hpeq",
+      "intent": "Large bright hit with deliberately gated tail",
+      "tags": [
+        "80s",
+        "gated"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-031",
+      "name": "Lo-Fi Paper",
+      "category": "Snare",
+      "file": "Snare/031-lo-fi-paper.hpeq",
+      "intent": "Narrow, papery and textured",
+      "tags": [
+        "lofi",
+        "character"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-032",
+      "name": "Funk Piccolo",
+      "category": "Snare",
+      "file": "Snare/032-funk-piccolo.hpeq",
+      "intent": "Higher tuning and quick lively transient",
+      "tags": [
+        "funk",
+        "piccolo"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-033",
+      "name": "Brush Gentle",
+      "category": "Snare",
+      "file": "Snare/033-brush-gentle.hpeq",
+      "intent": "Soft dynamics and natural airy tail",
+      "tags": [
+        "jazz",
+        "brush"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-034",
+      "name": "Side Stick Focus",
+      "category": "Snare",
+      "file": "Snare/034-side-stick-focus.hpeq",
+      "intent": "Midrange definition without false low weight",
+      "tags": [
+        "sidestick",
+        "utility"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-035",
+      "name": "Snare Rescue Neutral",
+      "category": "Snare",
+      "file": "Snare/035-snare-rescue-neutral.hpeq",
+      "intent": "Moderate cleanup, punch and peak safety",
+      "tags": [
+        "utility",
+        "clean"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-036",
+      "name": "Airy Pop Closed",
+      "category": "HiHat",
+      "file": "HiHat/036-airy-pop-closed.hpeq",
+      "intent": "Clean airy closed hat with gentle peak control",
+      "tags": [
+        "pop",
+        "closed"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-037",
+      "name": "Trap Tick",
+      "category": "HiHat",
+      "file": "HiHat/037-trap-tick.hpeq",
+      "intent": "Short bright tick that stays out of the vocal",
+      "tags": [
+        "trap",
+        "closed"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-038",
+      "name": "Dark House Shuffle",
+      "category": "HiHat",
+      "file": "HiHat/038-dark-house-shuffle.hpeq",
+      "intent": "Dark softened hats for rolling house grooves",
+      "tags": [
+        "house",
+        "dark"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-039",
+      "name": "Techno Steel",
+      "category": "HiHat",
+      "file": "HiHat/039-techno-steel.hpeq",
+      "intent": "Hard metallic presence with controlled harshness",
+      "tags": [
+        "techno",
+        "metallic"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-040",
+      "name": "DnB Razor",
+      "category": "HiHat",
+      "file": "HiHat/040-dnb-razor.hpeq",
+      "intent": "Fast bright definition for dense breakbeats",
+      "tags": [
+        "dnb",
+        "bright"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-041",
+      "name": "Boom Bap Dust Hats",
+      "category": "HiHat",
+      "file": "HiHat/041-boom-bap-dust-hats.hpeq",
+      "intent": "Rolled-off dusty loop treatment",
+      "tags": [
+        "boom-bap",
+        "lofi"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-042",
+      "name": "Open Hat Tamer",
+      "category": "HiHat",
+      "file": "HiHat/042-open-hat-tamer.hpeq",
+      "intent": "Controls long open-hat sustain without dulling attack",
+      "tags": [
+        "open-hat",
+        "control"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-043",
+      "name": "Disco Silk",
+      "category": "HiHat",
+      "file": "HiHat/043-disco-silk.hpeq",
+      "intent": "Wide silky top with restrained 8 kHz bite",
+      "tags": [
+        "disco",
+        "smooth"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-044",
+      "name": "Acoustic Hat Natural",
+      "category": "HiHat",
+      "file": "HiHat/044-acoustic-hat-natural.hpeq",
+      "intent": "Minimal cleanup for recorded cymbals",
+      "tags": [
+        "acoustic",
+        "natural"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-045",
+      "name": "Indie Wash",
+      "category": "HiHat",
+      "file": "HiHat/045-indie-wash.hpeq",
+      "intent": "Soft widened hat wash",
+      "tags": [
+        "indie",
+        "wide"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-046",
+      "name": "Funk Chick",
+      "category": "HiHat",
+      "file": "HiHat/046-funk-chick.hpeq",
+      "intent": "Dry mid-forward foot/closed-hat articulation",
+      "tags": [
+        "funk",
+        "dry"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-047",
+      "name": "Hyperpop Spark",
+      "category": "HiHat",
+      "file": "HiHat/047-hyperpop-spark.hpeq",
+      "intent": "Very bright controlled synthetic sparkle",
+      "tags": [
+        "hyperpop",
+        "bright"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-048",
+      "name": "Lo-Fi Cassette Hat",
+      "category": "HiHat",
+      "file": "HiHat/048-lo-fi-cassette-hat.hpeq",
+      "intent": "Bandwidth-limited and gently unstable colour",
+      "tags": [
+        "lofi",
+        "tape"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-049",
+      "name": "Shaker Pocket",
+      "category": "HiHat",
+      "file": "HiHat/049-shaker-pocket.hpeq",
+      "intent": "Smooths shaker peaks while preserving motion",
+      "tags": [
+        "shaker",
+        "perc"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-050",
+      "name": "Cymbal Safe Utility",
+      "category": "HiHat",
+      "file": "HiHat/050-cymbal-safe-utility.hpeq",
+      "intent": "Conservative harshness control and mono safety",
+      "tags": [
+        "utility",
+        "clean"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-051",
+      "name": "Congas Natural",
+      "category": "Percussion",
+      "file": "Percussion/051-congas-natural.hpeq",
+      "intent": "Keeps hand percussion lively while evening hits",
+      "tags": [
+        "conga",
+        "natural"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-052",
+      "name": "Toms Modern",
+      "category": "Percussion",
+      "file": "Percussion/052-toms-modern.hpeq",
+      "intent": "Solid body, reduced boxiness and present stick",
+      "tags": [
+        "toms",
+        "modern"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-053",
+      "name": "Toms Vintage",
+      "category": "Percussion",
+      "file": "Percussion/053-toms-vintage.hpeq",
+      "intent": "Round darker toms with tape-like cohesion",
+      "tags": [
+        "toms",
+        "vintage"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-054",
+      "name": "Bongo Snap",
+      "category": "Percussion",
+      "file": "Percussion/054-bongo-snap.hpeq",
+      "intent": "Fast hand attack with trimmed low-mid ring",
+      "tags": [
+        "bongo",
+        "fast"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-055",
+      "name": "Cajon Knock",
+      "category": "Percussion",
+      "file": "Percussion/055-cajon-knock.hpeq",
+      "intent": "Balances bass thump and front-plate snap",
+      "tags": [
+        "cajon",
+        "acoustic"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-056",
+      "name": "Claves Cut",
+      "category": "Percussion",
+      "file": "Percussion/056-claves-cut.hpeq",
+      "intent": "Narrow woody attack that cuts without harshness",
+      "tags": [
+        "claves",
+        "wood"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-057",
+      "name": "Cowbell Control",
+      "category": "Percussion",
+      "file": "Percussion/057-cowbell-control.hpeq",
+      "intent": "Tames ring while retaining the musical pitch",
+      "tags": [
+        "cowbell",
+        "control"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-058",
+      "name": "Tambourine Air",
+      "category": "Percussion",
+      "file": "Percussion/058-tambourine-air.hpeq",
+      "intent": "Bright tambourine energy with controlled peaks",
+      "tags": [
+        "tambourine",
+        "bright"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-059",
+      "name": "Shaker Glue",
+      "category": "Percussion",
+      "file": "Percussion/059-shaker-glue.hpeq",
+      "intent": "Smooth, wide shaker bed for pop and dance",
+      "tags": [
+        "shaker",
+        "wide"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-060",
+      "name": "Latin Bus",
+      "category": "Percussion",
+      "file": "Percussion/060-latin-bus.hpeq",
+      "intent": "Cohesive mixed Latin percussion subgroup",
+      "tags": [
+        "latin",
+        "bus"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-061",
+      "name": "Afro Pocket",
+      "category": "Percussion",
+      "file": "Percussion/061-afro-pocket.hpeq",
+      "intent": "Preserves hand dynamics with warm midrange focus",
+      "tags": [
+        "afro",
+        "organic"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-062",
+      "name": "Tech Perc Click",
+      "category": "Percussion",
+      "file": "Percussion/062-tech-perc-click.hpeq",
+      "intent": "Short synthetic click and tightly gated decay",
+      "tags": [
+        "techno",
+        "synthetic"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-063",
+      "name": "Industrial Metal",
+      "category": "Percussion",
+      "file": "Percussion/063-industrial-metal.hpeq",
+      "intent": "Aggressive metallic percussion texture",
+      "tags": [
+        "industrial",
+        "distorted"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-064",
+      "name": "Cinematic Hits",
+      "category": "Percussion",
+      "file": "Percussion/064-cinematic-hits.hpeq",
+      "intent": "Large controlled impacts with width and tail",
+      "tags": [
+        "cinematic",
+        "big"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-065",
+      "name": "Percussion Rescue",
+      "category": "Percussion",
+      "file": "Percussion/065-percussion-rescue.hpeq",
+      "intent": "Conservative cleanup and transient consistency",
+      "tags": [
+        "utility",
+        "clean"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-066",
+      "name": "VCA Gentle Glue",
+      "category": "DrumBus",
+      "file": "DrumBus/066-vca-gentle-glue.hpeq",
+      "intent": "Subtle cohesion that keeps kick and snare transients",
+      "tags": [
+        "glue",
+        "clean"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-067",
+      "name": "VCA Punch Bus",
+      "category": "DrumBus",
+      "file": "DrumBus/067-vca-punch-bus.hpeq",
+      "intent": "Forward transients and compact sustain",
+      "tags": [
+        "punch",
+        "vca"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-068",
+      "name": "Parallel New York",
+      "category": "DrumBus",
+      "file": "DrumBus/068-parallel-new-york.hpeq",
+      "intent": "Aggressive compression blended under the dry kit",
+      "tags": [
+        "parallel",
+        "aggressive"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-069",
+      "name": "Tape Cohesion",
+      "category": "DrumBus",
+      "file": "DrumBus/069-tape-cohesion.hpeq",
+      "intent": "Warm peak rounding with mild high-frequency softening",
+      "tags": [
+        "tape",
+        "warm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-070",
+      "name": "Console Snap",
+      "category": "DrumBus",
+      "file": "DrumBus/070-console-snap.hpeq",
+      "intent": "Mid-forward transient focus and subtle saturation",
+      "tags": [
+        "console",
+        "punch"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-071",
+      "name": "House Pump",
+      "category": "DrumBus",
+      "file": "DrumBus/071-house-pump.hpeq",
+      "intent": "Tempo-friendly pumping for four-on-the-floor drums",
+      "tags": [
+        "house",
+        "pump"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-072",
+      "name": "Techno Clamp",
+      "category": "DrumBus",
+      "file": "DrumBus/072-techno-clamp.hpeq",
+      "intent": "Dense controlled drum bus for loud club arrangements",
+      "tags": [
+        "techno",
+        "dense"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-073",
+      "name": "DnB Fast Glue",
+      "category": "DrumBus",
+      "file": "DrumBus/073-dnb-fast-glue.hpeq",
+      "intent": "Fast recovery and bright transient retention",
+      "tags": [
+        "dnb",
+        "fast"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-074",
+      "name": "Boom Bap Weight",
+      "category": "DrumBus",
+      "file": "DrumBus/074-boom-bap-weight.hpeq",
+      "intent": "Warm low-mid body and parallel density",
+      "tags": [
+        "boom-bap",
+        "warm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-075",
+      "name": "Rock Kit Cohesion",
+      "category": "DrumBus",
+      "file": "DrumBus/075-rock-kit-cohesion.hpeq",
+      "intent": "Natural bus compression for acoustic drums",
+      "tags": [
+        "rock",
+        "acoustic"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-076",
+      "name": "Metal Drum Armor",
+      "category": "DrumBus",
+      "file": "DrumBus/076-metal-drum-armor.hpeq",
+      "intent": "Tight consistent peaks with controlled cymbal edge",
+      "tags": [
+        "metal",
+        "tight"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-077",
+      "name": "Indie Room Lift",
+      "category": "DrumBus",
+      "file": "DrumBus/077-indie-room-lift.hpeq",
+      "intent": "Adds sustain and width without hard peak control",
+      "tags": [
+        "indie",
+        "room"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-078",
+      "name": "Lo-Fi Drum Print",
+      "category": "DrumBus",
+      "file": "DrumBus/078-lo-fi-drum-print.hpeq",
+      "intent": "Dark compressed texture resembling a printed loop",
+      "tags": [
+        "lofi",
+        "print"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-079",
+      "name": "Funk Pocket",
+      "category": "DrumBus",
+      "file": "DrumBus/079-funk-pocket.hpeq",
+      "intent": "Quick rhythmic recovery and restrained low end",
+      "tags": [
+        "funk",
+        "groove"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-080",
+      "name": "Disco Polish",
+      "category": "DrumBus",
+      "file": "DrumBus/080-disco-polish.hpeq",
+      "intent": "Smooth controlled top and gently widened image",
+      "tags": [
+        "disco",
+        "polished"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-081",
+      "name": "Pop Drum Finish",
+      "category": "DrumBus",
+      "file": "DrumBus/081-pop-drum-finish.hpeq",
+      "intent": "Balanced modern polish with true-peak safety",
+      "tags": [
+        "pop",
+        "polished"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-082",
+      "name": "Crushed Room Parallel",
+      "category": "DrumBus",
+      "file": "DrumBus/082-crushed-room-parallel.hpeq",
+      "intent": "Fast heavy room compression blended for excitement",
+      "tags": [
+        "room",
+        "parallel"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-083",
+      "name": "Transient Recovery",
+      "category": "DrumBus",
+      "file": "DrumBus/083-transient-recovery.hpeq",
+      "intent": "Restores attack after over-compressed samples",
+      "tags": [
+        "repair",
+        "transient"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-084",
+      "name": "Mono Club Safe",
+      "category": "DrumBus",
+      "file": "DrumBus/084-mono-club-safe.hpeq",
+      "intent": "Mono-compatible low end and conservative stereo width",
+      "tags": [
+        "club",
+        "mono-safe"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-085",
+      "name": "Drum Bus Safety",
+      "category": "DrumBus",
+      "file": "DrumBus/085-drum-bus-safety.hpeq",
+      "intent": "Minimal transparent finish with headroom",
+      "tags": [
+        "utility",
+        "clean"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-086",
+      "name": "Sub Mono Foundation",
+      "category": "Bass",
+      "file": "Bass/086-sub-mono-foundation.hpeq",
+      "intent": "Clean mono sub with restrained harmonics",
+      "tags": [
+        "sub",
+        "mono"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-087",
+      "name": "808 Translation",
+      "category": "Bass",
+      "file": "Bass/087-808-translation.hpeq",
+      "intent": "Adds audible harmonics while protecting the deepest octave",
+      "tags": [
+        "808",
+        "trap"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-088",
+      "name": "Reese Controlled",
+      "category": "Bass",
+      "file": "Bass/088-reese-controlled.hpeq",
+      "intent": "Controls low-mid density and keeps the sub centered",
+      "tags": [
+        "reese",
+        "dnb"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-089",
+      "name": "DnB Mid Bite",
+      "category": "Bass",
+      "file": "Bass/089-dnb-mid-bite.hpeq",
+      "intent": "Fast consistent bass with assertive midrange harmonics",
+      "tags": [
+        "dnb",
+        "aggressive"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-090",
+      "name": "House Round Bass",
+      "category": "Bass",
+      "file": "Bass/090-house-round-bass.hpeq",
+      "intent": "Smooth low-end body and gentle note leveling",
+      "tags": [
+        "house",
+        "warm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-091",
+      "name": "Techno Rumble Bass",
+      "category": "Bass",
+      "file": "Bass/091-techno-rumble-bass.hpeq",
+      "intent": "Dense dark bass with controlled upper resonance",
+      "tags": [
+        "techno",
+        "dark"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-092",
+      "name": "Funk Finger Bass",
+      "category": "Bass",
+      "file": "Bass/092-funk-finger-bass.hpeq",
+      "intent": "Preserves pluck and brings forward note definition",
+      "tags": [
+        "funk",
+        "electric"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-093",
+      "name": "Pick Bass Attack",
+      "category": "Bass",
+      "file": "Bass/093-pick-bass-attack.hpeq",
+      "intent": "Focused string attack for rock arrangements",
+      "tags": [
+        "rock",
+        "pick"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-094",
+      "name": "Synthwave Bass",
+      "category": "Bass",
+      "file": "Bass/094-synthwave-bass.hpeq",
+      "intent": "Firm retro synth body with warm saturation",
+      "tags": [
+        "synthwave",
+        "retro"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-095",
+      "name": "Acid Line Focus",
+      "category": "Bass",
+      "file": "Bass/095-acid-line-focus.hpeq",
+      "intent": "Controls resonant movement without flattening it",
+      "tags": [
+        "acid",
+        "303"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-096",
+      "name": "Indie Bass Warmth",
+      "category": "Bass",
+      "file": "Bass/096-indie-bass-warmth.hpeq",
+      "intent": "Natural leveling and mild tape colour",
+      "tags": [
+        "indie",
+        "warm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-097",
+      "name": "Metal Bass Grind",
+      "category": "Bass",
+      "file": "Bass/097-metal-bass-grind.hpeq",
+      "intent": "Centered low end with aggressive upper harmonics",
+      "tags": [
+        "metal",
+        "grind"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-098",
+      "name": "Lo-Fi Bass Print",
+      "category": "Bass",
+      "file": "Bass/098-lo-fi-bass-print.hpeq",
+      "intent": "Rounded bandwidth and audible vintage texture",
+      "tags": [
+        "lofi",
+        "tape"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-099",
+      "name": "Pop Bass Consistency",
+      "category": "Bass",
+      "file": "Bass/099-pop-bass-consistency.hpeq",
+      "intent": "Even notes, clear translation and mono-safe lows",
+      "tags": [
+        "pop",
+        "polished"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-100",
+      "name": "Bass Rescue Neutral",
+      "category": "Bass",
+      "file": "Bass/100-bass-rescue-neutral.hpeq",
+      "intent": "Conservative rumble removal, mud control and leveling",
+      "tags": [
+        "utility",
+        "clean"
+      ],
+      "outputGainDb": -1.0
+    }
+  ]
+}

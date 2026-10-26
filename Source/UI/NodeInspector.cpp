@@ -1,4 +1,5 @@
 #include "UI/NodeInspector.h"
+#include "Plugin/Presets.h"
 
 #include "UI/ModuleTile.h"
 
@@ -366,6 +367,10 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
         rebuildAsync();
     });
     setInfo(type, 1, 140, kRowHeight - 2);
+    auto* presetsPtr = &addButton("Presets", {});
+    presetsPtr->onClick = [this, k, presetsPtr] { showModulePresets(k, *presetsPtr); };
+    presetsPtr->setTooltip("Presets of this module: factory and your own (save, load)");
+    setInfo(*presetsPtr, 1, 80, kRowHeight - 2);
     auto& moduleOn = addButton("On", [this, k]
     {
         beginEdit("Module on");
@@ -586,6 +591,101 @@ void NodeInspector::addModule(FxType type)
     const auto* after = selectedChain(project);
     selection.slot = after != nullptr && !after->empty() ? static_cast<int>(after->size()) - 1 : -1;
     rebuildAsync();
+}
+
+void NodeInspector::showModulePresets(int k, juce::Component& target)
+{
+    const auto project = processor.getProject(); // keep alive: selectedChain points into it
+    const auto* chain = selectedChain(project);
+    if (chain == nullptr || k >= static_cast<int>(chain->size()))
+        return;
+    const auto type = (*chain)[static_cast<size_t>(k)].type;
+    juce::PopupMenu menu;
+    menu.addItem(1, "Default");
+    menu.addSectionHeader("Factory");
+    const auto& factory = presets::factoryModulePresets(type);
+    for (size_t i = 0; i < factory.size(); ++i)
+        menu.addItem(1000 + static_cast<int>(i), factory[i].name);
+    const auto userFiles = presets::listFiles(presets::userModuleFolder(type), "*.hpeqmod");
+    menu.addSectionHeader("User");
+    for (int i = 0; i < userFiles.size(); ++i)
+        menu.addItem(5000 + i, userFiles[i].getFileNameWithoutExtension());
+    if (userFiles.isEmpty())
+        menu.addItem(2, "(no presets saved yet)", false);
+    menu.addSeparator();
+    menu.addItem(3, "Save preset...");
+    menu.addItem(4, "Open preset folder");
+
+    juce::Component::SafePointer<NodeInspector> safe(this);
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(&target), [safe, k, type, userFiles](int result)
+    {
+        if (safe == nullptr || result == 0)
+            return;
+        std::optional<FxSlotState> module;
+        juce::String name;
+        if (result == 1)
+        {
+            module = defaultModule(type);
+            name = "Default";
+        }
+        else if (result == 3)
+            return safe->saveModulePresetAs(k);
+        else if (result == 4)
+        {
+            const auto folder = presets::userModuleFolder(type);
+            folder.createDirectory();
+            folder.startAsProcess();
+            return;
+        }
+        else if (result >= 5000 && result - 5000 < userFiles.size())
+        {
+            module = presets::loadModulePreset(userFiles[result - 5000], type);
+            name = userFiles[result - 5000].getFileNameWithoutExtension();
+        }
+        else if (result >= 1000 && static_cast<size_t>(result - 1000) < presets::factoryModulePresets(type).size())
+        {
+            const auto& preset = presets::factoryModulePresets(type)[static_cast<size_t>(result - 1000)];
+            module = presets::makeModule(type, preset);
+            name = preset.name;
+        }
+        if (!module.has_value())
+            return;
+        safe->processor.getUndoManager().beginNewTransaction(fxFullName(type) + " preset " + name);
+        safe->editChain(fxFullName(type) + " preset " + name, [k, type, &module](std::vector<FxSlotState>& c)
+        {
+            if (k >= static_cast<int>(c.size()) || c[static_cast<size_t>(k)].type != type)
+                return;
+            const bool keepOn = c[static_cast<size_t>(k)].enabled;
+            c[static_cast<size_t>(k)] = *module;
+            c[static_cast<size_t>(k)].enabled = keepOn;
+        });
+    });
+}
+
+void NodeInspector::saveModulePresetAs(int k)
+{
+    const auto project = processor.getProject();
+    const auto* chain = selectedChain(project);
+    if (chain == nullptr || k >= static_cast<int>(chain->size()))
+        return;
+    const auto module = (*chain)[static_cast<size_t>(k)];
+    saveDialog = std::make_unique<juce::AlertWindow>("Save " + fxFullName(module.type) + " preset", "Name of the preset:", juce::MessageBoxIconType::NoIcon, this);
+    saveDialog->addTextEditor("name", "My " + fxFullName(module.type));
+    saveDialog->addButton("Save", 1, juce::KeyPress(juce::KeyPress::returnKey));
+    saveDialog->addButton("Cancel", 0, juce::KeyPress(juce::KeyPress::escapeKey));
+    juce::Component::SafePointer<NodeInspector> safe(this);
+    saveDialog->enterModalState(true, juce::ModalCallbackFunction::create([safe, module](int result)
+    {
+        if (safe == nullptr || safe->saveDialog == nullptr)
+            return;
+        const auto name = presets::safeFileName(safe->saveDialog->getTextEditorContents("name"));
+        safe->saveDialog.reset();
+        if (result != 1)
+            return;
+        const auto file = presets::userModuleFolder(module.type).getChildFile(name + ".hpeqmod");
+        if (!presets::saveModulePreset(module, file))
+            juce::AlertWindow::showMessageBoxAsync(juce::MessageBoxIconType::WarningIcon, "Save preset", "Could not write " + file.getFullPathName());
+    }), false);
 }
 
 void NodeInspector::moveModule(int index, int delta)

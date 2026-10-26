@@ -78,6 +78,10 @@ private:
     juce::TextButton loudnessReset { "Reset" };
     juce::TextButton abA { "A" }, abB { "B" }, copyAB { "A>B" }, undo { "Undo" }, redo { "Redo" };
     juce::TextButton waveOverlay { "Overlay" }, waveDelta { "Delta" }, freeze { "Freeze" };
+    juce::TextButton presetButton { "Presets" }; // presets pass: factory / user presets of the whole plug-in
+    void showPresetMenu();
+    void savePresetAs();
+    std::unique_ptr<juce::AlertWindow> saveDialog;
     juce::TextButton tabSpectrum { "Spectrum" }, tabDifference { "Difference" };
     juce::ComboBox view;
     std::array<juce::TextButton, 10> layerButtons;

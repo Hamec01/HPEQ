@@ -33,10 +33,12 @@ public:
     bool isMidiEffect() const override { return false; }
     double getTailLengthSeconds() const override;
 
-    int getNumPrograms() override { return 1; }
-    int getCurrentProgram() override { return 0; }
-    void setCurrentProgram(int) override {}
-    const juce::String getProgramName(int) override { return {}; }
+    // Presets pass: the module's factory presets as the host's programs (0 = Default, then the presets
+    // HPEQ shows on this module's page).
+    int getNumPrograms() override;
+    int getCurrentProgram() override { return currentProgram; }
+    void setCurrentProgram(int) override;
+    const juce::String getProgramName(int) override;
     void changeProgramName(int, const juce::String&) override {}
 
     void getStateInformation(juce::MemoryBlock&) override;
@@ -66,6 +68,7 @@ private:
     dsp::AlignmentDelay wetAlign, dryAlign;
     dsp::LinearRamp wetAmount;
     int maximumBlockSize = 1;
+    int currentProgram = 0;
     int fixedLatency = 0;
     int bypassRampSteps = 1;
     std::atomic<double> currentSampleRate { 48000.0 };

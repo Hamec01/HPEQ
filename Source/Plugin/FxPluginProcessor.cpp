@@ -330,6 +330,8 @@ void FxPluginProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
     juce::ValueTree root(kStateRoot);
     root.setProperty(kStateSchema, kStateSchemaVersion, nullptr);
+    if (const auto name = getPresetName(); name.isNotEmpty())
+        root.setProperty("presetName", name, nullptr);
     root.appendChild(parameters.copyState(), nullptr);
     root.appendChild(toValueTree(getProject()), nullptr);
     if (auto xml = root.createXml())
@@ -356,7 +358,36 @@ void FxPluginProcessor::setStateInformation(const void* data, int sizeInBytes)
     const auto parametersTree = root.getChildWithName(kParametersTree);
     if (parametersTree.isValid())
         parameters.replaceState(parametersTree);
+    {
+        const juce::ScopedLock lock(projectLock);
+        presetName = root["presetName"].toString();
+    }
     setProject(std::move(*restored));
+}
+
+bool FxPluginProcessor::loadPreset(const void* data, int sizeInBytes, const juce::String& name)
+{
+    const auto xml = getXmlFromBinary(data, sizeInBytes);
+    if (xml == nullptr)
+        return false;
+    const auto root = juce::ValueTree::fromXml(*xml);
+    const int version = root.getProperty(kStateSchema, 0);
+    if (!root.hasType(kStateRoot) || version < 1 || version > kStateSchemaVersion)
+        return false;
+    auto restored = fromValueTree(root.getChildWithName("HpeqProject"));
+    if (!restored.has_value())
+        return false;
+
+    undoManager.beginNewTransaction("Preset " + name);
+    editProject("Preset " + name, [&restored](FxProjectState& p) { p = *restored; });
+    // Output gain comes with the preset (not undoable: it is a host parameter); Bypass stays.
+    const auto parametersTree = root.getChildWithName(kParametersTree);
+    for (const auto& child : parametersTree)
+        if (child["id"].toString() == params::outputGain.getParamID())
+            if (auto* p = parameters.getParameter(params::outputGain.getParamID()))
+                p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(child["value"])));
+    setPresetName(name);
+    return true;
 }
 
 juce::AudioProcessorEditor* FxPluginProcessor::createEditor()

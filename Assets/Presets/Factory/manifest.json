@@ -1,0 +1,20 @@
+{
+  "format": "HPEQ-Factory-Library",
+  "formatVersion": 1,
+  "pluginStateSchema": 1,
+  "presetCount": 185,
+  "packs": [
+    {
+      "id": "drums-and-bass",
+      "name": "Drums & Bass",
+      "presetCount": 100,
+      "manifest": "Drums-and-Bass/manifest.json"
+    },
+    {
+      "id": "vocals-mastering-and-more",
+      "name": "Vocals, Mastering & More",
+      "presetCount": 85,
+      "manifest": "Vocals-Mastering-and-More/manifest.json"
+    }
+  ]
+}

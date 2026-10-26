@@ -94,6 +94,25 @@ public:
                     aligned = aligned && dry.getSample(channel, i) == original.getSample(channel, i - latency);
             expect(aligned, processor->getName() + " bypass/PDC");
         }
+
+        beginTest("Presets pass: each module offers its factory presets as host programs; a program sets the panel, Default restores it");
+        for (const auto kind : kinds)
+        {
+            auto processor = std::make_unique<ModulePluginProcessor>(kind);
+            const int programs = processor->getNumPrograms();
+            expect(programs >= 7, processor->getName() + " programs");
+            expect(processor->getProgramName(0) == "Default" && processor->getProgramName(1).isNotEmpty());
+            processor->setCurrentProgram(1);
+            int changed = 0;
+            for (const auto& spec : processor->getSpec().parameters)
+                changed += std::abs(processor->parameterValue(spec.id) - spec.defaultValue) > 1.0e-3 ? 1 : 0;
+            expect(changed > 0 && processor->getCurrentProgram() == 1, processor->getName() + " program 1 changes nothing");
+            processor->setCurrentProgram(0);
+            bool restored = true;
+            for (const auto& spec : processor->getSpec().parameters)
+                restored = restored && std::abs(processor->parameterValue(spec.id) - spec.defaultValue) <= 1.0e-3 * std::max(1.0f, std::abs(spec.maximum));
+            expect(restored, processor->getName() + " Default");
+        }
     }
 };
 

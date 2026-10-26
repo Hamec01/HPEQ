@@ -117,3 +117,12 @@ No threshold was changed. Full suites: `HPEQ_Tests` 1678 / 1678, `HPEQ_ModuleTes
 - A button change moves the plug-in's latency (0 ↔ 38 samples at 48 kHz); hosts re-align, a short click
   at that moment is possible.
 - Listening in FL Studio (owner).
+
+## 7. Presets pass: 6 dB more drive (owner, 2026-10-26)
+
+The owner heard the colour as barely audible. The drive point moved from −6 to **−12 dBFS**: a −12 dBFS sine
+now gives the static THD of LENIN 1 % / STALIN 4 %; STALIN's core knee stays 6 dB above the drive point.
+Everything above happens 6 dB lower (e.g. LENIN THD at −18 dBFS 0.019 → 0.038 %, STALIN 0.52 → 1.10 %);
+MIX 50 % is close to the old colour. The two checks tied to the drive point moved with it (LENIN H2 over
+H3: −12 → −18 dBFS; transformer 40 Hz vs 1 kHz: −6 → −12 dBFS, 9.84 % vs 3.43 %); thresholds unchanged.
+Details: `PRESET_PASS_REPORT.md` §4–5.

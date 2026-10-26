@@ -72,6 +72,7 @@ target_sources(HPEQ
         Source/Analysis/LoudnessMeter.cpp
         Source/Core/FxProjectState.cpp
         Source/Core/Revolution.cpp
+        Source/Core/ModulePresets.cpp
         Source/DSP/Biquad.cpp
         Source/DSP/FxNodeProcessor.cpp
         Source/DSP/LayerEngine.cpp
@@ -94,6 +95,7 @@ target_sources(HPEQ
         Source/DSP/EqDesign.cpp
         Source/Plugin/FxPluginProcessor.cpp
         Source/Plugin/FxPluginEditor.cpp
+        Source/Plugin/Presets.cpp
         Source/UI/AnalysisModel.cpp
         Source/UI/NodeInspector.cpp
         Source/UI/LayerControls.cpp
@@ -124,8 +126,20 @@ file(GLOB_RECURSE HPEQ_HARDWARE_PICTURES CONFIGURE_DEPENDS
      ${CMAKE_CURRENT_SOURCE_DIR}/docs/fx-addon/assets/soviet_hardware_pack/*.png)
 # BRING LENIN / STALIN BACK: the owner's portraits, dark (off) and red (on)
 file(GLOB HPEQ_TUBE_PICTURES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/tubes/*.png)
+# Presets pass: the factory preset library (saved states), with an index of where each file sits
+# (pack / category / file); the index is rewritten only when the library changes.
+file(GLOB_RECURSE HPEQ_FACTORY_PRESETS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/Presets/Factory/*.hpeq)
+set(HPEQ_FACTORY_INDEX_TEXT "")
+foreach(preset ${HPEQ_FACTORY_PRESETS})
+    file(RELATIVE_PATH relative ${CMAKE_CURRENT_SOURCE_DIR}/Assets/Presets/Factory ${preset})
+    string(APPEND HPEQ_FACTORY_INDEX_TEXT "${relative}
+")
+endforeach()
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt.new "${HPEQ_FACTORY_INDEX_TEXT}")
+configure_file(${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt.new ${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt COPYONLY)
 juce_add_binary_data(HPEQ_Assets NAMESPACE HpeqAssets
-                     SOURCES ${HPEQ_SCRATCH_PICTURES} ${HPEQ_HARDWARE_PICTURES} ${HPEQ_TUBE_PICTURES})
+                     SOURCES ${HPEQ_SCRATCH_PICTURES} ${HPEQ_HARDWARE_PICTURES} ${HPEQ_TUBE_PICTURES}
+                             ${HPEQ_FACTORY_PRESETS} ${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt)
 
 target_link_libraries(HPEQ
     PUBLIC
@@ -143,6 +157,7 @@ target_link_libraries(HPEQ
 # These targets are additive: HPEQ above keeps its processor, editor, identity and source list.
 # Common module code is compiled once and linked into eight small variant targets.
 add_library(HPEQ_ModuleShared STATIC
+    Source/Core/ModulePresets.cpp
     Source/DSP/Biquad.cpp
     Source/DSP/FxNodeProcessor.cpp
     Source/DSP/LayerEngine.cpp
@@ -305,6 +320,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/RevolutionPassTests.cpp
     Tests/Unit/EqPassTests.cpp
     Tests/Unit/TubePassTests.cpp
+    Tests/Unit/PresetPassTests.cpp
     Tests/Unit/UiAnalysisTests.cpp)
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")

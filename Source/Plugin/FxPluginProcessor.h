@@ -50,6 +50,13 @@ public:
     void getStateInformation(juce::MemoryBlock&) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
+    // Presets pass: a saved state (factory or user .hpeq) as one undoable edit of the project, plus its
+    // Output gain; Bypass stays as it is. False (nothing changes) for a broken or newer state.
+    bool loadPreset(const void* data, int sizeInBytes, const juce::String& name);
+    // The last loaded / saved preset's name (shown on the preset button, saved with the state).
+    juce::String getPresetName() const { const juce::ScopedLock lock(projectLock); return presetName; }
+    void setPresetName(const juce::String& name) { { const juce::ScopedLock lock(projectLock); presetName = name; } sendChangeMessage(); }
+
     juce::AudioParameterBool* getBypassParameter() const override { return bypassParameter; }
 
     juce::AudioProcessorValueTreeState& getParameters() noexcept { return parameters; }
@@ -104,6 +111,7 @@ private:
 
     mutable juce::CriticalSection projectLock; // never taken by processBlock; also serialises publish()
     FxProjectState project;
+    juce::String presetName;
     dsp::ProjectEngine engine;
     dsp::TubeColour tubes; // BRING LENIN / STALIN BACK: the tube colour of the whole output
     std::atomic<bool> tubeLenin { false }, tubeStalin { false };

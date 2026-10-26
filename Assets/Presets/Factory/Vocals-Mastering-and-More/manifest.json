@@ -1,0 +1,1100 @@
+{
+  "format": "HPEQ-JUCE-State",
+  "formatVersion": 1,
+  "pluginStateSchema": 1,
+  "presetCount": 85,
+  "categories": {
+    "LeadVocal": 15,
+    "BackingVocal": 10,
+    "Mastering": 30,
+    "Guitar": 8,
+    "Synth": 8,
+    "Keys": 6,
+    "MixBus": 8
+  },
+  "masteringGenres": {
+    "Pop": 5,
+    "Rap": 5,
+    "Trap": 5,
+    "Techno": 5,
+    "House-EDM": 5,
+    "Rock-Indie": 5
+  },
+  "loading": "Each .hpeq file is a JUCE copyXmlToBinary state block and can be passed directly to FxPluginProcessor::setStateInformation.",
+  "designNotes": [
+    "Vocal dynamic EQ bands are starting points for sibilance and resonance control; tune frequency and threshold to the singer.",
+    "Mastering presets deliberately avoid fixed LUFS claims because achieved loudness depends on the input mix.",
+    "Mastering chains keep the limiter last, low frequencies centered, and broadband compression subtle.",
+    "Backing-vocal presets use stronger filtering and de-essing than lead presets so stacks remain behind the lead."
+  ],
+  "references": [
+    "https://www.soundonsound.com/techniques/vocal-production",
+    "https://www.soundonsound.com/techniques/techniques-vocal-de-essing",
+    "https://www.soundonsound.com/techniques/mixing-pop-vocals",
+    "https://www.izotope.com/community/blog/how-to-use-compression-in-mastering",
+    "https://www.izotope.com/community/blog/we-are-listening-your-mastering-questions-answered",
+    "https://www.izotope.com/en/learn/6-tips-for-widening-the-stereo-image-of-a-mix"
+  ],
+  "presets": [
+    {
+      "id": "factory-101",
+      "name": "Pop Lead Polish",
+      "category": "LeadVocal",
+      "file": "LeadVocal/001-pop-lead-polish.hpeq",
+      "intent": "Controlled, bright and centered modern pop lead",
+      "tags": [
+        "pop",
+        "polished"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-102",
+      "name": "Rap Lead Forward",
+      "category": "LeadVocal",
+      "file": "LeadVocal/002-rap-lead-forward.hpeq",
+      "intent": "Dense mid-forward vocal that remains intelligible over drums",
+      "tags": [
+        "rap",
+        "forward"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-103",
+      "name": "Trap Air Lead",
+      "category": "LeadVocal",
+      "file": "LeadVocal/003-trap-air-lead.hpeq",
+      "intent": "Bright airy lead with controlled sibilance and a short echo",
+      "tags": [
+        "trap",
+        "airy"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-104",
+      "name": "RNB Velvet",
+      "category": "LeadVocal",
+      "file": "LeadVocal/004-rnb-velvet.hpeq",
+      "intent": "Smooth intimate vocal with soft upper mids",
+      "tags": [
+        "rnb",
+        "smooth"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-105",
+      "name": "Rock Vocal Grip",
+      "category": "LeadVocal",
+      "file": "LeadVocal/005-rock-vocal-grip.hpeq",
+      "intent": "Assertive vocal density without losing consonants",
+      "tags": [
+        "rock",
+        "aggressive"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-106",
+      "name": "Indie Intimate",
+      "category": "LeadVocal",
+      "file": "LeadVocal/006-indie-intimate.hpeq",
+      "intent": "Close, natural vocal with restrained brightness",
+      "tags": [
+        "indie",
+        "natural"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-107",
+      "name": "EDM Lead Lift",
+      "category": "LeadVocal",
+      "file": "LeadVocal/007-edm-lead-lift.hpeq",
+      "intent": "Bright firm lead designed for dense synth arrangements",
+      "tags": [
+        "edm",
+        "bright"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-108",
+      "name": "Ballad Open Vocal",
+      "category": "LeadVocal",
+      "file": "LeadVocal/008-ballad-open-vocal.hpeq",
+      "intent": "Gentle leveling with an open natural top",
+      "tags": [
+        "ballad",
+        "dynamic"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-109",
+      "name": "Low Male Clarity",
+      "category": "LeadVocal",
+      "file": "LeadVocal/009-low-male-clarity.hpeq",
+      "intent": "Reduces chest buildup while preserving authority",
+      "tags": [
+        "male",
+        "low"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-110",
+      "name": "High Vocal Soft Air",
+      "category": "LeadVocal",
+      "file": "LeadVocal/010-high-vocal-soft-air.hpeq",
+      "intent": "Smooths upper-mid intensity before adding air",
+      "tags": [
+        "female",
+        "high"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-111",
+      "name": "Parallel Vocal Weight",
+      "category": "LeadVocal",
+      "file": "LeadVocal/011-parallel-vocal-weight.hpeq",
+      "intent": "Heavy compression blended beneath the original",
+      "tags": [
+        "parallel",
+        "dense"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-112",
+      "name": "Vintage Tape Vocal",
+      "category": "LeadVocal",
+      "file": "LeadVocal/012-vintage-tape-vocal.hpeq",
+      "intent": "Warm rounded vocal colour with softened air",
+      "tags": [
+        "vintage",
+        "tape"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-113",
+      "name": "Podcast Studio Voice",
+      "category": "LeadVocal",
+      "file": "LeadVocal/013-podcast-studio-voice.hpeq",
+      "intent": "Dry, even speech with plosive and sibilance control",
+      "tags": [
+        "speech",
+        "podcast"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-114",
+      "name": "Vocal Rescue Boxy",
+      "category": "LeadVocal",
+      "file": "LeadVocal/014-vocal-rescue-boxy.hpeq",
+      "intent": "Stronger low-mid cleanup for enclosed recordings",
+      "tags": [
+        "repair",
+        "boxy"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-115",
+      "name": "Vocal Rescue Harsh",
+      "category": "LeadVocal",
+      "file": "LeadVocal/015-vocal-rescue-harsh.hpeq",
+      "intent": "Dynamic upper-mid control with conservative air",
+      "tags": [
+        "repair",
+        "harsh"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-116",
+      "name": "Pop Stack Glue",
+      "category": "BackingVocal",
+      "file": "BackingVocal/016-pop-stack-glue.hpeq",
+      "intent": "Polished wide backing-vocal stack behind the lead",
+      "tags": [
+        "pop",
+        "stack"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-117",
+      "name": "Dark Behind Lead",
+      "category": "BackingVocal",
+      "file": "BackingVocal/017-dark-behind-lead.hpeq",
+      "intent": "Reduced presence and air to maintain depth",
+      "tags": [
+        "dark",
+        "support"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-118",
+      "name": "Airy Harmony Bed",
+      "category": "BackingVocal",
+      "file": "BackingVocal/018-airy-harmony-bed.hpeq",
+      "intent": "Wide floating harmonies with controlled esses",
+      "tags": [
+        "airy",
+        "harmony"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-119",
+      "name": "Rap Double Tight",
+      "category": "BackingVocal",
+      "file": "BackingVocal/019-rap-double-tight.hpeq",
+      "intent": "Compact center-supporting rap double",
+      "tags": [
+        "rap",
+        "double"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-120",
+      "name": "Trap Adlib Wide",
+      "category": "BackingVocal",
+      "file": "BackingVocal/020-trap-adlib-wide.hpeq",
+      "intent": "Wide bright ad-lib with tempo echo",
+      "tags": [
+        "trap",
+        "adlib"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-121",
+      "name": "RNB Choir Silk",
+      "category": "BackingVocal",
+      "file": "BackingVocal/021-rnb-choir-silk.hpeq",
+      "intent": "Smooth lush stereo backing choir",
+      "tags": [
+        "rnb",
+        "choir"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-122",
+      "name": "Rock Gang Shout",
+      "category": "BackingVocal",
+      "file": "BackingVocal/022-rock-gang-shout.hpeq",
+      "intent": "Dense controlled group shout with mild ambience",
+      "tags": [
+        "rock",
+        "gang"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-123",
+      "name": "Indie Ghost Layer",
+      "category": "BackingVocal",
+      "file": "BackingVocal/023-indie-ghost-layer.hpeq",
+      "intent": "Soft distant double that adds texture, not focus",
+      "tags": [
+        "indie",
+        "texture"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-124",
+      "name": "Backing Vocal DeEss",
+      "category": "BackingVocal",
+      "file": "BackingVocal/024-backing-vocal-deess.hpeq",
+      "intent": "Strong shared sibilance control for stacked parts",
+      "tags": [
+        "utility",
+        "deess"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-125",
+      "name": "Mono Support Double",
+      "category": "BackingVocal",
+      "file": "BackingVocal/025-mono-support-double.hpeq",
+      "intent": "Narrow backing layer for a stable vocal center",
+      "tags": [
+        "utility",
+        "mono"
+      ],
+      "outputGainDb": -1.5
+    },
+    {
+      "id": "factory-126",
+      "name": "Pop — Transparent Finish",
+      "category": "Mastering/Pop",
+      "file": "Mastering/Pop/026-pop-transparent-finish.hpeq",
+      "intent": "Minimal tonal correction and transparent peak control; tuned for Pop.",
+      "tags": [
+        "pop",
+        "transparent",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-127",
+      "name": "Pop — Streaming Balanced",
+      "category": "Mastering/Pop",
+      "file": "Mastering/Pop/027-pop-streaming-balanced.hpeq",
+      "intent": "Balanced translation with true-peak headroom; tuned for Pop.",
+      "tags": [
+        "pop",
+        "streaming",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-128",
+      "name": "Pop — Loud Controlled",
+      "category": "Mastering/Pop",
+      "file": "Mastering/Pop/028-pop-loud-controlled.hpeq",
+      "intent": "Denser level with protected stereo image and low-end center; tuned for Pop.",
+      "tags": [
+        "pop",
+        "loud",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-129",
+      "name": "Pop — Warm Cohesion",
+      "category": "Mastering/Pop",
+      "file": "Mastering/Pop/029-pop-warm-cohesion.hpeq",
+      "intent": "Rounder transients and gentle analog-style density; tuned for Pop.",
+      "tags": [
+        "pop",
+        "warm",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-130",
+      "name": "Pop — Open Dynamic",
+      "category": "Mastering/Pop",
+      "file": "Mastering/Pop/030-pop-open-dynamic.hpeq",
+      "intent": "Preserves movement while adding a small amount of polish; tuned for Pop.",
+      "tags": [
+        "pop",
+        "dynamic",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-131",
+      "name": "Rap — Transparent Finish",
+      "category": "Mastering/Rap",
+      "file": "Mastering/Rap/031-rap-transparent-finish.hpeq",
+      "intent": "Minimal tonal correction and transparent peak control; tuned for Rap.",
+      "tags": [
+        "rap",
+        "transparent",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-132",
+      "name": "Rap — Streaming Balanced",
+      "category": "Mastering/Rap",
+      "file": "Mastering/Rap/032-rap-streaming-balanced.hpeq",
+      "intent": "Balanced translation with true-peak headroom; tuned for Rap.",
+      "tags": [
+        "rap",
+        "streaming",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-133",
+      "name": "Rap — Loud Controlled",
+      "category": "Mastering/Rap",
+      "file": "Mastering/Rap/033-rap-loud-controlled.hpeq",
+      "intent": "Denser level with protected stereo image and low-end center; tuned for Rap.",
+      "tags": [
+        "rap",
+        "loud",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-134",
+      "name": "Rap — Warm Cohesion",
+      "category": "Mastering/Rap",
+      "file": "Mastering/Rap/034-rap-warm-cohesion.hpeq",
+      "intent": "Rounder transients and gentle analog-style density; tuned for Rap.",
+      "tags": [
+        "rap",
+        "warm",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-135",
+      "name": "Rap — Open Dynamic",
+      "category": "Mastering/Rap",
+      "file": "Mastering/Rap/035-rap-open-dynamic.hpeq",
+      "intent": "Preserves movement while adding a small amount of polish; tuned for Rap.",
+      "tags": [
+        "rap",
+        "dynamic",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-136",
+      "name": "Trap — Transparent Finish",
+      "category": "Mastering/Trap",
+      "file": "Mastering/Trap/036-trap-transparent-finish.hpeq",
+      "intent": "Minimal tonal correction and transparent peak control; tuned for Trap.",
+      "tags": [
+        "trap",
+        "transparent",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-137",
+      "name": "Trap — Streaming Balanced",
+      "category": "Mastering/Trap",
+      "file": "Mastering/Trap/037-trap-streaming-balanced.hpeq",
+      "intent": "Balanced translation with true-peak headroom; tuned for Trap.",
+      "tags": [
+        "trap",
+        "streaming",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-138",
+      "name": "Trap — Loud Controlled",
+      "category": "Mastering/Trap",
+      "file": "Mastering/Trap/038-trap-loud-controlled.hpeq",
+      "intent": "Denser level with protected stereo image and low-end center; tuned for Trap.",
+      "tags": [
+        "trap",
+        "loud",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-139",
+      "name": "Trap — Warm Cohesion",
+      "category": "Mastering/Trap",
+      "file": "Mastering/Trap/039-trap-warm-cohesion.hpeq",
+      "intent": "Rounder transients and gentle analog-style density; tuned for Trap.",
+      "tags": [
+        "trap",
+        "warm",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-140",
+      "name": "Trap — Open Dynamic",
+      "category": "Mastering/Trap",
+      "file": "Mastering/Trap/040-trap-open-dynamic.hpeq",
+      "intent": "Preserves movement while adding a small amount of polish; tuned for Trap.",
+      "tags": [
+        "trap",
+        "dynamic",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-141",
+      "name": "Techno — Transparent Finish",
+      "category": "Mastering/Techno",
+      "file": "Mastering/Techno/041-techno-transparent-finish.hpeq",
+      "intent": "Minimal tonal correction and transparent peak control; tuned for Techno.",
+      "tags": [
+        "techno",
+        "transparent",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-142",
+      "name": "Techno — Streaming Balanced",
+      "category": "Mastering/Techno",
+      "file": "Mastering/Techno/042-techno-streaming-balanced.hpeq",
+      "intent": "Balanced translation with true-peak headroom; tuned for Techno.",
+      "tags": [
+        "techno",
+        "streaming",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-143",
+      "name": "Techno — Loud Controlled",
+      "category": "Mastering/Techno",
+      "file": "Mastering/Techno/043-techno-loud-controlled.hpeq",
+      "intent": "Denser level with protected stereo image and low-end center; tuned for Techno.",
+      "tags": [
+        "techno",
+        "loud",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-144",
+      "name": "Techno — Warm Cohesion",
+      "category": "Mastering/Techno",
+      "file": "Mastering/Techno/044-techno-warm-cohesion.hpeq",
+      "intent": "Rounder transients and gentle analog-style density; tuned for Techno.",
+      "tags": [
+        "techno",
+        "warm",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-145",
+      "name": "Techno — Open Dynamic",
+      "category": "Mastering/Techno",
+      "file": "Mastering/Techno/045-techno-open-dynamic.hpeq",
+      "intent": "Preserves movement while adding a small amount of polish; tuned for Techno.",
+      "tags": [
+        "techno",
+        "dynamic",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-146",
+      "name": "House-EDM — Transparent Finish",
+      "category": "Mastering/House-EDM",
+      "file": "Mastering/House-EDM/046-house-edm-transparent-finish.hpeq",
+      "intent": "Minimal tonal correction and transparent peak control; tuned for House-EDM.",
+      "tags": [
+        "house",
+        "edm",
+        "transparent",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-147",
+      "name": "House-EDM — Streaming Balanced",
+      "category": "Mastering/House-EDM",
+      "file": "Mastering/House-EDM/047-house-edm-streaming-balanced.hpeq",
+      "intent": "Balanced translation with true-peak headroom; tuned for House-EDM.",
+      "tags": [
+        "house",
+        "edm",
+        "streaming",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-148",
+      "name": "House-EDM — Loud Controlled",
+      "category": "Mastering/House-EDM",
+      "file": "Mastering/House-EDM/048-house-edm-loud-controlled.hpeq",
+      "intent": "Denser level with protected stereo image and low-end center; tuned for House-EDM.",
+      "tags": [
+        "house",
+        "edm",
+        "loud",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-149",
+      "name": "House-EDM — Warm Cohesion",
+      "category": "Mastering/House-EDM",
+      "file": "Mastering/House-EDM/049-house-edm-warm-cohesion.hpeq",
+      "intent": "Rounder transients and gentle analog-style density; tuned for House-EDM.",
+      "tags": [
+        "house",
+        "edm",
+        "warm",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-150",
+      "name": "House-EDM — Open Dynamic",
+      "category": "Mastering/House-EDM",
+      "file": "Mastering/House-EDM/050-house-edm-open-dynamic.hpeq",
+      "intent": "Preserves movement while adding a small amount of polish; tuned for House-EDM.",
+      "tags": [
+        "house",
+        "edm",
+        "dynamic",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-151",
+      "name": "Rock-Indie — Transparent Finish",
+      "category": "Mastering/Rock-Indie",
+      "file": "Mastering/Rock-Indie/051-rock-indie-transparent-finish.hpeq",
+      "intent": "Minimal tonal correction and transparent peak control; tuned for Rock-Indie.",
+      "tags": [
+        "rock",
+        "indie",
+        "transparent",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-152",
+      "name": "Rock-Indie — Streaming Balanced",
+      "category": "Mastering/Rock-Indie",
+      "file": "Mastering/Rock-Indie/052-rock-indie-streaming-balanced.hpeq",
+      "intent": "Balanced translation with true-peak headroom; tuned for Rock-Indie.",
+      "tags": [
+        "rock",
+        "indie",
+        "streaming",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-153",
+      "name": "Rock-Indie — Loud Controlled",
+      "category": "Mastering/Rock-Indie",
+      "file": "Mastering/Rock-Indie/053-rock-indie-loud-controlled.hpeq",
+      "intent": "Denser level with protected stereo image and low-end center; tuned for Rock-Indie.",
+      "tags": [
+        "rock",
+        "indie",
+        "loud",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-154",
+      "name": "Rock-Indie — Warm Cohesion",
+      "category": "Mastering/Rock-Indie",
+      "file": "Mastering/Rock-Indie/054-rock-indie-warm-cohesion.hpeq",
+      "intent": "Rounder transients and gentle analog-style density; tuned for Rock-Indie.",
+      "tags": [
+        "rock",
+        "indie",
+        "warm",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-155",
+      "name": "Rock-Indie — Open Dynamic",
+      "category": "Mastering/Rock-Indie",
+      "file": "Mastering/Rock-Indie/055-rock-indie-open-dynamic.hpeq",
+      "intent": "Preserves movement while adding a small amount of polish; tuned for Rock-Indie.",
+      "tags": [
+        "rock",
+        "indie",
+        "dynamic",
+        "mastering"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-156",
+      "name": "Acoustic Guitar Natural",
+      "category": "Guitar",
+      "file": "Guitar/056-acoustic-guitar-natural.hpeq",
+      "intent": "Natural cleanup and controlled pick peaks",
+      "tags": [
+        "acoustic",
+        "natural"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-157",
+      "name": "Acoustic Guitar Bright",
+      "category": "Guitar",
+      "file": "Guitar/057-acoustic-guitar-bright.hpeq",
+      "intent": "Airy strumming with dynamic harshness control",
+      "tags": [
+        "acoustic",
+        "bright"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-158",
+      "name": "Electric Clean Chime",
+      "category": "Guitar",
+      "file": "Guitar/058-electric-clean-chime.hpeq",
+      "intent": "Clear clean guitar with gentle stereo space",
+      "tags": [
+        "electric",
+        "clean"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-159",
+      "name": "Rock Rhythm Tight",
+      "category": "Guitar",
+      "file": "Guitar/059-rock-rhythm-tight.hpeq",
+      "intent": "Dense rhythm guitar with low-mid cleanup",
+      "tags": [
+        "rock",
+        "rhythm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-160",
+      "name": "Metal Rhythm Wall",
+      "category": "Guitar",
+      "file": "Guitar/060-metal-rhythm-wall.hpeq",
+      "intent": "Tight high-gain guitar with fizz control",
+      "tags": [
+        "metal",
+        "heavy"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-161",
+      "name": "Lead Guitar Singing",
+      "category": "Guitar",
+      "file": "Guitar/061-lead-guitar-singing.hpeq",
+      "intent": "Sustaining forward lead with short ambience",
+      "tags": [
+        "lead",
+        "sustain"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-162",
+      "name": "Funk Guitar Snap",
+      "category": "Guitar",
+      "file": "Guitar/062-funk-guitar-snap.hpeq",
+      "intent": "Fast clean articulation and reduced low mids",
+      "tags": [
+        "funk",
+        "clean"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-163",
+      "name": "Lo-Fi Guitar Print",
+      "category": "Guitar",
+      "file": "Guitar/063-lo-fi-guitar-print.hpeq",
+      "intent": "Dark tape-coloured guitar texture",
+      "tags": [
+        "lofi",
+        "tape"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-164",
+      "name": "Analog Pad Width",
+      "category": "Synth",
+      "file": "Synth/064-analog-pad-width.hpeq",
+      "intent": "Wide warm pad with mono-safe low end",
+      "tags": [
+        "pad",
+        "analog"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-165",
+      "name": "Digital Pad Smooth",
+      "category": "Synth",
+      "file": "Synth/065-digital-pad-smooth.hpeq",
+      "intent": "Controls glassy peaks and adds soft depth",
+      "tags": [
+        "pad",
+        "digital"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-166",
+      "name": "Pluck Forward",
+      "category": "Synth",
+      "file": "Synth/066-pluck-forward.hpeq",
+      "intent": "Fast defined pluck with compact tail",
+      "tags": [
+        "pluck",
+        "transient"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-167",
+      "name": "Arp Controlled",
+      "category": "Synth",
+      "file": "Synth/067-arp-controlled.hpeq",
+      "intent": "Even rhythmic arpeggio with restrained width",
+      "tags": [
+        "arp",
+        "rhythmic"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-168",
+      "name": "Lead Synth Focus",
+      "category": "Synth",
+      "file": "Synth/068-lead-synth-focus.hpeq",
+      "intent": "Centered synth lead with presence and peak control",
+      "tags": [
+        "lead",
+        "mono-safe"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-169",
+      "name": "Supersaw Tamer",
+      "category": "Synth",
+      "file": "Synth/069-supersaw-tamer.hpeq",
+      "intent": "Reduces upper-mid glare while retaining size",
+      "tags": [
+        "supersaw",
+        "edm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-170",
+      "name": "Acid Resonance Control",
+      "category": "Synth",
+      "file": "Synth/070-acid-resonance-control.hpeq",
+      "intent": "Dynamic control for moving resonant lines",
+      "tags": [
+        "acid",
+        "resonant"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-171",
+      "name": "Lo-Fi Synth Print",
+      "category": "Synth",
+      "file": "Synth/071-lo-fi-synth-print.hpeq",
+      "intent": "Narrow vintage synth texture with tape colour",
+      "tags": [
+        "lofi",
+        "tape"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-172",
+      "name": "Grand Piano Natural",
+      "category": "Keys",
+      "file": "Keys/072-grand-piano-natural.hpeq",
+      "intent": "Transparent piano cleanup and peak control",
+      "tags": [
+        "piano",
+        "natural"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-173",
+      "name": "Pop Piano Bright",
+      "category": "Keys",
+      "file": "Keys/073-pop-piano-bright.hpeq",
+      "intent": "Forward piano for dense pop arrangements",
+      "tags": [
+        "piano",
+        "pop"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-174",
+      "name": "Felt Piano Intimate",
+      "category": "Keys",
+      "file": "Keys/074-felt-piano-intimate.hpeq",
+      "intent": "Soft close piano with warm ambience",
+      "tags": [
+        "piano",
+        "felt"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-175",
+      "name": "Rhodes Velvet",
+      "category": "Keys",
+      "file": "Keys/075-rhodes-velvet.hpeq",
+      "intent": "Warm electric piano with smooth upper mids",
+      "tags": [
+        "rhodes",
+        "warm"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-176",
+      "name": "Wurlitzer Bite",
+      "category": "Keys",
+      "file": "Keys/076-wurlitzer-bite.hpeq",
+      "intent": "Controlled bark and vintage harmonic density",
+      "tags": [
+        "wurli",
+        "vintage"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-177",
+      "name": "Keys Bus Glue",
+      "category": "Keys",
+      "file": "Keys/077-keys-bus-glue.hpeq",
+      "intent": "Cohesive keyboard subgroup with safe width",
+      "tags": [
+        "keys",
+        "bus"
+      ],
+      "outputGainDb": -1.0
+    },
+    {
+      "id": "factory-178",
+      "name": "Mix Bus Transparent",
+      "category": "MixBus",
+      "file": "MixBus/078-mix-bus-transparent.hpeq",
+      "intent": "Very light cohesion and true-peak safety",
+      "tags": [
+        "transparent",
+        "clean"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-179",
+      "name": "Mix Bus Modern Pop",
+      "category": "MixBus",
+      "file": "MixBus/079-mix-bus-modern-pop.hpeq",
+      "intent": "Polished top and controlled contemporary density",
+      "tags": [
+        "pop",
+        "polished"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-180",
+      "name": "Mix Bus Hip Hop",
+      "category": "MixBus",
+      "file": "MixBus/080-mix-bus-hip-hop.hpeq",
+      "intent": "Centered low end with punch-preserving glue",
+      "tags": [
+        "hip-hop",
+        "punch"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-181",
+      "name": "Mix Bus Electronic",
+      "category": "MixBus",
+      "file": "MixBus/081-mix-bus-electronic.hpeq",
+      "intent": "Firm electronic mix cohesion and peak control",
+      "tags": [
+        "electronic",
+        "club"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-182",
+      "name": "Mix Bus Analog Warm",
+      "category": "MixBus",
+      "file": "MixBus/082-mix-bus-analog-warm.hpeq",
+      "intent": "Rounded tape-style colour and soft glue",
+      "tags": [
+        "warm",
+        "analog"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-183",
+      "name": "Mix Bus Open Rock",
+      "category": "MixBus",
+      "file": "MixBus/083-mix-bus-open-rock.hpeq",
+      "intent": "Preserves live transients and stereo stability",
+      "tags": [
+        "rock",
+        "dynamic"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-184",
+      "name": "Mix Bus Wide Safe",
+      "category": "MixBus",
+      "file": "MixBus/084-mix-bus-wide-safe.hpeq",
+      "intent": "Small mono-compatible width increase",
+      "tags": [
+        "wide",
+        "mono-safe"
+      ],
+      "outputGainDb": 0.0
+    },
+    {
+      "id": "factory-185",
+      "name": "Mix Bus PreMaster",
+      "category": "MixBus",
+      "file": "MixBus/085-mix-bus-premaster.hpeq",
+      "intent": "Conservative headroom-oriented finishing chain",
+      "tags": [
+        "premaster",
+        "utility"
+      ],
+      "outputGainDb": 0.0
+    }
+  ]
+}

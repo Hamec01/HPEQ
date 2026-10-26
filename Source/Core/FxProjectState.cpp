@@ -196,6 +196,9 @@ FxSlotState slotFromTree(const juce::ValueTree& tree)
 }
 } // namespace
 
+juce::ValueTree moduleToTree(const FxSlotState& slot) { return slotToTree(slot); }
+FxSlotState moduleFromTree(const juce::ValueTree& tree) { return slotFromTree(tree); }
+
 std::array<LayerState, kNumLayers> FxProjectState::makeDefaultLayers()
 {
     std::array<LayerState, kNumLayers> layers;

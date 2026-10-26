@@ -145,7 +145,7 @@ public:
             }
         }
 
-        beginTest("Harmonics vs level (1 kHz): THD rises with level; at -6 dBFS LENIN 0.3-10 %, STALIN above LENIN; LENIN H2 over H3 at -12 dBFS");
+        beginTest("Harmonics vs level (1 kHz): THD rises with level; at -6 dBFS LENIN 0.3-10 %, STALIN above LENIN; LENIN H2 over H3 at -18 dBFS");
         {
             double lenin6 = 0.0, stalin6 = 0.0;
             for (const auto [l, s] : { std::pair { true, false }, std::pair { false, true } })
@@ -162,8 +162,10 @@ public:
                     previous = h.thd;
                     if (db == -6.0)
                         (l ? lenin6 : stalin6) = h.thd;
-                    if (l && db == -12.0)
-                        expect(h.h2 > h.h3, "LENIN: H2 not above H3 at -12 dBFS");
+                    // presets pass: the drive point moved from -6 to -12 dBFS (6 dB more drive, owner), so this
+                    // check of the character below the drive point moved with it (-12 -> -18 dBFS)
+                    if (l && db == -18.0)
+                        expect(h.h2 > h.h3, "LENIN: H2 not above H3 at -18 dBFS");
                 }
                 logMessage(juce::String(l ? "  LENIN " : "  STALIN ") + line);
                 expect(rising, "THD does not rise with level");
@@ -183,10 +185,11 @@ public:
             expect(tanhH.h2 < -100.0 && leninH.h2 > -80.0);
         }
 
-        beginTest("STALIN's transformer: at -6 dBFS a 40 Hz tone distorts more than twice a 1 kHz one");
+        // presets pass: measured at the drive point, which moved from -6 to -12 dBFS (6 dB more drive, owner)
+        beginTest("STALIN's transformer: at -12 dBFS (the drive point) a 40 Hz tone distorts more than twice a 1 kHz one");
         {
-            const auto low = harmonics(colour(sine(40.0, -6.0, 96000), false, true), 40.0);
-            const auto mid = harmonics(colour(sine(1000.0, -6.0, 96000), false, true), 1000.0);
+            const auto low = harmonics(colour(sine(40.0, -12.0, 96000), false, true), 40.0);
+            const auto mid = harmonics(colour(sine(1000.0, -12.0, 96000), false, true), 1000.0);
             logMessage("  STALIN THD: 40 Hz " + juce::String(low.thd, 3) + " %, 1 kHz " + juce::String(mid.thd, 3) + " %");
             expect(low.thd > 2.0 * mid.thd);
         }

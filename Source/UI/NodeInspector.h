@@ -74,6 +74,10 @@ private:
     void editChain(const juce::String& name, const std::function<void(std::vector<FxSlotState>&)>&);
     void addModule(FxType);
     void moveModule(int index, int delta);
+    // Presets pass: the module page's preset menu (default, factory, user, save).
+    void showModulePresets(int index, juce::Component& target);
+    void saveModulePresetAs(int index);
+    std::unique_ptr<juce::AlertWindow> saveDialog;
     void buildReverbPage(int k);
     void buildDelayPage(int k);
     void buildSaturatorPage(int k);

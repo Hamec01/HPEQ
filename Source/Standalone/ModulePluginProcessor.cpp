@@ -1,4 +1,5 @@
 #include "Standalone/ModulePluginProcessor.h"
+#include "Core/ModulePresets.h"
 
 #include "DSP/ProcessorsM6.h"
 #include "DSP/ReverbProcessor.h"
@@ -188,6 +189,32 @@ void ModulePluginProcessor::setParameterValue(const juce::String& id, double act
 {
     if (auto* p = parameter(id))
         p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(actualValue)));
+}
+
+int ModulePluginProcessor::getNumPrograms()
+{
+    return 1 + static_cast<int>(presets::factoryModulePresets(getSpec().type).size());
+}
+
+const juce::String ModulePluginProcessor::getProgramName(int index)
+{
+    const auto& list = presets::factoryModulePresets(getSpec().type);
+    if (index <= 0 || index > static_cast<int>(list.size()))
+        return "Default";
+    return list[static_cast<size_t>(index - 1)].name;
+}
+
+void ModulePluginProcessor::setCurrentProgram(int index)
+{
+    const auto& list = presets::factoryModulePresets(getSpec().type);
+    currentProgram = juce::jlimit(0, static_cast<int>(list.size()), index);
+    for (const auto& spec : getSpec().parameters)
+    {
+        double value = spec.defaultValue;
+        if (currentProgram > 0)
+            value = presets::presetValue(list[static_cast<size_t>(currentProgram - 1)], spec.id, value);
+        setParameterValue(spec.id, value);
+    }
 }
 
 } // namespace hpeq::standalone
