@@ -293,7 +293,9 @@ void EchoProcessor::updateTargets(const FxSlotParams& p, const Transport& transp
     timeMode = mode;
 
     feedbackTarget = std::clamp(static_cast<double>(p.values[slot::kFeedback]), 0.0, 0.98);
-    crossTarget = std::clamp(static_cast<double>(p.values[slot::kDlyCross]), 0.0, 1.0);
+    // PING-PONG feeds the left line only and bounces every echo to the other side (owner's bug 2026-10-26:
+    // with CROSS at 0 the echoes stayed in the left ear); CROSS acts while ping-pong is off.
+    crossTarget = pingPong ? 1.0 : std::clamp(static_cast<double>(p.values[slot::kDlyCross]), 0.0, 1.0);
     widthTarget = std::clamp(static_cast<double>(p.values[slot::kDelayWidth]), 0.0, 1.5);
     driveTarget = std::pow(10.0, std::clamp(static_cast<double>(p.values[slot::kDlyDriveDb]), 0.0, 24.0) / 20.0);
     modDepthTarget = freeze ? 0.0 : std::clamp(static_cast<double>(p.values[slot::kDlyModDepth]), 0.0, 1.0) * characterWobbleMs(character) * 1.0e-3 * fs;

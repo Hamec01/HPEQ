@@ -113,3 +113,71 @@ Full suites (Release): `HPEQ_Tests` 2480 / 2480, `HPEQ_ModuleTests` 105 / 105.
 - The library is the other agent's work: it is embedded and loads, but its content was not reviewed preset by preset.
 - **Undo does not cover everything a preset load sets:** it restores the project but not the Output gain or the preset name.
 - The EQ point has no preset menu of its own. Its DE-ESS button is a one-button preset.
+
+---
+
+# Presets pass 2: the whole library rebuilt and measured; HamloEcho ping-pong fix
+
+Owner, 2026-10-26: a vocal preset needed +8 dB by hand ("слишком тихо"); some vocal presets were written before the
+de-esser; the mastering presets must be redone from data; redo all presets, add more, and show what HPEQ can do
+(layers, HamloRevolution …). Also: HamloEcho sent a mono vocal to the left ear only.
+
+## 1. HamloEcho: ping-pong with CROSS 0 stayed in the left ear
+
+PING-PONG feeds the left line only and left the bouncing to the CROSS knob; at CROSS 0 % (the owner's setting)
+nothing crossed, so the echo stayed left. Now ping-pong always bounces L → R → L; CROSS acts while ping-pong is off.
+The echo-train display follows. New tests: a mono source with ping-pong off gives L = R within 1 dB (Clean / Tape /
+BBD / Lo-Fi: 0.01–0.15 dB); ping-pong at CROSS 0 bounces L, R, L with each echo ≥ 20 dB on its side (46–260 dB).
+
+## 2. The library: 197 presets, designed in code and calibrated on real material
+
+`Tests/Tools/LabPresets.cpp` (`HPEQ_Lab presets --material <dir> --out Assets/Presets/Factory`) replaces the two
+PowerShell generators (removed). It builds each preset, runs it through the plug-in on real material (the loudest
+24 s of each clip, 48 kHz) on all cores, calibrates it and writes the `.hpeq` files, the manifests (with every
+preset's measurement) and `Assets/Presets/Factory/CALIBRATION.md`.
+
+**Material** (the owner's, not in the repository): three lead vocals and three backing vocals from the owner's
+projects; kick, snare / clap, hats, percussion, sub bass, bass guitar, drum loop, guitar chords, felt chords,
+electric piano and a synth melody from the owner's stems; unmastered mixdowns `full_mix.wav` of three of the
+owner's beats. The owner's own masters of five beats measured **−10.6 … −11.8 LUFS** integrated (true peak up to
++1.0 dBFS sample peak).
+
+**Track presets are level-matched**: Output is set so the integrated loudness out = in on the category's material.
+What that found: the vocal presets needed **+0.5 … +8.2 dB** (the old library shipped them at −1 dB: the owner's
+"+8 dB by hand"). Where matching would push the true peak more than 6 dB over the input's, the peak sets the gain
+instead (8 presets, marked in CALIBRATION.md: six kick presets on a hot, clipped kick stem stay 0.3–5.5 LU under the
+input; two very bright vocal presets 0.9–1.0 LU under).
+
+**Mastering is target-driven**: the HamloRedWall threshold is searched (bisection, mean of three mixdowns) until
+the integrated loudness hits the genre target, true peak ≤ −1 dBTP. 6 genres × 7 masters: Clean, Warm (LENIN 30 %),
+Punch, Multiband, Loud, Stalin (15 %), Streaming −14. Targets: Pop / Rock −9.5, Rap −9, Techno / House −8.5,
+Trap −8 (Loud +0.5 dB, Punch +0.5 dB), Streaming −14. All 42 within ±0.5 LU, true peak −0.97 … −1.8 dBTP.
+
+Found while calibrating (and handled in the search):
+- the tubes run after the layers, so a master with LENIN / STALIN went over the ceiling (+1.0 … +1.6 dBTP): the
+  search lowers the RedWall ceiling until the plug-in's output is at −1 dBTP (−2.1 dB for the Lenin masters);
+- STALIN at 40 % on a loud master acts as a second, distorting limiter (loudness stuck at −11.7 LUFS): 15 % now;
+- GLASNOST tops out near −9 LUFS on these mixes however hard it is driven; the search moves on to STAKHANOV, then
+  OCTOBER, when a style cannot reach the target (the preset keeps the style that did).
+
+**Every vocal preset carries the DE-ESS point** (DETECT VOICE).
+
+**New: Hamlo Showcase** (20 presets) — Layers (Vocal Cinema: 4 parallel layers; Drum Factory: serial layers as a
+production line; Drums Parallel Monster; Split-Band Bass Layers; Vocal Octave Choir), Revolution (Beat Switch-Up,
+Vocal Chop Machine, Full Mix Destruction, Bass Gated Motion, Width Pulse, Crush Fills), Precision (points with their
+own modules, regions: De-Ess + Air Exciter, Kick-Only Reverb, Vocal Band Saturation, Hi-Hat Only Echo, Snare Band
+Reverb), Tubes (Lenin + Stalin Full Chain, Stalin Vocal Radio, Lenin Vocal Warmth, Stalin Drum Room). Layers,
+Revolution, regions and tubes also appear across the other categories.
+
+## 3. Tests
+
+`HPEQ_Tests` "Preset pass": 197 presets, 3 packs, 17 categories, each loads as one undoable edit and undoes; the
+generator itself fails (exit code) when a preset is outside tolerance. "Delay pass": the two ping-pong tests above.
+
+## 4. Not verified / limits
+
+- Listening in FL Studio (owner). Calibration is loudness, not taste.
+- The material is hip-hop heavy; the Pop / Rock / Techno / House masters were calibrated on the same three
+  mixdowns: on other material the limiter works harder or softer (loudness follows the threshold, so the target
+  moves with the source). Some loud masters drive the limiter hard (up to 20 dB on the quietest mixdown).
+- Dynamics thresholds depend on the source level; the kick presets were made on a hot, clipped kick stem.

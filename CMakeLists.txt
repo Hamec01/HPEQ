@@ -337,6 +337,7 @@ add_executable(HPEQ_Lab
     Tests/Tools/LabM7.cpp
     Tests/Tools/LabT11.cpp
     Tests/Tools/LabBench.cpp
+    Tests/Tools/LabPresets.cpp
     Tests/Tools/LabUi.cpp)
 target_include_directories(HPEQ_Lab PRIVATE Tests)
 target_link_libraries(HPEQ_Lab PRIVATE HPEQ)

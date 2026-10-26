@@ -260,6 +260,58 @@ public:
             expect(other - same >= 30.0 && first >= 30.0);
         }
 
+        beginTest("Mono source, ping-pong off, cross 0 (owner's bug, BBD 1/8T, pitch -0.3, mod 42 %): both sides echo alike (L - R within 1 dB)");
+        {
+            for (int character : { echo::Clean, echo::Tape, echo::Bbd, echo::LoFi })
+            {
+                auto p = echoParams(character, 250.0f);
+                p.values[slot::kFeedback] = 0.04f;
+                p.values[slot::kDlyDriveDb] = 3.0f;
+                p.values[slot::kDelayWidth] = 0.77f;
+                p.values[slot::kDlyModRate] = 0.42f;
+                p.values[slot::kDlyModDepth] = 0.42f;
+                p.values[slot::kDlyPitch] = -0.3f;
+                p.values[slot::kDelayLowCutHz] = 120.0f;
+                p.values[slot::kDampingHz] = 8000.0f;
+                juce::AudioBuffer<float> x(2, 96000);
+                juce::Random rng(3);
+                for (int i = 0; i < 48000; ++i)
+                {
+                    const float v = 0.1f * (2.0f * rng.nextFloat() - 1.0f) * std::sin(static_cast<float>(i) * 0.0004f);
+                    x.setSample(0, i, v);
+                    x.setSample(1, i, v);
+                }
+                const auto y = renderWith(x, p);
+                const double l = windowEnergyDb(y, 0, 0, 96000), r = windowEnergyDb(y, 1, 0, 96000);
+                logMessage("  character " + juce::String(character) + ": L " + juce::String(l, 2) + " dB, R " + juce::String(r, 2) + " dB");
+                expect(std::abs(l - r) <= 1.0, "character " + juce::String(character));
+            }
+        }
+
+        beginTest("Ping-pong at CROSS 0 (owner's bug): a mono source's echoes bounce L, R, L (each >= 20 dB stronger on its side)");
+        {
+            for (int character : { echo::Clean, echo::Tape, echo::Bbd })
+            {
+                auto p = echoParams(character, 100.0f);
+                p.values[slot::kFeedback] = 0.6f;
+                p.values[slot::kPingPong] = 1.0f;
+                auto x = makeImpulse({ kFs, 2, 0.5, kFixtureSeed }, 0, 0.01f);
+                x.copyFrom(1, 0, x, 0, 0, x.getNumSamples());
+                const auto y = renderWith(x, p);
+                double worst = 1.0e9;
+                juce::String line;
+                for (int k = 1; k <= 3; ++k)
+                {
+                    const int at = k * 4800 - 200;
+                    const double d = windowEnergyDb(y, k % 2 == 1 ? 0 : 1, at, 1200) - windowEnergyDb(y, k % 2 == 1 ? 1 : 0, at, 1200);
+                    worst = std::min(worst, d);
+                    line << " echo " << k << ": " << juce::String(d, 1) << " dB";
+                }
+                logMessage("  character " + juce::String(character) + ":" + line);
+                expect(worst >= 20.0, "character " + juce::String(character));
+            }
+        }
+
         beginTest("Loop filters: the first echo's response = the analytic low cut x band x high cut +-0.5 dB (100 Hz .. 10 kHz)");
         {
             auto p = echoParams(echo::Clean, 50.0f);

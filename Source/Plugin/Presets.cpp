@@ -28,10 +28,13 @@ juce::String categoryName(const juce::String& folder)
     return out;
 }
 
-// The preset's name: the first layer's name in the saved state (the library names it so), else the file's.
+// The preset's name: the state's presetName, else the first layer's name, else the file's.
 juce::String presetName(const char* data, int size, const juce::String& file)
 {
     const juce::String text(juce::CharPointer_UTF8(data + std::min(size, 8)), static_cast<size_t>(std::max(0, size - 8)));
+    if (const int root = text.indexOf("presetName=\""); root >= 0)
+        if (const int end = text.indexOfChar(root + 12, '"'); end > root + 12)
+            return text.substring(root + 12, end);
     const int layer = text.indexOf("<Layer index=\"0\"");
     if (layer >= 0)
     {

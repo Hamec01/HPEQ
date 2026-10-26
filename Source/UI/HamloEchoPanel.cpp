@@ -619,7 +619,7 @@ std::vector<HamloEchoPanel::Echo> HamloEchoPanel::echoTrain(double& span) const
     for (int i = 0; i < 9; ++i)
         meanDb += echo::loopResponseDb(300.0 * std::pow(10.0, i / 8.0), p) / 9.0;
     const double loopDb = classic ? 0.0 : meanDb;
-    const double fb = values.knobs[Feedback], cross = classic ? (values.switches[PingPong] > 0 ? 1.0 : 0.0) : values.knobs[Cross];
+    const double fb = values.knobs[Feedback], cross = values.switches[PingPong] > 0 ? 1.0 : (classic ? 0.0 : values.knobs[Cross]);
     const bool frozen = values.switches[Freeze] > 0 && !classic;
     span = niceCeiling(std::max(time[0], time[1]) * (fb > 0.05 || frozen ? 8.0 : 2.0));
     std::vector<Echo> out;

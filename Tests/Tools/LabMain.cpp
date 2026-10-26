@@ -467,6 +467,7 @@ int runM6Lab(const juce::File& out, const juce::String& commit); // LabM6.cpp
 int runM7Lab(const juce::File& out, const juce::String& commit); // LabM7.cpp
 int runT11Fixtures(const juce::File& out, int count); // LabT11.cpp
 int runUiSnapshots(const juce::File& out); // LabUi.cpp
+int runPresetLibrary(const juce::File& material, const juce::File& out, const juce::String& only); // LabPresets.cpp
 int runBench(const juce::File& out, const juce::String& commit, int reps, int blocks, bool cold); // LabBench.cpp
 
 int main(int argc, char* argv[])
@@ -478,6 +479,13 @@ int main(int argc, char* argv[])
     {
         const auto o = args.indexOf("--out");
         return runUiSnapshots(juce::File::getCurrentWorkingDirectory().getChildFile(o >= 0 ? args[o + 1] : "hpeq_ui"));
+    }
+    if (args.contains("presets"))
+    {
+        const auto m = args.indexOf("--material"), o = args.indexOf("--out"), f = args.indexOf("--only");
+        return runPresetLibrary(juce::File::getCurrentWorkingDirectory().getChildFile(args[m + 1]),
+                                juce::File::getCurrentWorkingDirectory().getChildFile(o >= 0 ? args[o + 1] : "Assets/Presets/Factory"),
+                                f >= 0 ? args[f + 1] : juce::String());
     }
     if (args.contains("bench"))
     {

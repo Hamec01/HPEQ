@@ -1,1100 +1,1393 @@
 {
   "format": "HPEQ-JUCE-State",
-  "formatVersion": 1,
-  "pluginStateSchema": 1,
-  "presetCount": 85,
-  "categories": {
-    "LeadVocal": 15,
-    "BackingVocal": 10,
-    "Mastering": 30,
-    "Guitar": 8,
-    "Synth": 8,
-    "Keys": 6,
-    "MixBus": 8
-  },
-  "masteringGenres": {
-    "Pop": 5,
-    "Rap": 5,
-    "Trap": 5,
-    "Techno": 5,
-    "House-EDM": 5,
-    "Rock-Indie": 5
-  },
-  "loading": "Each .hpeq file is a JUCE copyXmlToBinary state block and can be passed directly to FxPluginProcessor::setStateInformation.",
-  "designNotes": [
-    "Vocal dynamic EQ bands are starting points for sibilance and resonance control; tune frequency and threshold to the singer.",
-    "Mastering presets deliberately avoid fixed LUFS claims because achieved loudness depends on the input mix.",
-    "Mastering chains keep the limiter last, low frequencies centered, and broadband compression subtle.",
-    "Backing-vocal presets use stronger filtering and de-essing than lead presets so stacks remain behind the lead."
-  ],
-  "references": [
-    "https://www.soundonsound.com/techniques/vocal-production",
-    "https://www.soundonsound.com/techniques/techniques-vocal-de-essing",
-    "https://www.soundonsound.com/techniques/mixing-pop-vocals",
-    "https://www.izotope.com/community/blog/how-to-use-compression-in-mastering",
-    "https://www.izotope.com/community/blog/we-are-listening-your-mastering-questions-answered",
-    "https://www.izotope.com/en/learn/6-tips-for-widening-the-stereo-image-of-a-mix"
-  ],
+  "pack": "Vocals, Mastering & More",
+  "presetCount": 112,
   "presets": [
     {
-      "id": "factory-101",
+      "number": 1,
       "name": "Pop Lead Polish",
       "category": "LeadVocal",
-      "file": "LeadVocal/001-pop-lead-polish.hpeq",
-      "intent": "Controlled, bright and centered modern pop lead",
-      "tags": [
-        "pop",
-        "polished"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Modern pop lead: mud cut, presence, air, de-esser, plate.",
+      "path": "LeadVocal/001-pop-lead-polish.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 3.3,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.9
     },
     {
-      "id": "factory-102",
-      "name": "Rap Lead Forward",
+      "number": 2,
+      "name": "Rap Vocal Upfront",
       "category": "LeadVocal",
-      "file": "LeadVocal/002-rap-lead-forward.hpeq",
-      "intent": "Dense mid-forward vocal that remains intelligible over drums",
-      "tags": [
-        "rap",
-        "forward"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Rap vocal dry and loud in front: fast compression, presence, de-esser.",
+      "path": "LeadVocal/002-rap-vocal-upfront.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 6.7,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 3.9
     },
     {
-      "id": "factory-103",
-      "name": "Trap Air Lead",
-      "category": "LeadVocal",
-      "file": "LeadVocal/003-trap-air-lead.hpeq",
-      "intent": "Bright airy lead with controlled sibilance and a short echo",
-      "tags": [
-        "trap",
-        "airy"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-104",
-      "name": "RNB Velvet",
-      "category": "LeadVocal",
-      "file": "LeadVocal/004-rnb-velvet.hpeq",
-      "intent": "Smooth intimate vocal with soft upper mids",
-      "tags": [
-        "rnb",
-        "smooth"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-105",
-      "name": "Rock Vocal Grip",
-      "category": "LeadVocal",
-      "file": "LeadVocal/005-rock-vocal-grip.hpeq",
-      "intent": "Assertive vocal density without losing consonants",
-      "tags": [
-        "rock",
-        "aggressive"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-106",
-      "name": "Indie Intimate",
-      "category": "LeadVocal",
-      "file": "LeadVocal/006-indie-intimate.hpeq",
-      "intent": "Close, natural vocal with restrained brightness",
-      "tags": [
-        "indie",
-        "natural"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-107",
-      "name": "EDM Lead Lift",
-      "category": "LeadVocal",
-      "file": "LeadVocal/007-edm-lead-lift.hpeq",
-      "intent": "Bright firm lead designed for dense synth arrangements",
-      "tags": [
-        "edm",
-        "bright"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-108",
+      "number": 3,
       "name": "Ballad Open Vocal",
       "category": "LeadVocal",
-      "file": "LeadVocal/008-ballad-open-vocal.hpeq",
-      "intent": "Gentle leveling with an open natural top",
-      "tags": [
-        "ballad",
-        "dynamic"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Open ballad vocal: gentle compression, air, hall.",
+      "path": "LeadVocal/003-ballad-open-vocal.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 2.4,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.3
     },
     {
-      "id": "factory-109",
-      "name": "Low Male Clarity",
+      "number": 4,
+      "name": "Trap Vocal Air",
       "category": "LeadVocal",
-      "file": "LeadVocal/009-low-male-clarity.hpeq",
-      "intent": "Reduces chest buildup while preserving authority",
-      "tags": [
-        "male",
-        "low"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Trap lead: tight, bright, a 1/8D echo that ducks under the words.",
+      "path": "LeadVocal/004-trap-vocal-air.hpeq",
+      "calibration": "peak-limited (true peak <= input + 6 dB)",
+      "outputGainDb": 7.2,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -17.100000000000001,
+      "measuredTruePeakDbtp": 4.2
     },
     {
-      "id": "factory-110",
-      "name": "High Vocal Soft Air",
+      "number": 5,
+      "name": "Rock Vocal Grit",
       "category": "LeadVocal",
-      "file": "LeadVocal/010-high-vocal-soft-air.hpeq",
-      "intent": "Smooths upper-mid intensity before adding air",
-      "tags": [
-        "female",
-        "high"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Rock lead with Iron grit and a slapback.",
+      "path": "LeadVocal/005-rock-vocal-grit.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 4.5,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": -0.5
     },
     {
-      "id": "factory-111",
-      "name": "Parallel Vocal Weight",
+      "number": 6,
+      "name": "Soft Intimate Vocal",
       "category": "LeadVocal",
-      "file": "LeadVocal/011-parallel-vocal-weight.hpeq",
-      "intent": "Heavy compression blended beneath the original",
-      "tags": [
-        "parallel",
-        "dense"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Close, soft vocal: warm, lightly compressed, small room.",
+      "path": "LeadVocal/006-soft-intimate-vocal.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.9,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 0.0
     },
     {
-      "id": "factory-112",
-      "name": "Vintage Tape Vocal",
+      "number": 7,
+      "name": "Radio Telephone Voice",
       "category": "LeadVocal",
-      "file": "LeadVocal/012-vintage-tape-vocal.hpeq",
-      "intent": "Warm rounded vocal colour with softened air",
-      "tags": [
-        "vintage",
-        "tape"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Telephone / radio voice: band-limited and crushed (Germanium).",
+      "path": "LeadVocal/007-radio-telephone-voice.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 8.199999999999999,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.199999999999999,
+      "measuredTruePeakDbtp": -1.9
     },
     {
-      "id": "factory-113",
-      "name": "Podcast Studio Voice",
+      "number": 8,
+      "name": "Vintage Tube Vocal (Lenin)",
       "category": "LeadVocal",
-      "file": "LeadVocal/013-podcast-studio-voice.hpeq",
-      "intent": "Dry, even speech with plosive and sibilance control",
-      "tags": [
-        "speech",
-        "podcast"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Vintage lead: LA-style slow compression, tape, BRING LENIN BACK.",
+      "path": "LeadVocal/008-vintage-tube-vocal-lenin.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 3.6,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 0.8
     },
     {
-      "id": "factory-114",
-      "name": "Vocal Rescue Boxy",
+      "number": 9,
+      "name": "Vocal Doubler Wide",
       "category": "LeadVocal",
-      "file": "LeadVocal/014-vocal-rescue-boxy.hpeq",
-      "intent": "Stronger low-mid cleanup for enclosed recordings",
-      "tags": [
-        "repair",
-        "boxy"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Layers: layer 2 is a short pitched echo pushed wide - a natural double.",
+      "path": "LeadVocal/009-vocal-doubler-wide.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.1,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": -0.7
     },
     {
-      "id": "factory-115",
-      "name": "Vocal Rescue Harsh",
+      "number": 10,
+      "name": "Vocal Throw Layer",
       "category": "LeadVocal",
-      "file": "LeadVocal/015-vocal-rescue-harsh.hpeq",
-      "intent": "Dynamic upper-mid control with conservative air",
-      "tags": [
-        "repair",
-        "harsh"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Layers: layer 2 is only reverb + 1/4 echo on the vocal's top band, ducked - a send in one preset.",
+      "path": "LeadVocal/010-vocal-throw-layer.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 3.6,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.6
     },
     {
-      "id": "factory-116",
-      "name": "Pop Stack Glue",
+      "number": 11,
+      "name": "Stutter Vocal (Revolution)",
+      "category": "LeadVocal",
+      "intent": "HamloRevolution on the vocal: musical stutters and half-time moments.",
+      "path": "LeadVocal/011-stutter-vocal-revolution.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 4.0,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.5
+    },
+    {
+      "number": 12,
+      "name": "Ad-Lib Space",
+      "category": "LeadVocal",
+      "intent": "Ad-libs: band-limited, wide, ping-pong echo and a big plate.",
+      "path": "LeadVocal/012-ad-lib-space.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 4.2,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.7
+    },
+    {
+      "number": 13,
+      "name": "Vocal Dynamic Clarity",
+      "category": "LeadVocal",
+      "intent": "Dynamic EQ instead of static: mud and harsh bands move only when they stick out.",
+      "path": "LeadVocal/013-vocal-dynamic-clarity.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 3.3,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.0
+    },
+    {
+      "number": 14,
+      "name": "Lo-Fi Bedroom Vocal",
+      "category": "LeadVocal",
+      "intent": "Lo-fi vocal: cassette, narrow, a dusty room.",
+      "path": "LeadVocal/014-lo-fi-bedroom-vocal.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 7.2,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": -0.1
+    },
+    {
+      "number": 15,
+      "name": "R&B Silk Vocal",
+      "category": "LeadVocal",
+      "intent": "R&B lead: silky top, smooth compression, a short plate and a 1/8 echo.",
+      "path": "LeadVocal/015-r-b-silk-vocal.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 3.1,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.7
+    },
+    {
+      "number": 16,
+      "name": "Indie Room Vocal",
+      "category": "LeadVocal",
+      "intent": "Indie vocal: mid-forward, tape, a live room.",
+      "path": "LeadVocal/016-indie-room-vocal.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 3.7,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.0
+    },
+    {
+      "number": 17,
+      "name": "Drill Vocal Tight",
+      "category": "LeadVocal",
+      "intent": "Drill vocal: very tight, upfront, bright, short 1/16 echo.",
+      "path": "LeadVocal/017-drill-vocal-tight.hpeq",
+      "calibration": "peak-limited (true peak <= input + 6 dB)",
+      "outputGainDb": 7.5,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -17.199999999999999,
+      "measuredTruePeakDbtp": 4.2
+    },
+    {
+      "number": 18,
+      "name": "Spoken Word Warm",
+      "category": "LeadVocal",
+      "intent": "Podcast / spoken word: warm, even, no reverb.",
+      "path": "LeadVocal/018-spoken-word-warm.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 2.7,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.8
+    },
+    {
+      "number": 19,
+      "name": "Vocal Stalin Shout",
+      "category": "LeadVocal",
+      "intent": "Screams / shouts: STALIN and Iron, compressed hard.",
+      "path": "LeadVocal/019-vocal-stalin-shout.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 7.9,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": -1.5
+    },
+    {
+      "number": 20,
+      "name": "Vocal Big Hall Ballad",
+      "category": "LeadVocal",
+      "intent": "A big ballad: long hall with predelay, tape echo, de-esser before the space.",
+      "path": "LeadVocal/020-vocal-big-hall-ballad.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.7,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 0.5
+    },
+    {
+      "number": 21,
+      "name": "Vocal Air Multiband",
+      "category": "LeadVocal",
+      "intent": "A region on the air band (8-16 kHz) compressed on its own, so the top stays smooth when it gets louder.",
+      "path": "LeadVocal/021-vocal-air-multiband.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 3.2,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 1.6
+    },
+    {
+      "number": 22,
+      "name": "Tuning Ready Vocal",
+      "category": "LeadVocal",
+      "intent": "A clean, dry, controlled vocal for pitch correction afterwards: no time effects.",
+      "path": "LeadVocal/022-tuning-ready-vocal.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 5.0,
+      "measuredInLufs": -16.199999999999999,
+      "measuredOutLufs": -16.300000000000001,
+      "measuredTruePeakDbtp": 2.9
+    },
+    {
+      "number": 23,
+      "name": "Backing Pad Wide",
       "category": "BackingVocal",
-      "file": "BackingVocal/016-pop-stack-glue.hpeq",
-      "intent": "Polished wide backing-vocal stack behind the lead",
-      "tags": [
-        "pop",
-        "stack"
-      ],
-      "outputGainDb": -1.5
+      "intent": "Backing vocals pushed back and wide, darker than the lead.",
+      "path": "BackingVocal/023-backing-pad-wide.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.5,
+      "measuredInLufs": -19.899999999999999,
+      "measuredOutLufs": -19.899999999999999,
+      "measuredTruePeakDbtp": -5.5
     },
     {
-      "id": "factory-117",
-      "name": "Dark Behind Lead",
+      "number": 24,
+      "name": "Gang Vocal Stack",
       "category": "BackingVocal",
-      "file": "BackingVocal/017-dark-behind-lead.hpeq",
-      "intent": "Reduced presence and air to maintain depth",
-      "tags": [
-        "dark",
-        "support"
-      ],
-      "outputGainDb": -1.5
+      "intent": "Group shouts: dense compression, wide, room.",
+      "path": "BackingVocal/024-gang-vocal-stack.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 4.5,
+      "measuredInLufs": -19.899999999999999,
+      "measuredOutLufs": -19.899999999999999,
+      "measuredTruePeakDbtp": -6.1
     },
     {
-      "id": "factory-118",
-      "name": "Airy Harmony Bed",
+      "number": 25,
+      "name": "Harmony Air",
       "category": "BackingVocal",
-      "file": "BackingVocal/018-airy-harmony-bed.hpeq",
-      "intent": "Wide floating harmonies with controlled esses",
-      "tags": [
-        "airy",
-        "harmony"
-      ],
-      "outputGainDb": -1.5
+      "intent": "Harmonies airy and soft, behind the lead.",
+      "path": "BackingVocal/025-harmony-air.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.9,
+      "measuredInLufs": -19.899999999999999,
+      "measuredOutLufs": -19.899999999999999,
+      "measuredTruePeakDbtp": -6.8
     },
     {
-      "id": "factory-119",
-      "name": "Rap Double Tight",
+      "number": 26,
+      "name": "Choir Cathedral",
       "category": "BackingVocal",
-      "file": "BackingVocal/019-rap-double-tight.hpeq",
-      "intent": "Compact center-supporting rap double",
-      "tags": [
-        "rap",
-        "double"
-      ],
-      "outputGainDb": -1.5
+      "intent": "A choir in a cathedral.",
+      "path": "BackingVocal/026-choir-cathedral.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -0.1,
+      "measuredInLufs": -19.899999999999999,
+      "measuredOutLufs": -19.899999999999999,
+      "measuredTruePeakDbtp": -5.7
     },
     {
-      "id": "factory-120",
-      "name": "Trap Adlib Wide",
+      "number": 27,
+      "name": "Backing Doubler",
       "category": "BackingVocal",
-      "file": "BackingVocal/020-trap-adlib-wide.hpeq",
-      "intent": "Wide bright ad-lib with tempo echo",
-      "tags": [
-        "trap",
-        "adlib"
-      ],
-      "outputGainDb": -1.5
+      "intent": "Layers: a pitched short double on layer 2, wide.",
+      "path": "BackingVocal/027-backing-doubler.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.3,
+      "measuredInLufs": -19.899999999999999,
+      "measuredOutLufs": -19.899999999999999,
+      "measuredTruePeakDbtp": -6.2
     },
     {
-      "id": "factory-121",
-      "name": "RNB Choir Silk",
+      "number": 28,
+      "name": "Backing Tape Blend",
       "category": "BackingVocal",
-      "file": "BackingVocal/021-rnb-choir-silk.hpeq",
-      "intent": "Smooth lush stereo backing choir",
-      "tags": [
-        "rnb",
-        "choir"
-      ],
-      "outputGainDb": -1.5
+      "intent": "Backing vocals glued with tape and Lenin.",
+      "path": "BackingVocal/028-backing-tape-blend.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 2.9,
+      "measuredInLufs": -19.899999999999999,
+      "measuredOutLufs": -19.899999999999999,
+      "measuredTruePeakDbtp": -6.4
     },
     {
-      "id": "factory-122",
-      "name": "Rock Gang Shout",
+      "number": 29,
+      "name": "Backing Ping-Pong Air",
       "category": "BackingVocal",
-      "file": "BackingVocal/022-rock-gang-shout.hpeq",
-      "intent": "Dense controlled group shout with mild ambience",
-      "tags": [
-        "rock",
-        "gang"
-      ],
-      "outputGainDb": -1.5
+      "intent": "Backing vocal echoes bouncing L-R, airy.",
+      "path": "BackingVocal/029-backing-ping-pong-air.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 2.7,
+      "measuredInLufs": -19.899999999999999,
+      "measuredOutLufs": -19.899999999999999,
+      "measuredTruePeakDbtp": -7.1
     },
     {
-      "id": "factory-123",
-      "name": "Indie Ghost Layer",
+      "number": 30,
+      "name": "Backing Lo-Fi Chorus",
       "category": "BackingVocal",
-      "file": "BackingVocal/023-indie-ghost-layer.hpeq",
-      "intent": "Soft distant double that adds texture, not focus",
-      "tags": [
-        "indie",
-        "texture"
-      ],
-      "outputGainDb": -1.5
+      "intent": "Lo-fi backing: cassette and a wide BBD shimmer.",
+      "path": "BackingVocal/030-backing-lo-fi-chorus.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 2.3,
+      "measuredInLufs": -19.899999999999999,
+      "measuredOutLufs": -19.899999999999999,
+      "measuredTruePeakDbtp": -5.0
     },
     {
-      "id": "factory-124",
-      "name": "Backing Vocal DeEss",
+      "number": 31,
+      "name": "Backing Behind Lead",
       "category": "BackingVocal",
-      "file": "BackingVocal/024-backing-vocal-deess.hpeq",
-      "intent": "Strong shared sibilance control for stacked parts",
-      "tags": [
-        "utility",
-        "deess"
-      ],
-      "outputGainDb": -1.5
+      "intent": "Backing vocal tucked behind the lead: presence cut where the lead lives.",
+      "path": "BackingVocal/031-backing-behind-lead.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 2.1,
+      "measuredInLufs": -19.899999999999999,
+      "measuredOutLufs": -19.899999999999999,
+      "measuredTruePeakDbtp": -7.4
     },
     {
-      "id": "factory-125",
-      "name": "Mono Support Double",
-      "category": "BackingVocal",
-      "file": "BackingVocal/025-mono-support-double.hpeq",
-      "intent": "Narrow backing layer for a stable vocal center",
-      "tags": [
-        "utility",
-        "mono"
-      ],
-      "outputGainDb": -1.5
-    },
-    {
-      "id": "factory-126",
-      "name": "Pop — Transparent Finish",
-      "category": "Mastering/Pop",
-      "file": "Mastering/Pop/026-pop-transparent-finish.hpeq",
-      "intent": "Minimal tonal correction and transparent peak control; tuned for Pop.",
-      "tags": [
-        "pop",
-        "transparent",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-127",
-      "name": "Pop — Streaming Balanced",
-      "category": "Mastering/Pop",
-      "file": "Mastering/Pop/027-pop-streaming-balanced.hpeq",
-      "intent": "Balanced translation with true-peak headroom; tuned for Pop.",
-      "tags": [
-        "pop",
-        "streaming",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-128",
-      "name": "Pop — Loud Controlled",
-      "category": "Mastering/Pop",
-      "file": "Mastering/Pop/028-pop-loud-controlled.hpeq",
-      "intent": "Denser level with protected stereo image and low-end center; tuned for Pop.",
-      "tags": [
-        "pop",
-        "loud",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-129",
-      "name": "Pop — Warm Cohesion",
-      "category": "Mastering/Pop",
-      "file": "Mastering/Pop/029-pop-warm-cohesion.hpeq",
-      "intent": "Rounder transients and gentle analog-style density; tuned for Pop.",
-      "tags": [
-        "pop",
-        "warm",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-130",
-      "name": "Pop — Open Dynamic",
-      "category": "Mastering/Pop",
-      "file": "Mastering/Pop/030-pop-open-dynamic.hpeq",
-      "intent": "Preserves movement while adding a small amount of polish; tuned for Pop.",
-      "tags": [
-        "pop",
-        "dynamic",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-131",
-      "name": "Rap — Transparent Finish",
-      "category": "Mastering/Rap",
-      "file": "Mastering/Rap/031-rap-transparent-finish.hpeq",
-      "intent": "Minimal tonal correction and transparent peak control; tuned for Rap.",
-      "tags": [
-        "rap",
-        "transparent",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-132",
-      "name": "Rap — Streaming Balanced",
-      "category": "Mastering/Rap",
-      "file": "Mastering/Rap/032-rap-streaming-balanced.hpeq",
-      "intent": "Balanced translation with true-peak headroom; tuned for Rap.",
-      "tags": [
-        "rap",
-        "streaming",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-133",
-      "name": "Rap — Loud Controlled",
-      "category": "Mastering/Rap",
-      "file": "Mastering/Rap/033-rap-loud-controlled.hpeq",
-      "intent": "Denser level with protected stereo image and low-end center; tuned for Rap.",
-      "tags": [
-        "rap",
-        "loud",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-134",
-      "name": "Rap — Warm Cohesion",
-      "category": "Mastering/Rap",
-      "file": "Mastering/Rap/034-rap-warm-cohesion.hpeq",
-      "intent": "Rounder transients and gentle analog-style density; tuned for Rap.",
-      "tags": [
-        "rap",
-        "warm",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-135",
-      "name": "Rap — Open Dynamic",
-      "category": "Mastering/Rap",
-      "file": "Mastering/Rap/035-rap-open-dynamic.hpeq",
-      "intent": "Preserves movement while adding a small amount of polish; tuned for Rap.",
-      "tags": [
-        "rap",
-        "dynamic",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-136",
-      "name": "Trap — Transparent Finish",
-      "category": "Mastering/Trap",
-      "file": "Mastering/Trap/036-trap-transparent-finish.hpeq",
-      "intent": "Minimal tonal correction and transparent peak control; tuned for Trap.",
-      "tags": [
-        "trap",
-        "transparent",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-137",
-      "name": "Trap — Streaming Balanced",
-      "category": "Mastering/Trap",
-      "file": "Mastering/Trap/037-trap-streaming-balanced.hpeq",
-      "intent": "Balanced translation with true-peak headroom; tuned for Trap.",
-      "tags": [
-        "trap",
-        "streaming",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-138",
-      "name": "Trap — Loud Controlled",
-      "category": "Mastering/Trap",
-      "file": "Mastering/Trap/038-trap-loud-controlled.hpeq",
-      "intent": "Denser level with protected stereo image and low-end center; tuned for Trap.",
-      "tags": [
-        "trap",
-        "loud",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-139",
-      "name": "Trap — Warm Cohesion",
-      "category": "Mastering/Trap",
-      "file": "Mastering/Trap/039-trap-warm-cohesion.hpeq",
-      "intent": "Rounder transients and gentle analog-style density; tuned for Trap.",
-      "tags": [
-        "trap",
-        "warm",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-140",
-      "name": "Trap — Open Dynamic",
-      "category": "Mastering/Trap",
-      "file": "Mastering/Trap/040-trap-open-dynamic.hpeq",
-      "intent": "Preserves movement while adding a small amount of polish; tuned for Trap.",
-      "tags": [
-        "trap",
-        "dynamic",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-141",
-      "name": "Techno — Transparent Finish",
-      "category": "Mastering/Techno",
-      "file": "Mastering/Techno/041-techno-transparent-finish.hpeq",
-      "intent": "Minimal tonal correction and transparent peak control; tuned for Techno.",
-      "tags": [
-        "techno",
-        "transparent",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-142",
-      "name": "Techno — Streaming Balanced",
-      "category": "Mastering/Techno",
-      "file": "Mastering/Techno/042-techno-streaming-balanced.hpeq",
-      "intent": "Balanced translation with true-peak headroom; tuned for Techno.",
-      "tags": [
-        "techno",
-        "streaming",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-143",
-      "name": "Techno — Loud Controlled",
-      "category": "Mastering/Techno",
-      "file": "Mastering/Techno/043-techno-loud-controlled.hpeq",
-      "intent": "Denser level with protected stereo image and low-end center; tuned for Techno.",
-      "tags": [
-        "techno",
-        "loud",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-144",
-      "name": "Techno — Warm Cohesion",
-      "category": "Mastering/Techno",
-      "file": "Mastering/Techno/044-techno-warm-cohesion.hpeq",
-      "intent": "Rounder transients and gentle analog-style density; tuned for Techno.",
-      "tags": [
-        "techno",
-        "warm",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-145",
-      "name": "Techno — Open Dynamic",
-      "category": "Mastering/Techno",
-      "file": "Mastering/Techno/045-techno-open-dynamic.hpeq",
-      "intent": "Preserves movement while adding a small amount of polish; tuned for Techno.",
-      "tags": [
-        "techno",
-        "dynamic",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-146",
-      "name": "House-EDM — Transparent Finish",
-      "category": "Mastering/House-EDM",
-      "file": "Mastering/House-EDM/046-house-edm-transparent-finish.hpeq",
-      "intent": "Minimal tonal correction and transparent peak control; tuned for House-EDM.",
-      "tags": [
-        "house",
-        "edm",
-        "transparent",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-147",
-      "name": "House-EDM — Streaming Balanced",
-      "category": "Mastering/House-EDM",
-      "file": "Mastering/House-EDM/047-house-edm-streaming-balanced.hpeq",
-      "intent": "Balanced translation with true-peak headroom; tuned for House-EDM.",
-      "tags": [
-        "house",
-        "edm",
-        "streaming",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-148",
-      "name": "House-EDM — Loud Controlled",
-      "category": "Mastering/House-EDM",
-      "file": "Mastering/House-EDM/048-house-edm-loud-controlled.hpeq",
-      "intent": "Denser level with protected stereo image and low-end center; tuned for House-EDM.",
-      "tags": [
-        "house",
-        "edm",
-        "loud",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-149",
-      "name": "House-EDM — Warm Cohesion",
-      "category": "Mastering/House-EDM",
-      "file": "Mastering/House-EDM/049-house-edm-warm-cohesion.hpeq",
-      "intent": "Rounder transients and gentle analog-style density; tuned for House-EDM.",
-      "tags": [
-        "house",
-        "edm",
-        "warm",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-150",
-      "name": "House-EDM — Open Dynamic",
-      "category": "Mastering/House-EDM",
-      "file": "Mastering/House-EDM/050-house-edm-open-dynamic.hpeq",
-      "intent": "Preserves movement while adding a small amount of polish; tuned for House-EDM.",
-      "tags": [
-        "house",
-        "edm",
-        "dynamic",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-151",
-      "name": "Rock-Indie — Transparent Finish",
-      "category": "Mastering/Rock-Indie",
-      "file": "Mastering/Rock-Indie/051-rock-indie-transparent-finish.hpeq",
-      "intent": "Minimal tonal correction and transparent peak control; tuned for Rock-Indie.",
-      "tags": [
-        "rock",
-        "indie",
-        "transparent",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-152",
-      "name": "Rock-Indie — Streaming Balanced",
-      "category": "Mastering/Rock-Indie",
-      "file": "Mastering/Rock-Indie/052-rock-indie-streaming-balanced.hpeq",
-      "intent": "Balanced translation with true-peak headroom; tuned for Rock-Indie.",
-      "tags": [
-        "rock",
-        "indie",
-        "streaming",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-153",
-      "name": "Rock-Indie — Loud Controlled",
-      "category": "Mastering/Rock-Indie",
-      "file": "Mastering/Rock-Indie/053-rock-indie-loud-controlled.hpeq",
-      "intent": "Denser level with protected stereo image and low-end center; tuned for Rock-Indie.",
-      "tags": [
-        "rock",
-        "indie",
-        "loud",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-154",
-      "name": "Rock-Indie — Warm Cohesion",
-      "category": "Mastering/Rock-Indie",
-      "file": "Mastering/Rock-Indie/054-rock-indie-warm-cohesion.hpeq",
-      "intent": "Rounder transients and gentle analog-style density; tuned for Rock-Indie.",
-      "tags": [
-        "rock",
-        "indie",
-        "warm",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-155",
-      "name": "Rock-Indie — Open Dynamic",
-      "category": "Mastering/Rock-Indie",
-      "file": "Mastering/Rock-Indie/055-rock-indie-open-dynamic.hpeq",
-      "intent": "Preserves movement while adding a small amount of polish; tuned for Rock-Indie.",
-      "tags": [
-        "rock",
-        "indie",
-        "dynamic",
-        "mastering"
-      ],
-      "outputGainDb": 0.0
-    },
-    {
-      "id": "factory-156",
-      "name": "Acoustic Guitar Natural",
+      "number": 32,
+      "name": "Acoustic Sparkle",
       "category": "Guitar",
-      "file": "Guitar/056-acoustic-guitar-natural.hpeq",
-      "intent": "Natural cleanup and controlled pick peaks",
-      "tags": [
-        "acoustic",
-        "natural"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Acoustic guitar: boom cut, sparkle, a small room.",
+      "path": "Guitar/032-acoustic-sparkle.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.1,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -11.300000000000001
     },
     {
-      "id": "factory-157",
-      "name": "Acoustic Guitar Bright",
+      "number": 33,
+      "name": "Electric Crunch Body",
       "category": "Guitar",
-      "file": "Guitar/057-acoustic-guitar-bright.hpeq",
-      "intent": "Airy strumming with dynamic harshness control",
-      "tags": [
-        "acoustic",
-        "bright"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Electric rhythm: low mids even, Iron crunch.",
+      "path": "Guitar/033-electric-crunch-body.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.0,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -11.300000000000001
     },
     {
-      "id": "factory-158",
-      "name": "Electric Clean Chime",
+      "number": 34,
+      "name": "Clean Chorus Echo",
       "category": "Guitar",
-      "file": "Guitar/058-electric-clean-chime.hpeq",
-      "intent": "Clear clean guitar with gentle stereo space",
-      "tags": [
-        "electric",
-        "clean"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Clean electric with BBD echo modulation (chorus-like) and a plate.",
+      "path": "Guitar/034-clean-chorus-echo.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -0.2,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -11.300000000000001
     },
     {
-      "id": "factory-159",
-      "name": "Rock Rhythm Tight",
+      "number": 35,
+      "name": "Wide Rhythm",
       "category": "Guitar",
-      "file": "Guitar/059-rock-rhythm-tight.hpeq",
-      "intent": "Dense rhythm guitar with low-mid cleanup",
-      "tags": [
-        "rock",
-        "rhythm"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Rhythm guitar made wide (stereoize, mono-safe).",
+      "path": "Guitar/035-wide-rhythm.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.3,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -10.199999999999999
     },
     {
-      "id": "factory-160",
-      "name": "Metal Rhythm Wall",
+      "number": 36,
+      "name": "Ambient Guitar Wash",
       "category": "Guitar",
-      "file": "Guitar/060-metal-rhythm-wall.hpeq",
-      "intent": "Tight high-gain guitar with fizz control",
-      "tags": [
-        "metal",
-        "heavy"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Ambient guitar: long tape echo, cathedral, ducked.",
+      "path": "Guitar/036-ambient-guitar-wash.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -1.6,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -13.0
     },
     {
-      "id": "factory-161",
-      "name": "Lead Guitar Singing",
+      "number": 37,
+      "name": "Guitar Revolution Glitch",
       "category": "Guitar",
-      "file": "Guitar/061-lead-guitar-singing.hpeq",
-      "intent": "Sustaining forward lead with short ambience",
-      "tags": [
-        "lead",
-        "sustain"
-      ],
-      "outputGainDb": -1.0
+      "intent": "HamloRevolution on a guitar part: experimental chops and filter motion.",
+      "path": "Guitar/037-guitar-revolution-glitch.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.6,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -9.800000000000001
     },
     {
-      "id": "factory-162",
-      "name": "Funk Guitar Snap",
+      "number": 38,
+      "name": "Guitar Lenin Amp Warmth",
       "category": "Guitar",
-      "file": "Guitar/062-funk-guitar-snap.hpeq",
-      "intent": "Fast clean articulation and reduced low mids",
-      "tags": [
-        "funk",
-        "clean"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Guitar with BRING LENIN BACK and tape: warm amp-like body.",
+      "path": "Guitar/038-guitar-lenin-amp-warmth.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.5,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -11.9
     },
     {
-      "id": "factory-163",
-      "name": "Lo-Fi Guitar Print",
+      "number": 39,
+      "name": "Guitar Ping-Pong Delay",
       "category": "Guitar",
-      "file": "Guitar/063-lo-fi-guitar-print.hpeq",
-      "intent": "Dark tape-coloured guitar texture",
-      "tags": [
-        "lofi",
-        "tape"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Lead guitar with a dotted ping-pong echo and plate.",
+      "path": "Guitar/039-guitar-ping-pong-delay.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -11.5
     },
     {
-      "id": "factory-164",
-      "name": "Analog Pad Width",
-      "category": "Synth",
-      "file": "Synth/064-analog-pad-width.hpeq",
-      "intent": "Wide warm pad with mono-safe low end",
-      "tags": [
-        "pad",
-        "analog"
-      ],
-      "outputGainDb": -1.0
+      "number": 40,
+      "name": "Guitar Tight Gate",
+      "category": "Guitar",
+      "intent": "High-gain rhythm: gate the noise, tight lows.",
+      "path": "Guitar/040-guitar-tight-gate.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.0,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -12.1
     },
     {
-      "id": "factory-165",
-      "name": "Digital Pad Smooth",
-      "category": "Synth",
-      "file": "Synth/065-digital-pad-smooth.hpeq",
-      "intent": "Controls glassy peaks and adds soft depth",
-      "tags": [
-        "pad",
-        "digital"
-      ],
-      "outputGainDb": -1.0
+      "number": 41,
+      "name": "Guitar Freeze Swell",
+      "category": "Guitar",
+      "intent": "Layers: layer 2 turns the guitar into a long swelling pad.",
+      "path": "Guitar/041-guitar-freeze-swell.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.8,
+      "measuredInLufs": -28.5,
+      "measuredOutLufs": -28.5,
+      "measuredTruePeakDbtp": -12.199999999999999
     },
     {
-      "id": "factory-166",
-      "name": "Pluck Forward",
-      "category": "Synth",
-      "file": "Synth/066-pluck-forward.hpeq",
-      "intent": "Fast defined pluck with compact tail",
-      "tags": [
-        "pluck",
-        "transient"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-167",
-      "name": "Arp Controlled",
-      "category": "Synth",
-      "file": "Synth/067-arp-controlled.hpeq",
-      "intent": "Even rhythmic arpeggio with restrained width",
-      "tags": [
-        "arp",
-        "rhythmic"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-168",
-      "name": "Lead Synth Focus",
-      "category": "Synth",
-      "file": "Synth/068-lead-synth-focus.hpeq",
-      "intent": "Centered synth lead with presence and peak control",
-      "tags": [
-        "lead",
-        "mono-safe"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-169",
-      "name": "Supersaw Tamer",
-      "category": "Synth",
-      "file": "Synth/069-supersaw-tamer.hpeq",
-      "intent": "Reduces upper-mid glare while retaining size",
-      "tags": [
-        "supersaw",
-        "edm"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-170",
-      "name": "Acid Resonance Control",
-      "category": "Synth",
-      "file": "Synth/070-acid-resonance-control.hpeq",
-      "intent": "Dynamic control for moving resonant lines",
-      "tags": [
-        "acid",
-        "resonant"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-171",
-      "name": "Lo-Fi Synth Print",
-      "category": "Synth",
-      "file": "Synth/071-lo-fi-synth-print.hpeq",
-      "intent": "Narrow vintage synth texture with tape colour",
-      "tags": [
-        "lofi",
-        "tape"
-      ],
-      "outputGainDb": -1.0
-    },
-    {
-      "id": "factory-172",
-      "name": "Grand Piano Natural",
+      "number": 42,
+      "name": "Piano Clear",
       "category": "Keys",
-      "file": "Keys/072-grand-piano-natural.hpeq",
-      "intent": "Transparent piano cleanup and peak control",
-      "tags": [
-        "piano",
-        "natural"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Piano / keys clearer: low mids out, presence.",
+      "path": "Keys/042-piano-clear.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.5,
+      "measuredInLufs": -21.699999999999999,
+      "measuredOutLufs": -21.699999999999999,
+      "measuredTruePeakDbtp": -7.7
     },
     {
-      "id": "factory-173",
-      "name": "Pop Piano Bright",
+      "number": 43,
+      "name": "Rhodes Tube Warmth",
       "category": "Keys",
-      "file": "Keys/073-pop-piano-bright.hpeq",
-      "intent": "Forward piano for dense pop arrangements",
-      "tags": [
-        "piano",
-        "pop"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Electric piano: Tube saturation and a gentle wide chorus.",
+      "path": "Keys/043-rhodes-tube-warmth.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.4,
+      "measuredInLufs": -21.699999999999999,
+      "measuredOutLufs": -21.699999999999999,
+      "measuredTruePeakDbtp": -8.199999999999999
     },
     {
-      "id": "factory-174",
-      "name": "Felt Piano Intimate",
+      "number": 44,
+      "name": "Felt Lo-Fi Keys",
       "category": "Keys",
-      "file": "Keys/074-felt-piano-intimate.hpeq",
-      "intent": "Soft close piano with warm ambience",
-      "tags": [
-        "piano",
-        "felt"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Lo-fi felt keys: Vinyl crackle, dark, narrow.",
+      "path": "Keys/044-felt-lo-fi-keys.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 2.1,
+      "measuredInLufs": -21.699999999999999,
+      "measuredOutLufs": -21.699999999999999,
+      "measuredTruePeakDbtp": -7.4
     },
     {
-      "id": "factory-175",
-      "name": "Rhodes Velvet",
+      "number": 45,
+      "name": "Keys Hall",
       "category": "Keys",
-      "file": "Keys/075-rhodes-velvet.hpeq",
-      "intent": "Warm electric piano with smooth upper mids",
-      "tags": [
-        "rhodes",
-        "warm"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Keys in a lush hall.",
+      "path": "Keys/045-keys-hall.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -0.5,
+      "measuredInLufs": -21.699999999999999,
+      "measuredOutLufs": -21.699999999999999,
+      "measuredTruePeakDbtp": -7.6
     },
     {
-      "id": "factory-176",
-      "name": "Wurlitzer Bite",
+      "number": 46,
+      "name": "Keys Freeze Pad",
       "category": "Keys",
-      "file": "Keys/076-wurlitzer-bite.hpeq",
-      "intent": "Controlled bark and vintage harmonic density",
-      "tags": [
-        "wurli",
-        "vintage"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Layers: layer 2 freezes the keys into an endless reverb pad under the dry part.",
+      "path": "Keys/046-keys-freeze-pad.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.4,
+      "measuredInLufs": -21.699999999999999,
+      "measuredOutLufs": -21.699999999999999,
+      "measuredTruePeakDbtp": -8.300000000000001
     },
     {
-      "id": "factory-177",
-      "name": "Keys Bus Glue",
+      "number": 47,
+      "name": "Keys Tape Wobble",
       "category": "Keys",
-      "file": "Keys/077-keys-bus-glue.hpeq",
-      "intent": "Cohesive keyboard subgroup with safe width",
-      "tags": [
-        "keys",
-        "bus"
-      ],
-      "outputGainDb": -1.0
+      "intent": "Keys with cassette wow and flutter.",
+      "path": "Keys/047-keys-tape-wobble.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 2.4,
+      "measuredInLufs": -21.699999999999999,
+      "measuredOutLufs": -21.699999999999999,
+      "measuredTruePeakDbtp": -6.7
     },
     {
-      "id": "factory-178",
-      "name": "Mix Bus Transparent",
-      "category": "MixBus",
-      "file": "MixBus/078-mix-bus-transparent.hpeq",
-      "intent": "Very light cohesion and true-peak safety",
-      "tags": [
-        "transparent",
-        "clean"
-      ],
-      "outputGainDb": 0.0
+      "number": 48,
+      "name": "Keys Ping-Pong Dream",
+      "category": "Keys",
+      "intent": "Dreamy keys: ping-pong echo, cathedral, wide.",
+      "path": "Keys/048-keys-ping-pong-dream.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -0.2,
+      "measuredInLufs": -21.699999999999999,
+      "measuredOutLufs": -21.699999999999999,
+      "measuredTruePeakDbtp": -7.1
     },
     {
-      "id": "factory-179",
-      "name": "Mix Bus Modern Pop",
-      "category": "MixBus",
-      "file": "MixBus/079-mix-bus-modern-pop.hpeq",
-      "intent": "Polished top and controlled contemporary density",
-      "tags": [
-        "pop",
-        "polished"
-      ],
-      "outputGainDb": 0.0
+      "number": 49,
+      "name": "Keys Revolution Chops",
+      "category": "Keys",
+      "intent": "Revolution on keys: musical chops and repeats.",
+      "path": "Keys/049-keys-revolution-chops.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.1,
+      "measuredInLufs": -21.699999999999999,
+      "measuredOutLufs": -21.800000000000001,
+      "measuredTruePeakDbtp": -6.7
     },
     {
-      "id": "factory-180",
-      "name": "Mix Bus Hip Hop",
-      "category": "MixBus",
-      "file": "MixBus/080-mix-bus-hip-hop.hpeq",
-      "intent": "Centered low end with punch-preserving glue",
-      "tags": [
-        "hip-hop",
-        "punch"
-      ],
-      "outputGainDb": 0.0
+      "number": 50,
+      "name": "Organ Stalin Grit",
+      "category": "Keys",
+      "intent": "Organ / keys through STALIN: the transformer roar.",
+      "path": "Keys/050-organ-stalin-grit.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.8,
+      "measuredInLufs": -21.699999999999999,
+      "measuredOutLufs": -21.699999999999999,
+      "measuredTruePeakDbtp": -9.300000000000001
     },
     {
-      "id": "factory-181",
-      "name": "Mix Bus Electronic",
-      "category": "MixBus",
-      "file": "MixBus/081-mix-bus-electronic.hpeq",
-      "intent": "Firm electronic mix cohesion and peak control",
-      "tags": [
-        "electronic",
-        "club"
-      ],
-      "outputGainDb": 0.0
+      "number": 51,
+      "name": "Synth Lead Cut",
+      "category": "Synth",
+      "intent": "Lead synth through the mix: presence, tape drive, 1/8D echo.",
+      "path": "Synth/051-synth-lead-cut.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.2,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.0,
+      "measuredTruePeakDbtp": -13.6
     },
     {
-      "id": "factory-182",
-      "name": "Mix Bus Analog Warm",
-      "category": "MixBus",
-      "file": "MixBus/082-mix-bus-analog-warm.hpeq",
-      "intent": "Rounded tape-style colour and soft glue",
-      "tags": [
-        "warm",
-        "analog"
-      ],
-      "outputGainDb": 0.0
+      "number": 52,
+      "name": "Pad Wide Soft",
+      "category": "Synth",
+      "intent": "Pads: wide, soft, darker, in a hall.",
+      "path": "Synth/052-pad-wide-soft.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -1.1,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.0,
+      "measuredTruePeakDbtp": -12.0
     },
     {
-      "id": "factory-183",
-      "name": "Mix Bus Open Rock",
-      "category": "MixBus",
-      "file": "MixBus/083-mix-bus-open-rock.hpeq",
-      "intent": "Preserves live transients and stereo stability",
-      "tags": [
-        "rock",
-        "dynamic"
-      ],
-      "outputGainDb": 0.0
+      "number": 53,
+      "name": "Pluck Ping-Pong",
+      "category": "Synth",
+      "intent": "Plucks bouncing L-R on 1/8.",
+      "path": "Synth/053-pluck-ping-pong.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.3,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.0,
+      "measuredTruePeakDbtp": -12.4
     },
     {
-      "id": "factory-184",
-      "name": "Mix Bus Wide Safe",
-      "category": "MixBus",
-      "file": "MixBus/084-mix-bus-wide-safe.hpeq",
-      "intent": "Small mono-compatible width increase",
-      "tags": [
-        "wide",
-        "mono-safe"
-      ],
-      "outputGainDb": 0.0
+      "number": 54,
+      "name": "Synth Motion Filter",
+      "category": "Synth",
+      "intent": "HamloRevolution as an auto-filter: low-pass motion on the grid, no chops.",
+      "path": "Synth/054-synth-motion-filter.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.0,
+      "measuredTruePeakDbtp": -13.800000000000001
     },
     {
-      "id": "factory-185",
-      "name": "Mix Bus PreMaster",
+      "number": 55,
+      "name": "Arp Destruction",
+      "category": "Synth",
+      "intent": "Revolution DESTRUCTION on an arp: crush motion and glitches (mix 60 %).",
+      "path": "Synth/055-arp-destruction.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 2.8,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.0,
+      "measuredTruePeakDbtp": -10.9
+    },
+    {
+      "number": 56,
+      "name": "Synth Bass Growl",
+      "category": "Synth",
+      "intent": "Synth bass: sub mono, growl saturation on a region above 250 Hz.",
+      "path": "Synth/056-synth-bass-growl.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.5,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.0,
+      "measuredTruePeakDbtp": -12.699999999999999
+    },
+    {
+      "number": 57,
+      "name": "Synth Lenin Analog",
+      "category": "Synth",
+      "intent": "Synth with BRING LENIN BACK and Tube: analog-like.",
+      "path": "Synth/057-synth-lenin-analog.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.0,
+      "measuredTruePeakDbtp": -13.800000000000001
+    },
+    {
+      "number": 58,
+      "name": "Synth Stereo Cosmos",
+      "category": "Synth",
+      "intent": "Synth in KOSMOS: surround-like width, behind the speakers.",
+      "path": "Synth/058-synth-stereo-cosmos.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -0.7,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.0,
+      "measuredTruePeakDbtp": -11.699999999999999
+    },
+    {
+      "number": 59,
+      "name": "Synth Tape Stop Fx",
+      "category": "Synth",
+      "intent": "Revolution with only TIME: tape stops and half-time on a synth part.",
+      "path": "Synth/059-synth-tape-stop-fx.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -0.4,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.0,
+      "measuredTruePeakDbtp": -14.199999999999999
+    },
+    {
+      "number": 60,
+      "name": "Synth Freeze Drone",
+      "category": "Synth",
+      "intent": "Layers: the synth plus a long drone layer under it.",
+      "path": "Synth/060-synth-freeze-drone.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.5,
+      "measuredInLufs": -24.0,
+      "measuredOutLufs": -24.100000000000001,
+      "measuredTruePeakDbtp": -12.1
+    },
+    {
+      "number": 61,
+      "name": "Mix Bus Glue",
       "category": "MixBus",
-      "file": "MixBus/085-mix-bus-premaster.hpeq",
-      "intent": "Conservative headroom-oriented finishing chain",
-      "tags": [
-        "premaster",
-        "utility"
-      ],
-      "outputGainDb": 0.0
+      "intent": "2-bus glue: 2:1, slow attack, auto-release feel.",
+      "path": "MixBus/061-mix-bus-glue.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.3,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.1,
+      "measuredTruePeakDbtp": 2.0
+    },
+    {
+      "number": 62,
+      "name": "Mix Bus Analog (Lenin)",
+      "category": "MixBus",
+      "intent": "Analog bus: tape and BRING LENIN BACK.",
+      "path": "MixBus/062-mix-bus-analog-lenin.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.7,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.1,
+      "measuredTruePeakDbtp": 1.8
+    },
+    {
+      "number": 63,
+      "name": "Mix Bus Stalin Heat",
+      "category": "MixBus",
+      "intent": "BRING STALIN BACK at 50 %: transformer weight and harder harmonics.",
+      "path": "MixBus/063-mix-bus-stalin-heat.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.7,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.199999999999999,
+      "measuredTruePeakDbtp": -0.7
+    },
+    {
+      "number": 64,
+      "name": "Mix Bus Air & Weight",
+      "category": "MixBus",
+      "intent": "Tilt-like: a low shelf and air shelf, wide but mono below 120 Hz.",
+      "path": "MixBus/064-mix-bus-air-weight.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -0.2,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.1,
+      "measuredTruePeakDbtp": 1.8
+    },
+    {
+      "number": 65,
+      "name": "Mix Bus Multiband",
+      "category": "MixBus",
+      "intent": "Three regions: lows held, mids gentle, highs smoothed.",
+      "path": "MixBus/065-mix-bus-multiband.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.2,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.199999999999999,
+      "measuredTruePeakDbtp": 0.7
+    },
+    {
+      "number": 66,
+      "name": "Mix Bus Parallel Punch",
+      "category": "MixBus",
+      "intent": "Layers: layer 2 is a crushed copy of the mix blended in (New York style).",
+      "path": "MixBus/066-mix-bus-parallel-punch.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.9,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.1,
+      "measuredTruePeakDbtp": 1.5
+    },
+    {
+      "number": 67,
+      "name": "Mix Bus Wide Mono-Safe",
+      "category": "MixBus",
+      "intent": "Wider mix, mono below 150 Hz, SAFE on.",
+      "path": "MixBus/067-mix-bus-wide-mono-safe.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": -0.1,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.1,
+      "measuredTruePeakDbtp": 1.9
+    },
+    {
+      "number": 68,
+      "name": "Mix Bus Tape 15 ips",
+      "category": "MixBus",
+      "intent": "Tape machine on the mix, gentle.",
+      "path": "MixBus/068-mix-bus-tape-15-ips.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 1.1,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.1,
+      "measuredTruePeakDbtp": 0.3
+    },
+    {
+      "number": 69,
+      "name": "Mix Bus Dynamic Mud",
+      "category": "MixBus",
+      "intent": "A dynamic point at 250 Hz cuts mud only when it builds up.",
+      "path": "MixBus/069-mix-bus-dynamic-mud.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 0.7,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.1,
+      "measuredTruePeakDbtp": 1.6
+    },
+    {
+      "number": 70,
+      "name": "Mix Bus Vintage Radio",
+      "category": "MixBus",
+      "intent": "The whole mix as an old radio: band-limited and STALIN.",
+      "path": "MixBus/070-mix-bus-vintage-radio.hpeq",
+      "calibration": "level-matched",
+      "outputGainDb": 11.300000000000001,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.199999999999999,
+      "measuredTruePeakDbtp": 1.2
+    },
+    {
+      "number": 71,
+      "name": "Pop Clean Master",
+      "category": "Mastering",
+      "group": "Pop",
+      "intent": "Transparent: gentle glue, tonal balance, true-peak limiting. Target -9.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Pop/071-pop-clean-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 72,
+      "name": "Pop Warm Master (Lenin)",
+      "category": "Mastering",
+      "group": "Pop",
+      "intent": "Warm: tape saturation and BRING LENIN BACK at 30 % (the ceiling leaves room for the tube). Target -9.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Pop/072-pop-warm-master-lenin.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.5,
+      "measuredTruePeakDbtp": -1.1
+    },
+    {
+      "number": 73,
+      "name": "Pop Punch Master",
+      "category": "Mastering",
+      "group": "Pop",
+      "intent": "Punch: transients kept before the limiter, low end held by a region compressor. Target -9.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Pop/073-pop-punch-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 74,
+      "name": "Pop Multiband Master",
+      "category": "Mastering",
+      "group": "Pop",
+      "intent": "Multiband: three regions with their own compressors and saturation on the mids. Target -9.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Pop/074-pop-multiband-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 75,
+      "name": "Pop Streaming -14",
+      "category": "Mastering",
+      "group": "Pop",
+      "intent": "Streaming: no loudness war, the dynamics kept; the platforms play it at -14 LUFS anyway. Target -14.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Pop/075-pop-streaming-14.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 76,
+      "name": "Pop Loud Master",
+      "category": "Mastering",
+      "group": "Pop",
+      "intent": "Loud: glue, Tape and the limiter in STAKHANOV. Target -9.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Pop/076-pop-loud-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 77,
+      "name": "Pop Stalin Master",
+      "category": "Mastering",
+      "group": "Pop",
+      "intent": "Character: BRING STALIN BACK at 15 % and Iron on the mids (the ceiling leaves room for the tube). Target -9.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Pop/077-pop-stalin-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.5,
+      "measuredTruePeakDbtp": -1.8
+    },
+    {
+      "number": 78,
+      "name": "Rap Clean Master",
+      "category": "Mastering",
+      "group": "Rap",
+      "intent": "Transparent: gentle glue, tonal balance, true-peak limiting. Target -9.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rap/078-rap-clean-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 79,
+      "name": "Rap Warm Master (Lenin)",
+      "category": "Mastering",
+      "group": "Rap",
+      "intent": "Warm: tape saturation and BRING LENIN BACK at 30 % (the ceiling leaves room for the tube). Target -9.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rap/079-rap-warm-master-lenin.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.0,
+      "measuredTruePeakDbtp": -1.1
+    },
+    {
+      "number": 80,
+      "name": "Rap Punch Master",
+      "category": "Mastering",
+      "group": "Rap",
+      "intent": "Punch: transients kept before the limiter, low end held by a region compressor. Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rap/080-rap-punch-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 81,
+      "name": "Rap Multiband Master",
+      "category": "Mastering",
+      "group": "Rap",
+      "intent": "Multiband: three regions with their own compressors and saturation on the mids. Target -9.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rap/081-rap-multiband-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 82,
+      "name": "Rap Streaming -14",
+      "category": "Mastering",
+      "group": "Rap",
+      "intent": "Streaming: no loudness war, the dynamics kept; the platforms play it at -14 LUFS anyway. Target -14.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rap/082-rap-streaming-14.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 83,
+      "name": "Rap Loud Master",
+      "category": "Mastering",
+      "group": "Rap",
+      "intent": "Loud: glue, Tape and the limiter in STAKHANOV. Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rap/083-rap-loud-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 84,
+      "name": "Rap Stalin Master",
+      "category": "Mastering",
+      "group": "Rap",
+      "intent": "Character: BRING STALIN BACK at 15 % and Iron on the mids (the ceiling leaves room for the tube). Target -9.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rap/084-rap-stalin-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.0,
+      "measuredTruePeakDbtp": -1.8
+    },
+    {
+      "number": 85,
+      "name": "Trap Clean Master",
+      "category": "Mastering",
+      "group": "Trap",
+      "intent": "Transparent: gentle glue, tonal balance, true-peak limiting. Target -8.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Trap/085-trap-clean-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 86,
+      "name": "Trap Warm Master (Lenin)",
+      "category": "Mastering",
+      "group": "Trap",
+      "intent": "Warm: tape saturation and BRING LENIN BACK at 30 % (the ceiling leaves room for the tube). Target -8.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Trap/086-trap-warm-master-lenin.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 87,
+      "name": "Trap Punch Master",
+      "category": "Mastering",
+      "group": "Trap",
+      "intent": "Punch: transients kept before the limiter, low end held by a region compressor. Target -7.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Trap/087-trap-punch-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -7.5,
+      "measuredTruePeakDbtp": -1.1
+    },
+    {
+      "number": 88,
+      "name": "Trap Multiband Master",
+      "category": "Mastering",
+      "group": "Trap",
+      "intent": "Multiband: three regions with their own compressors and saturation on the mids. Target -8.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Trap/088-trap-multiband-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 89,
+      "name": "Trap Streaming -14",
+      "category": "Mastering",
+      "group": "Trap",
+      "intent": "Streaming: no loudness war, the dynamics kept; the platforms play it at -14 LUFS anyway. Target -14.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Trap/089-trap-streaming-14.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -13.9,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 90,
+      "name": "Trap Loud Master",
+      "category": "Mastering",
+      "group": "Trap",
+      "intent": "Loud: glue, Tape and the limiter in STAKHANOV. Target -7.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Trap/090-trap-loud-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -7.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 91,
+      "name": "Trap Stalin Master",
+      "category": "Mastering",
+      "group": "Trap",
+      "intent": "Character: BRING STALIN BACK at 15 % and Iron on the mids (the ceiling leaves room for the tube). Target -8.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Trap/091-trap-stalin-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.0,
+      "measuredTruePeakDbtp": -1.7
+    },
+    {
+      "number": 92,
+      "name": "Techno Clean Master",
+      "category": "Mastering",
+      "group": "Techno",
+      "intent": "Transparent: gentle glue, tonal balance, true-peak limiting. Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Techno/092-techno-clean-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 93,
+      "name": "Techno Warm Master (Lenin)",
+      "category": "Mastering",
+      "group": "Techno",
+      "intent": "Warm: tape saturation and BRING LENIN BACK at 30 % (the ceiling leaves room for the tube). Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Techno/093-techno-warm-master-lenin.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.1
+    },
+    {
+      "number": 94,
+      "name": "Techno Punch Master",
+      "category": "Mastering",
+      "group": "Techno",
+      "intent": "Punch: transients kept before the limiter, low end held by a region compressor. Target -8.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Techno/094-techno-punch-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 95,
+      "name": "Techno Multiband Master",
+      "category": "Mastering",
+      "group": "Techno",
+      "intent": "Multiband: three regions with their own compressors and saturation on the mids. Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Techno/095-techno-multiband-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 96,
+      "name": "Techno Streaming -14",
+      "category": "Mastering",
+      "group": "Techno",
+      "intent": "Streaming: no loudness war, the dynamics kept; the platforms play it at -14 LUFS anyway. Target -14.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Techno/096-techno-streaming-14.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 97,
+      "name": "Techno Loud Master",
+      "category": "Mastering",
+      "group": "Techno",
+      "intent": "Loud: glue, Tape and the limiter in STAKHANOV. Target -8.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Techno/097-techno-loud-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 98,
+      "name": "Techno Stalin Master",
+      "category": "Mastering",
+      "group": "Techno",
+      "intent": "Character: BRING STALIN BACK at 15 % and Iron on the mids (the ceiling leaves room for the tube). Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Techno/098-techno-stalin-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.7
+    },
+    {
+      "number": 99,
+      "name": "House / EDM Clean Master",
+      "category": "Mastering",
+      "group": "House-EDM",
+      "intent": "Transparent: gentle glue, tonal balance, true-peak limiting. Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/House-EDM/099-house-edm-clean-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 100,
+      "name": "House / EDM Warm Master (Lenin)",
+      "category": "Mastering",
+      "group": "House-EDM",
+      "intent": "Warm: tape saturation and BRING LENIN BACK at 30 % (the ceiling leaves room for the tube). Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/House-EDM/100-house-edm-warm-master-lenin.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.1
+    },
+    {
+      "number": 101,
+      "name": "House / EDM Punch Master",
+      "category": "Mastering",
+      "group": "House-EDM",
+      "intent": "Punch: transients kept before the limiter, low end held by a region compressor. Target -8.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/House-EDM/101-house-edm-punch-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 102,
+      "name": "House / EDM Multiband Master",
+      "category": "Mastering",
+      "group": "House-EDM",
+      "intent": "Multiband: three regions with their own compressors and saturation on the mids. Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/House-EDM/102-house-edm-multiband-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 103,
+      "name": "House / EDM Streaming -14",
+      "category": "Mastering",
+      "group": "House-EDM",
+      "intent": "Streaming: no loudness war, the dynamics kept; the platforms play it at -14 LUFS anyway. Target -14.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/House-EDM/103-house-edm-streaming-14.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 104,
+      "name": "House / EDM Loud Master",
+      "category": "Mastering",
+      "group": "House-EDM",
+      "intent": "Loud: glue, Tape and the limiter in STAKHANOV. Target -8.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/House-EDM/104-house-edm-loud-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 105,
+      "name": "House / EDM Stalin Master",
+      "category": "Mastering",
+      "group": "House-EDM",
+      "intent": "Character: BRING STALIN BACK at 15 % and Iron on the mids (the ceiling leaves room for the tube). Target -8.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/House-EDM/105-house-edm-stalin-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -8.5,
+      "measuredTruePeakDbtp": -1.7
+    },
+    {
+      "number": 106,
+      "name": "Rock / Indie Clean Master",
+      "category": "Mastering",
+      "group": "Rock-Indie",
+      "intent": "Transparent: gentle glue, tonal balance, true-peak limiting. Target -9.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rock-Indie/106-rock-indie-clean-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 107,
+      "name": "Rock / Indie Warm Master (Lenin)",
+      "category": "Mastering",
+      "group": "Rock-Indie",
+      "intent": "Warm: tape saturation and BRING LENIN BACK at 30 % (the ceiling leaves room for the tube). Target -9.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rock-Indie/107-rock-indie-warm-master-lenin.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.5,
+      "measuredTruePeakDbtp": -1.1
+    },
+    {
+      "number": 108,
+      "name": "Rock / Indie Punch Master",
+      "category": "Mastering",
+      "group": "Rock-Indie",
+      "intent": "Punch: transients kept before the limiter, low end held by a region compressor. Target -9.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rock-Indie/108-rock-indie-punch-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 109,
+      "name": "Rock / Indie Multiband Master",
+      "category": "Mastering",
+      "group": "Rock-Indie",
+      "intent": "Multiband: three regions with their own compressors and saturation on the mids. Target -9.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rock-Indie/109-rock-indie-multiband-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.5,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 110,
+      "name": "Rock / Indie Streaming -14",
+      "category": "Mastering",
+      "group": "Rock-Indie",
+      "intent": "Streaming: no loudness war, the dynamics kept; the platforms play it at -14 LUFS anyway. Target -14.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rock-Indie/110-rock-indie-streaming-14.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -14.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 111,
+      "name": "Rock / Indie Loud Master",
+      "category": "Mastering",
+      "group": "Rock-Indie",
+      "intent": "Loud: glue, Tape and the limiter in STAKHANOV. Target -9.0 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rock-Indie/111-rock-indie-loud-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.0,
+      "measuredTruePeakDbtp": -1.0
+    },
+    {
+      "number": 112,
+      "name": "Rock / Indie Stalin Master",
+      "category": "Mastering",
+      "group": "Rock-Indie",
+      "intent": "Character: BRING STALIN BACK at 15 % and Iron on the mids (the ceiling leaves room for the tube). Target -9.5 LUFS integrated, ceiling -1 dBTP.",
+      "path": "Mastering/Rock-Indie/112-rock-indie-stalin-master.hpeq",
+      "calibration": "loudness target",
+      "outputGainDb": 0.0,
+      "measuredInLufs": -14.1,
+      "measuredOutLufs": -9.5,
+      "measuredTruePeakDbtp": -1.8
     }
   ]
 }
