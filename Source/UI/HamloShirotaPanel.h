@@ -7,6 +7,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 #include "UI/BlackSteel.h"
+#include "UI/ModuleHelp.h"
 
 namespace hpeq::ui
 {
@@ -16,7 +17,7 @@ namespace hpeq::ui
 // character written small below, small knobs BALANCE, MIX, OUTPUT, levers SAFE and MONO, a green CRT
 // vectorscope (OSHIBKA when the node has one channel), a CORRELATION needle meter, ON lamp and toggle,
 // scratched pictures. Design coordinates 1180 x 780, scaled to fit.
-class HamloShirotaPanel final : public juce::Component, private juce::Timer
+class HamloShirotaPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param { Width, Stereoize, Space, MonoBass, Rotation, Mode, Balance, Mix, Output, NumKnobs };
@@ -39,6 +40,8 @@ public:
     };
 
     HamloShirotaPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloShirotaPanel() override;
 
     void setValues(const Values&);

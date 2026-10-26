@@ -5,6 +5,8 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
+#include "UI/ModuleHelp.h"
+
 #include "DSP/LayerSnapshot.h"
 
 namespace hpeq::ui
@@ -16,7 +18,7 @@ namespace hpeq::ui
 // current drive, the tape loop drawn; HARMONICS: H1 … H9 for the live input level, computed by the
 // engine), an OUTPUT needle meter, ON lamp, PUNISH / THUMP / STEEP / AUTO toggles, six large and seven
 // small brass knobs and the NOISE ALWAYS / FOLLOW toggle. Design coordinates 1180 x 820, scaled to fit.
-class HamloMagPanel final : public juce::Component, private juce::Timer
+class HamloMagPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param
@@ -31,12 +33,14 @@ public:
 
     struct Values
     {
-        std::array<double, NumParams> knobs { 6.0, 0.0, 20.0, 20000.0, 1.0, 0.0, 0.5, 0.0, 0.5, 0.15, 0.15, 0.0, 0.0 };
-        std::array<int, NumSwitches> switches { 1, 0, 1, 0, 0, 0, 1, 1 };
+        std::array<double, NumParams> knobs { 0.0, 0.0, 20.0, 20000.0, 1.0, 0.0, 0.5, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0 };
+        std::array<int, NumSwitches> switches { 1, 0, 1, 0, 0, 0, 0, 1 };
         bool on = true;
     };
 
     HamloMagPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloMagPanel() override;
 
     void setValues(const Values&); // from the project (no callbacks)

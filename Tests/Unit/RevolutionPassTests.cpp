@@ -508,7 +508,7 @@ public:
                 node.id = 1;
                 node.lowHz = 200.0;
                 node.highHz = 5000.0;
-                auto m = defaultModule(FxType::MonstaFx);
+                auto m = presetBaseModule(FxType::MonstaFx); // a generated pattern (the UI default is empty)
                 m.mix = mix;
                 m.enabled = enabled;
                 node.chain = { m };

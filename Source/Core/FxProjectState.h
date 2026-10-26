@@ -113,10 +113,16 @@ inline const LayerState& selectedLayer(const FxProjectState& p) { return p.layer
 // Copies `source` (nodes, EQ, controls, name) into layer `targetIndex`, giving every node a fresh id
 // from nextNodeId so ids stay unique in the project.
 void copyLayerInto(FxProjectState&, const LayerState& source, int targetIndex);
-// A module as the UI creates it. Compressor (module pass): threshold -30 dB, ratio 4, attack 1 ms,
-// release 80 ms, Punch, auto makeup on; the DSP's own defaults (used when a key is absent, e.g. in
-// older projects) are unchanged. Other types: no explicit parameters.
+// A module as the UI creates it (owner, 2026-10-26: "with no preset chosen, everything at zero"): the
+// module's knobs start where it does not change the sound — compressor 1:1 at 0 dB, limiter at 0 dB, the
+// saturator without drive, auto gain or noises, gate open, reverb and delay with MIX 0, stereo neutral,
+// HamloRevolution with an empty pattern. The DSP's own defaults (used when a key is absent, e.g. in older
+// projects) are unchanged.
 FxSlotState defaultModule(FxType);
+// The base the factory module presets are written against (the module defaults before the owner's
+// "everything at zero"): a preset sets only the keys it changes, so its sound must not move with
+// defaultModule().
+FxSlotState presetBaseModule(FxType);
 
 // D6: band of an EQ point's modules, the edges of a band-pass with the point's frequency and Q.
 std::pair<double, double> pointModuleBandHz(const EqNodeState&);

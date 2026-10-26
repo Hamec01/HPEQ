@@ -121,7 +121,7 @@ const char* HamloCompPanel::keyFor(Switch s)
 
 double HamloCompPanel::defaultFor(Param p)
 {
-    static constexpr double d[] { -30.0, 4.0, 6.0, 1.0, 80.0, 0.0, 1.0 }; // = defaultModule(Compressor), mix 100 %
+    static constexpr double d[] { 0.0, 1.0, 6.0, 1.0, 80.0, 0.0, 1.0 }; // = defaultModule(Compressor), mix 100 %
     return d[p];
 }
 
@@ -388,9 +388,13 @@ void HamloCompPanel::renderStatic(juce::Graphics& g) const
         g.fillRoundedRectangle(lcd, 3.0f);
     }
 
-    // meters: brass bezel and the aged dial paper
+    // the input history CRT where the INPUT needle was (owner, 2026-10-26)
+    steel::crtBezel(g, meters[0].bezel, meters[0].bezel.reduced(18.0f), "INPUT / GR  -  4 S", meters[0].bezel.getBottom() - 16.0f);
+    // meters: brass bezel and the aged dial paper (GAIN REDUCTION)
     for (const auto& m : meters)
     {
+        if (&m == &meters[0])
+            continue;
         const auto b = m.bezel;
         g.setColour(juce::Colours::black.withAlpha(0.8f));
         g.fillRoundedRectangle(b.translated(0, 10).expanded(2), 10.0f);
@@ -576,8 +580,8 @@ void HamloCompPanel::paint(juce::Graphics& g)
     for (int s = 0; s < NumSwitches; ++s)
         drawSwitch(g, s);
     drawPower(g);
-    for (const auto& m : meters)
-        drawMeterDynamic(g, m);
+    drawMeterDynamic(g, meters[1]);
+    drawHistory(g);
     // LCD text
     const juce::Rectangle<float> lcd(1124.0f - 172.0f, 66.0f, 172.0f, 42.0f);
     const auto text = "GR " + juce::String(std::abs(grText), 1) + " dB";
@@ -605,7 +609,66 @@ void HamloCompPanel::timerCallback()
     const float grTarget = -std::max(0.0f, grDb);
     gr.shown += (grTarget - gr.shown) * (grTarget < gr.shown ? 0.70f : 0.19f);
     grText += (grTarget - grText) * 0.35f;
+    pushHistory(inDb, values.on ? grDb : 0.0f);
     repaint();
+}
+
+void HamloCompPanel::pushHistory(float inputDb, float reductionDb)
+{
+    if (inputHistory.empty())
+    {
+        inputHistory.assign(120, -60.0f);
+        reductionHistory.assign(120, 0.0f);
+    }
+    std::rotate(inputHistory.begin(), inputHistory.begin() + 1, inputHistory.end());
+    inputHistory.back() = juce::jlimit(-60.0f, 6.0f, inputDb);
+    std::rotate(reductionHistory.begin(), reductionHistory.begin() + 1, reductionHistory.end());
+    reductionHistory.back() = juce::jlimit(0.0f, 30.0f, reductionDb);
+}
+
+void HamloCompPanel::drawHistory(juce::Graphics& g) const
+{
+    // input level (dim, 0 .. -60 dB from the top) and the gain reduction (bright, hanging from the top, 0 .. 30 dB)
+    const auto s = meters[0].bezel.reduced(18.0f);
+    steel::crtBegin(g, s);
+    const float x0 = s.getX() + 30.0f, w = s.getWidth() - 36.0f, top = s.getY() + 14.0f, h = s.getHeight() - 26.0f;
+    const auto yLevel = [&](float db) { return top + h * juce::jlimit(0.0f, 1.0f, -db / 60.0f); };
+    const auto yReduction = [&](float db) { return top + h * juce::jlimit(0.0f, 1.0f, db / 30.0f); };
+    for (float db : { 0.0f, -12.0f, -24.0f, -36.0f, -48.0f, -60.0f })
+    {
+        g.setColour(steel::phosphorDim.withAlpha(0.28f));
+        g.drawHorizontalLine(juce::roundToInt(yLevel(db)), x0, s.getRight() - 6.0f);
+        steel::crtText(g, juce::String(static_cast<int>(db)), { s.getX() + 3.0f, yLevel(db) - 7.0f, 26.0f, 14.0f }, 10.0f,
+                       juce::Justification::centredLeft, 0.55f);
+    }
+    const float t = static_cast<float>(values.knobs[Threshold]);
+    g.setColour(steel::phosphor.withAlpha(0.6f));
+    for (float x = x0; x < s.getRight() - 6.0f; x += 8.0f)
+        g.drawLine(x, yLevel(t), x + 4.0f, yLevel(t), 1.0f);
+    if (!inputHistory.empty())
+    {
+        juce::Path level, reduction;
+        for (size_t i = 0; i < inputHistory.size(); ++i)
+        {
+            const float x = x0 + w * static_cast<float>(i) / static_cast<float>(inputHistory.size() - 1);
+            if (i == 0)
+            {
+                level.startNewSubPath(x, yLevel(inputHistory[i]));
+                reduction.startNewSubPath(x, yReduction(reductionHistory[i]));
+            }
+            else
+            {
+                level.lineTo(x, yLevel(inputHistory[i]));
+                reduction.lineTo(x, yReduction(reductionHistory[i]));
+            }
+        }
+        steel::glow(g, level, steel::phosphorDim, 1.5f, 0.8f);
+        steel::glow(g, reduction, steel::phosphor, 2.0f, 1.0f);
+    }
+    steel::crtText(g, "IN " + juce::String(inputHistory.empty() ? -60.0f : inputHistory.back(), 1) + " dB   GR "
+                          + juce::String(reductionHistory.empty() ? 0.0f : reductionHistory.back(), 1) + " dB",
+                   { s.getRight() - 190.0f, s.getY() + 4.0f, 182.0f, 14.0f }, 11.0f, juce::Justification::centredRight, 0.9f);
+    steel::crtEnd(g, s);
 }
 
 void HamloCompPanel::settleMeters(float inputDb, float reductionDb)
@@ -613,6 +676,7 @@ void HamloCompPanel::settleMeters(float inputDb, float reductionDb)
     meters[0].shown = juce::jlimit(-42.0f, 7.0f, inputDb);
     meters[1].shown = juce::jlimit(-21.0f, 0.0f, -reductionDb);
     grText = -reductionDb;
+    pushHistory(inputDb, reductionDb); // the real reading joins the history
     repaint();
 }
 
@@ -772,4 +836,20 @@ void HamloCompPanel::editReadout(Param p)
     addAndMakeVisible(*typing);
     typing->grabKeyboardFocus();
 }
+juce::String HamloCompPanel::helpKeyAt(juce::Point<float> local) const
+{
+    const auto d = toDesign(local);
+    if (const int k = knobAt(d); k >= 0)
+        return keyFor(static_cast<Param>(k));
+    int which = -1, option = -1;
+    if (hitSwitch(d, which, option))
+        return keyFor(static_cast<Switch>(which));
+    return {};
+}
+
+juce::Rectangle<float> HamloCompPanel::contentBounds() const
+{
+    return juce::Rectangle<float>(0.0f, 0.0f, kW, kH).transformedBy(toScreen());
+}
+
 } // namespace hpeq::ui

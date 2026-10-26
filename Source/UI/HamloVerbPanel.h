@@ -5,6 +5,8 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
+#include "UI/ModuleHelp.h"
+
 #include "DSP/LayerSnapshot.h"
 
 namespace hpeq::ui
@@ -16,7 +18,7 @@ namespace hpeq::ui
 // FREEZE levers, a red ON lamp, six large and eleven small brass knobs. Drawn in its own design
 // coordinates (1180 x 760) and scaled to fit; the static plate is cached per size, the CRT keeps a
 // phosphor persistence image of its live trace.
-class HamloVerbPanel final : public juce::Component, private juce::Timer
+class HamloVerbPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param
@@ -36,6 +38,8 @@ public:
     };
 
     HamloVerbPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloVerbPanel() override;
 
     void setValues(const Values&); // from the project (no callbacks)

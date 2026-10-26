@@ -25,6 +25,7 @@
 #include "UI/HamloUdarnikPanel.h"
 #include "UI/HamloVerbPanel.h"
 #include "UI/HamloZastavaPanel.h"
+#include "UI/NodeInspector.h"
 #include "UI/HamloShirotaPanel.h"
 
 using namespace hpeq;
@@ -500,6 +501,9 @@ int runUiSnapshots(const juce::File& out)
                 editor->updateAnalysisNow();
         }
         save("hpeq_hamloredwall_page.png");
+        editor->getInspector().showHelp("thresholdDb"); // pointing at LOUDNESS: the text in the left margin
+        save("hpeq_help_margin.png");
+        editor->getInspector().showHelp({});
         editor->selectMix(-1);
         save("hpeq_mix_chain_grid.png");
         processor->setProject(project);

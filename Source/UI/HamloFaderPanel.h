@@ -6,6 +6,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 #include "UI/BlackSteel.h"
+#include "UI/ModuleHelp.h"
 
 namespace hpeq::ui
 {
@@ -13,7 +14,7 @@ namespace hpeq::ui
 // with an engraved dB scale (GAIN), INPUT and OUTPUT needle meters (band RMS), polarity levers for the
 // left and right channel, MUTE and SOLO levers with lamps, a MATCH push button (sets the gain so the band
 // lands on TARGET), DELAY / TARGET / MIX knobs, amber LCD, ON lamp. Design coordinates 1180 x 700.
-class HamloFaderPanel final : public juce::Component, private juce::Timer
+class HamloFaderPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param { Gain, Delay, Target, Mix, NumParams }; // Mix = the module's mix (FxSlotState::mix)
@@ -31,6 +32,8 @@ public:
     };
 
     HamloFaderPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloFaderPanel() override;
 
     void setValues(const Values&); // from the project (no callbacks)

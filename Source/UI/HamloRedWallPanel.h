@@ -7,6 +7,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 #include "UI/BlackSteel.h"
+#include "UI/ModuleHelp.h"
 
 namespace hpeq::ui
 {
@@ -15,7 +16,7 @@ namespace hpeq::ui
 // (THRESHOLD, CEILING, RELEASE, LOOKAHEAD, LINK, OUTPUT, MIX, STYLE with three detents GLASNOST / STAKHANOV / OCTOBER),
 // TRUE PEAK / RELEASE / MONITOR levers, a green CRT with the scrolling gain-reduction history, a GAIN
 // REDUCTION needle meter, ON lamp and toggle. Design coordinates 1180 x 700, scaled to fit.
-class HamloRedWallPanel final : public juce::Component, private juce::Timer
+class HamloRedWallPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     // Threshold is labelled LOUDNESS (push), Ceiling LIMIT; Output is the gain after the limiter.
@@ -30,6 +31,8 @@ public:
     };
 
     HamloRedWallPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloRedWallPanel() override;
 
     void setValues(const Values&);

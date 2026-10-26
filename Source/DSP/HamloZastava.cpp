@@ -159,6 +159,8 @@ void ZastavaCore::process(float* const* channels, int numChannels, int numSample
             target = open ? range : 0.0;
         else
             target = open ? 0.0 : std::min(range, (threshold - x) * (ratio - 1.0));
+        if (threshold <= -90.0)
+            target = 0.0; // the knob's end is OFF: never closes, never ducks (owner: a new gate changes nothing)
         const bool fast = duck ? target > attenuationDb : target < attenuationDb;
         attenuationDb = target + (fast ? attack : release) * (attenuationDb - target);
         if (attenuationDb < 1.0e-9)

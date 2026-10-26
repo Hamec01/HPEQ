@@ -18,6 +18,7 @@ namespace hpeq::dsp
 //   peak detector (10 ms release), x = dB; open above T, shut below T - hysteresis after the hold (M6)
 //   target: ZASTAVA open ? 0 : min(range, (T - x)(ratio - 1)); PATRUL clamp((T - x)(ratio - 1), 0, range);
 //           TREVOGA (duck) open ? range : 0
+//   THRESHOLD at -90 dB (the knob's end) = OFF: target 0
 //   one-pole in dB: ATTACK while opening (TREVOGA: while ducking), RELEASE otherwise
 //   applied A(m) = min (TREVOGA: max) of the attenuation over [m, m + L]: opens L early, closes on time
 //   y = x_d g | FLIP x_d - x_d g | KEY LISTEN k_d; OUTPUT last.

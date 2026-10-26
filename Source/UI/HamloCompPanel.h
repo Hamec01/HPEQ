@@ -2,18 +2,23 @@
 
 #include <array>
 #include <functional>
+#include <vector>
 
 #include <juce_gui_basics/juce_gui_basics.h>
+
+#include "UI/ModuleHelp.h"
 
 namespace hpeq::ui
 {
 // The compressor page, after the owner's HamloComp design ("Black Steel", hamlocomp.zip: index.html /
 // style.css / app.js): worn black steel panel with bolts, brass nameplate, amber GR display, six brass
 // knobs with engraved scales, three chrome toggle switches, two brass-bezel needle meters with aged dial
-// paper and scratched glass, a red ON lamp with a toggle. Drawn in the design's own coordinates
+// paper and scratched glass, a red ON lamp with a toggle. Owner (2026-10-26): the INPUT needle became a green
+// CRT with the history like the other pages — the input level and the gain reduction of the last 4 s, with
+// the threshold line; the GAIN REDUCTION needle stays. Drawn in the design's own coordinates
 // (1180 x 700) and scaled to fit; textures are procedural with the design's seeds. Static layers are
 // cached per size.
-class HamloCompPanel final : public juce::Component, private juce::Timer
+class HamloCompPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param { Threshold, Ratio, Knee, Attack, Release, Makeup, Mix, NumKnobs }; // Mix = the module's mix (FxSlotState::mix)
@@ -21,12 +26,14 @@ public:
 
     struct Values
     {
-        std::array<double, NumKnobs> knobs { -30.0, 4.0, 6.0, 1.0, 80.0, 0.0, 1.0 };
-        std::array<int, NumSwitches> switches { 0, 1, 1 };
+        std::array<double, NumKnobs> knobs { 0.0, 1.0, 6.0, 1.0, 80.0, 0.0, 1.0 };
+        std::array<int, NumSwitches> switches { 0, 1, 0 };
         bool on = true;
     };
 
     HamloCompPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloCompPanel() override;
 
     void setValues(const Values&); // from the project (no callbacks)
@@ -89,6 +96,7 @@ private:
     void drawSwitch(juce::Graphics&, int which) const;
     void drawPower(juce::Graphics&) const;
     void drawMeterDynamic(juce::Graphics&, const Meter&) const;
+    void drawHistory(juce::Graphics&) const;
     void editReadout(Param);
 
     Values values;
@@ -101,6 +109,8 @@ private:
     double dragStartNorm = 0.0;
     float dragStartY = 0.0f;
     float grText = 0.0f;
+    std::vector<float> inputHistory, reductionHistory; // dB, newest last, 30 Hz (4 s)
+    void pushHistory(float inputDb, float reductionDb);
     std::unique_ptr<juce::TextEditor> typing;
 };
 } // namespace hpeq::ui

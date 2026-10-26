@@ -5,6 +5,8 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
+#include "UI/ModuleHelp.h"
+
 #include "Core/Revolution.h"
 #include "UI/BlackSteel.h"
 
@@ -22,7 +24,10 @@ namespace hpeq::ui
 // Pass 10b: STRETCH (TAPE / RHYTHM / CLEAN) under the TIME plate; LISTEN under the seed: GENERATE then
 // follows the attacks the engine heard on each step (shown faintly in the TIME cells), and that snapshot
 // is saved with the pattern.
-class HamloRevolutionPanel final : public juce::Component, private juce::Timer
+// Owner, 2026-10-26: each lane has GEN (a new pattern for this lane only) and LOCK (GENERATE keeps the lane:
+// every step of it locked); the SEED counter became a wave screen — input and output of the pattern cycle
+// per 1/8 step, the play head and the step grid, the seed written small in its corner.
+class HamloRevolutionPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param { Mix, Rate, Steps, Swing, Humanize, Fade, TimeMix, TimeDepth, GlitchMix, GlitchDepth, MotionMix, MotionDepth, MotionSmooth, NumParams };
@@ -43,9 +48,12 @@ public:
         int step = -1;
         bool warming = false;
         std::array<float, revolution::kSteps> feel {}; // live attack strength per step, 0..1
+        std::array<float, 8 * revolution::kSteps> waveIn {}, waveOut {}; // peaks per 1/8 step (wave screen)
     };
 
     HamloRevolutionPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloRevolutionPanel() override;
 
     void setValues(const Values&); // from the project (no callbacks)
@@ -69,6 +77,9 @@ public:
     // As the clicks on the page (tests, screenshots).
     void pressGenerate();
     void pressNewSeed();
+    void pressLaneGenerate(int engine); // GEN on a lane: only that lane gets a new pattern (unless locked)
+    void pressLaneLock(int engine);     // LOCK on a lane: every step of it locked / unlocked
+    static bool laneLocked(const revolution::Pattern&, int engine) noexcept;
     void clickStep(int engine, int step, bool shift = false);
     void setMotionLevel(int step, int level);
     void settleStatus(const Status&);

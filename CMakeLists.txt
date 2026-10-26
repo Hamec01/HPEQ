@@ -108,6 +108,7 @@ target_sources(HPEQ
         Source/UI/HamloRedWallPanel.cpp
         Source/UI/HamloUdarnikPanel.cpp
         Source/UI/HamloZastavaPanel.cpp
+        Source/UI/ModuleHelp.cpp
         Source/UI/HamloShirotaPanel.cpp
         Source/UI/HamloRevolutionPanel.cpp
         Source/UI/HamloTochkaPanel.cpp
@@ -312,6 +313,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/TransientPassTests.cpp
     Tests/Unit/GatePassTests.cpp
     Tests/Unit/StereoPassTests.cpp
+    Tests/Unit/OwnerRoundTests.cpp
     Tests/Unit/ReverbPassTests.cpp
     Tests/Unit/DelayPassTests.cpp
     Tests/Unit/SaturatorPassTests.cpp

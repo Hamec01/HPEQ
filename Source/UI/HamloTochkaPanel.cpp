@@ -294,7 +294,7 @@ void HamloTochkaPanel::resized()
 void HamloTochkaPanel::renderStatic(juce::Graphics& g) const
 {
     panel(g, kW, kH, 777);
-    scratches(g, { { 11, { 300.0f, 250.0f, 70.0f, 70.0f }, -6.0f }, { 19, { 700.0f, 270.0f, 60.0f, 56.0f }, 4.0f } }, 0.7f);
+    scratches(g, { { 11, { 300.0f, 250.0f, 70.0f, 70.0f }, -6.0f }, { 19, { 700.0f, 270.0f, 60.0f, 56.0f }, 4.0f } });
     lcdWindow(g, kShapeWindow);
     lcdWindow(g, kSlopeWindow);
     lcdWindow(g, kChannelWindow);
@@ -553,4 +553,18 @@ void HamloTochkaPanel::mouseWheelMove(const juce::MouseEvent& e, const juce::Mou
     if (onGestureEnd)
         onGestureEnd();
 }
+juce::String HamloTochkaPanel::helpKeyAt(juce::Point<float> local) const
+{
+    const auto d = toDesign(local);
+    static constexpr const char* keys[] { "freq", "gain", "q", "thresh", "ratio", "range", "attack", "release" };
+    if (const int k = knobAt(d); k >= 0 && k < NumParams)
+        return keys[k];
+    return {};
+}
+
+juce::Rectangle<float> HamloTochkaPanel::contentBounds() const
+{
+    return juce::Rectangle<float>(0.0f, 0.0f, kW, kH).transformedBy(toScreen());
+}
+
 } // namespace hpeq::ui

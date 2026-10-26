@@ -228,7 +228,7 @@ public:
             };
             FxSlotState old;
             old.type = FxType::Compressor; // no parameters: the DSP defaults (-18 dB, 4:1, 10 / 120 ms, Clean, no makeup)
-            const auto in = bandOf(quiet), before = bandOf(renderWith(old)), after = bandOf(renderWith(defaultModule(FxType::Compressor)));
+            const auto in = bandOf(quiet), before = bandOf(renderWith(old)), after = bandOf(renderWith(presetBaseModule(FxType::Compressor))); // the module-pass default (now the preset base)
             logMessage("  band 60-250 Hz: peak " + juce::String(in.peakDbfs, 1) + " dBFS; crest input " + juce::String(in.crestDb, 2) + ", old default "
                        + juce::String(before.crestDb, 2) + ", new default " + juce::String(after.crestDb, 2) + " dB; band RMS "
                        + juce::String(in.rmsDbfs, 2) + " / " + juce::String(before.rmsDbfs, 2) + " / " + juce::String(after.rmsDbfs, 2) + " dBFS");
@@ -296,12 +296,15 @@ public:
             juce::ignoreUnused(workspace);
         }
 
-        beginTest("UI default compressor (defaultModule): threshold -30, ratio 4, attack 1, release 80, Punch, auto makeup on");
+        beginTest("UI default compressor (owner 2026-10-26: everything at zero): 0 dB, 1:1, no auto makeup; the preset base keeps -30 / 4:1 / auto");
         {
             const auto m = defaultModule(FxType::Compressor);
-            expect(static_cast<double>(m.parameters["thresholdDb"]) == -30.0 && static_cast<double>(m.parameters["ratio"]) == 4.0
-                   && static_cast<double>(m.parameters["attackMs"]) == 1.0);
-            expect(static_cast<int>(m.parameters["character"]) == 1 && static_cast<int>(m.parameters["autoMakeup"]) == 1);
+            expect(static_cast<double>(m.parameters["thresholdDb"]) == 0.0 && static_cast<double>(m.parameters["ratio"]) == 1.0
+                   && static_cast<int>(m.parameters["autoMakeup"]) == 0);
+            const auto base = presetBaseModule(FxType::Compressor);
+            expect(static_cast<double>(base.parameters["thresholdDb"]) == -30.0 && static_cast<double>(base.parameters["ratio"]) == 4.0
+                   && static_cast<double>(base.parameters["attackMs"]) == 1.0);
+            expect(static_cast<int>(base.parameters["character"]) == 1 && static_cast<int>(base.parameters["autoMakeup"]) == 1);
             expect(defaultModule(FxType::Gain).parameters.isEmpty()); // the reverb has its own defaults since the HamloVerb pass
         }
     }

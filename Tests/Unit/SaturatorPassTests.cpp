@@ -503,12 +503,14 @@ public:
             expectEquals(static_cast<int>(allocations), 0);
         }
 
-        beginTest("UI default saturator (defaultModule): TAPE, drive 6 dB, 2x");
+        beginTest("UI default saturator (owner 2026-10-26): TAPE, 2x, drive 0 dB, AUTO off, no noises; the preset base keeps drive 6 dB");
         {
             const auto m = defaultModule(FxType::Saturator);
             expectEquals(static_cast<int>(m.parameters["model"]), static_cast<int>(mag::Tape));
             expectEquals(static_cast<int>(m.parameters["oversampling"]), 1);
-            expect(std::abs(static_cast<double>(m.parameters["driveDb"]) - 6.0) < 1.0e-9);
+            expect(std::abs(static_cast<double>(m.parameters["driveDb"])) < 1.0e-9);
+            expect(static_cast<int>(m.parameters["autoGain"]) == 0 && static_cast<double>(m.parameters["hiss"]) == 0.0 && static_cast<double>(m.parameters["wow"]) == 0.0);
+            expect(std::abs(static_cast<double>(presetBaseModule(FxType::Saturator).parameters["driveDb"]) - 6.0) < 1.0e-9);
         }
 
         beginTest("HamloMag page: fills the editor body; knob, switch, mix and ON edit the project; values come back; an old saturator shows Classic");

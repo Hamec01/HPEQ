@@ -43,6 +43,7 @@ public:
     void selectNode(bool fx, std::uint32_t id, int slot = -1); // slot -1 = module grid
     // The layer's MIX chain (D7), as a click on its row would select it.
     void selectMix(int slot = -1);
+    ui::NodeInspector& getInspector() noexcept { return *inspector; } // tests and screenshots
     bool isMixSelected() const noexcept; // tests
     void showDifference(bool difference);
 

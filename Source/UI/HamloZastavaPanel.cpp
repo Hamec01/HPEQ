@@ -60,7 +60,7 @@ const char* HamloZastavaPanel::keyFor(Switch s)
 
 double HamloZastavaPanel::defaultFor(Param p)
 {
-    static constexpr double d[] { -40.0, 40.0, 0.5, 20.0, 100.0, 0.0, 4.0, 4.0, 20.0, 20000.0, 1.0, 0.0 }; // = defaultModule(GateExpander)
+    static constexpr double d[] { -90.0, 40.0, 0.5, 20.0, 100.0, 0.0, 4.0, 4.0, 20.0, 20000.0, 1.0, 0.0 }; // = defaultModule(GateExpander)
     return d[p];
 }
 
@@ -68,7 +68,8 @@ juce::String HamloZastavaPanel::format(Param p, double v)
 {
     switch (p)
     {
-        case Threshold: case Range: case Hysteresis: return juce::String(v, 1) + " dB";
+        case Threshold: return v <= -90.0 ? juce::String("OFF") : juce::String(v, 1) + " dB";
+        case Range: case Hysteresis: return juce::String(v, 1) + " dB";
         case Output: return (v > 0.0 ? "+" : "") + juce::String(v, 1) + " dB";
         case Attack: return juce::String(v, v < 10.0 ? 2 : 1) + " ms";
         case Hold: case Release: return juce::String(juce::roundToInt(v)) + " ms";
@@ -492,4 +493,20 @@ void HamloZastavaPanel::editReadout(Param p)
     addAndMakeVisible(*typing);
     typing->grabKeyboardFocus();
 }
+juce::String HamloZastavaPanel::helpKeyAt(juce::Point<float> local) const
+{
+    const auto d = toDesign(local);
+    if (const int k = knobAt(d); k >= 0)
+        return keyFor(static_cast<Param>(k));
+    int which = -1, option = -1;
+    if (hitSwitch(d, which, option))
+        return keyFor(static_cast<Switch>(which));
+    return {};
+}
+
+juce::Rectangle<float> HamloZastavaPanel::contentBounds() const
+{
+    return juce::Rectangle<float>(0.0f, 0.0f, kW, kH).transformedBy(toScreen());
+}
+
 } // namespace hpeq::ui

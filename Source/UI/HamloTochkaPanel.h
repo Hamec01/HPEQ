@@ -5,6 +5,8 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
+#include "UI/ModuleHelp.h"
+
 #include "Core/FxProjectState.h"
 #include "UI/BlackSteel.h"
 
@@ -17,7 +19,7 @@ namespace hpeq::ui
 // dynamics add right now. Right: DYNAMIC lever and lamp, THRESH, RATIO, RANGE, ATTACK, RELEASE, and an
 // LCD with the current dynamic gain, DETECT (BAND / VOICE: the region against the voice body) and DE-ESS
 // (one press makes the point a de-esser). The point's modules stay in the grid next to the page.
-class HamloTochkaPanel final : public juce::Component, private juce::Timer
+class HamloTochkaPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param { Freq, Gain, Q, Thresh, Ratio, Range, Attack, Release, NumParams };
@@ -29,6 +31,8 @@ public:
     };
 
     HamloTochkaPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloTochkaPanel() override;
 
     void setValues(const Values&); // from the project (no callbacks)

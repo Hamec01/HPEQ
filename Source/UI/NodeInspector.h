@@ -13,6 +13,7 @@
 #include "UI/HamloUdarnikPanel.h"
 #include "UI/HamloZastavaPanel.h"
 #include "UI/HamloShirotaPanel.h"
+#include "UI/ModuleHelp.h"
 #include "UI/HamloTochkaPanel.h"
 #include "UI/HamloVerbPanel.h"
 
@@ -107,6 +108,25 @@ private:
     HamloUdarnikPanel* udarnikPanel = nullptr; // owned by controls
     HamloZastavaPanel* zastavaPanel = nullptr; // owned by controls
     HamloShirotaPanel* shirotaPanel = nullptr; // owned by controls
+    // Knob help (owner, 2026-10-26): the large page under the mouse tells which control it is; the text is
+    // drawn in the free margin left of the page, the margins also carry scratched pictures.
+    struct HelpWatcher final : juce::MouseListener
+    {
+        std::function<void(const juce::MouseEvent&)> onEvent;
+        void mouseMove(const juce::MouseEvent& e) override { if (onEvent) onEvent(e); }
+        void mouseDown(const juce::MouseEvent& e) override { if (onEvent) onEvent(e); }
+        void mouseDrag(const juce::MouseEvent& e) override { if (onEvent) onEvent(e); }
+    };
+    void attachHelp();
+public:
+    // The help text for a control of the page shown now (as pointing at it; tests and screenshots).
+    void showHelp(const juce::String& key) { helpKey = key; repaint(); }
+    const juce::String& shownHelpKey() const noexcept { return helpKey; }
+private:
+    void drawMargins(juce::Graphics&) const;
+    HelpWatcher helpWatcher;
+    juce::Component* helpPanel = nullptr; // owned by controls
+    juce::String helpModule, helpKey;
     HamloRevolutionPanel* revolutionPanel = nullptr; // owned by controls
     HamloTochkaPanel* tochkaPanel = nullptr;         // owned by controls (EQ point page)
 };

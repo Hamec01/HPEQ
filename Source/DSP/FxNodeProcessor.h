@@ -90,6 +90,8 @@ public:
     bool isRevolutionWarming(int slotIndex) const noexcept;
     // ... and the input's attack strength per pattern step (false when not running).
     bool getRevolutionFeel(int slotIndex, std::array<float, 16>&) const noexcept;
+    // ... and the wave screen: input / output peak per 1/8 step over the pattern cycle (128 bins).
+    bool getRevolutionWave(int slotIndex, std::array<float, 128>& in, std::array<float, 128>& out) const noexcept;
     float getFaderInputDb(int slotIndex) const noexcept;
     float getFaderInputLongDb(int slotIndex) const noexcept;
     float getFaderOutputDb(int slotIndex) const noexcept;

@@ -80,6 +80,15 @@ bool RevolutionEngine::Segment::same(const Segment& o) const noexcept
 RevolutionEngine::RevolutionEngine() = default;
 RevolutionEngine::~RevolutionEngine() = default;
 
+void RevolutionEngine::getWave(std::array<float, kWaveBins>& in, std::array<float, kWaveBins>& out) const noexcept
+{
+    for (int b = 0; b < kWaveBins; ++b)
+    {
+        in[static_cast<size_t>(b)] = waveIn[static_cast<size_t>(b)].load(std::memory_order_relaxed);
+        out[static_cast<size_t>(b)] = waveOut[static_cast<size_t>(b)].load(std::memory_order_relaxed);
+    }
+}
+
 void RevolutionEngine::getFeel(std::array<float, kFeelSteps>& out) const noexcept
 {
     for (size_t i = 0; i < out.size(); ++i)
@@ -162,6 +171,13 @@ void RevolutionEngine::reset() noexcept
     lastPlaying = lastFree = false;
     fresh = true;
     shownStep.store(-1, std::memory_order_relaxed);
+    waveBin = -1;
+    waveInPeak = waveOutPeak = 0.0f;
+    for (int b = 0; b < kWaveBins; ++b)
+    {
+        waveIn[static_cast<size_t>(b)].store(0.0f, std::memory_order_relaxed);
+        waveOut[static_cast<size_t>(b)].store(0.0f, std::memory_order_relaxed);
+    }
     newEpoch();
 }
 
@@ -1150,8 +1166,36 @@ void RevolutionEngine::process(float* const* channels, int numChannels, int numS
                 tapeStage(e, x, numChannels, q);
         }
         analyse(in, numChannels, wrap(motionStep.k, steps));
+        float inPeak = 0.0f, outPeak = 0.0f;
         for (int ch = 0; ch < numChannels; ++ch)
+        {
             channels[ch][i] = orderGain >= 1.0 ? x[ch] : in[ch] + static_cast<float>(orderGain) * (x[ch] - in[ch]);
+            inPeak = std::max(inPeak, std::abs(in[ch]));
+            outPeak = std::max(outPeak, std::abs(channels[ch][i]));
+        }
+        // wave screen: the bin of this sample (1/8 of its step), peaks stored when the bin changes
+        const double qe = q + kEps * dq;
+        if (!waveStepValid || waveStamp != stamp || qe < waveStep.start || qe >= waveStep.end) // only at step edges
+        {
+            waveStep = stepAt(q);
+            waveStepValid = true;
+            waveStamp = stamp;
+            waveStepIndex = std::clamp(wrap(waveStep.k, steps), 0, kFeelSteps - 1) * 8;
+            waveStepScale = 8.0 / std::max(1.0e-12, waveStep.end - waveStep.start);
+        }
+        const int bin = waveStepIndex + std::clamp(static_cast<int>((q - waveStep.start) * waveStepScale), 0, 7);
+        if (bin != waveBin)
+        {
+            if (waveBin >= 0)
+            {
+                waveIn[static_cast<size_t>(waveBin)].store(waveInPeak, std::memory_order_relaxed);
+                waveOut[static_cast<size_t>(waveBin)].store(waveOutPeak, std::memory_order_relaxed);
+            }
+            waveBin = bin;
+            waveInPeak = waveOutPeak = 0.0f;
+        }
+        waveInPeak = std::max(waveInPeak, inPeak);
+        waveOutPeak = std::max(waveOutPeak, outPeak);
     }
     shownStep.store(wrap(stepAt(q).k, steps), std::memory_order_relaxed);
     const double stepSamples = stepQ / dq;

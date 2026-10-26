@@ -40,7 +40,7 @@ public:
     template <typename Panel>
     void check(FxType type, const juce::String& name)
     {
-        beginTest(name + ": the MIX knob sets the module's mix (not a parameter), starts at 100 % and comes back from the project");
+        beginTest(name + ": the MIX knob sets the module's mix (not a parameter), starts at the module's default and comes back from the project");
         auto plugin = std::make_unique<FxPluginProcessor>();
         FxProjectState p;
         FxNodeState n;
@@ -56,7 +56,8 @@ public:
         expect(panel != nullptr, "no page");
         if (panel == nullptr)
             return;
-        expectWithinAbsoluteError(panel->getValues().knobs[Panel::Mix], 1.0, 1.0e-9);
+        // a new reverb / delay starts with MIX 0 (owner 2026-10-26: nothing added until it is raised), the others at 100 %
+        expectWithinAbsoluteError(panel->getValues().knobs[Panel::Mix], static_cast<double>(defaultModule(type).mix), 1.0e-9);
         panel->onKnobChange(Panel::Mix, 0.35);
         const auto project = plugin->getProject();
         const auto& m = project.layers[0].fxNodes[0].chain[0];

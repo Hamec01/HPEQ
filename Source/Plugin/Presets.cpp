@@ -123,7 +123,7 @@ juce::String safeFileName(const juce::String& name)
 
 FxSlotState makeModule(FxType type, const ModulePreset& preset)
 {
-    auto m = defaultModule(type);
+    auto m = presetBaseModule(type); // the presets were calibrated against these, not the neutral UI defaults
     m.mix = preset.mix;
     for (const auto& [key, value] : preset.values)
         m.parameters.set(key, value);

@@ -709,6 +709,7 @@ void NodeInspector::rebuild()
     nodeIndex = -1;
     showingGrid = true;
     largePage = false;
+    helpPanel = nullptr; // deleted with the controls (its listener list goes with it)
     hamloPanel = nullptr;
     verbPanel = nullptr;
     echoPanel = nullptr;
@@ -1568,6 +1569,7 @@ void NodeInspector::buildRevolutionPage(int k)
         const auto& node = processor.getEngine().getLayer(project.selectedLayer).getNode(engineSlot);
         HamloRevolutionPanel::Status s { node.getRevolutionStep(k), node.isRevolutionWarming(k), {} };
         node.getRevolutionFeel(k, s.feel);
+        node.getRevolutionWave(k, s.waveIn, s.waveOut);
         return s;
     };
     refreshers.push_back([this, panel, k]
@@ -1688,6 +1690,91 @@ void NodeInspector::paint(juce::Graphics& g)
         if (showingGrid)
             g.drawText("MODULES (processed left to right, then the next row)", chainArea.toFloat().removeFromTop(14.0f), juce::Justification::centredLeft);
     }
+    drawMargins(g);
+}
+
+void NodeInspector::attachHelp()
+{
+    juce::Component* page = nullptr;
+    juce::String module;
+    const std::pair<juce::Component*, const char*> pages[] { { hamloPanel, "comp" }, { wallPanel, "limiter" }, { verbPanel, "reverb" },
+                                                             { echoPanel, "delay" }, { udarnikPanel, "transient" }, { magPanel, "saturator" },
+                                                             { revolutionPanel, "revolution" }, { shirotaPanel, "stereo" }, { zastavaPanel, "gate" },
+                                                             { faderPanel, "fader" }, { tochkaPanel, "point" } };
+    for (const auto& [c, name] : pages)
+        if (c != nullptr && c->isVisible())
+        {
+            page = c;
+            module = name;
+            break;
+        }
+    if (page == helpPanel)
+        return;
+    helpPanel = page;
+    helpModule = module;
+    helpKey = {};
+    if (page == nullptr)
+        return;
+    helpWatcher.onEvent = [this](const juce::MouseEvent& e)
+    {
+        const auto* target = dynamic_cast<const HelpTarget*>(helpPanel);
+        if (target == nullptr || e.eventComponent != helpPanel)
+            return;
+        const auto key = target->helpKeyAt(e.position);
+        if (key.isNotEmpty() && key != helpKey)
+        {
+            helpKey = key;
+            repaint();
+        }
+    };
+    page->addMouseListener(&helpWatcher, false);
+}
+
+void NodeInspector::drawMargins(juce::Graphics& g) const
+{
+    const auto* target = dynamic_cast<const HelpTarget*>(helpPanel);
+    if (target == nullptr || !largePage || showingGrid)
+        return;
+    const auto panel = helpPanel->getBounds().toFloat();
+    const auto content = target->contentBounds().translated(panel.getX(), panel.getY());
+    const auto left = juce::Rectangle<float>(panel.getX(), content.getY(), content.getX() - panel.getX(), content.getHeight());
+    const auto right = juce::Rectangle<float>(content.getRight(), content.getY(), panel.getRight() - content.getRight(), content.getHeight());
+    // scratched pictures in the free steel beside the page (owner: also on HPEQ itself)
+    if (right.getWidth() >= 90.0f)
+    {
+        const float w = juce::jmin(right.getWidth() - 20.0f, 110.0f);
+        ui::steel::scratches(g, { { 17, { right.getCentreX() - w * 0.5f, right.getY() + 20.0f, w, w * 1.45f }, 4.0f },
+                                  { 10, { right.getCentreX() - w * 0.4f, right.getBottom() - w * 1.3f - 10.0f, w * 0.8f, w * 1.2f }, -5.0f } });
+    }
+    if (left.getWidth() < 120.0f)
+        return;
+    const float w = juce::jmin(left.getWidth() - 30.0f, 100.0f);
+    ui::steel::scratches(g, { { 12, { left.getCentreX() - w * 0.5f, left.getBottom() - w * 1.45f - 10.0f, w, w * 1.4f }, -4.0f } });
+    // the help text: the control's name and what it does
+    auto area = left.reduced(14.0f, 10.0f).withHeight(juce::jmax(80.0f, left.getHeight() * 0.62f));
+    const auto help = moduleHelp(helpModule, helpKey);
+    g.setColour(ui::steel::stencil);
+    g.setFont(ui::steel::stencilFont(17.0f));
+    if (help.title.isEmpty())
+    {
+        g.setColour(ui::steel::stencilDim);
+        g.setFont(ui::steel::stencilFont(13.0f, false));
+        g.drawFittedText("Point at a knob or a switch: what it does appears here.", area.toNearestInt(), juce::Justification::topLeft, 6);
+        return;
+    }
+    g.drawText(help.title, area.removeFromTop(24.0f), juce::Justification::topLeft);
+    g.setColour(ui::steel::stencil.withAlpha(0.35f));
+    g.drawHorizontalLine(juce::roundToInt(area.getY()), area.getX(), area.getRight());
+    area.removeFromTop(8.0f);
+    g.setColour(ui::steel::stencil.withAlpha(0.92f));
+    g.setFont(ui::steel::stencilFont(14.0f, false));
+    juce::AttributedString text;
+    text.setText(help.text);
+    text.setFont(ui::steel::stencilFont(14.0f, false));
+    text.setColour(ui::steel::stencil.withAlpha(0.92f));
+    text.setLineSpacing(3.0f);
+    text.setJustification(juce::Justification::topLeft);
+    text.draw(g, area);
 }
 
 void NodeInspector::resized()
@@ -1729,6 +1816,7 @@ void NodeInspector::resized()
                 comboX += juce::jmax(width, 96) + 10;
             }
         }
+        attachHelp();
         return;
     }
 
@@ -1752,6 +1840,7 @@ void NodeInspector::resized()
                 ++tileIndex;
             }
         }
+        attachHelp();
         return;
     }
 
@@ -1778,5 +1867,6 @@ void NodeInspector::resized()
         c->setBounds(topX, y, width, height);
         topX += width + 10;
     }
+    attachHelp();
 }
 } // namespace hpeq::ui

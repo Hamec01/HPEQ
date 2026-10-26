@@ -7,6 +7,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 #include "UI/BlackSteel.h"
+#include "UI/ModuleHelp.h"
 
 namespace hpeq::ui
 {
@@ -16,7 +17,7 @@ namespace hpeq::ui
 // KEY LP, MIX, OUTPUT, levers LOOK-AHEAD / KEY LISTEN / FLIP, a green CRT (key level of the last 4 s, the
 // threshold, shut stretches shaded), an ATTENUATION needle meter, ON lamp and toggle, scratched pictures.
 // Design coordinates 1180 x 780, scaled to fit.
-class HamloZastavaPanel final : public juce::Component, private juce::Timer
+class HamloZastavaPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param { Threshold, Range, Attack, Hold, Release, Mode, Ratio, Hysteresis, KeyHp, KeyLp, Mix, Output, NumKnobs };
@@ -38,6 +39,8 @@ public:
     };
 
     HamloZastavaPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloZastavaPanel() override;
 
     void setValues(const Values&);

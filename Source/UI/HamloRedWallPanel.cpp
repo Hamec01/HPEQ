@@ -53,7 +53,7 @@ const char* HamloRedWallPanel::keyFor(Switch s)
 
 double HamloRedWallPanel::defaultFor(Param p)
 {
-    static constexpr double d[] { 0.0, -1.0, 60.0, 2.0, 1.0, 0.0, 1.0, 0.0 }; // = defaultModule(Limiter), mix 100 %
+    static constexpr double d[] { 0.0, 0.0, 60.0, 2.0, 1.0, 0.0, 1.0, 0.0 }; // = defaultModule(Limiter), mix 100 %
     return d[p];
 }
 
@@ -464,4 +464,20 @@ void HamloRedWallPanel::editReadout(Param p)
     addAndMakeVisible(*typing);
     typing->grabKeyboardFocus();
 }
+juce::String HamloRedWallPanel::helpKeyAt(juce::Point<float> local) const
+{
+    const auto d = toDesign(local);
+    if (const int k = knobAt(d); k >= 0)
+        return keyFor(static_cast<Param>(k));
+    int which = -1, option = -1;
+    if (hitSwitch(d, which, option))
+        return keyFor(static_cast<Switch>(which));
+    return {};
+}
+
+juce::Rectangle<float> HamloRedWallPanel::contentBounds() const
+{
+    return juce::Rectangle<float>(0.0f, 0.0f, kW, kH).transformedBy(toScreen());
+}
+
 } // namespace hpeq::ui

@@ -56,6 +56,10 @@ public:
     int glitchCapacity() const noexcept { return tapes[1].size; }
     // Attack strength 0..1 per pattern step (averaged over the pattern cycles heard so far).
     void getFeel(std::array<float, kFeelSteps>&) const noexcept;
+    // The wave screen (owner, 2026-10-26): input and output peak per 1/8 step over the pattern cycle, the
+    // latest cycle written over the previous one.
+    static constexpr int kWaveBins = 8 * kFeelSteps;
+    void getWave(std::array<float, kWaveBins>& in, std::array<float, kWaveBins>& out) const noexcept;
     // Frame sizes of the stretch renderers at this sample rate (RHYTHM, CLEAN).
     int rhythmFrame() const noexcept { return frameW; }
     int cleanFrame() const noexcept { return frameP; }
@@ -190,6 +194,13 @@ private:
     std::array<float, 2> held {};
 
     std::atomic<int> shownStep { -1 }, epochs { 0 };
+    std::array<std::atomic<float>, kWaveBins> waveIn {}, waveOut {};
+    int waveBin = -1, waveStepIndex = 0;
+    Step waveStep {};
+    bool waveStepValid = false;
+    unsigned waveStamp = 0;
+    double waveStepScale = 1.0;
+    float waveInPeak = 0.0f, waveOutPeak = 0.0f;
     std::atomic<bool> warming { false };
 };
 } // namespace hpeq::dsp

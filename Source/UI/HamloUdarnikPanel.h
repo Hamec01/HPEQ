@@ -7,6 +7,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 #include "UI/BlackSteel.h"
+#include "UI/ModuleHelp.h"
 
 namespace hpeq::ui
 {
@@ -15,7 +16,7 @@ namespace hpeq::ui
 // RISE, DECAY, SENS, PRESERVE, MIX, OUTPUT and the MODE knob titled PRAVDA / UDARNIK / PERESTROIKA),
 // LOOK-AHEAD and LISTEN levers, a green CRT (gain of the last 4 s with hit marks; the last hit's input and
 // output envelopes), an IMPACT needle meter, ON lamp and toggle. Design coordinates 1180 x 700, scaled to fit.
-class HamloUdarnikPanel final : public juce::Component, private juce::Timer
+class HamloUdarnikPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param { Snap, Body, Speed, Rise, Decay, Sensitivity, Preserve, Mix, Output, Mode, NumKnobs };
@@ -38,6 +39,8 @@ public:
     };
 
     HamloUdarnikPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloUdarnikPanel() override;
 
     void setValues(const Values&);

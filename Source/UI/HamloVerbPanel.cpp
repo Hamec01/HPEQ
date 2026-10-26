@@ -1127,4 +1127,17 @@ void HamloVerbPanel::editReadout(Param p)
     addAndMakeVisible(*typing);
     typing->grabKeyboardFocus();
 }
+juce::String HamloVerbPanel::helpKeyAt(juce::Point<float> local) const
+{
+    const auto d = toDesign(local);
+    if (const int k = knobAt(d); k >= 0)
+        return keyFor(static_cast<Param>(k));
+    return {};
+}
+
+juce::Rectangle<float> HamloVerbPanel::contentBounds() const
+{
+    return juce::Rectangle<float>(0.0f, 0.0f, kW, kH).transformedBy(toScreen());
+}
+
 } // namespace hpeq::ui

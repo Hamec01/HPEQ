@@ -219,6 +219,47 @@ void copyLayerInto(FxProjectState& project, const LayerState& source, int target
 
 FxSlotState defaultModule(FxType type)
 {
+    auto m = presetBaseModule(type);
+    switch (type)
+    {
+        case FxType::Compressor:
+            m.parameters.set("thresholdDb", 0);
+            m.parameters.set("ratio", 1);
+            m.parameters.set("autoMakeup", 0);
+            break;
+        case FxType::Limiter:
+            m.parameters.set("ceilingDb", 0);
+            break;
+        case FxType::Saturator:
+            m.parameters.set("driveDb", 0.0);
+            m.parameters.set("autoGain", 0);
+            m.parameters.set("wow", 0.0);
+            m.parameters.set("hiss", 0.0);
+            m.parameters.set("hum", 0.0);
+            m.parameters.set("crackle", 0.0);
+            break;
+        case FxType::Reverb:
+        case FxType::Delay:
+            m.mix = 0.0f; // sends: nothing added until MIX is raised
+            break;
+        case FxType::GateExpander:
+            m.parameters.set("thresholdDb", -90);
+            break;
+        case FxType::StereoProcessor:
+            m.parameters.set("stereoize", 0.0);
+            m.parameters.set("space", 0.0);
+            break;
+        case FxType::MonstaFx:
+            revolution::writePattern(m.parameters, revolution::Pattern {}); // no steps: GENERATE fills them
+            break;
+        case FxType::TransientShaper: case FxType::Gain:
+            break;
+    }
+    return m;
+}
+
+FxSlotState presetBaseModule(FxType type)
+{
     FxSlotState m;
     m.type = type;
     if (type == FxType::Limiter)

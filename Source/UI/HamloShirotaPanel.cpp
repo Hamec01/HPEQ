@@ -64,7 +64,7 @@ const char* HamloShirotaPanel::keyFor(Switch s)
 
 double HamloShirotaPanel::defaultFor(Param p)
 {
-    static constexpr double d[] { 1.0, 0.5, 0.5, 10.0, 0.0, 0.0, 0.0, 1.0, 0.0 }; // = defaultModule(StereoProcessor)
+    static constexpr double d[] { 1.0, 0.0, 0.0, 10.0, 0.0, 0.0, 0.0, 1.0, 0.0 }; // = defaultModule(StereoProcessor)
     return d[p];
 }
 
@@ -491,4 +491,20 @@ void HamloShirotaPanel::editReadout(Param p)
     addAndMakeVisible(*typing);
     typing->grabKeyboardFocus();
 }
+juce::String HamloShirotaPanel::helpKeyAt(juce::Point<float> local) const
+{
+    const auto d = toDesign(local);
+    if (const int k = knobAt(d); k >= 0)
+        return keyFor(static_cast<Param>(k));
+    int which = -1, option = -1;
+    if (hitSwitch(d, which, option))
+        return keyFor(static_cast<Switch>(which));
+    return {};
+}
+
+juce::Rectangle<float> HamloShirotaPanel::contentBounds() const
+{
+    return juce::Rectangle<float>(0.0f, 0.0f, kW, kH).transformedBy(toScreen());
+}
+
 } // namespace hpeq::ui

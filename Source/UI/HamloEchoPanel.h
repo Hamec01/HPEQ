@@ -5,6 +5,8 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
+#include "UI/ModuleHelp.h"
+
 #include "DSP/LayerSnapshot.h"
 
 namespace hpeq::ui
@@ -15,7 +17,7 @@ namespace hpeq::ui
 // response with LOW / BAND / HIGH handles and the response after 2..4 repeats), an OUTPUT needle meter,
 // ON lamp, PING-PONG and FREEZE levers, six large and eleven small brass knobs. Drawn in its own design
 // coordinates (1180 x 760) and scaled to fit; the static plate is cached per size.
-class HamloEchoPanel final : public juce::Component, private juce::Timer
+class HamloEchoPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param
@@ -37,6 +39,8 @@ public:
     };
 
     HamloEchoPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
     ~HamloEchoPanel() override;
 
     void setValues(const Values&); // from the project (no callbacks)
