@@ -15,18 +15,19 @@ namespace hamlo::ui
 // "HamloUdarnik · MODEL UD-1 · № 1961", amber LCDs (IMPACT, last HIT), ten brass knobs (SNAP, BODY, SPEED,
 // RISE, DECAY, SENS, PRESERVE, MIX, OUTPUT and the MODE knob titled PRAVDA / UDARNIK / PERESTROIKA),
 // LOOK-AHEAD and LISTEN levers, a green CRT (gain of the last 4 s with hit marks; the last hit's input and
-// output envelopes), an IMPACT needle meter, ON lamp and toggle. Design coordinates 1180 x 700, scaled to fit.
+// output envelopes), an IMPACT needle meter, ON lamp and toggle. Design coordinates 1180 x 820 (HamloUdarnik v2: a
+// bottom strip with the ENGINE CLASSIC / V2 and PROTECT levers), scaled to fit.
 class HamloUdarnikPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param { Snap, Body, Speed, Rise, Decay, Sensitivity, Preserve, Mix, Output, Mode, NumKnobs };
-    enum Switch { Lookahead, Listen, NumSwitches };
+    enum Switch { Lookahead, Listen, Engine, Protect, NumSwitches }; // ENGINE and PROTECT: the bottom strip (v2)
     static constexpr int kHitPoints = 64; // 2.5 ms each
 
     struct Values
     {
         std::array<double, NumKnobs> knobs { 0.0, 0.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0 };
-        std::array<int, NumSwitches> switches { 1, 0 };
+        std::array<int, NumSwitches> switches { 1, 0, 1, 1 };
         bool on = true;
     };
 

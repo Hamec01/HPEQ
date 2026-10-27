@@ -41,8 +41,10 @@ HamloUdarnikProcessor::HamloUdarnikProcessor()
     {
         raw.push_back(parameters.getRawParameterValue(specs[i].id));
         jassert(raw.back() != nullptr);
-        if (specs[i].slot < 0)
+        if (specs[i].slot == kMixSlot)
             mixIndex = static_cast<int>(i);
+        if (juce::String(specs[i].id) == "protect")
+            protectIndex = static_cast<int>(i);
     }
     bypassParameter = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter("bypass"));
     jassert(bypassParameter != nullptr);
@@ -53,7 +55,7 @@ dsp::TransientSettings HamloUdarnikProcessor::currentSettings() const noexcept
     dsp::TransientSettings s;
     const auto& specs = parameterSpecs();
     for (size_t i = 0; i < specs.size(); ++i)
-        if (specs[i].slot >= 0)
+        if (specs[i].slot >= 0) // MIX and PROTECT act in the plug-in
             s.values[static_cast<size_t>(specs[i].slot)] = transformed(raw[i]->load(std::memory_order_relaxed), specs[i].transform);
     return s;
 }
@@ -97,6 +99,7 @@ void HamloUdarnikProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     const auto settings = currentSettings();
     const int slotLatency = dsp::TransientProcessor::lookaheadSamples(settings, currentSampleRate.load(std::memory_order_relaxed));
     const int extra = juce::jmax(0, latency - slotLatency);
+    const bool protect = dsp::TransientProcessor::usesV2(settings) && raw[static_cast<size_t>(protectIndex)]->load(std::memory_order_relaxed) > 0.5f;
     mixAmount.setTarget(juce::jlimit(0.0, 1.0, static_cast<double>(raw[static_cast<size_t>(mixIndex)]->load(std::memory_order_relaxed))), rampSteps);
     onAmount.setTarget(isOn() ? 1.0 : 0.0, rampSteps);
 
@@ -128,6 +131,22 @@ void HamloUdarnikProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
         // Always clock the aligners (also at zero delay), so a later look-ahead change reads continuous history.
         wetAlign.process(wet, wet, channels, count, extra);
         dryAlign.process(dryPointers, dryPointers, channels, count, latency);
+        // v2 output protection (docs/UDARNIK_V2.md U7): only what the shaper added over the (aligned) input sample
+        // and over -3 dBFS is soft-limited into the room up to 0 dBFS; a sample the shaper did not raise passes
+        // exactly, and the output never passes 0 dBFS unless the input already did
+        if (protect)
+            for (int channel = 0; channel < channels; ++channel)
+                for (int i = 0; i < count; ++i)
+                {
+                    const float v = wet[channel][i], a = std::abs(v);
+                    constexpr float knee = 0.70794578f; // -3 dBFS
+                    const float base = std::max(knee, std::abs(dryPointers[channel][i]));
+                    if (a > base && base < 1.0f)
+                    {
+                        const float room = 1.0f - base;
+                        wet[channel][i] = std::copysign(base + room * std::tanh((a - base) / room), v);
+                    }
+                }
         for (int i = 0; i < count; ++i)
         {
             const auto on = static_cast<float>(onAmount.next());
@@ -159,7 +178,18 @@ void HamloUdarnikProcessor::setStateInformation(const void* data, int size)
 {
     if (auto xml = getXmlFromBinary(data, size))
         if (xml->hasTagName(parameters.state.getType().toString()))
+        {
+            // a state from before the v2 engine is CLASSIC without protection (it sounds as it did)
+            bool hasEngine = false;
+            for (auto* e : xml->getChildWithTagNameIterator("PARAM"))
+                hasEngine = hasEngine || e->getStringAttribute("id") == "engine";
             parameters.replaceState(juce::ValueTree::fromXml(*xml));
+            if (!hasEngine)
+            {
+                setParameterValue("engine", 0.0);
+                setParameterValue("protect", 0.0);
+            }
+        }
 }
 
 juce::RangedAudioParameter* HamloUdarnikProcessor::parameter(const juce::String& id) const noexcept

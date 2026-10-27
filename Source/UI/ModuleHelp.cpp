@@ -24,6 +24,8 @@ const std::map<juce::String, Table>& tables()
             { "style", { "MODE", "PRAVDA classic shaper; UDARNIK punch without louder peaks; PERESTROIKA changes the shape of the hit." } },
             { "lookahead", { "LOOK-AHEAD", "Sees the hit coming so the first sample is already shaped. Adds 2 or 5 ms latency." } },
             { "listen", { "LISTEN", "Hear only the attack or only the body that the shaper separates." } },
+            { "engine", { "ENGINE", "V2: the knobs deliver what they say on every hit, the effect does not depend on the level, steady tones are left alone. CLASSIC: the original HamloUdarnik laws (older projects open on it)." } },
+            { "protect", { "PROTECT", "V2: a soft clip from -3 dBFS that never lets the output pass 0 dBFS - push SNAP without clipping the DAW." } },
         } },
     };
     return t;

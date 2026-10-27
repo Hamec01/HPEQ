@@ -47,6 +47,7 @@ set_target_properties(HamloUdarnik_Assets PROPERTIES POSITION_INDEPENDENT_CODE O
 add_library(HamloUdarnik_Shared STATIC
     Source/DSP/HamloUdarnik.cpp
     Source/DSP/TransientShaper.cpp
+    Source/DSP/UdarnikV2.cpp
     Source/UI/BlackSteel.cpp
     Source/UI/HamloUdarnikPanel.cpp
     Source/UI/ModuleHelp.cpp
@@ -106,7 +107,8 @@ target_link_libraries(HamloUdarnik
 add_executable(HamloUdarnik_Tests
     Tests/TestMain.cpp
     Tests/ShaperTests.cpp
-    Tests/PluginTests.cpp)
+    Tests/PluginTests.cpp
+    Tests/V2Tests.cpp)
 target_compile_definitions(HamloUdarnik_Tests PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
 target_link_libraries(HamloUdarnik_Tests
     PRIVATE
@@ -140,3 +142,15 @@ target_link_libraries(HamloUdarnik_Snapshot
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 
+
+# Measurements against docs/UDARNIK_V2.md (the "before" and "after" runs use this tool unchanged).
+add_executable(HamloUdarnik_Lab Tests/LabMain.cpp)
+target_compile_definitions(HamloUdarnik_Lab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(HamloUdarnik_Lab
+    PRIVATE
+        HamloUdarnik_Shared
+        HamloUdarnik_Assets
+        juce::juce_audio_utils
+        juce::juce_audio_formats
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)

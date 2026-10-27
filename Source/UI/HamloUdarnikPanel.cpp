@@ -6,11 +6,21 @@ namespace hamlo::ui
 {
 namespace
 {
-constexpr float kW = 1180.0f, kH = 700.0f;
+constexpr float kW = 1180.0f, kH = 820.0f; // 700 + the ENGINE / PROTECT strip
 constexpr float kPi = juce::MathConstants<float>::pi;
 constexpr float kKnobY = 250.0f, kLabelY = 168.0f, kReadoutY = 318.0f, kKnobScale = 0.66f;
-constexpr float kSwitchDialX = 66.0f, kSwitchDialW = 230.0f;
-float switchTop(int i) { return 372.0f + static_cast<float>(i) * 104.0f; }
+// where a switch sits: LOOK-AHEAD and LISTEN in the left column, ENGINE and PROTECT in the bottom strip
+struct SwitchPlace
+{
+    float x, top, width;
+};
+SwitchPlace switchPlace(int i)
+{
+    if (i < 2)
+        return { 66.0f, 372.0f + static_cast<float>(i) * 104.0f, 230.0f };
+    return i == 2 ? SwitchPlace { 196.0f, 676.0f, 300.0f } : SwitchPlace { 684.0f, 676.0f, 300.0f };
+}
+constexpr float kStripTop = 662.0f;
 const juce::Rectangle<float> kCrtBezel { 331.0f, 385.0f, 404.0f, 238.0f };
 const juce::Rectangle<float> kCrtScreen { 349.0f, 403.0f, 368.0f, 182.0f };
 const juce::Point<float> kLamp { 1074.0f, 453.0f }, kToggle { 1074.0f, 559.0f };
@@ -29,8 +39,10 @@ constexpr std::array<MapInfo, HamloUdarnikPanel::NumKnobs> kMaps { { { -24.0, 24
 constexpr std::array<const char*, HamloUdarnikPanel::NumKnobs> kLabels { "Snap", "Body", "Speed", "Rise", "Decay", "Sens",
                                                                          "Preserve", "Mix", "Output", "Mode" };
 const std::array<juce::StringArray, HamloUdarnikPanel::NumSwitches> kSwitchOptions { juce::StringArray { "Sputnik", "Vostok", "Soyuz" },
-                                                                                     juce::StringArray { "Full", "Attack", "Body" } };
-constexpr std::array<const char*, HamloUdarnikPanel::NumSwitches> kSwitchLabels { "Look-ahead", "Listen" };
+                                                                                     juce::StringArray { "Full", "Attack", "Body" },
+                                                                                     juce::StringArray { "Classic", "V2" },
+                                                                                     juce::StringArray { "Off", "On" } };
+constexpr std::array<const char*, HamloUdarnikPanel::NumSwitches> kSwitchLabels { "Look-ahead", "Listen", "Engine", "Protect" };
 } // namespace
 
 const juce::StringArray& HamloUdarnikPanel::modeNames()
@@ -47,7 +59,7 @@ const char* HamloUdarnikPanel::keyFor(Param p)
 
 const char* HamloUdarnikPanel::keyFor(Switch s)
 {
-    static constexpr const char* keys[] { "lookahead", "listen" };
+    static constexpr const char* keys[] { "lookahead", "listen", "engine", "protect" };
     return keys[s];
 }
 
@@ -172,9 +184,20 @@ void HamloUdarnikPanel::renderStatic(juce::Graphics& g) const
                             17.0f, steel::stencil, juce::Justification::centred, 0.08f);
         steel::knobScale(g, c, kKnobScale);
     }
+    g.setColour(juce::Colours::black);
+    g.drawHorizontalLine(juce::roundToInt(kStripTop - 3.0f), 56.0f, kW - 56.0f);
+    g.setColour(juce::Colours::white.withAlpha(0.07f));
+    g.drawHorizontalLine(juce::roundToInt(kStripTop - 4.0f), 56.0f, kW - 56.0f);
     for (int i = 0; i < NumSwitches; ++i)
     {
-        const float top = switchTop(i);
+        const auto place = switchPlace(i);
+        const float top = place.top;
+        if (i >= 2)
+        {
+            steel::engraved(g, juce::String(kSwitchLabels[static_cast<size_t>(i)]).toUpperCase(), { place.x, top, place.width, 22.0f }, 16.0f,
+                            steel::stencil, juce::Justification::centred);
+            continue;
+        }
         if (i > 0)
         {
             g.setColour(juce::Colours::black);
@@ -282,16 +305,17 @@ void HamloUdarnikPanel::paint(juce::Graphics& g)
     {
         const auto& options = kSwitchOptions[static_cast<size_t>(sw)];
         const int n = options.size(), selected = juce::jlimit(0, n - 1, values.switches[static_cast<size_t>(sw)]);
-        const float dialTop = switchTop(sw) + 24.0f;
+        const auto place = switchPlace(sw);
+        const float dialTop = place.top + 24.0f;
         for (int i = 0; i < n; ++i)
         {
-            const float x = kSwitchDialX + kSwitchDialW * (0.12f + 0.76f * static_cast<float>(i) / static_cast<float>(n - 1));
+            const float x = place.x + place.width * (0.12f + 0.76f * static_cast<float>(i) / static_cast<float>(n - 1));
             g.setFont(steel::stencilFont(13.5f).withKerningFactor(0.1f));
             g.setColour(i == selected ? juce::Colour(0xfffff6d0) : steel::stencilDim);
             g.drawText(options[i].toUpperCase(), juce::Rectangle<float>(x - 44.0f, dialTop, 88.0f, 18.0f), juce::Justification::centred);
         }
-        const float a = (-38.0f + 38.0f * static_cast<float>(selected)) * kPi / 180.0f;
-        steel::lever(g, { kSwitchDialX + kSwitchDialW * 0.5f, dialTop + 54.0f }, a, 0.85f); // clear of the option names
+        const float a = (-38.0f + 76.0f * static_cast<float>(selected) / static_cast<float>(n - 1)) * kPi / 180.0f;
+        steel::lever(g, { place.x + place.width * 0.5f, dialTop + 54.0f }, a, 0.85f); // clear of the option names
     }
     drawCrt(g);
     steel::meterNeedle(g, impactMeter);
@@ -355,8 +379,9 @@ bool HamloUdarnikPanel::hitSwitch(juce::Point<float> d, int& which, int& option)
 {
     for (int s = 0; s < NumSwitches; ++s)
     {
-        const float dialTop = switchTop(s) + 24.0f;
-        if (d.y < dialTop || d.y > dialTop + 70.0f || d.x < kSwitchDialX || d.x > kSwitchDialX + kSwitchDialW)
+        const auto place = switchPlace(s);
+        const float dialTop = place.top + 24.0f;
+        if (d.y < dialTop || d.y > dialTop + 70.0f || d.x < place.x || d.x > place.x + place.width)
             continue;
         which = s;
         const int n = kSwitchOptions[static_cast<size_t>(s)].size();
@@ -364,7 +389,7 @@ bool HamloUdarnikPanel::hitSwitch(juce::Point<float> d, int& which, int& option)
         if (d.y <= dialTop + 20.0f)
             for (int i = 0; i < n; ++i)
             {
-                const float x = kSwitchDialX + kSwitchDialW * (0.12f + 0.76f * static_cast<float>(i) / static_cast<float>(n - 1));
+                const float x = place.x + place.width * (0.12f + 0.76f * static_cast<float>(i) / static_cast<float>(n - 1));
                 if (std::abs(d.x - x) <= 40.0f)
                     option = i;
             }

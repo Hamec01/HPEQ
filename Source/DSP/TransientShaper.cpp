@@ -30,11 +30,24 @@ bool TransientProcessor::usesUdarnik(const TransientSettings& p) noexcept
 
 int TransientProcessor::lookaheadSamples(const TransientSettings& p, double sampleRate) noexcept
 {
+    if (usesV2(p))
+        return UdarnikCore::lookaheadSamples(static_cast<int>(std::lround(p.values[slot::kTrLookahead])), sampleRate);
     return usesUdarnik(p) ? UdarnikCore::lookaheadSamples(static_cast<int>(std::lround(p.values[slot::kTrLookahead])), sampleRate) : 0;
 }
 
 void TransientProcessor::process(float* const* channels, int numChannels, int numSamples, const TransientSettings& p) noexcept
 {
+    if (usesV2(p))
+    {
+        if (!v2On)
+        {
+            v2.reset();
+            v2On = true;
+        }
+        v2.process(channels, numChannels, numSamples, p);
+        return;
+    }
+    v2On = false;
     if (usesUdarnik(p))
     {
         if (!coreActive)

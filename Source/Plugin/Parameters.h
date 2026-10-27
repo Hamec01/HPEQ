@@ -26,9 +26,11 @@ struct ParameterSpec
     float minimum, maximum, defaultValue, skew;
     const char* unit;
     juce::StringArray choices; // empty = a float knob
-    int slot;                  // dsp::slot index, -1 = the MIX
+    int slot;                  // dsp::slot index, kMixSlot = the MIX, kPluginOnly = the plug-in's output stage
     Transform transform = Transform::Direct;
 };
+
+constexpr int kMixSlot = -1, kPluginOnly = -2;
 
 inline const std::vector<ParameterSpec>& parameterSpecs()
 {
@@ -41,11 +43,15 @@ inline const std::vector<ParameterSpec>& parameterSpecs()
         { "decay", "Decay", 0.5f, 2.0f, 1.0f, 0.5f, "x", {}, s::kTrDecayLog2, Transform::Log2 },
         { "sensitivity", "Sensitivity", 0.0f, 1.0f, 1.0f, 1.0f, "", {}, s::kTrStrictness, Transform::OneMinus },
         { "preserve", "Preserve", 0.0f, 1.0f, 1.0f, 1.0f, "", {}, s::kTrPreserve },
-        { "mix", "Mix", 0.0f, 1.0f, 1.0f, 1.0f, "", {}, -1 },
+        { "mix", "Mix", 0.0f, 1.0f, 1.0f, 1.0f, "", {}, kMixSlot },
         { "outputDb", "Output", -24.0f, 12.0f, 0.0f, 1.0f, "dB", {}, s::kTrOutputDb },
         { "style", "Mode", 0.0f, 2.0f, 0.0f, 1.0f, "", { "PRAVDA", "UDARNIK", "PERESTROIKA" }, s::kTrStyle },
         { "lookahead", "Look-ahead", 0.0f, 2.0f, 1.0f, 1.0f, "", { "Sputnik", "Vostok", "Soyuz" }, s::kTrLookahead },
         { "listen", "Listen", 0.0f, 2.0f, 0.0f, 1.0f, "", { "Full", "Attack", "Body" }, s::kTrListen },
+        // docs/UDARNIK_V2.md: a new instance runs the v2 engine with the output protection; a state saved without
+        // `engine` (HPEQ's HamloUdarnik, HamloUdarnik 0.1.0) loads as CLASSIC without protection - it sounds as before
+        { "engine", "Engine", 0.0f, 1.0f, 1.0f, 1.0f, "", { "Classic", "V2" }, s::kTrEngine },
+        { "protect", "Protect", 0.0f, 1.0f, 1.0f, 1.0f, "", { "Off", "On" }, kPluginOnly },
     };
     return specs;
 }
@@ -62,5 +68,5 @@ inline float transformed(float value, Transform t) noexcept
 }
 
 constexpr const char* kStateTag = "HamloUdarnik";
-constexpr int kEditorWidth = 1180, kEditorHeight = 700;
+constexpr int kEditorWidth = 1180, kEditorHeight = 820;
 } // namespace hamlo::udarnik

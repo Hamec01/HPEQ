@@ -34,6 +34,8 @@ void setAll(juce::AudioProcessor& target, udarnik::HamloUdarnikProcessor& ours, 
         ours.setParameterValue(spec.id, spec.defaultValue);
     for (const auto& [id, v] : c.values)
         ours.setParameterValue(id, v);
+    ours.setParameterValue("engine", 0.0); // the reference (HPEQ) has only the CLASSIC laws
+    ours.setParameterValue("protect", 0.0);
     // a hosted VST3 parameter's ID is the VST3 hash, so the parameters are matched by name
     for (auto* p : target.getParameters())
     {

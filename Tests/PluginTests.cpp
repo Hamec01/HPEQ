@@ -194,7 +194,7 @@ public:
                 expectWithinAbsoluteError(p.parameterValue(spec.id), static_cast<double>(spec.defaultValue), 1.0e-3, spec.id);
         }
 
-        beginTest("Page: 1180 x 700, resizable; knob, MODE, levers and ON write the parameters; host changes come back");
+        beginTest("Page: 1180 x 820, resizable; knob, MODE, levers and ON write the parameters; host changes come back");
         {
             HamloUdarnikProcessor p;
             std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
@@ -212,16 +212,20 @@ public:
             panel.onKnobChange(P::Mode, 2.0);
             panel.onSwitchChange(P::Lookahead, 2);
             panel.onSwitchChange(P::Listen, 1);
+            panel.onSwitchChange(P::Engine, 0);
+            panel.onSwitchChange(P::Protect, 0);
             panel.onPowerChange(false);
             expectWithinAbsoluteError(p.parameterValue("attackDb"), 5.5, 1.0e-3);
             expectEquals(juce::roundToInt(p.parameterValue("style")), 2);
             expectEquals(juce::roundToInt(p.parameterValue("lookahead")), 2);
             expectEquals(juce::roundToInt(p.parameterValue("listen")), 1);
+            expectEquals(juce::roundToInt(p.parameterValue("engine")), 0);
+            expectEquals(juce::roundToInt(p.parameterValue("protect")), 0);
             expect(!p.isOn());
             p.setParameterValue("sustainDb", -4.0);
             p.setParameterValue("bypass", 0.0);
-            editor->setSize(590, 350);
-            expect(panel.getWidth() == 590 && panel.getHeight() == 350);
+            editor->setSize(590, 410);
+            expect(panel.getWidth() == 590 && panel.getHeight() == 410);
             juce::MessageManager::getInstance()->runDispatchLoopUntil(120);
             expectWithinAbsoluteError(panel.getValues().knobs[P::Body], -4.0, 1.0e-3);
             expect(panel.getValues().on);

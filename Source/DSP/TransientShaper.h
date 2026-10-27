@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DSP/HamloUdarnik.h"
+#include "DSP/UdarnikV2.h"
 #include "DSP/TransientSettings.h"
 
 namespace hamlo::dsp
@@ -13,18 +14,24 @@ namespace hamlo::dsp
 class TransientProcessor
 {
 public:
-    void prepare(double sampleRate) { sampleRate_ = sampleRate; core.prepare(sampleRate); reset(); } // allocates (core rings)
-    void reset() noexcept { fast = slow = 0.0; core.reset(); }
+    void prepare(double sampleRate) { sampleRate_ = sampleRate; core.prepare(sampleRate); v2.prepare(sampleRate); reset(); } // allocates (rings)
+    void reset() noexcept { fast = slow = 0.0; core.reset(); v2.reset(); }
     void process(float* const* channels, int numChannels, int numSamples, const TransientSettings&) noexcept;
 
     static bool usesUdarnik(const TransientSettings&) noexcept;
     static int lookaheadSamples(const TransientSettings&, double sampleRate) noexcept;
     const UdarnikCore& udarnik() const noexcept { return core; }
     bool udarnikActive() const noexcept { return coreActive; }
+    // HamloUdarnik: slot kTrEngine 1 runs the v2 engine (UdarnikV2.h) instead of the HPEQ laws
+    static bool usesV2(const TransientSettings& p) noexcept { return p.values[slot::kTrEngine] > 0.5f; }
+    const UdarnikV2& engine2() const noexcept { return v2; }
+    bool v2Active() const noexcept { return v2On; }
 
 private:
     double sampleRate_ = 48000.0, fast = 0.0, slow = 0.0;
     UdarnikCore core;
     bool coreActive = false;
+    UdarnikV2 v2;
+    bool v2On = false;
 };
 } // namespace hamlo::dsp

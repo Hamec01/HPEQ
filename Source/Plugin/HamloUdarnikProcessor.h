@@ -62,7 +62,7 @@ private:
     juce::AudioProcessorValueTreeState parameters;
     std::vector<std::atomic<float>*> raw; // in parameterSpecs() order
     juce::AudioParameterBool* bypassParameter = nullptr;
-    int mixIndex = -1;
+    int mixIndex = -1, protectIndex = -1;
 
     dsp::TransientProcessor transient;
     juce::AudioBuffer<float> dry, dryForMix;

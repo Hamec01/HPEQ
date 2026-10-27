@@ -18,15 +18,15 @@ HamloUdarnikEditor::HamloUdarnikEditor(HamloUdarnikProcessor& owner)
     panel->readMeters = [this]
     {
         const auto& shaper = processor.shaper();
-        if (!shaper.udarnikActive())
+        if (!shaper.udarnikActive() && !shaper.v2Active())
             return Panel::Reading {};
-        const auto m = shaper.udarnik().meters();
+        const auto m = shaper.v2Active() ? shaper.engine2().meters() : shaper.udarnik().meters();
         return Panel::Reading { m.impactDb, m.gainMinDb, m.gainMaxDb, m.events, m.confidence, m.strengthDb };
     };
     panel->readLastHit = [this](std::array<float, Panel::kHitPoints>& input, std::array<float, Panel::kHitPoints>& output)
     {
         const auto& shaper = processor.shaper();
-        return shaper.udarnikActive() ? shaper.udarnik().lastHit(input, output) : 0;
+        return shaper.v2Active() ? shaper.engine2().lastHit(input, output) : shaper.udarnikActive() ? shaper.udarnik().lastHit(input, output) : 0;
     };
     addAndMakeVisible(*panel);
 
