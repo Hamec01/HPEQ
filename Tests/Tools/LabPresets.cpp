@@ -5,7 +5,7 @@
 //    raise a vocal preset by 8 dB by hand);
 //  - mastering presets drive HamloRedWall (ceiling -1 dBTP, true peak) to a genre loudness target measured
 //    on unmastered mixdowns (the owner's own masters sit at -10.6 .. -11.8 LUFS).
-// Usage: HPEQ_Lab presets --material <dir of 48 kHz wav> --out <Assets/Presets/Factory>
+// Usage: HPEQ_Lab presets --material <dir of 48 kHz wav> --out <Assets/Presets/Factory> [--only <text>] [--keep <library>]
 // The material is not in the repository (the owner's stems and mixes); the report lists what was used.
 
 #include <cmath>
@@ -311,7 +311,7 @@ juce::String slug(const juce::String& s)
 juce::String folderOf(const juce::String& s) { return s.replace(" & ", "-and-").replace(", ", "-").replace(" / ", "-").replace(" ", ""); }
 } // namespace
 
-int runPresetLibrary(const juce::File& materialDir, const juce::File& outDir, const juce::String& only)
+int runPresetLibrary(const juce::File& materialDir, const juce::File& outDir, const juce::String& only, const juce::File& keepDir)
 {
     juce::ScopedJuceInitialiser_GUI gui;
     const auto material = loadMaterial(materialDir);
@@ -320,9 +320,34 @@ int runPresetLibrary(const juce::File& materialDir, const juce::File& outDir, co
     if (only.isNotEmpty()) // a check of one part: e.g. --only Mastering
         presets.erase(std::remove_if(presets.begin(), presets.end(), [&](const Preset& p)
                                      { return !(p.category + " " + p.name).containsIgnoreCase(only); }), presets.end());
-    outDir.getChildFile("Drums-and-Bass").deleteRecursively();
-    outDir.getChildFile("Vocals-Mastering-and-More").deleteRecursively();
-    outDir.getChildFile("Hamlo-Showcase").deleteRecursively();
+    // --keep <library>: a preset already in that library keeps its file (state and Output gain, byte for byte)
+    // and its measured calibration; only the presets new to it are calibrated (on this material). Pass 3: the
+    // first material is lost, so the 197 presets calibrated on it stay as they were.
+    struct Kept
+    {
+        juce::MemoryBlock state;
+        juce::var entry;
+    };
+    std::map<juce::String, Kept> kept;
+    const juce::String packNames[] { "Drums & Bass", "Vocals, Mastering & More", "Hamlo Showcase" }; // the library's packs (named below)
+    if (keepDir != juce::File())
+        for (const auto& pack : packNames)
+        {
+            const auto folder = keepDir.getChildFile(folderOf(pack));
+            const auto manifest = juce::JSON::parse(folder.getChildFile("manifest.json"));
+            if (const auto* list = manifest["presets"].getArray())
+                for (const auto& e : *list)
+                {
+                    Kept k;
+                    k.entry = e;
+                    folder.getChildFile(e["path"].toString()).loadFileAsData(k.state);
+                    jassert(k.state.getSize() > 0);
+                    kept[pack + "/" + e["name"].toString()] = std::move(k);
+                }
+        }
+    std::cout << "kept from the library: " << kept.size() << "\n";
+    for (const auto& pack : packNames)
+        outDir.getChildFile(folderOf(pack)).deleteRecursively();
 
     std::map<juce::String, juce::Array<juce::var>> manifests;
     std::map<juce::String, int> numbers;
@@ -343,6 +368,11 @@ int runPresetLibrary(const juce::File& materialDir, const juce::File& outDir, co
     {
         const auto& preset = presets[k];
         auto& r = results[k];
+        if (kept.count(preset.pack + "/" + preset.name) != 0)
+        {
+            r.valid = r.ok = true;
+            return;
+        }
         r.project = buildProject(preset.name, preset.design);
         auto& project = r.project;
         std::vector<const juce::AudioBuffer<float>*> clips;
@@ -444,19 +474,35 @@ int runPresetLibrary(const juce::File& materialDir, const juce::File& outDir, co
             continue;
         }
         const auto& project = r.project;
-        const double outputDb = r.outputDb;
-        const bool peakLimited = r.peakLimited, ok = r.ok;
-        const auto& m = r.m;
+        const auto keptIt = kept.find(preset.pack + "/" + preset.name);
+        const bool isKept = keptIt != kept.end();
+        double outputDb = r.outputDb;
+        bool peakLimited = r.peakLimited;
+        const bool ok = r.ok;
+        auto m = r.m;
         failures += ok ? 0 : 1;
 
-        // write the state, as the plug-in saves it
-        auto plugin = std::make_unique<FxPluginProcessor>();
-        plugin->setProject(project);
-        if (auto* p = plugin->getParameters().getParameter("outputGain"))
-            p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(outputDb)));
-        plugin->setPresetName(preset.name);
+        // write the state, as the plug-in saves it (a kept preset: its file as it was)
         juce::MemoryBlock state;
-        plugin->getStateInformation(state);
+        if (isKept)
+        {
+            const auto& e = keptIt->second.entry;
+            state = keptIt->second.state;
+            outputDb = static_cast<double>(e["outputGainDb"]);
+            peakLimited = e["calibration"].toString().startsWith("peak");
+            m.inLufs = e["measuredInLufs"];
+            m.outLufs = e["measuredOutLufs"];
+            m.outTp = e["measuredTruePeakDbtp"];
+        }
+        else
+        {
+            auto plugin = std::make_unique<FxPluginProcessor>();
+            plugin->setProject(project);
+            if (auto* p = plugin->getParameters().getParameter("outputGain"))
+                p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(outputDb)));
+            plugin->setPresetName(preset.name);
+            plugin->getStateInformation(state);
+        }
         const auto number = ++numbers[preset.pack];
         const auto fileName = juce::String(number).paddedLeft('0', 3) + "-" + slug(preset.name) + ".hpeq";
         auto folder = outDir.getChildFile(folderOf(preset.pack)).getChildFile(folderOf(preset.category));
@@ -468,6 +514,8 @@ int runPresetLibrary(const juce::File& materialDir, const juce::File& outDir, co
         juce::String materialText;
         for (const auto& s : preset.material)
             materialText << (materialText.isEmpty() ? "" : ", ") << s;
+        if (!kept.empty() && !isKept)
+            materialText << " (set 2)";
         auto* entry = new juce::DynamicObject();
         entry->setProperty("number", number);
         entry->setProperty("name", preset.name);
@@ -476,7 +524,10 @@ int runPresetLibrary(const juce::File& materialDir, const juce::File& outDir, co
             entry->setProperty("group", preset.group);
         entry->setProperty("intent", preset.intent);
         entry->setProperty("path", folder.getRelativePathFrom(outDir.getChildFile(folderOf(preset.pack))).replace("\\", "/") + "/" + fileName);
-        entry->setProperty("calibration", preset.cal == Cal::Target ? "loudness target" : (peakLimited ? "peak-limited (true peak <= input + 6 dB)" : "level-matched"));
+        entry->setProperty("calibration", isKept ? keptIt->second.entry["calibration"].toString()
+                                                 : preset.cal == Cal::Target ? "loudness target" : (peakLimited ? "peak-limited (true peak <= input + 6 dB)" : "level-matched"));
+        if (!kept.empty())
+            entry->setProperty("materialSet", isKept ? 1 : 2);
         entry->setProperty("outputGainDb", outputDb);
         entry->setProperty("measuredInLufs", std::round(m.inLufs * 10.0) / 10.0);
         entry->setProperty("measuredOutLufs", std::round(m.outLufs * 10.0) / 10.0);
@@ -512,7 +563,12 @@ int runPresetLibrary(const juce::File& materialDir, const juce::File& outDir, co
     outDir.getChildFile("manifest.json").replaceWithText(juce::JSON::toString(juce::var(root)));
     outDir.getChildFile("CALIBRATION.md").replaceWithText("# Factory library calibration\n\nGenerated by `HPEQ_Lab presets` (Tests/Tools/LabPresets.cpp). "
                                                           "Track presets: Output gain so the integrated loudness out = in on the material, unless that would put the true peak more than 6 dB over the input's (then the peak sets it: marked (peak)). Mastering: "
-                                                          "HamloRedWall threshold so the mean integrated loudness hits the target, ceiling -1 dBTP.\n\n" + report);
+                                                          "HamloRedWall threshold so the mean integrated loudness hits the target, ceiling -1 dBTP.\n\n"
+                                                          + (kept.empty() ? juce::String()
+                                                                          : juce::String("Two material sets: presets kept from the library (--keep) carry their calibration on material set 1 (the owner's "
+                                                                                         "stems and mixes of pass 2, since lost); presets marked (set 2) were calibrated on material set 2 (pass 3, see "
+                                                                                         "docs/fx-addon/reports/PRESET_PASS_REPORT.md for what it is).\n\n"))
+                                                          + report);
     std::cout << index << " presets, " << failures << " outside tolerance" << std::endl;
     return failures == 0 ? 0 : 1;
 }
@@ -970,6 +1026,90 @@ void more(std::vector<Preset>& v)
          tubes(one({ lowCut(30) }, { verb(2, 0.8, 5, 0.2), comp(-26, 6, 5, 80, 1, 0) }), false, true, 1.0, 0.8));
 }
 
+// Presets pass 3 (owner, 2026-10-27: "more presets, only good ones, and more for Revolution"). The Revolution
+// presets reuse the (character, seed, settings) of the HamloRevolution module presets that RevolutionPresetTests
+// checks, so the action in the name is in the pattern; the rest are standard engineering recipes the library
+// lacked (parallel compression, NY-style smash, sub focus).
+void pass3(std::vector<Preset>& v)
+{
+    const std::vector<juce::String> K { "kick" }, S { "snare" }, H { "hihat" }, P { "perc" }, B { "bass1", "bass2" }, D { "drumbus1" }, G { "guitar" },
+        KY { "keys", "keys2" }, SY { "synth" };
+    const auto add = [&](const juce::String& pack, const juce::String& cat, const juce::String& name, const juce::String& intent, std::vector<juce::String> m, Design d)
+    { v.push_back(track(pack, cat, name, intent, std::move(m), std::move(d))); };
+    // Revolution, on the part it suits
+    add(DB, "HiHat", "Hat Ratchet Rolls", "Revolution GLITCH only: trap-style ratchet rolls on the hats.", H,
+        one({ lowCut(350, 18) }, { revo(1, 62, 1.0, { { "timeOn", 0 }, { "motionOn", 0 }, { "glitchDepth", 0.7 } }) }));
+    add(DB, "Percussion", "Perc Triplet Stutter", "Revolution GLITCH on a triplet grid: stutters that roll against the beat.", P,
+        one({ lowCut(150, 18) }, { revo(1, 17, 1.0, { { "timeOn", 0 }, { "motionOn", 0 }, { "triplet", 1 } }) }));
+    add(DB, "Bass", "808 Tape Stop Drops", "Revolution TIME only: tape stops on the 808 / bass at the ends of phrases.", B,
+        one({ lowCut(28, 24) }, { revo(1, 23, 1.0, { { "glitchOn", 0 }, { "motionOn", 0 }, { "timeStretch", 0 } }), wide(1.0, 120) }));
+    add(VM, "LeadVocal", "Vocal Half-Time Hook", "Revolution TIME, CLEAN stretch: the hook drops to half time and back.", kVox,
+        one({ lowCut(90), bell(300, -2, 1.2), deess() }, { comp(-26, 3, 5, 100, 0, 1), revo(1, 83, 1.0, { { "glitchOn", 0 }, { "motionOn", 0 }, { "timeStretch", 2 } }) }));
+    add(VM, "BackingVocal", "Backing Reverse Swells", "Revolution reverses the backing line into a plate: swells into the next word.", kBack,
+        one({ lowCut(160), deess(6500, -8) }, { comp(-24, 3, 10, 120, 2), revo(1, 94, 0.6, { { "glitchOn", 0 }, { "motionOn", 0 } }), verb(4, 1.8, 20, 0.2, 300) }));
+    add(VM, "Guitar", "Guitar Freeze Filter", "Revolution freezes guitar moments while a smooth low-pass motion moves under them (mix 80 %).", G,
+        one({ lowCut(100) }, { revo(2, 44, 0.8, { { "glitchOn", 0 }, { "motionOn", 1 }, { "motionTarget", 1 }, { "motionDepth", 0.4 }, { "motionSmooth", 0.6 } }) }));
+    add(VM, "Keys", "Keys Crush Pulse", "Revolution CRUSH motion on keys with tape under it: lo-fi bit pulses on the grid.", KY,
+        one({ lowCut(60), highCut(9000) }, { mag(1, 4, 0.5, { { "speed", 1 } }), revo(1, 42, 1.0, { { "timeOn", 0 }, { "glitchOn", 0 }, { "motionTarget", 4 }, { "motionDepth", 0.5 }, { "motionSmooth", 0.5 } }) }));
+    add(VM, "Synth", "Pad Volume Chops", "Revolution VOLUME motion, hard edges: a pad chopped on 1/16 (trance-gate style).", SY,
+        one({ lowCut(100) }, { revo(2, 18, 1.0, { { "timeOn", 0 }, { "glitchOn", 0 }, { "motionTarget", 0 }, { "motionDepth", 0.9 }, { "motionSmooth", 0.05 } }) }));
+    const auto show = [&](const juce::String& cat, const juce::String& name, const juce::String& intent, std::vector<juce::String> material, Design d)
+    { v.push_back(track(SH, cat, name, intent, std::move(material), std::move(d))); };
+    show("Revolution", "Vocal Tape Stop Ends", "Revolution TIME on a vocal: tape stops at phrase ends, TAPE stretch.", kVox,
+         one({ lowCut(90), deess() }, { comp(-26, 3, 5, 100, 0, 1), revo(1, 23, 1.0, { { "glitchOn", 0 }, { "motionOn", 0 }, { "timeStretch", 0 } }) }));
+    show("Revolution", "Vocal Reverse Tails", "Revolution reverses vocal tails into a ducked plate (mix 80 %).", kVox,
+         one({ lowCut(90), deess() }, { comp(-26, 3, 5, 100, 0, 1), revo(1, 94, 0.8, { { "glitchOn", 0 }, { "motionOn", 0 } }), verb(4, 1.6, 30, 0.12, 250, 9000, { { "duck", 0.5 } }) }));
+    show("Revolution", "Boom Bap Swing Chops", "Revolution MUSICAL with 33 % swing on the drums: chops that keep the boom-bap pocket.", D,
+         one({}, { revo(1, 16, 1.0, { { "motionOn", 0 }, { "swing", 0.33 } }), comp(-18, 2, 20, 120, 2) }));
+    show("Revolution", "Scratch Break", "Revolution EXPERIMENTAL GLITCH: DJ scratches and jumps on a drum break.", D,
+         one({}, { revo(2, 5, 1.0, { { "timeOn", 0 }, { "motionOn", 0 } }) }));
+    show("Revolution", "Double-Time Drum Rush", "Revolution TIME, RHYTHM stretch: the drums rush in double time and land back.", D,
+         one({}, { revo(2, 53, 1.0, { { "glitchOn", 0 }, { "motionOn", 0 }, { "timeStretch", 1 } }) }));
+    show("Revolution", "Humanized Glitch Drums", "Revolution EXPERIMENTAL with 40 % humanize: glitches that sit off the grid like a player.", D,
+         one({}, { revo(2, 10, 1.0, { { "motionOn", 0 }, { "humanize", 0.4 } }) }));
+    show("Revolution", "Mix Gap Chopper", "Revolution GLITCH gaps on the whole mix: DJ-style cuts (mix 70 %).", kMixdowns,
+         one({}, { revo(1, 21, 0.7, { { "timeOn", 0 }, { "motionOn", 0 } }) }));
+    show("Revolution", "Mix High-Pass Riser", "Revolution HIGH-PASS motion, smooth: the mix thins out and comes back - a riser without automation.", kMixdowns,
+         one({}, { revo(1, 21, 1.0, { { "timeOn", 0 }, { "glitchOn", 0 }, { "motionTarget", 2 }, { "motionDepth", 0.7 }, { "motionSmooth", 0.8 } }) }));
+    show("Revolution", "Mirror Destruction (M-G-T)", "Revolution DESTRUCTION in reversed order (MOTION, GLITCH, TIME) with high-pass motion, mix 60 %.", kMixdowns,
+         one({}, { revo(3, 3, 0.6, { { "order", 5 }, { "motionTarget", 2 } }) }));
+    // Standard recipes the library lacked
+    {
+        Design d = one({ lowCut(28, 24), bell(350, -3, 1.4) }, { punch(3, -1, 0.6) });
+        d.layers.push_back({ "Smash", { lowCut(35, 24), bell(80, 2, 1.0), bell(4000, 3, 1.2) }, {}, { comp(-36, 10, 0.5, 60, 1, 0), mag(3, 8, 0.6) }, 0.0f, 0.3f });
+        add(DB, "Kick", "Kick Parallel Smash", "Layers: the kick plus a crushed, saturated copy at 30 % - punch without losing the transient.", K, d);
+    }
+    {
+        Design d = one({ lowCut(90, 18), bell(200, 1.5, 1.0) }, { punch(3, -1, 0.7) });
+        d.layers.push_back({ "Smash", { lowCut(120, 18), highShelf(6000, 2) }, {}, { comp(-36, 10, 0.5, 80, 1, 0), verb(2, 0.7, 0, 0.3, 250) }, 0.0f, 0.3f });
+        add(DB, "Snare", "Snare Parallel Smack", "Layers: a crushed snare with a short room under the dry one (New York style).", S, d);
+    }
+    add(DB, "Bass", "Sub Focus Mono", "Sub and low mids even: mono below 100 Hz, a dynamic shelf on the boom, a light Tube for small speakers.", B,
+        one({ lowCut(25, 24), dyn(lowShelf(70, 0), -14, -4, 3, 20, 160), bell(180, -1.5, 1.0) }, { mag(2, 4, 0.3, { { "harmonics", 0.5 } }), comp(-20, 2.5, 20, 140, 2, 1), wide(1.0, 100) }));
+    {
+        Design d = one({ lowCut(90), bell(300, -2, 1.2), highShelf(11000, 2), deess() }, { comp(-24, 2.5, 10, 120, 2, 1) });
+        d.layers.push_back({ "Crush", { lowCut(150), bell(3000, 2, 1.0) }, {}, { comp(-38, 10, 1, 80, 1, 0) }, 0.0f, 0.3f });
+        add(VM, "LeadVocal", "Vocal Parallel Compression", "Layers: the vocal lightly compressed, plus a crushed copy at 30 % - dense and present, the dynamics still there.", kVox, d);
+    }
+    add(VM, "Guitar", "Acoustic Strum Even", "Strummed acoustic even and full: boom held by a dynamic point, gentle opto-like compression.", G,
+        one({ lowCut(80), dyn(bell(180, 0, 1.0), -30, -4, 3, 10, 150), bell(2500, 1.5, 1.0), highShelf(11000, 1.5) }, { comp(-26, 2.5, 15, 150, 2, 1) }));
+    add(VM, "Keys", "Upright Piano Intimate", "Close upright piano: warm low mids, felt-soft top, a small room.", KY,
+        one({ lowCut(45), bell(250, 1, 1.0), highShelf(9000, -1.5) }, { comp(-26, 2, 20, 160, 2, 1), verb(1, 0.8, 10, 0.12, 150) }));
+    add(VM, "Synth", "Synth Lead Double", "Layers: the lead plus a pitched short double pushed wide.", SY,
+        plus(one({ lowCut(150), bell(2500, 1.5, 1.0) }, { comp(-22, 2, 10, 100) }),
+             { "Double", { lowCut(200) }, {}, { echo(1, 0, 0.0, 1.0, { { "timeMs", 16 }, { "timeRMs", 24 }, { "link", 0 }, { "pitch", 0.1 } }), wide(1.6) }, 0.0f, 0.45f }));
+    add(VM, "MixBus", "Mix Bus Low-End Focus", "Low end tidy on the mix: mono below 100 Hz, a dynamic shelf on the boom, the top untouched.", kMixdowns,
+        one({ lowCut(20, 18), dyn(lowShelf(90, 0), -18, -2.5, 3, 20, 200) }, { comp(-16, 1.5, 30, 200, 2), wide(1.0, 100) }));
+    // Mastering: a lo-fi group (beats for streaming playlists: softer, warm)
+    {
+        const std::vector<EqNodeState> eq { lowCut(25, 24), lowShelf(80, 1.0), highShelf(9000, -1.5) };
+        v.push_back(master("Lo-Fi", "Lo-Fi Tape Master", "Lo-fi beats: tape 9.5 cm/s and a soft top, gentle glue.", -12.0,
+                           one(eq, { comp(-16, 1.5, 30, 200, 2, 1, 10), mag(1, 4, 0.5, { { "speed", 1 } }), wall(-4, -1.0, 0) })));
+        v.push_back(master("Lo-Fi", "Lo-Fi Vinyl Master", "Lo-fi beats from a record: Vinyl with light crackle, narrower, gentle glue.", -12.0,
+                           one(eq, { comp(-16, 1.5, 30, 200, 2, 1, 10), mag(5, 3, 0.4, { { "crackle", 0.1 } }), wide(0.9, 120), wall(-4, -1.0, 0) })));
+    }
+}
+
 std::vector<Preset> library()
 {
     std::vector<Preset> v;
@@ -978,6 +1118,7 @@ std::vector<Preset> library()
     mastering(v);
     showcase(v);
     more(v);
+    pass3(v);
     // keep every category (and group) together, in the order it first appears: the menu builds from runs
     std::map<juce::String, int> order;
     for (const auto& p : v)
@@ -989,4 +1130,7 @@ std::vector<Preset> library()
 } // namespace
 } // namespace hpeq::lab
 
-int runPresetLibrary(const juce::File& material, const juce::File& out, const juce::String& only) { return hpeq::lab::runPresetLibrary(material, out, only); }
+int runPresetLibrary(const juce::File& material, const juce::File& out, const juce::String& only, const juce::File& keep)
+{
+    return hpeq::lab::runPresetLibrary(material, out, only, keep);
+}

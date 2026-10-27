@@ -6,6 +6,7 @@
 //    RMS out - in within -6 .. +1.5 dB, sample peak out <= peak in + 3 dB, and the difference out - in at least
 //    -24 dB under the input's RMS (the preset audibly changes the loop).
 
+#include <array>
 #include <cmath>
 #include <memory>
 #include <tuple>
@@ -156,6 +157,57 @@ public:
             }
             logMessage("  " + juce::String(static_cast<int>(list.size())) + " Revolution presets, " + juce::String(bad) + " outside the thresholds");
             expectEquals(bad, 0);
+        }
+
+        // presets pass 3: the factory presets that carry HamloRevolution (level-matched by HPEQ_Lab on material)
+        beginTest("Factory presets with Revolution: every engine left on has events; a preset named after an action has it in its pattern");
+        {
+            const std::vector<std::tuple<const char*, int, int>> promised { { "Hat Ratchet Rolls", rev::Glitch, rev::Ratchet }, { "Perc Triplet Stutter", rev::Glitch, rev::Stutter },
+                { "808 Tape Stop Drops", rev::Time, rev::TapeStop }, { "Vocal Half-Time Hook", rev::Time, rev::Half }, { "Backing Reverse Swells", rev::Time, rev::TimeReverse },
+                { "Guitar Freeze Filter", rev::Time, rev::Freeze }, { "Vocal Tape Stop Ends", rev::Time, rev::TapeStop }, { "Vocal Reverse Tails", rev::Time, rev::TimeReverse },
+                { "Scratch Break", rev::Glitch, rev::Scratch }, { "Double-Time Drum Rush", rev::Time, rev::Double }, { "Mix Gap Chopper", rev::Glitch, rev::Gap } };
+            const char* names[rev::kEngines] { "time", "glitch", "motion" };
+            int withRevolution = 0, found = 0;
+            for (const auto& p : presets::factoryPresets())
+            {
+                FxPluginProcessor plugin;
+                if (!plugin.loadPreset(p.data, p.size, p.name))
+                    continue;
+                std::vector<FxSlotState> modules;
+                for (const auto& layer : plugin.getProject().layers)
+                    for (const auto& m : layer.mixChain)
+                        if (m.type == FxType::MonstaFx)
+                            modules.push_back(m);
+                if (modules.empty())
+                    continue;
+                ++withRevolution;
+                std::array<int, rev::kEngines * 8> counts {};
+                for (const auto& m : modules)
+                {
+                    const auto pattern = rev::readPattern(m.parameters);
+                    for (int e = 0; e < rev::kEngines; ++e)
+                    {
+                        const juce::String key(names[e]);
+                        int events = 0;
+                        for (auto v : pattern.steps[static_cast<size_t>(e)])
+                        {
+                            events += v != 0 ? 1 : 0;
+                            if (v < 8)
+                                ++counts[static_cast<size_t>(e * 8 + v)];
+                        }
+                        if (static_cast<int>(m.parameters[key + "On"]) != 0 && static_cast<double>(m.parameters[key + "Mix"]) > 0.0)
+                            expect(events > 0, p.name + ": " + key + " is on with an empty lane");
+                    }
+                }
+                for (const auto& [name, engine, action] : promised)
+                    if (p.name == name)
+                    {
+                        ++found;
+                        expect(counts[static_cast<size_t>(engine * 8 + action)] > 0, p.name + ": the pattern has no " + rev::valueName(engine, action));
+                    }
+            }
+            logMessage("  " + juce::String(withRevolution) + " factory presets carry Revolution; " + juce::String(found) + " named after an action");
+            expectEquals(found, static_cast<int>(promised.size()));
         }
     }
 };

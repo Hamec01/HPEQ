@@ -253,3 +253,72 @@ Full suites (Release): `HPEQ_Tests` 2976 / 2976, `HPEQ_ModuleTests` 105 / 105.
   presets that were not calibrated and checked on it are not added. The Showcase / Revolution category keeps its 6.
 - Listening in FL Studio (owner). The checks are level, peak and "it changes the loop", not taste.
 - A host transport is not simulated: the loop runs at the plug-in's own 120 BPM clock.
+
+# Presets pass 3, part 2: 27 factory presets (17 with HamloRevolution), on a rebuilt material set
+
+Date 2026-10-27, branch `feature/hpeq-m0-m1`, base `a5ca92e`. The owner (2026-10-27): the first material folder is
+gone - "make it again", from the music on E:\.
+
+## 1. Material set 2 (`Tests/Tools/make_material_set2.py`)
+
+The same 20 clip names as set 1, 48 kHz stereo float, so every design keeps its material. Each clip is gained so
+its loudest 24 s (the window `HPEQ_Lab` uses) has set 1's integrated loudness (from CALIBRATION.md), unless the
+sample peak would pass -0.3 dBFS (then the peak sets the gain). Nothing of it goes into git.
+
+| Clips | Source | Loudness (set 1 -> set 2) |
+|---|---|---|
+| vocal_lead1-3 | the owner's dry vocal takes (Adobe Audition sessions "Голос твой", 6, 10) | -16.2 -> -16.2 LUFS |
+| vocal_back1-3 | quieter takes from other tracks of sessions 6 and 10 | -19.9 -> -19.9 |
+| mixdown_Ardnold / _boom_bap_3 / _sad_trap | the owner's "это всё перманентно" mixdown; two downloaded beats (boom bap, sad trap) | -14.1 -> -14.1 |
+| drumbus1, bass1, bass2, guitar, keys, keys2, synth | stems from `Sample pack/track stems` (boom-bap kit, sub, deep bass, guitar chords, piano, felt piano, atmospheric synth) | -20.9 / -9.4 / -9.4 / -28.5 / -21.7 / -21.7 / -24.0 -> the same (bass1 -9.6) |
+| kick, snare, hihat, perc | 90 BPM, 24-bar sequences of Boom Bap Box one-shots (fixed hits and patterns) | kick **-7.7 -> -11.5** (peak-limited); the rest the same |
+
+## 2. Before: the 197 existing presets on set 2 (same generator, nothing changed)
+
+All 197 calibrate within tolerance on set 2 too. Output gain set 2 - set 1, track presets: median 0.0 dB, within
+1 dB 112 / 155, within 2 dB 133 / 155; the largest moves are the saturating ones on kick, hats and bass (Tape Hats
++8.6 -> +2.8, Hats Lo-Fi Vinyl +9.4 -> +3.7, Rock Kick Punch +7.1 -> +2.1, Bass Tape Warmth +2.7 -> +6.9 dB): a
+saturator's loudness depends on the source. So the existing presets were **not** recalibrated: their gains came
+from the owner's own material, and set 2 is not better, only different.
+
+`HPEQ_Lab presets --keep <library>` (new) does that: a preset already in the library keeps its file and its
+manifest values; only presets new to it are calibrated. Checked: all 197 old files byte-identical to their
+pass-2 files, manifest values equal (they only get new numbers, as in pass 2). Also fixed: the generator deleted
+`Hamlo-Showcase/` but wrote `HamloShowcase/`, so an old Showcase file would have stayed.
+
+## 3. The new presets
+
+| Pack / category | Presets |
+|---|---|
+| Hamlo Showcase / Revolution (6 -> 15) | Vocal Tape Stop Ends, Vocal Reverse Tails, Boom Bap Swing Chops, Scratch Break, Double-Time Drum Rush, Humanized Glitch Drums, Mix Gap Chopper, Mix High-Pass Riser, Mirror Destruction (M-G-T) |
+| Revolution in the track categories | Hat Ratchet Rolls (HiHat), Perc Triplet Stutter (Percussion), 808 Tape Stop Drops (Bass), Vocal Half-Time Hook (LeadVocal), Backing Reverse Swells (BackingVocal), Guitar Freeze Filter (Guitar), Keys Crush Pulse (Keys), Pad Volume Chops (Synth) |
+| Standard recipes the library lacked | Kick Parallel Smash, Snare Parallel Smack, Sub Focus Mono, Vocal Parallel Compression, Acoustic Strum Even, Upright Piano Intimate, Synth Lead Double, Mix Bus Low-End Focus |
+| Mastering / Lo-Fi (new group, -12 LUFS) | Lo-Fi Tape Master, Lo-Fi Vinyl Master |
+
+Every Revolution preset uses the (character, seed, settings) of a HamloRevolution module preset that
+RevolutionPresetTests already checks on the drum loop, so its pattern is one that passed.
+
+## 4. Checks (thresholds as before)
+
+| Check | Threshold | Result |
+|---|---|---|
+| Calibration, track presets (25) | loudness out = in ±0.5 LU, or true peak <= input + 6 dB | 25 / 25 (3 peak-limited: Snare Parallel Smack, Sub Focus Mono -0.4 LU, Mix High-Pass Riser) |
+| Calibration, Lo-Fi masters (2) | -12.0 ±0.5 LUFS, true peak <= -0.7 dBTP | -12.0 / -12.0 LUFS, -1.0 / -1.0 dBTP |
+| Presets out of tolerance (whole library) | 0 | 0 of 224 (`HPEQ_Lab` exit 0) |
+| Factory presets with Revolution: every engine left on has events | >= 1 step | pass (`RevolutionPresetTests`, new test) |
+| ... a preset named after an action has it in its pattern | >= 1 step | 11 / 11 |
+| Factory library loads, each as one undoable edit | all | 224 / 224, 3 packs, 17 categories |
+
+No preset was dropped: none failed. Output gain of the new ones: -0.6 ... +5.8 dB (Mirror Destruction: the
+destruction loses loudness on a full mix; its true peak +3.4 dBTP is within input + 6 dB).
+
+Full suites (Release): `HPEQ_Tests` 3098 / 3098 (2976 before; 33 factory presets carry Revolution), `HPEQ_ModuleTests` 105 / 105.
+
+## 5. Not done / limits
+
+- The kick clip of set 2 is 3.8 LU quieter than set 1's (one-shots peak before they get as dense as set 1's
+  kick); the new Kick Parallel Smash was calibrated on it, so its compressor sees a quieter kick than the old kick
+  presets did.
+- Listening in FL Studio (owner). The checks are loudness, peak and "the action is there", not taste.
+- The library now has presets calibrated on two material sets; a full recalibration on one set would change
+  the gains of the 197 old presets (section 2) and was not done.

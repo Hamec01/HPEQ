@@ -2,21 +2,21 @@
   "format": "HPEQ-Factory-Library",
   "formatVersion": 2,
   "pluginStateSchema": 1,
-  "presetCount": 197,
+  "presetCount": 224,
   "packs": [
     {
       "name": "Drums & Bass",
-      "presetCount": 65,
+      "presetCount": 71,
       "manifest": "Drums-and-Bass/manifest.json"
     },
     {
       "name": "Hamlo Showcase",
-      "presetCount": 20,
+      "presetCount": 29,
       "manifest": "HamloShowcase/manifest.json"
     },
     {
       "name": "Vocals, Mastering & More",
-      "presetCount": 112,
+      "presetCount": 124,
       "manifest": "Vocals-Mastering-and-More/manifest.json"
     }
   ]

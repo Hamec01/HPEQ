@@ -92,10 +92,10 @@ public:
 
     void runTest() override
     {
-        beginTest("Factory library (presets pass 2): 197 presets embedded, named, in 3 packs and 17 categories; each loads as one undoable edit");
+        beginTest("Factory library (presets pass 3): 224 presets embedded, named, in 3 packs and 17 categories; each loads as one undoable edit");
         {
             const auto& list = presets::factoryPresets();
-            expectEquals(static_cast<int>(list.size()), 197);
+            expectEquals(static_cast<int>(list.size()), 224);
             std::set<juce::String> packs, categories;
             int loaded = 0, undone = 0;
             for (const auto& p : list)
@@ -119,8 +119,8 @@ public:
                        + " / " + list.front().name);
             expectEquals(static_cast<int>(packs.size()), 3);
             expectEquals(static_cast<int>(categories.size()), 17);
-            expectEquals(loaded, 197);
-            expectEquals(undone, 197);
+            expectEquals(loaded, 224);
+            expectEquals(undone, 224);
         }
 
         beginTest("Preset load: Output gain comes with it, Bypass stays, the name is saved with the state; a broken block changes nothing");
