@@ -41,7 +41,7 @@ public:
     {
         const auto loop = drums(3.0);
 
-        beginTest("Parameters: the IDs, ranges and defaults of HPEQ's HamloComp, then bypass");
+        beginTest("Parameters: the IDs and ranges of HPEQ's HamloComp, neutral defaults (0 dB, 1:1, no auto makeup), then bypass");
         {
             HamloCompProcessor p;
             const auto& params = p.getParameters();
@@ -58,6 +58,15 @@ public:
             }
             expect(p.getBypassParameter() != nullptr && !p.getBypassParameter()->get());
             expectEquals(p.getLatencySamples(), 0);
+            expectWithinAbsoluteError(p.parameterValue("thresholdDb"), 0.0, 1.0e-6);
+            expectWithinAbsoluteError(p.parameterValue("ratio"), 1.0, 1.0e-6);
+            expectEquals(juce::roundToInt(p.parameterValue("autoMakeup")), 0);
+        }
+
+        beginTest("A fresh instance does nothing: the output is the input, bit-exact (Punch included)");
+        {
+            HamloCompProcessor p;
+            expect(bitExact(render(p, loop, 512), loop));
         }
 
         beginTest("State: a HamloComp state saved by HPEQ's module VST3 (tag HamloComp, PARAM id / value) loads; save / load round trip");
@@ -97,16 +106,20 @@ public:
         {
             HamloCompProcessor p;
             p.setParameterValue("thresholdDb", -30.0);
+            p.setParameterValue("ratio", 4.0);
             p.setParameterValue("mix", 0.0);
             expect(bitExact(render(p, loop, 512), loop), "MIX 0");
 
             HamloCompProcessor q;
             q.setParameterValue("thresholdDb", -30.0);
+            q.setParameterValue("ratio", 4.0);
             q.setParameterValue("bypass", 1.0);
             expect(bitExact(render(q, loop, 512), loop), "ON off");
 
             HamloCompProcessor r;
             r.setParameterValue("thresholdDb", -30.0);
+            r.setParameterValue("ratio", 4.0);
+            r.setParameterValue("autoMakeup", 1.0);
             const auto y = render(r, loop, 512);
             dsp::CompressorProcessor c;
             c.prepare(kFs);
@@ -117,27 +130,31 @@ public:
                 c.process(ch, 2, juce::jmin(512, z.getNumSamples() - start), r.currentSettings(), true);
             }
             expect(bitExact(y, z), "MIX 1 is not the compressor alone");
-            logMessage("  default settings on the drum loop: level change " + juce::String(rmsDb(y) - rmsDb(loop), 2) + " dB");
+            logMessage("  -30 dB, 4:1, auto makeup on the drum loop: level change " + juce::String(rmsDb(y) - rmsDb(loop), 2) + " dB");
             expect(rmsDb(y) < rmsDb(loop) + 6.0 && !bitExact(y, loop));
         }
 
         beginTest("Host block size does not change the output: 1, 64, 127, 512, 4096 (prepared for less) bit-identical");
         {
+            const auto set = [](HamloCompProcessor& p)
+            {
+                p.setParameterValue("thresholdDb", -30.0);
+                p.setParameterValue("ratio", 4.0);
+                p.setParameterValue("mix", 0.6);
+                p.setParameterValue("character", 2.0);
+            };
             HamloCompProcessor ref;
-            ref.setParameterValue("mix", 0.6);
-            ref.setParameterValue("character", 2.0);
+            set(ref);
             const auto expected = render(ref, loop, 256);
             for (int block : { 1, 64, 127, 512 })
             {
                 HamloCompProcessor p;
-                p.setParameterValue("mix", 0.6);
-                p.setParameterValue("character", 2.0);
+                set(p);
                 expect(bitExact(render(p, loop, block), expected), "block " + juce::String(block));
             }
             // a host that sends more than it announced: processed in prepared-size chunks
             HamloCompProcessor big;
-            big.setParameterValue("mix", 0.6);
-            big.setParameterValue("character", 2.0);
+            set(big);
             big.prepareToPlay(kFs, 256);
             auto y = loop;
             juce::MidiBuffer midi;
@@ -152,6 +169,8 @@ public:
         beginTest("Mono: the mono layout is accepted and compresses like the left channel of a dual-mono signal");
         {
             HamloCompProcessor p;
+            p.setParameterValue("thresholdDb", -30.0);
+            p.setParameterValue("ratio", 4.0);
             juce::AudioProcessor::BusesLayout mono;
             mono.inputBuses.add(juce::AudioChannelSet::mono());
             mono.outputBuses.add(juce::AudioChannelSet::mono());
@@ -163,7 +182,7 @@ public:
             expect(!bitExact(y, m) && rmsDb(y) < rmsDb(m));
         }
 
-        beginTest("Programs: Default plus the 7 HPEQ compressor presets; a program sets every parameter; Default restores");
+        beginTest("Programs: Default plus the 7 HPEQ compressor presets; a preset starts from the preset base (-30 / 4:1 / auto makeup on); Default restores the neutral defaults");
         {
             HamloCompProcessor p;
             expectEquals(p.getNumPrograms(), 8);
@@ -172,7 +191,8 @@ public:
             p.setCurrentProgram(4);
             expectWithinAbsoluteError(p.parameterValue("thresholdDb"), -36.0, 1.0e-3);
             expectWithinAbsoluteError(p.parameterValue("mix"), 0.4, 1.0e-4);
-            expectWithinAbsoluteError(p.parameterValue("makeupDb"), 0.0, 1.0e-4); // not in the preset: default
+            expectWithinAbsoluteError(p.parameterValue("makeupDb"), 0.0, 1.0e-4); // not in the preset: the base
+            expectEquals(juce::roundToInt(p.parameterValue("autoMakeup")), 1);      // the base, not the neutral default
             p.setCurrentProgram(0);
             for (const auto& spec : comp::parameterSpecs())
                 expectWithinAbsoluteError(p.parameterValue(spec.id), static_cast<double>(spec.defaultValue), 1.0e-3, spec.id);

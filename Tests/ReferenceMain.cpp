@@ -28,9 +28,10 @@ struct Case
 
 void setAll(juce::AudioProcessor& target, comp::HamloCompProcessor& ours, const Case& c)
 {
-    // ours first (actual values), then the reference gets the same normalised values by parameter ID
+    // ours first (actual values, from the preset base as a program does), then the reference gets the same
+    // normalised values
     for (const auto& spec : comp::parameterSpecs())
-        ours.setParameterValue(spec.id, spec.defaultValue);
+        ours.setParameterValue(spec.id, spec.presetBase);
     for (const auto& [id, v] : c.values)
         ours.setParameterValue(id, v);
     // a hosted VST3 parameter's ID is the VST3 hash, so the parameters are matched by name
@@ -84,7 +85,13 @@ int main(int argc, char* argv[])
         return 2;
     }
 
-    std::vector<Case> cases { { "Default", {} } };
+    std::vector<Case> cases { { "Preset base (-30 dB, 4:1, auto makeup)", {} } };
+    {
+        Case neutral { "Default (neutral)", {} };
+        for (const auto& spec : comp::parameterSpecs())
+            neutral.values.push_back({ spec.id, spec.defaultValue });
+        cases.push_back(neutral);
+    }
     for (const auto& preset : comp::factoryPresets())
     {
         Case c { juce::String("Preset ") + preset.name, { { "mix", preset.mix } } };

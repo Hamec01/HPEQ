@@ -73,5 +73,18 @@ round-trips; MIX 0 and ON off give the dry signal bit-exact, MIX 1 the compresso
 - Not code-signed.
 - Built against HPEQ's patched JUCE checkout (`-DHAMLOCOMP_JUCE_DIR=E:/HPEQ/build/_deps/juce-src`); the
   FetchContent path (fetch + patch) was not run.
-- The defaults are those of HPEQ's HamloComp VST3 (-30 dB, 4:1, auto makeup on), not the neutral defaults
-  HPEQ's module page got in the owner round (0 dB, 1:1): kept for compatibility, a decision for the owner.
+
+## 5. Neutral defaults (owner, 2026-10-27)
+
+"Make the defaults neutral, as on HPEQ's module page: 0 dB, 1:1, no auto makeup." As in HPEQ, two sets of
+starting values: a fresh instance and the Default program are neutral (threshold 0 dB, ratio 1:1, auto
+makeup off; the rest unchanged); a factory preset starts from the preset base (-30 dB, 4:1, auto makeup on,
+HPEQ's `presetBaseModule`), so the 7 presets set exactly what they set before. Old projects are not affected:
+a saved state holds every parameter.
+
+| Check | Result |
+|---|---|
+| A fresh instance on the drum loop | output = input, bit-exact (new test) |
+| Programs: a preset's unnamed values come from the base (e.g. New York Parallel: auto makeup on) | pass |
+| `HamloComp_Tests` | 117 / 117 |
+| `HamloComp_Reference`: + a "Default (neutral)" case, presets from the base | 168 cases, 136 bit-identical, worst -140.8 dB, 0 over -120 dB |

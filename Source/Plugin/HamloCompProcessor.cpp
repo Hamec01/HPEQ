@@ -177,11 +177,7 @@ void HamloCompProcessor::setCurrentProgram(int index)
     const auto& list = factoryPresets();
     currentProgram = juce::jlimit(0, static_cast<int>(list.size()), index);
     for (const auto& spec : parameterSpecs())
-    {
-        double value = spec.defaultValue;
-        if (currentProgram > 0)
-            value = presetValue(list[static_cast<size_t>(currentProgram - 1)], spec.id, value);
-        setParameterValue(spec.id, value);
-    }
+        setParameterValue(spec.id, currentProgram > 0 ? presetValue(list[static_cast<size_t>(currentProgram - 1)], spec.id, spec.presetBase)
+                                                      : spec.defaultValue);
 }
 } // namespace hamlo::comp

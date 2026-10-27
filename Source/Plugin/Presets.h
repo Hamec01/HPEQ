@@ -8,8 +8,8 @@
 namespace hamlo::comp
 {
 // Factory presets: the compressor presets of HPEQ (Source/Core/ModulePresets.cpp, kCompressor). A preset
-// names only the values it sets, in the parameter IDs and units; everything else is the default. `mix` is
-// the MIX knob.
+// names only the values it sets, in the parameter IDs and units; everything else is the preset base
+// (ParameterSpec::presetBase). `mix` is the MIX knob.
 struct Preset
 {
     const char* name;
