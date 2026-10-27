@@ -105,7 +105,8 @@ target_link_libraries(HamloComp
 add_executable(HamloComp_Tests
     Tests/TestMain.cpp
     Tests/CompressorTests.cpp
-    Tests/PluginTests.cpp)
+    Tests/PluginTests.cpp
+    Tests/ModelTests.cpp)
 target_compile_definitions(HamloComp_Tests PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
 target_link_libraries(HamloComp_Tests
     PRIVATE
@@ -125,5 +126,15 @@ target_link_libraries(HamloComp_Reference
         HamloComp_Shared
         HamloComp_Assets
         juce::juce_audio_utils
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+
+# Measurements against docs/COMPRESSOR_MODELS.md (the "before" and "after" runs use this tool unchanged).
+add_executable(HamloComp_Lab Tests/LabMain.cpp)
+target_compile_definitions(HamloComp_Lab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(HamloComp_Lab
+    PRIVATE
+        HamloComp_Shared
+        juce::juce_gui_basics
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
