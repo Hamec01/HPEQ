@@ -18,10 +18,9 @@ Controls
   SOURCE     what the detector listens to: ALL, DRUMS (the kick does not pump the kit),
              SAMPLES (melodies, keys, pads), VOC (plosives ignored, harsh syllables first)
 
-Presets (the DAW's program list): Default, Vocal Leveler, Drum Punch, Bus Glue,
-New York Parallel, Bass Control, Gentle Master, Squash (parallel), Drum Bus VCA Glue,
-Drum Smash FET (parallel), Vocal FET Upfront, Vocal Opto Leveler, Keys Opto Smooth,
-Pads Tube Warmth, Bass FET Grip, Mix Bus VCA 2:1, Master Tube Gentle.
+Presets (the DAW's program list): Default and 51 presets for drums (kick, snare, hats, drum bus),
+vocals, bass, samples (keys, guitars, synths, pads) and the mix bus / master. Their thresholds
+assume tracks around -18 dBFS RMS (mixes -14): trim THRESHOLD if your level differs.
 
 Mono and stereo tracks. Latency 0.
 

@@ -184,10 +184,10 @@ public:
             expect(!bitExact(y, m) && rmsDb(y) < rmsDb(m));
         }
 
-        beginTest("Programs: Default plus the 7 HPEQ presets (CLASSIC) and 9 model presets; a preset starts from the preset base (-30 / 4:1 / auto makeup on / CLASSIC); Default restores the neutral defaults (VCA)");
+        beginTest("Programs: Default plus the 7 HPEQ presets (CLASSIC), 9 model presets and the 35 of the presets pass; a preset starts from the preset base (-30 / 4:1 / auto makeup on / CLASSIC); Default restores the neutral defaults (VCA)");
         {
             HamloCompProcessor p;
-            expectEquals(p.getNumPrograms(), 17);
+            expectEquals(p.getNumPrograms(), 52);
             expectEquals(juce::roundToInt(p.parameterValue("model")), 1); // a fresh instance: VCA
             expectEquals(p.getProgramName(0), juce::String("Default"));
             expectEquals(p.getProgramName(4), juce::String("New York Parallel"));
@@ -206,9 +206,11 @@ public:
                 expectWithinAbsoluteError(p.parameterValue(spec.id), static_cast<double>(spec.defaultValue), 1.0e-3, spec.id);
         }
 
-        beginTest("Every preset on the drum loop: finite, changes the signal, level change within -15 .. +6 dB");
+        // Presets pass: all 51 here, on the test drum loop (each one on its own material: HamloComp_PresetLab);
+        // the bound for the whole list was set to -20 .. +6 dB before the run (vocal and bus presets on drums).
+        beginTest("Every preset on the drum loop: finite, changes the signal, level change within -20 .. +6 dB");
         {
-            for (int program = 1; program < 17; ++program)
+            for (int program = 1; program < 52; ++program)
             {
                 HamloCompProcessor p;
                 p.setCurrentProgram(program);
@@ -219,7 +221,7 @@ public:
                         finite = finite && std::isfinite(y.getSample(ch, i));
                 const double level = rmsDb(y) - rmsDb(loop);
                 logMessage("  " + p.getProgramName(program) + ": level change " + juce::String(level, 2) + " dB");
-                expect(finite && !bitExact(y, loop) && level >= -15.0 && level <= 6.0, p.getProgramName(program));
+                expect(finite && !bitExact(y, loop) && level >= -20.0 && level <= 6.0, p.getProgramName(program));
             }
         }
 

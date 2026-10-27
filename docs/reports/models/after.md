@@ -1,4 +1,4 @@
-# HamloComp lab: after: models and sources in the plug-in
+# HamloComp lab: after: models and sources (FET loop limited)
 
 13 / 13 checks pass
 
@@ -7,7 +7,7 @@
 | T2 | VCA static gain at -10 dBFS (square, -30 dB, 4:1) | -15.00 dB (law -15.00) | within 0.5 dB | yes |
 | T3 | VCA GR left 300 ms after a 3 s vs a 30 ms burst (release 100 ms) | 9.88 vs 0.94 dB | long >= 2 x short | yes |
 | T4 | VCA THD at 6 dB GR | 0.022 % (H2 -240.0, H3 -73.4 dB) | <= 0.05 % | yes |
-| T5 | FET attack 0.1 ms: time to 90 % of the GR (+20 dB step) | 0.04 ms | <= 2 ms | yes |
+| T5 | FET attack 0.1 ms: time to 90 % of the GR (+20 dB step) | 0.06 ms | <= 2 ms | yes |
 | T6 | FET THD at 6 dB GR | 0.517 % (H2 -47.6, H3 -50.5 dB) | 0.3 .. 3 %, H2 and H3 >= -70 dB | yes |
 | T7 | OPTO 30 ms burst: time to recover 50 % (release 60 ms) | 57.4167 ms (GR 16.9 dB) | 40 .. 120 ms | yes |
 | T8 | OPTO 3 s burst: time to recover 90 %, vs after 30 ms | 5.17 s vs 0.15 s | >= 1 s and >= 4 x | yes |

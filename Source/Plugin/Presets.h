@@ -12,9 +12,14 @@ namespace hamlo::comp
 // (ParameterSpec::presetBase). `mix` is the MIX knob.
 struct Preset
 {
+    enum Depth { Gentle, Medium, Heavy };
     const char* name;
     float mix;
     std::vector<std::pair<const char*, double>> values;
+    // what the preset is for (HamloComp_Lab plays it on that material, docs/COMPRESSOR_MODELS.md section 4):
+    // drums, kick, snare, hats, vocal, backing, bass, keys, guitar, synth, mix
+    const char* material = "";
+    Depth depth = Medium;
 };
 
 const std::vector<Preset>& factoryPresets();

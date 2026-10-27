@@ -77,3 +77,49 @@ listens to the right part of the source.
   enough "character" is the owner's call - they are two constants per model.
 - No sidechain input, no lookahead (not asked for yet).
 - HPEQ does not have the models: carrying them back is a separate step (docs/SYNC_WITH_HPEQ.md).
+
+# Presets pass: 35 factory presets on their material (2026-10-27)
+
+Owner: "make presets, about 35 more". Method and targets fixed before the runs: docs/COMPRESSOR_MODELS.md section 4.
+
+## 1. The presets (51 in all: 16 before + 35)
+
+| Material | Presets |
+|---|---|
+| kick / snare / hats | Kick Punch FET, Kick Tight VCA, Snare Crack FET, Snare Fat Opto, Hi-Hat Tamer Opto |
+| drum bus | Drum Room Smash FET (parallel), Boom Bap Drum Bus VCA, Trap Drums Tight VCA, Lo-Fi Drums Tube Squeeze |
+| vocals | Rap Vocal FET Aggressive, Rap Vocal VCA Control, Pop Vocal Opto Smooth, Ballad Vocal Opto Gentle, Vocal Tube Warmth, Vocal Parallel FET (NY), Ad-Lib Squash FET, Podcast Voice Leveler; backing: Backing Vocals VCA Glue |
+| bass | 808 Control VCA, Bass Even Opto, Bass Round Tube, Slap Bass FET Grip |
+| samples | Piano Natural Opto, Rhodes Tube Glow, Soul Chop VCA Glue, Sample Flip Pump VCA (keys); Pad Tube Breathe, Synth Lead FET Bite (synth); Acoustic Guitar Opto, Electric Guitar FET Bite |
+| mix / master | Mix Bus VCA Punch 4:1, Mix Bus Tube Glue, Master Opto Leveling, Boom Bap Mix Tube Dust, Trap Mix VCA Slam |
+
+Model, source, ratio, knee, attack, release and mix are designed per preset; the threshold is calibrated
+(`HamloComp_PresetLab calibrate`): the value that gives the middle of the depth's band on the material at -18 dBFS
+active RMS (mixes -14). Thresholds therefore assume a track gain-staged around -18 dBFS RMS.
+
+## 2. Check on the material (`HamloComp_PresetLab check`, [presets_check.md](models/presets_check.md))
+
+**35 / 35 new presets pass P1 .. P5**: average GR GENTLE 1.93 .. 2.02, MEDIUM 4.35 .. 4.84, HEAVY 8.58 .. 9.30 dB;
+peak out - in -6.02 .. +2.31 dB (limit +6); active RMS out - in -9.82 .. -0.34 dB (limit -12 .. +6); all distinct.
+
+The 16 earlier presets, measured the same way (reported, not judged, not changed): 7 in their band; the 4 HPEQ
+presets Drum Punch (2.97, MEDIUM), New York Parallel (16.5, HEAVY), Gentle Master (0.69, GENTLE), Squash
+(21.6, HEAVY), and 5 of the model presets made earlier today: Drum Bus VCA Glue 0.30, Drum Smash FET 34.4,
+Vocal FET Upfront 14.9, Keys Opto Smooth 4.32, Bass FET Grip 21.2 dB - their thresholds were set by hand, before
+this method existed.
+
+## 3. Disclosed
+
+1. **A DSP defect found by this pass and fixed**: FET at 20:1 with a 0.1 ms attack ran away on the owner's drum
+   bus (average GR 21 .. 706 dB): the feedback loop's gain per sample, (R - 1) x the attack step, was above 1. The
+   attack step is now limited to 0.5 / (R - 1) and the target to 60 dB. After: GR rises monotonically as the
+   threshold falls (59.1 dB at -60), T5 0.06 ms (was 0.04), T6 unchanged, 13 / 13 targets still pass. New test:
+   every model x source at 20:1, 0.1 ms, thresholds -60 / -40 / -20 dB stays finite and below 60 dB average GR.
+   The FET stability test of the models pass only used a held square, which did not excite the loop.
+2. The drum-loop sanity test now covers all 51 presets with a bound of -20 .. +6 dB (set before that run; vocal
+   and bus presets play on drums there).
+
+## 4. Checks
+
+`HamloComp_Tests` 345 / 345; `HamloComp_Lab` 13 / 13; CLASSIC vs HPEQ unchanged (-140.8 dB); pluginval 10 and
+Steinberg's validator inside it: SUCCESS. Listening: the owner's.

@@ -125,6 +125,40 @@ public:
 
         // The level bound was -12 dB before the first run; FET measured -12.25 dB (feedback plus the fast release
         // from deep reduction - the most aggressive model, as the 1176 is). Widened to -15 dB, disclosed in the report.
+        // Found by the preset pass: FET 20:1, attack 0.1 ms, DRUMS on the owner's drum bus averaged 21 .. 706 dB
+        // of gain reduction (the loop rang). Every model x source on the drum loop with extreme settings must
+        // stay finite and below 60 dB average reduction.
+        beginTest("No model runs away: ratio 20, attack 0.1 ms, release 50 ms, thresholds -60 / -40 / -20 dB, every source - average GR < 60 dB, finite");
+        for (int model = 1; model < 5; ++model)
+            for (int source = 0; source < 4; ++source)
+                for (const float threshold : { -60.0f, -40.0f, -20.0f })
+                {
+                    CompressorSettings p;
+                    p.thresholdDb = threshold;
+                    p.ratio = 20.0f;
+                    p.kneeDb = 0.0f;
+                    p.attackMs = 0.1f;
+                    p.releaseMs = 50.0f;
+                    p.autoMakeup = 0.0f;
+                    p.model = static_cast<float>(model);
+                    p.source = static_cast<float>(source);
+                    CompressorProcessor c;
+                    c.prepare(kFs);
+                    auto y = loop;
+                    double sum = 0.0;
+                    int blocks = 0;
+                    for (int start = 0; start < y.getNumSamples(); start += 512)
+                    {
+                        float* ch[2] { y.getWritePointer(0) + start, y.getWritePointer(1) + start };
+                        c.process(ch, 2, juce::jmin(512, y.getNumSamples() - start), p, true);
+                        sum += c.getGainReductionDb();
+                        ++blocks;
+                    }
+                    const double average = sum / blocks;
+                    expect(finite(y) && average < 60.0, juce::String(kModels[model]) + " / " + kSources[source] + " / " + juce::String(threshold, 0) + " dB: average GR "
+                                                            + juce::String(average, 1) + " dB");
+                }
+
         beginTest("Every model sounds different from CLASSIC on the drum loop (difference >= -40 dB), finite, level change within -15 .. +6 dB");
         {
             const auto classic = run(busy(0, 0), loop, 256);

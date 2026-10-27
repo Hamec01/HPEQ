@@ -80,3 +80,23 @@ The "before" column is today's compressor (CLASSIC) on the same checks: it shows
 2. 1176LN: [Wikipedia, 1176 Peak Limiter](https://en.wikipedia.org/wiki/1176_Peak_Limiter), [Universal Audio 1176LN spec (Markertek)](https://www.markertek.com/product/ua-1176ln/universal-audio-1176ln-classic-limiting-amplifier)
 3. LA-2A: [UA help: LA-2A](https://help.uaudio.com/hc/en-us/articles/215779663), [Sound On Sound, Warm Audio WA-2A](https://www.soundonsound.com/reviews/warm-audio-wa-2a)
 4. Fairchild 670: [Thomann Fairchild 670](https://www.thomann.co.uk/fairchild_670.htm), [Vintage King](https://vintageking.com/blog/fairchild-recording-equipment-670/)
+
+## 4. Factory presets on their material (presets pass, 2026-10-27; fixed before the runs)
+
+Every preset names the material it is for (drums, kick, snare, hats, vocal, backing, bass, keys, guitar, synth,
+mix) and a depth: GENTLE, MEDIUM or HEAVY. `HamloComp_Lab presets <material dir>` plays each preset on its
+material - the owner's clips of material set 2 (HPEQ), each gained so its active RMS (blocks above -50 dBFS) is
+**-18 dBFS** (0 VU, the usual gain staging), mixes **-14 dBFS** - so a threshold means the same for every
+preset. For the new presets the threshold is the one result of a measurement: it is set so the average gain
+reduction hits the middle of the depth's band (GENTLE 2, MEDIUM 4.5, HEAVY 9 dB; rounded to 0.5 dB); all other
+settings are designed, not tuned.
+
+| # | Check (every preset, on its material) | Target |
+|---|---|---|
+| P1 | output finite | yes |
+| P2 | average gain reduction (the block meter, over blocks above -50 dBFS) | GENTLE 1 .. 3, MEDIUM 3 .. 6, HEAVY 6 .. 12 dB |
+| P3 | sample peak out - in | <= +6 dB |
+| P4 | active RMS out - in | -12 .. +6 dB |
+| P5 | no two presets with the same settings | all differ |
+
+The 16 presets made before this pass are measured the same way and reported; they are not changed.

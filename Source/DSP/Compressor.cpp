@@ -269,6 +269,7 @@ void CompressorProcessor::processModel(float* const* channels, int numChannels, 
     const double k2 = model == kFet ? 0.03 : model == kOpto ? 0.01 : model == kTube ? 0.04 : 0.0;
     const double k3 = model == kFet ? 0.08 : model == kTube ? 0.02 : 0.0;
     const double scale = std::pow(10.0, threshold / 20.0);
+    const double fetMaxStep = 0.5 / std::max(1.0, ratio - 1.0); // the FET loop's attack limit (see the ballistics)
     const int detectors = linked ? 1 : numChannels;
 
     // static gain reduction (dB) for a detector level (dB)
@@ -349,8 +350,17 @@ void CompressorProcessor::processModel(float* const* channels, int numChannels, 
             }
             else if (model == kFet)
             {
-                const double releaseNow = want > c ? attack : coefficient(releaseSeconds / (1.0 + c / 10.0));
-                c = want + releaseNow * (c - want);
+                // The loop: the output sets the next target with slope (R - 1), so an attack step larger than
+                // 0.5 / (R - 1) of the distance per sample rings (measured: 20:1, 0.1 ms on drums ran away to
+                // hundreds of dB). The step is held under that, and the target under 60 dB.
+                const double goal = std::min(want, 60.0);
+                if (goal > c)
+                {
+                    const double step = std::min(1.0 - attack, fetMaxStep);
+                    c += step * (goal - c);
+                }
+                else
+                    c = goal + coefficient(releaseSeconds / (1.0 + c / 10.0)) * (c - goal);
             }
             else if (model == kOpto)
             {

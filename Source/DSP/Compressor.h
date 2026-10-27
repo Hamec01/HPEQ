@@ -59,7 +59,9 @@ struct CompressorSettings
 //    sustained compression slowly. No colour.
 //  - FET: feedback - the detector listens to the previous output sample, with the gain computer written
 //    on the output level (c = (y - T)(R - 1) above the knee), so the static curve is still the law; the
-//    release runs faster from deep reduction (time RELEASE / (1 + c / 10 dB)). Colour: even + odd.
+//    release runs faster from deep reduction (time RELEASE / (1 + c / 10 dB)). The attack step per sample is
+//    at most 0.5 / (R - 1) of the distance (and the target at most 60 dB), which keeps the loop from ringing.
+//    Colour: even + odd.
 //  - OPTO: RMS (5 ms) detector, knee >= 12 dB; a fast stage f (ATTACK / RELEASE) and a slow stage s that
 //    follows f (charges with 0.5 s, releases with 2 s (1 + 2 m), m = one-pole (5 s) of [f > 1 dB]);
 //    c = max(f, s / 2): half the reduction comes back with RELEASE, the rest slowly, slower after long

@@ -149,3 +149,15 @@ target_link_libraries(HamloComp_Snapshot
         juce::juce_gui_basics
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
+
+# Factory presets on their material (docs/COMPRESSOR_MODELS.md section 4).
+add_executable(HamloComp_PresetLab Tests/PresetLabMain.cpp)
+target_compile_definitions(HamloComp_PresetLab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(HamloComp_PresetLab
+    PRIVATE
+        HamloComp_Shared
+        HamloComp_Assets
+        juce::juce_audio_utils
+        juce::juce_audio_formats
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)

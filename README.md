@@ -13,7 +13,7 @@ the two are developed separately, and improvements made here are carried back in
   three toggles, the MODEL and SOURCE levers, the input CRT with 4 s of history and the gain-reduction needle
   (`Source/UI/`).
 - **Plug-in**: host parameters with the IDs of HPEQ's HamloComp module VST3, the same plug-in identity
-  (HamloProd / BBLB / HmCp), so its projects open here (as CLASSIC); MIX, ON (bypass), 16 factory presets as programs,
+  (HamloProd / BBLB / HmCp), so its projects open here (as CLASSIC); MIX, ON (bypass), 51 factory presets as programs,
   mono and stereo, latency 0 (`Source/Plugin/`).
 
 ## Build
