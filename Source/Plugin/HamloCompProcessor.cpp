@@ -58,6 +58,8 @@ dsp::CompressorSettings HamloCompProcessor::currentSettings() const noexcept
     s.detector = v(7);
     s.character = v(8);
     s.autoMakeup = v(9);
+    s.model = v(10);
+    s.source = v(11);
     return s;
 }
 
@@ -138,7 +140,15 @@ void HamloCompProcessor::setStateInformation(const void* data, int size)
 {
     if (auto xml = getXmlFromBinary(data, size))
         if (xml->hasTagName(parameters.state.getType().toString()))
+        {
+            // a state from before MODEL (HPEQ's HamloComp, HamloComp 0.1.0 before the models) is CLASSIC
+            bool hasModel = false;
+            for (auto* e : xml->getChildWithTagNameIterator("PARAM"))
+                hasModel = hasModel || e->getStringAttribute("id") == "model";
             parameters.replaceState(juce::ValueTree::fromXml(*xml));
+            if (!hasModel)
+                setParameterValue("model", 0.0);
+        }
 }
 
 juce::RangedAudioParameter* HamloCompProcessor::parameter(const juce::String& id) const noexcept

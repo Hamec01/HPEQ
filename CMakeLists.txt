@@ -138,3 +138,14 @@ target_link_libraries(HamloComp_Lab
         juce::juce_gui_basics
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
+
+# The page as a PNG (docs and visual checks).
+add_executable(HamloComp_Snapshot Tests/SnapshotMain.cpp)
+target_compile_definitions(HamloComp_Snapshot PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(HamloComp_Snapshot
+    PRIVATE
+        HamloComp_Shared
+        HamloComp_Assets
+        juce::juce_gui_basics
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)

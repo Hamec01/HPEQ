@@ -6,7 +6,7 @@ made here is carried back into HPEQ.
 
 | HamloComp | HPEQ | Differences |
 |---|---|---|
-| `Source/DSP/Compressor.h/.cpp` (`hamlo::dsp::CompressorProcessor`) | `Source/DSP/Processors.h/.cpp` (`hpeq::dsp::CompressorProcessor`) | takes `CompressorSettings` instead of `FxSlotParams`; the law and the code are the same |
+| `Source/DSP/Compressor.h/.cpp` (`hamlo::dsp::CompressorProcessor`) | `Source/DSP/Processors.h/.cpp` (`hpeq::dsp::CompressorProcessor`) | takes `CompressorSettings` instead of `FxSlotParams`; CLASSIC + ALL is the same law and code; **MODEL (VCA / FET / OPTO / TUBE) and SOURCE exist only here** (2026-10-27, `processModel`, the source biquads) - not yet in HPEQ |
 | `Source/DSP/Ramp.h` | `Source/DSP/Ramp.h` | namespace only |
 | `Source/UI/HamloCompPanel.*`, `BlackSteel.*` | same paths | namespace `hamlo::ui`; binary-data namespace `HamloCompAssets` |
 | `Source/UI/ModuleHelp.*` | same paths | only the `comp` table |

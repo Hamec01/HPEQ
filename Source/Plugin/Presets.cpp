@@ -13,6 +13,17 @@ const std::vector<Preset>& factoryPresets()
         { "Bass Control", 1.0f, { { "thresholdDb", -26 }, { "ratio", 4 }, { "kneeDb", 6 }, { "attackMs", 10 }, { "releaseMs", 140 }, { "detector", 1 }, { "character", 0 } } },
         { "Gentle Master", 1.0f, { { "thresholdDb", -14 }, { "ratio", 1.5 }, { "kneeDb", 12 }, { "attackMs", 30 }, { "releaseMs", 250 }, { "detector", 1 }, { "character", 2 } } },
         { "Squash (parallel)", 0.3f, { { "thresholdDb", -40 }, { "ratio", 20 }, { "kneeDb", 0 }, { "attackMs", 0.1 }, { "releaseMs", 50 }, { "detector", 0 }, { "character", 1 } } },
+        // models and sources (docs/COMPRESSOR_MODELS.md); model 1 VCA / 2 FET / 3 OPTO / 4 TUBE, source 0 All /
+        // 1 Drums / 2 Samples / 3 Voc
+        { "Drum Bus VCA Glue", 1.0f, { { "model", 1 }, { "source", 1 }, { "thresholdDb", -20 }, { "ratio", 4 }, { "kneeDb", 6 }, { "attackMs", 10 }, { "releaseMs", 100 } } },
+        { "Drum Smash FET (parallel)", 0.4f, { { "model", 2 }, { "source", 1 }, { "thresholdDb", -32 }, { "ratio", 20 }, { "kneeDb", 0 }, { "attackMs", 0.1 }, { "releaseMs", 60 } } },
+        { "Vocal FET Upfront", 1.0f, { { "model", 2 }, { "source", 3 }, { "thresholdDb", -24 }, { "ratio", 4 }, { "kneeDb", 4 }, { "attackMs", 0.8 }, { "releaseMs", 80 } } },
+        { "Vocal Opto Leveler", 1.0f, { { "model", 3 }, { "source", 3 }, { "thresholdDb", -26 }, { "ratio", 3 }, { "attackMs", 10 }, { "releaseMs", 60 } } },
+        { "Keys Opto Smooth", 1.0f, { { "model", 3 }, { "source", 2 }, { "thresholdDb", -24 }, { "ratio", 2.5 }, { "attackMs", 10 }, { "releaseMs", 80 } } },
+        { "Pads Tube Warmth", 1.0f, { { "model", 4 }, { "source", 2 }, { "thresholdDb", -24 }, { "ratio", 6 }, { "attackMs", 20 }, { "releaseMs", 300 } } },
+        { "Bass FET Grip", 1.0f, { { "model", 2 }, { "source", 0 }, { "thresholdDb", -26 }, { "ratio", 8 }, { "kneeDb", 4 }, { "attackMs", 3 }, { "releaseMs", 120 } } },
+        { "Mix Bus VCA 2:1", 1.0f, { { "model", 1 }, { "source", 0 }, { "thresholdDb", -16 }, { "ratio", 2 }, { "kneeDb", 6 }, { "attackMs", 30 }, { "releaseMs", 100 } } },
+        { "Master Tube Gentle", 1.0f, { { "model", 4 }, { "source", 0 }, { "thresholdDb", -14 }, { "ratio", 3 }, { "attackMs", 30 }, { "releaseMs", 400 } } },
     };
     return list;
 }

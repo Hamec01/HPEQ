@@ -38,10 +38,14 @@ inline const std::vector<ParameterSpec>& parameterSpecs()
         { "detector", "Detector", 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, "", { "Peak", "RMS" } },
         { "character", "Character", 0.0f, 2.0f, 1.0f, 1.0f, 1.0f, "", { "Clean", "Punch", "Glue" } },
         { "autoMakeup", "Auto Makeup", 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, "", { "Off", "On" } },
+        // docs/COMPRESSOR_MODELS.md: a new instance starts on VCA; HPEQ's presets and any state saved without
+        // `model` are CLASSIC (setStateInformation), so they sound as before
+        { "model", "Model", 0.0f, 4.0f, 1.0f, 0.0f, 1.0f, "", { "Classic", "VCA", "FET", "Opto", "Tube" } },
+        { "source", "Source", 0.0f, 3.0f, 0.0f, 0.0f, 1.0f, "", { "All", "Drums", "Samples", "Voc" } },
     };
     return specs;
 }
 
 constexpr const char* kStateTag = "HamloComp";
-constexpr int kEditorWidth = 1180, kEditorHeight = 700;
+constexpr int kEditorWidth = 1180, kEditorHeight = 820;
 } // namespace hamlo::comp

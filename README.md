@@ -5,12 +5,15 @@ HamloProd's compressor as its own VST3 plug-in (Windows x64). It was extracted f
 the two are developed separately, and improvements made here are carried back into HPEQ
 ([docs/SYNC_WITH_HPEQ.md](docs/SYNC_WITH_HPEQ.md)).
 
-- **DSP**: feed-forward compressor, Peak / RMS detector, soft knee, Clean / Punch / Glue character, auto
-  makeup (`Source/DSP/Compressor.*`; every law documented in the header).
-- **Page**: the owner's Black Steel design (1180 x 700, resizable 0.5 .. 2 x): six brass knobs plus MIX,
-  three toggles, the input CRT with 4 s of history and the gain-reduction needle (`Source/UI/`).
+- **DSP**: five models - CLASSIC (the original: Peak / RMS, soft knee, Clean / Punch / Glue), VCA (auto
+  release), FET (feedback, grit), OPTO (two-stage release), TUBE (vari-mu curve, warmth) - and a SOURCE that
+  shapes the detector for DRUMS, SAMPLES (melodic parts) or VOC; auto makeup (`Source/DSP/Compressor.*`, every
+  law in the header; design and targets: [docs/COMPRESSOR_MODELS.md](docs/COMPRESSOR_MODELS.md)).
+- **Page**: the owner's Black Steel design (1180 x 820, resizable 0.5 .. 2 x): six brass knobs plus MIX,
+  three toggles, the MODEL and SOURCE levers, the input CRT with 4 s of history and the gain-reduction needle
+  (`Source/UI/`).
 - **Plug-in**: host parameters with the IDs of HPEQ's HamloComp module VST3, the same plug-in identity
-  (HamloProd / BBLB / HmCp), so its projects open here; MIX, ON (bypass), 7 factory presets as programs,
+  (HamloProd / BBLB / HmCp), so its projects open here (as CLASSIC); MIX, ON (bypass), 16 factory presets as programs,
   mono and stereo, latency 0 (`Source/Plugin/`).
 
 ## Build
@@ -40,4 +43,6 @@ runtime when missing).
 
 `pluginval` (v1.0.4, strictness 5-10) and Steinberg's VST3 validator (SDK 3.8.0, 537 tests) pass; see the report.
 
-Status and measurements: [docs/reports/M0_EXTRACTION_REPORT.md](docs/reports/M0_EXTRACTION_REPORT.md).
+- `HamloComp_Lab [report.md]`: the model and source targets T2 .. T14 ([docs/reports/MODELS_REPORT.md](docs/reports/MODELS_REPORT.md)).
+
+Status and measurements: [M0_EXTRACTION_REPORT](docs/reports/M0_EXTRACTION_REPORT.md), [MODELS_REPORT](docs/reports/MODELS_REPORT.md).

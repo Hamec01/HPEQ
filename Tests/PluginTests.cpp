@@ -92,6 +92,8 @@ public:
             expectEquals(juce::roundToInt(p.parameterValue("character")), 2);
             expectWithinAbsoluteError(p.parameterValue("mix"), 0.5, 1.0e-4);
             expect(!p.isOn());
+            expectEquals(juce::roundToInt(p.parameterValue("model")), 0); // a state without MODEL is CLASSIC
+            expectEquals(juce::roundToInt(p.parameterValue("source")), 0);
 
             juce::MemoryBlock saved;
             p.getStateInformation(saved);
@@ -182,10 +184,11 @@ public:
             expect(!bitExact(y, m) && rmsDb(y) < rmsDb(m));
         }
 
-        beginTest("Programs: Default plus the 7 HPEQ compressor presets; a preset starts from the preset base (-30 / 4:1 / auto makeup on); Default restores the neutral defaults");
+        beginTest("Programs: Default plus the 7 HPEQ presets (CLASSIC) and 9 model presets; a preset starts from the preset base (-30 / 4:1 / auto makeup on / CLASSIC); Default restores the neutral defaults (VCA)");
         {
             HamloCompProcessor p;
-            expectEquals(p.getNumPrograms(), 8);
+            expectEquals(p.getNumPrograms(), 17);
+            expectEquals(juce::roundToInt(p.parameterValue("model")), 1); // a fresh instance: VCA
             expectEquals(p.getProgramName(0), juce::String("Default"));
             expectEquals(p.getProgramName(4), juce::String("New York Parallel"));
             p.setCurrentProgram(4);
@@ -193,12 +196,34 @@ public:
             expectWithinAbsoluteError(p.parameterValue("mix"), 0.4, 1.0e-4);
             expectWithinAbsoluteError(p.parameterValue("makeupDb"), 0.0, 1.0e-4); // not in the preset: the base
             expectEquals(juce::roundToInt(p.parameterValue("autoMakeup")), 1);      // the base, not the neutral default
+            expectEquals(juce::roundToInt(p.parameterValue("model")), 0);           // HPEQ's presets: CLASSIC
+            p.setCurrentProgram(10);                                                // Vocal FET Upfront
+            expectEquals(p.getProgramName(10), juce::String("Vocal FET Upfront"));
+            expectEquals(juce::roundToInt(p.parameterValue("model")), 2);
+            expectEquals(juce::roundToInt(p.parameterValue("source")), 3);
             p.setCurrentProgram(0);
             for (const auto& spec : comp::parameterSpecs())
                 expectWithinAbsoluteError(p.parameterValue(spec.id), static_cast<double>(spec.defaultValue), 1.0e-3, spec.id);
         }
 
-        beginTest("Page: 1180 x 700, resizable; knob, switch and ON write the parameters; host changes come back to the page");
+        beginTest("Every preset on the drum loop: finite, changes the signal, level change within -15 .. +6 dB");
+        {
+            for (int program = 1; program < 17; ++program)
+            {
+                HamloCompProcessor p;
+                p.setCurrentProgram(program);
+                const auto y = render(p, loop, 512);
+                bool finite = true;
+                for (int ch = 0; ch < 2; ++ch)
+                    for (int i = 0; i < y.getNumSamples(); ++i)
+                        finite = finite && std::isfinite(y.getSample(ch, i));
+                const double level = rmsDb(y) - rmsDb(loop);
+                logMessage("  " + p.getProgramName(program) + ": level change " + juce::String(level, 2) + " dB");
+                expect(finite && !bitExact(y, loop) && level >= -15.0 && level <= 6.0, p.getProgramName(program));
+            }
+        }
+
+        beginTest("Page: 1180 x 820, resizable; knob, switch and ON write the parameters; host changes come back to the page");
         {
             HamloCompProcessor p;
             std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
@@ -220,8 +245,12 @@ public:
             expect(!p.isOn());
             p.setParameterValue("ratio", 10.0);
             p.setParameterValue("bypass", 0.0);
-            editor->setSize(590, 350);
-            expect(panel.getWidth() == 590 && panel.getHeight() == 350);
+            panel.onSwitchChange(ui::HamloCompPanel::Model, 3);
+            panel.onSwitchChange(ui::HamloCompPanel::Source, 2);
+            expectEquals(juce::roundToInt(p.parameterValue("model")), 3);
+            expectEquals(juce::roundToInt(p.parameterValue("source")), 2);
+            editor->setSize(590, 410);
+            expect(panel.getWidth() == 590 && panel.getHeight() == 410);
             // the 30 Hz refresh brings the host's values back
             juce::MessageManager::getInstance()->runDispatchLoopUntil(120);
             expectWithinAbsoluteError(panel.getValues().knobs[ui::HamloCompPanel::Ratio], 10.0, 1.0e-3);

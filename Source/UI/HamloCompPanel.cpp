@@ -7,7 +7,7 @@ namespace hamlo::ui
 {
 namespace
 {
-constexpr float kW = 1180.0f, kH = 700.0f; // design stage
+constexpr float kW = 1180.0f, kH = 820.0f; // design stage (700 + the MODEL / SOURCE strip)
 const juce::Colour stencil { 0xffe6d8a6 }, stencilDim { 0xffa89c76 };
 constexpr float kPi = juce::MathConstants<float>::pi;
 
@@ -66,13 +66,25 @@ constexpr float kKnobScale = 0.9f; // seven knobs share the 1068 px row
 constexpr std::array<const char*, HamloCompPanel::NumKnobs> kKnobLabels { "Threshold", "Ratio", "Knee", "Attack", "Release", "Makeup", "Mix" };
 const std::array<juce::StringArray, HamloCompPanel::NumSwitches> kSwitchOptions { juce::StringArray { "Peak", "RMS" },
                                                                                   juce::StringArray { "Clean", "Punch", "Glue" },
-                                                                                  juce::StringArray { "Off", "On" } };
-constexpr std::array<const char*, HamloCompPanel::NumSwitches> kSwitchLabels { "Detector", "Character", "Auto Makeup" };
+                                                                                  juce::StringArray { "Off", "On" },
+                                                                                  juce::StringArray { "Classic", "VCA", "FET", "Opto", "Tube" },
+                                                                                  juce::StringArray { "All", "Drums", "Samples", "Voc" } };
+constexpr std::array<const char*, HamloCompPanel::NumSwitches> kSwitchLabels { "Detector", "Character", "Auto Makeup", "Model", "Source" };
 
 // Layout (design coordinates, from style.css): content x 56..1124.
 constexpr float kKnobY = 253.0f, kLabelY = 160.0f, kReadoutY = 337.0f;
-float switchTop(int i) { return 372.0f + static_cast<float>(i) * 88.0f; }
-constexpr float kSwitchDialX = 66.0f, kSwitchDialW = 230.0f;
+// where a switch sits: the first three in the left column, MODEL and SOURCE in the bottom strip
+struct SwitchPlace
+{
+    float x, top, width;
+};
+SwitchPlace switchPlace(int i)
+{
+    if (i < 3)
+        return { 66.0f, 372.0f + static_cast<float>(i) * 88.0f, 230.0f };
+    return i == 3 ? SwitchPlace { 76.0f, 676.0f, 520.0f } : SwitchPlace { 652.0f, 676.0f, 420.0f };
+}
+constexpr float kStripTop = 662.0f;
 const juce::Point<float> kLamp { 1074.0f, 453.0f }, kToggle { 1074.0f, 559.0f };
 } // namespace
 
@@ -115,7 +127,7 @@ const char* HamloCompPanel::keyFor(Param p)
 
 const char* HamloCompPanel::keyFor(Switch s)
 {
-    static constexpr const char* keys[] { "detector", "character", "autoMakeup" };
+    static constexpr const char* keys[] { "detector", "character", "autoMakeup", "model", "source" };
     return keys[s];
 }
 
@@ -362,10 +374,23 @@ void HamloCompPanel::renderStatic(juce::Graphics& g) const
         steel::knobScale(g, k.centre, kKnobScale); // seven knobs: a little smaller than the six of the original design
     }
 
+    // the MODEL / SOURCE strip: an engraved groove across the panel
+    g.setColour(juce::Colours::black);
+    g.drawHorizontalLine(juce::roundToInt(kStripTop - 3.0f), 56.0f, kW - 56.0f);
+    g.setColour(juce::Colours::white.withAlpha(0.07f));
+    g.drawHorizontalLine(juce::roundToInt(kStripTop - 4.0f), 56.0f, kW - 56.0f);
+
     // switch labels and separators
     for (int i = 0; i < NumSwitches; ++i)
     {
-        const float top = switchTop(i);
+        const auto place = switchPlace(i);
+        const float top = place.top;
+        if (i >= 3)
+        {
+            engraved(g, juce::String(kSwitchLabels[static_cast<size_t>(i)]).toUpperCase(), juce::Rectangle<float>(place.x, top, place.width, 22.0f), 16.0f,
+                     stencil, juce::Justification::centred);
+            continue;
+        }
         if (i > 0)
         {
             g.setColour(juce::Colours::black);
@@ -495,10 +520,14 @@ void HamloCompPanel::drawSwitch(juce::Graphics& g, int which) const
 {
     const auto& options = kSwitchOptions[static_cast<size_t>(which)];
     const int n = options.size(), selected = juce::jlimit(0, n - 1, values.switches[static_cast<size_t>(which)]);
-    const float dialTop = switchTop(which) + 22.0f;
+    const auto place = switchPlace(which);
+    const float dialTop = place.top + 22.0f;
+    const bool inactive = which == Character && values.switches[Model] != 0; // CHARACTER is CLASSIC's
+    if (inactive)
+        g.beginTransparencyLayer(0.35f);
     for (int i = 0; i < n; ++i)
     {
-        const float x = kSwitchDialX + kSwitchDialW * (0.12f + 0.76f * static_cast<float>(i) / static_cast<float>(n - 1));
+        const float x = place.x + place.width * (0.12f + 0.76f * static_cast<float>(i) / static_cast<float>(n - 1));
         const auto r = juce::Rectangle<float>(x - 40.0f, dialTop, 80.0f, 18.0f);
         g.setFont(stencilFont(13.5f).withKerningFactor(0.1f));
         if (i == selected)
@@ -511,9 +540,12 @@ void HamloCompPanel::drawSwitch(juce::Graphics& g, int which) const
             g.setColour(stencilDim);
         g.drawText(options[i].toUpperCase(), r, juce::Justification::centred);
     }
-    const juce::Point<float> base(kSwitchDialX + kSwitchDialW * 0.5f, dialTop + 46.0f);
-    const float a = (n == 1 ? 0.0f : (-38.0f + 76.0f / static_cast<float>(n - 1) * static_cast<float>(selected))) * kPi / 180.0f;
+    const juce::Point<float> base(place.x + place.width * 0.5f, dialTop + 46.0f);
+    const float spread = n > 3 ? 56.0f : 38.0f; // the five / four position levers swing wider
+    const float a = (n == 1 ? 0.0f : (-spread + 2.0f * spread / static_cast<float>(n - 1) * static_cast<float>(selected))) * kPi / 180.0f;
     steel::lever(g, base, a, 1.0f);
+    if (inactive)
+        g.endTransparencyLayer();
 }
 
 void HamloCompPanel::drawPower(juce::Graphics& g) const
@@ -692,8 +724,9 @@ bool HamloCompPanel::hitSwitch(juce::Point<float> d, int& which, int& option) co
 {
     for (int s = 0; s < NumSwitches; ++s)
     {
-        const float dialTop = switchTop(s) + 22.0f;
-        if (d.y < dialTop || d.y > dialTop + 66.0f || d.x < kSwitchDialX || d.x > kSwitchDialX + kSwitchDialW)
+        const auto place = switchPlace(s);
+        const float dialTop = place.top + 22.0f;
+        if (d.y < dialTop || d.y > dialTop + 66.0f || d.x < place.x || d.x > place.x + place.width)
             continue;
         which = s;
         const int n = kSwitchOptions[static_cast<size_t>(s)].size();
@@ -701,7 +734,7 @@ bool HamloCompPanel::hitSwitch(juce::Point<float> d, int& which, int& option) co
         if (d.y <= dialTop + 20.0f)
             for (int i = 0; i < n; ++i)
             {
-                const float x = kSwitchDialX + kSwitchDialW * (0.12f + 0.76f * static_cast<float>(i) / static_cast<float>(n - 1));
+                const float x = place.x + place.width * (0.12f + 0.76f * static_cast<float>(i) / static_cast<float>(n - 1));
                 if (std::abs(d.x - x) <= 40.0f)
                     option = i;
             }

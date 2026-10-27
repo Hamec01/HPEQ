@@ -89,11 +89,15 @@ int main(int argc, char* argv[])
     {
         Case neutral { "Default (neutral)", {} };
         for (const auto& spec : comp::parameterSpecs())
-            neutral.values.push_back({ spec.id, spec.defaultValue });
+            if (juce::String(spec.id) != "model" && juce::String(spec.id) != "source") // the reference has no models
+                neutral.values.push_back({ spec.id, spec.defaultValue });
         cases.push_back(neutral);
     }
     for (const auto& preset : comp::factoryPresets())
     {
+        // the reference (HPEQ) has only CLASSIC: the presets that pick another model are not compared
+        if (comp::presetValue(preset, "model", 0.0) != 0.0)
+            continue;
         Case c { juce::String("Preset ") + preset.name, { { "mix", preset.mix } } };
         for (const auto& kv : preset.values)
             c.values.push_back(kv);

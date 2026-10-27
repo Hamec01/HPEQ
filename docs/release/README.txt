@@ -12,9 +12,16 @@ Controls
   CHARACTER  CLEAN transparent; PUNCH adds bite on the hits; GLUE program-dependent release
   AUTO MAKEUP  brings the output back up by what the compressor takes off on average
   ON         the lamp switch; off = the dry signal (20 ms crossfade)
+  MODEL      CLASSIC (the original, CHARACTER applies), VCA (clean glue, auto release),
+             FET (fast, aggressive, gritty), OPTO (smooth two-stage release), TUBE (ratio grows
+             with the level, warm)
+  SOURCE     what the detector listens to: ALL, DRUMS (the kick does not pump the kit),
+             SAMPLES (melodies, keys, pads), VOC (plosives ignored, harsh syllables first)
 
 Presets (the DAW's program list): Default, Vocal Leveler, Drum Punch, Bus Glue,
-New York Parallel, Bass Control, Gentle Master, Squash (parallel).
+New York Parallel, Bass Control, Gentle Master, Squash (parallel), Drum Bus VCA Glue,
+Drum Smash FET (parallel), Vocal FET Upfront, Vocal Opto Leveler, Keys Opto Smooth,
+Pads Tube Warmth, Bass FET Grip, Mix Bus VCA 2:1, Master Tube Gentle.
 
 Mono and stereo tracks. Latency 0.
 

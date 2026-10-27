@@ -22,6 +22,8 @@ const std::map<juce::String, Table>& tables()
             { "detector", { "DETECTOR", "PEAK reacts to every spike (drums); RMS follows the average loudness (smoother, vocals and buses)." } },
             { "character", { "CHARACTER", "CLEAN: transparent. PUNCH: adds bite on the hits as it compresses. GLUE: program-dependent release that holds a mix together." } },
             { "autoMakeup", { "AUTO MAKEUP", "Turns the output back up by what the compressor takes off on average, so you compare at the same loudness." } },
+            { "model", { "MODEL", "The circuit's behaviour. CLASSIC: the original HamloComp (CHARACTER applies). VCA: clean glue with auto release. FET: fast and aggressive, with grit. OPTO: smooth, two-stage release that breathes. TUBE: the ratio grows with the level, warm." } },
+            { "source", { "SOURCE", "What the detector listens to. DRUMS: the kick does not pull the kit down. SAMPLES: melodies, keys, pads - follows the phrase. VOC: plosives ignored, harsh syllables caught first. ALL: the plain signal." } },
         } },
     };
     return t;

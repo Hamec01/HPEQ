@@ -17,17 +17,18 @@ namespace hamlo::ui
 // CRT with the history like the other pages — the input level and the gain reduction of the last 4 s, with
 // the threshold line; the GAIN REDUCTION needle stays. Drawn in the design's own coordinates
 // (1180 x 700) and scaled to fit; textures are procedural with the design's seeds. Static layers are
-// cached per size.
+// cached per size. HamloComp (2026-10-27): the stage grew to 1180 x 820 for a bottom strip with the MODEL
+// (5 positions) and SOURCE (4) levers; CHARACTER is dimmed when the model is not CLASSIC.
 class HamloCompPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     enum Param { Threshold, Ratio, Knee, Attack, Release, Makeup, Mix, NumKnobs }; // Mix = the module's mix (FxSlotState::mix)
-    enum Switch { Detector, Character, AutoMakeup, NumSwitches };
+    enum Switch { Detector, Character, AutoMakeup, Model, Source, NumSwitches }; // Character acts in CLASSIC only
 
     struct Values
     {
         std::array<double, NumKnobs> knobs { 0.0, 1.0, 6.0, 1.0, 80.0, 0.0, 1.0 };
-        std::array<int, NumSwitches> switches { 0, 1, 0 };
+        std::array<int, NumSwitches> switches { 0, 1, 0, 1, 0 };
         bool on = true;
     };
 
