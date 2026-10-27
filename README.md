@@ -38,4 +38,6 @@ runtime when missing).
   processor on the same signals and settings and reports the difference
   ([docs/reports/reference_check.md](docs/reports/reference_check.md)).
 
+`pluginval` (v1.0.4, strictness 5-10) passes; see the report.
+
 Status and measurements: [docs/reports/M0_EXTRACTION_REPORT.md](docs/reports/M0_EXTRACTION_REPORT.md).

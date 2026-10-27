@@ -66,13 +66,11 @@ round-trips; MIX 0 and ON off give the dry signal bit-exact, MIX 1 the compresso
 
 ## 4. Not done / limits
 
-- **pluginval** not run (not on this machine; HPEQ's M8 used v1.0.4 from GitHub) - needs the owner's go to
-  download it.
+- Steinberg's vst3 validator (a pluginval step) skipped: it is built from the VST3 SDK, which was not
+  downloaded (the download was refused by the session's permission check).
 - **Not installed, not opened in a DAW** (FL Studio): the installer was built, not run (it needs
   administrator rights and writes to `Common Files\VST3`). Listening is the owner's.
 - Not code-signed.
-- Built against HPEQ's patched JUCE checkout (`-DHAMLOCOMP_JUCE_DIR=E:/HPEQ/build/_deps/juce-src`); the
-  FetchContent path (fetch + patch) was not run.
 
 ## 5. Neutral defaults (owner, 2026-10-27)
 
@@ -88,3 +86,21 @@ a saved state holds every parameter.
 | Programs: a preset's unnamed values come from the base (e.g. New York Parallel: auto makeup on) | pass |
 | `HamloComp_Tests` | 117 / 117 |
 | `HamloComp_Reference`: + a "Default (neutral)" case, presets from the base | 168 cases, 136 bit-identical, worst -140.8 dB, 0 over -120 dB |
+
+## 6. pluginval and the stand-alone build (owner: "download everything needed")
+
+**pluginval v1.0.4** (Tracktion, GitHub release `pluginval_Windows.zip`, SHA-256
+`c08e61ce3b96db41636f8ec7e76f4c7e2c13ebdac7fa1b5a1f52b4f32ec715ab`, the same file as HPEQ's M8; the exe is not
+signed) on `HamloComp.vst3` (Release, neutral defaults), strictness 5, 6, 7, 8, 9, 10: **SUCCESS at every
+level, 0 failures**. Sections: scan, cold / warm open, plugin info, programs, editor (also while processing),
+audio processing, non-releasing processing, state and state restoration, automation, editor automation,
+parameters, background-thread state, parameter thread safety, buses (list, enable all, disable non-main,
+restore), fuzz parameters. The vst3 validator step was skipped (no validator, section 4). Logs:
+`docs/reports/pluginval/strictness_<n>/`.
+
+Disclosed: the first attempt started the six levels at once (pluginval is a GUI program and PowerShell did not
+wait for it), which left empty logs; they were deleted and the levels run one after another.
+
+**FetchContent build**: a clean configure without `HAMLOCOMP_JUCE_DIR` fetched JUCE 8.0.12, applied the renderer
+patch (3 switches in place), built `HamloComp_VST3` and `HamloComp_Tests`; tests 117 / 117. So the repository
+builds on its own, without HPEQ's build folder.
