@@ -1,0 +1,60 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "vs2026-x64",
+      "displayName": "Visual Studio 2026 x64",
+      "generator": "Visual Studio 18 2026",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "HAMLOUDARNIK_JUCE_DIR": "$env{HAMLOUDARNIK_JUCE_DIR}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "release",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Release",
+      "targets": [
+        "HamloUdarnik_VST3",
+        "HamloUdarnik_Tests",
+        "HamloUdarnik_Reference"
+      ]
+    },
+    {
+      "name": "debug",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Debug",
+      "targets": [
+        "HamloUdarnik_VST3",
+        "HamloUdarnik_Tests",
+        "HamloUdarnik_Reference"
+      ]
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "release",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "debug",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}
