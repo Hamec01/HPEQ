@@ -123,3 +123,19 @@ this method existed.
 
 `HamloComp_Tests` 345 / 345; `HamloComp_Lab` 13 / 13; CLASSIC vs HPEQ unchanged (-140.8 dB); pluginval 10 and
 Steinberg's validator inside it: SUCCESS. Listening: the owner's.
+
+## 5. Recalibration of the 5 hand-set model presets (owner, 2026-10-27)
+
+"Recalibrate the thresholds of the 5 model presets by the same method; leave HPEQ's presets alone." Only the
+threshold changed; HPEQ's 7 presets are untouched.
+
+| Preset | Depth | Threshold before -> after | Average GR before -> after |
+|---|---|---|---|
+| Drum Bus VCA Glue | MEDIUM | -20 -> -32 dB | 0.30 -> 4.47 dB |
+| Drum Smash FET (parallel) | HEAVY | -32 -> -21.5 dB | 34.35 -> 8.12 dB |
+| Vocal FET Upfront | MEDIUM | -24 -> -14.5 dB | 14.93 -> 4.51 dB |
+| Keys Opto Smooth | GENTLE | -24 -> -18 dB | 4.32 -> 2.06 dB |
+| Bass FET Grip | MEDIUM | -26 -> -17 dB | 21.15 -> 4.60 dB |
+
+`HamloComp_PresetLab check`: **40 / 40 calibrated presets pass P1 .. P5** (35 new + these 5). The 4 HPEQ presets
+outside their band (Drum Punch, New York Parallel, Gentle Master, Squash) are reported only. Tests 345 / 345.

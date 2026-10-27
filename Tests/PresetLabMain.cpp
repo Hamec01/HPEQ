@@ -23,6 +23,9 @@ using hamlo::comp::Preset;
 constexpr double kFs = 48000.0;
 constexpr int kBlock = 512;
 constexpr int kFirstNewPreset = 16; // presets 0..15 existed before the presets pass
+// the model presets of the models pass whose thresholds were set by hand; recalibrated by the same method on the
+// owner's word (2026-10-27). HPEQ's 7 presets (0..6) stay as they are.
+const std::set<juce::String> kRecalibrated { "Drum Bus VCA Glue", "Drum Smash FET (parallel)", "Vocal FET Upfront", "Keys Opto Smooth", "Bass FET Grip" };
 
 const std::map<juce::String, juce::StringArray> kMaterial {
     { "drums", { "drumbus1" } }, { "kick", { "kick" } }, { "snare", { "snare" } }, { "hats", { "hihat" } },
@@ -191,7 +194,7 @@ int main(int argc, char* argv[])
         }
         if (mode == "calibrate")
         {
-            if (static_cast<int>(k) < kFirstNewPreset)
+            if (static_cast<int>(k) < kFirstNewPreset && kRecalibrated.count(preset.name) == 0)
                 continue;
             double lo = -60.0, hi = 0.0; // average GR falls as the threshold rises
             for (int i = 0; i < 14; ++i)
@@ -211,7 +214,7 @@ int main(int argc, char* argv[])
         const bool unique = seen.insert(key).second;
         const bool ok = m.finite && m.avgGr >= bandLo(preset.depth) && m.avgGr <= bandHi(preset.depth) && m.peakDelta <= 6.0
                         && m.rmsDelta >= -12.0 && m.rmsDelta <= 6.0 && unique;
-        const bool newPreset = static_cast<int>(k) >= kFirstNewPreset;
+        const bool newPreset = static_cast<int>(k) >= kFirstNewPreset || kRecalibrated.count(preset.name) != 0;
         bad += ok || !newPreset ? 0 : 1; // the presets made before this pass are reported, not judged
         table << "| " << program << " | " << preset.name << (newPreset ? "" : " (before)") << " | " << preset.material << " | " << depthName(preset.depth) << " | "
               << juce::String(m.avgGr, 2) << " dB | " << juce::String(m.peakDelta, 2) << " dB | " << juce::String(m.rmsDelta, 2) << " dB | "
@@ -220,7 +223,8 @@ int main(int argc, char* argv[])
     }
     if (mode == "check")
     {
-        const auto summary = juce::String(static_cast<int>(list.size()) - kFirstNewPreset) + " new presets, " + juce::String(bad) + " outside P1 .. P5";
+        const auto summary = juce::String(static_cast<int>(list.size()) - kFirstNewPreset + static_cast<int>(kRecalibrated.size()))
+                           + " calibrated presets (35 new + 5 recalibrated), " + juce::String(bad) + " outside P1 .. P5";
         std::cout << summary << std::endl;
         if (argc > 3)
             juce::File::getCurrentWorkingDirectory().getChildFile(argv[3]).replaceWithText("# HamloComp presets on their material\n\n" + summary + "\n\n" + table);

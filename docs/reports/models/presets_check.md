@@ -1,6 +1,6 @@
 # HamloComp presets on their material
 
-35 new presets, 0 outside P1 .. P5
+40 calibrated presets (35 new + 5 recalibrated), 0 outside P1 .. P5
 
 | # | Preset | Material | Depth | Avg GR | Peak out - in | RMS out - in | Pass |
 |---|---|---|---|---|---|---|---|
@@ -11,13 +11,13 @@
 | 5 | Bass Control (before) | bass | MEDIUM | 5.55 dB | 0.21 dB | -3.69 dB | yes |
 | 6 | Gentle Master (before) | mix | GENTLE | 0.69 dB | 0.59 dB | -0.46 dB | no |
 | 7 | Squash (parallel) (before) | drums | HEAVY | 21.63 dB | -2.86 dB | -2.74 dB | no |
-| 8 | Drum Bus VCA Glue (before) | drums | MEDIUM | 0.30 dB | -0.16 dB | -0.11 dB | no |
-| 9 | Drum Smash FET (parallel) (before) | drums | HEAVY | 34.35 dB | -3.73 dB | -2.97 dB | no |
-| 10 | Vocal FET Upfront (before) | vocal | MEDIUM | 14.93 dB | -1.54 dB | -5.83 dB | no |
+| 8 | Drum Bus VCA Glue | drums | MEDIUM | 4.47 dB | -0.21 dB | -2.49 dB | yes |
+| 9 | Drum Smash FET (parallel) | drums | HEAVY | 8.12 dB | -2.94 dB | -0.83 dB | yes |
+| 10 | Vocal FET Upfront | vocal | MEDIUM | 4.51 dB | -2.31 dB | -2.64 dB | yes |
 | 11 | Vocal Opto Leveler (before) | vocal | MEDIUM | 5.31 dB | 0.63 dB | -1.93 dB | yes |
-| 12 | Keys Opto Smooth (before) | keys | GENTLE | 4.32 dB | -3.33 dB | -2.99 dB | no |
+| 12 | Keys Opto Smooth | keys | GENTLE | 2.06 dB | -2.64 dB | -1.98 dB | yes |
 | 13 | Pads Tube Warmth (before) | synth | MEDIUM | 4.32 dB | -1.40 dB | -1.34 dB | yes |
-| 14 | Bass FET Grip (before) | bass | MEDIUM | 21.15 dB | -0.43 dB | -8.16 dB | no |
+| 14 | Bass FET Grip | bass | MEDIUM | 4.60 dB | -1.01 dB | -3.08 dB | yes |
 | 15 | Mix Bus VCA 2:1 (before) | mix | GENTLE | 1.76 dB | 1.14 dB | -0.87 dB | yes |
 | 16 | Master Tube Gentle (before) | mix | GENTLE | 1.69 dB | 0.43 dB | -0.28 dB | yes |
 | 17 | Kick Punch FET | kick | MEDIUM | 4.56 dB | 1.09 dB | -4.80 dB | yes |
