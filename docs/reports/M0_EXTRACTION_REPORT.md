@@ -66,8 +66,6 @@ round-trips; MIX 0 and ON off give the dry signal bit-exact, MIX 1 the compresso
 
 ## 4. Not done / limits
 
-- Steinberg's vst3 validator (a pluginval step) skipped: it is built from the VST3 SDK, which was not
-  downloaded (the download was refused by the session's permission check).
 - **Not installed, not opened in a DAW** (FL Studio): the installer was built, not run (it needs
   administrator rights and writes to `Common Files\VST3`). Listening is the owner's.
 - Not code-signed.
@@ -95,7 +93,7 @@ signed) on `HamloComp.vst3` (Release, neutral defaults), strictness 5, 6, 7, 8, 
 level, 0 failures**. Sections: scan, cold / warm open, plugin info, programs, editor (also while processing),
 audio processing, non-releasing processing, state and state restoration, automation, editor automation,
 parameters, background-thread state, parameter thread safety, buses (list, enable all, disable non-main,
-restore), fuzz parameters. The vst3 validator step was skipped (no validator, section 4). Logs:
+restore), fuzz parameters. The vst3 validator step was skipped in these runs (see section 7). Logs:
 `docs/reports/pluginval/strictness_<n>/`.
 
 Disclosed: the first attempt started the six levels at once (pluginval is a GUI program and PowerShell did not
@@ -104,3 +102,15 @@ wait for it), which left empty logs; they were deleted and the levels run one af
 **FetchContent build**: a clean configure without `HAMLOCOMP_JUCE_DIR` fetched JUCE 8.0.12, applied the renderer
 patch (3 switches in place), built `HamloComp_VST3` and `HamloComp_Tests`; tests 117 / 117. So the repository
 builds on its own, without HPEQ's build folder.
+
+## 7. Steinberg's VST3 validator (owner allowed the download, 2026-10-27)
+
+VST3 SDK `v3.8.0_build_66` (github.com/steinbergmedia/vst3sdk, the SDK version JUCE 8.0.12 carries: "VST 3.8.0"),
+`validator` built from it (Release, VSTGUI and samples off). On `HamloComp.vst3`:
+
+| Run | Result |
+|---|---|
+| `validator -e` (extensive) | **537 tests passed, 0 failed**; "64bit Audio Processing not supported" is information (the plug-in processes 32-bit float) |
+| pluginval strictness 10 with `--vst3validator` | **SUCCESS**, its vst3 validator step exited 0 |
+
+Logs: `docs/reports/vst3validator/validator_extensive.txt`, `docs/reports/pluginval/strictness_10_with_vst3validator/`.
