@@ -8,10 +8,13 @@ separately and improvements are carried back ([docs/SYNC_WITH_HPEQ.md](docs/SYNC
   BODY gains), UDARNIK (loudness-neutral body, peak-safe snap), PERESTROIKA (rise and decay reshaped), hit
   detection with confidence and sensitivity, PRESERVE, look-ahead 0 / 2 / 5 ms, LISTEN, OUTPUT
   (`Source/DSP/`, every law in `HamloUdarnik.h`).
-- **Page**: the Black Steel design (1180 x 700, resizable 0.5 .. 2 x): ten knobs, LOOK-AHEAD and LISTEN levers,
+- **V2 engine** (default for new instances): hits from a fast onset detector, weights from the hit's phases, so SNAP /
+  BODY deliver their value, level independent, steady tones untouched; PROTECT keeps the added level under 0 dBFS
+  ([docs/reports/V2_REPORT.md](docs/reports/V2_REPORT.md)). CLASSIC keeps the original laws for older projects.
+- **Page**: the Black Steel design (1180 x 820, resizable 0.5 .. 2 x): ten knobs, LOOK-AHEAD and LISTEN levers, ENGINE and PROTECT,
   the gain CRT with the last hit, the IMPACT needle (`Source/UI/`).
 - **Plug-in**: host parameters with the IDs of HPEQ's HamloUdarnik module VST3 and the same identity
-  (HamloProd / BBLB / HmUd), so its projects open here; MIX, ON (bypass), 6 presets as programs, mono and stereo,
+  (HamloProd / BBLB / HmUd), so its projects open here (as CLASSIC); MIX, ON (bypass), 18 presets as programs, mono and stereo,
   a fixed latency of 5 ms (`Source/Plugin/`).
 
 ## Build

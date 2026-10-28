@@ -26,6 +26,7 @@ void UdarnikV2::prepare(double sampleRate)
         a.assign(static_cast<size_t>(capacity), 0.0f);
     gainDb.assign(static_cast<size_t>(capacity), 0.0f);
     attackShare.assign(static_cast<size_t>(capacity), 0.0f);
+    bodyShare.assign(static_cast<size_t>(capacity), 0.0f);
     reset();
 }
 
@@ -35,6 +36,8 @@ void UdarnikV2::reset() noexcept
     lookahead = -1;
     meanSquare = fast = slow = hold = gainSmooth = peakHold = impact = 0.0;
     inHit = false;
+    armed = true;
+    e1 = e10 = 0.0;
     hitStart = riseEnd = -1;
     riseMax = 0.0;
     hitFloor = hitPeak = 0.0;
@@ -43,6 +46,9 @@ void UdarnikV2::reset() noexcept
         std::fill(a.begin(), a.end(), 0.0f);
     std::fill(gainDb.begin(), gainDb.end(), 0.0f);
     std::fill(attackShare.begin(), attackShare.end(), 0.0f);
+    std::fill(bodyShare.begin(), bodyShare.end(), 0.0f);
+    attackOpen = false;
+    attackIn = attackOut = giveBack = 0.0;
     capT0 = -1;
     capBins = 0;
     events = 0;
@@ -72,11 +78,13 @@ void UdarnikV2::process(float* const* channels, int numChannels, int numSamples,
     const double fastA = coefficient(0.1, fs), fastR = coefficient(8.0 * speed, fs);
     const double slowA = coefficient(6.0 * speed * rise, fs), slowR = coefficient(150.0 * speed, fs);
     const double smoothC = coefficient(0.5, fs), impactC = coefficient(300.0, fs), peakRelease = coefficient(50.0, fs);
-    const double dead = 1.5 + 6.0 * (1.0 - preserve) + 12.0 * (1.0 - sensitivity);
+    const double theta = 6.0 + 18.0 * (1.0 - sensitivity) + 6.0 * (1.0 - preserve); // CLASSIC: 6 + 18 (1 - SENS)
+    const double e1A = coefficient(0.05, fs), e1R = coefficient(1.0, fs), e10A = coefficient(1.0, fs), e10R = coefficient(10.0, fs);
+    const long long rearm = static_cast<long long>(0.010 * fs);
     const int lead = std::min(L, static_cast<int>(leadMs * 1.0e-3 * fs));
     const int bin = std::max(1, static_cast<int>(0.0025 * fs));
     const double decayFactor = 1.0 - 1.0 / decayK;
-    const double attackWindow = 0.012 * speed * rise * fs, bodyLength = 0.500 * speed * fs, bodyRamp = 0.003 * fs;
+    const double attackWindow = 0.015 * speed * rise * fs, bodyLength = 0.500 * speed * fs, bodyRamp = 0.003 * fs;
     const double bodyFadeStep = 1.0 / (0.050 * fs);
 
     float blockInput = 0.0f;
@@ -101,9 +109,16 @@ void UdarnikV2::process(float* const* channels, int numChannels, int numSamples,
         slow = follow(slow, level, slowA, slowR);
         hold = follow(hold, level, fastA, slowR); // the sustain pair: fast attack, slow release
         const double A = 20.0 * std::log10((fast + kTiny) / (slow + kTiny));
-        // a hit: the attack envelope stands out of the slow one by more than `dead` (re-armed below dead - 1 dB)
-        if (!inHit && A > dead)
+        // a hit: the onset detector of the CLASSIC core (peak envelopes 0.05 / 1 ms and 1 / 10 ms, their ratio over
+        // theta), which also sees an attack riding on the previous hit's tail; re-armed 3 dB under theta, 10 ms on
+        e1 = follow(e1, peak, e1A, e1R);
+        e10 = follow(e10, peak, e10A, e10R);
+        const double ns = 20.0 * std::log10((e1 + kTiny) / (e10 + kTiny));
+        if (!armed && ns < theta - 3.0 && n - hitStart >= rearm)
+            armed = true;
+        if (armed && ns >= theta && peak > 1.0e-6f)
         {
+            armed = false;
             inHit = true;
             hitStart = n;
             riseEnd = n;
@@ -119,8 +134,8 @@ void UdarnikV2::process(float* const* channels, int numChannels, int numSamples,
             capIn.fill(0.0f);
             capOut.fill(0.0f);
         }
-        else if (inHit && A < dead - 1.0)
-            inHit = false;
+        else if (inHit && n - hitStart >= rearm && A < riseMax - 1.0)
+            inHit = false; // past the attack envelope's peak: the rise no longer holds the window open
         double wa = 0.0, wb = 0.0, fall = 0.0;
         if (hitStart >= 0)
         {
@@ -148,8 +163,6 @@ void UdarnikV2::process(float* const* channels, int numChannels, int numSamples,
             }
         }
         double G = snap * wa + body * wb;
-        if (style == 1 && snap > 0.0)
-            G -= 0.5 * snap * wb; // UDARNIK: the body gives back half the SNAP, so the contrast is the SNAP and the peak stays
         if (style == 2)
             G += std::max(0.0, fall) * decayFactor * wb; // the decay's slope in dB divided by DECAY
         const int w = static_cast<int>(n % capacity);
@@ -157,6 +170,7 @@ void UdarnikV2::process(float* const* channels, int numChannels, int numSamples,
             audio[static_cast<size_t>(c)][static_cast<size_t>(w)] = channels[c][i];
         gainDb[static_cast<size_t>(w)] = static_cast<float>(G);
         attackShare[static_cast<size_t>(w)] = static_cast<float>(wa);
+        bodyShare[static_cast<size_t>(w)] = static_cast<float>(wb);
 
         // ---------------------------------------------------------------- audio (time m = n - L)
         const long long m = n - L;
@@ -172,6 +186,22 @@ void UdarnikV2::process(float* const* channels, int numChannels, int numSamples,
         // higher. Without a boost (gain <= 1) it is the plain gain.
         const bool peakNeutral = style == 1 && gain > 1.0 && attackShare[static_cast<size_t>(g)] > 0.0f; // the attack's boost only
         const double share = attackShare[static_cast<size_t>(g)];
+        // UDARNIK: what the attack could not get under its peak, the body gives back (the contrast follows SNAP)
+        if (style == 1 && snap > 0.0)
+        {
+            if (share > 0.0 && !attackOpen)
+            {
+                attackOpen = true;
+                attackIn = attackOut = 0.0;
+            }
+            else if (share <= 0.0 && attackOpen)
+            {
+                attackOpen = false;
+                const double achieved = attackIn > 0.0 && attackOut > 0.0 ? 10.0 * std::log10(attackOut / attackIn) : 0.0;
+                giveBack = std::clamp(snap - achieved, 0.0, snap);
+            }
+        }
+        const double bodyGive = style == 1 && snap > 0.0 ? std::pow(10.0, -giveBack * bodyShare[static_cast<size_t>(g)] / 20.0) : 1.0;
         gMin = std::min(gMin, gainSmooth);
         gMax = std::max(gMax, gainSmooth);
         double inPeak = 0.0, outPeak = 0.0;
@@ -184,6 +214,12 @@ void UdarnikV2::process(float* const* channels, int numChannels, int numSamples,
                 const double a = std::abs(xin), room = std::max(0.0, peakHold - a), boost = a * (gain - 1.0);
                 y = std::copysign(a + (room > 0.0 ? room * std::tanh(boost / room) : 0.0), xin);
             }
+            if (attackOpen)
+            {
+                attackIn += xin * xin;
+                attackOut += y * y;
+            }
+            y *= bodyGive;
             if (listen == 1)
                 y *= share;
             else if (listen == 2)

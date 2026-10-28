@@ -181,10 +181,10 @@ public:
             expect(!bitExact(render(p, m, 512), delayed(m, 240)));
         }
 
-        beginTest("Programs: Default plus the 6 HPEQ transient presets; Default restores");
+        beginTest("Programs: Default plus the 6 HPEQ transient presets (CLASSIC) and 12 V2 presets; Default restores");
         {
             HamloUdarnikProcessor p;
-            expectEquals(p.getNumPrograms(), 7);
+            expectEquals(p.getNumPrograms(), 19);
             expectEquals(p.getProgramName(2), juce::String("Snare Crack"));
             p.setCurrentProgram(2);
             expectWithinAbsoluteError(p.parameterValue("attackDb"), 8.0, 1.0e-3);
@@ -192,6 +192,26 @@ public:
             p.setCurrentProgram(0);
             for (const auto& spec : udarnik::parameterSpecs())
                 expectWithinAbsoluteError(p.parameterValue(spec.id), static_cast<double>(spec.defaultValue), 1.0e-3, spec.id);
+        }
+
+        beginTest("Every preset on the drum loop at -1 dBFS peak: finite, changes it; the V2 ones (PROTECT on) stay <= 0 dBFS");
+        {
+            auto hot = loop;
+            hot.applyGain(static_cast<float>(std::pow(10.0, -1.0 / 20.0) / hot.getMagnitude(0, hot.getNumSamples())));
+            for (int program = 1; program < 19; ++program)
+            {
+                HamloUdarnikProcessor p;
+                p.setCurrentProgram(program);
+                const auto y = render(p, hot, 512);
+                bool finite = true;
+                for (int ch = 0; ch < 2; ++ch)
+                    for (int i = 0; i < y.getNumSamples(); ++i)
+                        finite = finite && std::isfinite(y.getSample(ch, i));
+                const double peak = 20.0 * std::log10(y.getMagnitude(0, y.getNumSamples()));
+                const bool v2 = juce::roundToInt(p.parameterValue("engine")) == 1;
+                logMessage("  " + p.getProgramName(program) + (v2 ? " (V2)" : " (CLASSIC)") + ": peak " + juce::String(peak, 2) + " dBFS");
+                expect(finite && !bitExact(y, delayed(hot, 240)) && (!v2 || peak <= 0.0), p.getProgramName(program));
+            }
         }
 
         beginTest("Page: 1180 x 820, resizable; knob, MODE, levers and ON write the parameters; host changes come back");
