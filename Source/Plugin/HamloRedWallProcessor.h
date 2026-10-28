@@ -8,14 +8,16 @@
 #include "DSP/AlignmentDelay.h"
 #include "DSP/Ramp.h"
 #include "DSP/Limiter.h"
+#include "DSP/RedWallColour.h"
 
 namespace hamlo::redwall
 {
 // HamloRedWall: the limiter alone. Signal path per block, as HPEQ's module plug-in (a one-slot
 // LayerEngine there, the limiter directly here):
-//   wet  = limiter(x)                        (latency L = the look-ahead of the current settings, + 8 with TRUE PEAK)
-//   y    = D_L(x) + m (wet - D_L(x))         MIX, 20 ms ramp, exact at 0 and 1
-//   y    = D_(F - L)(y)                       aligned to the fixed latency F = the 10 ms look-ahead + 8 (true peak)
+//   wet  = limiter(colour(x))                (colour = DRIVE / TUBE, latency C constant, a pure delay at 0;
+//                                             limiter latency L = the look-ahead of the current settings, + 8 with TRUE PEAK)
+//   y    = D_(C+L)(x) + m (wet - D_(C+L)(x)) MIX, 20 ms ramp, exact at 0 and 1
+//   y    = D_(F - C - L)(y)                   aligned to the fixed latency F = C + the 10 ms look-ahead + 8 (true peak)
 //   out  = D_F(x) + on (y - D_F(x))           ON crossfade, 20 ms
 // F is reported to the host and never changes, so automating LOOKAHEAD or TRUE PEAK does not move the PDC.
 class HamloRedWallProcessor final : public juce::AudioProcessor
@@ -64,6 +66,7 @@ private:
     juce::AudioParameterBool* bypassParameter = nullptr;
     int mixIndex = -1;
 
+    dsp::RedWallColour colour;
     dsp::LimiterProcessor core;
     juce::AudioBuffer<float> dry, dryForMix;
     dsp::AlignmentDelay mixAlign, wetAlign, dryAlign;

@@ -63,11 +63,12 @@ void HamloRedWallProcessor::prepareToPlay(double sampleRate, int expectedBlockSi
     maximumBlockSize = juce::jmax(1, expectedBlockSize);
     currentSampleRate.store(sampleRate, std::memory_order_relaxed);
     core.prepare(sampleRate);
+    colour.prepare(sampleRate, maximumBlockSize);
     {
         dsp::LimiterSettings largest; // the 10 ms look-ahead with TRUE PEAK: the most this limiter can delay
         largest.values[dsp::slot::kLookaheadMs] = 10.0f;
         largest.values[dsp::slot::kLimTruePeak] = 1.0f;
-        latency = dsp::LimiterProcessor::lookaheadSamples(largest, sampleRate);
+        latency = colour.latency() + dsp::LimiterProcessor::lookaheadSamples(largest, sampleRate);
     }
     mixAlign.prepare(latency);
     wetAlign.prepare(latency);
@@ -100,7 +101,7 @@ void HamloRedWallProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
 
     const int channels = juce::jmin(inputs, outputs, buffer.getNumChannels(), dsp::kMaxChannels);
     const auto settings = currentSettings();
-    const int slotLatency = dsp::LimiterProcessor::lookaheadSamples(settings, currentSampleRate.load(std::memory_order_relaxed));
+    const int slotLatency = colour.latency() + dsp::LimiterProcessor::lookaheadSamples(settings, currentSampleRate.load(std::memory_order_relaxed));
     const int extra = juce::jmax(0, latency - slotLatency);
     mixAmount.setTarget(juce::jlimit(0.0, 1.0, static_cast<double>(raw[static_cast<size_t>(mixIndex)]->load(std::memory_order_relaxed))), rampSteps);
     onAmount.setTarget(isOn() ? 1.0 : 0.0, rampSteps);
@@ -120,6 +121,7 @@ void HamloRedWallProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
         }
         // the slot's dry reference, delayed by the slot's own latency (HPEQ: FxNodeProcessor's slot align)
         mixAlign.process(dryPointers, mixDry, channels, count, slotLatency);
+        colour.process(wet, channels, count, settings);
         core.process(wet, channels, count, settings);
         for (int i = 0; i < count; ++i)
         {
@@ -164,7 +166,15 @@ void HamloRedWallProcessor::setStateInformation(const void* data, int size)
 {
     if (auto xml = getXmlFromBinary(data, size))
         if (xml->hasTagName(parameters.state.getType().toString()))
+        {
+            // a state from before the v2 engine is CLASSIC (it sounds as it did)
+            bool hasEngine = false;
+            for (auto* e : xml->getChildWithTagNameIterator("PARAM"))
+                hasEngine = hasEngine || e->getStringAttribute("id") == "engine";
             parameters.replaceState(juce::ValueTree::fromXml(*xml));
+            if (!hasEngine)
+                setParameterValue("engine", 0.0);
+        }
 }
 
 juce::RangedAudioParameter* HamloRedWallProcessor::parameter(const juce::String& id) const noexcept

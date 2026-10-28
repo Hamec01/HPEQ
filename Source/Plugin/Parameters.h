@@ -38,10 +38,16 @@ inline const std::vector<ParameterSpec>& parameterSpecs()
         { "truePeak", "True Peak", 0.0f, 1.0f, 1.0f, 1.0f, "", { "Off", "On" }, s::kLimTruePeak },
         { "autoRelease", "Release", 0.0f, 1.0f, 1.0f, 1.0f, "", { "Manual", "Auto" }, s::kLimAutoRelease },
         { "monitor", "Monitor", 0.0f, 2.0f, 0.0f, 1.0f, "", { "Normal", "Unity", "Delta" }, s::kLimMonitor },
+        // docs/REDWALL_V2.md: a new instance runs the v2 engine; a state saved without `engine` (HPEQ's HamloRedWall,
+        // HamloRedWall 0.1.0) loads as CLASSIC - it sounds as before
+        { "engine", "Engine", 0.0f, 1.0f, 1.0f, 1.0f, "", { "Classic", "V2" }, s::kLimEngine },
+        // the colour stage before the limiter (DSP/RedWallColour.h); 0 = no colour, a state without them loads at 0
+        { "drive", "Drive", 0.0f, 1.0f, 0.0f, 1.0f, "", {}, s::kLimDrive },
+        { "tube", "Tube", 0.0f, 1.0f, 0.0f, 1.0f, "", {}, s::kLimTube },
     };
     return specs;
 }
 
 constexpr const char* kStateTag = "HamloRedWall";
-constexpr int kEditorWidth = 1180, kEditorHeight = 700;
+constexpr int kEditorWidth = 1180, kEditorHeight = 820; // 700 + the ENGINE / DRIVE / TUBE strip
 } // namespace hamlo::redwall

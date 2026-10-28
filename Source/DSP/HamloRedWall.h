@@ -26,6 +26,10 @@ namespace hamlo::dsp
 //   OUTPUT O (-24 .. 0 dB): out = (monitored y) * 10^(O/20), last. With O <= 0 the output sample peak is
 //   <= ceiling * 10^(O/20), i.e. LIMIT + OUTPUT in dB, and the loudness moves by exactly O dB.
 // Latency = L (+ 8 with TRUE PEAK).
+//
+// HamloRedWall v2 engine (slot kLimEngine 1, docs/REDWALL_V2.md); everything else as above:
+//   TRUE PEAK on an 8x grid (fractions 1/8 .. 7/8, the same 16-tap Kaiser sinc, the same 8-sample delay)
+//   (an asymmetric AUTO-release hold was tried and dropped: +0.0 LU, bass THD 0.22 -> 0.40 %, docs/reports)
 class RedWallCore
 {
 public:
@@ -61,6 +65,7 @@ private:
     int prePos = 0, corePos = 0;
     std::array<Channel, kMaxChannels> ch;
     std::array<std::array<float, 16>, 3> phaseTaps {}; // fractions 1/4, 2/4, 3/4
+    std::array<std::array<float, 16>, 7> phaseTaps8 {}; // v2: fractions 1/8 .. 7/8
     std::atomic<float> meterReduction { 0.0f }, meterOutput { -120.0f };
 };
 } // namespace hamlo::dsp

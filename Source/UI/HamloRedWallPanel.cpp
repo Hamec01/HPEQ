@@ -6,11 +6,14 @@ namespace hamlo::ui
 {
 namespace
 {
-constexpr float kW = 1180.0f, kH = 700.0f;
+constexpr float kW = 1180.0f, kH = 820.0f; // design stage (700 + the ENGINE / DRIVE / TUBE strip)
 constexpr float kPi = juce::MathConstants<float>::pi;
 constexpr float kKnobY = 253.0f, kLabelY = 160.0f, kReadoutY = 337.0f;
 constexpr float kSwitchDialX = 66.0f, kSwitchDialW = 230.0f;
-float switchTop(int i) { return 372.0f + static_cast<float>(i) * 88.0f; }
+constexpr float kStripTop = 688.0f, kStripKnobY = 740.0f, kStripKnobScale = 0.6f;
+constexpr int kRowKnobs = 8, kRowSwitches = 3; // the top row and the left column; the rest sit in the strip
+float switchTop(int i) { return i < kRowSwitches ? 372.0f + static_cast<float>(i) * 88.0f : kStripTop; }
+bool inStrip(int knob) { return knob >= kRowKnobs; }
 const juce::Rectangle<float> kCrtBezel { 331.0f, 385.0f, 404.0f, 238.0f };
 const juce::Rectangle<float> kCrtScreen { 349.0f, 403.0f, 368.0f, 182.0f };
 const juce::Point<float> kLamp { 1074.0f, 453.0f }, kToggle { 1074.0f, 559.0f };
@@ -24,13 +27,19 @@ struct MapInfo
 // THRESHOLD turns right to push harder (0 -> -30 dB); STYLE has three detents.
 constexpr std::array<MapInfo, HamloRedWallPanel::NumKnobs> kMaps { { { 0.0, -30.0, false }, { -20.0, 0.0, false }, { 1.0, 1000.0, true },
                                                                       { 0.1, 10.0, true }, { 0.0, 1.0, false }, { -24.0, 0.0, false },
-                                                                      { 0.0, 1.0, false }, { 0.0, 2.0, false } } };
+                                                                      { 0.0, 1.0, false }, { 0.0, 2.0, false }, { 0.0, 1.0, false },
+                                                                      { 0.0, 1.0, false } } };
 constexpr float kKnobScale = 0.84f; // eight knobs share the 1068 px row
-constexpr std::array<const char*, HamloRedWallPanel::NumKnobs> kLabels { "Loudness", "Limit", "Release", "Lookahead", "Link", "Output", "Mix", "Style" };
+float knobScaleFor(int knob) { return inStrip(knob) ? kStripKnobScale : kKnobScale; }
+// the strip knobs: the title left of the knob, the readout right of it
+juce::Rectangle<float> stripLabel(juce::Point<float> c) { return { c.x - 172.0f, c.y - 16.0f, 120.0f, 32.0f }; }
+juce::Rectangle<float> stripReadout(juce::Point<float> c) { return { c.x + 54.0f, c.y - 16.0f, 96.0f, 32.0f }; }
+constexpr std::array<const char*, HamloRedWallPanel::NumKnobs> kLabels { "Loudness", "Limit", "Release", "Lookahead", "Link", "Output", "Mix", "Style", "Drive", "Tube" };
 const std::array<juce::StringArray, HamloRedWallPanel::NumSwitches> kSwitchOptions { juce::StringArray { "Off", "On" },
                                                                                      juce::StringArray { "Manual", "Auto" },
-                                                                                     juce::StringArray { "Normal", "Unity", "Delta" } };
-constexpr std::array<const char*, HamloRedWallPanel::NumSwitches> kSwitchLabels { "True Peak", "Release", "Monitor" };
+                                                                                     juce::StringArray { "Normal", "Unity", "Delta" },
+                                                                                     juce::StringArray { "Classic", "V2" } };
+constexpr std::array<const char*, HamloRedWallPanel::NumSwitches> kSwitchLabels { "True Peak", "Release", "Monitor", "Engine" };
 } // namespace
 
 const juce::StringArray& HamloRedWallPanel::styleNames()
@@ -41,19 +50,19 @@ const juce::StringArray& HamloRedWallPanel::styleNames()
 
 const char* HamloRedWallPanel::keyFor(Param p)
 {
-    static constexpr const char* keys[] { "thresholdDb", "ceilingDb", "releaseMs", "lookaheadMs", "link", "outputDb", "mix", "style" };
+    static constexpr const char* keys[] { "thresholdDb", "ceilingDb", "releaseMs", "lookaheadMs", "link", "outputDb", "mix", "style", "drive", "tube" };
     return keys[p];
 }
 
 const char* HamloRedWallPanel::keyFor(Switch s)
 {
-    static constexpr const char* keys[] { "truePeak", "autoRelease", "monitor" };
+    static constexpr const char* keys[] { "truePeak", "autoRelease", "monitor", "engine" };
     return keys[s];
 }
 
 double HamloRedWallPanel::defaultFor(Param p)
 {
-    static constexpr double d[] { 0.0, 0.0, 60.0, 2.0, 1.0, 0.0, 1.0, 0.0 }; // = defaultModule(Limiter), mix 100 %
+    static constexpr double d[] { 0.0, 0.0, 60.0, 2.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0 }; // = defaultModule(Limiter), mix 100 %; no colour
     return d[p];
 }
 
@@ -65,7 +74,7 @@ juce::String HamloRedWallPanel::format(Param p, double v)
         case Ceiling: case Output: return juce::String(v, 1) + " dB";
         case Release: return juce::String(juce::roundToInt(v)) + " ms";
         case Lookahead: return juce::String(v, 2) + " ms";
-        case Link: case Mix: return juce::String(juce::roundToInt(v * 100.0)) + " %";
+        case Link: case Mix: case Drive: case Tube: return juce::String(juce::roundToInt(v * 100.0)) + " %";
         case Style: return styleNames()[juce::jlimit(0, 2, juce::roundToInt(v))];
         case NumKnobs: break;
     }
@@ -74,8 +83,10 @@ juce::String HamloRedWallPanel::format(Param p, double v)
 
 HamloRedWallPanel::HamloRedWallPanel()
 {
-    for (int i = 0; i < NumKnobs; ++i) // eight columns over the content width 56 .. 1124
-        centres[static_cast<size_t>(i)] = { 56.0f + (static_cast<float>(i) + 0.5f) * (1068.0f / NumKnobs), kKnobY };
+    for (int i = 0; i < kRowKnobs; ++i) // eight columns over the content width 56 .. 1124
+        centres[static_cast<size_t>(i)] = { 56.0f + (static_cast<float>(i) + 0.5f) * (1068.0f / kRowKnobs), kKnobY };
+    centres[Drive] = { 560.0f, kStripKnobY };
+    centres[Tube] = { 930.0f, kStripKnobY };
     grMeter.bezel = { 751.0f, 385.0f, 248.0f, 238.0f };
     grMeter.min = -20.0f;
     grMeter.max = 0.0f;
@@ -168,10 +179,13 @@ void HamloRedWallPanel::renderStatic(juce::Graphics& g) const
     for (int i = 0; i < NumKnobs; ++i)
     {
         const auto c = centres[static_cast<size_t>(i)];
-        if (i != Style) // the STYLE knob is titled with the chosen style itself (paint)
+        if (inStrip(i))
+            steel::engraved(g, juce::String(kLabels[static_cast<size_t>(i)]).toUpperCase(), stripLabel(c), 19.0f, steel::stencil,
+                            juce::Justification::centredRight, 0.1f);
+        else if (i != Style) // the STYLE knob is titled with the chosen style itself (paint)
             steel::engraved(g, juce::String(kLabels[static_cast<size_t>(i)]).toUpperCase(), { c.x - 66.0f, kLabelY - 17.0f, 132.0f, 34.0f }, 19.0f,
                             steel::stencil, juce::Justification::centred, 0.1f);
-        steel::knobScale(g, c, kKnobScale);
+        steel::knobScale(g, c, knobScaleFor(i));
     }
     // STYLE detents: the two end names beside the scale (the selected one is the red readout)
     for (int k : { 0, 2 })
@@ -181,10 +195,15 @@ void HamloRedWallPanel::renderStatic(juce::Graphics& g) const
         const juce::Point<float> p(c.x + std::sin(a) * 78.0f, c.y - std::cos(a) * 78.0f);
         steel::engraved(g, styleNames()[k], { p.x - 46.0f, p.y + 2.0f, 92.0f, 16.0f }, 10.5f, steel::stencilDim);
     }
+    // the strip: an engraved groove across the panel
+    g.setColour(juce::Colours::black);
+    g.drawHorizontalLine(juce::roundToInt(kStripTop - 14.0f), 56.0f, kW - 56.0f);
+    g.setColour(juce::Colours::white.withAlpha(0.07f));
+    g.drawHorizontalLine(juce::roundToInt(kStripTop - 15.0f), 56.0f, kW - 56.0f);
     for (int i = 0; i < NumSwitches; ++i)
     {
         const float top = switchTop(i);
-        if (i > 0)
+        if (i > 0 && i < kRowSwitches)
         {
             g.setColour(juce::Colours::black);
             g.drawHorizontalLine(juce::roundToInt(top - 3.0f), 56.0f, 306.0f);
@@ -236,8 +255,18 @@ void HamloRedWallPanel::paint(juce::Graphics& g)
         const auto c = centres[static_cast<size_t>(i)];
         const auto p = static_cast<Param>(i);
         float angle = (-135.0f + static_cast<float>(normFor(p)) * 270.0f) * kPi / 180.0f;
-        steel::brassKnob(g, c, angle, kKnobScale, 1.0f, steel::KnobAsset::AluminumBrassInsert, steel::PointerAsset::WhiteEnamel);
+        steel::brassKnob(g, c, angle, knobScaleFor(i), 1.0f, steel::KnobAsset::AluminumBrassInsert, steel::PointerAsset::WhiteEnamel);
         const auto text = format(p, values.knobs[static_cast<size_t>(i)]);
+        if (inStrip(i))
+        {
+            const auto r = stripReadout(c);
+            g.setFont(steel::stencilFont(20.0f));
+            g.setColour(juce::Colours::black);
+            g.drawText(text, r.translated(0.0f, 1.0f), juce::Justification::centredLeft);
+            g.setColour(steel::stencil);
+            g.drawText(text, r, juce::Justification::centredLeft);
+            continue;
+        }
         if (p == Style)
         {
             // owner: the chosen style is the knob's title, no separate readout
@@ -306,10 +335,16 @@ void HamloRedWallPanel::settleMeters(float out, float reductionDb)
     repaint();
 }
 
+juce::Rectangle<float> HamloRedWallPanel::readoutArea(Param p) const
+{
+    const auto c = centres[static_cast<size_t>(p)];
+    return inStrip(p) ? stripReadout(c) : juce::Rectangle<float>(c.x - 64.0f, kReadoutY - 16.0f, 128.0f, 32.0f);
+}
+
 int HamloRedWallPanel::knobAt(juce::Point<float> d) const
 {
     for (int i = 0; i < NumKnobs; ++i)
-        if (d.getDistanceFrom(centres[static_cast<size_t>(i)]) <= 52.0f)
+        if (d.getDistanceFrom(centres[static_cast<size_t>(i)]) <= (inStrip(i) ? 40.0f : 52.0f))
             return i;
     return -1;
 }
@@ -373,7 +408,7 @@ void HamloRedWallPanel::mouseDown(const juce::MouseEvent& e)
         return;
     }
     for (int i = 0; i < NumKnobs; ++i)
-        if (i != Style && juce::Rectangle<float>(centres[static_cast<size_t>(i)].x - 64.0f, kReadoutY - 16.0f, 128.0f, 32.0f).contains(d))
+        if (i != Style && readoutArea(static_cast<Param>(i)).contains(d))
         {
             editReadout(static_cast<Param>(i));
             return;
@@ -425,25 +460,25 @@ void HamloRedWallPanel::mouseWheelMove(const juce::MouseEvent& e, const juce::Mo
 
 void HamloRedWallPanel::editReadout(Param p)
 {
-    const auto c = centres[static_cast<size_t>(p)];
-    const auto area = juce::Rectangle<float>(c.x - 70.0f, kReadoutY - 16.0f, 140.0f, 32.0f).transformedBy(toScreen()).toNearestInt();
+    const auto area = readoutArea(p).expanded(6.0f, 0.0f).transformedBy(toScreen()).toNearestInt();
     typing = std::make_unique<juce::TextEditor>();
     typing->setBounds(area);
     typing->setFont(steel::stencilFont(22.0f * scale * 1.1f));
     typing->setJustification(juce::Justification::centred);
     typing->setColour(juce::TextEditor::backgroundColourId, juce::Colour(0xff120b04));
     typing->setColour(juce::TextEditor::textColourId, juce::Colour(0xffffb347));
-    const double shown = p == Link ? values.knobs[Link] * 100.0 : p == Threshold ? -values.knobs[Threshold] : values.knobs[static_cast<size_t>(p)];
+    const bool percent = p == Link || p == Mix || p == Drive || p == Tube;
+    const double shown = percent ? values.knobs[static_cast<size_t>(p)] * 100.0 : p == Threshold ? -values.knobs[Threshold] : values.knobs[static_cast<size_t>(p)];
     typing->setText(juce::String(shown, p == Lookahead ? 2 : 1), false);
     typing->selectAll();
     juce::Component::SafePointer<HamloRedWallPanel> self(this);
     const auto closeEditor = [self] { juce::MessageManager::callAsync([self] { if (self != nullptr) self->typing.reset(); }); };
-    const auto commit = [this, p, closeEditor]
+    const auto commit = [this, p, percent, closeEditor]
     {
         if (typing == nullptr)
             return;
         double v = typing->getText().retainCharacters("-0123456789.").getDoubleValue();
-        if (p == Link)
+        if (percent)
             v /= 100.0;
         if (p == Threshold)
             v = -std::abs(v); // typed as the push: "6" = +6 dB louder

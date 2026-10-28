@@ -35,6 +35,7 @@ void setAll(juce::AudioProcessor& target, redwall::HamloRedWallProcessor& ours, 
         ours.setParameterValue(spec.id, spec.defaultValue);
     for (const auto& [id, v] : c.values)
         ours.setParameterValue(id, v);
+    ours.setParameterValue("engine", 0.0); // the reference (HPEQ) has only the CLASSIC laws
     // a hosted VST3 parameter's ID is the VST3 hash, so the parameters are matched by name - and by which
     // occurrence of that name it is, since RedWall has two named "Release" (the time and Manual / Auto); both
     // lists keep the specs' order. (First version matched by name only and set both from the second.)
@@ -60,7 +61,13 @@ juce::AudioBuffer<float> render(juce::AudioProcessor& p, const juce::AudioBuffer
 {
     p.setRateAndBufferSizeDetails(fs, block);
     p.prepareToPlay(fs, block);
-    auto y = x;
+    // the input then `latency` zeros, the output read from `latency`: HamloRedWall's colour stage adds a constant
+    // delay HPEQ's module does not have, so both are compared aligned to their input
+    const int latency = p.getLatencySamples();
+    juce::AudioBuffer<float> y(x.getNumChannels(), x.getNumSamples() + latency);
+    y.clear();
+    for (int ch = 0; ch < x.getNumChannels(); ++ch)
+        y.copyFrom(ch, 0, x, ch, 0, x.getNumSamples());
     juce::MidiBuffer midi;
     for (int start = 0; start < y.getNumSamples(); start += block)
     {
@@ -68,7 +75,10 @@ juce::AudioBuffer<float> render(juce::AudioProcessor& p, const juce::AudioBuffer
         p.processBlock(view, midi);
     }
     p.releaseResources();
-    return y;
+    juce::AudioBuffer<float> out(x.getNumChannels(), x.getNumSamples());
+    for (int ch = 0; ch < x.getNumChannels(); ++ch)
+        out.copyFrom(ch, 0, y, ch, latency, x.getNumSamples());
+    return out;
 }
 } // namespace
 
@@ -94,6 +104,9 @@ int main(int argc, char* argv[])
     std::vector<Case> cases { { "Default", {} } };
     for (const auto& preset : redwall::factoryPresets())
     {
+        // HPEQ's six presets only: they run CLASSIC; the v2 presets use the colour stage HPEQ does not have
+        if (redwall::presetValue(preset, "engine", 1.0) != 0.0)
+            continue;
         Case c { juce::String("Preset ") + preset.name, { { "mix", preset.mix } } };
         for (const auto& kv : preset.values)
             c.values.push_back(kv);
@@ -155,24 +168,6 @@ int main(int argc, char* argv[])
                     // HamloRedWall starts at once (reported separately, not judged)
                     const int settle = static_cast<int>(0.5 * fs), length = a.getNumSamples() - settle;
                     const auto as = test::segment(a, settle, length), bs = test::segment(b, settle, length);
-                    if (juce::SystemStats::getEnvironmentVariable("REF_DEBUG", {}).isNotEmpty() && c.name == "Default" && signalName == "drums" && block == 512 && fs == 48000.0)
-                    {
-                        int first = -1;
-                        for (int i = 0; i < a.getNumSamples() && first < 0; ++i)
-                            if (a.getSample(0, i) != b.getSample(0, i))
-                                first = i;
-                        std::cout << "DEBUG first different sample " << first << " (" << first / fs << " s): ref " << a.getSample(0, juce::jmax(0, first))
-                                  << " ours " << b.getSample(0, juce::jmax(0, first)) << " in " << x.getSample(0, juce::jmax(0, first - 488)) << std::endl;
-                        for (int s0 = first; s0 < first + 4800 && s0 + 100 < a.getNumSamples(); s0 += 200)
-                        {
-                            double worst = 0.0;
-                            for (int i = s0; i < s0 + 200; ++i)
-                                worst = std::max(worst, std::abs(static_cast<double>(a.getSample(0, i)) - b.getSample(0, i)));
-                            std::cout << "    +" << (s0 - first) << ": max |diff| " << worst << ", ref " << a.getSample(0, s0) << ", ours " << b.getSample(0, s0) << std::endl;
-                        }
-                        for (int s0 = 0; s0 + 24000 <= a.getNumSamples(); s0 += 24000)
-                            std::cout << "  " << s0 / fs << " s: diff " << test::differenceDb(test::segment(b, s0, 24000), test::segment(a, s0, 24000)) << std::endl;
-                    }
                     const bool same = test::bitExact(bs, as);
                     const double diff = test::differenceDb(bs, as);
                     const double startDiff = test::differenceDb(test::segment(b, 0, settle), test::segment(a, 0, settle));

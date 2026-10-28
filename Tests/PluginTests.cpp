@@ -49,6 +49,14 @@ public:
     void runTest() override
     {
         const auto loop = drums(2.0);
+        // the fixed latency: the 10 ms look-ahead + 8 (true peak) + the colour stage's oversampler
+        const int colourLatency = []
+        {
+            dsp::RedWallColour c;
+            c.prepare(kFs, 512);
+            return c.latency();
+        }();
+        const int latency = 488 + colourLatency;
 
         beginTest("Parameters: the IDs, ranges and defaults of HPEQ's HamloRedWall, then bypass");
         {
@@ -67,15 +75,19 @@ public:
             expect(p.getBypassParameter() != nullptr && !p.getBypassParameter()->get());
         }
 
-        beginTest("Latency: fixed at the 10 ms look-ahead + 8 (true peak) = 488 samples at 48 kHz whatever LOOKAHEAD / TRUE PEAK");
+        beginTest("Latency: fixed at the 10 ms look-ahead + 8 (true peak) = 488 samples at 48 kHz + the colour stage, whatever LOOKAHEAD / TRUE PEAK / DRIVE / TUBE");
         {
+            logMessage("  colour stage " + juce::String(colourLatency) + " samples");
+            expect(colourLatency > 0 && colourLatency < 100);
             HamloRedWallProcessor p;
             p.prepareToPlay(kFs, 512);
-            expectEquals(p.getLatencySamples(), 488);
+            expectEquals(p.getLatencySamples(), latency);
             p.setParameterValue("lookaheadMs", 0.5);
             p.setParameterValue("truePeak", 0.0);
+            p.setParameterValue("drive", 0.7);
+            p.setParameterValue("tube", 0.4);
             p.prepareToPlay(kFs, 512);
-            expectEquals(p.getLatencySamples(), 488);
+            expectEquals(p.getLatencySamples(), latency);
         }
 
         beginTest("MIX 0 and ON off: the input delayed by the latency, bit-exact; a quiet loop under the ceiling passes delayed (every lookahead)");
@@ -85,19 +97,19 @@ public:
             quiet.applyGain(0.25f); // about -11 dBFS peak, under the -1 dB LIMIT
             HamloRedWallProcessor p;
             p.setParameterValue("lookaheadMs", lookahead);
-            expect(bitExact(render(p, quiet, 512), delayed(quiet, 488)), "quiet, lookahead " + juce::String(lookahead));
+            expect(bitExact(render(p, quiet, 512), delayed(quiet, latency)), "quiet, lookahead " + juce::String(lookahead));
 
             HamloRedWallProcessor m;
             m.setParameterValue("lookaheadMs", lookahead);
             m.setParameterValue("thresholdDb", -9.0);
             m.setParameterValue("mix", 0.0);
-            expect(bitExact(render(m, loop, 512), delayed(loop, 488)), "MIX 0, lookahead " + juce::String(lookahead));
+            expect(bitExact(render(m, loop, 512), delayed(loop, latency)), "MIX 0, lookahead " + juce::String(lookahead));
 
             HamloRedWallProcessor o;
             o.setParameterValue("lookaheadMs", lookahead);
             o.setParameterValue("thresholdDb", -9.0);
             o.setParameterValue("bypass", 1.0);
-            expect(bitExact(render(o, loop, 512), delayed(loop, 488)), "ON off, lookahead " + juce::String(lookahead));
+            expect(bitExact(render(o, loop, 512), delayed(loop, latency)), "ON off, lookahead " + juce::String(lookahead));
         }
 
         beginTest("Pushed 9 dB the output never passes the -1 dB LIMIT, and it is louder than the input");
@@ -139,6 +151,24 @@ public:
                 expectWithinAbsoluteError(q.parameterValue(spec.id), p.parameterValue(spec.id), 1.0e-6, spec.id);
         }
 
+        beginTest("Migration: a state without engine / drive / tube (HPEQ, HamloRedWall 0.1.0) loads as CLASSIC with no colour; a new instance is V2");
+        {
+            HamloRedWallProcessor fresh;
+            expectEquals(juce::roundToInt(fresh.parameterValue("engine")), 1);
+            HamloRedWallProcessor p;
+            p.setParameterValue("drive", 0.5);
+            juce::XmlElement xml("HamloRedWall");
+            auto* e = xml.createNewChildElement("PARAM");
+            e->setAttribute("id", "thresholdDb");
+            e->setAttribute("value", -3.0);
+            juce::MemoryBlock block;
+            juce::AudioProcessor::copyXmlToBinary(xml, block);
+            p.setStateInformation(block.getData(), static_cast<int>(block.getSize()));
+            expectEquals(juce::roundToInt(p.parameterValue("engine")), 0);
+            expectEquals(p.parameterValue("drive"), 0.0);
+            expectEquals(p.parameterValue("tube"), 0.0);
+        }
+
         beginTest("Host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (STAKHANOV, pushed 6 dB, MIX 0.7)");
         {
             const auto set = [](HamloRedWallProcessor& p)
@@ -161,6 +191,68 @@ public:
             expect(bitExact(render(big, loop, 4096, 256), expected), "block 4096 after prepare(256)");
         }
 
+        beginTest("DRIVE / TUBE: host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (every style, pushed 6 dB)");
+        for (const double style : { 0.0, 1.0, 2.0 })
+        {
+            const auto set = [style](HamloRedWallProcessor& p)
+            {
+                p.setParameterValue("thresholdDb", -6.0);
+                p.setParameterValue("style", style);
+                p.setParameterValue("drive", 0.6);
+                p.setParameterValue("tube", 0.8);
+            };
+            HamloRedWallProcessor ref;
+            set(ref);
+            const auto expected = render(ref, loop, 256);
+            for (int block : { 1, 64, 127, 512 })
+            {
+                HamloRedWallProcessor p;
+                set(p);
+                expect(bitExact(render(p, loop, block), expected), "style " + juce::String(style) + ", block " + juce::String(block));
+            }
+            HamloRedWallProcessor big;
+            set(big);
+            expect(bitExact(render(big, loop, 4096, 256), expected), "style " + juce::String(style) + ", block 4096 after prepare(256)");
+        }
+
+        beginTest("DRIVE / TUBE: LIMIT holds at 100 % (drums +18 dB, TRUE PEAK on and off); the stage colours (output differs from DRIVE = TUBE = 0)");
+        for (const double tp : { 0.0, 1.0 })
+        {
+            auto hot = loop;
+            hot.applyGain(juce::Decibels::decibelsToGain(18.0f));
+            HamloRedWallProcessor p, plain;
+            for (auto* q : { &p, &plain })
+                q->setParameterValue("truePeak", tp);
+            p.setParameterValue("drive", 1.0);
+            p.setParameterValue("tube", 1.0);
+            const auto y = render(p, hot, 512);
+            expect(y.getMagnitude(0, y.getNumSamples()) <= std::pow(10.0f, -1.0f / 20.0f) + 1.0e-5f, "true peak " + juce::String(tp));
+            expect(!bitExact(y, render(plain, hot, 512)));
+        }
+
+        beginTest("DRIVE / TUBE back to 0: after the 10 ms fade the colour stage is the delayed input again, bit-exact");
+        {
+            // (checked on the stage: the limiter after it saw a different signal and settles only asymptotically)
+            dsp::RedWallColour c;
+            c.prepare(kFs, 512);
+            dsp::LimiterSettings s;
+            s.values[dsp::slot::kLimTube] = 0.5f;
+            s.values[dsp::slot::kLimDrive] = 0.5f;
+            auto y = loop;
+            const int switchAt = loop.getNumSamples() / 4;
+            for (int start = 0; start < y.getNumSamples(); start += 512)
+            {
+                if (start >= switchAt)
+                    s.values[dsp::slot::kLimTube] = s.values[dsp::slot::kLimDrive] = 0.0f;
+                float* ptr[2] { y.getWritePointer(0, start), y.getWritePointer(1, start) };
+                c.process(ptr, 2, juce::jmin(512, y.getNumSamples() - start), s);
+            }
+            const auto expected = delayed(loop, colourLatency);
+            const int from = switchAt + 1024; // the 10 ms (480 samples) fade done
+            expect(bitExact(segment(y, from, y.getNumSamples() - from), segment(expected, from, y.getNumSamples() - from)));
+            expect(!bitExact(segment(y, 0, switchAt), segment(expected, 0, switchAt)));
+        }
+
         beginTest("Mono: the mono layout is accepted and the limiter works on it");
         {
             HamloRedWallProcessor p;
@@ -172,13 +264,18 @@ public:
             juce::AudioBuffer<float> m(1, loop.getNumSamples());
             m.copyFrom(0, 0, loop, 0, 0, loop.getNumSamples());
             const auto y = render(p, m, 512);
-            expect(!bitExact(y, delayed(m, 488)) && y.getMagnitude(0, y.getNumSamples()) <= std::pow(10.0f, -1.0f / 20.0f) + 1.0e-5f);
+            expect(!bitExact(y, delayed(m, latency)) && y.getMagnitude(0, y.getNumSamples()) <= std::pow(10.0f, -1.0f / 20.0f) + 1.0e-5f);
         }
 
-        beginTest("Programs: Default plus the 6 HPEQ limiter presets; Default restores");
+        beginTest("Programs: Default, the 6 HPEQ limiter presets (CLASSIC) and 12 v2 presets; Default restores");
         {
             HamloRedWallProcessor p;
-            expectEquals(p.getNumPrograms(), 7);
+            expectEquals(p.getNumPrograms(), 19);
+            for (int i = 1; i <= 6; ++i)
+            {
+                p.setCurrentProgram(i);
+                expectEquals(juce::roundToInt(p.parameterValue("engine")), 0, p.getProgramName(i));
+            }
             expectEquals(p.getProgramName(3), juce::String("Loud Master"));
             p.setCurrentProgram(3);
             expectWithinAbsoluteError(p.parameterValue("thresholdDb"), -6.0, 1.0e-3);
@@ -188,7 +285,21 @@ public:
                 expectWithinAbsoluteError(p.parameterValue(spec.id), static_cast<double>(spec.defaultValue), 1.0e-3, spec.id);
         }
 
-        beginTest("Page: 1180 x 700, resizable; knobs, STYLE, levers and ON write the parameters; host changes come back");
+        beginTest("Every program at MIX 100 %: drums +12 dB stay under its LIMIT (sample peak); a parallel one (MIX < 100 %) passes the dry part by design");
+        for (int i = 1; i < 19; ++i)
+        {
+            HamloRedWallProcessor p;
+            p.setCurrentProgram(i);
+            if (p.parameterValue("mix") < 1.0)
+                continue;
+            auto hot = loop;
+            hot.applyGain(juce::Decibels::decibelsToGain(12.0f));
+            const auto y = render(p, hot, 512);
+            const double peak = 20.0 * std::log10(y.getMagnitude(0, y.getNumSamples()));
+            expect(peak <= p.parameterValue("ceilingDb") + 1.0e-3, p.getProgramName(i) + ": " + juce::String(peak, 3) + " dBFS");
+        }
+
+        beginTest("Page: 1180 x 820, resizable; knobs, STYLE, levers and ON write the parameters; host changes come back");
         {
             HamloRedWallProcessor p;
             std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());

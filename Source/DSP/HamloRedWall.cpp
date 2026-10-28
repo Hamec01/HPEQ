@@ -58,6 +58,24 @@ void RedWallCore::prepare(double newSampleRate, int maxLookahead)
         for (int k = 0; k < 16; ++k)
             phaseTaps[static_cast<size_t>(p - 1)][static_cast<size_t>(k)] = static_cast<float>(taps[static_cast<size_t>(k)] / sum);
     }
+    for (int p = 1; p <= 7; ++p) // v2: the same design on an 8x grid
+    {
+        const double frac = p / 8.0, fc = 0.5, beta = 9.0;
+        double sum = 0.0;
+        std::array<double, 16> taps {};
+        for (int k = 0; k < 16; ++k)
+        {
+            const double d = k - (7.0 + frac);
+            const double x = 2.0 * fc * d;
+            const double sinc = std::abs(x) < 1.0e-12 ? 1.0 : std::sin(kPi * x) / (kPi * x);
+            const double r = d / 8.5;
+            const double w = std::abs(r) < 1.0 ? besselI0(beta * std::sqrt(1.0 - r * r)) / besselI0(beta) : 0.0;
+            taps[static_cast<size_t>(k)] = 2.0 * fc * sinc * w;
+            sum += taps[static_cast<size_t>(k)];
+        }
+        for (int k = 0; k < 16; ++k)
+            phaseTaps8[static_cast<size_t>(p - 1)][static_cast<size_t>(k)] = static_cast<float>(taps[static_cast<size_t>(k)] / sum);
+    }
     coreLookahead = preDelay = -1;
     reset();
 }
@@ -111,6 +129,7 @@ void RedWallCore::process(float* const* channels, int numChannels, int numSample
     const double releaseManual = coefficientFor(releaseMs, sampleRate);
     const double releaseFast = coefficientFor(releaseMs * 0.25, sampleRate), releaseSlow = coefficientFor(releaseMs * 6.0, sampleRate);
     const double holdCoefficient = std::exp(-1.0 / (0.3 * sampleRate));
+    const bool v2 = p.values[slot::kLimEngine] > 0.5f;
     const float unity = std::pow(10.0f, thresholdDb / 20.0f);
     const float outputGain = std::pow(10.0f, std::clamp(p.values[slot::kLimOutputDb], -24.0f, 0.0f) / 20.0f);
     const int ring = le + 1, dequeCapacity = capacity + 1;
@@ -130,13 +149,20 @@ void RedWallCore::process(float* const* channels, int numChannels, int numSample
                 std::copy(s.history.begin() + 1, s.history.end(), s.history.begin());
                 s.history[15] = u;
                 float isp = 0.0f;
-                for (const auto& taps : phaseTaps)
+                const auto interpolate = [&](const auto& phases)
                 {
-                    float y = 0.0f;
-                    for (int k = 0; k < 16; ++k)
-                        y += taps[static_cast<size_t>(k)] * s.history[static_cast<size_t>(k)];
-                    isp = std::max(isp, std::abs(y));
-                }
+                    for (const auto& taps : phases)
+                    {
+                        float y = 0.0f;
+                        for (int k = 0; k < 16; ++k)
+                            y += taps[static_cast<size_t>(k)] * s.history[static_cast<size_t>(k)];
+                        isp = std::max(isp, std::abs(y));
+                    }
+                };
+                if (v2)
+                    interpolate(phaseTaps8);
+                else
+                    interpolate(phaseTaps);
                 v[static_cast<size_t>(c)] = s.history[7];
                 level[static_cast<size_t>(c)] = std::max({ std::abs(s.history[7]), isp, s.previousInterSample });
                 s.previousInterSample = isp; // the points between history[7] and [8] are the next sample's left side

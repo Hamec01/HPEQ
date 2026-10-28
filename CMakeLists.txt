@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloRedWall VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloRedWall VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -47,6 +47,7 @@ set_target_properties(HamloRedWall_Assets PROPERTIES POSITION_INDEPENDENT_CODE O
 add_library(HamloRedWall_Shared STATIC
     Source/DSP/HamloRedWall.cpp
     Source/DSP/Limiter.cpp
+    Source/DSP/RedWallColour.cpp
     Source/UI/BlackSteel.cpp
     Source/UI/HamloRedWallPanel.cpp
     Source/UI/ModuleHelp.cpp
@@ -99,6 +100,7 @@ target_link_libraries(HamloRedWall
         HamloRedWall_Shared
         HamloRedWall_Assets
         juce::juce_audio_utils
+        juce::juce_dsp
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 
@@ -113,6 +115,7 @@ target_link_libraries(HamloRedWall_Tests
         HamloRedWall_Shared
         HamloRedWall_Assets
         juce::juce_audio_utils
+        juce::juce_dsp
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 add_test(NAME HamloRedWall_Tests COMMAND HamloRedWall_Tests)
@@ -126,6 +129,7 @@ target_link_libraries(HamloRedWall_Reference
         HamloRedWall_Shared
         HamloRedWall_Assets
         juce::juce_audio_utils
+        juce::juce_dsp
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 
@@ -137,6 +141,20 @@ target_link_libraries(HamloRedWall_Snapshot
         HamloRedWall_Shared
         HamloRedWall_Assets
         juce::juce_gui_basics
+        juce::juce_dsp
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 
+
+# Measurements against docs/REDWALL_V2.md (the "before" and "after" runs use this tool unchanged).
+add_executable(HamloRedWall_Lab Tests/LabMain.cpp)
+target_compile_definitions(HamloRedWall_Lab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(HamloRedWall_Lab
+    PRIVATE
+        HamloRedWall_Shared
+        HamloRedWall_Assets
+        juce::juce_audio_utils
+        juce::juce_dsp
+        juce::juce_audio_formats
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)

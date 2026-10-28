@@ -14,6 +14,8 @@ int main(int argc, char* argv[])
     panel.setSize(hamlo::redwall::kEditorWidth, hamlo::redwall::kEditorHeight);
     hamlo::ui::HamloRedWallPanel::Values v;
     v.knobs[0] = -6.0;
+    v.knobs[hamlo::ui::HamloRedWallPanel::Drive] = 0.25;
+    v.knobs[hamlo::ui::HamloRedWallPanel::Tube] = 0.4;
     panel.setValues(v);
     panel.settleMeters(-1.0f, 4.0f);
     const auto image = panel.createComponentSnapshot(panel.getLocalBounds(), true, 1.0f);

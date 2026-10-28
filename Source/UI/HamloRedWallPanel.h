@@ -15,18 +15,20 @@ namespace hamlo::ui
 // "HamloRedWall · MODEL OGR-1 · № 1917", amber LCDs (gain reduction, output peak), six brass knobs
 // (THRESHOLD, CEILING, RELEASE, LOOKAHEAD, LINK, OUTPUT, MIX, STYLE with three detents GLASNOST / STAKHANOV / OCTOBER),
 // TRUE PEAK / RELEASE / MONITOR levers, a green CRT with the scrolling gain-reduction history, a GAIN
-// REDUCTION needle meter, ON lamp and toggle. Design coordinates 1180 x 700, scaled to fit.
+// REDUCTION needle meter, ON lamp and toggle. Design coordinates 1180 x 700, scaled to fit. HamloRedWall v2
+// (2026-10-28): the stage grew to 1180 x 820 for a bottom strip with the ENGINE lever and the DRIVE / TUBE knobs.
 class HamloRedWallPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
     // Threshold is labelled LOUDNESS (push), Ceiling LIMIT; Output is the gain after the limiter.
-    enum Param { Threshold, Ceiling, Release, Lookahead, Link, Output, Mix, Style, NumKnobs }; // Mix = the module's mix
-    enum Switch { TruePeak, AutoRelease, Monitor, NumSwitches };
+    // Mix = the module's mix; Drive and Tube sit in the strip
+    enum Param { Threshold, Ceiling, Release, Lookahead, Link, Output, Mix, Style, Drive, Tube, NumKnobs };
+    enum Switch { TruePeak, AutoRelease, Monitor, Engine, NumSwitches }; // Engine in the strip
 
     struct Values
     {
-        std::array<double, NumKnobs> knobs { 0.0, -1.0, 60.0, 2.0, 1.0, 0.0, 1.0, 0.0 };
-        std::array<int, NumSwitches> switches { 1, 1, 0 };
+        std::array<double, NumKnobs> knobs { 0.0, -1.0, 60.0, 2.0, 1.0, 0.0, 1.0, 0.0, 0.0, 0.0 };
+        std::array<int, NumSwitches> switches { 1, 1, 0, 1 };
         bool on = true;
     };
 
@@ -71,6 +73,7 @@ private:
     double valueFor(Param, double norm) const;
     void setNorm(Param, double norm, bool notify);
     int knobAt(juce::Point<float>) const;
+    juce::Rectangle<float> readoutArea(Param) const;
     bool hitSwitch(juce::Point<float>, int& which, int& option) const;
     bool hitPower(juce::Point<float>) const;
     void renderStatic(juce::Graphics&) const;

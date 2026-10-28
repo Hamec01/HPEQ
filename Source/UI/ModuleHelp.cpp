@@ -22,6 +22,9 @@ const std::map<juce::String, Table>& tables()
             { "style", { "STYLE", "GLASNOST transparent; STAKHANOV fast, less ducking before hits; OCTOBER soft clip first, louder and denser." } },
             { "truePeak", { "TRUE PEAK", "Also catches the peaks between samples that appear after conversion. Adds 8 samples of latency." } },
             { "autoRelease", { "RELEASE AUTO", "Release that adapts to the material: fast on short peaks, slow on sustained loud parts." } },
+            { "drive", { "DRIVE", "Blends in harmonics before the limiter (mostly odd, oversampled): edge and presence. The amount follows LOUDNESS and LIMIT." } },
+            { "tube", { "TUBE", "Warmth and weight: even harmonics and softly rounded peaks against the body of the music - fatter, a lower crest factor, never a higher peak." } },
+            { "engine", { "ENGINE", "V2: true peak on a finer grid. CLASSIC: exactly the HPEQ limiter (older projects open in CLASSIC)." } },
             { "monitor", { "MONITOR", "NORMAL; UNITY = hear it at the input level (judge the tone, not the loudness); DELTA = hear only what is removed." } },
         } },
     };
