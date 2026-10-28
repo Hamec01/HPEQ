@@ -1,0 +1,71 @@
+#pragma once
+
+#include <array>
+#include <atomic>
+#include <vector>
+
+#include "DSP/LimiterSettings.h"
+
+namespace hamlo::dsp
+{
+// HamloRedWall (module pass 5, LIMITER_DESIGN.md): the limiter's options around the M6 law. The
+// LimiterProcessor runs this core only when an option is set; with every option at its default the M6
+// code runs (bit-exact for older projects).
+//
+// Per sample and channel c:
+//   u_c = x_c * 10^(-T/20)                                     THRESHOLD T (push)
+//   OCTOBER: u_c = s tanh(u_c / s), s = 1.25 ceiling            soft clip before the limiter
+//   TRUE PEAK: v_c[n] = u_c[n - 8], level = max(|v|, 4x interpolated points on both sides of it)
+//              (16-tap polyphase windowed sinc); otherwise v = u, level = |u|
+//   pre-delay P = L - Le (Le = L, STAKHANOV: max(1, L / 4))
+//   t_c = min(1, ceiling / level_c);  LINK l: t'_c = l min(t_L, t_R) + (1 - l) t_c
+//   M6 core with look-ahead Le per channel: sliding minimum over Le + 1, release (AUTO: coefficient
+//   between 0.25 x and 6 x the release by a 0.3 s hold follower of [reduction > 1 dB]; STAKHANOV: release
+//   halved), moving average over Le, audio delayed by Le  ->  y_c (sample peak <= ceiling)
+//   MONITOR: UNITY y * 10^(T/20); DELTA (delayed core input) - y
+//   OUTPUT O (-24 .. 0 dB): out = (monitored y) * 10^(O/20), last. With O <= 0 the output sample peak is
+//   <= ceiling * 10^(O/20), i.e. LIMIT + OUTPUT in dB, and the loudness moves by exactly O dB.
+// Latency = L (+ 8 with TRUE PEAK).
+//
+// HamloRedWall v2 engine (slot kLimEngine 1, docs/REDWALL_V2.md); everything else as above:
+//   TRUE PEAK on an 8x grid (fractions 1/8 .. 7/8, the same 16-tap Kaiser sinc, the same 8-sample delay)
+//   (an asymmetric AUTO-release hold was tried and dropped: +0.0 LU, bass THD 0.22 -> 0.40 %, docs/reports)
+class RedWallCore
+{
+public:
+    static constexpr int kTruePeakDelay = 8;
+
+    void prepare(double sampleRate, int maxLookahead);
+    void reset() noexcept;
+    void process(float* const* channels, int numChannels, int numSamples, const LimiterSettings&, int lookahead) noexcept;
+
+    float lastGainReductionDb() const noexcept { return meterReduction.load(std::memory_order_relaxed); }
+    float lastOutputPeakDb() const noexcept { return meterOutput.load(std::memory_order_relaxed); }
+
+private:
+    struct Channel
+    {
+        std::array<float, 16> history {};
+        float previousInterSample = 0.0f;
+        std::vector<float> preAudio, preLevel; // pre-delay ring
+        std::vector<float> audio;              // core delay ring
+        std::vector<double> averaged;
+        std::vector<float> dequeValue;
+        std::vector<long long> dequeIndex;
+        int dequeHead = 0, dequeTail = 0;
+        double released = 1.0, runningSum = 0.0, hold = 0.0;
+    };
+
+    double sampleRate = 48000.0;
+    int capacity = 0;        // ring sizes
+    int coreLookahead = -1;  // Le of the current state
+    int preDelay = -1;       // P of the current state
+    bool truePeak = false;
+    long long counter = 0;
+    int prePos = 0, corePos = 0;
+    std::array<Channel, kMaxChannels> ch;
+    std::array<std::array<float, 16>, 3> phaseTaps {}; // fractions 1/4, 2/4, 3/4
+    std::array<std::array<float, 16>, 7> phaseTaps8 {}; // v2: fractions 1/8 .. 7/8
+    std::atomic<float> meterReduction { 0.0f }, meterOutput { -120.0f };
+};
+} // namespace hamlo::dsp
