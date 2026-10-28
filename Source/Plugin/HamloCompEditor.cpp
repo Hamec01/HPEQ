@@ -2,13 +2,14 @@
 
 #include "Plugin/HamloCompProcessor.h"
 #include "Plugin/Parameters.h"
+#include "Plugin/Presets.h"
 
 namespace hamlo::comp
 {
 using Panel = ui::HamloCompPanel;
 
 HamloCompEditor::HamloCompEditor(HamloCompProcessor& owner)
-    : juce::AudioProcessorEditor(owner), processor(owner), panel(std::make_unique<Panel>())
+    : juce::AudioProcessorEditor(owner), processor(owner), panel(std::make_unique<Panel>()), presets(std::make_unique<ui::PresetScreen>())
 {
     panel->onKnobGestureStart = [this](Panel::Param p) { beginGesture(Panel::keyFor(p)); };
     panel->onKnobChange = [this](Panel::Param p, double value) { processor.setParameterValue(Panel::keyFor(p), value); };
@@ -17,6 +18,20 @@ HamloCompEditor::HamloCompEditor(HamloCompProcessor& owner)
     panel->onPowerChange = [this](bool on) { setImmediate("bypass", on ? 0.0 : 1.0); };
     panel->readMeters = [this] { return std::pair<float, float> { processor.inputLevelDb(), processor.gainReductionDb() }; };
     addAndMakeVisible(*panel);
+    {
+        std::vector<ui::PresetScreen::Entry> entries;
+        const auto& list = factoryPresets();
+        for (size_t i = 0; i < list.size(); ++i)
+            entries.push_back({ static_cast<int>(i) + 1, list[i].genre, list[i].group, list[i].name, list[i].note });
+        presets->setEntries(std::move(entries));
+    }
+    presets->onSelect = [this](int program)
+    {
+        processor.setCurrentProgram(program);
+        processor.updateHostDisplay(juce::AudioProcessorListener::ChangeDetails().withProgramChanged(true));
+        refresh();
+    };
+    addAndMakeVisible(*presets);
 
     setResizable(true, true);
     setResizeLimits(kEditorWidth / 2, kEditorHeight / 2, kEditorWidth * 2, kEditorHeight * 2);
@@ -43,6 +58,7 @@ void HamloCompEditor::refresh()
         values.switches[i] = juce::roundToInt(processor.parameterValue(Panel::keyFor(static_cast<Panel::Switch>(i))));
     values.on = processor.isOn();
     panel->setValues(values);
+    presets->setCurrent(processor.getCurrentProgram(), processor.programModified());
 }
 
 void HamloCompEditor::beginGesture(const juce::String& id)
@@ -100,5 +116,6 @@ void HamloCompEditor::selectSoftwareRenderer()
 void HamloCompEditor::resized()
 {
     panel->setBounds(getLocalBounds());
+    presets->placeOnStage(panel->contentBounds());
 }
 } // namespace hamlo::comp

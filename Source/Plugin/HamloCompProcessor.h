@@ -38,6 +38,8 @@ public:
     // The factory presets as the host's programs (0 = Default).
     int getNumPrograms() override;
     int getCurrentProgram() override { return currentProgram; }
+    // true when a parameter differs from what the current program set (the preset screen marks it with *)
+    bool programModified() const;
     void setCurrentProgram(int) override;
     const juce::String getProgramName(int) override;
     void changeProgramName(int, const juce::String&) override {}

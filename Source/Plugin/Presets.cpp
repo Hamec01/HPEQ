@@ -67,6 +67,9 @@ const std::vector<Preset>& factoryPresets()
         { "Master Opto Leveling", 1.0f, { { "model", 3 }, { "thresholdDb", -15.5 }, { "ratio", 2 }, { "attackMs", 20 }, { "releaseMs", 120 } }, "mix", Preset::Gentle },
         { "Boom Bap Mix Tube Dust", 1.0f, { { "model", 4 }, { "thresholdDb", -17 }, { "ratio", 6 }, { "attackMs", 20 }, { "releaseMs", 250 } }, "mix", Preset::Medium },
         { "Trap Mix VCA Slam", 1.0f, { { "model", 1 }, { "thresholdDb", -16 }, { "ratio", 10 }, { "kneeDb", 2 }, { "attackMs", 3 }, { "releaseMs", 60 } }, "mix", Preset::Medium },
+        // genre presets (docs/GENRE_PRESETS.md): Boom Bap, Trap, Techno, DnB x 50, in groups; THRESHOLD calibrated
+        // on the material by HamloComp_PresetLab calibrate-genre
+#include "Plugin/GenrePresets.inc"
     };
     return list;
 }

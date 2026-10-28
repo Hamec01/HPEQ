@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloComp VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloComp VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -49,6 +49,7 @@ add_library(HamloComp_Shared STATIC
     Source/UI/BlackSteel.cpp
     Source/UI/HamloCompPanel.cpp
     Source/UI/ModuleHelp.cpp
+    Source/UI/PresetScreen.cpp
     Source/Plugin/Presets.cpp
     Source/Plugin/HamloCompProcessor.cpp
     Source/Plugin/HamloCompEditor.cpp)
@@ -147,6 +148,7 @@ target_link_libraries(HamloComp_Snapshot
         HamloComp_Shared
         HamloComp_Assets
         juce::juce_gui_basics
+        juce::juce_audio_utils
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 

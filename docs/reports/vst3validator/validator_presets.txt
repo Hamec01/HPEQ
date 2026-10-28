@@ -1,0 +1,3198 @@
+﻿* Loading module...
+
+	E:\HamloComp\build\HamloComp_artefacts\Release\VST3\HamloComp.vst3
+
+* Check valid bundle structure...
+
+* Scanning classes...
+
+  Factory Info:
+	vendor = HamloProd
+	url = 
+	email = 
+
+  Class Info 0:
+	name = HamloComp
+	category = Audio Module Class
+	subCategories = Fx|Dynamics
+	version = 0.2.0
+	sdkVersion = VST 3.8.0
+	cid = ABCDEF019182FAEB42424C42486D4370
+
+  Class Info 1:
+	name = HamloComp
+	category = Component Controller Class
+	subCategories = Fx|Dynamics
+	version = 0.2.0
+	sdkVersion = VST 3.8.0
+	cid = ABCDEF011234ABCD42424C42486D4370
+
+* Checking snapshots...
+
+Info: No snapshots in Bundle.
+
+* Creating tests...
+
+* Running tests...
+
+-------------------------------------------------------------
+TestSuite : HamloComp
+-------------------------------------------------------------
+
+-------------------------------------------------------------
+TestSuite : General Tests
+-------------------------------------------------------------
+
+[Scan Editor Classes]
+Info:  ===Scan Editor Classes ====================================
+Info:  This component has an edit controller class
+Info:     Controller CID: {ABCDEF01-1234-ABCD-4242-4C42486D4370}
+[Succeeded]
+
+[Scan Buses]
+Info:  ===Scan Buses ====================================
+Info:  => Audio Buses: [1 In(s) => 1 Out(s)]
+Info:       In [0]: "Input" (Main-Default Active) 
+Info:       Out[0]: "Output" (Main-Default Active) 
+Info:  => Event Buses: [0 In(s) => 0 Out(s)]
+[Succeeded]
+
+[Scan Parameters]
+Info:  ===Scan Parameters ====================================
+Info:  This component exports 14 parameter(s)
+Info:     Parameter 000 (id=855277129): [title="Threshold"] [unit="dB"] [type = Float, default = 1.000000, unit = 0]
+Info:     Parameter 001 (id=108285963): [title="Ratio"] [unit=":1"] [type = Float, default = 0.000000, unit = 0]
+Info:     Parameter 002 (id=1020530977): [title="Knee"] [unit="dB"] [type = Float, default = 0.150000, unit = 0]
+Info:     Parameter 003 (id=538740238): [title="Attack"] [unit="ms"] [type = Float, default = 0.201646, unit = 0]
+Info:     Parameter 004 (id=89607181): [title="Release"] [unit="ms"] [type = Float, default = 0.265908, unit = 0]
+Info:     Parameter 005 (id=41499495): [title="Makeup"] [unit="dB"] [type = Float, default = 0.000000, unit = 0]
+Info:     Parameter 006 (id=108124): [title="Mix"] [unit=""] [type = Float, default = 1.000000, unit = 0]
+Info:     Parameter 007 (id=1048254406): [title="Detector"] [unit=""] [type = Toggle, default = 0.000000, unit = 0]
+Info:     Parameter 008 (id=1564195625): [title="Character"] [unit=""] [type = Discrete, default = 0.500000, unit = 0]
+Info:     Parameter 009 (id=1575279512): [title="Auto Makeup"] [unit=""] [type = Toggle, default = 0.000000, unit = 0]
+Info:     Parameter 010 (id=104069929): [title="Model"] [unit=""] [type = Discrete, default = 0.250000, unit = 0]
+Info:     Parameter 011 (id=1250977819): [title="Source"] [unit=""] [type = Discrete, default = 0.000000, unit = 0]
+Info:     Parameter 012 (id=773352680): [title="Bypass"] [unit=""] [type = Toggle, default = 0.000000, unit = 0]
+Info:     Parameter 013 (id=1886548852): [title="Program"] [unit=""] [type = Discrete, default = 0.000000, unit = 0]
+Info:  =>Parameter 013 (id=1886548852) is kIsProgramChange, but not a kIsList!
+[Succeeded]
+
+[MIDI Mapping]
+Info:  ===MIDI Mapping ====================================
+[Succeeded]
+
+[MIDI Learn]
+Info:  ===MIDI Learn ====================================
+Info:  No MIDI Learn interface supplied!
+[Succeeded]
+
+[Scan Units]
+Info:  ===Scan Units ====================================
+Info:  This component has 1 unit(s).
+Info:     Unit000 (ID = 0): "Root Unit" (parent ID = -1, programlist ID = 1886548852)
+[Succeeded]
+
+[Scan Programs]
+Info:  ===Scan Programs ====================================
+Info:  Programlist 000 (id=1886548852):  "Factory Presets" (252 programs).
+Info:  Programlist 000->Program 000: "Default"
+Info:  Programlist 000->Program 001: "Vocal Leveler"
+Info:  Programlist 000->Program 002: "Drum Punch"
+Info:  Programlist 000->Program 003: "Bus Glue"
+Info:  Programlist 000->Program 004: "New York Parallel"
+Info:  Programlist 000->Program 005: "Bass Control"
+Info:  Programlist 000->Program 006: "Gentle Master"
+Info:  Programlist 000->Program 007: "Squash (parallel)"
+Info:  Programlist 000->Program 008: "Drum Bus VCA Glue"
+Info:  Programlist 000->Program 009: "Drum Smash FET (parallel)"
+Info:  Programlist 000->Program 010: "Vocal FET Upfront"
+Info:  Programlist 000->Program 011: "Vocal Opto Leveler"
+Info:  Programlist 000->Program 012: "Keys Opto Smooth"
+Info:  Programlist 000->Program 013: "Pads Tube Warmth"
+Info:  Programlist 000->Program 014: "Bass FET Grip"
+Info:  Programlist 000->Program 015: "Mix Bus VCA 2:1"
+Info:  Programlist 000->Program 016: "Master Tube Gentle"
+Info:  Programlist 000->Program 017: "Kick Punch FET"
+Info:  Programlist 000->Program 018: "Kick Tight VCA"
+Info:  Programlist 000->Program 019: "Snare Crack FET"
+Info:  Programlist 000->Program 020: "Snare Fat Opto"
+Info:  Programlist 000->Program 021: "Hi-Hat Tamer Opto"
+Info:  Programlist 000->Program 022: "Drum Room Smash FET (parallel)"
+Info:  Programlist 000->Program 023: "Boom Bap Drum Bus VCA"
+Info:  Programlist 000->Program 024: "Trap Drums Tight VCA"
+Info:  Programlist 000->Program 025: "Lo-Fi Drums Tube Squeeze"
+Info:  Programlist 000->Program 026: "Rap Vocal FET Aggressive"
+Info:  Programlist 000->Program 027: "Rap Vocal VCA Control"
+Info:  Programlist 000->Program 028: "Pop Vocal Opto Smooth"
+Info:  Programlist 000->Program 029: "Ballad Vocal Opto Gentle"
+Info:  Programlist 000->Program 030: "Vocal Tube Warmth"
+Info:  Programlist 000->Program 031: "Vocal Parallel FET (NY)"
+Info:  Programlist 000->Program 032: "Ad-Lib Squash FET"
+Info:  Programlist 000->Program 033: "Backing Vocals VCA Glue"
+Info:  Programlist 000->Program 034: "Podcast Voice Leveler"
+Info:  Programlist 000->Program 035: "808 Control VCA"
+Info:  Programlist 000->Program 036: "Bass Even Opto"
+Info:  Programlist 000->Program 037: "Bass Round Tube"
+Info:  Programlist 000->Program 038: "Slap Bass FET Grip"
+Info:  Programlist 000->Program 039: "Piano Natural Opto"
+Info:  Programlist 000->Program 040: "Rhodes Tube Glow"
+Info:  Programlist 000->Program 041: "Soul Chop VCA Glue"
+Info:  Programlist 000->Program 042: "Sample Flip Pump VCA"
+Info:  Programlist 000->Program 043: "Pad Tube Breathe"
+Info:  Programlist 000->Program 044: "Synth Lead FET Bite"
+Info:  Programlist 000->Program 045: "Acoustic Guitar Opto"
+Info:  Programlist 000->Program 046: "Electric Guitar FET Bite"
+Info:  Programlist 000->Program 047: "Mix Bus VCA Punch 4:1"
+Info:  Programlist 000->Program 048: "Mix Bus Tube Glue"
+Info:  Programlist 000->Program 049: "Master Opto Leveling"
+Info:  Programlist 000->Program 050: "Boom Bap Mix Tube Dust"
+Info:  Programlist 000->Program 051: "Trap Mix VCA Slam"
+Info:  Programlist 000->Program 052: "Boom Bap / Kick / Classic Knock"
+Info:  Programlist 000->Program 053: "Boom Bap / Kick / Dusty Thump"
+Info:  Programlist 000->Program 054: "Boom Bap / Kick / Jazzy Soft Kick"
+Info:  Programlist 000->Program 055: "Boom Bap / Kick / Gold Punch"
+Info:  Programlist 000->Program 056: "Boom Bap / Kick / Underground Grit"
+Info:  Programlist 000->Program 057: "Boom Bap / Kick / Lofi Squash"
+Info:  Programlist 000->Program 058: "Boom Bap / Snare / Clap / Classic Crack"
+Info:  Programlist 000->Program 059: "Boom Bap / Snare / Clap / Dusty Fat Snare"
+Info:  Programlist 000->Program 060: "Boom Bap / Snare / Clap / Jazzy Brush"
+Info:  Programlist 000->Program 061: "Boom Bap / Snare / Clap / Gold Snap"
+Info:  Programlist 000->Program 062: "Boom Bap / Snare / Clap / Underground Layer Glue"
+Info:  Programlist 000->Program 063: "Boom Bap / Snare / Clap / Lofi Snare Parallel"
+Info:  Programlist 000->Program 064: "Boom Bap / Hats / Cymbals / Classic Hat Even"
+Info:  Programlist 000->Program 065: "Boom Bap / Hats / Cymbals / Dusty Soft Top"
+Info:  Programlist 000->Program 066: "Boom Bap / Hats / Cymbals / Jazzy Ride Smooth"
+Info:  Programlist 000->Program 067: "Boom Bap / Hats / Cymbals / Gold Tick"
+Info:  Programlist 000->Program 068: "Boom Bap / Hats / Cymbals / Lofi Hat Crush"
+Info:  Programlist 000->Program 069: "Boom Bap / Percussion / Classic Shaker Level"
+Info:  Programlist 000->Program 070: "Boom Bap / Percussion / Dusty Bongo Punch"
+Info:  Programlist 000->Program 071: "Boom Bap / Percussion / Jazzy Tamb Glue"
+Info:  Programlist 000->Program 072: "Boom Bap / Percussion / Underground Perc Smack"
+Info:  Programlist 000->Program 073: "Boom Bap / Drum Bus / Classic Bus Glue"
+Info:  Programlist 000->Program 074: "Boom Bap / Drum Bus / Dusty Tape Bus"
+Info:  Programlist 000->Program 075: "Boom Bap / Drum Bus / Jazzy Room Bus"
+Info:  Programlist 000->Program 076: "Boom Bap / Drum Bus / Gold Knock Bus"
+Info:  Programlist 000->Program 077: "Boom Bap / Drum Bus / Underground NY Parallel"
+Info:  Programlist 000->Program 078: "Boom Bap / Drum Bus / Lofi SP Squash"
+Info:  Programlist 000->Program 079: "Boom Bap / Drum Bus / Hard Knock Bus"
+Info:  Programlist 000->Program 080: "Boom Bap / 808 / Bass / Classic Bass Level"
+Info:  Programlist 000->Program 081: "Boom Bap / 808 / Bass / Dusty Warm Bass"
+Info:  Programlist 000->Program 082: "Boom Bap / 808 / Bass / Jazzy Upright"
+Info:  Programlist 000->Program 083: "Boom Bap / 808 / Bass / Gold Grip"
+Info:  Programlist 000->Program 084: "Boom Bap / 808 / Bass / Underground Sub Hold"
+Info:  Programlist 000->Program 085: "Boom Bap / Vocals / Classic Rap Upfront"
+Info:  Programlist 000->Program 086: "Boom Bap / Vocals / Dusty Tube Vocal"
+Info:  Programlist 000->Program 087: "Boom Bap / Vocals / Jazzy Smooth Vocal"
+Info:  Programlist 000->Program 088: "Boom Bap / Vocals / Gold Adlib Control"
+Info:  Programlist 000->Program 089: "Boom Bap / Vocals / Underground Raw Parallel"
+Info:  Programlist 000->Program 090: "Boom Bap / Keys / Piano / Classic Rhodes Smooth"
+Info:  Programlist 000->Program 091: "Boom Bap / Keys / Piano / Dusty Piano Warm"
+Info:  Programlist 000->Program 092: "Boom Bap / Keys / Piano / Jazzy Keys Breathe"
+Info:  Programlist 000->Program 093: "Boom Bap / Keys / Piano / Gold Keys Pump"
+Info:  Programlist 000->Program 094: "Boom Bap / Samples / Melody / Classic Soul Chop Glue"
+Info:  Programlist 000->Program 095: "Boom Bap / Samples / Melody / Dusty Vinyl Sample"
+Info:  Programlist 000->Program 096: "Boom Bap / Samples / Melody / Jazzy Loop Level"
+Info:  Programlist 000->Program 097: "Boom Bap / Samples / Melody / Lofi Sample Pump"
+Info:  Programlist 000->Program 098: "Boom Bap / Master / Classic Mix Glue"
+Info:  Programlist 000->Program 099: "Boom Bap / Master / Dusty Tape Master"
+Info:  Programlist 000->Program 100: "Boom Bap / Master / Gold Knock Master"
+Info:  Programlist 000->Program 101: "Boom Bap / Master / Lofi Master Squash"
+Info:  Programlist 000->Program 102: "Trap / Kick / ATL Click"
+Info:  Programlist 000->Program 103: "Trap / Kick / Dark Tight Kick"
+Info:  Programlist 000->Program 104: "Trap / Kick / Cloud Soft Kick"
+Info:  Programlist 000->Program 105: "Trap / Kick / Rage Slam"
+Info:  Programlist 000->Program 106: "Trap / Kick / Memphis Knock"
+Info:  Programlist 000->Program 107: "Trap / Kick / Luxury Clean Punch"
+Info:  Programlist 000->Program 108: "Trap / Snare / Clap / ATL Clap Snap"
+Info:  Programlist 000->Program 109: "Trap / Snare / Clap / Dark Snare Body"
+Info:  Programlist 000->Program 110: "Trap / Snare / Clap / Cloud Clap Smooth"
+Info:  Programlist 000->Program 111: "Trap / Snare / Clap / Rage Crack"
+Info:  Programlist 000->Program 112: "Trap / Snare / Clap / Memphis Rimshot"
+Info:  Programlist 000->Program 113: "Trap / Snare / Clap / Luxury Layer Glue"
+Info:  Programlist 000->Program 114: "Trap / Hats / Cymbals / ATL Roll Even"
+Info:  Programlist 000->Program 115: "Trap / Hats / Cymbals / Dark Hat Tame"
+Info:  Programlist 000->Program 116: "Trap / Hats / Cymbals / Rage Hat Bite"
+Info:  Programlist 000->Program 117: "Trap / Hats / Cymbals / Memphis Hat Grit"
+Info:  Programlist 000->Program 118: "Trap / Hats / Cymbals / Luxury Open Hat Tail"
+Info:  Programlist 000->Program 119: "Trap / Percussion / ATL Perc Pop"
+Info:  Programlist 000->Program 120: "Trap / Percussion / Dark Perc Level"
+Info:  Programlist 000->Program 121: "Trap / Percussion / Rage Perc Smash"
+Info:  Programlist 000->Program 122: "Trap / Percussion / Luxury Shaker Smooth"
+Info:  Programlist 000->Program 123: "Trap / Drum Bus / ATL Bus Glue"
+Info:  Programlist 000->Program 124: "Trap / Drum Bus / Dark Bus Weight"
+Info:  Programlist 000->Program 125: "Trap / Drum Bus / Cloud Bus Soft"
+Info:  Programlist 000->Program 126: "Trap / Drum Bus / Rage Bus Slam"
+Info:  Programlist 000->Program 127: "Trap / Drum Bus / Memphis Parallel Crush"
+Info:  Programlist 000->Program 128: "Trap / Drum Bus / Luxury Bus Punch"
+Info:  Programlist 000->Program 129: "Trap / Drum Bus / Dark Parallel Body"
+Info:  Programlist 000->Program 130: "Trap / 808 / Bass / ATL 808 Even"
+Info:  Programlist 000->Program 131: "Trap / 808 / Bass / Dark 808 Hold"
+Info:  Programlist 000->Program 132: "Trap / 808 / Bass / Rage 808 Grip"
+Info:  Programlist 000->Program 133: "Trap / 808 / Bass / Memphis 808 Knock"
+Info:  Programlist 000->Program 134: "Trap / 808 / Bass / Luxury Sub Smooth"
+Info:  Programlist 000->Program 135: "Trap / Vocals / ATL Vocal Upfront"
+Info:  Programlist 000->Program 136: "Trap / Vocals / Dark Vocal Tube"
+Info:  Programlist 000->Program 137: "Trap / Vocals / Cloud Vocal Smooth"
+Info:  Programlist 000->Program 138: "Trap / Vocals / Rage Vocal Crush"
+Info:  Programlist 000->Program 139: "Trap / Vocals / Luxury Adlib Tame"
+Info:  Programlist 000->Program 140: "Trap / Keys / Piano / ATL Piano Level"
+Info:  Programlist 000->Program 141: "Trap / Keys / Piano / Dark Keys Pump"
+Info:  Programlist 000->Program 142: "Trap / Keys / Piano / Cloud Pad Glue"
+Info:  Programlist 000->Program 143: "Trap / Keys / Piano / Luxury Bell Control"
+Info:  Programlist 000->Program 144: "Trap / Samples / Melody / ATL Loop Glue"
+Info:  Programlist 000->Program 145: "Trap / Samples / Melody / Dark Melody Weight"
+Info:  Programlist 000->Program 146: "Trap / Samples / Melody / Cloud Guitar Smooth"
+Info:  Programlist 000->Program 147: "Trap / Samples / Melody / Rage Synth Bite"
+Info:  Programlist 000->Program 148: "Trap / Master / ATL Mix Glue"
+Info:  Programlist 000->Program 149: "Trap / Master / Dark Master Weight"
+Info:  Programlist 000->Program 150: "Trap / Master / Rage Loud Bus"
+Info:  Programlist 000->Program 151: "Trap / Master / Luxury Clean Master"
+Info:  Programlist 000->Program 152: "Techno / Kick / Peak Kick Punch"
+Info:  Programlist 000->Program 153: "Techno / Kick / Hypnotic Kick Pump"
+Info:  Programlist 000->Program 154: "Techno / Kick / Minimal Kick Tight"
+Info:  Programlist 000->Program 155: "Techno / Kick / Detroit Kick Warm"
+Info:  Programlist 000->Program 156: "Techno / Kick / Hard Kick Distort"
+Info:  Programlist 000->Program 157: "Techno / Kick / Dub Kick Round"
+Info:  Programlist 000->Program 158: "Techno / Snare / Clap / Peak Clap Snap"
+Info:  Programlist 000->Program 159: "Techno / Snare / Clap / Minimal Clap Tight"
+Info:  Programlist 000->Program 160: "Techno / Snare / Clap / Detroit Clap Room"
+Info:  Programlist 000->Program 161: "Techno / Snare / Clap / Acid Clap Bite"
+Info:  Programlist 000->Program 162: "Techno / Snare / Clap / Hard Clap Smash"
+Info:  Programlist 000->Program 163: "Techno / Snare / Clap / Dub Snare Space"
+Info:  Programlist 000->Program 164: "Techno / Hats / Cymbals / Peak Hat Drive"
+Info:  Programlist 000->Program 165: "Techno / Hats / Cymbals / Hypnotic Hat Groove"
+Info:  Programlist 000->Program 166: "Techno / Hats / Cymbals / Minimal Hat Tick"
+Info:  Programlist 000->Program 167: "Techno / Hats / Cymbals / Acid Hat Grit"
+Info:  Programlist 000->Program 168: "Techno / Hats / Cymbals / Hard Ride Control"
+Info:  Programlist 000->Program 169: "Techno / Percussion / Peak Perc Pop"
+Info:  Programlist 000->Program 170: "Techno / Percussion / Hypnotic Perc Loop"
+Info:  Programlist 000->Program 171: "Techno / Percussion / Minimal Click Level"
+Info:  Programlist 000->Program 172: "Techno / Percussion / Detroit Conga Warm"
+Info:  Programlist 000->Program 173: "Techno / Drum Bus / Peak Bus Glue"
+Info:  Programlist 000->Program 174: "Techno / Drum Bus / Hypnotic Bus Pump"
+Info:  Programlist 000->Program 175: "Techno / Drum Bus / Minimal Bus Clean"
+Info:  Programlist 000->Program 176: "Techno / Drum Bus / Detroit Bus Warm"
+Info:  Programlist 000->Program 177: "Techno / Drum Bus / Hard Bus Crush"
+Info:  Programlist 000->Program 178: "Techno / Drum Bus / Hard Parallel Smash"
+Info:  Programlist 000->Program 179: "Techno / Drum Bus / Dub Rumble Group"
+Info:  Programlist 000->Program 180: "Techno / 808 / Bass / Peak Bass Lock"
+Info:  Programlist 000->Program 181: "Techno / 808 / Bass / Hypnotic Rumble Control"
+Info:  Programlist 000->Program 182: "Techno / 808 / Bass / Acid 303 Squeeze"
+Info:  Programlist 000->Program 183: "Techno / 808 / Bass / Detroit Bass Warm"
+Info:  Programlist 000->Program 184: "Techno / 808 / Bass / Minimal Sub Even"
+Info:  Programlist 000->Program 185: "Techno / Vocals / Peak Vocal Chop"
+Info:  Programlist 000->Program 186: "Techno / Vocals / Hypnotic Whisper Level"
+Info:  Programlist 000->Program 187: "Techno / Vocals / Detroit Soul Vocal"
+Info:  Programlist 000->Program 188: "Techno / Vocals / Dub Vocal Space"
+Info:  Programlist 000->Program 189: "Techno / Vocals / Hard Shout Crush"
+Info:  Programlist 000->Program 190: "Techno / Keys / Piano / Detroit Chord Stab"
+Info:  Programlist 000->Program 191: "Techno / Keys / Piano / Dub Chord Pump"
+Info:  Programlist 000->Program 192: "Techno / Keys / Piano / Peak Pad Glue"
+Info:  Programlist 000->Program 193: "Techno / Keys / Piano / Minimal Keys Level"
+Info:  Programlist 000->Program 194: "Techno / Samples / Melody / Acid Lead Squeeze"
+Info:  Programlist 000->Program 195: "Techno / Samples / Melody / Hypnotic Loop Pump"
+Info:  Programlist 000->Program 196: "Techno / Samples / Melody / Peak Synth Glue"
+Info:  Programlist 000->Program 197: "Techno / Samples / Melody / Hard Noise FX Crush"
+Info:  Programlist 000->Program 198: "Techno / Master / Peak Club Glue"
+Info:  Programlist 000->Program 199: "Techno / Master / Hypnotic Master Breath"
+Info:  Programlist 000->Program 200: "Techno / Master / Detroit Warm Master"
+Info:  Programlist 000->Program 201: "Techno / Master / Hard Loud Bus"
+Info:  Programlist 000->Program 202: "DnB / Kick / Modern Kick Punch"
+Info:  Programlist 000->Program 203: "DnB / Kick / Roller Kick Tight"
+Info:  Programlist 000->Program 204: "DnB / Kick / Liquid Kick Soft"
+Info:  Programlist 000->Program 205: "DnB / Kick / Neuro Kick Smash"
+Info:  Programlist 000->Program 206: "DnB / Kick / Jump-Up Kick Knock"
+Info:  Programlist 000->Program 207: "DnB / Kick / Break Kick Level"
+Info:  Programlist 000->Program 208: "DnB / Snare / Clap / Modern Snare Crack"
+Info:  Programlist 000->Program 209: "DnB / Snare / Clap / Roller Snare Body"
+Info:  Programlist 000->Program 210: "DnB / Snare / Clap / Liquid Snare Smooth"
+Info:  Programlist 000->Program 211: "DnB / Snare / Clap / Neuro Snare Slam"
+Info:  Programlist 000->Program 212: "DnB / Snare / Clap / Jump-Up Snare Smack"
+Info:  Programlist 000->Program 213: "DnB / Snare / Clap / Break Ghost Lift"
+Info:  Programlist 000->Program 214: "DnB / Hats / Cymbals / Modern Shuffle Even"
+Info:  Programlist 000->Program 215: "DnB / Hats / Cymbals / Roller Hat Drive"
+Info:  Programlist 000->Program 216: "DnB / Hats / Cymbals / Liquid Ride Smooth"
+Info:  Programlist 000->Program 217: "DnB / Hats / Cymbals / Neuro Hat Bite"
+Info:  Programlist 000->Program 218: "DnB / Hats / Cymbals / Break Cymbal Tame"
+Info:  Programlist 000->Program 219: "DnB / Percussion / Modern Perc Pop"
+Info:  Programlist 000->Program 220: "DnB / Percussion / Liquid Shaker Smooth"
+Info:  Programlist 000->Program 221: "DnB / Percussion / Neuro Perc Smash"
+Info:  Programlist 000->Program 222: "DnB / Percussion / Break Perc Glue"
+Info:  Programlist 000->Program 223: "DnB / Drum Bus / Modern Bus Glue"
+Info:  Programlist 000->Program 224: "DnB / Drum Bus / Roller Bus Punch"
+Info:  Programlist 000->Program 225: "DnB / Drum Bus / Liquid Bus Soft"
+Info:  Programlist 000->Program 226: "DnB / Drum Bus / Neuro Bus Slam"
+Info:  Programlist 000->Program 227: "DnB / Drum Bus / Amen Break Fatten"
+Info:  Programlist 000->Program 228: "DnB / Drum Bus / Break Tape Squash"
+Info:  Programlist 000->Program 229: "DnB / Drum Bus / Jump-Up Bus Loud"
+Info:  Programlist 000->Program 230: "DnB / 808 / Bass / Modern Reese Control"
+Info:  Programlist 000->Program 231: "DnB / 808 / Bass / Roller Sub Even"
+Info:  Programlist 000->Program 232: "DnB / 808 / Bass / Liquid Bass Warm"
+Info:  Programlist 000->Program 233: "DnB / 808 / Bass / Neuro Bass Squeeze"
+Info:  Programlist 000->Program 234: "DnB / 808 / Bass / Jump-Up Wobble Grip"
+Info:  Programlist 000->Program 235: "DnB / Vocals / Modern MC Upfront"
+Info:  Programlist 000->Program 236: "DnB / Vocals / Liquid Vocal Silk"
+Info:  Programlist 000->Program 237: "DnB / Vocals / Roller Vocal Chop"
+Info:  Programlist 000->Program 238: "DnB / Vocals / Jump-Up MC Hype"
+Info:  Programlist 000->Program 239: "DnB / Vocals / Liquid Backing Air"
+Info:  Programlist 000->Program 240: "DnB / Keys / Piano / Liquid Rhodes Smooth"
+Info:  Programlist 000->Program 241: "DnB / Keys / Piano / Liquid Piano Breath"
+Info:  Programlist 000->Program 242: "DnB / Keys / Piano / Modern Stab Tight"
+Info:  Programlist 000->Program 243: "DnB / Keys / Piano / Roller Pad Pump"
+Info:  Programlist 000->Program 244: "DnB / Samples / Melody / Liquid Strings Glue"
+Info:  Programlist 000->Program 245: "DnB / Samples / Melody / Neuro Synth Bite"
+Info:  Programlist 000->Program 246: "DnB / Samples / Melody / Break Loop Level"
+Info:  Programlist 000->Program 247: "DnB / Samples / Melody / Jump-Up Hoover Grip"
+Info:  Programlist 000->Program 248: "DnB / Master / Modern Mix Glue"
+Info:  Programlist 000->Program 249: "DnB / Master / Liquid Warm Master"
+Info:  Programlist 000->Program 250: "DnB / Master / Neuro Loud Bus"
+Info:  Programlist 000->Program 251: "DnB / Master / Roller Master Punch"
+[Succeeded]
+
+[Terminate/Initialize]
+Info:  ===Terminate/Initialize ====================================
+[Succeeded]
+
+[Check Unit Structure]
+Info:  ===Check Unit Structure ====================================
+Info:  All units have valid parent IDs.
+[Succeeded]
+
+[Valid State Transition 32bits]
+Info:  ===Valid State Transition 32bits ====================================
+[Succeeded]
+
+[Valid State Transition 64bits]
+Info:  ===Valid State Transition 64bits ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Bus Consistency]
+Info:  ===Bus Consistency ====================================
+[Succeeded]
+
+[Bus Activation]
+Info:  ===Bus Activation ====================================
+Info:     Bus Activation: Input Audio Bus (0) (kMain)
+Info:     Bus Activation: Output Audio Bus (0) (kMain)
+[Succeeded]
+
+[Check Audio Bus Arrangement]
+Info:  ===Check Audio Bus Arrangement ====================================
+Info:     Check Input Audio Bus Arrangement (0)
+Info:     Check Output Audio Bus Arrangement (0)
+[Succeeded]
+
+[SideChain Arrangement]
+Info:  ===SideChain Arrangement ====================================
+[Succeeded]
+
+[Suspend/Resume]
+Info:  ===Suspend/Resume ====================================
+[Succeeded]
+
+[Note Expression]
+Info:  ===Note Expression ====================================
+Info:  No Note Expression interface supplied!
+[Succeeded]
+
+[Keyswitch]
+Info:  ===Keyswitch ====================================
+Info:  No Keyswitch interface supplied!
+[Succeeded]
+
+[ProcessContext Requirements]
+Info:  ===ProcessContext Requirements ====================================
+Info:  ProcessContextRequirements:
+Info:   - SystemTime
+Info:   - ContinousTimeSamples
+Info:   - ProjectTimeMusic
+Info:   - BarPosititionMusic
+Info:   - CycleMusic
+Info:   - SamplesToNextClock
+Info:   - Tempo
+Info:   - TimeSignature
+Info:   - Chord
+Info:   - FrameRate
+Info:   - TransportState
+[Succeeded]
+
+-------------------------------------------------------------
+TestSuite : Single Precision (32 bit) Tests
+-------------------------------------------------------------
+
+[Process Test]
+[Succeeded]
+
+[Process function running in another thread]
+Info:  ===Process function running in another thread ====================================
+[Succeeded]
+
+[Silence Flags]
+Info:  ===Silence Flags ====================================
+[Succeeded]
+
+[Silence Processing]
+Info:  ===Silence Processing ====================================
+[Succeeded]
+
+[Parameters Flush (no Buffer)]
+Info:  ===Parameters Flush (no Buffer) ====================================
+[Succeeded]
+
+[Parameters Flush 2 (only numChannel==0)]
+Info:  ===Parameters Flush 2 (only numChannel==0) ====================================
+[Succeeded]
+
+[Parameters Flush 2 (no Buffer, no parameter change)]
+Info:  ===Parameters Flush 2 (no Buffer, no parameter change) ====================================
+[Succeeded]
+
+[Variable Block Size]
+Info:  ===Variable Block Size ====================================
+[Succeeded]
+
+[Process Format]
+Info:  ===Process Format ====================================
+Info:  ***Tested Sample Rates***
+Info:        22050 Hz - processed successfully!
+Info:        32000 Hz - processed successfully!
+Info:        44100 Hz - processed successfully!
+Info:        48000 Hz - processed successfully!
+Info:        88200 Hz - processed successfully!
+Info:        96000 Hz - processed successfully!
+Info:       192000 Hz - processed successfully!
+Info:       384000 Hz - processed successfully!
+Info:    1234.5678 Hz - processed successfully!
+Info:    12345.678 Hz - processed successfully!
+Info:    123456.78 Hz - processed successfully!
+Info:    1234567.8 Hz - processed successfully!
+[Succeeded]
+
+[Parameter Bypass persistence]
+Info:  ===Parameter Bypass persistence ====================================
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: Mono: 1 Channels]
+Info:  ===In: Mono: 1 Channels, Out: Mono: 1 Channels ====================================
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: Stereo: 2 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 30Music: 3 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 31Music: 4 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 40Music: 4 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 41Music: 5 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 50: 5 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 50: 5 Channels ====================================
+Info:      Mono Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:      Stereo Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: Stereo: 2 Channels ====================================
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 50: 5 Channels ====================================
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 50: 5 Channels ====================================
+Info:      StereoSurround Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 50: 5 Channels ====================================
+Info:      StereoCenter Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 50: 5 Channels ====================================
+Info:      StereoSide Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 50: 5 Channels ====================================
+Info:      StereoCLfe Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: Mono: 1 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: Stereo: 2 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 30Music: 3 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 31Music: 4 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 40Music: 4 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 41Music: 5 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 50: 5 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 50: 5 Channels ====================================
+Info:      30Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: Mono: 1 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: Stereo: 2 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 30Music: 3 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 31Music: 4 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 40Music: 4 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 41Music: 5 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 50: 5 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 50: 5 Channels ====================================
+Info:      30Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: Mono: 1 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: Stereo: 2 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 30Music: 3 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 31Music: 4 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 40Music: 4 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 41Music: 5 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 50: 5 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 50: 5 Channels ====================================
+Info:      31Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: Mono: 1 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: Stereo: 2 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 30Music: 3 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 31Music: 4 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 40Music: 4 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 41Music: 5 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 50: 5 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 50: 5 Channels ====================================
+Info:      31Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: Mono: 1 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: Stereo: 2 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 30Music: 3 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 31Music: 4 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 40Music: 4 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 41Music: 5 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 50: 5 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 50: 5 Channels ====================================
+Info:      40Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: Mono: 1 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: Stereo: 2 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 30Music: 3 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 31Music: 4 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 40Music: 4 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 41Music: 5 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 50: 5 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 50: 5 Channels ====================================
+Info:      40Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: Mono: 1 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: Stereo: 2 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 30Music: 3 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 31Music: 4 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 40Music: 4 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 41Music: 5 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 50: 5 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 50: 5 Channels ====================================
+Info:      41Cine Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: Mono: 1 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: Stereo: 2 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 30Music: 3 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 31Music: 4 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 40Music: 4 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 41Music: 5 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 50: 5 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 50: 5 Channels ====================================
+Info:      41Music Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 50: 5 Channels, Out: Mono: 1 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Mono.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: Stereo: 2 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSurround Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCenter Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: StereoSide: 2 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoSide Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      StereoCLfe Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 50: 5 Channels, Out: 30Cine: 3 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 50: 5 Channels, Out: 30Music: 3 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      30Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 50: 5 Channels, Out: 31Cine: 4 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 50: 5 Channels, Out: 31Music: 4 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      31Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 50: 5 Channels, Out: 40Cine: 4 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 50: 5 Channels, Out: 40Music: 4 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      40Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 50: 5 Channels, Out: 41Cine: 5 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Cine Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 50: 5 Channels, Out: 41Music: 5 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      41Music Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 50: 5 Channels]
+Info:  ===In: 50: 5 Channels, Out: 50: 5 Channels ====================================
+Info:      50 Input-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+Info:      50 Output-SpeakerArrangement is not supported. Plug-in suggests: Stereo.
+[Succeeded]
+
+[Accuracy: Block, 1 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 1 Parameters, Change every100 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 1 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 1 Parameters, Change every100 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, 1 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Block, 1 Parameters, Change every50 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 1 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Sample, 1 Parameters, Change every50 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, 1 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Block, 1 Parameters, Change every1 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 1 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Sample, 1 Parameters, Change every1 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, 2 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 2 Parameters, Change every100 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 2 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 2 Parameters, Change every100 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, 2 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Block, 2 Parameters, Change every50 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 2 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Sample, 2 Parameters, Change every50 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, 2 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Block, 2 Parameters, Change every1 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 2 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Sample, 2 Parameters, Change every1 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, 10 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 10 Parameters, Change every100 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 10 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 10 Parameters, Change every100 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, 10 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Block, 10 Parameters, Change every50 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 10 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Sample, 10 Parameters, Change every50 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, 10 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Block, 10 Parameters, Change every1 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, 10 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Sample, 10 Parameters, Change every1 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, All Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 14 Parameters, Change every100 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, All Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 14 Parameters, Change every100 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, All Parameters, Change every50 Samples]
+Info:  ===Accuracy: Block, 14 Parameters, Change every50 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, All Parameters, Change every50 Samples]
+Info:  ===Accuracy: Sample, 14 Parameters, Change every50 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+[Accuracy: Block, All Parameters, Change every1 Samples]
+Info:  ===Accuracy: Block, 14 Parameters, Change every1 Samples ====================================
+[Succeeded]
+
+[Accuracy: Sample, All Parameters, Change every1 Samples]
+Info:  ===Accuracy: Sample, 14 Parameters, Change every1 Samples ====================================
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+Info:     Not all points have been read via IParameterChanges
+[Succeeded]
+
+-------------------------------------------------------------
+TestSuite : Double Precision (64 bit) Tests
+-------------------------------------------------------------
+
+[Process Test]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Process function running in another thread]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Silence Flags]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Silence Processing]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Parameters Flush (no Buffer)]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Parameters Flush 2 (only numChannel==0)]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Parameters Flush 2 (no Buffer, no parameter change)]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Variable Block Size]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Process Format]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Parameter Bypass persistence]
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: Mono: 1 Channels]
+Info:  ===In: Mono: 1 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: Mono: 1 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Mono: 1 Channels, Out: 50: 5 Channels]
+Info:  ===In: Mono: 1 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: Stereo: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: Stereo: 2 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSurround: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: StereoSurround: 2 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCenter: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: StereoCenter: 2 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoSide: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: StereoSide: 2 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: Mono: 1 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: StereoCLfe: 2 Channels, Out: 50: 5 Channels]
+Info:  ===In: StereoCLfe: 2 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Cine: 3 Channels, Out: 50: 5 Channels]
+Info:  ===In: 30Cine: 3 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 30Music: 3 Channels, Out: 50: 5 Channels]
+Info:  ===In: 30Music: 3 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Cine: 4 Channels, Out: 50: 5 Channels]
+Info:  ===In: 31Cine: 4 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 31Music: 4 Channels, Out: 50: 5 Channels]
+Info:  ===In: 31Music: 4 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Cine: 4 Channels, Out: 50: 5 Channels]
+Info:  ===In: 40Cine: 4 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 40Music: 4 Channels, Out: 50: 5 Channels]
+Info:  ===In: 40Music: 4 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Cine: 5 Channels, Out: 50: 5 Channels]
+Info:  ===In: 41Cine: 5 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 41Music: 5 Channels, Out: 50: 5 Channels]
+Info:  ===In: 41Music: 5 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: Mono: 1 Channels]
+Info:  ===In: 50: 5 Channels, Out: Mono: 1 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: Stereo: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: Stereo: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: StereoSurround: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: StereoSurround: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: StereoCenter: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: StereoCenter: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: StereoSide: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: StereoSide: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: StereoCLfe: 2 Channels]
+Info:  ===In: 50: 5 Channels, Out: StereoCLfe: 2 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 30Cine: 3 Channels]
+Info:  ===In: 50: 5 Channels, Out: 30Cine: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 30Music: 3 Channels]
+Info:  ===In: 50: 5 Channels, Out: 30Music: 3 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 31Cine: 4 Channels]
+Info:  ===In: 50: 5 Channels, Out: 31Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 31Music: 4 Channels]
+Info:  ===In: 50: 5 Channels, Out: 31Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 40Cine: 4 Channels]
+Info:  ===In: 50: 5 Channels, Out: 40Cine: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 40Music: 4 Channels]
+Info:  ===In: 50: 5 Channels, Out: 40Music: 4 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 41Cine: 5 Channels]
+Info:  ===In: 50: 5 Channels, Out: 41Cine: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 41Music: 5 Channels]
+Info:  ===In: 50: 5 Channels, Out: 41Music: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[In: 50: 5 Channels, Out: 50: 5 Channels]
+Info:  ===In: 50: 5 Channels, Out: 50: 5 Channels ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 1 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 1 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 1 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 1 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 1 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Block, 1 Parameters, Change every50 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 1 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Sample, 1 Parameters, Change every50 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 1 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Block, 1 Parameters, Change every1 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 1 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Sample, 1 Parameters, Change every1 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 2 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 2 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 2 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 2 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 2 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Block, 2 Parameters, Change every50 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 2 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Sample, 2 Parameters, Change every50 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 2 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Block, 2 Parameters, Change every1 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 2 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Sample, 2 Parameters, Change every1 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 10 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 10 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 10 Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 10 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 10 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Block, 10 Parameters, Change every50 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 10 Parameters, Change every50 Samples]
+Info:  ===Accuracy: Sample, 10 Parameters, Change every50 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, 10 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Block, 10 Parameters, Change every1 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, 10 Parameters, Change every1 Samples]
+Info:  ===Accuracy: Sample, 10 Parameters, Change every1 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, All Parameters, Change every100 Samples]
+Info:  ===Accuracy: Block, 14 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, All Parameters, Change every100 Samples]
+Info:  ===Accuracy: Sample, 14 Parameters, Change every100 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, All Parameters, Change every50 Samples]
+Info:  ===Accuracy: Block, 14 Parameters, Change every50 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, All Parameters, Change every50 Samples]
+Info:  ===Accuracy: Sample, 14 Parameters, Change every50 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Block, All Parameters, Change every1 Samples]
+Info:  ===Accuracy: Block, 14 Parameters, Change every1 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+[Accuracy: Sample, All Parameters, Change every1 Samples]
+Info:  ===Accuracy: Sample, 14 Parameters, Change every1 Samples ====================================
+Info:  64bit Audio Processing not supported.
+[Succeeded]
+
+-------------------------------------------------------------
+Result: 537 tests passed, 0 tests failed
+-------------------------------------------------------------

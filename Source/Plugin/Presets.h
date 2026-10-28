@@ -20,6 +20,11 @@ struct Preset
     // drums, kick, snare, hats, vocal, backing, bass, keys, guitar, synth, mix
     const char* material = "";
     Depth depth = Medium;
+    // the genre presets (docs/GENRE_PRESETS.md): genre and group on the preset screen and one line on what it does;
+    // empty for the others
+    const char* genre = "";
+    const char* group = "";
+    const char* note = "";
 };
 
 const std::vector<Preset>& factoryPresets();

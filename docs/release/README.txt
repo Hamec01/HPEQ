@@ -1,4 +1,4 @@
-HamloComp 0.1.0 - compressor, VST3, Windows x64 (HamloProd)
+HamloComp 0.2.0 - compressor, VST3, Windows x64 (HamloProd)
 
 Controls
   THRESHOLD  level where compression starts (-60 .. 0 dB)
@@ -18,7 +18,14 @@ Controls
   SOURCE     what the detector listens to: ALL, DRUMS (the kick does not pump the kit),
              SAMPLES (melodies, keys, pads), VOC (plosives ignored, harsh syllables first)
 
-Presets (the DAW's program list): Default and 51 presets for drums (kick, snare, hats, drum bus),
+Presets: the screen top left. GENRE and GROUP (click to choose), the arrows step through the presets of
+that genre and group (or the mouse wheel; click the name for a menu of all of them), the line below says what
+the preset does. * = a knob moved since it was loaded. The same presets are in the DAW's program list.
+200 genre presets - Boom Bap, Trap, Techno, DnB, 50 each - in ten groups: Kick, Snare / Clap, Hats / Cymbals,
+Percussion, Drum Bus, 808 / Bass, Vocals, Keys / Piano, Samples / Melody, Master. Release times follow each
+genre's tempo. Their thresholds assume tracks around -18 dBFS RMS (mixes -14).
+
+Factory presets (the DAW's program list): Default and 51 presets for drums (kick, snare, hats, drum bus),
 vocals, bass, samples (keys, guitars, synths, pads) and the mix bus / master. Their thresholds
 assume tracks around -18 dBFS RMS (mixes -14): trim THRESHOLD if your level differs.
 

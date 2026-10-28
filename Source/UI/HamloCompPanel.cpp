@@ -322,7 +322,8 @@ void HamloCompPanel::renderStatic(juce::Graphics& g) const
     }
 
     // owner's scratched pictures in free corners of the steel
-    steel::scratches(g, { { 1, { 255.0f, 16.0f, 82.0f, 120.0f }, -5.0f }, { 21, { 832.0f, 16.0f, 82.0f, 120.0f }, 4.0f },
+    // (the top-left drawing moved to the bottom right: the preset screen sits top left on every Hamlo page)
+    steel::scratches(g, { { 1, { 1040.0f, 598.0f, 60.0f, 80.0f }, -5.0f }, { 21, { 832.0f, 16.0f, 82.0f, 120.0f }, 4.0f },
                           { 10, { 236.0f, 598.0f, 64.0f, 92.0f }, -3.0f } });
 
     // nameplate

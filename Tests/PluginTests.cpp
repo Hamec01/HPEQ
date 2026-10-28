@@ -1,7 +1,9 @@
 // The plug-in around the compressor: parameters and state compatible with HPEQ's HamloComp module VST3,
 // MIX / ON, block-size independence, mono, programs, the page.
 
+#include <map>
 #include <memory>
+#include <set>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
@@ -187,7 +189,7 @@ public:
         beginTest("Programs: Default plus the 7 HPEQ presets (CLASSIC), 9 model presets and the 35 of the presets pass; a preset starts from the preset base (-30 / 4:1 / auto makeup on / CLASSIC); Default restores the neutral defaults (VCA)");
         {
             HamloCompProcessor p;
-            expectEquals(p.getNumPrograms(), 52);
+            expectEquals(p.getNumPrograms(), 252); // + the 200 genre presets
             expectEquals(juce::roundToInt(p.parameterValue("model")), 1); // a fresh instance: VCA
             expectEquals(p.getProgramName(0), juce::String("Default"));
             expectEquals(p.getProgramName(4), juce::String("New York Parallel"));
@@ -223,6 +225,68 @@ public:
                 logMessage("  " + p.getProgramName(program) + ": level change " + juce::String(level, 2) + " dB");
                 expect(finite && !bitExact(y, loop) && level >= -20.0 && level <= 6.0, p.getProgramName(program));
             }
+        }
+
+        beginTest("Genre presets (docs/GENRE_PRESETS.md): Boom Bap, Trap, Techno, DnB x 50, each in the ten groups; names unique per genre; the host list shows genre / group / name");
+        {
+            const auto& list = comp::factoryPresets();
+            std::map<juce::String, int> perGenre;
+            std::map<juce::String, std::set<juce::String>> groups, names;
+            for (const auto& preset : list)
+            {
+                const juce::String genre(preset.genre);
+                if (genre.isEmpty())
+                    continue;
+                ++perGenre[genre];
+                groups[genre].insert(preset.group);
+                expect(names[genre].insert(preset.name).second, genre + " / " + preset.name + " twice");
+                expect(juce::String(preset.note).isNotEmpty(), preset.name);
+            }
+            expectEquals(static_cast<int>(perGenre.size()), 4);
+            for (const auto& [genre, count] : perGenre)
+            {
+                expectEquals(count, 50, genre);
+                expectEquals(static_cast<int>(groups[genre].size()), 10, genre);
+            }
+            HamloCompProcessor p;
+            const int first = p.getNumPrograms() - 200;
+            expect(p.getProgramName(first).startsWith("Boom Bap / Kick / "), p.getProgramName(first));
+            p.setCurrentProgram(first);
+            expect(!p.programModified());
+            p.setParameterValue("mix", 0.3);
+            expect(p.programModified());
+        }
+
+        beginTest("Preset screen: top left on the page (the same place on every Hamlo plug-in); genre / group filter, arrows wrap, a host program change shows its genre and group; the program survives save / load");
+        {
+            HamloCompProcessor p;
+            std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
+            auto* editor = dynamic_cast<comp::HamloCompEditor*>(e.get());
+            expect(editor != nullptr);
+            if (editor != nullptr)
+            {
+                auto& screen = editor->getPresetScreen();
+                const auto expectedBounds = juce::Rectangle<float>(56.0f, 20.0f, 336.0f, 116.0f).toNearestInt();
+                expect(screen.getBounds() == expectedBounds, screen.getBounds().toString());
+                const int first = p.getNumPrograms() - 200;
+                screen.setFilter("Trap", "Kick");
+                const auto kicks = screen.filtered();
+                expectEquals(static_cast<int>(kicks.size()), 6);
+                screen.setCurrent(kicks.back(), false);
+                screen.step(1); // wraps to the first Trap kick
+                expectEquals(p.getCurrentProgram(), kicks.front());
+                p.setCurrentProgram(first); // Boom Bap / Kick from the host
+                screen.setCurrent(first, false);
+                expect(screen.genre() == "Boom Bap" && screen.group() == "Kick", screen.genre() + " / " + screen.group());
+                screen.setFilter("All", "All");
+                expectEquals(static_cast<int>(screen.filtered().size()), p.getNumPrograms() - 1);
+            }
+            juce::MemoryBlock saved;
+            p.setCurrentProgram(p.getNumPrograms() - 1);
+            p.getStateInformation(saved);
+            HamloCompProcessor q;
+            q.setStateInformation(saved.getData(), static_cast<int>(saved.getSize()));
+            expectEquals(q.getCurrentProgram(), p.getNumPrograms() - 1);
         }
 
         beginTest("Page: 1180 x 820, resizable; knob, switch and ON write the parameters; host changes come back to the page");

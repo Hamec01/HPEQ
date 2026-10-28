@@ -5,12 +5,13 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "UI/HamloCompPanel.h"
+#include "UI/PresetScreen.h"
 
 namespace hamlo::comp
 {
 class HamloCompProcessor;
 
-// The HamloComp page (Black Steel, 1180 x 700, scaled 0.5 .. 2 x). Panel edits become host gestures and
+// The HamloComp page (Black Steel, 1180 x 820, scaled 0.5 .. 2 x) with the preset screen top left. Panel edits become host gestures and
 // parameter writes; a 30 Hz timer brings host automation and the meters back into the panel.
 class HamloCompEditor final : public juce::AudioProcessorEditor, private juce::Timer
 {
@@ -23,6 +24,7 @@ public:
     void parentHierarchyChanged() override;
 
     ui::HamloCompPanel& getPanel() noexcept { return *panel; }
+    ui::PresetScreen& getPresetScreen() noexcept { return *presets; }
 
 private:
     void beginGesture(const juce::String& id);
@@ -34,6 +36,7 @@ private:
 
     HamloCompProcessor& processor;
     std::unique_ptr<ui::HamloCompPanel> panel;
+    std::unique_ptr<ui::PresetScreen> presets;
     juce::RangedAudioParameter* activeGesture = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HamloCompEditor)

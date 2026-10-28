@@ -31,6 +31,7 @@ const std::map<juce::String, juce::StringArray> kMaterial {
     { "drums", { "drumbus1" } }, { "kick", { "kick" } }, { "snare", { "snare" } }, { "hats", { "hihat" } },
     { "vocal", { "vocal_lead1", "vocal_lead2", "vocal_lead3" } }, { "backing", { "vocal_back1", "vocal_back2", "vocal_back3" } },
     { "bass", { "bass1", "bass2" } }, { "keys", { "keys", "keys2" } }, { "guitar", { "guitar" } }, { "synth", { "synth" } },
+    { "perc", { "perc" } }, { "samples", { "guitar", "synth", "keys2" } }, // the genre presets' groups
     { "mix", { "mixdown_Ardnold", "mixdown_boom_bap_3", "mixdown_sad_trap" } } };
 
 double blockRms(const juce::AudioBuffer<float>& x, int start, int n)
@@ -192,8 +193,29 @@ int main(int argc, char* argv[])
                 std::cout << "SWEEP	" << preset.name << "	" << th << "	" << playAll(program, it->second, &th).avgGr << std::endl;
             continue;
         }
+        const bool genre = juce::String(preset.genre).isNotEmpty();
+        if (mode == "calibrate-genre") // docs/GENRE_PRESETS.md: the genre presets only, keyed genre / group / name
+        {
+            if (!genre)
+                continue;
+            // argv[3] (optional): only the presets whose name contains one of these ';'-separated parts
+            if (argc > 3 && ![&] { for (const auto& part : juce::StringArray::fromTokens(argv[3], ";", "")) if (juce::String(preset.name).contains(part)) return true; return false; }())
+                continue;
+            double lo = -60.0, hi = 0.0;
+            for (int i = 0; i < 14; ++i)
+            {
+                const double mid = 0.5 * (lo + hi);
+                (playAll(program, it->second, &mid).avgGr > bandMid(preset.depth) ? lo : hi) = mid;
+            }
+            const double t = std::round(0.5 * (lo + hi) * 2.0) / 2.0;
+            const auto m = playAll(program, it->second, &t);
+            std::cout << "CAL\t" << preset.genre << "/" << preset.group << "/" << preset.name << "\t" << t << "\t" << m.avgGr << std::endl;
+            continue;
+        }
         if (mode == "calibrate")
         {
+            if (genre)
+                continue;
             if (static_cast<int>(k) < kFirstNewPreset && kRecalibrated.count(preset.name) == 0)
                 continue;
             double lo = -60.0, hi = 0.0; // average GR falls as the threshold rises
@@ -216,7 +238,7 @@ int main(int argc, char* argv[])
                         && m.rmsDelta >= -12.0 && m.rmsDelta <= 6.0 && unique;
         const bool newPreset = static_cast<int>(k) >= kFirstNewPreset || kRecalibrated.count(preset.name) != 0;
         bad += ok || !newPreset ? 0 : 1; // the presets made before this pass are reported, not judged
-        table << "| " << program << " | " << preset.name << (newPreset ? "" : " (before)") << " | " << preset.material << " | " << depthName(preset.depth) << " | "
+        table << "| " << program << " | " << (genre ? juce::String(preset.genre) + " / " + preset.group + " / " : juce::String()) << preset.name << (newPreset ? "" : " (before)") << " | " << preset.material << " | " << depthName(preset.depth) << " | "
               << juce::String(m.avgGr, 2) << " dB | " << juce::String(m.peakDelta, 2) << " dB | " << juce::String(m.rmsDelta, 2) << " dB | "
               << (ok ? "yes" : (newPreset ? "**no**" : "no")) << (unique ? "" : " (duplicate)") << (m.finite ? "" : " (not finite)") << " |\n";
         std::cout << program << " " << preset.name << ": GR " << m.avgGr << " peak " << m.peakDelta << " rms " << m.rmsDelta << (ok ? "" : "  FAIL") << std::endl;
@@ -224,7 +246,7 @@ int main(int argc, char* argv[])
     if (mode == "check")
     {
         const auto summary = juce::String(static_cast<int>(list.size()) - kFirstNewPreset + static_cast<int>(kRecalibrated.size()))
-                           + " calibrated presets (35 new + 5 recalibrated), " + juce::String(bad) + " outside P1 .. P5";
+                           + " calibrated presets (35 of the presets pass + 5 recalibrated + 200 genre presets), " + juce::String(bad) + " outside P1 .. P5";
         std::cout << summary << std::endl;
         if (argc > 3)
             juce::File::getCurrentWorkingDirectory().getChildFile(argv[3]).replaceWithText("# HamloComp presets on their material\n\n" + summary + "\n\n" + table);
