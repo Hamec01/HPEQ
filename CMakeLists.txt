@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloUdarnik VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloUdarnik VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -51,6 +51,7 @@ add_library(HamloUdarnik_Shared STATIC
     Source/UI/BlackSteel.cpp
     Source/UI/HamloUdarnikPanel.cpp
     Source/UI/ModuleHelp.cpp
+    Source/UI/PresetScreen.cpp
     Source/Plugin/Presets.cpp
     Source/Plugin/HamloUdarnikProcessor.cpp
     Source/Plugin/HamloUdarnikEditor.cpp)
@@ -139,6 +140,7 @@ target_link_libraries(HamloUdarnik_Snapshot
         HamloUdarnik_Shared
         HamloUdarnik_Assets
         juce::juce_gui_basics
+        juce::juce_audio_utils
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 
@@ -147,6 +149,18 @@ target_link_libraries(HamloUdarnik_Snapshot
 add_executable(HamloUdarnik_Lab Tests/LabMain.cpp)
 target_compile_definitions(HamloUdarnik_Lab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
 target_link_libraries(HamloUdarnik_Lab
+    PRIVATE
+        HamloUdarnik_Shared
+        HamloUdarnik_Assets
+        juce::juce_audio_utils
+        juce::juce_audio_formats
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+
+# Genre presets on their material: the check (docs/GENRE_PRESETS.md).
+add_executable(HamloUdarnik_PresetLab Tests/PresetLabMain.cpp)
+target_compile_definitions(HamloUdarnik_PresetLab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(HamloUdarnik_PresetLab
     PRIVATE
         HamloUdarnik_Shared
         HamloUdarnik_Assets

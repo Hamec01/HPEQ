@@ -1,4 +1,4 @@
-HamloUdarnik 0.1.0 - transient shaper, VST3, Windows x64 (HamloProd)
+HamloUdarnik 0.2.0 - transient shaper, VST3, Windows x64 (HamloProd)
 
 Controls
   SNAP         gain on the attack of each hit (-24 .. +24 dB)
@@ -18,7 +18,14 @@ Controls
   PROTECT      V2: what the shaper adds is kept under 0 dBFS (soft clip from -3 dBFS)
   ON           the lamp switch; off = the dry signal (20 ms crossfade)
 
-Presets (the DAW's program list): Default; CLASSIC: Kick Punch, Snare Crack, Tighten Room, Soften Attack,
+Presets: the screen top left. GENRE and GROUP (click to choose), the arrows step through the presets of
+that genre and group (or the mouse wheel; click the name for a menu of all of them), the line below says what
+the preset does. * = a knob moved since it was loaded. The same presets are in the DAW's program list.
+200 genre presets - Boom Bap, Trap, Techno, DnB, 50 each - in ten groups: Kick, Snare / Clap, Hats / Cymbals,
+Percussion, Drum Bus, 808 / Bass, Vocals, Keys / Piano, Samples / Melody, Master. SPEED follows each genre's
+tempo (the faster, the shorter the attack window).
+
+Factory presets (the DAW's program list): Default; CLASSIC: Kick Punch, Snare Crack, Tighten Room, Soften Attack,
 Drum Bus Snap, Sustain Bloom; V2: Kick Punch V2, Kick Long Boom, Snare Crack V2, Snare Fat Body, Tight Drums,
 Room Killer, Drum Bus Punch V2, Soft Hits, Hats Shorter, Long Decay Bloom, Snappy Perc, Lo-Fi Dull Attack.
 

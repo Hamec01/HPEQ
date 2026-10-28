@@ -14,6 +14,12 @@ struct Preset
     const char* name;
     float mix;
     std::vector<std::pair<const char*, double>> values;
+    // the genre presets (docs/GENRE_PRESETS.md): genre and group on the preset screen, one line on what it does and
+    // the material HamloUdarnik_PresetLab checks it on; empty for the others
+    const char* genre = "";
+    const char* group = "";
+    const char* note = "";
+    const char* material = "";
 };
 
 const std::vector<Preset>& factoryPresets();

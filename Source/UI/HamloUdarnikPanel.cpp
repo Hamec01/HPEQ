@@ -24,7 +24,8 @@ constexpr float kStripTop = 662.0f;
 const juce::Rectangle<float> kCrtBezel { 331.0f, 385.0f, 404.0f, 238.0f };
 const juce::Rectangle<float> kCrtScreen { 349.0f, 403.0f, 368.0f, 182.0f };
 const juce::Point<float> kLamp { 1074.0f, 453.0f }, kToggle { 1074.0f, 559.0f };
-const juce::Rectangle<float> kLcdLeft { 56.0f, 66.0f, 190.0f, 42.0f }, kLcdRight { 934.0f, 66.0f, 190.0f, 42.0f };
+// the top left is the preset screen (UI/PresetScreen.h); both LCDs sit right of the nameplate
+const juce::Rectangle<float> kLcdLeft { 792.0f, 66.0f, 160.0f, 42.0f }, kLcdRight { 964.0f, 66.0f, 160.0f, 42.0f };
 constexpr float kColumn = 1068.0f / HamloUdarnikPanel::NumKnobs;
 
 struct MapInfo
@@ -169,8 +170,8 @@ void HamloUdarnikPanel::resized()
 void HamloUdarnikPanel::renderStatic(juce::Graphics& g) const
 {
     steel::panel(g, kW, kH, 1961);
-    steel::scratches(g, { { 19, { 256.0f, 14.0f, 82.0f, 122.0f }, 4.0f }, { 11, { 834.0f, 14.0f, 82.0f, 122.0f }, -4.0f },
-                          { 5, { 236.0f, 590.0f, 66.0f, 96.0f }, -3.0f } });
+    // (the two top drawings moved: the preset screen and the LCDs took their places)
+    steel::scratches(g, { { 19, { 1040.0f, 598.0f, 60.0f, 80.0f }, 4.0f }, { 5, { 236.0f, 590.0f, 66.0f, 96.0f }, -3.0f } });
     steel::nameplate(g, { 590.0f - 185.0f, 41.0f, 370.0f, 92.0f }, "HamloUdarnik", "MODEL UD-1", juce::String::fromUTF8("\xe2\x84\x96 1961"));
     steel::lcdWindow(g, kLcdLeft);
     steel::lcdWindow(g, kLcdRight);

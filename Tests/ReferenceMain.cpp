@@ -90,6 +90,8 @@ int main(int argc, char* argv[])
     std::vector<Case> cases { { "Default", {} } };
     for (const auto& preset : udarnik::factoryPresets())
     {
+        if (juce::String(preset.genre).isNotEmpty())
+            continue; // the genre presets (docs/GENRE_PRESETS.md) are V2 presets: the reference compares the shared laws
         Case c { juce::String("Preset ") + preset.name, { { "mix", preset.mix } } };
         for (const auto& kv : preset.values)
             c.values.push_back(kv);

@@ -170,7 +170,9 @@ juce::AudioProcessorEditor* HamloUdarnikProcessor::createEditor()
 
 void HamloUdarnikProcessor::getStateInformation(juce::MemoryBlock& destination)
 {
-    if (auto xml = parameters.copyState().createXml())
+    auto state = parameters.copyState();
+    state.setProperty("program", currentProgram, nullptr); // the preset screen shows it again after a reload
+    if (auto xml = state.createXml())
         copyXmlToBinary(*xml, destination);
 }
 
@@ -184,6 +186,7 @@ void HamloUdarnikProcessor::setStateInformation(const void* data, int size)
             for (auto* e : xml->getChildWithTagNameIterator("PARAM"))
                 hasEngine = hasEngine || e->getStringAttribute("id") == "engine";
             parameters.replaceState(juce::ValueTree::fromXml(*xml));
+            currentProgram = juce::jlimit(0, static_cast<int>(factoryPresets().size()), static_cast<int>(xml->getIntAttribute("program", 0)));
             if (!hasEngine)
             {
                 setParameterValue("engine", 0.0);
@@ -210,6 +213,20 @@ void HamloUdarnikProcessor::setParameterValue(const juce::String& id, double act
         p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(actualValue)));
 }
 
+bool HamloUdarnikProcessor::programModified() const
+{
+    const auto& list = factoryPresets();
+    const Preset* preset = currentProgram > 0 && currentProgram <= static_cast<int>(list.size()) ? &list[static_cast<size_t>(currentProgram - 1)] : nullptr;
+    for (const auto& spec : parameterSpecs())
+    {
+        const double expected = preset != nullptr ? presetValue(*preset, spec.id, spec.defaultValue) : spec.defaultValue;
+        const double tolerance = 1.0e-3 * (spec.maximum - spec.minimum);
+        if (std::abs(parameterValue(spec.id) - juce::jlimit(static_cast<double>(spec.minimum), static_cast<double>(spec.maximum), expected)) > tolerance)
+            return true;
+    }
+    return false;
+}
+
 int HamloUdarnikProcessor::getNumPrograms()
 {
     return 1 + static_cast<int>(factoryPresets().size());
@@ -220,7 +237,9 @@ const juce::String HamloUdarnikProcessor::getProgramName(int index)
     const auto& list = factoryPresets();
     if (index <= 0 || index > static_cast<int>(list.size()))
         return "Default";
-    return list[static_cast<size_t>(index - 1)].name;
+    const auto& preset = list[static_cast<size_t>(index - 1)];
+    // the genre presets carry their genre and group in the host's program list (the preset screen shows them apart)
+    return juce::String(preset.genre).isEmpty() ? juce::String(preset.name) : juce::String(preset.genre) + " / " + preset.group + " / " + preset.name;
 }
 
 void HamloUdarnikProcessor::setCurrentProgram(int index)

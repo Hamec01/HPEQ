@@ -27,6 +27,8 @@ const std::vector<Preset>& factoryPresets()
         { "Long Decay Bloom", 1.0f, { { "sustainDb", 3 }, { "decay", 2.0 }, { "style", 2 } } },
         { "Snappy Perc", 1.0f, { { "attackDb", 8 }, { "sustainDb", -4 }, { "rise", 0.5 }, { "style", 2 } } },
         { "Lo-Fi Dull Attack", 1.0f, { { "attackDb", -12 }, { "sustainDb", 4 }, { "speed", 0.7 }, { "style", 0 } } },
+        // genre presets (docs/GENRE_PRESETS.md): Boom Bap, Trap, Techno, DnB x 50, in groups; V2 engine, PROTECT on
+#include "Plugin/GenrePresets.inc"
     };
     return list;
 }
