@@ -1,0 +1,6 @@
+HamloUdarnik 0.2.0 - third-party notices
+
+JUCE: copyright its contributors; its original LICENSE.md is distributed
+under Documentation/ThirdParty/JUCE. See that file for applicable terms.
+
+The Black Steel panel artwork (hardware pack, scratched pictures) is HamloProd's own.

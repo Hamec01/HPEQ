@@ -1,0 +1,9 @@
+HamloUdarnik is installed.
+
+1. Open your 64-bit DAW and rescan VST3 plugins.
+2. Insert HamloUdarnik (HamloProd) on a drum track, a drum bus or any part with hits.
+3. Pick a preset from the DAW's program list, or start from Default.
+
+The README is in Start menu -> HamloProd -> HamloUdarnik README,
+and in the HamloUdarnik.vst3\Documentation folder.
+If Windows asks for a restart, do it before opening your DAW.
