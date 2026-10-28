@@ -1,0 +1,9 @@
+HamloRedWall is installed.
+
+1. Open your 64-bit DAW and rescan VST3 plugins.
+2. Insert HamloRedWall (HamloProd) last on the master bus or on any bus you want loud and safe.
+3. Pick a preset from the DAW's program list, or start from Default.
+
+The README is in Start menu -> HamloProd -> HamloRedWall README,
+and in the HamloRedWall.vst3\Documentation folder.
+If Windows asks for a restart, do it before opening your DAW.
