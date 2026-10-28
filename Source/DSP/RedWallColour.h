@@ -22,7 +22,7 @@ namespace hamlo::dsp
 //   DRIVE  relative to the ceiling, with c = LIMIT (linear) and P = 10^(-LOUDNESS / 20): u = x P / c,
 //          tanh(k u) / k, k = 1 + 2.5 DRIVE - odd harmonics; x = c u / P
 //   then a 5 Hz DC blocker (the half-wave bend leaves an offset)
-// Switching the stage on or off crossfades (10 ms) against the delayed input.
+// Switching the stage on or off crossfades (10 ms) against the delayed input; on from the start, it starts full.
 class RedWallColour
 {
 public:
@@ -43,6 +43,6 @@ private:
     std::vector<float> levels;
     double power = 0.0, fade = 0.0;
     std::array<double, kMaxChannels> dcIn {}, dcOut {};
-    bool running = false;
+    bool running = false, fresh = true;
 };
 } // namespace hamlo::dsp

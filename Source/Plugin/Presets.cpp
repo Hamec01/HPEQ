@@ -26,6 +26,9 @@ const std::vector<Preset>& factoryPresets()
         { "Vocal Presence", 1.0f, { { "thresholdDb", -3 }, { "ceilingDb", -1 }, { "releaseMs", 60 }, { "style", 0 }, { "autoRelease", 1 }, { "drive", 0.25 }, { "tube", 0.2 } } },
         { "Keys Warmth", 1.0f, { { "thresholdDb", -2 }, { "ceilingDb", -1 }, { "releaseMs", 150 }, { "style", 0 }, { "autoRelease", 1 }, { "tube", 0.5 } } },
         { "Parallel Smash", 0.4f, { { "thresholdDb", -12 }, { "ceilingDb", -1 }, { "style", 2 }, { "autoRelease", 1 }, { "drive", 0.7 }, { "tube", 0.5 } } },
+        // genre presets (docs/GENRE_PRESETS.md): Boom Bap, Trap, Techno, DnB x 50, in groups, LOUDNESS calibrated
+        // on the material by HamloRedWall_PresetLab
+#include "Plugin/GenrePresets.inc"
     };
     return list;
 }

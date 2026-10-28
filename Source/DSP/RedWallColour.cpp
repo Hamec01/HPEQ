@@ -29,6 +29,7 @@ void RedWallColour::reset() noexcept
     dcIn = {};
     dcOut = {};
     running = false;
+    fresh = true;
 }
 
 void RedWallColour::process(float* const* channels, int numChannels, int numSamples, const LimiterSettings& p) noexcept
@@ -62,6 +63,10 @@ void RedWallColour::processChunk(float* const* channels, int numChannels, int nu
             std::copy(dryPtr[c], dryPtr[c] + numSamples, channels[c]);
         return;
     }
+    if (on && fresh)
+        fade = 1.0; // on from the start (after prepare / reset): no fade from the dry signal, which the limiter would
+                    // then push by LOUDNESS - at -30 dB that hit LIMIT for 10 ms (found by HamloRedWall_PresetLab)
+    fresh = false;
     if (on && !running)
     {
         oversampler->reset(); // starts clean; the 10 ms fade hides the filter's start

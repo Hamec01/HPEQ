@@ -2,13 +2,14 @@
 
 #include "Plugin/HamloRedWallProcessor.h"
 #include "Plugin/Parameters.h"
+#include "Plugin/Presets.h"
 
 namespace hamlo::redwall
 {
 using Panel = ui::HamloRedWallPanel;
 
 HamloRedWallEditor::HamloRedWallEditor(HamloRedWallProcessor& owner)
-    : juce::AudioProcessorEditor(owner), processor(owner), panel(std::make_unique<Panel>())
+    : juce::AudioProcessorEditor(owner), processor(owner), panel(std::make_unique<Panel>()), presets(std::make_unique<ui::PresetScreen>())
 {
     panel->onKnobGestureStart = [this](Panel::Param p) { beginGesture(Panel::keyFor(p)); };
     panel->onKnobChange = [this](Panel::Param p, double value) { processor.setParameterValue(Panel::keyFor(p), value); };
@@ -21,6 +22,20 @@ HamloRedWallEditor::HamloRedWallEditor(HamloRedWallProcessor& owner)
         return std::pair<float, float> { l.lastOutputPeakDb(), l.lastGainReductionDb() };
     };
     addAndMakeVisible(*panel);
+    {
+        std::vector<ui::PresetScreen::Entry> entries;
+        const auto& list = factoryPresets();
+        for (size_t i = 0; i < list.size(); ++i)
+            entries.push_back({ static_cast<int>(i) + 1, list[i].genre, list[i].group, list[i].name, list[i].note });
+        presets->setEntries(std::move(entries));
+    }
+    presets->onSelect = [this](int program)
+    {
+        processor.setCurrentProgram(program);
+        processor.updateHostDisplay(juce::AudioProcessorListener::ChangeDetails().withProgramChanged(true));
+        refresh();
+    };
+    addAndMakeVisible(*presets);
 
     setResizable(true, true);
     setResizeLimits(kEditorWidth / 2, kEditorHeight / 2, kEditorWidth * 2, kEditorHeight * 2);
@@ -47,6 +62,7 @@ void HamloRedWallEditor::refresh()
         values.switches[i] = juce::roundToInt(processor.parameterValue(Panel::keyFor(static_cast<Panel::Switch>(i))));
     values.on = processor.isOn();
     panel->setValues(values);
+    presets->setCurrent(processor.getCurrentProgram(), processor.programModified());
 }
 
 void HamloRedWallEditor::beginGesture(const juce::String& id)
@@ -104,5 +120,6 @@ void HamloRedWallEditor::selectSoftwareRenderer()
 void HamloRedWallEditor::resized()
 {
     panel->setBounds(getLocalBounds());
+    presets->placeOnStage(panel->contentBounds());
 }
 } // namespace hamlo::redwall

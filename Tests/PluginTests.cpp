@@ -1,7 +1,9 @@
 // The plug-in around the limiter: parameters and state of HPEQ's HamloRedWall module VST3, the fixed latency,
 // MIX / ON, block-size independence, mono, programs, the page.
 
+#include <map>
 #include <memory>
+#include <set>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
@@ -270,7 +272,7 @@ public:
         beginTest("Programs: Default, the 6 HPEQ limiter presets (CLASSIC) and 12 v2 presets; Default restores");
         {
             HamloRedWallProcessor p;
-            expectEquals(p.getNumPrograms(), 19);
+            expectEquals(p.getNumPrograms(), 219); // + the 200 genre presets
             for (int i = 1; i <= 6; ++i)
             {
                 p.setCurrentProgram(i);
@@ -286,7 +288,7 @@ public:
         }
 
         beginTest("Every program at MIX 100 %: drums +12 dB stay under its LIMIT (sample peak); a parallel one (MIX < 100 %) passes the dry part by design");
-        for (int i = 1; i < 19; ++i)
+        for (int i = 1; i < 219; ++i) // with the 200 genre presets
         {
             HamloRedWallProcessor p;
             p.setCurrentProgram(i);
@@ -297,6 +299,81 @@ public:
             const auto y = render(p, hot, 512);
             const double peak = 20.0 * std::log10(y.getMagnitude(0, y.getNumSamples()));
             expect(peak <= p.parameterValue("ceilingDb") + 1.0e-3, p.getProgramName(i) + ": " + juce::String(peak, 3) + " dBFS");
+        }
+
+        beginTest("Colour stage on from the start: no fade from the dry signal (which LOUDNESS -30 pushed into LIMIT for 10 ms); DRIVE 100 % stays well under LIMIT");
+        {
+            HamloRedWallProcessor p;
+            p.setParameterValue("thresholdDb", -30.0);
+            p.setParameterValue("drive", 1.0);
+            const auto y = render(p, loop, 512);
+            const double first = 20.0 * std::log10(y.getMagnitude(0, 0, 4800) + 1.0e-9), all = 20.0 * std::log10(y.getMagnitude(0, y.getNumSamples()) + 1.0e-9);
+            logMessage("  peak first 100 ms " + juce::String(first, 2) + " dBFS, all " + juce::String(all, 2) + " dBFS (before the fix the first 100 ms hit -1, LIMIT)");
+            // (first version asked for -9 dB, near LIMIT / 3.5 = -11.9; clipped drums overshoot that to about -6.7 dBFS
+            // through the oversampler and the DC blocker - still under LIMIT; docs/GENRE_PRESETS.md)
+            expect(first <= -6.0 && all <= -6.0);
+        }
+
+        beginTest("Genre presets (docs/GENRE_PRESETS.md): Boom Bap, Trap, Techno, DnB x 50, each in the ten groups; names unique per genre; the host list shows genre / group / name");
+        {
+            const auto& list = redwall::factoryPresets();
+            std::map<juce::String, int> perGenre;
+            std::map<juce::String, std::set<juce::String>> groups, names;
+            for (const auto& preset : list)
+            {
+                const juce::String genre(preset.genre);
+                if (genre.isEmpty())
+                    continue;
+                ++perGenre[genre];
+                groups[genre].insert(preset.group);
+                expect(names[genre].insert(preset.name).second, genre + " / " + preset.name + " twice");
+                expect(juce::String(preset.note).isNotEmpty(), preset.name);
+            }
+            expectEquals(static_cast<int>(perGenre.size()), 4);
+            for (const auto& [genre, count] : perGenre)
+            {
+                expectEquals(count, 50, genre);
+                expectEquals(static_cast<int>(groups[genre].size()), 10, genre);
+            }
+            HamloRedWallProcessor p;
+            const int first = p.getNumPrograms() - 200;
+            expect(p.getProgramName(first).startsWith("Boom Bap / Kick / "), p.getProgramName(first));
+            p.setCurrentProgram(first);
+            expect(!p.programModified());
+            p.setParameterValue("mix", 0.3);
+            expect(p.programModified());
+        }
+
+        beginTest("Preset screen: top left on the page (the same place on every Hamlo plug-in); genre / group filter, arrows wrap, a host program change shows its genre and group; the program survives save / load");
+        {
+            HamloRedWallProcessor p;
+            std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
+            auto* editor = dynamic_cast<redwall::HamloRedWallEditor*>(e.get());
+            expect(editor != nullptr);
+            if (editor != nullptr)
+            {
+                auto& screen = editor->getPresetScreen();
+                const auto expectedBounds = juce::Rectangle<float>(56.0f, 20.0f, 336.0f, 116.0f).toNearestInt();
+                expect(screen.getBounds() == expectedBounds, screen.getBounds().toString());
+                const int first = p.getNumPrograms() - 200;
+                screen.setFilter("Trap", "Kick");
+                const auto kicks = screen.filtered();
+                expectEquals(static_cast<int>(kicks.size()), 6);
+                screen.setCurrent(kicks.back(), false);
+                screen.step(1); // wraps to the first Trap kick
+                expectEquals(p.getCurrentProgram(), kicks.front());
+                p.setCurrentProgram(first); // Boom Bap / Kick from the host
+                screen.setCurrent(first, false);
+                expect(screen.genre() == "Boom Bap" && screen.group() == "Kick", screen.genre() + " / " + screen.group());
+                screen.setFilter("All", "All");
+                expectEquals(static_cast<int>(screen.filtered().size()), p.getNumPrograms() - 1);
+            }
+            juce::MemoryBlock saved;
+            p.setCurrentProgram(p.getNumPrograms() - 1);
+            p.getStateInformation(saved);
+            HamloRedWallProcessor q;
+            q.setStateInformation(saved.getData(), static_cast<int>(saved.getSize()));
+            expectEquals(q.getCurrentProgram(), p.getNumPrograms() - 1);
         }
 
         beginTest("Page: 1180 x 820, resizable; knobs, STYLE, levers and ON write the parameters; host changes come back");

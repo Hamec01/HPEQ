@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloRedWall VERSION 0.2.0 LANGUAGES C CXX)
+project(HamloRedWall VERSION 0.3.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -51,6 +51,7 @@ add_library(HamloRedWall_Shared STATIC
     Source/UI/BlackSteel.cpp
     Source/UI/HamloRedWallPanel.cpp
     Source/UI/ModuleHelp.cpp
+    Source/UI/PresetScreen.cpp
     Source/Plugin/Presets.cpp
     Source/Plugin/HamloRedWallProcessor.cpp
     Source/Plugin/HamloRedWallEditor.cpp)
@@ -141,6 +142,7 @@ target_link_libraries(HamloRedWall_Snapshot
         HamloRedWall_Shared
         HamloRedWall_Assets
         juce::juce_gui_basics
+        juce::juce_audio_utils
         juce::juce_dsp
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
@@ -150,6 +152,19 @@ target_link_libraries(HamloRedWall_Snapshot
 add_executable(HamloRedWall_Lab Tests/LabMain.cpp)
 target_compile_definitions(HamloRedWall_Lab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
 target_link_libraries(HamloRedWall_Lab
+    PRIVATE
+        HamloRedWall_Shared
+        HamloRedWall_Assets
+        juce::juce_audio_utils
+        juce::juce_dsp
+        juce::juce_audio_formats
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+
+# Genre presets on their material: LOUDNESS calibration and the check (docs/GENRE_PRESETS.md).
+add_executable(HamloRedWall_PresetLab Tests/PresetLabMain.cpp)
+target_compile_definitions(HamloRedWall_PresetLab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(HamloRedWall_PresetLab
     PRIVATE
         HamloRedWall_Shared
         HamloRedWall_Assets

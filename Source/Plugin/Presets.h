@@ -11,9 +11,17 @@ namespace hamlo::redwall
 // the values it sets, in the parameter IDs and units; everything else is the default. `mix` is the MIX knob.
 struct Preset
 {
+    enum Depth { Gentle, Medium, Heavy };
     const char* name;
     float mix;
     std::vector<std::pair<const char*, double>> values;
+    // the genre presets (docs/GENRE_PRESETS.md): genre and group on the preset screen, one line on what it is for,
+    // and the material / gain-reduction depth HamloRedWall_PresetLab calibrates LOUDNESS on; empty for the others
+    const char* genre = "";
+    const char* group = "";
+    const char* note = "";
+    const char* material = "";
+    Depth depth = Medium;
 };
 
 const std::vector<Preset>& factoryPresets();
