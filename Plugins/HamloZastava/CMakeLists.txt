@@ -1,0 +1,149 @@
+cmake_minimum_required(VERSION 3.22)
+
+project(HamloZastava VERSION 0.1.0 LANGUAGES C CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+# --- JUCE -------------------------------------------------------------------------------------
+# The same JUCE version as HPEQ (the gate/expander came from there). A local checkout avoids a download.
+set(HAMLO_ZASTAVA_JUCE_VERSION 8.0.12)
+set(HAMLO_ZASTAVA_JUCE_DIR "" CACHE PATH "Local JUCE ${HAMLO_ZASTAVA_JUCE_VERSION} checkout (empty = FetchContent)")
+
+if (HAMLO_ZASTAVA_JUCE_DIR)
+    add_subdirectory("${HAMLO_ZASTAVA_JUCE_DIR}" "${CMAKE_BINARY_DIR}/JUCE")
+    set(HAMLO_ZASTAVA_JUCE_SOURCE "${HAMLO_ZASTAVA_JUCE_DIR}")
+else()
+    include(FetchContent)
+    FetchContent_Declare(JUCE
+        GIT_REPOSITORY https://github.com/juce-framework/JUCE.git
+        GIT_TAG ${HAMLO_ZASTAVA_JUCE_VERSION}
+        GIT_SHALLOW TRUE)
+    FetchContent_MakeAvailable(JUCE)
+    set(HAMLO_ZASTAVA_JUCE_SOURCE "${juce_SOURCE_DIR}")
+endif()
+
+# JUCE 8 creates a Direct2D / D3D11 device per Windows plug-in DLL; FL Studio may unload the plug-in while
+# transport runs and some NVIDIA drivers hang tearing that device down. The patch adds compile switches
+# (HPEQ_JUCE_DEFAULT_*, named after the project they came from) so this target can default to the GDI
+# software renderer. A local JUCE must already carry the patch (HPEQ's fetched copy does).
+if (WIN32 AND NOT HAMLO_ZASTAVA_JUCE_DIR)
+    include(cmake/PatchJuceWindowsRenderer.cmake)
+    hpeq_patch_juce_windows_renderer("${HAMLO_ZASTAVA_JUCE_SOURCE}")
+endif()
+
+enable_testing()
+
+# --- Assets: HPEQ's Black Steel pictures (scratches, tubes, the hardware pack), embedded as HpeqAssets -------
+file(GLOB HAMLO_ZASTAVA_SCRATCHES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/scratches/*.png)
+file(GLOB_RECURSE HAMLO_ZASTAVA_HARDWARE CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/hardware_pack/*.png)
+file(GLOB HAMLO_ZASTAVA_TUBES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/tubes/*.png)
+juce_add_binary_data(HamloZastava_Assets NAMESPACE HpeqAssets SOURCES ${HAMLO_ZASTAVA_SCRATCHES} ${HAMLO_ZASTAVA_HARDWARE} ${HAMLO_ZASTAVA_TUBES})
+set_target_properties(HamloZastava_Assets PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+# --- Shared code: HPEQ's module-plug-in stack (Source/ is HPEQ's, verbatim; docs/SYNC_WITH_HPEQ.md) -----------
+add_library(HamloZastava_Shared STATIC
+    Source/Core/ModulePresets.cpp
+    Source/DSP/Biquad.cpp
+    Source/DSP/FxNodeProcessor.cpp
+    Source/DSP/LayerEngine.cpp
+    Source/DSP/PreEqProcessor.cpp
+    Source/DSP/Processors.cpp
+    Source/DSP/ReverbProcessor.cpp
+    Source/DSP/HamloVerb.cpp
+    Source/DSP/HamloEcho.cpp
+    Source/DSP/HamloMag.cpp
+    Source/DSP/ProcessorsM6.cpp
+    Source/DSP/HamloRevolution.cpp
+    Source/DSP/HamloRedWall.cpp
+    Source/DSP/HamloUdarnik.cpp
+    Source/DSP/HamloZastava.cpp
+    Source/DSP/HamloShirota.cpp
+    Source/DSP/CrossoverTree.cpp
+    Source/DSP/EqDesign.cpp
+    Source/UI/BlackSteel.cpp
+    Source/UI/HamloCompPanel.cpp
+    Source/UI/HamloVerbPanel.cpp
+    Source/UI/HamloEchoPanel.cpp
+    Source/UI/HamloMagPanel.cpp
+    Source/UI/HamloRedWallPanel.cpp
+    Source/UI/HamloUdarnikPanel.cpp
+    Source/UI/HamloZastavaPanel.cpp
+    Source/UI/HamloShirotaPanel.cpp
+    Source/Standalone/ModuleVariant.cpp
+    Source/Standalone/ModulePluginProcessor.cpp
+    Source/Standalone/ModulePluginEditor.cpp
+    Source/UI/PresetScreen.cpp)
+target_include_directories(HamloZastava_Shared
+    PUBLIC Source
+    PRIVATE
+        "${HAMLO_ZASTAVA_JUCE_SOURCE}/modules"
+        "${CMAKE_CURRENT_BINARY_DIR}/juce_binarydata_HamloZastava_Assets/JuceLibraryCode")
+target_compile_definitions(HamloZastava_Shared
+    PUBLIC
+        JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0
+        JUCE_VST3_CAN_REPLACE_VST2=0)
+add_dependencies(HamloZastava_Shared HamloZastava_Assets) # BinaryData.h first
+target_link_libraries(HamloZastava_Shared
+    PRIVATE
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+
+# --- The plug-in: identity = HPEQ's HamloZastava module VST3 (BBLB / HmZa / com.hamloprod.hamlozastava, kind 6)
+juce_add_plugin(HamloZastava
+    COMPANY_NAME "HamloProd"
+    BUNDLE_ID com.hamloprod.hamlozastava
+    IS_SYNTH FALSE
+    NEEDS_MIDI_INPUT FALSE
+    NEEDS_MIDI_OUTPUT FALSE
+    IS_MIDI_EFFECT FALSE
+    EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+    COPY_PLUGIN_AFTER_BUILD FALSE
+    PLUGIN_MANUFACTURER_CODE BBLB
+    PLUGIN_CODE HmZa
+    VST3_CATEGORIES Fx
+    FORMATS VST3
+    PRODUCT_NAME "HamloZastava")
+target_sources(HamloZastava PRIVATE Source/Standalone/ModulePluginEntry.cpp)
+target_compile_definitions(HamloZastava PRIVATE
+    HPEQ_MODULE_KIND=6
+    HPEQ_JUCE_DEFAULT_IMAGE_TYPE=SoftwareImageType
+    HPEQ_JUCE_DEFAULT_RENDERING_ENGINE=0
+    JUCE_WEB_BROWSER=0
+    JUCE_USE_CURL=0
+    JUCE_VST3_CAN_REPLACE_VST2=0
+    JUCE_DISPLAY_SPLASH_SCREEN=0)
+target_link_libraries(HamloZastava
+    PRIVATE
+        HamloZastava_Shared
+        HamloZastava_Assets
+        juce::juce_audio_utils
+        juce::juce_dsp
+        juce::juce_audio_formats
+        juce::juce_cryptography
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+
+# --- Tests and the page snapshot ----------------------------------------------------------------------
+foreach(tool Tests Snapshot)
+    if (tool STREQUAL "Tests")
+        add_executable(HamloZastava_Tests Tests/TestMain.cpp Tests/PluginTests.cpp)
+    else()
+        add_executable(HamloZastava_Snapshot Tests/SnapshotMain.cpp)
+    endif()
+    target_compile_definitions(HamloZastava_${tool} PRIVATE HPEQ_MODULE_KIND=6 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+    target_link_libraries(HamloZastava_${tool}
+        PRIVATE
+            HamloZastava_Shared
+            HamloZastava_Assets
+            juce::juce_audio_utils
+            juce::juce_dsp
+            juce::juce_audio_formats
+            juce::juce_cryptography
+            juce::juce_recommended_config_flags
+            juce::juce_recommended_warning_flags)
+endforeach()
+add_test(NAME HamloZastava_Tests COMMAND HamloZastava_Tests)
