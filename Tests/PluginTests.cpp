@@ -1,7 +1,9 @@
 // The plug-in around the saturator: parameters and state of HPEQ's HamloMag module VST3, the fixed latency,
 // MIX / ON, block-size independence, mono, programs, the page and the preset screen.
 
+#include <map>
 #include <memory>
+#include <set>
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
@@ -54,7 +56,7 @@ public:
         {
             HamloMagProcessor p;
             const auto& specs = saturator::parameterSpecs();
-            expectEquals(static_cast<int>(specs.size()), 21);
+            expectEquals(static_cast<int>(specs.size()), 27); // 21 of HPEQ + 6 of v2
             for (const auto& spec : specs)
             {
                 auto* param = p.parameter(spec.id);
@@ -65,7 +67,7 @@ public:
             expect(p.getBypassParameter() != nullptr && !p.getBypassParameter()->get());
         }
 
-        beginTest("Latency: fixed at 4x + the TAPE wow delay whatever OVERSAMPLING / MODEL");
+        beginTest("Latency: fixed at the SAMPLER + 8x + the TAPE wow delay whatever OVERSAMPLING / MODEL / SAMPLER");
         int latency = 0;
         {
             HamloMagProcessor p;
@@ -158,10 +160,10 @@ public:
             expect(!bitExact(y, delayed(m, latency)));
         }
 
-        beginTest("Programs: Default plus the 7 HPEQ saturator presets; Default restores");
+        beginTest("Programs: Default plus the 7 HPEQ saturator presets and the 200 genre presets; Default restores");
         {
             HamloMagProcessor p;
-            expectEquals(p.getNumPrograms(), 8);
+            expectEquals(p.getNumPrograms(), 208);
             expectEquals(p.getProgramName(2), juce::String("Tube Glow"));
             p.setCurrentProgram(2);
             expectWithinAbsoluteError(p.parameterValue("driveDb"), 8.0, 1.0e-3);
@@ -171,7 +173,69 @@ public:
                 expectWithinAbsoluteError(p.parameterValue(spec.id), static_cast<double>(spec.defaultValue), 1.0e-3, spec.id);
         }
 
-        beginTest("Page: 1180 x 820, resizable; the preset screen top left; a knob writes its parameter");
+        beginTest("Genre presets (docs/GENRE_PRESETS.md): Boom Bap, Trap, Techno, DnB x 50, each in the ten groups; names unique per genre; the host list shows genre / group / name");
+        {
+            const auto& list = saturator::factoryPresets();
+            std::map<juce::String, int> perGenre;
+            std::map<juce::String, std::set<juce::String>> groups, names;
+            for (const auto& preset : list)
+            {
+                const juce::String genre(preset.genre);
+                if (genre.isEmpty())
+                    continue;
+                ++perGenre[genre];
+                groups[genre].insert(preset.group);
+                expect(names[genre].insert(preset.name).second, genre + " / " + preset.name + " twice");
+                expect(juce::String(preset.note).isNotEmpty(), preset.name);
+            }
+            expectEquals(static_cast<int>(perGenre.size()), 4);
+            for (const auto& [genre, count] : perGenre)
+            {
+                expectEquals(count, 50, genre);
+                expectEquals(static_cast<int>(groups[genre].size()), 10, genre);
+            }
+            HamloMagProcessor p;
+            const int first = p.getNumPrograms() - 200;
+            expect(p.getProgramName(first).startsWith("Boom Bap / Kick / "), p.getProgramName(first));
+            p.setCurrentProgram(first);
+            expect(!p.programModified());
+            p.setParameterValue("mix", 0.3);
+            expect(p.programModified());
+        }
+
+        beginTest("Preset screen: top left on the page (the same place on every Hamlo plug-in); genre / group filter, arrows wrap, a host program change shows its genre and group; the program survives save / load");
+        {
+            HamloMagProcessor p;
+            std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
+            auto* editor = dynamic_cast<saturator::HamloMagEditor*>(e.get());
+            expect(editor != nullptr);
+            if (editor != nullptr)
+            {
+                auto& screen = editor->getPresetScreen();
+                const auto expectedBounds = juce::Rectangle<float>(56.0f, 20.0f, 336.0f, 116.0f).toNearestInt();
+                expect(screen.getBounds() == expectedBounds, screen.getBounds().toString());
+                const int first = p.getNumPrograms() - 200;
+                screen.setFilter("Trap", "Kick");
+                const auto kicks = screen.filtered();
+                expectEquals(static_cast<int>(kicks.size()), 6);
+                screen.setCurrent(kicks.back(), false);
+                screen.step(1); // wraps to the first Trap kick
+                expectEquals(p.getCurrentProgram(), kicks.front());
+                p.setCurrentProgram(first); // Boom Bap / Kick from the host
+                screen.setCurrent(first, false);
+                expect(screen.genre() == "Boom Bap" && screen.group() == "Kick", screen.genre() + " / " + screen.group());
+                screen.setFilter("All", "All");
+                expectEquals(static_cast<int>(screen.filtered().size()), p.getNumPrograms() - 1);
+            }
+            juce::MemoryBlock saved;
+            p.setCurrentProgram(p.getNumPrograms() - 1);
+            p.getStateInformation(saved);
+            HamloMagProcessor q;
+            q.setStateInformation(saved.getData(), static_cast<int>(saved.getSize()));
+            expectEquals(q.getCurrentProgram(), p.getNumPrograms() - 1);
+        }
+
+        beginTest("Page: 1180 x 940, resizable; the preset screen top left; a knob writes its parameter");
         {
             HamloMagProcessor p;
             std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());

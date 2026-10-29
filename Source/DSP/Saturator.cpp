@@ -18,7 +18,7 @@ int SaturatorProcessor::latencySamples(int oversamplingIndex)
     // Measured, not taken from Oversampling::getLatencyInSamples(): for 4x (two half-band stages) that
     // reports 60 samples while the chain delays by 61 (M6 test "measured latency equals reported").
     // White noise through up -> down without shaping; the latency is the lag of maximum correlation.
-    static const std::array<int, 3> table = []
+    static const std::array<int, 4> table = []
     {
         using OS = juce::dsp::Oversampling<float>;
         constexpr int n = 4096, maxLag = 400;
@@ -29,8 +29,8 @@ int SaturatorProcessor::latencySamples(int oversamplingIndex)
             state = state * 1664525u + 1013904223u;
             v = static_cast<float>(state >> 8) / static_cast<float>(1u << 24) - 0.5f;
         }
-        std::array<int, 3> result { 0, 0, 0 };
-        for (int stages = 1; stages <= 2; ++stages)
+        std::array<int, 4> result { 0, 0, 0, 0 };
+        for (int stages = 1; stages <= 3; ++stages)
         {
             OS os(1, static_cast<size_t>(stages), OS::filterHalfBandFIREquiripple, true, true);
             os.initProcessing(static_cast<size_t>(n));
@@ -54,7 +54,7 @@ int SaturatorProcessor::latencySamples(int oversamplingIndex)
         }
         return result;
     }();
-    return table[static_cast<size_t>(std::clamp(oversamplingIndex, 0, 2))];
+    return table[static_cast<size_t>(std::clamp(oversamplingIndex, 0, 3))];
 }
 
 int SaturatorProcessor::latencySamples(const FxSlotParams& p, double sampleRate)
@@ -66,7 +66,7 @@ void SaturatorProcessor::prepare(double newSampleRate, int maxBlockSize)
 {
     sampleRate = newSampleRate;
     using OS = juce::dsp::Oversampling<float>;
-    for (int i = 0; i < 2; ++i)
+    for (int i = 0; i < 3; ++i)
     {
         oversamplers[static_cast<size_t>(i)] = std::make_unique<OS>(kMaxChannels, static_cast<size_t>(i + 1), OS::filterHalfBandFIREquiripple, true, true);
         oversamplers[static_cast<size_t>(i)]->initProcessing(static_cast<size_t>(std::min(maxBlockSize, kOversamplingChunk)));
@@ -108,7 +108,7 @@ void SaturatorProcessor::process(float* const* channels, int numChannels, int nu
 {
     if (std::lround(p.values[slot::kSatModel]) > 0)
     {
-        const int os = std::clamp(static_cast<int>(std::lround(p.values[slot::kOversampling])), 0, 2);
+        const int os = std::clamp(static_cast<int>(std::lround(p.values[slot::kOversampling])), 0, 3);
         if (os != activeOversampling)
         {
             if (os > 0)
@@ -155,7 +155,7 @@ void SaturatorProcessor::process(float* const* channels, int numChannels, int nu
         slopeAtBias = 1.0f - std::tanh(1.4f * bias) * std::tanh(1.4f * bias);
     const float norm = (p.values[slot::kAutoGain] > 0.5f ? 1.0f / (g * slopeAtBias) : 1.0f) * trim;
 
-    const int os = std::clamp(static_cast<int>(std::lround(p.values[slot::kOversampling])), 0, 2);
+    const int os = std::clamp(static_cast<int>(std::lround(p.values[slot::kOversampling])), 0, 3);
     if (os != activeOversampling)
     {
         if (os > 0)

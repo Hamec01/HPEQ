@@ -1,0 +1,1415 @@
+{
+  "Boom Bap/Kick/Classic SP Knock": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "SP",
+    "sub": 50,
+    "thump": 1,
+    "dyn": 0.4
+  },
+  "Boom Bap/Kick/Dusty Tape Thump": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "thump": 1,
+    "tone": -0.2,
+    "bias": 0.4
+  },
+  "Boom Bap/Kick/Jazzy Warm Kick": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "tone": -0.1
+  },
+  "Boom Bap/Kick/Gold Iron Punch": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "dyn": 0.6,
+    "sub": 60
+  },
+  "Boom Bap/Kick/Underground Grit Kick": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "SP",
+    "sub": 70,
+    "dyn": 0.5
+  },
+  "Boom Bap/Kick/Lofi Vinyl Kick": {
+    "depth": "m",
+    "model": "VINYL",
+    "sampler": "S950",
+    "crackle": 0.1,
+    "tone": -0.3
+  },
+  "Boom Bap/Snare / Clap/Classic SP Crack": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "SP",
+    "dyn": 0.5
+  },
+  "Boom Bap/Snare / Clap/Dusty Fat Snare": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "bias": 0.35,
+    "tone": -0.15
+  },
+  "Boom Bap/Snare / Clap/Jazzy Brush Warmth": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.6,
+    "tone": -0.2
+  },
+  "Boom Bap/Snare / Clap/Gold Iron Snap": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "dyn": 0.7,
+    "tone": 0.1
+  },
+  "Boom Bap/Snare / Clap/Underground Dirt Snare": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "SP",
+    "punish": 1,
+    "mix": 0.7
+  },
+  "Boom Bap/Snare / Clap/Lofi S950 Snare": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "S950",
+    "speed": 2,
+    "tone": -0.3
+  },
+  "Boom Bap/Hats / Cymbals/Classic Hat Shine": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "tone": 0.1,
+    "lc": 200
+  },
+  "Boom Bap/Hats / Cymbals/Dusty Hat Dull": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 2,
+    "bias": 0.3,
+    "hc": 9000
+  },
+  "Boom Bap/Hats / Cymbals/Jazzy Ride Air": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.4,
+    "lc": 300
+  },
+  "Boom Bap/Hats / Cymbals/Gold Hat Grit": {
+    "depth": "m",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "lc": 400,
+    "mix": 0.6
+  },
+  "Boom Bap/Hats / Cymbals/Lofi SP Hats": {
+    "depth": "h",
+    "model": "CLASSIC",
+    "sampler": "SP",
+    "lc": 300
+  },
+  "Boom Bap/Percussion/Classic Perc Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 100
+  },
+  "Boom Bap/Percussion/Dusty Bongo Warm": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "tone": -0.2
+  },
+  "Boom Bap/Percussion/Jazzy Shaker Soft": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "hc": 10000
+  },
+  "Boom Bap/Percussion/Underground Perc Crunch": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "SP",
+    "mix": 0.7
+  },
+  "Boom Bap/Drum Bus/Classic SP Bus": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "SP",
+    "sub": 60,
+    "mix": 0.8
+  },
+  "Boom Bap/Drum Bus/Dusty Tape Bus": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "thump": 1,
+    "wow": 0.05
+  },
+  "Boom Bap/Drum Bus/Jazzy Bus Glow": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.4
+  },
+  "Boom Bap/Drum Bus/Gold Iron Bus": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 80,
+    "dyn": 0.3
+  },
+  "Boom Bap/Drum Bus/Underground Crush Bus": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "SP",
+    "sub": 90,
+    "mix": 0.5
+  },
+  "Boom Bap/Drum Bus/Lofi Vinyl Bus": {
+    "depth": "m",
+    "model": "VINYL",
+    "sampler": "S950",
+    "crackle": 0.15,
+    "tone": -0.25
+  },
+  "Boom Bap/Drum Bus/Knock MPC Bus": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "MPC",
+    "dyn": 0.5
+  },
+  "Boom Bap/808 / Bass/Classic Bass Tape": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 60,
+    "phone": 0.3
+  },
+  "Boom Bap/808 / Bass/Dusty Upright Tube": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "phone": 0.2
+  },
+  "Boom Bap/808 / Bass/Jazzy Bass Warm": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "bias": 0.45
+  },
+  "Boom Bap/808 / Bass/Gold Iron Bass": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 70,
+    "phone": 0.4
+  },
+  "Boom Bap/808 / Bass/Underground Sub Grit": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 80,
+    "phone": 0.5
+  },
+  "Boom Bap/Vocals/Classic Rap Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 90
+  },
+  "Boom Bap/Vocals/Dusty Vocal Tube": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "lc": 100
+  },
+  "Boom Bap/Vocals/Jazzy Vocal Iron": {
+    "depth": "g",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 90,
+    "tone": -0.1
+  },
+  "Boom Bap/Vocals/Gold Adlib Grit": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "lc": 150,
+    "mix": 0.6,
+    "material": "backing"
+  },
+  "Boom Bap/Vocals/Lofi Phone Vocal": {
+    "depth": "h",
+    "model": "CLASSIC",
+    "sampler": "S950",
+    "lc": 400,
+    "hc": 4000
+  },
+  "Boom Bap/Keys / Piano/Classic Rhodes Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "wow": 0.08
+  },
+  "Boom Bap/Keys / Piano/Dusty Piano Vinyl": {
+    "depth": "m",
+    "model": "VINYL",
+    "sampler": "",
+    "crackle": 0.12,
+    "tone": -0.2
+  },
+  "Boom Bap/Keys / Piano/Jazzy Keys Tube": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.6
+  },
+  "Boom Bap/Keys / Piano/Gold Keys S950": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "S950",
+    "wow": 0.1
+  },
+  "Boom Bap/Samples / Melody/Classic Soul Chop SP": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "SP",
+    "wow": 0.1,
+    "lc": 60
+  },
+  "Boom Bap/Samples / Melody/Dusty Vinyl Sample": {
+    "depth": "m",
+    "model": "VINYL",
+    "sampler": "S950",
+    "crackle": 0.2,
+    "wow": 0.12,
+    "hiss": 0.05
+  },
+  "Boom Bap/Samples / Melody/Jazzy Loop Warmth": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "wow": 0.05
+  },
+  "Boom Bap/Samples / Melody/Lofi Cassette Loop": {
+    "depth": "h",
+    "model": "TAPE",
+    "sampler": "MPC",
+    "speed": 2,
+    "wow": 0.35,
+    "hiss": 0.12,
+    "hc": 9000
+  },
+  "Boom Bap/Master/Classic Boom Bap Master": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 40,
+    "match": 1
+  },
+  "Boom Bap/Master/Dusty Tape Master": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "wow": 0.04,
+    "match": 1
+  },
+  "Boom Bap/Master/Gold Iron Master": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 50,
+    "match": 1
+  },
+  "Boom Bap/Master/Lofi Vinyl Master": {
+    "depth": "m",
+    "model": "VINYL",
+    "sampler": "",
+    "crackle": 0.1,
+    "tone": -0.15,
+    "match": 1
+  },
+  "Trap/Kick/ATL Kick Click": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 60,
+    "dyn": 0.7,
+    "tone": 0.15
+  },
+  "Trap/Kick/Dark Kick Weight": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 50,
+    "eo": 0.4
+  },
+  "Trap/Kick/Cloud Kick Soft": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "tone": -0.1
+  },
+  "Trap/Kick/Rage Kick Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 70,
+    "punish": 1
+  },
+  "Trap/Kick/Memphis MPC Kick": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "MPC",
+    "sub": 60,
+    "thump": 1
+  },
+  "Trap/Kick/Luxury Kick Polish": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 50,
+    "eo": 0.3,
+    "tone": 0.1
+  },
+  "Trap/Snare / Clap/ATL Clap Bite": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "dyn": 0.6,
+    "tone": 0.15
+  },
+  "Trap/Snare / Clap/Dark Snare Body": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "tone": -0.1
+  },
+  "Trap/Snare / Clap/Cloud Clap Air": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 150
+  },
+  "Trap/Snare / Clap/Rage Snare Smash": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "punish": 1,
+    "mix": 0.8
+  },
+  "Trap/Snare / Clap/Memphis Rim Dirt": {
+    "depth": "m",
+    "model": "CLASSIC",
+    "sampler": "MPC",
+    "dyn": 0.5
+  },
+  "Trap/Snare / Clap/Luxury Clap Shine": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.3,
+    "tone": 0.2,
+    "lc": 200
+  },
+  "Trap/Hats / Cymbals/ATL Hat Crisp": {
+    "depth": "g",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 500,
+    "tone": 0.1
+  },
+  "Trap/Hats / Cymbals/Dark Hat Tape": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "hc": 12000,
+    "lc": 300
+  },
+  "Trap/Hats / Cymbals/Rage Hat Fizz": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "lc": 600,
+    "mix": 0.6
+  },
+  "Trap/Hats / Cymbals/Memphis Hat MPC": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "MPC",
+    "lc": 300
+  },
+  "Trap/Hats / Cymbals/Luxury Hat Silk": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.4,
+    "lc": 500
+  },
+  "Trap/Percussion/ATL Perc Pop": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "dyn": 0.5,
+    "lc": 150
+  },
+  "Trap/Percussion/Dark Perc Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1
+  },
+  "Trap/Percussion/Rage Perc Crunch": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "mix": 0.7,
+    "lc": 200
+  },
+  "Trap/Percussion/Luxury Perc Glow": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.4
+  },
+  "Trap/Drum Bus/ATL Drum Glue": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 60
+  },
+  "Trap/Drum Bus/Dark Bus Weight": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 60,
+    "eo": 0.4
+  },
+  "Trap/Drum Bus/Cloud Bus Haze": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "wow": 0.05,
+    "tone": -0.1
+  },
+  "Trap/Drum Bus/Rage Bus Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 80,
+    "punish": 1,
+    "mix": 0.6
+  },
+  "Trap/Drum Bus/Memphis Bus Dirt": {
+    "depth": "m",
+    "model": "CLASSIC",
+    "sampler": "MPC",
+    "sub": 70
+  },
+  "Trap/Drum Bus/Luxury Bus Polish": {
+    "depth": "g",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 50,
+    "tone": 0.1
+  },
+  "Trap/Drum Bus/Dark Parallel Smash": {
+    "depth": "h",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 90,
+    "punish": 1,
+    "mix": 0.4
+  },
+  "Trap/808 / Bass/ATL 808 Phone": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 55,
+    "phone": 0.8
+  },
+  "Trap/808 / Bass/Dark 808 Weight": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 50,
+    "phone": 0.6,
+    "thump": 1
+  },
+  "Trap/808 / Bass/Rage 808 Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 60,
+    "phone": 0.5,
+    "punish": 1
+  },
+  "Trap/808 / Bass/Memphis 808 Grit": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 65,
+    "phone": 0.7
+  },
+  "Trap/808 / Bass/Luxury Sub Clean": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 80,
+    "phone": 0.4,
+    "eo": 0.3
+  },
+  "Trap/Vocals/ATL Vocal Edge": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 120,
+    "tone": 0.1
+  },
+  "Trap/Vocals/Dark Vocal Tape": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 100,
+    "speed": 1
+  },
+  "Trap/Vocals/Cloud Vocal Air": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.4,
+    "lc": 120,
+    "tone": 0.1
+  },
+  "Trap/Vocals/Rage Vocal Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "lc": 200,
+    "punish": 1,
+    "mix": 0.7
+  },
+  "Trap/Vocals/Luxury Adlib Shine": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.3,
+    "lc": 150,
+    "material": "backing"
+  },
+  "Trap/Keys / Piano/ATL Piano Warm": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "tone": -0.05
+  },
+  "Trap/Keys / Piano/Dark Keys Tube": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "tone": -0.15
+  },
+  "Trap/Keys / Piano/Cloud Pad Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "wow": 0.12
+  },
+  "Trap/Keys / Piano/Luxury Bell Iron": {
+    "depth": "g",
+    "model": "IRON",
+    "sampler": "",
+    "tone": 0.1
+  },
+  "Trap/Samples / Melody/ATL Loop Glue": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "wow": 0.04
+  },
+  "Trap/Samples / Melody/Dark Melody Vinyl": {
+    "depth": "m",
+    "model": "VINYL",
+    "sampler": "",
+    "crackle": 0.08,
+    "tone": -0.2
+  },
+  "Trap/Samples / Melody/Cloud Guitar Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "wow": 0.15
+  },
+  "Trap/Samples / Melody/Rage Synth Fuzz": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "punish": 1,
+    "mix": 0.7
+  },
+  "Trap/Master/ATL Trap Master": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 50,
+    "match": 1
+  },
+  "Trap/Master/Dark Master Weight": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 40,
+    "thump": 1,
+    "match": 1
+  },
+  "Trap/Master/Rage Loud Master": {
+    "depth": "h",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 60,
+    "match": 1
+  },
+  "Trap/Master/Luxury Clean Master": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 45,
+    "eo": 0.3,
+    "match": 1
+  },
+  "Techno/Kick/Peak Kick Drive": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 60,
+    "dyn": 0.6
+  },
+  "Techno/Kick/Hypnotic Kick Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 50,
+    "speed": 0
+  },
+  "Techno/Kick/Minimal Kick Click": {
+    "depth": "g",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 70,
+    "dyn": 0.8,
+    "tone": 0.15
+  },
+  "Techno/Kick/Detroit Kick Warm": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 55,
+    "eo": 0.5
+  },
+  "Techno/Kick/Hard Kick Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 60,
+    "punish": 1,
+    "os": 3
+  },
+  "Techno/Kick/Dub Kick Round": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 45,
+    "thump": 1,
+    "tone": -0.15
+  },
+  "Techno/Snare / Clap/Peak Clap Drive": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "dyn": 0.5
+  },
+  "Techno/Snare / Clap/Minimal Clap Tick": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "lc": 250,
+    "tone": 0.1
+  },
+  "Techno/Snare / Clap/Detroit Clap Tape": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1
+  },
+  "Techno/Snare / Clap/Acid Clap Fuzz": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "mix": 0.7,
+    "os": 3
+  },
+  "Techno/Snare / Clap/Hard Clap Smash": {
+    "depth": "h",
+    "model": "IRON",
+    "sampler": "",
+    "punish": 1,
+    "os": 3
+  },
+  "Techno/Snare / Clap/Dub Snare Space": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "wow": 0.08,
+    "tone": -0.2
+  },
+  "Techno/Hats / Cymbals/Peak Hat Drive": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 400
+  },
+  "Techno/Hats / Cymbals/Hypnotic Hat Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 300,
+    "speed": 0
+  },
+  "Techno/Hats / Cymbals/Minimal Hat Air": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "lc": 600,
+    "tone": 0.1
+  },
+  "Techno/Hats / Cymbals/Acid Hat Fizz": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "lc": 500,
+    "mix": 0.5,
+    "os": 3
+  },
+  "Techno/Hats / Cymbals/Hard Ride Grit": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 400,
+    "dyn": 0.4
+  },
+  "Techno/Percussion/Peak Perc Iron": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 150
+  },
+  "Techno/Percussion/Hypnotic Perc Loop": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1
+  },
+  "Techno/Percussion/Minimal Click Shine": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "lc": 300,
+    "tone": 0.15
+  },
+  "Techno/Percussion/Detroit Conga Warm": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "tone": -0.1
+  },
+  "Techno/Drum Bus/Peak Drum Drive": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 70,
+    "dyn": 0.3
+  },
+  "Techno/Drum Bus/Hypnotic Bus Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 60
+  },
+  "Techno/Drum Bus/Minimal Bus Clean": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 60,
+    "eo": 0.3
+  },
+  "Techno/Drum Bus/Detroit Bus Tape": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 60,
+    "speed": 1,
+    "thump": 1
+  },
+  "Techno/Drum Bus/Hard Bus Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 80,
+    "punish": 1,
+    "mix": 0.6,
+    "os": 3
+  },
+  "Techno/Drum Bus/Dub Rumble Group": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 40,
+    "speed": 1,
+    "tone": -0.2
+  },
+  "Techno/Drum Bus/Hard Parallel Iron": {
+    "depth": "h",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 90,
+    "punish": 1,
+    "mix": 0.4
+  },
+  "Techno/808 / Bass/Peak Bass Drive": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 60,
+    "phone": 0.5
+  },
+  "Techno/808 / Bass/Hypnotic Rumble Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 45,
+    "speed": 1
+  },
+  "Techno/808 / Bass/Acid 303 Fuzz": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 80,
+    "dyn": 0.4,
+    "os": 3
+  },
+  "Techno/808 / Bass/Detroit Bass Warm": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 55,
+    "phone": 0.4,
+    "eo": 0.5
+  },
+  "Techno/808 / Bass/Minimal Sub Phone": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 90,
+    "phone": 0.7
+  },
+  "Techno/Vocals/Peak Vocal Chop Iron": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 150
+  },
+  "Techno/Vocals/Hypnotic Whisper Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 150,
+    "speed": 1,
+    "wow": 0.05
+  },
+  "Techno/Vocals/Detroit Soul Tube": {
+    "depth": "m",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "lc": 100
+  },
+  "Techno/Vocals/Dub Vocal Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 120,
+    "speed": 1,
+    "wow": 0.1
+  },
+  "Techno/Vocals/Hard Shout Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "lc": 250,
+    "punish": 1,
+    "mix": 0.7
+  },
+  "Techno/Keys / Piano/Detroit Chord Tape": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1
+  },
+  "Techno/Keys / Piano/Dub Chord Warm": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "wow": 0.06
+  },
+  "Techno/Keys / Piano/Peak Stab Iron": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "tone": 0.1
+  },
+  "Techno/Keys / Piano/Minimal Keys Clean": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.3
+  },
+  "Techno/Samples / Melody/Acid Lead Fuzz": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "dyn": 0.3,
+    "os": 3
+  },
+  "Techno/Samples / Melody/Hypnotic Loop Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "wow": 0.06
+  },
+  "Techno/Samples / Melody/Peak Synth Iron": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "tone": 0.05
+  },
+  "Techno/Samples / Melody/Hard Noise Crush": {
+    "depth": "h",
+    "model": "CLASSIC",
+    "sampler": "SP",
+    "mix": 0.6
+  },
+  "Techno/Master/Peak Club Master": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 50,
+    "match": 1
+  },
+  "Techno/Master/Hypnotic Tape Master": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 40,
+    "match": 1
+  },
+  "Techno/Master/Detroit Warm Master": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 45,
+    "eo": 0.4,
+    "match": 1
+  },
+  "Techno/Master/Hard Loud Master": {
+    "depth": "h",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 60,
+    "punish": 1,
+    "match": 1
+  },
+  "DnB/Kick/Modern Kick Drive": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 60,
+    "dyn": 0.6
+  },
+  "DnB/Kick/Roller Kick Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 55
+  },
+  "DnB/Kick/Liquid Kick Warm": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 50,
+    "eo": 0.4,
+    "tone": -0.1
+  },
+  "DnB/Kick/Neuro Kick Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 70,
+    "punish": 1,
+    "os": 3
+  },
+  "DnB/Kick/Jump-Up Kick Iron": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 65,
+    "dyn": 0.7,
+    "tone": 0.1
+  },
+  "DnB/Kick/Break SP Kick": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "SP",
+    "sub": 60
+  },
+  "DnB/Snare / Clap/Modern Snare Crack": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "dyn": 0.7,
+    "tone": 0.1
+  },
+  "DnB/Snare / Clap/Roller Snare Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 0
+  },
+  "DnB/Snare / Clap/Liquid Snare Silk": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.4,
+    "tone": 0.05
+  },
+  "DnB/Snare / Clap/Neuro Snare Smash": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "punish": 1,
+    "os": 3
+  },
+  "DnB/Snare / Clap/Jump-Up Snare Bite": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "dyn": 0.5,
+    "punish": 1
+  },
+  "DnB/Snare / Clap/Amen SP Snare": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "SP",
+    "dyn": 0.4
+  },
+  "DnB/Hats / Cymbals/Modern Shuffle Iron": {
+    "depth": "g",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 500
+  },
+  "DnB/Hats / Cymbals/Roller Hat Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 300,
+    "speed": 0
+  },
+  "DnB/Hats / Cymbals/Liquid Ride Silk": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.4,
+    "lc": 400
+  },
+  "DnB/Hats / Cymbals/Neuro Hat Fizz": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "lc": 600,
+    "mix": 0.5,
+    "os": 3
+  },
+  "DnB/Hats / Cymbals/Break SP Cymbals": {
+    "depth": "m",
+    "model": "CLASSIC",
+    "sampler": "SP",
+    "lc": 300
+  },
+  "DnB/Percussion/Modern Perc Iron": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 150
+  },
+  "DnB/Percussion/Liquid Shaker Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "hc": 12000
+  },
+  "DnB/Percussion/Neuro Perc Crunch": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "mix": 0.6,
+    "os": 3
+  },
+  "DnB/Percussion/Break Perc S950": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "S950"
+  },
+  "DnB/Drum Bus/Modern Bus Drive": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 70,
+    "dyn": 0.3
+  },
+  "DnB/Drum Bus/Roller Bus Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 60
+  },
+  "DnB/Drum Bus/Liquid Bus Warm": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 55,
+    "eo": 0.4
+  },
+  "DnB/Drum Bus/Neuro Bus Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 90,
+    "punish": 1,
+    "mix": 0.6,
+    "os": 3
+  },
+  "DnB/Drum Bus/Amen Break SP-1200": {
+    "depth": "h",
+    "model": "TAPE",
+    "sampler": "SP",
+    "sub": 70,
+    "dyn": 0.4
+  },
+  "DnB/Drum Bus/Break Tape Squash": {
+    "depth": "h",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 60,
+    "speed": 1,
+    "punish": 1,
+    "mix": 0.6
+  },
+  "DnB/Drum Bus/Jump-Up Bus Iron": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 80,
+    "dyn": 0.5
+  },
+  "DnB/808 / Bass/Modern Reese Drive": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 90,
+    "phone": 0.4
+  },
+  "DnB/808 / Bass/Roller Sub Phone": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 80,
+    "phone": 0.8
+  },
+  "DnB/808 / Bass/Liquid Bass Warm": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 60,
+    "phone": 0.3,
+    "speed": 1
+  },
+  "DnB/808 / Bass/Neuro Bass Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 100,
+    "phone": 0.4,
+    "os": 3
+  },
+  "DnB/808 / Bass/Jump-Up Wobble Grit": {
+    "depth": "h",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 90,
+    "punish": 1,
+    "phone": 0.5
+  },
+  "DnB/Vocals/Modern MC Edge": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "lc": 150,
+    "tone": 0.1
+  },
+  "DnB/Vocals/Liquid Vocal Silk": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "lc": 120,
+    "tone": 0.05
+  },
+  "DnB/Vocals/Roller Vocal Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 120
+  },
+  "DnB/Vocals/Jump-Up MC Distort": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "lc": 200,
+    "punish": 1,
+    "mix": 0.7
+  },
+  "DnB/Vocals/Liquid Backing Air": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "lc": 150,
+    "speed": 1,
+    "wow": 0.05,
+    "material": "backing"
+  },
+  "DnB/Keys / Piano/Liquid Rhodes Tube": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "eo": 0.5,
+    "wow": 0.05
+  },
+  "DnB/Keys / Piano/Liquid Piano Tape": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1
+  },
+  "DnB/Keys / Piano/Modern Stab Iron": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "tone": 0.1
+  },
+  "DnB/Keys / Piano/Roller Pad Warm": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "speed": 1,
+    "wow": 0.1
+  },
+  "DnB/Samples / Melody/Liquid Strings Tape": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "wow": 0.08,
+    "tone": -0.05
+  },
+  "DnB/Samples / Melody/Neuro Synth Fuzz": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "dyn": 0.3,
+    "os": 3
+  },
+  "DnB/Samples / Melody/Break Loop SP-1200": {
+    "depth": "m",
+    "model": "TAPE",
+    "sampler": "SP",
+    "wow": 0.05
+  },
+  "DnB/Samples / Melody/Jump-Up Hoover Grit": {
+    "depth": "h",
+    "model": "IRON",
+    "sampler": "",
+    "punish": 1,
+    "mix": 0.8
+  },
+  "DnB/Master/Modern DnB Master": {
+    "depth": "m",
+    "model": "IRON",
+    "sampler": "",
+    "sub": 50,
+    "match": 1
+  },
+  "DnB/Master/Liquid Warm Master": {
+    "depth": "g",
+    "model": "TUBE",
+    "sampler": "",
+    "sub": 45,
+    "eo": 0.4,
+    "match": 1
+  },
+  "DnB/Master/Neuro Loud Master": {
+    "depth": "h",
+    "model": "GERMANIUM",
+    "sampler": "",
+    "sub": 60,
+    "match": 1
+  },
+  "DnB/Master/Roller Tape Master": {
+    "depth": "g",
+    "model": "TAPE",
+    "sampler": "",
+    "sub": 45,
+    "speed": 1,
+    "match": 1
+  }
+}
