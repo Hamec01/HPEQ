@@ -1,4 +1,4 @@
-﻿* Loading module...
+* Loading module...
 
 	E:\HamloMag\build\HamloMag_artefacts\Release\VST3\HamloMag.vst3
 
@@ -8,8 +8,8 @@
 
   Factory Info:
 	vendor = HamloProd
-	url = 
-	email = 
+	url =
+	email =
 
   Class Info 0:
 	name = HamloMag
@@ -52,8 +52,8 @@ Info:     Controller CID: {ABCDEF01-1234-ABCD-4242-4C42486D4D67}
 [Scan Buses]
 Info:  ===Scan Buses ====================================
 Info:  => Audio Buses: [1 In(s) => 1 Out(s)]
-Info:       In [0]: "Input" (Main-Default Active) 
-Info:       Out[0]: "Output" (Main-Default Active) 
+Info:       In [0]: "Input" (Main-Default Active)
+Info:       Out[0]: "Output" (Main-Default Active)
 Info:  => Event Buses: [0 In(s) => 0 Out(s)]
 [Succeeded]
 
