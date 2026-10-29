@@ -1,0 +1,9 @@
+HamloEcho is installed.
+
+1. Open your 64-bit DAW and rescan VST3 plugins.
+2. Insert HamloEcho (HamloProd) on a track or a bus.
+3. Pick a preset on the screen top left (or the DAW's program list), or start from Default.
+
+The README is in Start menu -> HamloProd -> HamloEcho README,
+and in the HamloEcho.vst3\Documentation folder.
+If Windows asks for a restart, do it before opening your DAW.
