@@ -9,7 +9,7 @@ include them.
 | HamloComp | compressor: VCA / FET / OPTO / TUBE, DRUMS / SAMPLES / VOC | 0.2.0 | docs/COMPRESSOR_MODELS.md |
 | HamloUdarnik | transient shaper, V2 engine | 0.2.0 | docs/UDARNIK_V2.md |
 | HamloRedWall | limiter, V2 engine, DRIVE / TUBE colour | 0.3.0 | docs/REDWALL_V2.md |
-| HamloMag | saturator, sampler colour, PHONE / SUB / DYNAMICS / MATCH / DELTA | 0.2.0 | docs/reports/v2/V2_REPORT.md |
+| HamloMag | saturator, sampler colour, PHONE / SUB / DYNAMICS / MATCH / DELTA | 0.2.1 | docs/reports/v2/TARGETS_FIX_REPORT.md |
 | HamloEcho | delay (M0: HPEQ's module-plug-in stack, kind 2) | 0.1.0 | docs/reports/M0_EXTRACTION_REPORT.md |
 | HamloVerb | reverb (M0, kind 1) | 0.1.0 | docs/reports/M0_EXTRACTION_REPORT.md |
 | HamloZastava | gate / expander (M0, kind 6) | 0.1.0 | docs/reports/M0_EXTRACTION_REPORT.md |
