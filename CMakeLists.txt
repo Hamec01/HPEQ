@@ -93,7 +93,7 @@ target_link_libraries(HamloFader_Shared
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
 
-# --- The plug-in: identity = HPEQ's HamloFader module VST3 (BBLB / HmFd / com.hamloprod.hamlofader, kind 8)
+# --- The plug-in: HamloFader (BBLB / HmFd / com.hamloprod.hamlofader, kind 8 - added here: HPEQ has no Fader module VST3)
 juce_add_plugin(HamloFader
     COMPANY_NAME "HamloProd"
     BUNDLE_ID com.hamloprod.hamlofader

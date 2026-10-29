@@ -9,7 +9,7 @@ HamloRedWall and HamloMag did.
   and the headers they include). HPEQ has no module VST3 for its Gain slot (the HamloFader page), so the copy gets
   `ModuleKind::Fader` (kind 8) and `makeFader()` with the ranges of HPEQ's LayerSnapshot.cpp (gain -60 .. +24 dB, delay
   0 .. 20 ms, target -40 .. 0 dB, polarity, mute, solo) and the Fader case of the editor; the DSP is HPEQ's Gain slot,
-  unchanged. Identity BBLB / HmFd / com.hamlofader (new: no HPEQ plug-in to open). SOLO has no effect in a plug-in of
+  unchanged. Identity BBLB / HmFd / com.hamloprod.hamlofader (new: there is no HPEQ plug-in to open). SOLO has no effect in a plug-in of
   its own (it soloes a band among the layer's bands in HPEQ).
 - Added: the preset screen top left (`Source/UI/PresetScreen.*`, the same file as the other Hamlo plug-ins; HPEQ's
   module presets on it), tests, the page snapshot, the installer, the docs, AGENTS.md.
