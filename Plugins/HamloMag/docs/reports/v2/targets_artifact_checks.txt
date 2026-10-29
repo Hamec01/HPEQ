@@ -1,0 +1,4 @@
+ZIP CRC, binary and README identity: pass
+Binary SHA256 ae96fd1249ff647ca1659e60690d2f4c0f351cf9f176bcbb67751c03c2d9de92
+HamloMag_VST3_Setup_0.2.1.exe 14e7f447ae47d5dfe82dd1d4de8224df31b09fa49a9b2a819fa57644df7869ca
+HamloMag-0.2.1-win64-vst3.zip b3f4796db82fc2fb62498a4a611af494b5e51d30bfc2ec814410d34391e5c9f9

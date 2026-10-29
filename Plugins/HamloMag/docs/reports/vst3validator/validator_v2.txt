@@ -15,7 +15,7 @@
 	name = HamloMag
 	category = Audio Module Class
 	subCategories = Fx|Distortion
-	version = 0.2.0
+	version = 0.2.1
 	sdkVersion = VST 3.8.0
 	cid = ABCDEF019182FAEB42424C42486D4D67
 
@@ -23,7 +23,7 @@
 	name = HamloMag
 	category = Component Controller Class
 	subCategories = Fx|Distortion
-	version = 0.2.0
+	version = 0.2.1
 	sdkVersion = VST 3.8.0
 	cid = ABCDEF011234ABCD42424C42486D4D67
 

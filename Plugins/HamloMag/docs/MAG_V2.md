@@ -76,6 +76,20 @@ calibration; `check` still measures the complete preset.
 
 ## Sources
 
+### Follow-up refinement (2026-10-29)
+
+The owner requested that G2 and G12 meet their original targets: <= -90 dB at 8x and <= 0.5 LU MATCH error.
+Baseline remains the 0.2.0 report (-77.8 dB / 0.58 LU). The laboratory and thresholds stay unchanged.
+The first candidate strengthens only the 8x FIR stages to -120 dB rejection and speeds the MATCH power average
+to 0.5 s with 0.1 s gain smoothing. Legacy 1x / 2x / 4x and MATCH-off paths must retain bit identity.
+Latency is remeasured from the actual FIR chain and reported to the host; G13 steady-noise movement must still
+remain within +/-0.3 dB. These candidate settings are subject to the same complete lab, block and preset checks.
+
+Final follow-up design: 8x TUBE uses first-order ADAA on the original piecewise tube curve, alongside the stronger
+FIR chain. MATCH retains the original averaging / smoothing and adds compensated-output residual feedback.
+G2 -105.6 dB, G12 0.49 LU, G13 +/-0.08 dB; all 15 lab targets pass. Full experiment history and regression
+results: `docs/reports/v2/TARGETS_FIX_REPORT.md`. Fixed host latency at 48 kHz is now 395 samples.
+
 1. [Soundtoys Decapitator manual](https://www.fullcompass.com/common/files/33650-SoundToysDecapitatorManual.pdf), [Dubspot: Decapitator vs Saturn 2](https://blog.dubspot.com/plugins/compare/decapitator-vs-saturn-2)
 2. [MusicTech: FabFilter Saturn 2](https://musictech.com/news/fabfilter-saturn-2/), [Production Expert: Saturn 2](https://www.pro-tools-expert.com/production-expert-1/2020/5/19/saturn-2-from-fabfilter-new-version-offers-everything-for-saturation-and-distortion-from-subtle-to-wild)
 3. [Rossum Electro: SP-1200 education](https://www.rossum-electro.com/pages/education-sp-1200), [Rossum SP-1200](https://www.rossum-electro.com/products/sp-1200/), [Sound On Sound: Isla S2400](https://www.soundonsound.com/reviews/isla-instruments-s2400)

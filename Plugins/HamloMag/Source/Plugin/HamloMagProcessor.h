@@ -81,6 +81,7 @@ private:
     };
     KWeighting kIn, kOut;
     double meanIn = 0.0, meanOut = 0.0, matchDb = 0.0, matchTarget = 0.0, longIn = 0.0, blockIn = 0.0, blockOut = 0.0;
+    double feedbackIn = 0.0, feedbackOut = 0.0, blockMatched = 0.0;
     int blockCount = 0;
     int matchIndex = -1, deltaIndex = -1;
     juce::AudioBuffer<float> dry, dryForMix;

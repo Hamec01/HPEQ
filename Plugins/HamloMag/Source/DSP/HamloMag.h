@@ -34,6 +34,7 @@ constexpr double kWowBaseSeconds = 0.004;     // centre of the wow delay = its l
 
 struct LawSettings
 {
+    bool adaaTube = false;
     std::array<double, 6> weights {}; // H k_n for n = 2..7 (even / odd balance applied)
     double knee = 0.5;                // E_m
 };
@@ -46,10 +47,12 @@ struct Core
     int hold = 0, holdSamples = 1;
     double play = 0.0;      // tape hysteresis (play operator)
     double ironLow = 0.0, ironCoefficient = 0.0;
+    double previousTubeInput = 0.0;
     void prepare(double sampleRate) noexcept;
     void reset() noexcept
     {
         envelope = play = ironLow = 0.0;
+        previousTubeInput = 0.0;
         hold = 0;
         levelEnvelope = levelKnee = -1.0;
     }
