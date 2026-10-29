@@ -193,7 +193,34 @@ PHONE, SUB, DYNAMICS, MATCH, DELTA, 8x, переименованные тумб�
    пуш ветки `feature/hamlo-plugins` — когда владелец скажет.
 
 Дальше по плану владельца (после HamloMag): HamloVerb, HamloEcho, затем HamloZastava, HamloShirota — тем же порядком
-(M0 → эталоны и цели → замеры → код → 200 пресетов → валидаторы → отчёт). Известное, не сделанное: в RedWall DRIVE
+(M0 → эталоны и цели → замеры → код → 200 пресетов → валидаторы → отчёт).
+
+### M0 остальных модулей (сделано 2026-10-29)
+
+`E:\HamloEcho` (дилей, HmEc), `E:\HamloVerb` (реверб, HmVb), `E:\HamloZastava` (гейт, HmZa), `E:\HamloShirota`
+(стерео, HmSh), `E:\HamloFader` (гейн-утилита, HmFd). Устроены иначе, чем первые четыре: `Source/` — это **весь стек
+модульного плагина HPEQ без изменений** (исходники `HPEQ_ModuleShared` из `E:\HPEQ\CMakeLists.txt` и их заголовки,
+namespace `hpeq`), собранный с `HPEQ_MODULE_KIND=<n>`; сверху добавлен только экран пресетов (`Source/UI/PresetScreen.*`,
+namespace `hpeq::ui`) в `Source/Standalone/ModulePluginEditor.*`. HamloFader: у HPEQ нет модульного VST3 для слота Gain —
+в копию добавлены `ModuleKind::Fader` (kind 8) и `makeFader()` с диапазонами из `LayerSnapshot.cpp`.
+Генератор: `make_module_repo.py` (+ `make_fader.py`) — скрипты лежали в рабочей папке прошлого агента; повторять не нужно.
+Тесты: процессор модуля HPEQ огромный (LayerEngine) — в тестах создавать **в куче** (`std::make_unique`), на стеке два
+экземпляра переполняют стек (0xC00000FD).
+
+Первый шаг V2 для каждого из них — **сузить `Source/`** до своего модуля (как HamloMag: свой `<X>Settings.h` с HPEQ-индексами,
+свой процессор без LayerEngine, своя `Parameters.h`), доказать бит-в-бит против текущей M0-сборки, и только потом эталоны и цели.
+
+### HamloRevolution — ещё не вынесен (план)
+
+У Revolution нет модульного VST3, и одной правкой его не добавить: панель (`UI/HamloRevolutionPanel.*`) кроме ручек
+редактирует паттерн, «feel» и seed (`onPatternChange`, `onUpgrade`, `readStatus` — см. `E:\HPEQ\Source\UI\NodeInspector.cpp`,
+`buildRevolutionPage`). HPEQ хранит их как именованные параметры слота (`revolution::writePattern / readPattern / writeFeel`,
+`revSeed`, `mode` = 1) и переводит в `FxSlotParams` в `DSP/LayerSnapshot.cpp` (ветка MonstaFx: kRevMode .. kRevSmartJoin,
+паттерны упакованы по 4 float, `revolution::packQuad`). План: репозиторий по образцу HamloFader (ModuleKind::Revolution,
+код HmRv), в процессоре — `juce::NamedValueSet` с параметрами Revolution, который пишется в состояние; ручки/переключатели —
+APVTS; `onPatternChange` пишет в этот набор; при сборке слота — перенос из LayerSnapshot.cpp; transport (BPM, позиция) —
+уже есть в `ModulePluginProcessor::currentTransport()`; статус панели — `FxNodeProcessor::getRevolutionStep / Feel / Wave`.
+Проверка: тот же паттерн и темп → тот же выход, что у слота Revolution в HPEQ (рендер HPEQ-проекта с одним слотом). Известное, не сделанное: в RedWall DRIVE
 насыщает относительно LIMIT, при сильном DRIVE громкие места упираются в LIMIT/k (−9 дБ при 60 %) — кандидат на доработку,
 если владелец попросит.
 
