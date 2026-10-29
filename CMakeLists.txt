@@ -128,9 +128,13 @@ target_link_libraries(HamloVerb
         juce::juce_recommended_warning_flags)
 
 # --- Tests and the page snapshot ----------------------------------------------------------------------
-foreach(tool Tests Snapshot)
+foreach(tool Tests Snapshot Reference Lab)
     if (tool STREQUAL "Tests")
         add_executable(HamloVerb_Tests Tests/TestMain.cpp Tests/PluginTests.cpp)
+    elseif(tool STREQUAL "Reference")
+        add_executable(HamloVerb_Reference Tests/ReferenceMain.cpp)
+    elseif(tool STREQUAL "Lab")
+        add_executable(HamloVerb_Lab Tests/LabMain.cpp)
     else()
         add_executable(HamloVerb_Snapshot Tests/SnapshotMain.cpp)
     endif()
