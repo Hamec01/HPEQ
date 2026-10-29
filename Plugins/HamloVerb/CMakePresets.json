@@ -1,0 +1,58 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 22,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "vs2026-x64",
+      "displayName": "Visual Studio 2026 x64",
+      "generator": "Visual Studio 18 2026",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "HAMLO_VERB_JUCE_DIR": "$env{HAMLO_VERB_JUCE_DIR}"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "release",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Release",
+      "targets": [
+        "HamloVerb_VST3",
+        "HamloVerb_Tests"
+      ]
+    },
+    {
+      "name": "debug",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Debug",
+      "targets": [
+        "HamloVerb_VST3",
+        "HamloVerb_Tests"
+      ]
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "release",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "debug",
+      "configurePreset": "vs2026-x64",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}
