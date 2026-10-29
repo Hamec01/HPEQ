@@ -93,6 +93,7 @@ void HamloMagProcessor::prepareToPlay(double sampleRate, int expectedBlockSize)
     kOut.design(sampleRate);
     meanIn = meanOut = matchDb = matchTarget = longIn = blockIn = blockOut = 0.0;
     blockCount = 0;
+    feedbackIn = feedbackOut = blockMatched = 0.0;
     mixAmount.reset(juce::jlimit(0.0, 1.0, static_cast<double>(raw[static_cast<size_t>(mixIndex)]->load(std::memory_order_relaxed))));
     onAmount.reset(isOn() ? 1.0 : 0.0);
     setLatencySamples(latency);
@@ -163,11 +164,11 @@ void HamloMagProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
                     pin += a * a;
                     pout += b * b;
                 }
-                // 100 ms blocks, gated like BS.1770's integrated loudness (the block counts when it is no more than
-                // 10 dB under the input's 10 s level), averaged over 1.5 s (run 1 matched every sample's power, ungated:
-                // 0.6 LU off on the mixes, the quiet parts weighed in where the loudness measure leaves them out)
+                // 100 ms gated blocks: feedforward power ratio plus the residual error of the compensated output.
+                // The original feedforward-only tracker missed G12 at 0.58 LU; feedback closes that tracking bias.
                 blockIn += pin;
                 blockOut += pout;
+                blockMatched += pout * std::pow(10.0, matchDb / 10.0);
                 if (++blockCount >= blockLength)
                 {
                     const double bi = blockIn / blockCount, bo = blockOut / blockCount;
@@ -176,9 +177,14 @@ void HamloMagProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
                     {
                         meanIn = bi + meanC * (meanIn - bi);
                         meanOut = bo + meanC * (meanOut - bo);
-                        matchTarget = juce::jlimit(-24.0, 24.0, 10.0 * std::log10(meanIn / meanOut));
+                        feedbackIn = bi + meanC * (feedbackIn - bi);
+                        const double bm = blockMatched / blockCount;
+                        feedbackOut = bm + meanC * (feedbackOut - bm);
+                        const double residual = 1.0 * 10.0 * std::log10(feedbackIn / std::max(1.0e-20, feedbackOut));
+                        matchTarget = juce::jlimit(-24.0, 24.0, 10.0 * std::log10(meanIn / meanOut) + residual);
                     }
                     blockIn = blockOut = 0.0;
+                    blockMatched = 0.0;
                     blockCount = 0;
                 }
                 matchDb = matchTarget + smoothC * (matchDb - matchTarget);

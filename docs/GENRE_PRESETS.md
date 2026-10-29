@@ -71,6 +71,9 @@ Reproduce (after building): `python -I Tools/run_genre_calibration.py <material-
 `python -I Tools/run_genre_check.py <material-dir> docs/reports/presets/genre_presets_check.md`.
 The check runs genres in parallel, while retaining full-bank duplicate detection.
 
+0.2.1 regression: the same 200 recipes and DRIVE values also pass **200/200** with the improved 8x and MATCH
+processing: [genre_presets_check_021.md](reports/presets/genre_presets_check_021.md). No preset retuning was needed.
+
 ## Sources
 
 1. [Mastering The Mix: compression settings for a punchy mix](https://www.masteringthemix.com/blogs/learn/best-compression-settings-for-a-punchy-mix), [ProSoundWeb: five steps to punchy drum compression](https://www.prosoundweb.com/five-steps-to-punchy-drum-compression/), [Sonarworks: drum compression tips](https://www.sonarworks.com/blog/learn/killer-drum-tracks-compression-tips), [EDMProd: three ways to compress drums](https://www.edmprod.com/three-different-ways-to-compress-drums/)

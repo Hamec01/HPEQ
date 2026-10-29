@@ -10,6 +10,14 @@ namespace hamlo::dsp
 namespace
 {
 constexpr double kPi = 3.14159265358979323846;
+void configure8x(juce::dsp::Oversampling<float>& os)
+{
+    os.clearOversamplingStages();
+    for (int stage = 0; stage < 3; ++stage)
+        os.addOversamplingStage(juce::dsp::Oversampling<float>::filterHalfBandFIREquiripple,
+                               stage == 0 ? 0.05f : 0.1f, -120.0f,
+                               stage == 0 ? 0.05f : 0.1f, -120.0f);
+}
 } // namespace
 
 // ------------------------------------------------------------------------------------- Saturator
@@ -33,6 +41,8 @@ int SaturatorProcessor::latencySamples(int oversamplingIndex)
         for (int stages = 1; stages <= 3; ++stages)
         {
             OS os(1, static_cast<size_t>(stages), OS::filterHalfBandFIREquiripple, true, true);
+            if (stages == 3)
+                configure8x(os);
             os.initProcessing(static_cast<size_t>(n));
             auto output = input;
             float* channel[] { output.data() };
@@ -69,6 +79,8 @@ void SaturatorProcessor::prepare(double newSampleRate, int maxBlockSize)
     for (int i = 0; i < 3; ++i)
     {
         oversamplers[static_cast<size_t>(i)] = std::make_unique<OS>(kMaxChannels, static_cast<size_t>(i + 1), OS::filterHalfBandFIREquiripple, true, true);
+        if (i == 2)
+            configure8x(*oversamplers[static_cast<size_t>(i)]);
         oversamplers[static_cast<size_t>(i)]->initProcessing(static_cast<size_t>(std::min(maxBlockSize, kOversamplingChunk)));
     }
     dcCoefficient = 1.0 - 2.0 * kPi * 10.0 / sampleRate;

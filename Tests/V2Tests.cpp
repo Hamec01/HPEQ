@@ -158,10 +158,11 @@ public:
         }
 
         beginTest("Host blocks 1, 64, 127, 4096 after prepare(256) bit-identical with every new control on");
+        for (int model : { 1, 2 })
         {
-            const auto set = [](HamloMagProcessor& p)
+            const auto set = [model](HamloMagProcessor& p)
             {
-                p.setParameterValue("model", 1.0);
+                p.setParameterValue("model", static_cast<double>(model));
                 p.setParameterValue("oversampling", 3.0);
                 p.setParameterValue("sampler", 1.0);
                 p.setParameterValue("phoneBass", 0.7);

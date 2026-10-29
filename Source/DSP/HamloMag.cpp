@@ -229,6 +229,21 @@ double Core::process(double x, int model, const LawSettings& s, double width) no
         ironLow += ironCoefficient * (x - ironLow);
         y = std::tanh(3.0 * ironLow) / 3.0 + std::tanh(x - ironLow);
     }
+    else if (model == Tube && s.adaaTube)
+    {
+        // First-order antiderivative antialiasing integrates the original two half-wave laws over the
+        // line segment between samples. Only 8x opts in; legacy rates retain the exact original curve.
+        const auto primitive = [](double v)
+        {
+            const double scale = v >= 0.0 ? 1.0 : 0.6;
+            const double a = std::abs(scale * v);
+            return (a + std::log1p(std::exp(-2.0 * a)) - std::log(2.0)) / (scale * scale);
+        };
+        const double dx = x - previousTubeInput;
+        y = std::abs(dx) > 1.0e-5 ? (primitive(x) - primitive(previousTubeInput)) / dx
+                                  : shape(0.5 * (x + previousTubeInput), Tube);
+        previousTubeInput = x;
+    }
     else
         y = shape(x, model);
     return y + lawLayer(x, envelope, levelFor(s), s);
@@ -366,6 +381,7 @@ void MagProcessor::beginBlock(const FxSlotParams& p, int oversamplingFactor) noe
     model = std::max(1, modelOf(p));
     speed = speedOf(p);
     law = mag::lawSettings(model, p.values[slot::kSatHarmonics], p.values[slot::kSatEvenOdd]);
+    law.adaaTube = osFactor >= 8;
     width = tapeWidth(p);
     driveTarget = driveOf(p);
     if (!primed)

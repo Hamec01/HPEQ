@@ -1,4 +1,4 @@
-HamloMag 0.2.0 - saturator, VST3, Windows x64 (HamloProd)
+HamloMag 0.2.1 - saturator, VST3, Windows x64 (HamloProd)
 
 Controls
   MODEL        CLASSIC, TAPE, TUBE, IRON (transformer), GERMANIUM, VINYL: each its own curve and colour
@@ -29,13 +29,13 @@ Kick, Snare / Clap, Hats / Cymbals, Percussion, Drum Bus, 808 / Bass, Vocals, Ke
 Master. Their DRIVE assumes tracks around -18 dBFS RMS (mixes -14). Factory: Tape Warmth, Tube Glow, Iron Weight,
 Germanium Fuzz, Vinyl Dust, Cassette Lo-Fi, Parallel Grit.
 
-Mono and stereo. Latency 7.3 ms at 48 kHz (351 samples, fixed, reported to the DAW).
+Mono and stereo. Latency 8.23 ms at 48 kHz (395 samples, fixed, reported to the DAW).
 
 V2 compatibility: new controls default to off; the original saved-state renders remain bit-identical after
 latency alignment. OVERSAMPLE adds an 8x choice: saved integer 1x / 2x / 4x state values stay, but existing
 normalized host automation can map differently with the expanded choice count.
 
-Measured limits: the 9 kHz / 24 dB TUBE test reaches -77.8 dB alias suppression at 8x (target -90 dB);
-MATCH's maximum measured mix loudness error is 0.58 LU (target 0.5 LU).
+Verified follow-up: 8x alias suppression -105.6 dB on the 9 kHz / 24 dB TUBE test (target -90 dB);
+MATCH maximum mix loudness error 0.49 LU (target 0.5 LU).
 
 Uninstall: Settings -> Apps -> HamloMag, or Start menu -> HamloProd -> Uninstall HamloMag.
