@@ -23,7 +23,7 @@
 | HamloComp (компрессор, 0.2.0) | `E:\HamloComp` (git, ветка `main`) |
 | HamloUdarnik (транзиент-шейпер, 0.2.0) | `E:\HamloUdarnik` (`main`) |
 | HamloRedWall (лимитер, 0.3.0) | `E:\HamloRedWall` (`main`) |
-| HamloMag (сатуратор, 0.1.0 закоммичен, **v2 не закоммичен**) | `E:\HamloMag` (`master`) |
+| HamloMag (сатуратор, 0.2.0, v2 завершён) | `E:\HamloMag` (`master`) |
 | HPEQ (источник кода модулей) | `E:\HPEQ` (ветка `feature/hpeq-m0-m1`) — **исходники HPEQ не трогать** |
 | Все четыре плагина в HPEQ (для пуша) | worktree `E:\HPEQ-hamlo-plugins`, ветка `feature/hamlo-plugins`, папки `Plugins/<name>` (git subtree) |
 | HPDG (жанры, стили, темпы) | `C:\DRUMENGINE\Source\Engine\StyleDefaults.cpp`, `DnB\DnBStyleProfile.cpp`, `Techno\TechnoStyleProfile.cpp` |
@@ -171,26 +171,21 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Текущее состояние — с чего начать (HamloMag v2)
+## 9. Текущее состояние — HamloMag v2 завершён (2026-10-29)
 
-HamloMag v2 сделан, но **не закоммичен** (`E:\HamloMag`, `git status` — ~25 файлов): SAMPLER (SP-1200 / MPC60 / S950),
-PHONE, SUB, DYNAMICS, MATCH, DELTA, 8x, переименованные тумблеры, нижняя полоса панели (1180×940), 200 рецептов
-пресетов в `Tools/genre_presets.py`, `Tests/V2Tests.cpp`, `Tests/PresetLabMain.cpp`. Лаборатория: 13 / 15
-(G2 8x −77.8 дБ при цели −90; G12 MATCH 0.58 LU при цели 0.5 — честные пределы). Юнит-тесты 707 / 707.
-Эталонные рендеры G1 лежат в `...\scratchpad\mag_g1` (если пропали — G1 сравнивать нечем: собрать 0.1.0 из коммита
-09c6d45 и записать заново).
+HamloMag 0.2.0: SAMPLER, PHONE, SUB, DYNAMICS, MATCH, DELTA и 8x; панель 1180×940.
+Калибровка всех 200 пресетов завершена. Проверка: 138/200 → 195/200 → **200/200**;
+63 рецепта исправлены, исходные полосы и пороги не менялись. Исправлен поиск DRIVE для немонотонной
+характеристики; все раскрытия и точные изменения рецептов — `docs/reports/v2/V2_REPORT.md` и
+`docs/reports/presets/recipe_changes.md`. Старые Factory-пресеты не менялись.
 
-Осталось:
-1. **Калибровка пресетов прервалась на 48 / 200** (готов Boom Bap, в `Tools/genre_presets_cal.tsv`). Досчитать остальные
-   (фильтр по именам или полный прогон в фоне), сгенерировать `.inc`, `check` → 200 / 200 (провалы чинить рецептами,
-   раскрывать).
-2. Проверить латентность в README (сейчас написано 351 сэмпл; после FIR сэмплера стала больше — взять из теста «Latency»).
-3. `docs/GENRE_PRESETS.md` — вместо `{result}` вписать результат проверки и раскрытия; `docs/reports/v2/V2_REPORT.md` —
-   по образцу HamloRedWall (что сделано, таблица «до → после», что не выполнено и почему, все раскрытия: G4/G6/G11/G13
-   переписаны, DYNAMICS переделан, PHONE до H6, FIR вместо Баттерворта, MATCH с гейтом).
-4. Снимок панели в `docs/reports/v2/panel_v2.png`, pluginval 5–10 + validator, установщик 0.2.0, `dist/`, коммит.
-5. `git subtree pull` в `E:\HPEQ-hamlo-plugins` (Plugins/HamloMag) и обновить строку HamloMag в `Plugins/README.md`;
-   пуш ветки `feature/hamlo-plugins` — когда владелец скажет.
+Юнит-тесты 707/707; G1 — 18/18 побитовых совпадений с 0.1.0; лаборатория 13/15.
+Две цели по-прежнему не выполнены: G2 8x −77.8 дБ при цели −90; G12 MATCH 0.58 LU при цели 0.5.
+Латентность проверена: **351 сэмпл при 48 кГц**, README верен. pluginval 5–10 и Steinberg 537/537 пройдены.
+Снимок панели проверен. Установщик, ZIP, SHA-256 и VST3 лежат в `E:\HamloMag\dist`.
+
+Продолжать с итогового отчёта, а не повторять прежний незавершённый расчёт 48/200.
+Коммиты и subtree — в локальной истории; пуш только по просьбе владельца.
 
 Дальше по плану владельца (после HamloMag): HamloVerb, HamloEcho, затем HamloZastava, HamloShirota — тем же порядком
 (M0 → эталоны и цели → замеры → код → 200 пресетов → валидаторы → отчёт).
