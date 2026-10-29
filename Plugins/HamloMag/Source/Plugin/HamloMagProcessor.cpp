@@ -43,6 +43,10 @@ HamloMagProcessor::HamloMagProcessor()
         jassert(raw.back() != nullptr);
         if (specs[i].slot == kMixSlot)
             mixIndex = static_cast<int>(i);
+        if (juce::String(specs[i].id) == "match")
+            matchIndex = static_cast<int>(i);
+        if (juce::String(specs[i].id) == "delta")
+            deltaIndex = static_cast<int>(i);
     }
     bypassParameter = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter("bypass"));
     jassert(bypassParameter != nullptr);
@@ -59,7 +63,7 @@ dsp::FxSlotParams HamloMagProcessor::currentSettings() const noexcept
         const float v = raw[i]->load(std::memory_order_relaxed);
         if (specs[i].slot >= 0)
             s.values[static_cast<size_t>(specs[i].slot)] = v;
-        else
+        else if (specs[i].slot == kMixSlot)
             s.mix = juce::jlimit(0.0f, 1.0f, v);
     }
     return s;
@@ -71,12 +75,13 @@ void HamloMagProcessor::prepareToPlay(double sampleRate, int expectedBlockSize)
     currentSampleRate.store(sampleRate, std::memory_order_relaxed);
     core.prepare(sampleRate, maximumBlockSize);
     {
-        dsp::FxSlotParams largest; // HPEQ: maximumLatencySamples (ModuleVariant.cpp): 4x, TAPE, WOW 1
+        dsp::FxSlotParams largest; // HPEQ: maximumLatencySamples (ModuleVariant.cpp): TAPE, WOW 1; v2: 8x, the SAMPLER
         largest.active = true;
-        largest.values[dsp::slot::kOversampling] = 2.0f;
+        largest.values[dsp::slot::kOversampling] = 3.0f;
         largest.values[dsp::slot::kSatModel] = 1.0f;
         largest.values[dsp::slot::kSatWow] = 1.0f;
-        latency = dsp::SaturatorProcessor::latencySamples(largest, sampleRate);
+        largest.values[dsp::slot::kSatSampler] = 1.0f;
+        latency = dsp::MagV2Processor::latencySamples(largest, sampleRate);
     }
     mixAlign.prepare(latency);
     wetAlign.prepare(latency);
@@ -84,6 +89,10 @@ void HamloMagProcessor::prepareToPlay(double sampleRate, int expectedBlockSize)
     dry.setSize(dsp::kMaxChannels, maximumBlockSize, false, false, true);
     dryForMix.setSize(dsp::kMaxChannels, maximumBlockSize, false, false, true);
     rampSteps = dsp::stepsFor(kRampSeconds, sampleRate);
+    kIn.design(sampleRate);
+    kOut.design(sampleRate);
+    meanIn = meanOut = matchDb = matchTarget = longIn = blockIn = blockOut = 0.0;
+    blockCount = 0;
     mixAmount.reset(juce::jlimit(0.0, 1.0, static_cast<double>(raw[static_cast<size_t>(mixIndex)]->load(std::memory_order_relaxed))));
     onAmount.reset(isOn() ? 1.0 : 0.0);
     setLatencySamples(latency);
@@ -109,7 +118,12 @@ void HamloMagProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
 
     const int channels = juce::jmin(inputs, outputs, buffer.getNumChannels(), dsp::kMaxChannels);
     const auto settings = currentSettings();
-    const int slotLatency = dsp::SaturatorProcessor::latencySamples(settings, currentSampleRate.load(std::memory_order_relaxed));
+    const double fs = currentSampleRate.load(std::memory_order_relaxed);
+    const int slotLatency = dsp::MagV2Processor::latencySamples(settings, fs);
+    const bool match = raw[static_cast<size_t>(matchIndex)]->load(std::memory_order_relaxed) > 0.5f;
+    const bool delta = raw[static_cast<size_t>(deltaIndex)]->load(std::memory_order_relaxed) > 0.5f;
+    const int blockLength = juce::jmax(1, juce::roundToInt(0.1 * fs));
+    const double meanC = std::exp(-0.1 / 1.5), longC = std::exp(-0.1 / 10.0), smoothC = std::exp(-1.0 / (0.5 * fs));
     const int extra = juce::jmax(0, latency - slotLatency);
     mixAmount.setTarget(juce::jlimit(0.0, 1.0, static_cast<double>(raw[static_cast<size_t>(mixIndex)]->load(std::memory_order_relaxed))), rampSteps);
     onAmount.setTarget(isOn() ? 1.0 : 0.0, rampSteps);
@@ -139,6 +153,42 @@ void HamloMagProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
                 wet[channel][i] = m == 1.0f ? wet[channel][i] : (m == 0.0f ? d : d + m * (wet[channel][i] - d));
             }
         }
+        if (match) // HamloMag v2: loudness-matched output
+            for (int i = 0; i < count; ++i)
+            {
+                double pin = 0.0, pout = 0.0;
+                for (int channel = 0; channel < channels; ++channel)
+                {
+                    const double a = kIn.process(channel, mixDry[channel][i]), b = kOut.process(channel, wet[channel][i]);
+                    pin += a * a;
+                    pout += b * b;
+                }
+                // 100 ms blocks, gated like BS.1770's integrated loudness (the block counts when it is no more than
+                // 10 dB under the input's 10 s level), averaged over 1.5 s (run 1 matched every sample's power, ungated:
+                // 0.6 LU off on the mixes, the quiet parts weighed in where the loudness measure leaves them out)
+                blockIn += pin;
+                blockOut += pout;
+                if (++blockCount >= blockLength)
+                {
+                    const double bi = blockIn / blockCount, bo = blockOut / blockCount;
+                    longIn = bi + longC * (longIn - bi);
+                    if (bi > 1.0e-9 && bo > 1.0e-12 && bi > 0.1 * longIn)
+                    {
+                        meanIn = bi + meanC * (meanIn - bi);
+                        meanOut = bo + meanC * (meanOut - bo);
+                        matchTarget = juce::jlimit(-24.0, 24.0, 10.0 * std::log10(meanIn / meanOut));
+                    }
+                    blockIn = blockOut = 0.0;
+                    blockCount = 0;
+                }
+                matchDb = matchTarget + smoothC * (matchDb - matchTarget);
+                const auto g = static_cast<float>(std::pow(10.0, matchDb / 20.0));
+                for (int channel = 0; channel < channels; ++channel)
+                    wet[channel][i] *= g;
+            }
+        if (delta) // HamloMag v2: only what HamloMag adds
+            for (int channel = 0; channel < channels; ++channel)
+                juce::FloatVectorOperations::subtract(wet[channel], mixDry[channel], count);
         // Always clock the aligners (also at zero delay), so a later latency change reads continuous history.
         wetAlign.process(wet, wet, channels, count, extra);
         dryAlign.process(dryPointers, dryPointers, channels, count, latency);
@@ -151,6 +201,47 @@ void HamloMagProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
                 wet[channel][i] = on == 0.0f ? dryPointers[channel][i] : dryPointers[channel][i] + on * (wet[channel][i] - dryPointers[channel][i]);
         }
     }
+}
+
+void HamloMagProcessor::KWeighting::design(double sampleRate) noexcept
+{
+    // ITU-R BS.1770 K-weighting at any rate (the pre-filter shelf, then the RLB high-pass)
+    const double pi = juce::MathConstants<double>::pi;
+    {
+        const double f0 = 1681.974450955533, gain = 3.999843853973347, q = 0.7071752369554196;
+        const double k = std::tan(pi * f0 / sampleRate), vh = std::pow(10.0, gain / 20.0), vb = std::pow(vh, 0.4996667741545416);
+        const double a0 = 1.0 + k / q + k * k;
+        b[0][0] = (vh + vb * k / q + k * k) / a0;
+        b[0][1] = 2.0 * (k * k - vh) / a0;
+        b[0][2] = (vh - vb * k / q + k * k) / a0;
+        a[0][1] = 2.0 * (k * k - 1.0) / a0;
+        a[0][2] = (1.0 - k / q + k * k) / a0;
+    }
+    {
+        const double f0 = 38.13547087602444, q = 0.5003270373238773;
+        const double k = std::tan(pi * f0 / sampleRate), a0 = 1.0 + k / q + k * k;
+        b[1][0] = 1.0;
+        b[1][1] = -2.0;
+        b[1][2] = 1.0;
+        a[1][1] = 2.0 * (k * k - 1.0) / a0;
+        a[1][2] = (1.0 - k / q + k * k) / a0;
+    }
+    for (auto& c : z)
+        for (auto& s : c)
+            s[0] = s[1] = 0.0;
+}
+
+double HamloMagProcessor::KWeighting::process(int channel, double x) noexcept
+{
+    for (int s = 0; s < 2; ++s)
+    {
+        auto& st = z[channel][s];
+        const double y = b[s][0] * x + st[0];
+        st[0] = b[s][1] * x - a[s][1] * y + st[1];
+        st[1] = b[s][2] * x - a[s][2] * y;
+        x = y;
+    }
+    return x;
 }
 
 double HamloMagProcessor::getTailLengthSeconds() const

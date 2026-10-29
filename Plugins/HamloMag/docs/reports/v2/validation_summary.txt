@@ -1,0 +1,7 @@
+pluginval 5 passed
+pluginval 6 passed
+pluginval 7 passed
+pluginval 8 passed
+pluginval 9 passed
+pluginval 10 passed
+Steinberg extensive validation passed

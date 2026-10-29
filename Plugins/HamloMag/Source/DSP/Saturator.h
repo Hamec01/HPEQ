@@ -25,7 +25,7 @@ public:
     void reset() noexcept;
     void process(float* const* channels, int numChannels, int numSamples, const FxSlotParams&) noexcept;
 
-    // Integer latency at the base rate for oversampling index 0 (1x) / 1 (2x) / 2 (4x). The first call
+    // Integer latency at the base rate for oversampling index 0 (1x) / 1 (2x) / 2 (4x) / 3 (8x, HamloMag v2). The first call
     // builds the table (allocates): it is made from prepare() / the message thread.
     static int latencySamples(int oversamplingIndex);
     // The whole slot: oversampling + the HamloMag wow delay (TAPE, VINYL).
@@ -40,7 +40,7 @@ private:
     void shape(float* data, int n, float g, float bias, float norm, int curve) noexcept;
 
     double sampleRate = 48000.0;
-    std::array<std::unique_ptr<juce::dsp::Oversampling<float>>, 2> oversamplers; // 2x, 4x
+    std::array<std::unique_ptr<juce::dsp::Oversampling<float>>, 3> oversamplers; // 2x, 4x, 8x (HamloMag v2)
     int activeOversampling = 0;
     std::array<double, kMaxChannels> dcIn {}, dcOut {};
     double dcCoefficient = 0.999;

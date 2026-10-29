@@ -12,7 +12,7 @@ namespace
 using namespace steel;
 namespace mag = dsp::mag;
 
-constexpr float kW = 1180.0f, kH = 820.0f; // design stage
+constexpr float kW = 1180.0f, kH = 940.0f; // design stage (820 + the v2 strip)
 constexpr float kPi = juce::MathConstants<float>::pi;
 
 enum class Map { Linear, Log };
@@ -35,9 +35,13 @@ constexpr std::array<MapInfo, HamloMagPanel::NumParams> kMaps { {
     { 0.0, 1.0, Map::Linear },      // Hiss
     { 0.0, 1.0, Map::Linear },      // Hum
     { 0.0, 1.0, Map::Linear },      // Crackle
+    { 0.0, 1.0, Map::Linear },      // Phone
+    { 0.0, 300.0, Map::Linear },    // Sub (Hz, 0 = off)
+    { -1.0, 1.0, Map::Linear },     // Dynamics
 } };
 constexpr std::array<const char*, HamloMagPanel::NumParams> kLabels { "Drive", "Tone", "Low cut", "High cut", "Mix", "Output", "Harmonics",
-                                                                      "Even / odd", "Bias", "Wow", "Hiss", "Hum 50", "Crackle" };
+                                                                      "Even / odd", "Bias", "Wow", "Hiss", "Hum 50", "Crackle",
+                                                                      "Phone", "Sub", "Dynamics" };
 
 // Layout (design coordinates)
 const juce::Rectangle<float> kPlate { 405.0f, 36.0f, 370.0f, 92.0f };
@@ -60,6 +64,14 @@ constexpr std::array<float, 4> kToggleX { 914.0f, 974.0f, 1034.0f, 1094.0f };
 constexpr float kToggleY = 474.0f;
 constexpr float kLargeY = 598.0f, kLargeLabelY = 532.0f, kLargeReadoutY = 666.0f;
 constexpr float kSmallY = 748.0f, kSmallLabelY = 702.0f, kSmallReadoutY = 790.0f;
+// the v2 strip
+constexpr float kStripTop = 834.0f, kStripKnobY = 884.0f, kSamplerX = 200.0f;
+constexpr std::array<float, 3> kStripKnobX { 480.0f, 650.0f, 820.0f };
+const juce::Point<float> kMatchToggle { 980.0f, kStripKnobY }, kDeltaToggle { 1070.0f, kStripKnobY };
+float samplerOptionX(int i) { return kSamplerX + 72.0f * (static_cast<float>(i) - 1.5f); }
+// a small knob's title and readout sit 46 above / 42 below its centre (the small row's spacing)
+float labelYFor(float centreY, bool large) { return large ? kLargeLabelY : centreY - 46.0f; }
+float readoutYFor(float centreY, bool large) { return large ? kLargeReadoutY : centreY + 42.0f; }
 const juce::Colour kOdd = phosphor.withRotatedHue(0.08f);
 
 float modelAngle(int i) { return (-125.0f + 50.0f * static_cast<float>(i)) * kPi / 180.0f; }
@@ -75,7 +87,8 @@ juce::Rectangle<float> modelLabelArea(int i)
     return { c.x - 46.0f, c.y - 10.0f, 92.0f, 20.0f };
 }
 
-float optionX(float centre, int i) { return centre + 42.0f * static_cast<float>(i - 1); }
+float optionX(float centre, int i, int n = 3) { return centre + 42.0f * (static_cast<float>(i) - 0.5f * static_cast<float>(n - 1)); }
+int optionsOf(float centre) { return centre == kOsX ? 4 : 3; } // OVERSAMPLE 1x / 2x / 4x / 8x
 
 juce::String hz(double v)
 {
@@ -97,7 +110,12 @@ HamloMagPanel::HamloMagPanel() : meter(std::make_unique<MeterState>())
     {
         auto& k = knobs[static_cast<size_t>(i)];
         k.param = static_cast<Param>(i);
-        if (i < kLarge)
+        if (i >= kFirstStrip)
+        {
+            k.centre = { kStripKnobX[static_cast<size_t>(i - kFirstStrip)], kStripKnobY };
+            k.scale = 0.55f;
+        }
+        else if (i < kLarge)
         {
             k.centre = { 56.0f + (1068.0f / kLarge) * (static_cast<float>(i) + 0.5f), kLargeY };
             k.scale = 0.82f;
@@ -139,13 +157,14 @@ HamloMagPanel::~HamloMagPanel()
 const char* HamloMagPanel::keyFor(Param p)
 {
     static constexpr const char* keys[] { "driveDb", "tone", "satLowCutHz", "satHighCutHz", "mix", "trimDb", "harmonics", "evenOdd",
-                                          "tapeBias", "wow", "hiss", "hum", "crackle" };
+                                          "tapeBias", "wow", "hiss", "hum", "crackle", "phoneBass", "subProtectHz", "dynamics" };
     return keys[p];
 }
 
 const char* HamloMagPanel::keyFor(Switch s)
 {
-    static constexpr const char* keys[] { "model", "speed", "oversampling", "punish", "thump", "steep", "autoGain", "noiseFollow" };
+    static constexpr const char* keys[] { "model", "speed", "oversampling", "punish", "thump", "steep", "autoGain", "noiseFollow",
+                                          "sampler", "match", "delta" };
     return keys[s];
 }
 
@@ -156,7 +175,7 @@ double HamloMagPanel::defaultFor(Param p)
 
 bool HamloMagPanel::usedByClassic(Param p) noexcept
 {
-    return p == Drive || p == Mix || p == Output;
+    return p == Drive || p == Mix || p == Output || p == Phone || p == Sub || p == Dynamics;
 }
 
 bool HamloMagPanel::isActive(Param p) const noexcept
@@ -180,8 +199,10 @@ juce::String HamloMagPanel::format(Param p, double v)
             return std::abs(v) < 0.005 ? juce::String("0") : (v > 0 ? "+" : "") + juce::String(juce::roundToInt(v * 100.0));
         case LowCut: return hz(v);
         case HighCut: return v >= 19900.0 ? juce::String("OFF") : hz(v);
-        case Mix: case Harmonics: case Bias: case Wow: case Hiss: case Hum: case Crackle:
+        case Mix: case Harmonics: case Bias: case Wow: case Hiss: case Hum: case Crackle: case Phone:
             return juce::String(juce::roundToInt(v * 100.0)) + " %";
+        case Sub: return v < 1.0 ? juce::String("OFF") : hz(v);
+        case Dynamics: return std::abs(v) < 0.005 ? juce::String("0") : (v > 0 ? "+" : "") + juce::String(juce::roundToInt(v * 100.0)) + " %";
         case NumParams: break;
     }
     return {};
@@ -216,6 +237,10 @@ dsp::FxSlotParams HamloMagPanel::slotParams() const
     p.values[s::kSatHum] = static_cast<float>(k[Hum]);
     p.values[s::kSatCrackle] = static_cast<float>(k[Crackle]);
     p.values[s::kSatNoiseFollow] = static_cast<float>(sw[NoiseFollow]);
+    p.values[s::kSatSampler] = static_cast<float>(sw[Sampler]);
+    p.values[s::kSatPhone] = static_cast<float>(k[Phone]);
+    p.values[s::kSatSubHz] = static_cast<float>(k[Sub]);
+    p.values[s::kSatDynamics] = static_cast<float>(k[Dynamics]);
     return p;
 }
 
@@ -371,7 +396,7 @@ void HamloMagPanel::renderStatic(juce::Graphics& g) const
 
     crtBezel(g, kBezel, kScreen, juce::String::fromUTF8("\xd0\xad\xd0\x9a\xd0\xa0\xd0\x90\xd0\x9d \xc2\xb7 \xd0\xa1\xd0\x9a\xd0\x9e"), 476.0f); // ЭКРАН · СКО
     meterFace(g, meter->meter);
-    const std::array<const char*, 4> toggleLabels { "PUNISH", "THUMP", "STEEP", "AUTO" };
+    const std::array<const char*, 4> toggleLabels { "OVERLOAD", "BUMP", "24 DB", "AUTO" };
     for (int i = 0; i < 4; ++i)
         engraved(g, toggleLabels[static_cast<size_t>(i)], juce::Rectangle<float>(kToggleX[static_cast<size_t>(i)] - 34.0f, 432.0f, 68.0f, 18.0f), 12.5f);
     engraved(g, "ON", juce::Rectangle<float>(kLamp.x - 24.0f, kLamp.y + 18.0f, 48.0f, 16.0f), 12.0f);
@@ -379,7 +404,7 @@ void HamloMagPanel::renderStatic(juce::Graphics& g) const
     for (const auto& k : knobs)
     {
         const bool large = k.param < kLarge;
-        const float labelY = large ? kLargeLabelY : kSmallLabelY;
+        const float labelY = labelYFor(k.centre.y, large);
         const float w = large ? 170.0f : 120.0f;
         engraved(g, juce::String(kLabels[static_cast<size_t>(k.param)]).toUpperCase(),
                  juce::Rectangle<float>(k.centre.x - w * 0.5f, labelY - 13.0f, w, 26.0f), large ? 20.0f : 14.0f, stencil, juce::Justification::centred, 0.1f);
@@ -390,6 +415,14 @@ void HamloMagPanel::renderStatic(juce::Graphics& g) const
     g.drawHorizontalLine(684, 56.0f, kW - 56.0f);
     g.setColour(juce::Colours::white.withAlpha(0.07f));
     g.drawHorizontalLine(683, 56.0f, kW - 56.0f);
+    // the v2 strip: a groove, SAMPLER, MATCH, DELTA
+    g.setColour(juce::Colours::black);
+    g.drawHorizontalLine(juce::roundToInt(kStripTop - 18.0f), 56.0f, kW - 56.0f);
+    g.setColour(juce::Colours::white.withAlpha(0.07f));
+    g.drawHorizontalLine(juce::roundToInt(kStripTop - 19.0f), 56.0f, kW - 56.0f);
+    engraved(g, "SAMPLER", juce::Rectangle<float>(kSamplerX - 80.0f, kStripTop - 10.0f, 160.0f, 20.0f), 14.0f);
+    engraved(g, "MATCH", juce::Rectangle<float>(kMatchToggle.x - 40.0f, kStripTop - 4.0f, 80.0f, 18.0f), 12.5f);
+    engraved(g, "DELTA", juce::Rectangle<float>(kDeltaToggle.x - 40.0f, kStripTop - 4.0f, 80.0f, 18.0f), 12.5f);
 }
 
 // ---------------------------------------------------------------------------------------------------
@@ -476,7 +509,7 @@ void HamloMagPanel::drawKnob(juce::Graphics& g, const Knob& k) const
     const float angle = (-135.0f + static_cast<float>(normFor(k.param)) * 270.0f) * kPi / 180.0f;
     brassKnob(g, k.centre, angle, k.scale, active ? 1.0f : 0.45f, KnobAsset::ChippedIronDark, PointerAsset::WhiteEnamel);
     const bool large = k.param < kLarge;
-    const auto r = juce::Rectangle<float>(k.centre.x - (large ? 80.0f : 60.0f), (large ? kLargeReadoutY : kSmallReadoutY) - 12.0f,
+    const auto r = juce::Rectangle<float>(k.centre.x - (large ? 80.0f : 60.0f), readoutYFor(k.centre.y, large) - 12.0f,
                                           large ? 160.0f : 120.0f, 24.0f);
     const auto text = format(k.param, values.knobs[static_cast<size_t>(k.param)]);
     g.setFont(stencilFont(large ? 22.0f : 16.0f));
@@ -533,30 +566,31 @@ void HamloMagPanel::drawSelector(juce::Graphics& g) const
 void HamloMagPanel::drawLevers(juce::Graphics& g) const
 {
     const int model = values.switches[Model];
-    const auto three = [&](float centre, int selected, const std::array<juce::String, 3>& names, bool usable)
+    const auto three = [&](float centre, int selected, const juce::StringArray& names, bool usable)
     {
-        for (int i = 0; i < 3; ++i)
+        const int n = names.size();
+        for (int i = 0; i < n; ++i)
         {
-            const auto r = juce::Rectangle<float>(optionX(centre, i) - 22.0f, leverTop(centre) + 4.0f, 44.0f, 16.0f);
+            const auto r = juce::Rectangle<float>(optionX(centre, i, n) - 22.0f, leverTop(centre) + 4.0f, 44.0f, 16.0f);
             g.setFont(stencilFont(12.5f).withKerningFactor(0.05f));
             if (i == selected && usable)
             {
                 g.setColour(juce::Colour(0x55ffe9a0));
-                g.drawText(names[static_cast<size_t>(i)], r.expanded(1.0f), juce::Justification::centred);
+                g.drawText(names[i], r.expanded(1.0f), juce::Justification::centred);
                 g.setColour(juce::Colour(0xfffff6d0));
             }
             else
                 g.setColour(stencilDim.withAlpha(usable ? 1.0f : 0.4f));
-            g.drawText(names[static_cast<size_t>(i)], r, juce::Justification::centred);
+            g.drawText(names[i], r, juce::Justification::centred);
         }
-        lever(g, { centre, leverTop(centre) + 64.0f }, (-36.0f + 36.0f * static_cast<float>(selected)) * kPi / 180.0f, 0.8f);
+        lever(g, { centre, leverTop(centre) + 64.0f }, (-36.0f + 72.0f / static_cast<float>(n - 1) * static_cast<float>(selected)) * kPi / 180.0f, 0.8f);
     };
     const bool vinyl = model == mag::Vinyl;
     three(kSpeedX, values.switches[Speed], { mag::speedName(model, 0), mag::speedName(model, 1), mag::speedName(model, 2) }, mag::hasWow(model));
     g.setFont(stencilFont(10.5f).withKerningFactor(0.15f));
     g.setColour(stencilDim);
     g.drawText(vinyl ? "RPM" : "CM/S", juce::Rectangle<float>(kSpeedX + 40.0f, kSpeedTop - 12.0f, 50.0f, 14.0f), juce::Justification::centredLeft);
-    three(kOsX, values.switches[Oversampling], { "1x", "2x", "4x" }, true);
+    three(kOsX, values.switches[Oversampling], { "1x", "2x", "4x", "8x" }, true);
     lamp(g, kLamp, values.on, 0.42f);
 }
 
@@ -584,6 +618,31 @@ void HamloMagPanel::drawToggles(juce::Graphics& g) const
     g.drawText("FOLLOW", juce::Rectangle<float>(kNoiseToggle.x + 14.0f, kNoiseToggle.y - 26.0f, 60.0f, 14.0f), juce::Justification::centredLeft);
     g.setColour(!follow ? juce::Colour(0xfffff6d0) : stencilDim);
     g.drawText("ALWAYS", juce::Rectangle<float>(kNoiseToggle.x + 14.0f, kNoiseToggle.y + 12.0f, 60.0f, 14.0f), juce::Justification::centredLeft);
+}
+
+void HamloMagPanel::drawStrip(juce::Graphics& g) const
+{
+    // SAMPLER: OFF / SP-1200 / MPC60 / S950
+    static const std::array<const char*, 4> names { "OFF", "SP-1200", "MPC60", "S950" };
+    const int selected = juce::jlimit(0, 3, values.switches[Sampler]);
+    for (int i = 0; i < 4; ++i)
+    {
+        const auto r = juce::Rectangle<float>(samplerOptionX(i) - 34.0f, kStripTop + 14.0f, 68.0f, 16.0f);
+        g.setFont(stencilFont(12.5f).withKerningFactor(0.05f));
+        g.setColour(i == selected ? juce::Colour(0xfffff6d0) : stencilDim);
+        g.drawText(names[static_cast<size_t>(i)], r, juce::Justification::centred);
+    }
+    lever(g, { kSamplerX, kStripTop + 80.0f }, (-40.0f + 80.0f / 3.0f * static_cast<float>(selected)) * kPi / 180.0f, 0.8f);
+    for (const auto& [where, which] : { std::pair { kMatchToggle, Match }, std::pair { kDeltaToggle, Delta } })
+    {
+        const bool on = values.switches[which] > 0;
+        lever(g, where, on ? 0.0f : kPi, 0.62f, on ? LeverPosition::Up : LeverPosition::Down);
+        if (on)
+        {
+            g.setColour(juce::Colour(0xffff4a3a));
+            g.fillEllipse(where.x + 16.0f, where.y - 22.0f, 5.0f, 5.0f);
+        }
+    }
 }
 
 void HamloMagPanel::drawLcd(juce::Graphics& g) const
@@ -720,6 +779,7 @@ void HamloMagPanel::paint(juce::Graphics& g)
     drawToggles(g);
     meterNeedle(g, meter->meter);
     drawLcd(g);
+    drawStrip(g);
     for (const auto& k : knobs)
         drawKnob(g, k);
 }
@@ -815,11 +875,12 @@ void HamloMagPanel::mouseDown(const juce::MouseEvent& e)
         if (juce::Rectangle<float>(centre - 70.0f, leverTop(centre), 140.0f, 90.0f).contains(d))
         {
             int option = -1;
+            const int n = optionsOf(centre);
             if (d.y <= leverTop(centre) + 24.0f)
-                for (int i = 0; i < 3; ++i)
-                    if (std::abs(d.x - optionX(centre, i)) <= 21.0f)
+                for (int i = 0; i < n; ++i)
+                    if (std::abs(d.x - optionX(centre, i, n)) <= 21.0f)
                         option = i;
-            setSwitch(which, option >= 0 ? option : (values.switches[which] + 1) % 3);
+            setSwitch(which, option >= 0 ? option : (values.switches[which] + 1) % n);
             return;
         }
     const std::array<Switch, 4> toggles { Punish, Thump, Steep, Auto };
@@ -827,6 +888,22 @@ void HamloMagPanel::mouseDown(const juce::MouseEvent& e)
         if (juce::Rectangle<float>(toggleCentre(i).x - 22.0f, toggleCentre(i).y - 30.0f, 44.0f, 52.0f).contains(d))
         {
             const auto which = toggles[static_cast<size_t>(i)];
+            setSwitch(which, values.switches[which] > 0 ? 0 : 1);
+            return;
+        }
+    if (juce::Rectangle<float>(kSamplerX - 150.0f, kStripTop + 8.0f, 300.0f, 90.0f).contains(d))
+    {
+        int option = -1;
+        if (d.y <= kStripTop + 34.0f)
+            for (int i = 0; i < 4; ++i)
+                if (std::abs(d.x - samplerOptionX(i)) <= 34.0f)
+                    option = i;
+        setSwitch(Sampler, option >= 0 ? option : (values.switches[Sampler] + 1) % 4);
+        return;
+    }
+    for (const auto& [where, which] : { std::pair { kMatchToggle, Match }, std::pair { kDeltaToggle, Delta } })
+        if (juce::Rectangle<float>(where.x - 24.0f, where.y - 32.0f, 48.0f, 60.0f).contains(d))
+        {
             setSwitch(which, values.switches[which] > 0 ? 0 : 1);
             return;
         }
@@ -846,7 +923,7 @@ void HamloMagPanel::mouseDown(const juce::MouseEvent& e)
     for (const auto& k : knobs) // a click on a readout types a value
     {
         const bool large = k.param < kLarge;
-        const auto r = juce::Rectangle<float>(k.centre.x - (large ? 80.0f : 60.0f), (large ? kLargeReadoutY : kSmallReadoutY) - 12.0f,
+        const auto r = juce::Rectangle<float>(k.centre.x - (large ? 80.0f : 60.0f), readoutYFor(k.centre.y, large) - 12.0f,
                                               large ? 160.0f : 120.0f, 24.0f);
         if (r.contains(d))
         {
@@ -915,11 +992,12 @@ void HamloMagPanel::editReadout(Param p)
 {
     const auto& k = knobs[static_cast<size_t>(p)];
     const bool large = p < kLarge;
-    const auto area = juce::Rectangle<float>(k.centre.x - (large ? 70.0f : 56.0f), (large ? kLargeReadoutY : kSmallReadoutY) - 13.0f,
+    const auto area = juce::Rectangle<float>(k.centre.x - (large ? 70.0f : 56.0f), readoutYFor(k.centre.y, large) - 13.0f,
                                              large ? 140.0f : 112.0f, 26.0f)
                           .transformedBy(toScreen())
                           .toNearestInt();
-    const bool percent = p == Mix || p == Harmonics || p == Bias || p == Wow || p == Hiss || p == Hum || p == Crackle || p == Tone || p == EvenOdd;
+    const bool percent = p == Mix || p == Harmonics || p == Bias || p == Wow || p == Hiss || p == Hum || p == Crackle || p == Tone || p == EvenOdd
+                         || p == Phone || p == Dynamics;
     typing = std::make_unique<juce::TextEditor>();
     typing->setBounds(area);
     typing->setFont(stencilFont((large ? 20.0f : 15.0f) * scale * 1.1f));
@@ -959,6 +1037,12 @@ juce::String HamloMagPanel::helpKeyAt(juce::Point<float> local) const
     const auto d = toDesign(local);
     if (const int k = knobAt(d); k >= 0)
         return keyFor(static_cast<Param>(k));
+    if (juce::Rectangle<float>(kSamplerX - 150.0f, kStripTop + 8.0f, 300.0f, 90.0f).contains(d))
+        return keyFor(Sampler);
+    if (d.getDistanceFrom(kMatchToggle) <= 30.0f)
+        return keyFor(Match);
+    if (d.getDistanceFrom(kDeltaToggle) <= 30.0f)
+        return keyFor(Delta);
     return {};
 }
 

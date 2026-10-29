@@ -1,0 +1,69 @@
+Random seed: 0x4e92c5
+-----------------------------------------------------------------
+Starting tests in: Saturator / CLASSIC (model 0), 1x: y = DC-block((tanh(g x) - tanh(0)) / g) with auto gain - HPEQ's M6 law...
+  worst difference 0.000000037
+Completed tests in Saturator / CLASSIC (model 0), 1x: y = DC-block((tanh(g x) - tanh(0)) / g) with auto gain - HPEQ's M6 law
+-----------------------------------------------------------------
+Starting tests in: Saturator / Every model and oversampling: finite, bounded, and not the input (it colours)...
+Completed tests in Saturator / Every model and oversampling: finite, bounded, and not the input (it colours)
+-----------------------------------------------------------------
+Starting tests in: Saturator / Latency: 1x 0, 2x / 4x the measured oversampler delay; TAPE / VINYL add the 4 ms wow delay...
+Completed tests in Saturator / Latency: 1x 0, 2x / 4x the measured oversampler delay; TAPE / VINYL add the 4 ms wow delay
+-----------------------------------------------------------------
+Starting tests in: Saturator / Blocks 1, 64, 127 and 4096 (after prepare(512)) bit-identical to 512, every model at 4x...
+Completed tests in Saturator / Blocks 1, 64, 127 and 4096 (after prepare(512)) bit-identical to 512, every model at 4x
+-----------------------------------------------------------------
+Starting tests in: V2 / SAMPLER, PHONE, SUB, DYNAMICS off: MagV2Processor = SaturatorProcessor bit-exact (every model, 1x .. 8x)...
+Completed tests in V2 / SAMPLER, PHONE, SUB, DYNAMICS off: MagV2Processor = SaturatorProcessor bit-exact (every model, 1x .. 8x)
+-----------------------------------------------------------------
+Starting tests in: V2 / Every new control on, every model at 4x: finite and bounded...
+Completed tests in V2 / Every new control on, every model at 4x: finite and bounded
+-----------------------------------------------------------------
+Starting tests in: V2 / SUB at DRIVE 0 (CLASSIC): the split sums back - a 1 kHz tone and a 60 Hz tone keep their level within 0.2 dB...
+Completed tests in V2 / SUB at DRIVE 0 (CLASSIC): the split sums back - a 1 kHz tone and a 60 Hz tone keep their level within 0.2 dB
+-----------------------------------------------------------------
+Starting tests in: V2 / DELTA: the output with DELTA + the input delayed by the latency = the output without DELTA...
+Completed tests in V2 / DELTA: the output with DELTA + the input delayed by the latency = the output without DELTA
+-----------------------------------------------------------------
+Starting tests in: V2 / MATCH: TUBE at DRIVE 24 dB comes out within 1 dB of the input level (pink-ish drums, after 1.5 s)...
+  level change 0.17 dB
+Completed tests in V2 / MATCH: TUBE at DRIVE 24 dB comes out within 1 dB of the input level (pink-ish drums, after 1.5 s)
+-----------------------------------------------------------------
+Starting tests in: V2 / Host blocks 1, 64, 127, 4096 after prepare(256) bit-identical with every new control on...
+Completed tests in V2 / Host blocks 1, 64, 127, 4096 after prepare(256) bit-identical with every new control on
+-----------------------------------------------------------------
+Starting tests in: V2 / Migration: a state without the v2 parameters (HPEQ, HamloMag 0.1.0) loads with every new control off...
+Completed tests in V2 / Migration: a state without the v2 parameters (HPEQ, HamloMag 0.1.0) loads with every new control off
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Parameters: the IDs, ranges and defaults of HPEQ's HamloMag, then bypass...
+Completed tests in Plug-in / Parameters: the IDs, ranges and defaults of HPEQ's HamloMag, then bypass
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Latency: fixed at the SAMPLER + 8x + the TAPE wow delay whatever OVERSAMPLING / MODEL / SAMPLER...
+  351 samples at 48 kHz
+Completed tests in Plug-in / Latency: fixed at the SAMPLER + 8x + the TAPE wow delay whatever OVERSAMPLING / MODEL / SAMPLER
+-----------------------------------------------------------------
+Starting tests in: Plug-in / MIX 0 and ON off: the input delayed by the latency, bit-exact (every model)...
+Completed tests in Plug-in / MIX 0 and ON off: the input delayed by the latency, bit-exact (every model)
+-----------------------------------------------------------------
+Starting tests in: Plug-in / State: a state saved by HPEQ's module VST3 (tag HamloMag, PARAM id / value) loads; save / load round trip...
+Completed tests in Plug-in / State: a state saved by HPEQ's module VST3 (tag HamloMag, PARAM id / value) loads; save / load round trip
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (TAPE, 4x, wow, hiss, MIX 0.7)...
+Completed tests in Plug-in / Host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (TAPE, 4x, wow, hiss, MIX 0.7)
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Mono: the mono layout is accepted and the saturator works on it...
+Completed tests in Plug-in / Mono: the mono layout is accepted and the saturator works on it
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Programs: Default plus the 7 HPEQ saturator presets and the 200 genre presets; Default restores...
+Completed tests in Plug-in / Programs: Default plus the 7 HPEQ saturator presets and the 200 genre presets; Default restores
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Genre presets (docs/GENRE_PRESETS.md): Boom Bap, Trap, Techno, DnB x 50, each in the ten groups; names unique per genre; the host list shows genre / group / name...
+Completed tests in Plug-in / Genre presets (docs/GENRE_PRESETS.md): Boom Bap, Trap, Techno, DnB x 50, each in the ten groups; names unique per genre; the host list shows genre / group / name
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Preset screen: top left on the page (the same place on every Hamlo plug-in); genre / group filter, arrows wrap, a host program change shows its genre and group; the program survives save / load...
+Completed tests in Plug-in / Preset screen: top left on the page (the same place on every Hamlo plug-in); genre / group filter, arrows wrap, a host program change shows its genre and group; the program survives save / load
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Page: 1180 x 940, resizable; the preset screen top left; a knob writes its parameter...
+Completed tests in Plug-in / Page: 1180 x 940, resizable; the preset screen top left; a knob writes its parameter
+
+HamloMag_Tests: 707 expectations passed, 0 failed

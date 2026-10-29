@@ -18,6 +18,9 @@ namespace hamlo::ui
 // current drive, the tape loop drawn; HARMONICS: H1 … H9 for the live input level, computed by the
 // engine), an OUTPUT needle meter, ON lamp, PUNISH / THUMP / STEEP / AUTO toggles, six large and seven
 // small brass knobs and the NOISE ALWAYS / FOLLOW toggle. Design coordinates 1180 x 820, scaled to fit.
+// HamloMag v2 (docs/MAG_V2.md): the stage grew to 1180 x 940 for a bottom strip - the SAMPLER lever (OFF / SP-1200 /
+// MPC60 / S950), PHONE, SUB and DYNAMICS knobs, MATCH and DELTA toggles; OVERSAMPLE has 8x; the toggles read
+// OVERLOAD / BUMP / 24 DB / AUTO; the preset screen sits top left (SPEED moved under OVERSAMPLE).
 class HamloMagPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
@@ -25,16 +28,17 @@ public:
     {
         Drive, Tone, LowCut, HighCut, Mix, Output,                 // large row
         Harmonics, EvenOdd, Bias, Wow, Hiss, Hum, Crackle,         // small row
+        Phone, Sub, Dynamics,                                      // the v2 strip
         NumParams
     };
-    static constexpr int kLarge = 6;
-    enum Switch { Model, Speed, Oversampling, Punish, Thump, Steep, Auto, NoiseFollow, NumSwitches };
+    static constexpr int kLarge = 6, kFirstStrip = Phone;
+    enum Switch { Model, Speed, Oversampling, Punish, Thump, Steep, Auto, NoiseFollow, Sampler, Match, Delta, NumSwitches };
     enum DisplayMode { CurveView, HarmonicsView };
 
     struct Values
     {
-        std::array<double, NumParams> knobs { 0.0, 0.0, 20.0, 20000.0, 1.0, 0.0, 0.5, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0 };
-        std::array<int, NumSwitches> switches { 1, 0, 1, 0, 0, 0, 0, 1 };
+        std::array<double, NumParams> knobs { 0.0, 0.0, 20.0, 20000.0, 1.0, 0.0, 0.5, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
+        std::array<int, NumSwitches> switches { 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0 };
         bool on = true;
     };
 
@@ -106,6 +110,7 @@ private:
     void drawCurveView(juce::Graphics&, juce::Rectangle<float> screen) const;
     void drawHarmonicsView(juce::Graphics&, juce::Rectangle<float> screen) const;
     void drawLcd(juce::Graphics&) const;
+    void drawStrip(juce::Graphics&) const;
     void editReadout(Param);
 
     Values values;

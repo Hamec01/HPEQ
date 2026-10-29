@@ -13,6 +13,9 @@ const std::vector<Preset>& factoryPresets()
         { "Vinyl Dust", 1.0f, { { "model", 5 }, { "speed", 0 }, { "driveDb", 4 }, { "crackle", 0.3 }, { "hiss", 0.1 } } },
         { "Cassette Lo-Fi", 1.0f, { { "model", 1 }, { "speed", 2 }, { "driveDb", 8 }, { "wow", 0.4 }, { "hiss", 0.2 }, { "satHighCutHz", 9000 } } },
         { "Parallel Grit", 0.3f, { { "model", 0 }, { "driveDb", 18 } } },
+        // genre presets (docs/GENRE_PRESETS.md): Boom Bap, Trap, Techno, DnB x 50, in groups; DRIVE calibrated on the
+        // material by HamloMag_PresetLab
+#include "Plugin/GenrePresets.inc"
     };
     return list;
 }

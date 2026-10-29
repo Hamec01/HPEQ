@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloMag VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloMag VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -47,6 +47,7 @@ set_target_properties(HamloMag_Assets PROPERTIES POSITION_INDEPENDENT_CODE ON)
 add_library(HamloMag_Shared STATIC
     Source/DSP/HamloMag.cpp
     Source/DSP/Saturator.cpp
+    Source/DSP/MagV2.cpp
     Source/UI/BlackSteel.cpp
     Source/UI/HamloMagPanel.cpp
     Source/UI/ModuleHelp.cpp
@@ -108,6 +109,7 @@ target_link_libraries(HamloMag
 add_executable(HamloMag_Tests
     Tests/TestMain.cpp
     Tests/SaturatorTests.cpp
+    Tests/V2Tests.cpp
     Tests/PluginTests.cpp)
 target_compile_definitions(HamloMag_Tests PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
 target_link_libraries(HamloMag_Tests
@@ -134,3 +136,29 @@ target_link_libraries(HamloMag_Snapshot
         juce::juce_recommended_warning_flags)
 
 
+
+# Measurements against docs/MAG_V2.md (the "before" and "after" runs use this tool unchanged).
+add_executable(HamloMag_Lab Tests/LabMain.cpp)
+target_compile_definitions(HamloMag_Lab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(HamloMag_Lab
+    PRIVATE
+        HamloMag_Shared
+        HamloMag_Assets
+        juce::juce_audio_utils
+        juce::juce_dsp
+        juce::juce_audio_formats
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
+
+# Genre presets on their material: DRIVE calibration and the check (docs/GENRE_PRESETS.md).
+add_executable(HamloMag_PresetLab Tests/PresetLabMain.cpp)
+target_compile_definitions(HamloMag_PresetLab PRIVATE JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_link_libraries(HamloMag_PresetLab
+    PRIVATE
+        HamloMag_Shared
+        HamloMag_Assets
+        juce::juce_audio_utils
+        juce::juce_dsp
+        juce::juce_audio_formats
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_warning_flags)
