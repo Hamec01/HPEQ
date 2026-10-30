@@ -42,35 +42,14 @@ file(GLOB HAMLO_ECHO_TUBES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/
 juce_add_binary_data(HamloEcho_Assets NAMESPACE HpeqAssets SOURCES ${HAMLO_ECHO_SCRATCHES} ${HAMLO_ECHO_HARDWARE} ${HAMLO_ECHO_TUBES})
 set_target_properties(HamloEcho_Assets PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-# --- Shared code: HPEQ's module-plug-in stack (Source/ is HPEQ's, verbatim; docs/SYNC_WITH_HPEQ.md) -----------
+# --- Echo-only shared code; M0 provenance and bit-exact verification: docs/SYNC_WITH_HPEQ.md -----------
 add_library(HamloEcho_Shared STATIC
     Source/Core/ModulePresets.cpp
-    Source/DSP/Biquad.cpp
-    Source/DSP/FxNodeProcessor.cpp
-    Source/DSP/LayerEngine.cpp
-    Source/DSP/PreEqProcessor.cpp
-    Source/DSP/Processors.cpp
-    Source/DSP/ReverbProcessor.cpp
-    Source/DSP/HamloVerb.cpp
     Source/DSP/HamloEcho.cpp
-    Source/DSP/HamloMag.cpp
-    Source/DSP/ProcessorsM6.cpp
-    Source/DSP/HamloRevolution.cpp
-    Source/DSP/HamloRedWall.cpp
-    Source/DSP/HamloUdarnik.cpp
-    Source/DSP/HamloZastava.cpp
-    Source/DSP/HamloShirota.cpp
-    Source/DSP/CrossoverTree.cpp
-    Source/DSP/EqDesign.cpp
+    Source/DSP/LegacyDelay.cpp
+    Source/DSP/LegacyEchoCore.cpp
     Source/UI/BlackSteel.cpp
-    Source/UI/HamloCompPanel.cpp
-    Source/UI/HamloVerbPanel.cpp
     Source/UI/HamloEchoPanel.cpp
-    Source/UI/HamloMagPanel.cpp
-    Source/UI/HamloRedWallPanel.cpp
-    Source/UI/HamloUdarnikPanel.cpp
-    Source/UI/HamloZastavaPanel.cpp
-    Source/UI/HamloShirotaPanel.cpp
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
@@ -130,7 +109,7 @@ target_link_libraries(HamloEcho
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot Lab)
     if (tool STREQUAL "Tests")
-        add_executable(HamloEcho_Tests Tests/TestMain.cpp Tests/PluginTests.cpp)
+        add_executable(HamloEcho_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/LegacyStateTests.cpp)
     elseif(tool STREQUAL "Lab")
         add_executable(HamloEcho_Lab Tests/EchoLabMain.cpp)
     else()

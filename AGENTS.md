@@ -23,7 +23,7 @@
 | HamloComp (компрессор, 0.2.0) | `E:\HamloComp` (git, ветка `main`) |
 | HamloUdarnik (транзиент-шейпер, 0.2.0) | `E:\HamloUdarnik` (`main`) |
 | HamloRedWall (лимитер, 0.3.0) | `E:\HamloRedWall` (`main`) |
-| HamloMag (сатуратор, 0.1.0 закоммичен, **v2 не закоммичен**) | `E:\HamloMag` (`master`) |
+| HamloMag (saturator, 0.2.1 complete) | `E:\HamloMag` (`master`) |
 | HPEQ (источник кода модулей) | `E:\HPEQ` (ветка `feature/hpeq-m0-m1`) — **исходники HPEQ не трогать** |
 | Все четыре плагина в HPEQ (для пуша) | worktree `E:\HPEQ-hamlo-plugins`, ветка `feature/hamlo-plugins`, папки `Plugins/<name>` (git subtree) |
 | HPDG (жанры, стили, темпы) | `C:\DRUMENGINE\Source\Engine\StyleDefaults.cpp`, `DnB\DnBStyleProfile.cpp`, `Techno\TechnoStyleProfile.cpp` |
@@ -171,45 +171,17 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Текущее состояние — с чего начать (HamloMag v2)
+## 9. Current local handoff — HamloEcho (2026-10-30)
 
-HamloMag v2 сделан, но **не закоммичен** (`E:\HamloMag`, `git status` — ~25 файлов): SAMPLER (SP-1200 / MPC60 / S950),
-PHONE, SUB, DYNAMICS, MATCH, DELTA, 8x, переименованные тумблеры, нижняя полоса панели (1180×940), 200 рецептов
-пресетов в `Tools/genre_presets.py`, `Tests/V2Tests.cpp`, `Tests/PresetLabMain.cpp`. Лаборатория: 13 / 15
-(G2 8x −77.8 дБ при цели −90; G12 MATCH 0.58 LU при цели 0.5 — честные пределы). Юнит-тесты 707 / 707.
-Эталонные рендеры G1 лежат в `...\scratchpad\mag_g1` (если пропали — G1 сравнивать нечем: собрать 0.1.0 из коммита
-09c6d45 и записать заново).
+HamloMag and HamloVerb are complete. Their old unfinished checklists do not apply. The owner requires work only in E:/HamloEcho; do not modify Verb or HPEQ, run subtree integration, or push.
 
-Осталось:
-1. **Калибровка пресетов прервалась на 48 / 200** (готов Boom Bap, в `Tools/genre_presets_cal.tsv`). Досчитать остальные
-   (фильтр по именам или полный прогон в фоне), сгенерировать `.inc`, `check` → 200 / 200 (провалы чинить рецептами,
-   раскрывать).
-2. Проверить латентность в README (сейчас написано 351 сэмпл; после FIR сэмплера стала больше — взять из теста «Latency»).
-3. `docs/GENRE_PRESETS.md` — вместо `{result}` вписать результат проверки и раскрытия; `docs/reports/v2/V2_REPORT.md` —
-   по образцу HamloRedWall (что сделано, таблица «до → после», что не выполнено и почему, все раскрытия: G4/G6/G11/G13
-   переписаны, DYNAMICS переделан, PHONE до H6, FIR вместо Баттерворта, MATCH с гейтом).
-4. Снимок панели в `docs/reports/v2/panel_v2.png`, pluginval 5–10 + validator, установщик 0.2.0, `dist/`, коммит.
-5. `git subtree pull` в `E:\HPEQ-hamlo-plugins` (Plugins/HamloMag) и обновить строку HamloMag в `Plugins/README.md`;
-   пуш ветки `feature/hamlo-plugins` — когда владелец скажет.
+The approved Echo V2 direction and numerical acceptance targets are in docs/HAMLOECHO_V2.md. Manual SOURCE NOTE and actual target notes are the initial musical model; automatic/polyphonic correction is not promised. Eight reflections, independent spectral bands, Echo-owned space and glitch, Insert/Send, and 200 new recipes remain upcoming work.
 
-Дальше по плану владельца (после HamloMag): HamloVerb, HamloEcho, затем HamloZastava, HamloShirota — тем же порядком
-(M0 → эталоны и цели → замеры → код → 200 пресетов → валидаторы → отчёт).
+Completed: M0 archive and Echo-only Legacy extraction. All 160 raw renders are bit-identical, host contract unchanged, all 160 old states restore on fresh/edited instances. Tests 590/590, pluginval 5..10 passed, Steinberg 537/537. Source now has 26 files; LayerEngine, unrelated modules and panels were removed. CRT PresetScreen.* unchanged. Version remains 0.1.0 until V2 is ready.
 
-### M0 остальных модулей (сделано 2026-10-29)
+Read docs/NEXT_STAGE.md and docs/reports/v2/LEGACY_EXTRACTION_REPORT.md for exact commands, evidence and remaining limits. Preserve out/m0 (original binary, frozen lab, states/renders). Do not rerun the one-time Tools/isolate_echo_m0.py migration over subsequent V2 work. Next stage: measured note/pitch/reverse prototypes. No active jobs; no model/effort switch performed. No subagents; apply efficient-staged-work as required by the owner's personal AGENTS.
 
-`E:\HamloEcho` (дилей, HmEc), `E:\HamloVerb` (реверб, HmVb), `E:\HamloZastava` (гейт, HmZa), `E:\HamloShirota`
-(стерео, HmSh), `E:\HamloFader` (гейн-утилита, HmFd). Устроены иначе, чем первые четыре: `Source/` — это **весь стек
-модульного плагина HPEQ без изменений** (исходники `HPEQ_ModuleShared` из `E:\HPEQ\CMakeLists.txt` и их заголовки,
-namespace `hpeq`), собранный с `HPEQ_MODULE_KIND=<n>`; сверху добавлен только экран пресетов (`Source/UI/PresetScreen.*`,
-namespace `hpeq::ui`) в `Source/Standalone/ModulePluginEditor.*`. HamloFader: у HPEQ нет модульного VST3 для слота Gain —
-в копию добавлены `ModuleKind::Fader` (kind 8) и `makeFader()` с диапазонами из `LayerSnapshot.cpp`.
-Генератор: `make_module_repo.py` (+ `make_fader.py`) — скрипты лежали в рабочей папке прошлого агента; повторять не нужно.
-Тесты: процессор модуля HPEQ огромный (LayerEngine) — в тестах создавать **в куче** (`std::make_unique`), на стеке два
-экземпляра переполняют стек (0xC00000FD).
-
-Первый шаг V2 для каждого из них — **сузить `Source/`** до своего модуля (как HamloMag: свой `<X>Settings.h` с HPEQ-индексами,
-свой процессор без LayerEngine, своя `Parameters.h`), доказать бит-в-бит против текущей M0-сборки, и только потом эталоны и цели.
-
+The other module M0 extractions remain separate repositories; their old full-stack source does not describe Echo's current layout.
 ### HamloRevolution — ещё не вынесен (план)
 
 У Revolution нет модульного VST3, и одной правкой его не добавить: панель (`UI/HamloRevolutionPanel.*`) кроме ручек

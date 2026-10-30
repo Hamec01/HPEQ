@@ -5,7 +5,7 @@
 
 #include <juce_core/juce_core.h>
 
-#include "Core/FxProjectState.h"
+#include "DSP/EchoSettings.h"
 
 namespace hpeq::presets
 {

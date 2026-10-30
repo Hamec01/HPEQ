@@ -1,10 +1,19 @@
 # HamloEcho
 
-The delay of HPEQ as its own VST3 (HamloProd), part of the Hamlo plug-in line. M0: HPEQ's module-plug-in stack
-(`Source/` is HPEQ's, verbatim, built with HPEQ_MODULE_KIND=2) plus the preset screen top left.
+HamloProd's standalone delay, part of the Hamlo plug-in line. The Echo-only Legacy processor now replaces
+the original full HPEQ module stack. All 160 archived M0 renders remain bit-identical, including automation;
+the original parameter contract, eight programs, state tag and zero-sample latency are preserved.
 
     cmake -S . -B build -G "Visual Studio 18 2026" -A x64 -DHAMLO_ECHO_JUCE_DIR=E:/HPEQ/build/_deps/juce-src
     cmake --build build --config Release
 
-Targets: `HamloEcho_VST3`, `HamloEcho_Tests`, `HamloEcho_Snapshot`. Installer: `Installer/Build-Installer.ps1`.
-Working rules and the hand-over: AGENTS.md.
+Targets: `HamloEcho_VST3`, `HamloEcho_Tests`, `HamloEcho_Lab`, `HamloEcho_Snapshot`.
+Current version remains 0.1.0; the planned 0.2.0 musical features are not implemented or released yet.
+
+Verified extraction: 590 test expectations (including machine-local archived states), pluginval 5..10,
+and Steinberg validator 537/537. See [extraction report](docs/reports/v2/LEGACY_EXTRACTION_REPORT.md),
+[V2 design](docs/HAMLOECHO_V2.md), and [handoff](docs/NEXT_STAGE.md).
+
+The raw M0 reference archive lives under ignored `out/m0/`; keep it intact. On a source-only checkout,
+archive-dependent state tests explicitly report SKIP. Original DSP provenance is in [SYNC_WITH_HPEQ](docs/SYNC_WITH_HPEQ.md).
+Installer tooling is in `Installer/`; packaging 0.2.0 follows completion of the new DSP/UI/library and release checks.
