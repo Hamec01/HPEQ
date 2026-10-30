@@ -1,4 +1,5 @@
 #include "Standalone/ScoreParameters.h"
+#include "Standalone/QuickControls.h"
 
 namespace hpeq::standalone
 {
@@ -61,6 +62,10 @@ const std::vector<ParameterSpec>& scoreParameterSpecs()
         }
         add("scoreSwing","Score Swing",0,.75f,0);
         for(int t=0;t<8;++t)add("tap"+juce::String(t+1)+"SpaceSend","Reflection "+juce::String(t+1)+" Space Send",0,1,1);
+        choice("quickEnabled","Quick Enabled",0,{"Off","On"});
+        choice("quickStyle","Quick Move",0,{"Echo","Tape","Bounce","Note Fall","Note Rise","Reverse","Texture","Cloud"});
+        add("quickTime","Time",0,1,.5f);add("quickMotion","Motion",0,1,0);add("quickSpace","Space",0,1,0);
+        choice("quickSync","Quick Timing",1,{"Milliseconds","Host Sync"});
         jassert(out.size() == scoreparam::Count);
         return out;
     }();
@@ -70,7 +75,10 @@ const std::vector<ParameterSpec>& scoreParameterSpecs()
 hamlo::echo::ScoreSettings readScoreSettings(const std::vector<std::atomic<float>*>& values, double bpm) noexcept
 {
     using namespace scoreparam;
-    const auto v = [&](int i) { const double value=values[static_cast<size_t>(i)]->load(std::memory_order_relaxed);return std::isfinite(value)?value:static_cast<double>(scoreParameterSpecs()[static_cast<size_t>(i)].defaultValue); };
+    const auto raw = [&](int i) { const float value=values[static_cast<size_t>(i)]->load(std::memory_order_relaxed);return std::isfinite(value)?value:scoreParameterSpecs()[static_cast<size_t>(i)].defaultValue; };
+    const bool quick=raw(QuickEnabled)>.5f;
+    const auto recipe=quick?quickRecipe(juce::roundToInt(raw(QuickStyle)),raw(QuickTime),raw(QuickMotion),raw(QuickSpace),raw(QuickSync)>.5f):QuickRecipe{};
+    const auto v = [&](int i)->double {return quick&&recipe.applies[static_cast<size_t>(i)]?recipe.actual(i):raw(i);};
     hamlo::echo::ScoreSettings s;
     s.sourceNote=static_cast<int>(v(Source)); s.bpm=bpm; s.mix=v(Mix); s.outputDb=v(Output); s.routing=static_cast<int>(v(Routing));
     s.width=v(Width); s.duck=v(Duck); s.freeze=v(Freeze)>.5; s.feedback=v(Feedback); s.feedbackMs=v(FeedbackMs);

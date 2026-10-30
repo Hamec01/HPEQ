@@ -171,19 +171,17 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Current local handoff - HamloEcho 0.2.0 (2026-10-30)
+## 9. Current local handoff - HamloEcho 0.2.2 (2026-10-30)
 
-Work only in E:/HamloEcho. HamloVerb and HamloMag are complete. Do not modify Verb/HPEQ, integrate subtree, push, or delegate to subagents. Apply C:/Users/Ham_h/.codex/skills/efficient-staged-work/SKILL.md. No model/effort change was performed.
+Work only in E:/HamloEcho. Verb/Mag are complete; do not modify Verb/HPEQ, subtree, push or use subagents. Apply efficient-staged-work. No model switch performed.
 
-Echo 0.2.0 is implemented and packaged for the owner's FL Studio audition. Code/preset commit e3a5293; release evidence/handoff is committed separately (see git log). Own Score engine: eight editable notes, sync/Swing, shared pitch, cumulative feedback pitch, three spectral bands, spatial routing, per-tap sends, captured Reverse/Stutter/Tape Stop/Skip, independent tail Glitch, Insert/Send/Mix Lock/Freeze and English Black Steel UI. Shared PresetScreen.* is unchanged. Legacy original controls/state/program numbers and 160 raw renders are retained.
+Echo0.2.2 is complete and packaged. Neutral Default0.2.1 checkpoint:257a863. Latest commit contains QUICK: three TIME/MOTION/SPACE knobs, eight moves, separate MIX and exact EDIT IN NOTE SCORE transfer. Detailed Note Score and Legacy remain intact. QUICK stores its recipe separately; full tabs recall the detailed score. Six controls append after existing143Score params, default off for old projects/presets. Shared PresetScreen and Source/DSP unchanged.200calibrated genre recipes/208host programs retained by explicit old-value/DSP equivalence.
 
-Final checks: 1198 expectations, 59 integrated measurements, 2687 component hashes, 160 M0 cases, 200/200 compiled recipes (400 Insert/Send renders), pluginval5..10 and Steinberg537/537. Production source c5dd2066c79ce00c6887862d740a59a4a94be0b3b9aff09a9760ae22770fa969. Validated DLL SHA256 62127774c8d48e6e6bfbb04417521fd15a8e8db2daa0e93f7b3cc8ff914ec519.
+Verified:4197expectations,160M0cases,200compiled recipes unchanged, zero audio allocation, bit-exact block1/64/127/512/4096 macro/tempo events, exact continuous Quick-to-Full transfer, pluginval5..10 and Steinberg537/537. Source:7711864ea5a230fe9b4658ff695a140c5072b2c7e1bf9829b52ecffe400b30c3. DLL SHA256:dfa03a81343617d18f3f99cd58f7701866d275b011063c878302303148d2d3a5.
 
-Artifacts: dist/HamloEcho_VST3_Setup_0.2.0.exe, HamloEcho-0.2.0-win64-vst3.zip, HamloEcho-0.2.0-audio-examples.zip, companion SHA256 and release-manifest.json. Installer input inventory matches the validated core; ZIP entries were hash-verified. The installer was prepared, not executed. Owner FL audition remains pending.
+Artifacts:dist/HamloEcho.vst3, setup/ZIP0.2.2, SHA256 and manifests. ZIP/loose entries and installer inputs hash-verified. Installer not executed; owner FL audition pending. Report:docs/reports/quick_022/REPORT.md. Handoff:docs/CURRENT_WORK.md and NEXT_STAGE.md. No active jobs. Commands/logs are in CURRENT_WORK.md.
 
-Read docs/reports/v2/V2_REPORT.md for E01/E10/E12 exceptions: JUCE's extra Program selector expands from8to208 choices, so old normalised Program automation needs review; original effect controls and saved states remain compatible. Controlled CPU means pass25%/50%, but a failed dense run and deadline outliers are retained. SOURCE is manual, capture minimum80ms, effective delay ceiling4s, runtime Freeze audio is not serialized. Prepared demo peaks use a disclosed common scale; unscaled Send can exceed0dBFS.
-
-Current short handoff: docs/CURRENT_WORK.md and docs/NEXT_STAGE.md. No active build/calibration jobs. Preserve out/m0, out/prototypes, out/attacks, out/score and out/presets. Do not rerun Tools/isolate_echo_m0.py over the completed product. Calibration/generator reject stale DSP identities; any DSP change requires new calibration/compiled-bank verification. Use the final source as the baseline for owner-reported FL issues; do not restart M0 extraction. Normal playback tests and packaging can use the owner's medium setting; difficult DSP diagnosis merits xhigh. Never claim a model switch without a supported tool confirmation.
+Retain disclosed0.2.0limits (Program-selector scale, CPU outliers, manual pitch/capture limits,4s ceiling, runtime-only Freeze, Send headroom). This controller patch claims no fresh CPU guarantee or recalibration. Do not bypass source guards. Preserve ignored reference/calibration/staging archives; do not rerun extraction. Investigate concrete FL issues against0.2.2. Owner controls model/effort settings unless a supported tool confirms a switch.
 
 ### HamloRevolution — ещё не вынесен (план)
 
@@ -209,6 +207,3 @@ APVTS; `onPatternChange` пишет в этот набор; при сборке 
 - [ ] pluginval 5–10 и Steinberg validator 537 / 537;
 - [ ] отчёт с цифрами, невыполненное — честно, все изменения методики раскрыты;
 - [ ] версия, README, установщик, dist; коммит; владельцу — короткий отчёт по-русски с путями к файлам.
-
-## Default 0.2.1 checkpoint (2026-10-30)
-Neutral program 0 and new-instance initialization are complete. See docs/reports/default_021/REPORT.md: 1234 expectations, 160 M0 cases, pluginval5..10, Steinberg537/537; all DSP files and 200 compiled recipes unchanged. Installer/ZIP0.2.1 hash-verified, not installed. Next authorized stage: QUICK, a simplified Note Score page with TIME/MOTION/SPACE; full Note Score remains. No active jobs or model switch. Continue without confirmation requests.

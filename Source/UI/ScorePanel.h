@@ -13,7 +13,7 @@ public:
     void resized() override;
     juce::Rectangle<float> contentBounds() const override;
     juce::String helpKeyAt(juce::Point<float>) const override{return {};}
-    void selectPage(int p){showPage(juce::jlimit(0,4,p));}
+    void selectPage(int p);
     std::function<void(juce::String)> onCategory;
     std::function<void()> onLoadStart;
 private:
@@ -55,7 +55,10 @@ private:
     HardwareLook look;
     Canvas canvas;
     std::vector<std::unique_ptr<Control>> controls;
-    std::array<juce::TextButton,5> tabs,categories;
+    std::array<juce::TextButton,6> tabs;
+    std::array<juce::TextButton,5> categories;
+    std::array<juce::TextButton,8> quickMoves;
+    juce::TextButton expandQuick{"EDIT IN NOTE SCORE"};
     std::array<juce::TextButton,8> tapSelectors;
     juce::TextButton loadStart{"LOAD START"},power{"ON"};
     juce::TextButton fillNotes{"FILL NOTES"};
@@ -65,7 +68,7 @@ private:
     std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> powerLink;
     juce::TooltipWindow tooltip;
     int page=0,selectedTap=0;
-    bool lastFl=true;
+    bool lastFl=true,lastQuick=false;
     juce::String category;
 };
 }

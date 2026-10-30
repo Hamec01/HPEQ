@@ -58,6 +58,9 @@ public:
     juce::AudioProcessorValueTreeState& valueTreeState() noexcept { return parameters; }
     bool presetModified() const noexcept;
     float scoreOutputDb() const noexcept { return scoreMeter.load(std::memory_order_relaxed); }
+    void setQuickEnabled(bool);
+    void expandQuickToScore();
+    hamlo::echo::ScoreSettings effectiveScoreSettings(double bpm=120) const noexcept {return readScoreSettings(scoreValues,bpm);}
 
 private:
     dsp::FxSlotParams currentSlot(bool active) const noexcept;

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloEcho VERSION 0.2.1 LANGUAGES C CXX)
+project(HamloEcho VERSION 0.2.2 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -64,6 +64,7 @@ add_library(HamloEcho_Shared STATIC
     Source/UI/ScorePanel.cpp
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ScoreParameters.cpp
+    Source/Standalone/QuickControls.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
     Source/UI/PresetScreen.cpp)
@@ -122,7 +123,7 @@ target_link_libraries(HamloEcho
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot Lab ScorePresetLab)
     if (tool STREQUAL "Tests")
-        add_executable(HamloEcho_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/LegacyStateTests.cpp Tests/ScoreIntegrationTests.cpp Tests/AllocationAudit.cpp)
+        add_executable(HamloEcho_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/LegacyStateTests.cpp Tests/ScoreIntegrationTests.cpp Tests/QuickTests.cpp Tests/AllocationAudit.cpp)
     elseif(tool STREQUAL "ScorePresetLab")
         add_executable(HamloEcho_ScorePresetLab Tests/ScorePresetLabMain.cpp)
         target_include_directories(HamloEcho_ScorePresetLab PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")

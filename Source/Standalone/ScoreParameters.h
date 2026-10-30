@@ -19,7 +19,8 @@ constexpr int bandIndex(int band, Band field) { return GlobalCount + band * Band
 constexpr int tapIndex(int tap, Tap field) { return GlobalCount + 3 * BandCount + tap * TapCount + field; }
 constexpr int Swing = GlobalCount + 3 * BandCount + 8 * TapCount;
 constexpr int SpaceSend = Swing+1;
-constexpr int Count = SpaceSend+8;
+constexpr int BaseCount = SpaceSend+8;
+enum Quick { QuickEnabled=BaseCount, QuickStyle, QuickTime, QuickMotion, QuickSpace, QuickSync, Count };
 }
 const std::vector<ParameterSpec>& scoreParameterSpecs();
 hamlo::echo::ScoreSettings readScoreSettings(const std::vector<std::atomic<float>*>&, double bpm) noexcept;

@@ -1,9 +1,13 @@
-HamloEcho 0.2.1 - musical echo machine, VST3, Windows x64 (HamloProd)
+HamloEcho 0.2.2 - musical echo machine, VST3, Windows x64 (HamloProd)
 
 Default starts NOTE SCORE with Mix, feedback, space, glitch and pitch shifts at0.
 Choose Default under Factory / General to clear all effects/tails, even with
 Send, Mix Lock or Freeze active. Raise Mix and Time to explore the first echo.
 Older saved projects retain their stored engine/settings. Genre recipes are unchanged.
+
+QUICK: simplified Note Score with TIME / MOTION / SPACE and separate MIX.
+Eight moves; EDIT IN NOTE SCORE transfers the move into the full editor.
+The complete Note Score and Legacy pages remain available.
 
 Score engine
   Eight editable note reflections, piano/text input, host sync and Swing.

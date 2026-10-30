@@ -1,5 +1,6 @@
 #include "Standalone/ModulePluginProcessor.h"
 #include "Core/ModulePresets.h"
+#include "Standalone/QuickControls.h"
 
 #include "Standalone/ModulePluginEditor.h"
 #include <cstring>
@@ -297,12 +298,19 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
         {
             const juce::ScopedLock lock(stateWriter);bulkRevision.fetch_add(1,std::memory_order_acq_rel);
             auto state=juce::ValueTree::fromXml(*xml);
+            const bool predatesQuick=!state.getChildWithProperty("id","quickEnabled").isValid();
             for(const auto& spec:scoreParameterSpecs())
                 if(!state.getChildWithProperty("id",spec.id).isValid())
                 {juce::ValueTree child("PARAM");child.setProperty("id",spec.id,nullptr);child.setProperty("value",spec.defaultValue,nullptr);state.addChild(child,-1,nullptr);}
             parameters.replaceState(state);
             currentProgram.store(juce::jlimit(0,getNumPrograms()-1,static_cast<int>(state.getProperty("selectedProgram",0))),std::memory_order_relaxed);
-            const auto baseline=state.getProperty("recipeHash").toString();loadedHash.store(baseline.isNotEmpty()?static_cast<uint64_t>(baseline.getHexValue64()):parameterHash(),std::memory_order_relaxed);
+            const auto baseline=state.getProperty("recipeHash").toString();
+            uint64_t savedHash=baseline.isNotEmpty()?static_cast<uint64_t>(baseline.getHexValue64()):parameterHash();
+            // Extend an old recipe fingerprint with the appended neutral defaults.
+            // This preserves both clean and already-modified old project labels.
+            if(predatesQuick&&baseline.isNotEmpty())for(int i=scoreparam::BaseCount;i<scoreparam::Count;++i)
+            {const float value=scoreValues[static_cast<size_t>(i)]->load(std::memory_order_relaxed);uint32_t bits=0;std::memcpy(&bits,&value,sizeof(bits));savedHash=(savedHash^bits)*1099511628211ull;}
+            loadedHash.store(savedHash,std::memory_order_relaxed);
             restorePending.store(true,std::memory_order_release);bulkRevision.fetch_add(1,std::memory_order_release);
         }
 }
@@ -333,6 +341,24 @@ void ModulePluginProcessor::setParameterValue(const juce::String& id, double act
 {
     if (auto* p = parameter(id))
         p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(actualValue)));
+}
+
+void ModulePluginProcessor::setQuickEnabled(bool enabled)
+{
+    const juce::ScopedLock lock(stateWriter);bulkRevision.fetch_add(1,std::memory_order_acq_rel);
+    if(enabled)setParameterValue("echoMode",1);
+    setParameterValue("quickEnabled",enabled?1:0);
+    bulkRevision.fetch_add(1,std::memory_order_release);
+}
+
+void ModulePluginProcessor::expandQuickToScore()
+{
+    const juce::ScopedLock lock(stateWriter);bulkRevision.fetch_add(1,std::memory_order_acq_rel);
+    const auto r=quickRecipe(juce::roundToInt(parameterValue("quickStyle")),static_cast<float>(parameterValue("quickTime")),
+        static_cast<float>(parameterValue("quickMotion")),static_cast<float>(parameterValue("quickSpace")),parameterValue("quickSync")>.5);
+    for(int i=0;i<scoreparam::BaseCount;++i)if(r.applies[static_cast<size_t>(i)])
+        parameter(scoreParameterSpecs()[static_cast<size_t>(i)].id)->setValueNotifyingHost(r.normalised[static_cast<size_t>(i)]);
+    setParameterValue("quickEnabled",0);bulkRevision.fetch_add(1,std::memory_order_release);
 }
 
 int ModulePluginProcessor::getNumPrograms()

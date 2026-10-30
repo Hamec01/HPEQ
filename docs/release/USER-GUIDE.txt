@@ -1,6 +1,20 @@
-# HamloEcho 0.2.1
+# HamloEcho 0.2.2
 
 HamloEcho combines a stereo delay, an editable eight-note reflection score, frequency-dependent timing, a compact spatial field and captured-audio textures. **Default** now opens NOTE SCORE with Mix, feedback, space, glitch, modulation and pitch shifts at zero. It passes the dry signal unchanged. Raise Mix and then Time to explore the prepared first unpitched reflection. Default is available under Factory / General in the preset screen and deliberately resets Send, Mix Lock, bypass, Freeze and existing tails. Output 0 dB, Width 100%, open filters and unity sends are neutral rather than muted. **Legacy** retains the original sound and loads automatically for older saved projects. Loading an old saved Default restores its stored settings; select Default again for the new clean reset.
+
+## QUICK: start with three controls
+
+Select QUICK above the detailed pages. It uses the full Note Score engine and keeps your stored detailed score. Pick ECHO, TAPE, BOUNCE, NOTE FALL, NOTE RISE, REVERSE, TEXTURE or CLOUD, then raise MIX to hear the effect. Default remains dry until MIX rises (Insert).
+
+- TIME: the primary echo interval. Host Sync follows tempo; Milliseconds covers 1–2000 ms. Double-click restores the middle setting. Typed divisions must match the displayed choices, such as 1/8 or 1/8 D.
+- MOTION: adds up to four reflections and up to 68% loop feedback. The selected move determines character, stereo placement, note intervals, accumulated loop pitch or captured chopping. Note Fall/Rise reach a -12/+12 st step per circulation at maximum Motion.
+- SPACE: blends in space and increases decay. Cloud reaches 12 s; other moves reach 6 s. Zero adds no spatial field.
+
+MIX is separate so you can shape a move while remaining dry. Routing, Mix Lock, Freeze and Wet Output remain accessible. Send is wet-only regardless of stored Insert Mix; choose Insert for a zero-effect starting point. QUICK shares those controls with the detailed editor. Project state saves the macros and the underlying score.
+
+Full-page tabs restore the detailed score you had before QUICK. **EDIT IN NOTE SCORE** instead transfers the exact effective move into the full editor, retaining the running sound and shared controls. You can then change individual notes, taps, bands or spatial routing. Loading a factory preset or Default disables QUICK. These eight moves are controllers, not extra host programs: the bank remains 208 programs.
+
+Pitch remains relative to a manual C5/MIDI60 reference; an entire melody shifts by the selected intervals. TIME shows the requested primary interval: pitched capture has an 80 ms minimum, Reverse/Stutter add a 50–400 ms capture window, and effective delays cap at 4 s. All existing capture/headroom limits still apply. QUICK is a separate beginner view; Legacy and the complete Note Score pages remain available.
 
 ## Start with a musical reference
 

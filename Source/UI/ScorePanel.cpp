@@ -1,4 +1,5 @@
 #include "UI/ScorePanel.h"
+#include "Standalone/QuickControls.h"
 #include <algorithm>
 
 namespace hpeq::ui
@@ -31,12 +32,15 @@ void ScorePanel::HardwareLook::drawRotarySlider(juce::Graphics& g,int x,int y,in
 ScorePanel::ScorePanel(standalone::ModulePluginProcessor& p):processor(p),canvas(*this),tooltip(this,600)
 {
     setLookAndFeel(&look);addAndMakeVisible(canvas);canvas.setBounds(0,0,1180,980);
-    const char* pages[]{"REFLECTIONS","LOOP / COLOR","FREQUENCY BANDS","SPACE","GLITCH / DETAILS"};
+    const char* pages[]{"REFLECTIONS","LOOP / COLOR","FREQUENCY BANDS","SPACE","GLITCH / DETAILS","QUICK"};
     const char* groups[]{"VOCAL","DRUMS","SAMPLES","SYNTH","ATMOSPHERE"};
+    for(int i=0;i<6;++i)
+    {
+        auto& button=tabs[static_cast<size_t>(i)];canvas.addAndMakeVisible(button);button.setButtonText(pages[i]);button.setBounds(32+186*(i==5?0:i+1),234,178,30);
+        button.onClick=[this,i]{selectPage(i);};
+    }
     for(int i=0;i<5;++i)
     {
-        auto& button=tabs[static_cast<size_t>(i)];canvas.addAndMakeVisible(button);button.setButtonText(pages[i]);button.setBounds(32+224*i,234,216,30);
-        button.onClick=[this,i]{showPage(i);};
         auto& group=categories[static_cast<size_t>(i)];canvas.addAndMakeVisible(group);group.setButtonText(groups[i]);group.setBounds(574+108*i,176,102,26);
         group.setTooltip("Filter the preset library without changing the sound. LOAD START loads the first matching recipe.");
         group.onClick=[this,i]{const juce::String names[]{"Vocal","Drums","Samples / Keys","Synth","Atmosphere / FX"};category=category==names[i]?juce::String{}:names[i];if(onCategory)onCategory(category);};
@@ -88,7 +92,20 @@ ScorePanel::ScorePanel(standalone::ModulePluginProcessor& p):processor(p),canvas
     loadStart.setTooltip("Load the first preset matching the current genre and category. Filtering alone does not load a recipe.");
     canvas.addAndMakeVisible(power);power.setBounds(1040,94,90,28);power.setClickingTogglesState(true);power.setButtonText("BYPASS");
     powerLink=std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(processor.valueTreeState(),"bypass",power);
-    showPage(0);startTimerHz(10);
+    for(int i=0;i<8;++i)
+    {
+        auto& b=quickMoves[static_cast<size_t>(i)];canvas.addAndMakeVisible(b);
+        b.setButtonText(standalone::quickName(i));b.setBounds(45+137*i,290,130,32);
+        b.setTooltip(standalone::quickDescription(i));b.onClick=[this,i]{auto* param=processor.parameter("quickStyle");param->beginChangeGesture();processor.setParameterValue("quickStyle",i);param->endChangeGesture();canvas.repaint();};
+    }
+    add("quickTime",5,{85,390,270,270});add("quickMotion",5,{455,390,270,270});add("quickSpace",5,{825,390,270,270});
+    add("quickSync",5,{105,678,230,60});
+    add("scoreMix",5,{75,810,650,95},juce::Slider::LinearHorizontal);
+    add("scoreOutput",5,{975,880,150,60},juce::Slider::LinearHorizontal);
+    canvas.addAndMakeVisible(expandQuick);expandQuick.setBounds(418,710,346,38);
+    expandQuick.setTooltip("Transfer this exact move into the full Note Score editor. Mix and the running sound are retained. Full-page tabs without this button restore your stored detailed score.");
+    expandQuick.onClick=[this]{processor.expandQuickToScore();lastQuick=false;showPage(0);};
+    lastQuick=processor.parameterValue("quickEnabled")>.5;showPage(lastQuick?5:0);startTimerHz(10);
 }
 ScorePanel::~ScorePanel(){stopTimer();powerLink.reset();controls.clear();setLookAndFeel(nullptr);}
 void ScorePanel::add(juce::String id,int targetPage,juce::Rectangle<int> bounds,juce::Slider::SliderStyle style,int tap)
@@ -126,7 +143,7 @@ void ScorePanel::add(juce::String id,int targetPage,juce::Rectangle<int> bounds,
         }
         else
         {
-            const bool percent=id=="scoreMix"||id=="scoreWidth"||id=="scoreDuck"||id=="scoreFeedback"||id=="scoreSpaceMix"||id=="scoreGlitchAmount"||id=="scoreSwing"||id.endsWith("SpaceSend")||(id.startsWith("band")&&id.endsWith("Feedback"));
+            const bool percent=id=="quickMotion"||id=="quickSpace"||id=="scoreMix"||id=="scoreWidth"||id=="scoreDuck"||id=="scoreFeedback"||id=="scoreSpaceMix"||id=="scoreGlitchAmount"||id=="scoreSwing"||id.endsWith("SpaceSend")||(id.startsWith("band")&&id.endsWith("Feedback"));
             if(percent)
             {
                 slider.setTextValueSuffix({});slider.textFromValueFunction=[](double value){return juce::String(value*100,0)+" %";};
@@ -137,6 +154,11 @@ void ScorePanel::add(juce::String id,int targetPage,juce::Rectangle<int> bounds,
                 const int decimals=found->interval>=1?0:found->unit=="ms"||found->unit=="Hz"?1:found->unit=="dB"?1:2;
                 slider.textFromValueFunction=[decimals](double value){return juce::String(value,decimals);};
             }
+        }
+        if(id=="quickTime")
+        {
+            slider.textFromValueFunction=[this](double value){const int division=standalone::quickDivision(static_cast<float>(value));return processor.parameterValue("quickSync")>.5?standalone::scoreParameterSpecs()[standalone::scoreparam::FeedbackSync].choices[division]:juce::String(standalone::quickMilliseconds(static_cast<float>(value)),1)+" ms";};
+            slider.valueFromTextFunction=[this](const juce::String& text)->double{if(processor.parameterValue("quickSync")>.5){const auto& labels=standalone::scoreParameterSpecs()[standalone::scoreparam::FeedbackSync].choices;const int d=labels.indexOf(text.trim());return d>=1?standalone::quickTimeForDivision(d):processor.parameterValue("quickTime");}return juce::jlimit(0.,1.,std::log(juce::jlimit(1.,2000.,text.getDoubleValue()))/std::log(2000.));};
         }
         slider.updateText();
     }
@@ -149,6 +171,10 @@ void ScorePanel::add(juce::String id,int targetPage,juce::Rectangle<int> bounds,
 }
 juce::String ScorePanel::help(const juce::String& id) const
 {
+    if(id=="quickTime")return "Set the primary delay. Host Sync follows tempo; Milliseconds covers 1-2000 ms. Pitched echoes need at least 80 ms; captured actions add their fragment window.";
+    if(id=="quickMotion")return "Add reflections, loop feedback and movement for the selected move. Note Fall/Rise add source-relative intervals and an accumulating pitch step. No automatic note detection.";
+    if(id=="quickSpace")return "Blend in the existing Note Score spatial field and lengthen its decay. Zero adds no spatial effect.";
+    if(id=="quickSync")return "Choose host-tempo divisions or free milliseconds for TIME. MIX is independent; zero Mix is dry in Insert.";
     if(id=="scoreSource")return "Declare the incoming source note. Echo transposes the complete audio relative to this reference; it does not identify notes or separate chords.";
     if(id=="scoreOctaves")return "Labels only: FL Studio C5 = MIDI 60; Standard C4 = MIDI 60. Stored MIDI notes and audio do not change.";
     if(id.endsWith("Note"))return "Type a note such as C5, F#4, Db4 or a MIDI number. Supported interval is +/-24 semitones from SOURCE. Out-of-range reflections are muted and marked red.";
@@ -169,10 +195,17 @@ juce::String ScorePanel::help(const juce::String& id) const
 void ScorePanel::showPage(int next)
 {
     page=next;
-    for(auto& c:controls){const bool visible=c->page<0||(c->page==page&&(page!=4||c->tap<0||c->tap==selectedTap));c->caption.setVisible(visible);if(c->slider)c->slider->setVisible(visible);if(c->combo)c->combo->setVisible(visible);}
-    for(int i=0;i<5;++i)tabs[static_cast<size_t>(i)].setToggleState(i==page,juce::dontSendNotification);
+    for(auto& c:controls){const bool common=c->page<0&&(page!=5||c->id=="scoreFreeze"||c->id=="scoreRouting"||c->id=="scoreMixLock");const bool visible=common||(c->page==page&&(page!=4||c->tap<0||c->tap==selectedTap));c->caption.setVisible(visible);if(c->slider)c->slider->setVisible(visible);if(c->combo)c->combo->setVisible(visible);}
+    for(int i=0;i<6;++i)tabs[static_cast<size_t>(i)].setToggleState(i==page,juce::dontSendNotification);
+    for(int i=0;i<8;++i){auto& b=quickMoves[static_cast<size_t>(i)];b.setVisible(page==5);b.setToggleState(i==juce::roundToInt(processor.parameterValue("quickStyle")),juce::dontSendNotification);}expandQuick.setVisible(page==5);
+    for(auto& b:categories)b.setVisible(page!=5);
+    fillMode.setVisible(page!=5);fillStep.setVisible(page!=5);fillNotes.setVisible(page!=5);
     for(int t=0;t<8;++t){tapSelectors[static_cast<size_t>(t)].setVisible(page==0);tapSelectors[static_cast<size_t>(t)].setToggleState(t==selectedTap,juce::dontSendNotification);}
     detailTap.setVisible(page==4);canvas.repaint();
+}
+void ScorePanel::selectPage(int p)
+{
+    const int next=juce::jlimit(0,5,p);processor.setQuickEnabled(next==5);lastQuick=next==5;showPage(next);
 }
 juce::Rectangle<float> ScorePanel::contentBounds() const
 {
@@ -195,7 +228,8 @@ void ScorePanel::draw(juce::Graphics& g)
     const int source=juce::roundToInt(processor.parameterValue("scoreSource"));
     steel::lcdWindow(g,{820,43,310,38});steel::lcdText(g,{829,45,292,34},"WET "+juce::String(processor.scoreOutputDb(),1)+" dB",16);
     g.setColour(green());g.setFont(juce::Font(steel::monoFont(13)));
-    g.drawText("MIDI "+juce::String(source)+" / "+juce::String(440*std::pow(2.,(source-69)/12.),2)+" Hz",32,209,240,20,juce::Justification::centred);
+    if(page!=5)g.drawText("MIDI "+juce::String(source)+" / "+juce::String(440*std::pow(2.,(source-69)/12.),2)+" Hz",32,209,240,20,juce::Justification::centred);
+    else g.drawText("QUICK NOTE SCORE   /   Choose a move, shape it, then raise MIX.",45,174,1090,40,juce::Justification::centred);
     if(page==0)
     {
         for(int t=0;t<8;++t)
@@ -217,6 +251,14 @@ void ScorePanel::draw(juce::Graphics& g)
         if(page==2){const char* titles[]{"LOW","MID","HIGH"};for(int b=0;b<3;++b)g.drawText(titles[b],65+365*b,401,135,28,juce::Justification::centred);}
         if(page==3)g.drawText("ROOM: discrete space   /   PLATE: dense short loops   /   CLOUD: expanded field",55,735,1070,30,juce::Justification::centred);
         if(page==4)g.drawFittedText("TEXTURE CAPTURE: "+juce::String(processor.parameterValue("scoreGlitchMs"),0)+" ms\nREPEAT: paired fragments  /  STUTTER: x4",65,655,530,105,juce::Justification::centred,3);
+        if(page==5)
+        {
+            const int style=juce::roundToInt(processor.parameterValue("quickStyle"));
+            g.setColour(green());g.drawFittedText(standalone::quickDescription(style),60,338,1060,40,juce::Justification::centred,2);
+            g.setColour(steel::stencilDim);g.setFont(juce::Font(steel::monoFont(12)));
+            g.drawText("RHYTHM",85,665,270,20,juce::Justification::centred);g.drawText("REPEATS + MOVEMENT",455,665,270,20,juce::Justification::centred);g.drawText("AMOUNT + DECAY",825,665,270,20,juce::Justification::centred);
+            g.drawText("Full tabs recall your stored score. EDIT transfers this move without changing its sound.",45,758,1090,20,juce::Justification::centred);
+        }
     }
     g.setColour(steel::stencilDim);g.drawHorizontalLine(797,32,1147);
     g.setFont(juce::Font(steel::monoFont(13)));g.setColour(green());
@@ -248,6 +290,10 @@ void ScorePanel::keyboardClick(juce::Point<float> p)
 }
 void ScorePanel::timerCallback()
 {
+    const bool quick=processor.parameterValue("quickEnabled")>.5;
+    if(quick!=lastQuick){lastQuick=quick;showPage(quick?5:0);}
+    for(int i=0;i<8;++i)quickMoves[static_cast<size_t>(i)].setToggleState(i==juce::roundToInt(processor.parameterValue("quickStyle")),juce::dontSendNotification);
+    for(auto& c:controls)if(c->id=="quickTime"&&c->slider)c->slider->updateText();
     const bool fl=processor.parameterValue("scoreOctaves")<.5;
     if(fl!=lastFl){lastFl=fl;for(auto& c:controls)if(c->slider&&(c->id=="scoreSource"||c->id.endsWith("Note")))c->slider->updateText();}
     for(int i=0;i<5;++i){const juce::String names[]{"Vocal","Drums","Samples / Keys","Synth","Atmosphere / FX"};categories[static_cast<size_t>(i)].setToggleState(category==names[i],juce::dontSendNotification);}

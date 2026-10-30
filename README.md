@@ -1,7 +1,8 @@
-# HamloEcho 0.2.1
+# HamloEcho 0.2.2
 
 HamloProd's standalone musical echo machine for Windows x64 VST3. **Default** now starts NOTE SCORE dry, with all effect amounts at zero. Choose Default under Factory / General to clear tails and reset Send/Mix Lock/Freeze; raise Mix and Time to explore the first unpitched echo. Older saved projects retain their stored engine and settings. The [0.2.1 patch report](docs/reports/default_021/REPORT.md) documents this initialisation-only change; DSP algorithms and the 200 genre recipes are unchanged.
 
+- QUICK: a simplified Note Score page with TIME / MOTION / SPACE, eight moves and a separate MIX slider. EDIT IN NOTE SCORE transfers the move into the full editor.
 - Eight editable note reflections: text/piano input, sync, Swing and a Same/Step note generator.
 - Separate cumulative feedback pitch, Clean/Warm/Tape/BBD/Dust loop character.
 - Three complementary bands with independent time, feedback, level and pan.
@@ -14,7 +15,7 @@ SOURCE NOTE is a manual reference; the complete input is transposed relative to 
 
 Saved states and the 28 original effect controls retain their behaviour. Expanding the library changes the wrapper-generated host Program selector's normalised scale from eight to208choices; existing Program-selection automation needs review. Direct program numbers0..7 remain unchanged. See [compatibility scope](docs/reports/release_020/SDK_PROGRAM_SELECTOR.md).
 
-Read the [user guide](docs/USER_GUIDE.md), [factory catalog](docs/GENRE_PRESETS.md), [0.2.1 patch report](docs/reports/default_021/REPORT.md) and [original 0.2.0 report](docs/reports/v2/V2_REPORT.md). The original [compiled-bank report](docs/reports/presets/verification.json) passes 200/200; the patch verifies identical DSP files and all 200 recipe payloads. Updated installer/portable ZIP and SHA256 are in `dist/`; the [0.2.1 package manifest](docs/reports/default_021/package_manifest.json) pins the new binary. The unchanged 0.2.0 A/B archive remains available. Owner FL Studio audition follows delivery.
+Read the [user guide](docs/USER_GUIDE.md), [factory catalog](docs/GENRE_PRESETS.md), [0.2.1 patch report](docs/reports/default_021/REPORT.md) and [original 0.2.0 report](docs/reports/v2/V2_REPORT.md). The original [compiled-bank report](docs/reports/presets/verification.json) passes 200/200; the patch verifies identical DSP files and all 200 recipe payloads. The [QUICK report](docs/reports/quick_022/REPORT.md) covers the added controller. Updated 0.2.2 installer/portable ZIP and SHA256 are in `dist/`; the [0.2.2 package manifest](docs/reports/quick_022/package_manifest.json) pins the new binary. The unchanged 0.2.0 A/B archive remains available. Owner FL Studio audition follows delivery.
 
 ## Build and verify
 
