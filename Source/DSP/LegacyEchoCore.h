@@ -13,6 +13,7 @@ class LegacyEchoCore
 {
 public:
     void prepare(double sampleRate, int maximumBlockSize);
+    void reset() noexcept;
     void setTargets(const FxSlotParams&) noexcept;
     void process(float* const* channels, int numChannels, int samples, const Transport&) noexcept;
     int getLatencySamples() const noexcept { return 0; }

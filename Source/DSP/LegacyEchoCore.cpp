@@ -39,6 +39,11 @@ void LegacyEchoCore::setTargets(const FxSlotParams& p) noexcept
     }
 }
 
+void LegacyEchoCore::reset() noexcept
+{
+    delay.reset();nodeMix.reset(0);mix.reset(0);inputGate.reset(0);silentSamples=0;running=false;
+}
+
 void LegacyEchoCore::process(float* const* channels, int numChannels, int samples, const Transport& transport) noexcept
 {
     float* input[kMaxChannels] {};

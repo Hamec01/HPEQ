@@ -1,0 +1,68 @@
+"""Assemble final release evidence without replacing failed or unverified goals."""
+import json,re,runpy
+from pathlib import Path
+ROOT=Path(__file__).resolve().parents[1]
+REPORT=ROOT/'docs/reports/release_020_final'
+INTEGRATION=ROOT/'docs/reports/integration/stable_020f'
+def load(p):return json.loads(p.read_text(encoding='utf-8-sig'))
+def main():
+    library=load(ROOT/'docs/reports/presets/verification.json');calibration=load(ROOT/'docs/reports/presets/calibration.json');validated=load(REPORT/'validated_payload.json')
+    effects=load(INTEGRATION/'effects.json');prototype=load(INTEGRATION/'prototype_regression.json');legacy=load(REPORT/'legacy_160.json')
+    current=runpy.run_path(str(ROOT/'Tools/calibrate_score.py'))['current_dsp']()
+    assert current==library['dsp_source']==calibration['dsp_source']==validated['dsp_source']==effects['dsp_sha256']
+    assert library['passed']==200 and library['failed']==0 and library['unique']==200 and not calibration['failed']
+    assert validated['passed'] and not effects['failed'] and not legacy['failures'] and prototype['passed']==2687
+    raw=(ROOT/'build/shipping_tests.log').read_bytes();summary=raw.decode('utf-16' if raw.startswith(b'\xff\xfe') else 'utf-8-sig',errors='replace');match=re.search(r'(\d+) expectations passed, 0 failed',summary);assert match and int(match[1])>=1198
+    binary=next(f for f in validated['files'] if f['path'].endswith('/HamloEcho.vst3'))
+    measures={c['name']:c for c in effects['checks']};rows=library['results']
+    null=max(r['send_reconstruction_error'] for r in rows);mincorr=min(r['correlation'] for r in rows);monoloss=min(r['mono_loss_db'] for r in rows)
+    inserts=max(r['insert_true_peak_db'] for r in rows);sends=max(r['send_true_peak_db'] for r in rows)
+    pitch=[r for r in effects['pitch'] if 55<=r['expected']<=7040];worstcents=max(abs(r['cents']) for r in pitch)
+    text=['# HamloEcho 0.2.0 release report','', '2026-10-30. Local Windows x64 VST3 release for the owner\'s FL Studio audition. All approved Echo features and the200-recipe library are implemented. Owner listening/FL acceptance is still pending; the installer is prepared, not executed by the agent.','',
+        f'Production DSP source SHA256: `{current}`. Validated VST3 binary SHA256: `{binary["sha256"]}`. Original VST3 identity, state root and28effect controls are preserved. The wrapper Program-selector compatibility exception is explicitly disclosed below.','',
+        '## Acceptance','', '| Goal | Result and scope |','|---|---|',
+        '| E01 Legacy |160/160 immutable M0 raw renders identical; old states reset added controls on fresh and already edited instances. Original effect-parameter contract and numbered programs0..7 retained. Wrapper Program automation is an exception. |',
+        f'| E02 Determinism / memory |{match[1]}unit expectations pass. New-mode blocks1/64/127/512/4096, sample-positioned note/space/tempo/bypass/mode events, prepared audio allocation0, reused captured paths match fresh epochs. |',
+        '| E03 Time |15free/sync cases at44.1/48/96kHz: exact to one sample within effective delay limits. |',
+        f'| E04 Pitch |Original component matrix retained via2687identical archived hashes; integrated fixed/cumulative tone checks pass, worst{worstcents:.4f}cents in their measured range. Source is declared manually; this is not pitch tracking or chord correction. |',
+        '| E05 Captures / rhythm |Analytic Reverse/Stutter/Tape Stop/texture references,100ms Reverse at6pitch intervals, lifecycle reuse and non-divisible2..8subdivision checks pass. |',
+        '| E06 Bands |Neutral reconstruction <=1e-6; independent timing measured. Ordered complementary one-pole bands and shared return-norm safety prevent overlap reinforcement. |',
+        f'| E07 Freeze |60s settled energy drift{measures["Freeze settled 60 s drift"]["value"]:.6f}dB;5min finite stress; controlled release and genuine host infinity. |',
+        f'| E08 Stereo |Width0 wet channels bit-identical. All200recipes measured: minimum correlation{mincorr:.4f}; worst mono energy change{monoloss:.3f}dB. Stereo character is reported, not universally certified mono-safe. |',
+        f'| E09 Routing / state |Dry/PDC0samples; Mix0 exact dry; Send retains Insert Mix. Independent Insert/Send null maximum{null:.3g}; all200complete states round-trip. |',
+        '| E10 CPU |Controlled tone/dense means meet25%/50%; an initial dense run failed and wall-time outliers remain disclosed in the table below. No unconditional deadline guarantee. |',
+        '| E11 Library |200/200 compiled recipes pass;208programs total,200unique recipes excluding Mix/Output;400actual Insert/Send renders; depth, finite output, state, tail, peaks/demo scale checked. |',
+        '| E12 Release |pluginval5..10 and Steinberg537/537 pass. Main/allAdvanced/Legacy/885px images inspected; four A/B demonstration sets prepared. Owner FL Studio audition pending. Packaging evidence below. |','',
+        '## Library and headroom','',
+        'Four genres x50: Vocal10 / Drums12 / Samples-Keys10 / Synth8 / Atmosphere-FX10. Permanent IDs, descriptions, source assumptions, material and tempo are in the compiled bank and GENRE_PRESETS.md. Both actual routing depths must be in the stated Gentle/Medium/Heavy band. Mix0.5 puts Insert and Send6.0206dB apart; calibration targets their shared feasible interval. No energy threshold was relaxed.','',
+        f'The first calibration had28over-range Heavy recipes (required gain up to+20.94dB). Revise their authored tap balance/pre-space direct share, retain failed results, then re-render after the lifecycle/stutter corrections. Final200gain calibrations and400compiled-bank renders use this production identity. Maximum unscaled Insert/Send true-peak estimates:{inserts:.3f}/{sends:.3f}dBTP. This is an echo, not a limiter. Prepared demos use one common dry/Insert/Send scale per recipe and stay below-1dBTP (target margin-1.1dBTP). The scale and unscaled peaks are stored for each recipe.','',
+        'Owner material:16named WAVs, energetic10s excerpts (or shorter complete clips),48kHz, target-18dBFS RMS with-3dBFS sample-peak ceiling taking precedence. Full tails are included, and the final second is checked for truncation. Resume identities pin DSP, executable, recipe, material and tempo. Results from older DSP candidates were retained as historical evidence and not adopted as final calibration.','',
+        '## CPU evidence','', 'i5-10300H,48kHz/256samples, Release. Eight distinct reflection notes, bands, space, captured texture and cumulative feedback pitch. The dual plugin case is an actual incoming path plus a retiring tail. Wall-clock time includes scheduling; FL64 was open (a spot process counter read49processor-percent). This does not identify a proven cause for any individual spike.','',
+        '| Workload / run | Mean single | Mean transition | Worst single | Worst transition |','|---|---:|---:|---:|---:|']
+    for label,name in [('Tones','plugin_cpu.json'),('Dense initial (FAILED single mean)','plugin_cpu_dense.json'),('Dense repeat1','plugin_cpu_dense_repeat1.json'),('Dense repeat2','plugin_cpu_dense_repeat2.json')]:
+        r=load(INTEGRATION/name)['rows'];text.append(f'| {label} |{r[0]["mean_percent"]:.3f}% |{r[1]["mean_percent"]:.3f}% |{r[0]["max_percent"]:.3f}% |{r[1]["max_percent"]:.3f}% |')
+    text += ['', 'The initial dense run exceeds the single-instance mean target; it is not discarded or relabelled a pass. Repeated controlled runs meet the mean targets with limited single-path headroom. Earlier pre-optimisation40.23%/68.52% and reset-only dense dual142.856% worst-block failures are also retained. Exact-zero history metadata reduces tail-transition cost without changing any of2687archived component outputs. No acceptance threshold was weakened.','',
+        '## Fixed failures and method history','',
+        'SCORE_METHODS.md records the initial sustained Plate loop, adversarial frequency-band reinforcement,80ms pitched Reverse grain-clock shift, inactive-history epoch reuse and truncated non-divisible Stutter subdivisions. Each was reproduced before correction and checked again afterwards. Fresh/reused bit identity, allocation and all original block comparisons retain their strict tests. The M0 verifier extension permits appended controls/programs and compares old XML values plus reset additions; original signals/event schedules/raw references are unchanged. Earlier unpinned reports are diagnostics, not final source identity evidence.','',
+        '## Compatibility and practical limits','',
+        '- The28original effect controls retain IDs, ranges, order, defaults and normalisation. JUCE adds a separate host Program selector: its range grows from0..7 to0..207. Existing normalised automation of that selector needs review/rebinding (old1/7 now selects approximately30). Direct numbered recall and saved effect states retain old programs. See release_020/SDK_PROGRAM_SELECTOR.md. This is an exception to blanket host-program-automation compatibility.','- SOURCE is manual, fixed intervals +/-24st; out-of-range cards are visibly muted. Cumulative feedback can move farther, eventually reaching audio bandwidth limits.','- Pitched capture minimum80ms, additional Reverse/Glitch capture as displayed. Effective reflection delays are limited to1..4000ms and loop requests to20..4000ms; pitch capture can impose a longer minimum. Tempo/scale requests beyond the effective range are clipped. Dry/host latency is0samples.','- High combined band returns receive a safety trim. Freeze holds runtime audio; projects save its controls rather than captured memory. Structural changes release outgoing Freeze; outgoing paths are limited to120s.','- Actual unscaled wet output can exceed0dBFS; demonstration peak compliance uses the disclosed common scale. Windows wall-time outliers remain; owner must verify practical behaviour in FL Studio.','',
+        '## Open acceptance items','',
+        'E01 is not a blanket pass for every host automation lane: the expanded wrapper Program selector changes its normalised scale. E10 has a retained failed dense run and deadline outliers despite passing controlled repeats. E12 still requires the owner\'s FL Studio audition. These exceptions are not counted away by the successful core/library checks.','',
+        '## Artifacts','']
+    package_path=REPORT/'package_manifest.json'
+    if package_path.exists():
+        package=load(package_path);assert package['dsp_source']==current and package['plugin_sha256']==binary['sha256']
+        for artifact in package['artifacts']:text.append(f'- `{artifact["name"]}` — SHA256 `{artifact["sha256"]}` ({artifact["bytes"]}bytes).')
+        text += ['', 'ZIP core and documentation entries were decompressed in memory and hash-compared to staging. Installer inputs were pinned to the validated core inventory and checked unchanged after ISCC compilation; the installer was not run or extracted. Do not confuse the compiler-input audit with an installation/FL audition. Companion.sha256 files and dist/release-manifest.json are provided.']
+    else:text.append('Packaging pending; run this report generator again after package_release.ps1.')
+    text += ['', '## Reproduction and files','', 'Tools/run_integrated_checks.ps1 -Run stable_020f; Tools/calibrate_score.py calibrate/check; Tools/validate_release.ps1; Tools/package_release.ps1. Logs build/stable_020f-*, shipping_*. Machine-readable data: integration/stable_020f, presets/calibration.json, presets/verification.json and release_020_final. Preserve ignored out/m0, out/attacks, out/score and out/presets. No HPEQ/Verb edits, subtree or push are included.','']
+    content='\n'.join(text)
+    for a,b in {'the200':'the 200','and28':'and 28','28effect':'28 effect','28original':'28 original','160/160immutable':'160/160 immutable','unit expectations':'unit expectations','15free':'15 free','at44':'at 44','at48':'at 48','at16':'at 16','6pitch':'6 pitch','60s settled':'60 s settled','5min finite':'5 min finite','all200':'all 200','All200':'All 200','all208':'all 208','208programs':'208 programs','200unique':'200 unique','400actual':'400 actual','to208':'to 208','to0..207':'to 0..207','numbers0..7':'numbers 0..7','programs0..7':'programs 0..7','approximately30':'approximately 30','eight to208':'eight to 208','choices0':'choices 0','feedback0':'feedback 0','program30':'program 30','than eight':'than eight','per recipe':'per recipe'}.items():content=content.replace(a,b)
+    content=re.sub(r'(?<=\d)(?=(?:ms|samples|kHz|dBTP|dBFS|dB|bytes|st)\b)',' ',content)
+    content=re.sub(r'(?<=\d)(?=(?:unit|identical|retained|recipes|programs|free|gain|complete|original|processor|archived)\b)',' ',content)
+    content=re.sub(r'\b(blocks|allocation|via|worst|at|non-divisible|drift|correlation|change|maximum|meet|Vocal|Drums|Samples-Keys|Synth|Atmosphere-FX|Mix|Send|had|Final|and|energetic|read|pre-optimisation|dual|of|The|from|old|minimum|to|is|exceed|pluginval|Steinberg|Width)(?=[+\-]?\d)',r'\1 ',content)
+    content=re.sub(r'(?<=\d)(?=(?:cents|subdivision|compiled|over-range|named|px|s)\b)',' ',content)
+    content=content.replace('allAdvanced','all Advanced').replace('material:16','material: 16').replace('Revise their authored tap balance/pre-space direct share, retain failed results, then re-render after the lifecycle/stutter corrections.','We revised their authored tap balance/pre-space direct share, retained failed results, then re-rendered after the lifecycle/stutter corrections.')
+    dest=ROOT/'docs/reports/v2/V2_REPORT.md';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(content,encoding='utf-8')
+    print(dest)
+if __name__=='__main__':main()

@@ -4,7 +4,9 @@ Approved direction: 2026-10-30. Work is confined to E:/HamloEcho. HamloVerb is c
 
 ## Musical behaviour
 
-An editable score of eight reflections combines time, note, level, pan, forward/reverse playback and space send. A piano keyboard and text entry expose actual note names and MIDI numbers. SOURCE NOTE is a manually declared reference: MIDI 60 is C4, A4 is 440 Hz. Changing a target note transposes the complete incoming audio relative to that reference. It does not extract individual notes from a chord or force an evolving melody to one absolute pitch. Automatic monophonic pitch tracking is a separate, uncommitted extension; polyphonic pitch correction is outside this design.
+An editable score of eight reflections combines time, note, level, pan, forward/reverse playback and space send. A piano keyboard and text entry expose actual note names and MIDI numbers. SOURCE NOTE is a manually declared reference. Default FL Studio labels use C5=MIDI60; an explicit Standard option uses C4=MIDI60. Both label systems store the same MIDI values and frequencies. Changing a target note transposes the complete incoming audio relative to that reference. It does not extract individual notes from a chord or force an evolving melody to one absolute pitch. Automatic monophonic pitch tracking is a separate, uncommitted extension; polyphonic pitch correction is outside this design.
+
+The first design paragraph used Standard octave labels. The implementation adopts the owner's FL Studio convention by default, with Standard retained as a label-only option; no stored MIDI value or pitch ratio changes.
 
 The score supports free notes, a repeated target note, and an editable staircase generated from a start note and interval. Targets remain bounded by the supported pitch range. Fixed-note reflections are derived from source history rather than repeatedly shifting already shifted audio. A separate feedback-transposition mode deliberately accumulates pitch and timbral changes; its limits must be explicit.
 

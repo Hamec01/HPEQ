@@ -12,6 +12,7 @@ const std::vector<ModulePreset> kDelay {
     { "BBD Chorus Echo", 0.25f, { { "character", 3 }, { "sync", 7 }, { "feedback", 0.4 }, { "modRate", 0.8 }, { "modDepth", 0.5 }, { "dampingHz", 6000 } } },
     { "Lo-Fi Dub", 0.3f, { { "character", 4 }, { "sync", 9 }, { "feedback", 0.65 }, { "lofi", 0.6 }, { "driveDb", 6 }, { "dampingHz", 3000 }, { "lowCutHz", 200 } } },
     { "Vocal Throw (ducked)", 0.3f, { { "character", 2 }, { "sync", 8 }, { "feedback", 0.45 }, { "duck", 0.7 }, { "lowCutHz", 250 }, { "dampingHz", 6000 } } },
+#include "Core/ScorePresets.inc"
 };
 
 }

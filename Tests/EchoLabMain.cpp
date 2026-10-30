@@ -33,7 +33,7 @@ std::vector<Case> cases()
     auto probe = std::make_unique<ModulePluginProcessor>(ModuleKind::Echo);
     for (double rate : { 44100.0, 48000.0, 96000.0 })
         for (int ch : { 1, 2 })
-            for (int p = 0; p < probe->getNumPrograms(); ++p)
+            for (int p = 0; p < 8; ++p) // Immutable M0 host-program prefix, even after the new bank is appended.
             {
                 Case c;
                 c.name = "program_" + juce::String(p) + "_" + juce::String(static_cast<int>(rate)) + "_ch" + juce::String(ch);
@@ -158,8 +158,22 @@ int run(bool capture, const juce::File& reference, const juce::File& report)
     if (capture && !reference.createDirectory()) throw std::runtime_error("Cannot create baseline directory");
     juce::Array<juce::var> rows;
     auto probe = std::make_unique<ModulePluginProcessor>(ModuleKind::Echo);
-    const auto layout = juce::JSON::toString(contract(*probe), true);
+    auto currentContract=contract(*probe);
     const auto contractFile = reference.getChildFile("contract.json");
+    // Integration extension: compare the entire original prefix, never require
+    // newly appended controls/programs to disappear from the public plugin.
+    if(!capture)
+    {
+        const auto original=juce::JSON::parse(contractFile.loadFileAsString());
+        for(const auto key:{"parameters","programs"})
+        {
+            auto* current=currentContract.getProperty(key,{}).getArray();
+            const auto old=original.getProperty(key,{});const auto* previous=old.getArray();
+            if(current==nullptr||previous==nullptr||current->size()<previous->size())throw std::runtime_error("M0 contract prefix missing");
+            current->removeRange(previous->size(),current->size()-previous->size());
+        }
+    }
+    const auto layout = juce::JSON::toString(currentContract, true);
     if (capture) contractFile.replaceWithText(layout);
     int failures = !capture && contractFile.loadFileAsString() != layout ? 1 : 0;
     const auto all = cases();
@@ -170,6 +184,8 @@ int run(bool capture, const juce::File& reference, const juce::File& report)
         for (const auto& value : c.initial) p->setParameterValue(value.first, value.second);
         juce::MemoryBlock state;
         p->getStateInformation(state);
+        std::array<float,28> originalValues{};
+        for(int i=0;i<28;++i)originalValues[static_cast<size_t>(i)]=p->getParameters()[i]->getValue();
         const auto stateFile = reference.getChildFile(c.name + ".state");
         const auto rawFile = reference.getChildFile(c.name + ".f32");
         bool statePass = true;
@@ -185,10 +201,15 @@ int run(bool capture, const juce::File& reference, const juce::File& report)
             p->setCurrentProgram(6);
             for (const auto& spec : p->getSpec().parameters) p->setParameterValue(spec.id, spec.maximum);
             p->setParameterValue("bypass", 1);
+            for(const auto& spec:hpeq::standalone::scoreParameterSpecs())p->setParameterValue(spec.id,spec.maximum);
             p->setStateInformation(oldState.getData(), static_cast<int>(oldState.getSize()));
             juce::MemoryBlock restored;
             p->getStateInformation(restored);
-            statePass = restored == state;
+            // First M0 extraction used whole-state byte equality. Added fields
+            // legitimately change XML; preserve all old values and neutral additions.
+            for(int i=0;i<28;++i)statePass=statePass&&std::abs(p->getParameters()[i]->getValue()-originalValues[static_cast<size_t>(i)])<=1e-6f;
+            for(const auto& spec:hpeq::standalone::scoreParameterSpecs())
+            {auto* parameter=p->parameter(spec.id);statePass=statePass&&std::abs(parameter->getValue()-parameter->getDefaultValue())<=1e-6f;}
         }
         auto bytes = render(*p, c);
         bool pass = true, finite = true;
@@ -222,7 +243,7 @@ int run(bool capture, const juce::File& reference, const juce::File& report)
         std::cout << (capture ? "CAPTURE " : pass && statePass ? "PASS " : "FAIL ") << c.name << std::endl;
     }
     auto* root = new juce::DynamicObject;
-    root->setProperty("method", "EchoLab M0 capture v1; planar float32; prepare(256); exact event splits; source specified in source code");
+    root->setProperty("method", "EchoLab M0 signals/schedules v1 unchanged; integration v2 permits append-only contract and semantic state migration");
     root->setProperty("cases", rows); root->setProperty("failures", failures);
     root->setProperty("newFeatures", "n/a: score, note targets, multiband, space, glitch and Send do not exist in M0");
     report.getParentDirectory().createDirectory();

@@ -8,6 +8,8 @@
 #include "Standalone/ModulePluginProcessor.h"
 #include "UI/PresetScreen.h"
 
+namespace hpeq::ui {class ScorePanel;}
+
 namespace hpeq::standalone
 {
 class ModulePluginEditor final : public juce::AudioProcessorEditor, private juce::Timer
@@ -20,7 +22,8 @@ public:
     void visibilityChanged() override;
     void parentHierarchyChanged() override;
     ui::PresetScreen& getPresetScreen() noexcept { return *presets; }
-    juce::Component* getPanel() noexcept { return panel.get(); }
+    juce::Component* getPanel() noexcept;
+    void selectScorePage(int);
 
 private:
     template <typename Panel>
@@ -33,6 +36,10 @@ private:
 
     ModulePluginProcessor& processor;
     std::unique_ptr<juce::Component> panel;
+    std::unique_ptr<ui::ScorePanel> scorePanel;
+    juce::ComboBox modeSelector;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> modeLink;
+    int shownMode=-1;
     std::unique_ptr<ui::PresetScreen> presets;
     std::function<void()> refreshPanel;
     juce::RangedAudioParameter* activeGesture = nullptr;

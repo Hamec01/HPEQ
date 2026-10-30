@@ -1,4 +1,5 @@
 #include "Standalone/ModuleVariant.h"
+#include "Standalone/ScoreParameters.h"
 
 #include <cmath>
 
@@ -100,6 +101,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout(Module
         layout.add(std::make_unique<juce::AudioParameterFloat>(id, p.name, range, p.defaultValue, attributes));
     }
     layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID { "bypass", 1 }, "Bypass", false));
+    // Append only: all original host indices, including bypass at 27, remain fixed.
+    for(const auto& p:scoreParameterSpecs())
+    {
+        const juce::ParameterID id{p.id,1};
+        if(!p.choices.isEmpty())layout.add(std::make_unique<juce::AudioParameterChoice>(id,p.name,p.choices,juce::roundToInt(p.defaultValue)));
+        else layout.add(std::make_unique<juce::AudioParameterFloat>(id,p.name,juce::NormalisableRange<float>(p.minimum,p.maximum,p.interval,p.skew),p.defaultValue,juce::AudioParameterFloatAttributes{}.withLabel(p.unit)));
+    }
     return layout;
 }
 

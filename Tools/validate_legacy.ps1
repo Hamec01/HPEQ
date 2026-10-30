@@ -1,11 +1,13 @@
 param(
     [string]$Pluginval = 'E:\HamloComp\build\tools\pluginval\pluginval.exe',
-    [string]$Validator = 'E:\HamloComp\build\tools\vst3sdk-build\bin\Release\validator.exe'
+    [string]$Validator = 'E:\HamloComp\build\tools\vst3sdk-build\bin\Release\validator.exe',
+    [string]$ReportDirectory = ''
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
 $plugin = Join-Path $repo 'build\HamloEcho_artefacts\Release\VST3\HamloEcho.vst3'
 $reports = Join-Path $repo 'docs\reports\v2\validators'
+if ($ReportDirectory) { $reports = [System.IO.Path]::GetFullPath($ReportDirectory) }
 New-Item -ItemType Directory -Path $reports -Force | Out-Null
 $summary = @()
 foreach ($level in 5..10) {

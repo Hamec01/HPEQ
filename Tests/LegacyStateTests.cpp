@@ -31,12 +31,26 @@ public:
                 if (edited)
                 {
                     for (const auto& spec : p->getSpec().parameters) p->setParameterValue(spec.id, spec.maximum);
+                    for(const auto& spec:hpeq::standalone::scoreParameterSpecs())p->setParameterValue(spec.id,spec.maximum);
                     p->setParameterValue("bypass", 1);
                 }
                 p->setStateInformation(oldState.getData(), static_cast<int>(oldState.getSize()));
                 juce::MemoryBlock restored;
                 p->getStateInformation(restored);
-                expect(restored == oldState, file.getFileName() + (edited ? " edited" : " fresh"));
+                // New XML parameters/metadata must exist; compare old semantic
+                // values and defaults instead of requiring missing new fields.
+                const auto xml=juce::AudioProcessor::getXmlFromBinary(oldState.getData(),static_cast<int>(oldState.getSize()));
+                bool match=xml!=nullptr;
+                if(xml!=nullptr)
+                    for(auto* child:xml->getChildIterator())
+                    {
+                        const auto id=child->getStringAttribute("id");auto* parameter=p->parameter(id);
+                        match=match&&parameter!=nullptr;
+                        if(parameter!=nullptr)match=match&&std::abs(parameter->getValue()-parameter->convertTo0to1(static_cast<float>(child->getDoubleAttribute("value"))))<=1e-6;
+                    }
+                for(const auto& spec:hpeq::standalone::scoreParameterSpecs())
+                {auto* parameter=p->parameter(spec.id);match=match&&std::abs(parameter->getValue()-parameter->getDefaultValue())<=1e-6;}
+                expect(match, file.getFileName() + (edited ? " edited" : " fresh"));
             }
         }
     }

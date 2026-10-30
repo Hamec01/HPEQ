@@ -29,12 +29,16 @@ public:
     void prepare(double sampleRate, int maximumBlockSize);
     void setScore(const Score&) noexcept;
     void process(const float* const* input, float* const* wet, int channels, int samples) noexcept;
+    // Prepared shared transposition streams for the production routing engine.
+    void processVoices(const float* const* input, float* const* const* voices, int channels, int samples) noexcept;
+    void resetEpoch() noexcept;
     int pitchAccumulationSamples(int semitones) const noexcept;
     int reverseAccumulationSamples(int tap) const noexcept;
     size_t historyBytes() const noexcept;
     static size_t sharedTableBytes() noexcept;
 
 private:
+    void processInternal(const float* const*, float* const*, float* const* const*, int, int) noexcept;
     struct Attack { int64_t first = 0, peak = 0, end = 0; };
     struct AttackRead
     {
@@ -74,6 +78,8 @@ private:
     std::vector<double> window;
     std::vector<float> attackMask, activity;
     std::vector<uint16_t> fullyMaskedRun;
+    std::vector<int> fullySilentRun;
+    int silentRun=0;
     std::array<Attack, 512> attackEvents;
     uint64_t attackCount = 0;
     Attack pendingAttack;
@@ -84,5 +90,6 @@ private:
     double rate = 48000.0;
     int capacity = 0, write = 0, grain = 0, search = 0;
     int64_t clock = 0;
+    int64_t validFrom = 0;
 };
 }

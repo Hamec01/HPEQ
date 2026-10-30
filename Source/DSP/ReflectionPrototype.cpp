@@ -73,6 +73,7 @@ void ReflectionPrototype::prepare(double sampleRate, int)
     attackMask.assign(static_cast<size_t>(2 * capacity), 0.0f);
     activity.assign(static_cast<size_t>(2 * capacity), 0.0f);
     fullyMaskedRun.assign(static_cast<size_t>(capacity), 0);
+    fullySilentRun.assign(static_cast<size_t>(capacity),0);silentRun=0;
     window.resize(static_cast<size_t>(grain));
     for (int i = 0; i < grain; ++i) window[static_cast<size_t>(i)] = .5 - .5 * std::cos(2 * pi * i / grain);
     voices = {};
@@ -85,6 +86,20 @@ void ReflectionPrototype::prepare(double sampleRate, int)
     release = std::exp(-1 / (.01 * rate));
     capture = static_cast<int>(std::ceil(.08 * rate));
     write = 0; clock = 0;
+    validFrom = 0;
+    setScore(score);
+}
+
+void ReflectionPrototype::resetEpoch() noexcept
+{
+    // No clearing of large audio buffers on the audio thread. Reads before this
+    // epoch are explicitly zero, including partial interpolation windows.
+    clock=0;write=0;validFrom=0;silentRun=0;
+    voices = {};
+    attackCount = 0; pending = false;
+    maskFullEnd = maskEnd = -1;
+    lastDetection = lastSignal = -1000000000;
+    pendingPeak = slowPeak = envelope = 0;
     setScore(score);
 }
 
@@ -135,7 +150,7 @@ size_t ReflectionPrototype::sharedTableBytes() noexcept { return static_cast<siz
 
 float ReflectionPrototype::integerAt(int channel, int64_t position) const noexcept
 {
-    if (position < 0 || position > clock || position <= clock - capacity) return 0.0f;
+    if (position < validFrom || position > clock || position <= clock - capacity) return 0.0f;
     return history[static_cast<size_t>(channel)][static_cast<size_t>(position % capacity)];
 }
 
@@ -143,7 +158,7 @@ double ReflectionPrototype::interpolate(int channel, double position, int shift,
 {
     const int r = attack ? attackRadius : radius;
     const int count = attack ? attackTaps : taps;
-    if (position < (attack ? -r : 0) || position > static_cast<double>(clock - r - 1)
+    if (position < static_cast<double>(validFrom - (attack ? r : 0)) || position > static_cast<double>(clock - r - 1)
         || position < static_cast<double>(clock - capacity + count)) return 0.0;
     const auto whole = static_cast<int64_t>(std::floor(position));
     const double phase = (position - static_cast<double>(whole)) * phases;
@@ -151,15 +166,18 @@ double ReflectionPrototype::interpolate(int channel, double position, int shift,
     const double fraction = phase - p;
     int index = static_cast<int>((whole - r + 1) % capacity);
     if (index < 0) index += capacity;
+    if(silentRun>=count)
+    {int last=index+count-1;if(last>=capacity)last-=capacity;if(fullySilentRun[static_cast<size_t>(last)]>=count)return 0;}
     const float* x = history[static_cast<size_t>(channel)].data() + index;
     const float* mask = attackMask.data() + index;
     const float* a = (attack ? kernels().attackCoefficients.data() : kernels().coefficients.data()) + ((shift + 24) * (phases + 1) + p) * count;
     const float* b = a + count;
     double sum = 0;
+    const int epochBegin = static_cast<int>(std::clamp<int64_t>(validFrom - (whole - r + 1), 0, count));
     // Every nonzero mask interval lasts at least 14 ms, including retroactive
     // marking. At >=8 kHz it cannot fit between two zero endpoints of 64 taps.
     // Ordinary body reads can therefore use the original unmasked inner loop.
-    if (!attack && rate >= 8000 && mask[0] == 0 && mask[count - 1] == 0)
+    if (!attack && epochBegin == 0 && rate >= 8000 && mask[0] == 0 && mask[count - 1] == 0)
     {
         for (int k = 0; k < count; ++k) sum += x[k] * (a[k] + fraction * (b[k] - a[k]));
         return sum;
@@ -168,7 +186,7 @@ double ReflectionPrototype::interpolate(int channel, double position, int shift,
     {
         int last = index + count - 1;
         if (last >= capacity) last -= capacity;
-        if (fullyMaskedRun[static_cast<size_t>(last)] >= count) return 0;
+        if (epochBegin == 0 && fullyMaskedRun[static_cast<size_t>(last)] >= count) return 0;
     }
     else
     {
@@ -185,7 +203,7 @@ double ReflectionPrototype::interpolate(int channel, double position, int shift,
         for (int k = begin; k < finish; ++k) sum += x[k] * static_cast<double>(mask[k]) * (a[k] + fraction * (b[k] - a[k]));
         return sum;
     }
-    for (int k = 0; k < count; ++k)
+    for (int k = epochBegin; k < count; ++k)
     {
         const int64_t source = whole - r + 1 + k;
         const double weight = attack ? (source >= first && source < end ? mask[k] : 0.0) : 1.0 - mask[k];
@@ -202,7 +220,9 @@ double ReflectionPrototype::matchedStart(double candidate, double continuing, in
     int best = 0;
     const int step = std::max(1, static_cast<int>(rate / 6000));
     const int length = std::max(8, static_cast<int>(.006 * rate));
-    if (base - search - length < 0 || other - length < 0) return candidate;
+    if (base - search - length < validFrom || other - length < validFrom) return candidate;
+    if(silentRun>=length&&other<=clock&&other>clock-capacity&&fullySilentRun[static_cast<size_t>(other%capacity)]>=length)
+        return static_cast<double>(base)+continuing-static_cast<double>(other);
     // Mirrored history makes the entire backwards search contiguous. Compute the
     // ring indices once per splice, rather than taking a modulo in every dot product.
     std::array<const float*, 2> aPointers {}, bPointers {};
@@ -281,7 +301,7 @@ void ReflectionPrototype::detectAttack(double peak) noexcept
     if (!pending && onset && clock - lastDetection >= static_cast<int64_t>(std::lround(.008 * rate)))
     {
         pending = true;
-        pendingAttack.first = std::max<int64_t>(0, clock - attackRadius);
+        pendingAttack.first = std::max<int64_t>(validFrom, clock - attackRadius);
         // Seal the preceding fragment before a nearby new attack, avoiding reuse
         // of the next transient by two different pitched event readers.
         if (attackCount != 0)
@@ -297,7 +317,7 @@ void ReflectionPrototype::detectAttack(double peak) noexcept
         maskFullEnd = clock + static_cast<int64_t>(std::lround(.010 * rate));
         maskEnd = pendingAttack.end;
         // The capture budget lets us split the few samples before detection too.
-        for (int j = 1; j <= attackRadius && clock - j >= 0; ++j)
+        for (int j = 1; j <= attackRadius && clock - j >= validFrom; ++j)
         {
             int index = write - j;
             if (index < 0) index += capacity;
@@ -305,7 +325,7 @@ void ReflectionPrototype::detectAttack(double peak) noexcept
         }
         // Repair the short retroactive range in chronological order. Queries can
         // then skip a wholly extracted body window with one exact run-length read.
-        for (int j = static_cast<int>(std::min<int64_t>(attackRadius, clock)); j >= 1; --j)
+        for (int j = static_cast<int>(std::min<int64_t>(attackRadius, clock - validFrom)); j >= 1; --j)
         {
             int index = write - j;
             if (index < 0) index += capacity;
@@ -383,7 +403,7 @@ double ReflectionPrototype::attackOutput(const Voice& v, int channel) const noex
 double ReflectionPrototype::bodyGain(const Voice& v) const noexcept
 {
     const int64_t sourceTime = clock - v.effectiveDelay;
-    if (!v.heardAttack || sourceTime < 0 || sourceTime <= clock - capacity) return 0;
+    if (!v.heardAttack || sourceTime < validFrom || sourceTime <= clock - capacity) return 0;
     double gain = activity[static_cast<size_t>(sourceTime % capacity)];
     if (v.activeAttacks != 0)
         for (const auto& reader : v.attacks)
@@ -420,6 +440,16 @@ double ReflectionPrototype::backwards(Voice& v, int channel) const noexcept
 
 void ReflectionPrototype::process(const float* const* input, float* const* wet, int channels, int samples) noexcept
 {
+    processInternal(input, wet, nullptr, channels, samples);
+}
+
+void ReflectionPrototype::processVoices(const float* const* input, float* const* const* separate, int channels, int samples) noexcept
+{
+    processInternal(input, nullptr, separate, channels, samples);
+}
+
+void ReflectionPrototype::processInternal(const float* const* input, float* const* wet, float* const* const* separate, int channels, int samples) noexcept
+{
     channels = std::clamp(channels, 1, 2);
     for (int sample = 0; sample < samples; ++sample)
     {
@@ -428,10 +458,14 @@ void ReflectionPrototype::process(const float* const* input, float* const* wet, 
             auto& ring = history[static_cast<size_t>(ch)];
             ring[static_cast<size_t>(write)] = ring[static_cast<size_t>(write + capacity)] = input[ch < channels ? ch : 0][sample];
         }
-        double peak = 0;
-        for (int ch = 0; ch < channels; ++ch) peak = std::max(peak, std::abs(static_cast<double>(input[ch][sample])));
+        double peak = 0;bool silent=true;
+        for (int ch = 0; ch < channels; ++ch){const float value=input[ch][sample];peak=std::max(peak,std::abs(static_cast<double>(value)));silent&=value==0;}
+        silentRun=silent?std::min(capacity,silentRun+1):0;fullySilentRun[static_cast<size_t>(write)]=silentRun;
         detectAttack(peak);
         std::array<double, 2> sum {};
+        if (separate != nullptr)
+            for (int tap = 0; tap < 8; ++tap)
+                for (int ch = 0; ch < channels; ++ch) separate[tap][ch][sample] = 0;
         for (size_t tap = 0; tap < voices.size(); ++tap)
         {
             const auto& config = score.taps[tap];
@@ -453,11 +487,16 @@ void ReflectionPrototype::process(const float* const* input, float* const* wet, 
                 }
             }
             for (int ch = 0; ch < channels; ++ch)
-                sum[static_cast<size_t>(ch)] += (config.reverse ? backwards(v, ch) : forward(v, ch)) * (ch == 0 ? v.left : v.right);
+            {
+                const double value = (config.reverse ? backwards(v, ch) : forward(v, ch)) * (ch == 0 ? v.left : v.right);
+                sum[static_cast<size_t>(ch)] += value;
+                if (separate != nullptr) separate[tap][ch][sample] = static_cast<float>(value);
+            }
             if (!config.reverse && v.shift != 0)
                 for (auto& head : v.heads) { head.read += v.ratio; ++head.phase; }
         }
-        for (int ch = 0; ch < channels; ++ch) wet[ch][sample] = static_cast<float>(sum[static_cast<size_t>(ch)]);
+        if (wet != nullptr)
+            for (int ch = 0; ch < channels; ++ch) wet[ch][sample] = static_cast<float>(sum[static_cast<size_t>(ch)]);
         if (++write == capacity) write = 0;
         ++clock;
     }

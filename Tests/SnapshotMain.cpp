@@ -15,8 +15,11 @@ int main(int argc, char* argv[])
         return 2;
     hpeq::standalone::ModulePluginProcessor p(static_cast<hpeq::standalone::ModuleKind>(HPEQ_MODULE_KIND));
     p.setCurrentProgram(argc > 2 ? juce::String(argv[2]).getIntValue() : 1);
+    const bool score=argc>3&&juce::String(argv[3]).getIntValue()!=0;if(score)p.setParameterValue("echoMode",1);
     std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
-    e->setSize(p.getSpec().editorWidth, p.getSpec().editorHeight);
+    const int width=argc>5?juce::String(argv[5]).getIntValue():p.getSpec().editorWidth;
+    e->setSize(width,juce::roundToInt(width*(score?980.f:760.f)/1180.f));
+    if(auto* editor=dynamic_cast<hpeq::standalone::ModulePluginEditor*>(e.get()))if(score&&argc>4)editor->selectScorePage(juce::String(argv[4]).getIntValue());
     const auto image = e->createComponentSnapshot(e->getLocalBounds(), true, 1.0f);
     juce::File out = juce::File::getCurrentWorkingDirectory().getChildFile(argv[1]);
     out.deleteFile();
