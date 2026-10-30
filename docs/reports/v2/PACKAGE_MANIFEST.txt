@@ -1,0 +1,6 @@
+Validated VST3: b3728742ce6b59bd65293dff53a972fdeb5b3a75dff1dd05cdaccad82b6edbae
+Portable ZIP: c169608fe5dce5428d65ae7c7ced1fd65d0bc697b0b926f9b9de6c47d5beedc6
+Installer: 16d2e54b47bebca38164a49cad06794251b8cbc9922dc57ce8f92930feda1b4b
+Version: 0.2.0
+Preset source/DSP: 8615f8e44c663db27c6b83d558aa1d91710a3e8f7d7dfcbf8c61cfb04d13866f
+Audio examples: 20 sets (dry / Insert / Send)

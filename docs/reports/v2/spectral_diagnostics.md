@@ -1,0 +1,109 @@
+# Independent spectral diagnostics
+
+Additional IR-export diagnostic added after the first V2 run. Existing acceptance methods/thresholds are unchanged.
+48 kHz, 12-second stereo impulses, fourth-order Butterworth octave bands, Schroeder T30 (-5 to -35 dB).
+Coloured settings: bass ratio 1.5, HF ratio 0.5; neutral ratios 1. Decay EQ: +1 octave bell at 1 kHz. Post EQ: +6 dB bell at 1 kHz.
+
+| Character/profile | Band Hz | T30 seconds | R-squared |
+|---|---:|---:|---:|
+| Bloom_coloured | 125 | 2.9196 | 0.99953 |
+| Bloom_coloured | 250 | 2.6357 | 0.99886 |
+| Bloom_coloured | 500 | 2.1288 | 0.99928 |
+| Bloom_coloured | 1000 | 2.0020 | 0.99972 |
+| Bloom_coloured | 2000 | 1.8775 | 0.99969 |
+| Bloom_coloured | 4000 | 1.4232 | 0.99922 |
+| Bloom_coloured | 8000 | 1.0355 | 0.99992 |
+| Bloom_neutral | 125 | 2.0069 | 0.99878 |
+| Bloom_neutral | 250 | 1.9723 | 0.99888 |
+| Bloom_neutral | 500 | 2.0208 | 0.99923 |
+| Bloom_neutral | 1000 | 2.0070 | 0.99973 |
+| Bloom_neutral | 2000 | 2.0114 | 0.99978 |
+| Bloom_neutral | 4000 | 1.9990 | 0.99994 |
+| Bloom_neutral | 8000 | 1.9984 | 0.99998 |
+| Clean_coloured | 125 | 2.9696 | 0.99873 |
+| Clean_coloured | 250 | 2.5679 | 0.99971 |
+| Clean_coloured | 500 | 2.0999 | 0.99972 |
+| Clean_coloured | 1000 | 2.0018 | 0.99980 |
+| Clean_coloured | 2000 | 1.8801 | 0.99992 |
+| Clean_coloured | 4000 | 1.4394 | 0.99965 |
+| Clean_coloured | 8000 | 1.0282 | 0.99997 |
+| Clean_decay | 125 | 2.0583 | 0.99752 |
+| Clean_decay | 250 | 2.1744 | 0.99943 |
+| Clean_decay | 500 | 2.9628 | 0.99964 |
+| Clean_decay | 1000 | 3.7788 | 0.99989 |
+| Clean_decay | 2000 | 2.8231 | 0.99982 |
+| Clean_decay | 4000 | 2.1476 | 0.99994 |
+| Clean_decay | 8000 | 2.0261 | 0.99998 |
+| Clean_neutral | 125 | 2.0222 | 0.99741 |
+| Clean_neutral | 250 | 2.0051 | 0.99951 |
+| Clean_neutral | 500 | 1.9958 | 0.99968 |
+| Clean_neutral | 1000 | 2.0069 | 0.99980 |
+| Clean_neutral | 2000 | 2.0036 | 0.99993 |
+| Clean_neutral | 4000 | 2.0060 | 0.99994 |
+| Clean_neutral | 8000 | 1.9995 | 0.99998 |
+| Clean_post | 125 | 2.0217 | 0.99743 |
+| Clean_post | 250 | 2.0066 | 0.99950 |
+| Clean_post | 500 | 1.9945 | 0.99965 |
+| Clean_post | 1000 | 2.0068 | 0.99979 |
+| Clean_post | 2000 | 2.0052 | 0.99992 |
+| Clean_post | 4000 | 2.0057 | 0.99994 |
+| Clean_post | 8000 | 1.9994 | 0.99998 |
+| Crisp_coloured | 125 | 3.1417 | 0.99927 |
+| Crisp_coloured | 250 | 2.6416 | 0.99939 |
+| Crisp_coloured | 500 | 2.1189 | 0.99960 |
+| Crisp_coloured | 1000 | 2.0072 | 0.99981 |
+| Crisp_coloured | 2000 | 1.8980 | 0.99989 |
+| Crisp_coloured | 4000 | 1.4403 | 0.99955 |
+| Crisp_coloured | 8000 | 1.0531 | 0.99992 |
+| Crisp_neutral | 125 | 2.1529 | 0.99883 |
+| Crisp_neutral | 250 | 2.0508 | 0.99938 |
+| Crisp_neutral | 500 | 2.0043 | 0.99946 |
+| Crisp_neutral | 1000 | 2.0168 | 0.99979 |
+| Crisp_neutral | 2000 | 2.0153 | 0.99991 |
+| Crisp_neutral | 4000 | 2.0074 | 0.99997 |
+| Crisp_neutral | 8000 | 2.0180 | 0.99998 |
+| Deep_coloured | 125 | 2.8784 | 0.99909 |
+| Deep_coloured | 250 | 2.6337 | 0.99955 |
+| Deep_coloured | 500 | 2.1109 | 0.99964 |
+| Deep_coloured | 1000 | 2.0043 | 0.99987 |
+| Deep_coloured | 2000 | 1.8865 | 0.99990 |
+| Deep_coloured | 4000 | 1.4302 | 0.99969 |
+| Deep_coloured | 8000 | 1.0288 | 0.99993 |
+| Deep_neutral | 125 | 1.9347 | 0.99889 |
+| Deep_neutral | 250 | 1.9916 | 0.99952 |
+| Deep_neutral | 500 | 2.0121 | 0.99956 |
+| Deep_neutral | 1000 | 2.0089 | 0.99987 |
+| Deep_neutral | 2000 | 2.0164 | 0.99992 |
+| Deep_neutral | 4000 | 1.9988 | 0.99996 |
+| Deep_neutral | 8000 | 1.9912 | 0.99997 |
+| Velvet_coloured | 125 | 2.7105 | 0.99919 |
+| Velvet_coloured | 250 | 2.6450 | 0.99953 |
+| Velvet_coloured | 500 | 2.1181 | 0.99964 |
+| Velvet_coloured | 1000 | 1.9804 | 0.99986 |
+| Velvet_coloured | 2000 | 1.8911 | 0.99988 |
+| Velvet_coloured | 4000 | 1.4421 | 0.99964 |
+| Velvet_coloured | 8000 | 1.0364 | 0.99996 |
+| Velvet_neutral | 125 | 1.8970 | 0.99885 |
+| Velvet_neutral | 250 | 2.0291 | 0.99947 |
+| Velvet_neutral | 500 | 2.0144 | 0.99957 |
+| Velvet_neutral | 1000 | 1.9848 | 0.99986 |
+| Velvet_neutral | 2000 | 2.0194 | 0.99992 |
+| Velvet_neutral | 4000 | 2.0095 | 0.99997 |
+| Velvet_neutral | 8000 | 2.0165 | 0.99998 |
+| Warm_coloured | 125 | 2.8815 | 0.99903 |
+| Warm_coloured | 250 | 2.5740 | 0.99896 |
+| Warm_coloured | 500 | 2.0845 | 0.99911 |
+| Warm_coloured | 1000 | 1.9954 | 0.99984 |
+| Warm_coloured | 2000 | 1.8813 | 0.99978 |
+| Warm_coloured | 4000 | 1.4659 | 0.99966 |
+| Warm_coloured | 8000 | 1.0411 | 0.99996 |
+| Warm_neutral | 125 | 1.9359 | 0.99780 |
+| Warm_neutral | 250 | 1.9382 | 0.99916 |
+| Warm_neutral | 500 | 1.9777 | 0.99938 |
+| Warm_neutral | 1000 | 1.9984 | 0.99985 |
+| Warm_neutral | 2000 | 2.0141 | 0.99984 |
+| Warm_neutral | 4000 | 2.0155 | 0.99997 |
+| Warm_neutral | 8000 | 2.0107 | 0.99997 |
+
+Measured Post EQ gain at 1 kHz: **6.0000 dB**.
+Decay curves shown in the UI are target models; these tables describe the actual rendered tails.

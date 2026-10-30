@@ -1,56 +1,51 @@
-# HamloVerb continuation — 2026-10-30
+# HamloVerb 0.2.0 release handoff — 2026-10-30
 
-## Objective and constraints
+## Delivered work
 
-Implement the approved standalone 0.2.0 plan in `docs/HAMLOVERB_V2.md`, including 200 calibrated presets. Do not touch HPEQ, integrate subtree or push. Owner now requires one agent, targeted reading and one coherent stage per chat; see personal efficient-staged-work skill.
+Standalone core and Legacy compatibility, six new characters, Decay/Post EQ6, Gated/Reverse Swell/
+Reverse Audio/Shimmer, stable Freeze, two-path handover, Insert/Send, Mix Lock, standalone UI and
+200 calibrated genre recipes are implemented. Production version: 0.2.0.
 
-## Verified stage
+- M0 compatibility: 390/390 bit-exact.
+- Final unit tests: 1154/1154.
+- Final-DSP calibration: 200/200; independent compiled-bank check: 200/200.
+- pluginval5..10 and Steinberg537/537 passed on the packaged binary.
+- Five-minute Freeze stress passed for all6 characters; spectral and temporal contracts checked.
+- Main/EQ/Texture/Effects/Legacy/minimum-size snapshots reviewed.
+- Installer, portable ZIP, VST3, SHA256 manifests and20 dry/Insert/Send audio sets are in dist/.
 
-Commit `dc6f952` records the design and immutable M0 reference harness, acoustic baseline and fixtures.
-Commit `dbd2000` completes the standalone core extraction: nine Verb/UI/wrapper translation units,
-no LayerEngine/pools/other effect implementations, independent VerbSettings and LegacyVerbPath.
-Final post-refactor M0 comparison: **390/390 bit-exact**, including matching-block automation.
-Unit tests: **95/95**, including post-prepare MIX target ramp. Unchanged acoustic lab: four passed,
-zero failed; absent V2 features are n/a. Release Reference/Tests/Lab/VST3 targets built.
-See `docs/reports/v2/STANDALONE_CORE_REPORT.md` and `standalone_reference_check.md`.
+Read docs/reports/v2/V2_REPORT.md for exact measurements and disclosures,
+docs/reports/v2/PACKAGE_MANIFEST.txt for package hashes, and docs/GENRE_PRESETS.md for the bank.
 
-Intermediate standalone VST3 binary SHA256: `f201668a56b329a55be697566f3a4a76f174012cc33fb3d086726e8595a3a811`.
-The project version remains 0.1.0 until the planned 0.2.0 release is actually ready.
+## Explicit limits
 
-Original source baseline: `02446a7787643e74c438d584713265b74be9194b`. Original binary SHA256: `e270991f4201250dfbdcfacfb2d5d69807038318f7251bcb57403946837b90ff`. Preserved binaries are in `build/reference/m0`; state/hash/raw fixtures are archived in `docs/reports/v2/m0-fixtures.zip`.
+Manual final-VST3 loading/listening in FL Studio and administrator installer execution are unverified.
+Protected Program Files destinations denied writes; an alternate-folder dialog did not accept UI
+automation. A separate test FL instance was closed; the owner's trap.flp instance was untouched.
+Do not describe these as passes. The installer is compiled and its exact input binary is validated.
 
-Commands used:
+The full after report keeps7 CPU failures under concurrent workloads. The same isolated test passed
+at2.91..4.91% for one character and8.89% for handover. The report explains both results; no goals moved.
+
+## Provenance and commands
+
+M0 baseline02446a7, design/fixturesdc6f952, standalone extractiondbd2000, V2 implementationa418499.
+Subsequent release commits hold the reports/tools. Use git log/status for the latest revision.
+Validated VST3 SHA256: b3728742ce6b59bd65293dff53a972fdeb5b3a75dff1dd05cdaccad82b6edbae.
 
 ```powershell
-cmake --build build --config Release --target HamloVerb_Reference -- /m:3
-build\Release\HamloVerb_Reference.exe record build\reference\m0 docs\reports\v2\m0_reference_manifest.md
-cmake --build build --config Release --target HamloVerb_Lab -- /m:3
-build\reference\m0\HamloVerb_Lab.exe docs\reports\v2\before.md M0
+cmake --build build --config Release
+build\Release\HamloVerb_Tests.exe
+build\Release\HamloVerb_Reference.exe check build\reference\m0 docs\reports\v2\v2_legacy_reference.md
+build\Release\HamloVerb_Lab.exe docs\reports\v2\cpu_isolated.md V2-isolated cpu
+python -I Tools\run_preset_lab.py check <material-directory>
+powershell -NoProfile -ExecutionPolicy Bypass -File Tools\Validate-Release.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File Tools\Package-Release.ps1
 ```
 
-## Unfinished work in the working tree
+Fixtures are in build/reference/m0 or docs/reports/v2/m0-fixtures.zip. Do not overwrite M0 fixtures.
+Calibration caches require matching DSP/source/material/recipe hashes; never reuse stale results.
+Final audio source directory is recorded in each example description. No background job is required.
 
-New V2 DSP/parameter/UI/test files and `Tools/` remain untracked. They are partial implementations,
-not integrated or verified. Production processor, editor, parameter spec and preset list are now
-Verb-only. Inspect `git status --short` and specific interfaces before proceeding. Do not discard
-the unfinished files or assume earlier agent summaries establish correctness. VerbV2Settings.h's
-include was adjusted to the new standalone VerbSettings.h; this does not establish DSP correctness.
-
-`Tools/genre_presets.py` generated 200 recipes (4x50, approved Vocal10/Drums12/Samples10/Synth8/Atmosphere10 distribution). Zero calibration entries have been applied. The generated bank is not yet connected to factory programs.
-
-No integrated V2 build, V2 acoustic after run, preset calibration/check, redesigned-panel visual QA,
-release validators, FL Studio check, installer or 0.2.0 release commit is complete. No background job
-is intentionally required to continue; verify process state if any executable is locked.
-
-## Next stage
-
-Review and finish the new DSP implementation, then integrate additive V2 parameters and state migration
-while retaining Legacy as default. Preserve all old parameter indices including bypass (append additions
-after it), old host programs and old-state reset semantics. Do not connect the 200-preset bank until its
-DSP dependencies work. Run the immutable reference check after wrapper changes, plus relevant new DSP
-tests and acoustic goals. Existing unfinished sources are not grounds to claim six working engines.
-
-Continuation prompt: "Continue HamloVerb in E:\\HamloVerb using docs/NEXT_STAGE.md. Finish the V2 DSP and
-additive parameter/state integration stage, without subagents. Preserve the verified Legacy core."
-
-Recommended effort: xhigh for the extraction/null-test investigation; medium for an understood build/test sequence. The agent cannot change its current-chat model through the tools presently exposed. No subagents.
+No HPEQ source, subtree or remote work was performed. No push. HamloMag is finished; do not redo it.
+No subagents. Continue with another plugin only when requested; do not silently expand this release.

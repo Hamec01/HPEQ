@@ -53,3 +53,14 @@ The same lab implementation runs before/after; nonexistent features are n/a. A f
 - Abel and Huang, AES 6985: https://aes.org/publications/elibrary/elibrary-page/?id=13819 — normalized echo density.
 
 Deliver version 0.2.0, README/help, before/after and preset reports, known limitations, local stage commits, installer, portable ZIP and SHA256 manifests. Update local handover to remove obsolete Mag work. Do not integrate or push HPEQ.
+
+## Execution disclosures (2026-10-30)
+
+- The first V2 unit run passed 1130 expectations and failed one CRT-position check because the old 760-high panel was still hosted in the new 940-high editor. The standalone panel resolved it; the test bounds were not changed.
+- Ordinary Freeze passed its initial five-minute tests. Source review then identified live Size/Diffusion changes altering a frozen tank; the geometry/diffusion capture was fixed and a bit-exact regression added. Bypass now closes new input, and Freeze bypasses temporal shaping so a gated preset can hold audibly.
+- Two provisional calibration runs were interrupted during DSP review. Their source-keyed caches were invalidated; only the complete final-DSP calibration/check results count.
+- The full after run included concurrent compilation/calibration and failed all seven wall-clock CPU rows (38 other checks passed). These failures remain in after.md. The identical CPU function was rerun without concurrent jobs: 2.91..4.91% for a single character, 8.89% for a handover. Thresholds/methods were unchanged.
+- An additional spectral IR-export mode and independent octave-band analysis were appended after the first runs. They add diagnostics only; existing acceptance functions and thresholds were not modified. See spectral_diagnostics.md.
+- Native preset comparison uses normalized parameter values to avoid a false modified marker from frequency round-trip rounding. No audio metric was relaxed.
+- Gate Release has an effective 5 ms floor. Reverse and Shimmer are causal delay-based effects. No measured alias-rejection or subjective superiority claim is made for them.
+- FL Studio is installed and a separate empty instance was opened, but loading the final VST3 could not be confirmed: protected installation paths denied writes and the folder dialog did not accept automation. The owner's trap.flp instance was left untouched; test processes were closed. This manual host check remains unverified, not a pass.

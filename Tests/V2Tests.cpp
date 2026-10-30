@@ -128,6 +128,21 @@ public:
                 expectEquals(static_cast<int>(allocations),0,"engine "+juce::String(engine));
             }
         }
+        beginTest("Swell rises relative to the same tank; Gate Hold changes the cutoff time");
+        {
+            auto settings=neutral(4,2);set(settings,"earlyDb",0);set(settings,"gateThresholdDb",-40);
+            set(settings,"shapeTimeMs",250);set(settings,"gateReleaseMs",30);
+            const auto plain=impulse(settings,2);
+            set(settings,"timeShape",2);const auto swell=impulse(settings,2);
+            const double early=energy(swell,960,1920)/energy(plain,960,1920);
+            const double later=energy(swell,7200,2400)/energy(plain,7200,2400);
+            expect(later>early*10&&later>.05,"Relative envelope must rise, independent of tank decay");
+            expect(energy(swell,19200)/energy(swell)<1e-6,"Swell must end after its time and release");
+            set(settings,"timeShape",1);const auto shortGate=impulse(settings,2);
+            set(settings,"shapeTimeMs",500);const auto longGate=impulse(settings,2);
+            const double at350=energy(shortGate,16800,2400)/energy(longGate,16800,2400);
+            expect(at350<.01,"250 ms gate closes while 500 ms gate remains open");
+        }
         beginTest("Freeze preserves the captured tank under size and diffusion automation");
         {
             for(int engine=1;engine<=6;++engine)
