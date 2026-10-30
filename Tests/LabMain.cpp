@@ -155,6 +155,31 @@ int main(int argc,char** argv)
     if(argc<3){std::cerr<<"Usage: HamloVerb_Lab report.md label [all|quick|rt60|density|predelay|stereo|freeze|shapes|cpu]\n";return 2;}
     auto p=processor({});const bool modern=p->parameter("engine")!=nullptr;p.reset();
     const juce::String section=argc>3?argv[3]:"all";
+    // Additional export-only diagnostic, appended after the M0/first V2 runs.
+    // None of the fixed acceptance methods or thresholds below is changed.
+    if(section=="spectral")
+    {
+        const auto directory=juce::File::getCurrentWorkingDirectory().getChildFile("build/spectral");
+        directory.createDirectory();
+        for(int engine=1;engine<=6;++engine)
+            for(int coloured=0;coloured<2;++coloured)
+            {
+                auto settings=neutral(engine,2);
+                if(coloured){set(settings,"bassMult",1.5);set(settings,"hfDecayRatio",.5);}
+                const auto ir=impulse(settings,12,fs);juce::MemoryBlock data;
+                for(int ch=0;ch<2;++ch)data.append(ir.getReadPointer(ch),static_cast<size_t>(ir.getNumSamples())*sizeof(float));
+                directory.getChildFile(juce::String(names[engine])+(coloured?"_coloured":"_neutral")+".f32").replaceWithData(data.getData(),data.getSize());
+            }
+        for(int post=0;post<2;++post)
+        {
+            auto settings=neutral(1,2);set(settings,post?"postEq1On":"decayEq1On",1);
+            set(settings,post?"postEq1Value":"decayEq1Value",post?6:1);set(settings,post?"postEq1Hz":"decayEq1Hz",1000);
+            const auto ir=impulse(settings,12,fs);juce::MemoryBlock data;
+            for(int ch=0;ch<2;++ch)data.append(ir.getReadPointer(ch),static_cast<size_t>(ir.getNumSamples())*sizeof(float));
+            directory.getChildFile(post?"Clean_post.f32":"Clean_decay.f32").replaceWithData(data.getData(),data.getSize());
+        }
+        return 0;
+    }
     const auto run=[&](const char* name){return section=="all"||section=="quick"||section==name;};
     report="# HamloVerb acoustic laboratory: "+juce::String(argv[2])+"\n\n"
         "Fixed protocol in docs/HAMLOVERB_V2.md. 48 kHz stereo, prepare(256), one second of silent settling before impulses. "

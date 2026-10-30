@@ -14,11 +14,16 @@ const std::vector<ModulePreset> kReverb {
     { "80s Snare Plate", 0.25f, { { "space", 4 }, { "color", 1 }, { "predelayMs", 0 }, { "size", 1.0 }, { "decaySeconds", 1.8 }, { "lowCutHz", 250 } } },
 };
 
+#define HAMLO_VERB_BANK
+const std::vector<ModulePreset> kGenre {
+#include "Core/GenrePresets.inc"
+};
 const std::vector<ModulePreset> kNone;
 }
 const std::vector<ModulePreset>& factoryModulePresets(FxType type)
 {
-    return type == FxType::Reverb ? kReverb : kNone;
+    static const std::vector<ModulePreset> all = [] { auto bank = kReverb; bank.insert(bank.end(), kGenre.begin(), kGenre.end()); return bank; }();
+    return type == FxType::Reverb ? all : kNone;
 }
 
 double presetValue(const ModulePreset& preset, const juce::String& key, double fallback)

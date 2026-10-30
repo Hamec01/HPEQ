@@ -6,6 +6,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 
 #include "Standalone/ModulePluginEditor.h"
+#include "UI/VerbV2Panel.h"
 #include "Standalone/ModulePluginProcessor.h"
 
 int main(int argc, char* argv[])
@@ -13,10 +14,15 @@ int main(int argc, char* argv[])
     juce::ScopedJuceInitialiser_GUI gui;
     if (argc < 2)
         return 2;
-    hpeq::standalone::ModulePluginProcessor p(static_cast<hpeq::standalone::ModuleKind>(HPEQ_MODULE_KIND));
+    auto owned = std::make_unique<hpeq::standalone::ModulePluginProcessor>(static_cast<hpeq::standalone::ModuleKind>(HPEQ_MODULE_KIND));
+    auto& p = *owned;
     p.setCurrentProgram(argc > 2 ? juce::String(argv[2]).getIntValue() : 1);
     std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
     e->setSize(p.getSpec().editorWidth, p.getSpec().editorHeight);
+    if (auto* editor = dynamic_cast<hpeq::standalone::ModulePluginEditor*>(e.get()))
+        if (auto* panel = dynamic_cast<hpeq::ui::VerbV2Panel*>(editor->getPanel()))
+            if (argc > 3) { panel->showAdvanced(true); panel->showAdvancedSection(juce::String(argv[3]).getIntValue()); }
+    if (argc > 5) e->setSize(juce::String(argv[4]).getIntValue(), juce::String(argv[5]).getIntValue());
     const auto image = e->createComponentSnapshot(e->getLocalBounds(), true, 1.0f);
     juce::File out = juce::File::getCurrentWorkingDirectory().getChildFile(argv[1]);
     out.deleteFile();

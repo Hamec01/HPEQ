@@ -1,4 +1,5 @@
 #include "Standalone/ModuleVariant.h"
+#include "Standalone/VerbParameters.h"
 
 namespace hpeq::standalone
 {
@@ -72,15 +73,18 @@ const ModuleSpec& moduleSpec(ModuleKind kind)
 {
     jassert(kind == ModuleKind::Verb);
     juce::ignoreUnused(kind);
-    static const ModuleSpec verb = makeVerb();
+    static const ModuleSpec verb = [] { auto v = makeVerb(); v.editorHeight = 940; appendVerbParameters(v); return v; }();
     return verb;
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout(ModuleKind kind)
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    int index = 0;
     for (const auto& p : moduleSpec(kind).parameters)
     {
+        if (index++ == LegacyParameterCount)
+            layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID { "bypass", 1 }, "Bypass", false));
         const juce::ParameterID id { p.id, 1 };
         if (!p.choices.isEmpty())
         {
@@ -92,7 +96,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout(Module
         auto attributes = juce::AudioParameterFloatAttributes {}.withLabel(p.unit);
         layout.add(std::make_unique<juce::AudioParameterFloat>(id, p.name, range, p.defaultValue, attributes));
     }
-    layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID { "bypass", 1 }, "Bypass", false));
     return layout;
 }
 
@@ -108,7 +111,9 @@ dsp::FxSlotParams makeSlot(ModuleKind kind, const std::vector<std::atomic<float>
     {
         const auto& p = spec.parameters[i];
         const float value = values[i]->load(std::memory_order_relaxed);
-        if (p.slotValueIndex < 0)
+        if (p.slotValueIndex == -2)
+            continue;
+        else if (p.slotValueIndex == -1)
             slot.mix = juce::jlimit(0.0f, 1.0f, value);
         else
             slot.values[static_cast<size_t>(p.slotValueIndex)] = value;

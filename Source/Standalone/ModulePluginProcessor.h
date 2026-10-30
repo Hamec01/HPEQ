@@ -6,6 +6,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "DSP/LegacyVerbPath.h"
+#include "DSP/VerbV2Processor.h"
 #include "DSP/Ramp.h"
 #include "Standalone/ModuleVariant.h"
 
@@ -35,7 +36,7 @@ public:
     // Presets pass: the module's factory presets as the host's programs (0 = Default, then the presets
     // HPEQ shows on this module's page).
     int getNumPrograms() override;
-    int getCurrentProgram() override { return currentProgram; }
+    int getCurrentProgram() override { return currentProgram.load(std::memory_order_relaxed); }
     void setCurrentProgram(int) override;
     const juce::String getProgramName(int) override;
     void changeProgramName(int, const juce::String&) override {}
@@ -51,9 +52,13 @@ public:
     void setParameterValue(const juce::String& id, double actualValue);
     bool isModuleOn() const noexcept { return bypassParameter != nullptr && !bypassParameter->get(); }
     double getHostBpm() const noexcept { return hostBpm.load(std::memory_order_relaxed); }
-    float getOutputDb() const noexcept { return engine.outputLevelDb(); }
-    float getDuckDb() const noexcept { return engine.duckingDb(); }
+    float getOutputDb() const noexcept { return rawValues[22]->load() < .5f ? engine.outputLevelDb() : modern.outputLevelDb(); }
+    float getDuckDb() const noexcept { return rawValues[22]->load() < .5f ? engine.duckingDb() : modern.duckingDb(); }
 
+    bool getMixLock() const noexcept { return mixLocked.load(); }
+    void setMixLock(bool value) noexcept { mixLocked.store(value); }
+    bool isProgramModified() const;
+    double getTankEnergy() const noexcept { return modern.energy(); }
 private:
     dsp::FxSlotParams currentSlot(bool active) const noexcept;
     dsp::Transport currentTransport() noexcept;
@@ -64,10 +69,16 @@ private:
     juce::AudioParameterBool* bypassParameter = nullptr;
 
     dsp::LegacyVerbPath engine;
+    dsp::VerbV2Processor modern;
+    juce::AudioBuffer<float> wetBuffer;
+    juce::ValueTree defaults;
+    std::atomic<bool> mixLocked { false };
+    dsp::LinearRamp insertMix, outputGain;
+    int lastEngine = 0;
     juce::AudioBuffer<float> dry;
     dsp::LinearRamp wetAmount;
     int maximumBlockSize = 1;
-    int currentProgram = 0;
+    std::atomic<int> currentProgram { 0 };
     int fixedLatency = 0;
     int bypassRampSteps = 1;
     std::atomic<double> currentSampleRate { 48000.0 };

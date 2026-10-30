@@ -1,81 +1,54 @@
 #include "Standalone/ModulePluginEditor.h"
-
-#include "UI/HamloVerbPanel.h"
-#include "UI/ModuleHelp.h"
-#include "UI/PresetScreen.h"
+#include "UI/VerbV2Panel.h"
+#include "Core/ModulePresets.h"
+#include <algorithm>
 
 namespace hpeq::standalone
 {
-template <typename Panel>
-void ModulePluginEditor::installPanel(std::unique_ptr<Panel> owned)
-{
-    auto* const p = owned.get();
-    p->onKnobGestureStart = [this](typename Panel::Param parameter)
-    {
-        beginGesture(Panel::keyFor(parameter));
-    };
-    p->onKnobChange = [this](typename Panel::Param parameter, double value)
-    {
-        processor.setParameterValue(Panel::keyFor(parameter), value);
-    };
-    p->onKnobGestureEnd = [this] { endGesture(); };
-    p->onSwitchChange = [this](typename Panel::Switch sw, int value)
-    {
-        setImmediate(Panel::keyFor(sw), value);
-    };
-    p->onPowerChange = [this](bool on) { setImmediate("bypass", on ? 0.0 : 1.0); };
-
-    refreshPanel = [this, p]
-    {
-        typename Panel::Values values;
-        for (size_t i = 0; i < values.knobs.size(); ++i)
-            values.knobs[i] = processor.parameterValue(Panel::keyFor(static_cast<typename Panel::Param>(i)));
-        for (size_t i = 0; i < values.switches.size(); ++i)
-            values.switches[i] = juce::roundToInt(processor.parameterValue(Panel::keyFor(static_cast<typename Panel::Switch>(i))));
-        values.on = processor.isModuleOn();
-        p->setValues(values);
-    };
-
-    panel = std::move(owned);
-    addAndMakeVisible(*panel);
-}
-
 ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     : juce::AudioProcessorEditor(owner), processor(owner)
 {
-    using namespace hpeq::ui;
-    auto p = std::make_unique<HamloVerbPanel>();
-    p->readMeters = [this]
-    {
-        return std::pair<float, float> { processor.getOutputDb(), processor.getDuckDb() };
-    };
-    installPanel(std::move(p));
-
-    // Hamlo line (2026-10-29): the preset screen top left, as on HamloComp / HamloUdarnik / HamloRedWall / HamloMag
     presets = std::make_unique<ui::PresetScreen>();
+    std::vector<ui::PresetScreen::Entry> entries;
+    const auto& bank = presets::factoryModulePresets(processor.getSpec().type);
+    for (size_t i = 0; i < bank.size(); ++i)
+        entries.push_back({ static_cast<int>(i+1), bank[i].genre, bank[i].group, bank[i].name, bank[i].note });
+    presets->setEntries(std::move(entries));
+    auto surface = std::make_unique<ui::VerbV2Panel>(processor.getSpec());
+    auto* view = surface.get();
+    view->readValue = [this](const juce::String& id) { return processor.parameterValue(id); };
+    view->readSampleRate = [this] { return processor.getSampleRate() > 0 ? processor.getSampleRate() : 48000.; };
+    view->onChange = [this](const juce::String& id, double value) { processor.setParameterValue(id, value); };
+    view->onGestureStart = [this](const juce::String& id) { beginGesture(id); };
+    view->onGestureEnd = [this] { endGesture(); };
+    view->onMixLock = [this](bool locked) { processor.setMixLock(locked); };
+    view->onMaterial = [this](const juce::String& group) { presets->setFilter(presets->genre(), group); };
+    view->onLoadStart = [this](const juce::String& group)
     {
-        std::vector<ui::PresetScreen::Entry> entries;
-        for (int i = 1; i < processor.getNumPrograms(); ++i)
-            entries.push_back({ i, {}, {}, processor.getProgramName(i), {} });
-        presets->setEntries(std::move(entries));
-    }
+        const auto& recipes = presets::factoryModulePresets(processor.getSpec().type);
+        const auto genre = presets->genre();
+        for (size_t i = 7; i < recipes.size(); ++i)
+            if ((group == "All" || group == recipes[i].group) && (genre == "All" || genre == "Factory" || genre == recipes[i].genre))
+            {
+                processor.setCurrentProgram(static_cast<int>(i+1));
+                processor.updateHostDisplay(juce::AudioProcessorListener::ChangeDetails().withProgramChanged(true));
+                refreshPanel(); return;
+            }
+    };
+    refreshPanel = [this, view] { view->refresh(processor.getMixLock(), processor.getOutputDb(), processor.getDuckDb()); };
+    panel = std::move(surface); addAndMakeVisible(*panel);
     presets->onSelect = [this](int program)
     {
         processor.setCurrentProgram(program);
         processor.updateHostDisplay(juce::AudioProcessorListener::ChangeDetails().withProgramChanged(true));
-        if (refreshPanel)
-            refreshPanel();
+        refreshPanel();
     };
     addAndMakeVisible(*presets);
-    presets->setCurrent(processor.getCurrentProgram(), false);
-
-    const auto& spec = processor.getSpec();
+    presets->setCurrent(processor.getCurrentProgram(), processor.isProgramModified());
     setResizable(true, true);
-    setResizeLimits(spec.editorWidth / 2, spec.editorHeight / 2, spec.editorWidth * 2, spec.editorHeight * 2);
-    setSize(spec.editorWidth, spec.editorHeight);
-    if (refreshPanel)
-        refreshPanel();
-    startTimerHz(30);
+    setResizeLimits(885, 705, 2360, 1880);
+    setSize(processor.getSpec().editorWidth, processor.getSpec().editorHeight);
+    refreshPanel(); startTimerHz(20);
 }
 
 ModulePluginEditor::~ModulePluginEditor()
@@ -91,17 +64,15 @@ ModulePluginEditor::~ModulePluginEditor()
 
 void ModulePluginEditor::beginGesture(const juce::String& id)
 {
-    endGesture();
-    activeGesture = processor.parameter(id);
-    if (activeGesture != nullptr)
-        activeGesture->beginChangeGesture();
+    if (auto* parameter = processor.parameter(id))
+        if (std::find(activeGestures.begin(), activeGestures.end(), parameter) == activeGestures.end())
+        { activeGestures.push_back(parameter); parameter->beginChangeGesture(); }
 }
 
 void ModulePluginEditor::endGesture()
 {
-    if (activeGesture != nullptr)
-        activeGesture->endChangeGesture();
-    activeGesture = nullptr;
+    for (auto* parameter : activeGestures) parameter->endChangeGesture();
+    activeGestures.clear();
 }
 
 void ModulePluginEditor::setImmediate(const juce::String& id, double value)
@@ -120,7 +91,7 @@ void ModulePluginEditor::timerCallback()
     if (refreshPanel)
         refreshPanel();
     if (presets != nullptr)
-        presets->setCurrent(processor.getCurrentProgram(), false);
+        presets->setCurrent(processor.getCurrentProgram(), processor.isProgramModified());
 }
 
 void ModulePluginEditor::visibilityChanged()

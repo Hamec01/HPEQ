@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloVerb VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloVerb VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -47,8 +47,10 @@ add_library(HamloVerb_Shared STATIC
     Source/Core/ModulePresets.cpp
     Source/DSP/ReverbProcessor.cpp
     Source/DSP/HamloVerb.cpp
+    Source/DSP/VerbV2Processor.cpp
     Source/UI/BlackSteel.cpp
     Source/UI/HamloVerbPanel.cpp
+    Source/UI/VerbV2Panel.cpp
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
@@ -106,11 +108,13 @@ target_link_libraries(HamloVerb
         juce::juce_recommended_warning_flags)
 
 # --- Tests and the page snapshot ----------------------------------------------------------------------
-foreach(tool Tests Snapshot Reference Lab)
+foreach(tool Tests Snapshot Reference Lab PresetLab)
     if (tool STREQUAL "Tests")
-        add_executable(HamloVerb_Tests Tests/TestMain.cpp Tests/PluginTests.cpp)
+        add_executable(HamloVerb_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/V2Tests.cpp Tests/TemporalTests.cpp)
     elseif(tool STREQUAL "Reference")
         add_executable(HamloVerb_Reference Tests/ReferenceMain.cpp)
+    elseif(tool STREQUAL "PresetLab")
+        add_executable(HamloVerb_PresetLab Tests/PresetLabMain.cpp)
     elseif(tool STREQUAL "Lab")
         add_executable(HamloVerb_Lab Tests/LabMain.cpp)
     else()
