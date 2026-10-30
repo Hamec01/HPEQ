@@ -1,0 +1,37 @@
+{
+  "method": "Listening preview diagnostic only: 200 ms segments, not the E04 acceptance window",
+  "results": [
+    {
+      "note": 60,
+      "expected_hz": 261.6255653005986,
+      "measured_hz": 261.6250031875189,
+      "cents": -0.0037196301794051676,
+      "residual_dbc": -91.54870916914274,
+      "strongest_spur_dbc": -31.46869505407359
+    },
+    {
+      "note": 67,
+      "expected_hz": 391.99543598174927,
+      "measured_hz": 391.9864657462927,
+      "cents": -0.03961718253188192,
+      "residual_dbc": -59.55214616450731,
+      "strongest_spur_dbc": -31.301359321403062
+    },
+    {
+      "note": 72,
+      "expected_hz": 523.2511306011972,
+      "measured_hz": 523.251131055049,
+      "cents": 1.5016184741697889e-06,
+      "residual_dbc": -139.574711226056,
+      "strongest_spur_dbc": -31.46852796206105
+    },
+    {
+      "note": 48,
+      "expected_hz": 130.8127826502993,
+      "measured_hz": 130.81279200165457,
+      "cents": 0.0001237599546193012,
+      "residual_dbc": -93.99692578292765,
+      "strongest_spur_dbc": -31.464132071194662
+    }
+  ]
+}

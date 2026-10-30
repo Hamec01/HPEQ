@@ -128,3 +128,8 @@ foreach(tool Tests Snapshot Lab)
             juce::juce_recommended_warning_flags)
 endforeach()
 add_test(NAME HamloEcho_Tests COMMAND HamloEcho_Tests)
+
+# Research only: candidate note/reverse renderer, deliberately not linked into the plugin.
+add_executable(HamloEcho_PrototypeLab Tests/PrototypeLabMain.cpp Source/DSP/ReflectionPrototype.cpp)
+target_include_directories(HamloEcho_PrototypeLab PRIVATE Source)
+target_compile_options(HamloEcho_PrototypeLab PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/W4>)

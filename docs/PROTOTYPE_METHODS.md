@@ -1,0 +1,32 @@
+# Echo note/reflection prototype: frozen methods v1
+
+2026-10-30, written before prototype DSP implementation or measurement. This stage is an isolated research target, not a change to the shipping VST3 or the frozen 160-case Legacy lab.
+
+## Candidate and bounds
+
+Implement an original, shared-input-history renderer with eight independently pitched reflections. Integer source/target MIDI notes map to ratios 2^((target-source)/12), bounded to -24..+24 semitones. No pitch detector, polyphonic correction or formant preservation is promised. No feedback, space, crossover, Freeze, routing or UI implementation is claimed by this prototype.
+
+Forward pitch uses two overlapping 80 ms raised-cosine windows. At a splice, a stereo-linked waveform correlation search over up to 20 ms of older source history aligns the new reader to the continuing one. Test a 64-tap, 512-phase Blackman-windowed sinc reader, with pitch-dependent cutoff for accelerated reads. All coefficient/history/window storage is prepared before processing. Unity pitch forward bypasses the windowed reader and is an exact integer-sample delay. Heads are tied to sample time, not host blocks. This is a candidate, not a claim that granular resynthesis is inherently transparent.
+
+Unpitched Reverse captures L samples, emits the captured range backward over L output samples, and overlaps periodic Hann windows at L/2 hops. First launch is after requested echo delay D plus L accumulation samples. The source fragment for a launch at time t is input[t-D-L:t-D]. Thus an input sample's audible position also depends on its location in the fragment; the accumulation value is not a constant alignment correction. Reverse plus pitch is deferred until the individual mechanisms are validated.
+
+Conceptual references only; no external code is copied: [Dutilleux et al., DAFX chapter 6](https://www.dafx.de/DAFX_Book_Page_2nd_edition/chapter6.html) identifies overlap/add, variable replay and delay-based pitch shifting; [Julius O. Smith, delay-line interpolation](https://dsprelated.com/freebooks/pasp/Delay_Line_Signal_Interpolation.html) describes interpolation and its quality/cost tradeoffs. The routing, score model, implementation and tests here are our own.
+
+## Measurements
+
+- P01 pitch: 110/220/440/880 Hz, every integer shift -24..+24 at 48 kHz, where expected output is 55..7040 Hz. Test every eligible combination (184 cases). Render 2 s with 125 ms echo delay; analyse 500 ms after echo delay + declared worst pitch accumulation + 250 ms settling. Estimate the global spectral peak with a zero-padded Hann FFT and quadratic log-magnitude refinement, then independently fit a sinusoid at the estimated frequency. Target <=5 cents (E04). Report sinusoid residual and strongest separated spur; these diagnostics have no invented pass threshold in this prototype. M0 target-note measurements are n/a.
+- P02 rates/stereo: selected shifts -24/-12/+7/+12/+24 at 44.1 and 96 kHz on stereo tones. Same estimator and target. Include identical-channel inputs to check linked readers preserve stereo identity.
+- P03 exact forward timing: impulses with target=source at 1/125/500/4000 ms and 44.1/48/96 kHz. First output must equal rounded requested delay, with exactly preserved sample values.
+- P04 Reverse: independent offline slice/reverse/overlap-add reference at 50/125/500/2000 ms, rates 44.1/48/96 kHz, on an asymmetric deterministic waveform. Maximum absolute difference <=1e-6. Describe first nonzero output and accumulation explicitly.
+- P05 determinism: eight voices, mono/stereo, blocks 1/64/127/512/4096 after prepare(256), with note and tempo events split at the same sample positions. Raw output must be bit-identical. Repeat with Reverse independently. This does not yet establish complete plugin-state or mode-transition behaviour.
+- P06 resource audit: intercept C++ new/new[] (including aligned allocation) during both process() and parameter/tempo updates after prepare(); count must be zero. This establishes the isolated C++ renderer's allocation behaviour, not a whole-plugin allocation audit. Record allocated history/table storage.
+- P07 CPU: Release x64, actual i5-10300H, 48 kHz/256, stereo, eight different shifted notes with phase search and sinc enabled. Discard only a declared warmup of 1 s; measure 5 s, average, 99th percentile and worst block. Mean <=25% is an early ceiling for this component, not a pass for the eventual complete plugin E10. Record each run and concurrent process conditions. Also run two prepared renderers as a provisional transition workload (mean ceiling 50%).
+- P08 diagnostics: a single impulse and gated sine establish transient spreading/onset. A 10 kHz tone shifted +24 at 48 kHz tests out-of-band foldback (expected ideal output 40 kHz, which is unavailable); measure remaining output relative to input, without calling desired harmonics aliasing. A full-band source and real owner material are listening examples, not ground-truth pitch tests.
+
+Raw files use planar float32 with metadata in a TSV manifest. Independent Python analysis owns the pitch estimator and reverse reference. Preserve all measured runs, source/executable hashes and failures. Any correction to these methods after the first run must be disclosed here and in the stage report. The frozen compatibility tool Tests/EchoLabMain.cpp remains unchanged.
+
+## Additions after the first run
+
+The first 254-case run and CPU results are retained. DSP iteration 2 refines sub-sample splice alignment and staggers voice splice phases; thresholds, signals and analysis windows are unchanged. A supplemental four-case 12 s/96 kHz stereo ring-wrap test adds note/tempo events at samples 600007 and 700003 and compares blocks 64/4096 in pitch and unpitched Reverse. These events are beyond every original determinism render and do not alter its output. The Python summary permits null pitch aggregates for this non-pitch-only supplemental run; the measurement functions and thresholds are unchanged.
+
+A listening-only C5 (MIDI 72) burst is followed by C4/G4/C5/C3 at requested echo times 500/1500/2500/3500 ms. Owner snare/keys/synth/vocal excerpts produce eight-voice and Reverse previews. Actual source notes on owner material are unspecified; do not label those files as absolute pitch demonstrations. Preview dry, wet and dry+0.7wet files share any final peak-normalisation gain, with an 8x true-peak ceiling of -1 dBTP. File generation does not constitute human listening or FL Studio validation.

@@ -10,6 +10,10 @@ the original parameter contract, eight programs, state tag and zero-sample laten
 Targets: `HamloEcho_VST3`, `HamloEcho_Tests`, `HamloEcho_Lab`, `HamloEcho_Snapshot`.
 Current version remains 0.1.0; the planned 0.2.0 musical features are not implemented or released yet.
 
+A separate `HamloEcho_PrototypeLab` target now tests eight pitched reflections and unpitched Reverse.
+Pitch accuracy, timing, block invariance, memory and CPU are measured; short-attack preservation and pitched onset
+remain open design work. The prototype is not connected to the VST3. See the [prototype report](docs/reports/prototype/PROTOTYPE_REPORT.md).
+
 Verified extraction: 590 test expectations (including machine-local archived states), pluginval 5..10,
 and Steinberg validator 537/537. See [extraction report](docs/reports/v2/LEGACY_EXTRACTION_REPORT.md),
 [V2 design](docs/HAMLOECHO_V2.md), and [handoff](docs/NEXT_STAGE.md).

@@ -1,0 +1,5 @@
+{
+  "cases": 254,
+  "all_bit_identical_to_measured_run2": true,
+  "method": "SHA256 of each planar float32 output from final executable versus run2 analysed renders"
+}

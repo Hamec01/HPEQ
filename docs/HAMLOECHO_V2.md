@@ -58,3 +58,9 @@ Factory library allocation per genre: Vocal 10, Drums 12, Samples/Keys 10, Synth
 5. Validate, audition, report, package 0.2.0, publish local SHA256 files and commit each coherent stage. No push.
 
 No algorithmic goal is considered achieved merely because the implementation exists or a smoke test passes.
+
+## Prototype checkpoint, 2026-10-30
+
+The isolated note/Reverse component is measured in docs/reports/prototype/PROTOTYPE_REPORT.md using docs/PROTOTYPE_METHODS.md. It is not connected to the plugin. Pitch, unpitched timing, reverse-reference and block tests pass within that matrix; full E02/E04/E05/E10 acceptance remains pending integration, feedback and combined modes. No target was weakened or measurement window changed between candidates. Fractional alignment and staggered splices improve the DSP under the original methods. Added long ring-wrap coverage and a diagnostic-only short listening-example check are explicitly separated from original acceptance cases.
+
+The impulse diagnostic exposes short-attack loss and variable pitched onset. Resolve these using a rate-aware reference and multiple onset phases before treating this as the final drums path. Buffer/CPU measurements support eight voices as an initial budget, not three duplicated eight-voice engines. All failed/limited quality diagnostics remain visible in the prototype report.
