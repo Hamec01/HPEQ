@@ -171,19 +171,20 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Current local handoff — HamloEcho (2026-10-30)
+## 9. Current local handoff - HamloEcho 0.2.0 (2026-10-30)
 
-HamloMag and HamloVerb are complete. Their old unfinished checklists do not apply. The owner requires work only in E:/HamloEcho; do not modify Verb or HPEQ, run subtree integration, or push.
+Work only in E:/HamloEcho. HamloVerb and HamloMag are complete. Do not modify Verb/HPEQ, integrate subtree, push, or delegate to subagents. Apply C:/Users/Ham_h/.codex/skills/efficient-staged-work/SKILL.md. No model/effort change was performed.
 
-The approved Echo V2 direction and numerical acceptance targets are in docs/HAMLOECHO_V2.md. Manual SOURCE NOTE and actual target notes are the initial musical model; automatic/polyphonic correction is not promised. Eight reflections, independent spectral bands, Echo-owned space and glitch, Insert/Send, and 200 new recipes remain upcoming work.
+Echo 0.2.0 is implemented and packaged for the owner's FL Studio audition. Code/preset commit e3a5293; release evidence/handoff is committed separately (see git log). Own Score engine: eight editable notes, sync/Swing, shared pitch, cumulative feedback pitch, three spectral bands, spatial routing, per-tap sends, captured Reverse/Stutter/Tape Stop/Skip, independent tail Glitch, Insert/Send/Mix Lock/Freeze and English Black Steel UI. Shared PresetScreen.* is unchanged. Legacy original controls/state/program numbers and 160 raw renders are retained.
 
-Completed: M0 archive and Echo-only Legacy extraction. All 160 raw renders are bit-identical, host contract unchanged, all 160 old states restore on fresh/edited instances. Tests 590/590, pluginval 5..10 passed, Steinberg 537/537. The Legacy extraction retained 26 source/header files; LayerEngine, unrelated modules and panels were removed. The later isolated prototype adds two DSP files. CRT PresetScreen.* unchanged. Version remains 0.1.0 until V2 is ready.
+Final checks: 1198 expectations, 59 integrated measurements, 2687 component hashes, 160 M0 cases, 200/200 compiled recipes (400 Insert/Send renders), pluginval5..10 and Steinberg537/537. Production source c5dd2066c79ce00c6887862d740a59a4a94be0b3b9aff09a9760ae22770fa969. Validated DLL SHA256 62127774c8d48e6e6bfbb04417521fd15a8e8db2daa0e93f7b3cc8ff914ec519.
 
-The first standalone prototype stage passed pitch/timing/Reverse tests but exposed short-attack loss. The following attack-correction stage now passes 2352 short-attack and 75 boundary/pair cases, with original pitch worst 0.2376 cents. Effective pitched delay is max(requested,80 ms), with peak-centred band-limited attack resampling. Final mean CPU: tones 18.78%/38.02%, dense attacks 22.32%/46.14% for single/dual renderers; failed earlier runs and wall-time outliers remain disclosed. See docs/reports/attacks/ATTACK_REPORT.md. It is still not connected to the VST3; Reverse+pitch, full state/UI/DSP integration and release are pending.
+Artifacts: dist/HamloEcho_VST3_Setup_0.2.0.exe, HamloEcho-0.2.0-win64-vst3.zip, HamloEcho-0.2.0-audio-examples.zip, companion SHA256 and release-manifest.json. Installer input inventory matches the validated core; ZIP entries were hash-verified. The installer was prepared, not executed. Owner FL audition remains pending.
 
-Read docs/NEXT_STAGE.md and both stage reports for exact commands, evidence and remaining limits. Preserve out/m0 and out/prototypes (frozen binaries, states/renders, listening WAVs). Do not rerun the one-time Tools/isolate_echo_m0.py migration over subsequent V2 work. Attack correction is now verified in docs/reports/attacks/ATTACK_REPORT.md (2352+75 cases, original pitch/block checks, dense CPU and wrap tests). Next stage: integrate a new score mode and state migration while preserving Legacy. The prototype is still not connected to the VST3. No active jobs; no model/effort switch performed. No subagents; apply efficient-staged-work as required by the owner's personal AGENTS.
+Read docs/reports/v2/V2_REPORT.md for E01/E10/E12 exceptions: JUCE's extra Program selector expands from8to208 choices, so old normalised Program automation needs review; original effect controls and saved states remain compatible. Controlled CPU means pass25%/50%, but a failed dense run and deadline outliers are retained. SOURCE is manual, capture minimum80ms, effective delay ceiling4s, runtime Freeze audio is not serialized. Prepared demo peaks use a disclosed common scale; unscaled Send can exceed0dBFS.
 
-The other module M0 extractions remain separate repositories; their old full-stack source does not describe Echo's current layout.
+Current short handoff: docs/CURRENT_WORK.md and docs/NEXT_STAGE.md. No active build/calibration jobs. Preserve out/m0, out/prototypes, out/attacks, out/score and out/presets. Do not rerun Tools/isolate_echo_m0.py over the completed product. Calibration/generator reject stale DSP identities; any DSP change requires new calibration/compiled-bank verification. Use the final source as the baseline for owner-reported FL issues; do not restart M0 extraction. Normal playback tests and packaging can use the owner's medium setting; difficult DSP diagnosis merits xhigh. Never claim a model switch without a supported tool confirmation.
+
 ### HamloRevolution — ещё не вынесен (план)
 
 У Revolution нет модульного VST3, и одной правкой его не добавить: панель (`UI/HamloRevolutionPanel.*`) кроме ручек

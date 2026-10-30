@@ -1,0 +1,18 @@
+﻿{
+    "version":  "0.2.0",
+    "dsp_source":  "c5dd2066c79ce00c6887862d740a59a4a94be0b3b9aff09a9760ae22770fa969",
+    "passed":  true,
+    "files":  [
+                  {
+                      "path":  "Contents/Resources/moduleinfo.json",
+                      "sha256":  "7784f92eb73264ab35ad4dc399b1a4213c528df45412d16e14779bf2ba6f5e66",
+                      "bytes":  1037
+                  },
+                  {
+                      "path":  "Contents/x86_64-win/HamloEcho.vst3",
+                      "sha256":  "62127774c8d48e6e6bfbb04417521fd15a8e8db2daa0e93f7b3cc8ff914ec519",
+                      "bytes":  11714560
+                  }
+              ],
+    "validation_scope":  "pluginval5..10; Steinberg537/537; immutable payload before/after"
+}

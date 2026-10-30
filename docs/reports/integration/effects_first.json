@@ -1,0 +1,470 @@
+{
+  "dsp_sha256": "unrecorded preliminary capture",
+  "source_directory": "out\\score\\before_opt",
+  "checks": [
+    {
+      "name": "unity impulse exact delay",
+      "value": 2.980232227667301e-09,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "neutral complementary band null",
+      "value": 2.168404344971009e-19,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "band 0 independent onset error",
+      "value": 0.0,
+      "limit": "<=1 sample",
+      "passed": true
+    },
+    {
+      "name": "band 1 independent onset error",
+      "value": 0.0,
+      "limit": "<=1 sample",
+      "passed": true
+    },
+    {
+      "name": "band 2 independent onset error",
+      "value": 0.0,
+      "limit": "<=1 sample",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step -12, turn 0",
+      "value": 5.073326337463858e-06,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step -12, turn 1",
+      "value": 0.0005477010081784195,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step -12, turn 2",
+      "value": 0.0007236507866122965,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step -12, turn 3",
+      "value": 2.1391384181987078e-05,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step 12, turn 0",
+      "value": 5.073326337463858e-06,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step 12, turn 1",
+      "value": 0.00034601036294653296,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step 12, turn 2",
+      "value": 0.0004504834964304609,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step 12, turn 3",
+      "value": 0.0005223118354873854,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step -12, turn 0",
+      "value": 0.0006431150172181095,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step -12, turn 1",
+      "value": 0.0011437749682436636,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step -12, turn 2",
+      "value": 0.0010666015749569767,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step 12, turn 0",
+      "value": 0.0006431150172181095,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step 12, turn 1",
+      "value": 0.033880657993613894,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step 12, turn 2",
+      "value": 0.03402390581162506,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step 12, turn 3",
+      "value": 0.030916946165998663,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "space 0/0 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 0/0 decays",
+      "value": 1.3043130243214612e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 0/1 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 0/1 decays",
+      "value": 5.584603555074448e-10,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 0/2 finite",
+      "value": 0.05000000074505806,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 0/2 decays",
+      "value": 1.3611522519471937e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 1/0 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 1/0 decays",
+      "value": 1.3072306189068002e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 1/1 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 1/1 decays",
+      "value": 0.0278669904326877,
+      "limit": "<1e-8 after 12 s",
+      "passed": false
+    },
+    {
+      "name": "space 1/2 finite",
+      "value": 0.05000000074505806,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 1/2 decays",
+      "value": 1.3787574941885902e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 2/0 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 2/0 decays",
+      "value": 1.3063811897185441e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 2/1 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 2/1 decays",
+      "value": 1.2620876443552139e-15,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 2/2 finite",
+      "value": 0.05000000074505806,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 2/2 decays",
+      "value": 1.3896292193057145e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "per-reflection Skip",
+      "value": 0.0,
+      "limit": "0",
+      "passed": true
+    },
+    {
+      "name": "full Omit",
+      "value": 0.0,
+      "limit": "0",
+      "passed": true
+    }
+  ],
+  "pitch": [
+    {
+      "initial": 0,
+      "step": -12,
+      "turn": 0,
+      "expected": 440.0,
+      "measured": 439.999998710594,
+      "cents": -5.073326337463858e-06,
+      "largest_outside_8Hz_db": -48.53838890755553
+    },
+    {
+      "initial": 0,
+      "step": -12,
+      "turn": 1,
+      "expected": 220.0,
+      "measured": 219.99993039981925,
+      "cents": -0.0005477010081784195,
+      "largest_outside_8Hz_db": -48.441045836629414
+    },
+    {
+      "initial": 0,
+      "step": -12,
+      "turn": 2,
+      "expected": 110.0,
+      "measured": 109.99995402033022,
+      "cents": -0.0007236507866122965,
+      "largest_outside_8Hz_db": -48.45052749783839
+    },
+    {
+      "initial": 0,
+      "step": -12,
+      "turn": 3,
+      "expected": 55.0,
+      "measured": 55.00000067958815,
+      "cents": 2.1391384181987078e-05,
+      "largest_outside_8Hz_db": -48.476329412054454
+    },
+    {
+      "initial": 0,
+      "step": 12,
+      "turn": 0,
+      "expected": 440.0,
+      "measured": 439.999998710594,
+      "cents": -5.073326337463858e-06,
+      "largest_outside_8Hz_db": -48.53838890755553
+    },
+    {
+      "initial": 0,
+      "step": 12,
+      "turn": 1,
+      "expected": 880.0,
+      "measured": 880.0001758798297,
+      "cents": 0.00034601036294653296,
+      "largest_outside_8Hz_db": -48.52936769878048
+    },
+    {
+      "initial": 0,
+      "step": 12,
+      "turn": 2,
+      "expected": 1760.0,
+      "measured": 1760.000457968729,
+      "cents": 0.0004504834964304609,
+      "largest_outside_8Hz_db": -48.536690465663945
+    },
+    {
+      "initial": 0,
+      "step": 12,
+      "turn": 3,
+      "expected": 3520.0,
+      "measured": 3520.001061981157,
+      "cents": 0.0005223118354873854,
+      "largest_outside_8Hz_db": -48.542628218868
+    },
+    {
+      "initial": -12,
+      "step": -12,
+      "turn": 0,
+      "expected": 220.0,
+      "measured": 220.00008172513134,
+      "cents": 0.0006431150172181095,
+      "largest_outside_8Hz_db": -48.46250091109914
+    },
+    {
+      "initial": -12,
+      "step": -12,
+      "turn": 1,
+      "expected": 110.0,
+      "measured": 110.00007267376017,
+      "cents": 0.0011437749682436636,
+      "largest_outside_8Hz_db": -48.498241849670066
+    },
+    {
+      "initial": -12,
+      "step": -12,
+      "turn": 2,
+      "expected": 55.0,
+      "measured": 55.000033885138016,
+      "cents": 0.0010666015749569767,
+      "largest_outside_8Hz_db": -48.4770880439195
+    },
+    {
+      "initial": -12,
+      "step": -12,
+      "turn": 3,
+      "expected": 27.5,
+      "measured": 27.50003277912694,
+      "cents": 0.002063574793970856,
+      "largest_outside_8Hz_db": -48.47810658584876
+    },
+    {
+      "initial": -12,
+      "step": 12,
+      "turn": 0,
+      "expected": 220.0,
+      "measured": 220.00008172513134,
+      "cents": 0.0006431150172181095,
+      "largest_outside_8Hz_db": -48.46250091109914
+    },
+    {
+      "initial": -12,
+      "step": 12,
+      "turn": 1,
+      "expected": 440.0,
+      "measured": 439.9913891806514,
+      "cents": -0.033880657993613894,
+      "largest_outside_8Hz_db": -47.38530482674407
+    },
+    {
+      "initial": -12,
+      "step": 12,
+      "turn": 2,
+      "expected": 880.0,
+      "measured": 879.9827055487286,
+      "cents": -0.03402390581162506,
+      "largest_outside_8Hz_db": -46.763183169974
+    },
+    {
+      "initial": -12,
+      "step": 12,
+      "turn": 3,
+      "expected": 1760.0,
+      "measured": 1759.9685696226836,
+      "cents": -0.030916946165998663,
+      "largest_outside_8Hz_db": -47.27629377174615
+    }
+  ],
+  "space": [
+    {
+      "type": 0,
+      "route": 0,
+      "peak": 0.25,
+      "tail_energy": 2.4628136259744338e-05,
+      "late_energy": 1.425792642429566e-23,
+      "correlation": 0.9676163600951241
+    },
+    {
+      "type": 0,
+      "route": 1,
+      "peak": 0.25,
+      "tail_energy": 4.5456242188064464e-05,
+      "late_energy": 5.958619077810309e-11,
+      "correlation": 0.9938117284446663
+    },
+    {
+      "type": 0,
+      "route": 2,
+      "peak": 0.05000000074505806,
+      "tail_energy": 1.7561150898193163e-06,
+      "late_energy": 1.0166924113281245e-24,
+      "correlation": 0.5531292004710862
+    },
+    {
+      "type": 1,
+      "route": 0,
+      "peak": 0.25,
+      "tail_energy": 2.4844458094280433e-05,
+      "late_energy": 1.438311812745414e-23,
+      "correlation": 0.9628227580047108
+    },
+    {
+      "type": 1,
+      "route": 1,
+      "peak": 0.25,
+      "tail_energy": 0.005337614821531646,
+      "late_energy": 0.0031253852500564474,
+      "correlation": 0.9918890687626946
+    },
+    {
+      "type": 1,
+      "route": 2,
+      "peak": 0.05000000074505806,
+      "tail_energy": 1.9453839518107723e-06,
+      "late_energy": 1.1262330992274431e-24,
+      "correlation": 0.5274650003632599
+    },
+    {
+      "type": 2,
+      "route": 0,
+      "peak": 0.25,
+      "tail_energy": 2.4539695444736548e-05,
+      "late_energy": 1.4206693449426164e-23,
+      "correlation": 0.9731103853874927
+    },
+    {
+      "type": 2,
+      "route": 1,
+      "peak": 0.25,
+      "tail_energy": 3.787445161377847e-05,
+      "late_energy": 1.3451370469964783e-16,
+      "correlation": 0.9949862443959715
+    },
+    {
+      "type": 2,
+      "route": 2,
+      "peak": 0.05000000074505806,
+      "tail_energy": 1.6553348116756454e-06,
+      "late_energy": 9.583255109647573e-25,
+      "correlation": 0.5985117342012357
+    }
+  ],
+  "passed": 39,
+  "failed": 1,
+  "initial_analysis_working_tree_hash": "602d869fae1980899189df26003fd773f418ab37553a1ea37ba4a1c6eec1fe5f",
+  "identity_note": "Initial analyzer hashed the working tree at analysis time, not the earlier capture. Corrected metadata only; measurements, tolerances and failures unchanged. Never used for final calibration."
+}

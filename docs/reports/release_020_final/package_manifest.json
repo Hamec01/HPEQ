@@ -1,0 +1,39 @@
+﻿{
+    "version":  "0.2.0",
+    "dsp_source":  "c5dd2066c79ce00c6887862d740a59a4a94be0b3b9aff09a9760ae22770fa969",
+    "plugin_sha256":  "62127774c8d48e6e6bfbb04417521fd15a8e8db2daa0e93f7b3cc8ff914ec519",
+    "core_payload":  [
+                         {
+                             "path":  "Contents/Resources/moduleinfo.json",
+                             "sha256":  "7784f92eb73264ab35ad4dc399b1a4213c528df45412d16e14779bf2ba6f5e66",
+                             "bytes":  1037
+                         },
+                         {
+                             "path":  "Contents/x86_64-win/HamloEcho.vst3",
+                             "sha256":  "62127774c8d48e6e6bfbb04417521fd15a8e8db2daa0e93f7b3cc8ff914ec519",
+                             "bytes":  11714560
+                         }
+                     ],
+    "zip_payload_verified":  true,
+    "installer_inputs_unchanged":  true,
+    "installer_method":  "ISCC source payload inventory pinned before/after compilation; installer not executed",
+    "artifacts":  [
+                      {
+                          "name":  "HamloEcho_VST3_Setup_0.2.0.exe",
+                          "sha256":  "ccf2261b9684460dc359cfdc9c0236ef5c7a0a94f25d0a46d05117595f8cd028",
+                          "bytes":  26363655
+                      },
+                      {
+                          "name":  "HamloEcho-0.2.0-win64-vst3.zip",
+                          "sha256":  "1ffe202db6cb6791b43d96aa08cabd320a8cc2c3300bd8f13db512d4ff34fdf7",
+                          "bytes":  7184183
+                      },
+                      {
+                          "name":  "HamloEcho-0.2.0-audio-examples.zip",
+                          "sha256":  "b06702b6230a56dad72be70a91f00c19a9f3d845637dd47ca74f22bc3d5f3d41",
+                          "bytes":  77560220
+                      }
+                  ],
+    "portable_bundle":  "E:\\HamloEcho\\out\\packages\\0.2.0-62127774c8d4\\HamloEcho.vst3",
+    "owner_fl_audition":  "pending"
+}

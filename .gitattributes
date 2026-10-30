@@ -1,0 +1,2 @@
+# Keep generated validator output verbatim (blank URL/email fields contain spaces).
+docs/reports/**/validators/** -whitespace

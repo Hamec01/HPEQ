@@ -63,6 +63,8 @@ def main():
     content=re.sub(r'\b(blocks|allocation|via|worst|at|non-divisible|drift|correlation|change|maximum|meet|Vocal|Drums|Samples-Keys|Synth|Atmosphere-FX|Mix|Send|had|Final|and|energetic|read|pre-optimisation|dual|of|The|from|old|minimum|to|is|exceed|pluginval|Steinberg|Width)(?=[+\-]?\d)',r'\1 ',content)
     content=re.sub(r'(?<=\d)(?=(?:cents|subdivision|compiled|over-range|named|px|s)\b)',' ',content)
     content=content.replace('allAdvanced','all Advanced').replace('material:16','material: 16').replace('Revise their authored tap balance/pre-space direct share, retain failed results, then re-render after the lifecycle/stutter corrections.','We revised their authored tap balance/pre-space direct share, retained failed results, then re-rendered after the lifecycle/stutter corrections.')
+    content=re.sub(r'([,;:])(?=[A-Za-z0-9+\-])',r'\1 ',content)
+    for a,b in {'PDC0':'PDC 0','x50':'x 50','below-':'below -','margin-':'margin -','target-':'target -','with-':'with -'}.items():content=content.replace(a,b)
     dest=ROOT/'docs/reports/v2/V2_REPORT.md';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(content,encoding='utf-8')
     print(dest)
 if __name__=='__main__':main()

@@ -1,23 +1,7 @@
-# HamloEcho working handoff
+# HamloEcho next step
 
-2026-10-30. Work only in E:/HamloEcho. Verb is complete; do not modify it or HPEQ, integrate subtree or push. No subagents. Apply efficient-staged-work. No model/effort switch was performed.
+HamloEcho0.2.0 is implemented, calibrated, validated and packaged. See [CURRENT_WORK.md](CURRENT_WORK.md) and [release report](reports/v2/V2_REPORT.md). Code/preset commit:e3a5293; release-evidence commit follows it (git log -2).
 
-Completed: M0 baseline eb3b9a9; own Legacy core 8c9cdb0; first prototype 05a1445; attack-correction stage in the following local commit (see git log). Shipping VST3 remains 0.1.0 and byte-identical to the Legacy-extraction binary. No new mode, state parameters or UI are connected to the plugin yet.
+Owner next: install/audition the VST3 in FL Studio. Choose NOTE SCORE or load a genre preset; Default stays Legacy. Review any old normalised Program-selection automation. CPU outliers and practical limits are disclosed in the report.
 
-Attack result: 2352/2352 short-attack cases and 75/75 rate/delay/stereo/rapid-pair cases pass the corrected independent reference. Peak error 0 samples; maximum energy error <=0.000007 dB, waveform error <=0.0000013. Original pitch cases 204/204, worst 0.2376 cents; old timing/Reverse/block records 44/44. Final six long wrap records pass, including dense attack history wrap with a 4 s reflection. All final processing/update guards record zero C++ allocations. 2685 existing outputs reproduce prior measured hashes; two additional dense records agree. Existing plugin tests remain 590/590.
-
-DSP: shared raw history, complementary attack mask/body split, 6 ms peak lookahead, prepared 512-event history, stereo-linked detector, per-voice attack resampling, adjacent-fragment sealing and quiet-gap rearm. Pitched delay=max(requested,80 ms), unity exact requested delay. Peak-centred resampling can expand a leading waveform before its original start. Body windows adapt 80/40 ms to causal availability. Attack FIR=Kaiser96; body FIR=Blackman64. No unpitched attack overlay. Exact run-length metadata and bounded FIR loops reduce dense workload cost without changing outputs.
-
-Final normal-priority means at 48k/256 on i5-10300H: tones 18.78% single /38.02% dual; dense hits every 8 ms 22.32%/46.14%. Dense dual worst wall block 161.33% remains disclosed. Several earlier CPU runs failed (including dense 41.47%/84.15%); preserve them. Full plugin CPU/deadline acceptance is pending. Prepared instance history/window/run data=10,641,168 bytes at 48k; shared tables=16,087,680 bytes.
-
-Evidence: docs/reports/attacks/ATTACK_REPORT.md, docs/ATTACK_METHODS.md, docs/reports/attacks/*.json and *.tsv. Method corrections v1/v2/v3 are documented and old failures retained. Tests/PrototypeReference/DSP is immutable 05a1445 DSP, built by HamloEcho_AttackBaselineLab using the same harness. Do not edit this baseline to follow new DSP.
-
-Preserve ignored out/m0, out/prototypes and out/attacks (all raw runs and archived executables). Final tested renderer: out/attacks/verified.exe; dense/tonal CPU run: out/attacks/final8.exe (same DSP, prior lab-only command additions). Fresh 27 WAV listening files: out/attacks/VerifiedAudioExamples/. Source assumptions and identities accompany the report. No human audition or FL Studio prototype validation is claimed. No active jobs remain once this stage is committed.
-
-Next coherent stage: integrate a separate new score mode into the own plugin while preserving Legacy. Append parameters after the existing bypass at host index 27; preserve old IDs/ranges/choices/program positions/state tag/FUID. Loading an old state over an edited new instance must reset additions to neutral Legacy defaults. Add state/Mix Lock/Insert-Send semantics and timing/capture display; then implement missing feedback accumulation, independent bands, Echo-owned space/glitch and Reverse+pitch within the measured total voice budget. Do not duplicate eight pitch engines per spectral band. Production transitions need their own smoothing/CPU tests; the prototype does not establish that behaviour.
-
-The current frozen M0 lab/tests compare the complete old contract and serialised state byte-for-byte. Once neutral new parameters/programs are legitimately appended, extend semantic contract/migration checks with explicit disclosures; keep original signals/events/raw render expectations unchanged and rerun the pinned old baseline. Do not mistake the expected presence of new XML fields for an audio incompatibility or remove the old-state tests.
-
-Still pending: complete DSP and UI, whole-plugin allocation/CPU/stress checks, all 200 calibrated recipes, host audition, validators on the final DLL, report and 0.2.0 installer/ZIP/SHA256. Source-note reference is manual; no automatic/polyphonic correction is promised. Full captured-fragment duration and sustained-material/transient listening remain production acceptance work.
-
-Model recommendation: Astra xhigh for integration/DSP/measurement failures, medium for known build/test/package work. The owner performs chat model changes; never claim an unsupported switch.
+No active jobs. Preserve all ignored reference/calibration archives. Work only in E:/HamloEcho; no Verb/HPEQ/subtree/push/subagents. No model switch was performed. Do not restart extraction or calibration without a new DSP change or a specific failed owner case.

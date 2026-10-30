@@ -1,0 +1,1 @@
+{"dsp_source": "c5dd2066c79ce00c6887862d740a59a4a94be0b3b9aff09a9760ae22770fa969", "workload": "tones", "rows": [{"paths": 1, "mean_percent": 24.362401339285721, "max_percent": 42.063750000000006}, {"paths": 2, "mean_percent": 36.732420535714283, "max_percent": 69.322500000000005}]}

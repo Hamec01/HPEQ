@@ -1,0 +1,9 @@
+# VST3 program-selector compatibility scope
+
+The28original processor controls retain their IDs, ranges, defaults, order and normalisation. Their automation and saved effect states are covered by the immutable160-case M0 matrix. Default and old programs0..7 retain their numbers and sounds; project state restoration is tested on fresh and already edited instances.
+
+The expanded factory library necessarily changes JUCE's additional, wrapper-generated **Program** selector from8choices (0..7) to208choices (0..207). This selector is not one of the28processor controls. JUCE8.0.12's VST3 wrapper creates `juceProgramParameter` with range `0..getNumPrograms()-1` and reports that value as the VST3 step count. Its normalised automation therefore has a different scale: for example, an old canonical value1/7 now selects approximately program30 rather than1. Direct recall by program number and the saved processor-state payload preserve old programs.
+
+Existing host automation of the wrapper's normalised Program selector must be reviewed/rebound when adopting the208-program library. This is a disclosed compatibility exception to a blanket claim that every possible old host automation lane is unchanged. The original effect-parameter automation is unchanged. The M0 audio/state matrix does not cover a DAW's wrapper-generated program-selection automation; owner FL Studio validation remains pending.
+
+Evidence: local pinned JUCE source `modules/juce_audio_plugin_client/juce_audio_plugin_client_VST3.cpp`, creation of `ownedProgramParameter` and `ProgramChangeParameter` step count/normalised conversion. No JUCE/HPEQ source was modified. The208-program list is the approved new host-program requirement; the original M0 contract comparison is deliberately scoped to original processor controls and numbered program recall.

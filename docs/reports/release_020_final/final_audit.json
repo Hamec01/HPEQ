@@ -1,0 +1,15 @@
+{
+  "dsp_source": "c5dd2066c79ce00c6887862d740a59a4a94be0b3b9aff09a9760ae22770fa969",
+  "plugin_sha256": "62127774c8d48e6e6bfbb04417521fd15a8e8db2daa0e93f7b3cc8ff914ec519",
+  "artifacts_verified": 3,
+  "companion_sha256_verified": 3,
+  "zip_core_hashes_match": true,
+  "original_vst3_class_ids_preserved": true,
+  "class_ids": [
+    "ABCDEF011234ABCD42424C42486D4563",
+    "ABCDEF019182FAEB42424C42486D4563"
+  ],
+  "library_passed": 200,
+  "owner_fl_audition": "pending",
+  "installer_executed": false
+}
