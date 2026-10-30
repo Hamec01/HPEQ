@@ -1,7 +1,6 @@
 #include "Standalone/ModulePluginProcessor.h"
 #include "Core/ModulePresets.h"
 
-#include "DSP/ProcessorsM6.h"
 #include "DSP/ReverbProcessor.h"
 #include "Standalone/ModulePluginEditor.h"
 
@@ -37,20 +36,14 @@ void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSi
     engine.prepare(sampleRate, maximumBlockSize);
 
     fixedLatency = maximumLatencySamples(kind, sampleRate);
-    wetAlign.prepare(fixedLatency);
-    dryAlign.prepare(fixedLatency);
     dry.setSize(dsp::kMaxChannels, maximumBlockSize, false, false, true);
     bypassRampSteps = dsp::stepsFor(kBypassRampSeconds, sampleRate);
     wetAmount.reset(isModuleOn() ? 1.0 : 0.0);
     setLatencySamples(fixedLatency);
-
-    dsp::LayerSnapshot snapshot;
-    snapshot.mix.active = true;
-    snapshot.mix.channel = ChannelMode::Stereo;
-    snapshot.mix.numSlots = 1;
-    snapshot.mix.slots[0] = currentSlot(isModuleOn());
-    engine.publish(snapshot);
-    engine.update();
+    // M0 acquired its reverb slot during prepare, before the first host block.
+    // In particular, MIX automation between prepare and process must ramp from
+    // that initial value rather than starting at the first block's value.
+    engine.setTargets(currentSlot(isModuleOn()));
 }
 
 bool ModulePluginProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
@@ -99,17 +92,12 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
         return;
 
     const int channels = juce::jmin(inputs, outputs, buffer.getNumChannels(), dsp::kMaxChannels);
+    if (channels <= 0)
+        return;
     const bool on = isModuleOn();
     wetAmount.setTarget(on ? 1.0 : 0.0, bypassRampSteps);
 
-    dsp::LayerSnapshot snapshot;
-    snapshot.mix.active = true;
-    snapshot.mix.channel = ChannelMode::Stereo;
-    snapshot.mix.numSlots = 1;
-    snapshot.mix.slots[0] = currentSlot(on);
-    engine.publish(snapshot);
-    engine.update();
-    const int extraWetDelay = juce::jmax(0, fixedLatency - engine.getLatencySamples());
+    const auto slot = currentSlot(on);
     const auto transport = currentTransport();
 
     for (int start = 0; start < samples; start += maximumBlockSize)
@@ -128,12 +116,7 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
         if (chunkTransport.hasPosition && start > 0)
             chunkTransport.ppqAtBlockStart += static_cast<double>(start) * chunkTransport.bpm
                                                / (60.0 * currentSampleRate.load(std::memory_order_relaxed));
-        engine.process(wet, channels, count, chunkTransport);
-        // Always clock the aligner, including at zero delay, so a later automated latency change
-        // can draw from continuous history instead of newly-cleared memory.
-        wetAlign.process(wet, wet, channels, count, extraWetDelay);
-        dryAlign.process(dryPointers, dryPointers, channels, count, fixedLatency);
-
+        engine.process(wet, channels, count, slot, chunkTransport);
         for (int i = 0; i < count; ++i)
         {
             const float amount = static_cast<float>(wetAmount.next());
@@ -147,12 +130,7 @@ double ModulePluginProcessor::getTailLengthSeconds() const
 {
     const auto slot = currentSlot(true);
     const double bpm = hostBpm.load(std::memory_order_relaxed);
-    double tail = 0.0;
-    if (kind == ModuleKind::Verb)
-        tail = dsp::ReverbProcessor::tailSeconds(slot, bpm);
-    else if (kind == ModuleKind::Echo)
-        tail = dsp::DelayProcessor::tailSeconds(slot, bpm);
-    return tail + static_cast<double>(fixedLatency) / currentSampleRate.load(std::memory_order_relaxed);
+    return dsp::ReverbProcessor::tailSeconds(slot, bpm);
 }
 
 juce::AudioProcessorEditor* ModulePluginProcessor::createEditor()

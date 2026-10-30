@@ -125,6 +125,24 @@ public:
             expect(bitExact(render(big, loop, 4096, 256), expected), "block 4096 after prepare(256)");
         }
 
+        beginTest("MIX changed after prepare retains its initial 20 ms ramp");
+        {
+            auto ramped = std::make_unique<ModulePluginProcessor>(kKind);
+            auto steady = std::make_unique<ModulePluginProcessor>(kKind);
+            ramped->setCurrentProgram(6); // short Ambience: wet arrives during the ramp
+            steady->setCurrentProgram(6);
+            ramped->setParameterValue("mix", 0);
+            steady->setParameterValue("mix", 1);
+            ramped->prepareToPlay(kFs, 256);
+            steady->prepareToPlay(kFs, 256);
+            ramped->setParameterValue("mix", 1);
+            auto a = segment(loop, 0, 2048), b = a;
+            juce::MidiBuffer midi;
+            ramped->processBlock(a, midi);
+            steady->processBlock(b, midi);
+            expect(!bitExact(a, b), "A post-prepare target must not replace the initial MIX");
+        }
+
         beginTest("State: save / load round trip");
         {
             auto pOwned = std::make_unique<ModulePluginProcessor>(kKind); // the module engine is large: heap, not stack

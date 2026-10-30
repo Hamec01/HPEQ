@@ -42,35 +42,13 @@ file(GLOB HAMLO_VERB_TUBES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/
 juce_add_binary_data(HamloVerb_Assets NAMESPACE HpeqAssets SOURCES ${HAMLO_VERB_SCRATCHES} ${HAMLO_VERB_HARDWARE} ${HAMLO_VERB_TUBES})
 set_target_properties(HamloVerb_Assets PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-# --- Shared code: HPEQ's module-plug-in stack (Source/ is HPEQ's, verbatim; docs/SYNC_WITH_HPEQ.md) -----------
+# --- Standalone Verb only: no layer graph or unrelated effect implementations.
 add_library(HamloVerb_Shared STATIC
     Source/Core/ModulePresets.cpp
-    Source/DSP/Biquad.cpp
-    Source/DSP/FxNodeProcessor.cpp
-    Source/DSP/LayerEngine.cpp
-    Source/DSP/PreEqProcessor.cpp
-    Source/DSP/Processors.cpp
     Source/DSP/ReverbProcessor.cpp
     Source/DSP/HamloVerb.cpp
-    Source/DSP/HamloEcho.cpp
-    Source/DSP/HamloMag.cpp
-    Source/DSP/ProcessorsM6.cpp
-    Source/DSP/HamloRevolution.cpp
-    Source/DSP/HamloRedWall.cpp
-    Source/DSP/HamloUdarnik.cpp
-    Source/DSP/HamloZastava.cpp
-    Source/DSP/HamloShirota.cpp
-    Source/DSP/CrossoverTree.cpp
-    Source/DSP/EqDesign.cpp
     Source/UI/BlackSteel.cpp
-    Source/UI/HamloCompPanel.cpp
     Source/UI/HamloVerbPanel.cpp
-    Source/UI/HamloEchoPanel.cpp
-    Source/UI/HamloMagPanel.cpp
-    Source/UI/HamloRedWallPanel.cpp
-    Source/UI/HamloUdarnikPanel.cpp
-    Source/UI/HamloZastavaPanel.cpp
-    Source/UI/HamloShirotaPanel.cpp
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp

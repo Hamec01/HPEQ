@@ -6,7 +6,7 @@
 
 #include "DSP/DspConfig.h"
 #include "DSP/HamloVerb.h"
-#include "DSP/LayerSnapshot.h"
+#include "DSP/VerbSettings.h"
 
 namespace hpeq::dsp
 {
