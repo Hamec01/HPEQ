@@ -133,3 +133,7 @@ add_test(NAME HamloEcho_Tests COMMAND HamloEcho_Tests)
 add_executable(HamloEcho_PrototypeLab Tests/PrototypeLabMain.cpp Source/DSP/ReflectionPrototype.cpp)
 target_include_directories(HamloEcho_PrototypeLab PRIVATE Source)
 target_compile_options(HamloEcho_PrototypeLab PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/W4>)
+
+# The same research harness against immutable 05a1445 DSP for strengthened before/after methods.
+add_executable(HamloEcho_AttackBaselineLab Tests/PrototypeLabMain.cpp Tests/PrototypeReference/DSP/ReflectionPrototype.cpp)
+target_include_directories(HamloEcho_AttackBaselineLab PRIVATE Tests/PrototypeReference)

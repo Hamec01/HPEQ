@@ -1,0 +1,109 @@
+{
+  "note_example": {
+    "source_note": "C5",
+    "source_midi": 72,
+    "targets": [
+      "C4",
+      "G4",
+      "C5",
+      "C3"
+    ],
+    "midi": [
+      60,
+      67,
+      72,
+      48
+    ],
+    "requested_times_ms": [
+      500,
+      1500,
+      2500,
+      3500
+    ],
+    "scale": 1.0,
+    "maximum_true_peak_dbtp": -10.683906805000369,
+    "wet_dry_energy_db": 6.106146599953889
+  },
+  "owner_material": [
+    {
+      "name": "snare_EightNotes",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\snare.wav",
+      "source_sha256": "0862f92fc43c6a0ab4498ef4a5a46b8065663c9e3a1acffb343d975391094ffe",
+      "excerpt_start_sample": 2880000,
+      "source_note": "unspecified: relative interval texture only",
+      "scale": 1.0,
+      "maximum_true_peak_dbtp": -5.825502286827051,
+      "wet_dry_energy_db": -11.00550507114095
+    },
+    {
+      "name": "snare_Reverse",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\snare.wav",
+      "source_sha256": "0862f92fc43c6a0ab4498ef4a5a46b8065663c9e3a1acffb343d975391094ffe",
+      "excerpt_start_sample": 2880000,
+      "source_note": "unspecified: relative interval texture only",
+      "scale": 1.0,
+      "maximum_true_peak_dbtp": -5.892803306720285,
+      "wet_dry_energy_db": -11.17326752870623
+    },
+    {
+      "name": "keys_EightNotes",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\keys.wav",
+      "source_sha256": "251f5c79b7248078a9d4be68621728acee75f923e02a8a8adfe0e9f601942c4f",
+      "excerpt_start_sample": 0,
+      "source_note": "unspecified: relative interval texture only",
+      "scale": 1.0,
+      "maximum_true_peak_dbtp": -5.978033383836085,
+      "wet_dry_energy_db": -10.275520334371587
+    },
+    {
+      "name": "keys_Reverse",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\keys.wav",
+      "source_sha256": "251f5c79b7248078a9d4be68621728acee75f923e02a8a8adfe0e9f601942c4f",
+      "excerpt_start_sample": 0,
+      "source_note": "unspecified: relative interval texture only",
+      "scale": 1.0,
+      "maximum_true_peak_dbtp": -5.978033383836085,
+      "wet_dry_energy_db": -11.581897356858079
+    },
+    {
+      "name": "synth_EightNotes",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\synth.wav",
+      "source_sha256": "5d5a9c193f335bb5030f13a136fe95333fcb8f0a117306c39223b4d0decc7eeb",
+      "excerpt_start_sample": 432000,
+      "source_note": "unspecified: relative interval texture only",
+      "scale": 1.0,
+      "maximum_true_peak_dbtp": -5.392360678589776,
+      "wet_dry_energy_db": -10.855149213632142
+    },
+    {
+      "name": "synth_Reverse",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\synth.wav",
+      "source_sha256": "5d5a9c193f335bb5030f13a136fe95333fcb8f0a117306c39223b4d0decc7eeb",
+      "excerpt_start_sample": 432000,
+      "source_note": "unspecified: relative interval texture only",
+      "scale": 1.0,
+      "maximum_true_peak_dbtp": -5.88492166124014,
+      "wet_dry_energy_db": -11.09430253646941
+    },
+    {
+      "name": "vocal_lead1_EightNotes",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead1.wav",
+      "source_sha256": "d8f4d6f7936574b373651bd8a90ce8e9bfde0f699ab64ef8adfda3177af9feb9",
+      "excerpt_start_sample": 1632000,
+      "source_note": "unspecified: relative interval texture only",
+      "scale": 1.0,
+      "maximum_true_peak_dbtp": -5.322570008118328,
+      "wet_dry_energy_db": -11.100196258061533
+    },
+    {
+      "name": "vocal_lead1_Reverse",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead1.wav",
+      "source_sha256": "d8f4d6f7936574b373651bd8a90ce8e9bfde0f699ab64ef8adfda3177af9feb9",
+      "excerpt_start_sample": 1632000,
+      "source_note": "unspecified: relative interval texture only",
+      "scale": 1.0,
+      "maximum_true_peak_dbtp": -5.669381260002011,
+      "wet_dry_energy_db": -11.250701223870186
+    }
+  ]
+}

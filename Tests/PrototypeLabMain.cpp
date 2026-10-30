@@ -13,6 +13,10 @@
 #include <new>
 #include <string>
 #include <vector>
+#ifdef _WIN32
+#define NOMINMAX
+#include <windows.h>
+#endif
 
 namespace audit
 {
@@ -50,12 +54,28 @@ using hamlo::echo::ReflectionPrototype;
 using hamlo::echo::Score;
 constexpr double pi = 3.14159265358979323846;
 using Audio = std::array<std::vector<float>, 2>;
+double threadSeconds()
+{
+#ifdef _WIN32
+    FILETIME created {}, exited {}, kernel {}, user {};
+    if (GetThreadTimes(GetCurrentThread(), &created, &exited, &kernel, &user))
+    {
+        const uint64_t k = (static_cast<uint64_t>(kernel.dwHighDateTime) << 32) | kernel.dwLowDateTime;
+        const uint64_t u = (static_cast<uint64_t>(user.dwHighDateTime) << 32) | user.dwLowDateTime;
+        return static_cast<double>(k + u) * 1e-7;
+    }
+#endif
+    return 0;
+}
 struct Case
 {
     std::string name, type = "pitch";
     double rate = 48000, hz = 440, rightHz = 440, seconds = 2;
     int channels = 1, shift = 0, block = 256;
     bool events = false;
+    bool dense = false;
+    int onset = 0;
+    int gap = 0;
     Score score;
 };
 
@@ -93,7 +113,30 @@ Audio inputFor(const Case& c)
         for (int ch = 0; ch < c.channels; ++ch)
         {
             double x;
-            if (c.type == "timing" || c.type == "transient") x = i == 0 ? .5 : 0;
+            if (c.dense)
+            {
+                const int age = i % static_cast<int>(std::lround(.008 * c.rate));
+                uint32_t value = static_cast<uint32_t>(age + ch * 53) * 747796405u + 2891336453u;
+                value = ((value >> ((value >> 28u) + 4u)) ^ value) * 277803737u;
+                value = (value >> 22u) ^ value;
+                x = age < static_cast<int>(std::lround(.006 * c.rate)) ? (static_cast<double>(value >> 8) / 8388608. - 1.) * .4 * std::exp(-age / (.0015 * c.rate)) : 0;
+            }
+            else if (c.type == "attack_pair") x = (i == c.onset ? .5 : 0) + (i == c.onset + c.gap ? -.35 : 0);
+            else if (c.type == "attack_impulse") x = i == c.onset ? .5 : 0;
+            else if (c.type == "attack_pulse")
+            {
+                const int age = i - c.onset, length = static_cast<int>(std::lround(.002 * c.rate));
+                x = age >= 0 && age < length ? .4 * std::sin(2 * pi * 800 * age / c.rate) * (.5 - .5 * std::cos(2 * pi * age / length)) : 0;
+            }
+            else if (c.type == "attack_noise")
+            {
+                const int age = i - c.onset, length = static_cast<int>(std::lround(.006 * c.rate));
+                uint32_t value = static_cast<uint32_t>(std::max(0, age)) * 747796405u + 2891336453u;
+                value = ((value >> ((value >> 28u) + 4u)) ^ value) * 277803737u;
+                value = (value >> 22u) ^ value;
+                x = age >= 0 && age < length ? (static_cast<double>(value >> 8) / 8388608. - 1.) * .4 * std::exp(-age / (.0015 * c.rate)) : 0;
+            }
+            else if (c.type == "timing" || c.type == "transient") x = i == 0 ? .5 : 0;
             else if (c.type == "reverse") x = (((i * 37 + ch * 19) % 251) - 125) / 512.0;
             else
             {
@@ -240,13 +283,80 @@ void wrapStress(const std::filesystem::path& directory)
             c.block = block; c.events = true; c.score = eight(reverse);
             selected.push_back(c);
         }
+    for (int block : { 64, 4096 })
+    {
+        Case c; c.name = "wrap_dense_" + std::to_string(block); c.type = "determinism";
+        c.rate = 96000; c.channels = 2; c.seconds = 12; c.block = block;
+        c.events = true; c.dense = true; c.score = eight();
+        c.score.taps[0].timeMs = 4000; c.score.taps[0].sync = false;
+        selected.push_back(c);
+    }
     renderCases(directory, selected);
 }
 
-void benchmark(const std::filesystem::path& report, bool reverse)
+void attackMatrix(const std::filesystem::path& directory, bool edges = false)
+{
+    if (std::filesystem::exists(directory)) throw std::runtime_error("Refusing to overwrite attack run");
+    std::filesystem::create_directories(directory);
+    std::ofstream manifest(directory / "attacks.tsv");
+    manifest << "case\ttype\trate\tchannels\tshift\tonset\tdelay\tstart\tframes\tallocations\tgap\n";
+    std::vector<Case> selected;
+    if (!edges) for (int shift = -24; shift <= 24; ++shift)
+        for (int phase = 0; phase < 16; ++phase)
+            for (const char* type : { "attack_impulse", "attack_pulse", "attack_noise" })
+            {
+                Case c; c.type = type; c.shift = shift; c.onset = 16000 + 239 * phase;
+                c.name = c.type + "_" + std::to_string(shift) + "_" + std::to_string(phase);
+                c.seconds = 1; c.score = one(shift);
+                selected.push_back(c);
+            }
+    if (edges)
+    {
+        for (double rate : { 44100., 96000. })
+            for (int shift : { -24, -12, 0, 7, 24 })
+                for (double delayMs : { 1., 4000. })
+                    for (const char* type : { "attack_impulse", "attack_pulse", "attack_noise" })
+                    {
+                        Case c; c.type = type; c.shift = shift; c.rate = rate; c.channels = 2;
+                        c.onset = static_cast<int>(std::lround(rate * .2)) + 113;
+                        c.name = c.type + "_edge_" + std::to_string(static_cast<int>(rate)) + "_" + std::to_string(shift) + "_" + std::to_string(static_cast<int>(delayMs));
+                        c.score = one(shift, delayMs);
+                        c.seconds = c.onset / rate + std::max(.08, delayMs / 1000.) + .32;
+                        selected.push_back(c);
+                    }
+        for (int shift : { -24, -12, 0, 7, 24 })
+            for (double gap : { .008, .016, .03 })
+            {
+                Case c; c.type = "attack_pair"; c.shift = shift; c.onset = 16019;
+                c.gap = static_cast<int>(std::lround(gap * c.rate));
+                c.name = "pair_" + std::to_string(shift) + "_" + std::to_string(c.gap);
+                c.score = one(shift); c.seconds = 1;
+                selected.push_back(c);
+            }
+    }
+    for (const auto& c : selected)
+    {
+                const auto input = inputFor(c);
+                size_t allocations = 0;
+                auto output = render(c, input, allocations);
+                const double delayMs = c.shift == 0 ? c.score.taps[0].timeMs : std::max(80.0, c.score.taps[0].timeMs);
+                const int delay = static_cast<int>(std::lround(delayMs * c.rate / 1000.));
+                const int start = c.onset + delay - static_cast<int>(std::lround(.032 * c.rate));
+                const int length = static_cast<int>(std::lround(.332 * c.rate));
+                Audio cropped;
+                for (int ch = 0; ch < c.channels; ++ch)
+                    cropped[static_cast<size_t>(ch)].assign(output[static_cast<size_t>(ch)].begin() + start, output[static_cast<size_t>(ch)].begin() + start + length);
+                write(directory / (c.name + ".f32"), cropped, c.channels);
+                manifest << c.name << '\t' << c.type << '\t' << c.rate << '\t' << c.channels << '\t' << c.shift << '\t' << c.onset
+                         << '\t' << delay << '\t' << start << '\t' << length << '\t' << allocations << '\t' << c.gap << '\n';
+    }
+    std::cout << "COMPLETE " << selected.size() << " attack cases\n";
+}
+
+void benchmark(const std::filesystem::path& report, bool reverse, bool dense = false)
 {
     std::ofstream file(report);
-    file << "instances\treverse\tmean_percent\tp99_percent\tworst_percent\tallocations\thistory_bytes_per_instance\tshared_table_bytes\n" << std::setprecision(12);
+    file << "instances\treverse\tmean_percent\tp99_percent\tworst_percent\tallocations\thistory_bytes_per_instance\tshared_table_bytes\tthread_mean_percent\n" << std::setprecision(12);
     for (int instances : { 1, 2 })
     {
         std::array<ReflectionPrototype, 2> processors;
@@ -258,15 +368,28 @@ void benchmark(const std::filesystem::path& report, bool reverse)
         percentages.reserve(1000);
         const size_t before = audit::allocations;
         int64_t position = 0;
+        double chargedCpu = 0;
         for (int block = 0; block < 1125; ++block)
         {
             for (int i = 0; i < 256; ++i, ++position)
             {
                 input[0][static_cast<size_t>(i)] = static_cast<float>(.15 * std::sin(2 * pi * 173 * position / 48000.) + .05 * std::sin(2 * pi * 1009 * position / 48000.));
                 input[1][static_cast<size_t>(i)] = static_cast<float>(.13 * std::sin(2 * pi * 251 * position / 48000.) + .04 * std::sin(2 * pi * 1877 * position / 48000.));
+                if (dense)
+                {
+                    const int age = static_cast<int>(position % 384);
+                    for (int ch = 0; ch < 2; ++ch)
+                    {
+                        uint32_t value = static_cast<uint32_t>(age + ch * 53) * 747796405u + 2891336453u;
+                        value = ((value >> ((value >> 28u) + 4u)) ^ value) * 277803737u;
+                        value = (value >> 22u) ^ value;
+                        input[static_cast<size_t>(ch)][static_cast<size_t>(i)] = age < 288 ? static_cast<float>((static_cast<double>(value >> 8) / 8388608. - 1.) * .4 * std::exp(-age / 72.)) : 0.0f;
+                    }
+                }
             }
             const float* in[] { input[0].data(), input[1].data() };
             float* out[] { output[0].data(), output[1].data() };
+            const double cpuBefore = threadSeconds();
             const auto start = std::chrono::steady_clock::now();
             {
                 audit::Guard guard;
@@ -277,6 +400,8 @@ void benchmark(const std::filesystem::path& report, bool reverse)
                 }
             }
             const auto end = std::chrono::steady_clock::now();
+            const double cpuAfter = threadSeconds();
+            if (block >= 188) chargedCpu += cpuAfter - cpuBefore;
             if (block >= 188) percentages.push_back(std::chrono::duration<double>(end - start).count() / (256. / 48000.) * 100.);
         }
         double sum = 0; for (double percent : percentages) sum += percent;
@@ -284,7 +409,7 @@ void benchmark(const std::filesystem::path& report, bool reverse)
         const double mean = sum / percentages.size();
         file << instances << '\t' << reverse << '\t' << mean << '\t' << percentages[static_cast<size_t>(.99 * (percentages.size() - 1))]
              << '\t' << percentages.back() << '\t' << audit::allocations - before << '\t' << processors[0].historyBytes()
-             << '\t' << ReflectionPrototype::sharedTableBytes() << '\n';
+             << '\t' << ReflectionPrototype::sharedTableBytes() << '\t' << chargedCpu / (percentages.size() * 256. / 48000.) * 100 << '\n';
         std::cout << "CPU " << instances << " reverse=" << reverse << " mean=" << mean << '%' << std::endl;
     }
 }
@@ -341,8 +466,11 @@ int main(int argc, char** argv)
     {
         if (argc == 3 && std::string(argv[1]) == "render") renderCases(argv[2], cases());
         else if (argc == 3 && std::string(argv[1]) == "stress") wrapStress(argv[2]);
+        else if (argc == 3 && std::string(argv[1]) == "attacks") attackMatrix(argv[2]);
+        else if (argc == 3 && std::string(argv[1]) == "attackedges") attackMatrix(argv[2], true);
         else if (argc == 3 && std::string(argv[1]) == "notes") noteExample(argv[2]);
         else if (argc == 4 && std::string(argv[1]) == "bench") benchmark(argv[2], std::atoi(argv[3]) != 0);
+        else if (argc == 5 && std::string(argv[1]) == "bench") benchmark(argv[2], std::atoi(argv[3]) != 0, std::string(argv[4]) == "dense");
         else if (argc == 6 && std::string(argv[1]) == "material") material(argv[2], argv[3], std::clamp(std::atoi(argv[4]), 1, 2), std::atoi(argv[5]) != 0);
         else { std::cerr << "Usage: PrototypeLab render|stress <new-dir> | notes <dir> | bench <report.tsv> <reverse:0|1> | material <planar-input.f32> <output.f32> <channels> <reverse:0|1>\n"; return 2; }
         return 0;

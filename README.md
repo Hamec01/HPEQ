@@ -11,8 +11,10 @@ Targets: `HamloEcho_VST3`, `HamloEcho_Tests`, `HamloEcho_Lab`, `HamloEcho_Snapsh
 Current version remains 0.1.0; the planned 0.2.0 musical features are not implemented or released yet.
 
 A separate `HamloEcho_PrototypeLab` target now tests eight pitched reflections and unpitched Reverse.
-Pitch accuracy, timing, block invariance, memory and CPU are measured; short-attack preservation and pitched onset
-remain open design work. The prototype is not connected to the VST3. See the [prototype report](docs/reports/prototype/PROTOTYPE_REPORT.md).
+Pitch accuracy, timing, block invariance, memory and CPU are measured. The new attack path passes 2352 short-attack
+and 75 boundary/pair cases against an independent rate-aware reference. It has an explicit 80 ms minimum pitched
+capture policy; no dry latency is added. It is not connected to the VST3. See the [attack report](docs/reports/attacks/ATTACK_REPORT.md)
+and [original prototype report](docs/reports/prototype/PROTOTYPE_REPORT.md).
 
 Verified extraction: 590 test expectations (including machine-local archived states), pluginval 5..10,
 and Steinberg validator 537/537. See [extraction report](docs/reports/v2/LEGACY_EXTRACTION_REPORT.md),
