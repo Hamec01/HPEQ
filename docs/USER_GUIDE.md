@@ -1,6 +1,6 @@
-# HamloEcho 0.2.0
+# HamloEcho 0.2.1
 
-HamloEcho combines a stereo delay, an editable eight-note reflection score, frequency-dependent timing, a compact spatial field and captured-audio textures. Choose **NOTE SCORE** in the Engine selector or load a genre preset to use the new engine. **Legacy** retains the original sound and loads automatically for older projects.
+HamloEcho combines a stereo delay, an editable eight-note reflection score, frequency-dependent timing, a compact spatial field and captured-audio textures. **Default** now opens NOTE SCORE with Mix, feedback, space, glitch, modulation and pitch shifts at zero. It passes the dry signal unchanged. Raise Mix and then Time to explore the prepared first unpitched reflection. Default is available under Factory / General in the preset screen and deliberately resets Send, Mix Lock, bypass, Freeze and existing tails. Output 0 dB, Width 100%, open filters and unity sends are neutral rather than muted. **Legacy** retains the original sound and loads automatically for older saved projects. Loading an old saved Default restores its stored settings; select Default again for the new clean reset.
 
 ## Start with a musical reference
 

@@ -1,6 +1,6 @@
-# HamloEcho 0.2.0
+# HamloEcho 0.2.1
 
-HamloProd's standalone musical echo machine for Windows x64 VST3. Choose **NOTE SCORE** in Engine or load a genre preset. Default and older projects retain **Legacy**, with its original sound and parameter/program identities.
+HamloProd's standalone musical echo machine for Windows x64 VST3. **Default** now starts NOTE SCORE dry, with all effect amounts at zero. Choose Default under Factory / General to clear tails and reset Send/Mix Lock/Freeze; raise Mix and Time to explore the first unpitched echo. Older saved projects retain their stored engine and settings. The [0.2.1 patch report](docs/reports/default_021/REPORT.md) documents this initialisation-only change; DSP algorithms and the 200 genre recipes are unchanged.
 
 - Eight editable note reflections: text/piano input, sync, Swing and a Same/Step note generator.
 - Separate cumulative feedback pitch, Clean/Warm/Tape/BBD/Dust loop character.
@@ -14,7 +14,7 @@ SOURCE NOTE is a manual reference; the complete input is transposed relative to 
 
 Saved states and the 28 original effect controls retain their behaviour. Expanding the library changes the wrapper-generated host Program selector's normalised scale from eight to208choices; existing Program-selection automation needs review. Direct program numbers0..7 remain unchanged. See [compatibility scope](docs/reports/release_020/SDK_PROGRAM_SELECTOR.md).
 
-Read the [user guide](docs/USER_GUIDE.md), [factory catalog](docs/GENRE_PRESETS.md), [design/acceptance contract](docs/HAMLOECHO_V2.md) and [release report](docs/reports/v2/V2_REPORT.md). The [compiled-bank report](docs/reports/presets/verification.json) passes 200/200 recipes. Installer, portable VST3 ZIP, A/B examples and SHA256 files are in `dist/`; the [package manifest](docs/reports/release_020_final/package_manifest.json) pins the validated binary. Owner FL Studio audition follows delivery.
+Read the [user guide](docs/USER_GUIDE.md), [factory catalog](docs/GENRE_PRESETS.md), [0.2.1 patch report](docs/reports/default_021/REPORT.md) and [original 0.2.0 report](docs/reports/v2/V2_REPORT.md). The original [compiled-bank report](docs/reports/presets/verification.json) passes 200/200; the patch verifies identical DSP files and all 200 recipe payloads. Updated installer/portable ZIP and SHA256 are in `dist/`; the [0.2.1 package manifest](docs/reports/default_021/package_manifest.json) pins the new binary. The unchanged 0.2.0 A/B archive remains available. Owner FL Studio audition follows delivery.
 
 ## Build and verify
 
@@ -26,6 +26,6 @@ build/Release/HamloEcho_Tests.exe
 
 Additional targets: `HamloEcho_Lab` (immutable Legacy verification), `HamloEcho_ScoreLab` (integrated DSP), `HamloEcho_ScorePresetLab` (actual compiled-bank renders), `HamloEcho_Snapshot`, `HamloEcho_PrototypeLab`. [SCORE_METHODS](docs/SCORE_METHODS.md) and [PRESET_METHODS](docs/PRESET_METHODS.md) define measurements and retained failures. Calibration resumes by DSP/material/recipe/tool identity and rejects stale sources.
 
-The corrected engine passes 1198 unit expectations, 59 integrated checks, 160 bit-identical M0 renders and 2687 retained renderer hashes. The 200-recipe bank passes independent Insert/Send, depth, state, finite-output, tail and demonstration-peak checks. Pluginval 5–10 and Steinberg 537/537 pass. Controlled tone/dense CPU runs meet the 25%/50% mean budgets at 48 kHz/256 on the owner's i5-10300H; one failed dense run and wall-time outliers remain disclosed in the report.
+The patch passes 1234 unit expectations and 160 bit-identical M0 state renders, plus pluginval 5–10 and Steinberg 537/537. The unchanged DSP/library retain the 0.2.0 evidence: 59 integrated checks, 2687 renderer hashes and 200/200 independent Insert/Send/depth/state/tail/demo checks. Earlier CPU measurements and their failed/outlier runs remain scoped to their documented workload; this init-only patch does not claim a new performance or calibration campaign.
 
 The raw machine-local archives under ignored `out/m0`, `out/attacks`, `out/score` and `out/presets` must be preserved. Source-only checkouts explicitly skip unavailable old-state archive tests. Provenance: [SYNC_WITH_HPEQ](docs/SYNC_WITH_HPEQ.md). HPEQ/Verb are separate and unchanged. Maintainer handoff: [CURRENT_WORK](docs/CURRENT_WORK.md).

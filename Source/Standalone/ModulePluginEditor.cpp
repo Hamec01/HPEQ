@@ -70,6 +70,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     presets = std::make_unique<ui::PresetScreen>();
     {
         std::vector<ui::PresetScreen::Entry> entries;
+        entries.push_back({0,{},{},"Default","Clean start: Mix / feedback / space / glitch / pitch = 0"});
         const auto& bank=hpeq::presets::factoryModulePresets(processor.getSpec().type);
         for (int i = 1; i < processor.getNumPrograms(); ++i)
         {const auto& p=bank[static_cast<size_t>(i-1)];entries.push_back({i,p.genre,p.group,p.name,p.note});}

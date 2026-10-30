@@ -29,6 +29,24 @@ public:
     ScoreIntegrationTests():juce::UnitTest("Score integration","HamloEcho"){}
     void runTest() override
     {
+        beginTest("Neutral Default starts dry and resets a playing Send/locked/frozen instance");
+        {
+            auto p=std::make_unique<ModulePluginProcessor>(hpeq::standalone::ModuleKind::Echo);
+            expectWithinAbsoluteError(p->parameterValue("echoMode"),1.,1e-6);
+            for(const auto* id:{"mix","scoreMix","scoreFeedback","feedback","scoreSpaceMix","scoreGlitchAmount","scoreGlitch","scoreFeedbackPitch","scoreDrive","modDepth","scoreSwing"})expectWithinAbsoluteError(p->parameterValue(id),0.,1e-6,id);
+            for(int t=1;t<=8;++t){expectWithinAbsoluteError(p->parameterValue("tap"+juce::String(t)+"Note"),60.,1e-6);expectWithinAbsoluteError(p->parameterValue("tap"+juce::String(t)+"On"),t==1?1.:0.,1e-6);}
+            const auto input=hamlo::test::drums(.3);expect(hamlo::test::bitExact(run(*p,input,127),input));
+            p->setCurrentProgram(17);(void)run(*p,hamlo::test::drums(.6),127);
+            p->setParameterValue("scoreFreeze",1);p->setParameterValue("scoreRouting",1);p->setParameterValue("scoreMixLock",1);p->setParameterValue("bypass",1);
+            juce::AudioBuffer<float> held(2,256);held.clear();juce::MidiBuffer midi;p->processBlock(held,midi);
+            p->setCurrentProgram(0);auto actual=input;
+            for(int start=0;start<actual.getNumSamples();start+=127){juce::AudioBuffer<float> view(actual.getArrayOfWritePointers(),2,start,juce::jmin(127,actual.getNumSamples()-start));p->processBlock(view,midi);}
+            expect(hamlo::test::bitExact(actual,input),"Default must clear retiring tails and restore dry Insert even with Mix Lock");
+            for(const auto* id:{"scoreRouting","scoreMixLock","scoreFreeze","bypass"})expectWithinAbsoluteError(p->parameterValue(id),0.,1e-6,id);
+            expect(!p->presetModified());
+            p->setParameterValue("scoreMix",1);juce::AudioBuffer<float> impulse(2,512);impulse.clear();impulse.setSample(0,100,.25f);impulse.setSample(1,100,.25f);
+            const auto echo=run(*p,impulse,64);expectWithinAbsoluteError(echo.getSample(0,148),.25f,1e-6f,"Raising Mix must expose the prepared 1ms unpitched reflection");
+        }
         beginTest("Original parameter indices, append-only additions and note conventions");
         {
             auto p=make();expectEquals(p->getParameters().size(),28+hpeq::standalone::scoreparam::Count);
@@ -100,6 +118,7 @@ public:
             {
                 auto p=make();p->setParameterValue("tap1Time",125);p->setParameterValue("tap1Note",48);p->setParameterValue("scoreFeedback",.55);
                 p->setParameterValue("scoreBands",1);p->setParameterValue("band1Time",.5);p->setParameterValue("band3Time",1.5);
+                for(int b=1;b<=3;++b)p->setParameterValue("band"+juce::String(b)+"Feedback",.4);
                 p->setParameterValue("scoreSpaceMix",.4);p->setParameterValue("scoreGlitch",3);p->setParameterValue("scoreGlitchAmount",.3);
                 Playhead ph;p->setPlayHead(&ph);p->prepareToPlay(48000,256);auto out=signal;juce::MidiBuffer midi;
                 const int positions[]{0,10001,10401,10901,21007,31009,41011,out.getNumSamples()};
@@ -127,7 +146,8 @@ public:
         }
         beginTest("After Echo is outside feedback, and individual Space Send can remain dry");
         {
-            auto p=make();p->setParameterValue("scoreFeedback",.45);auto input=hamlo::test::drums(1.5);const auto echoes=run(*p,input,127);
+            auto p=make();p->setParameterValue("scoreSpaceDecay",2);p->setParameterValue("scoreSpaceDamping",6000); // Explicit reference settings, independent of the neutral init recipe.
+            p->setParameterValue("scoreFeedback",.45);auto input=hamlo::test::drums(1.5);const auto echoes=run(*p,input,127);
             p->setParameterValue("scoreSpaceMix",.8);p->setParameterValue("scoreSpaceRoute",0);p->setParameterValue("tap1SpaceSend",0);
             p->setParameterValue("scoreFeedback",0);auto drySpace=run(*p,input,127);p->setParameterValue("scoreSpaceMix",0);auto dryReference=run(*p,input,127);expect(hamlo::test::bitExact(drySpace,dryReference));
             p->setParameterValue("tap1SpaceSend",1);p->setParameterValue("scoreFeedback",.45);p->setParameterValue("scoreSpaceMix",.8);const auto actual=run(*p,input,127);

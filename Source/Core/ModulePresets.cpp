@@ -19,6 +19,44 @@ const std::vector<ModulePreset> kDelay {
 
 const std::vector<ModulePreset>& factoryModulePresets(FxType) { return kDelay; }
 
+double neutralDefaultValue(const juce::String& key,double fallback)
+{
+    // Factory initialisation is separate from immutable host parameter defaults
+    // and old-state migration. Unity gains / open filters are acoustically neutral.
+    static const std::pair<const char*,double> values[]{
+        {"timeMs",1},{"timeRMs",1},{"feedback",0},{"cross",0},{"driveDb",0},{"width",1},{"mix",0},
+        {"modRate",.05},{"modDepth",0},{"diffusion",0},{"pitch",0},{"lofi",0},{"lowCutHz",10},{"dampingHz",20000},
+        {"bandHz",1000},{"bandGainDb",0},{"bandQ",1},{"duck",0},{"lowRes",0},{"highRes",0},
+        {"character",1},{"timeMode",1},{"sync",0},{"syncR",0},{"link",1},{"pingPong",0},{"freeze",0},
+        {"echoMode",1},{"scoreSource",60},{"scoreOctaves",0},{"scoreMix",0},{"scoreOutput",0},
+        {"scoreRouting",0},{"scoreMixLock",0},{"scoreWidth",1},{"scoreDuck",0},{"scoreFreeze",0},
+        {"scoreFeedback",0},{"scoreFeedbackMs",20},{"scoreFeedbackSync",0},{"scoreFeedbackPitch",0},
+        {"scoreColor",0},{"scoreDrive",0},{"scoreLowCut",10},{"scoreHighCut",20000},{"scoreBands",0},
+        {"scoreSpaceMix",0},{"scoreSpaceDecay",.1},{"scoreSpaceSize",1},{"scoreSpaceDamping",18000},
+        {"scoreSpaceType",0},{"scoreSpaceRoute",0},{"scoreGlitch",0},{"scoreGlitchTarget",1},
+        {"scoreGlitchMs",25},{"scoreGlitchAmount",0},{"scoreSwing",0}};
+    for(const auto& value:values)if(key==value.first)return value.second;
+    if(key.startsWith("tap"))
+    {
+        const auto field=key.substring(4);
+        if(field=="On")return key[3]=='1'?1:0;
+        if(field=="Note")return 60;
+        if(field=="Time")return 1;
+        if(field=="Fragment")return 50;
+        if(field=="Repeats")return 2;
+        if(field=="Low")return 10;
+        if(field=="High")return 20000;
+        if(field=="SpaceSend")return 1;
+        return 0;
+    }
+    if(key.startsWith("band"))
+    {
+        const auto field=key.substring(5);
+        return field=="Time"||field=="On"?1:0;
+    }
+    return fallback;
+}
+
 double presetValue(const ModulePreset& preset, const juce::String& key, double fallback)
 {
     if (key == "mix")

@@ -29,6 +29,7 @@ ModulePluginProcessor::ModulePluginProcessor(ModuleKind moduleKind)
     bypassParameter = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter("bypass"));
     jassert(bypassParameter != nullptr);
     for(const auto& spec:scoreParameterSpecs())scoreValues.push_back(parameters.getRawParameterValue(spec.id));
+    setCurrentProgram(0);
     lastLegacy=currentSlot(true);activeLegacy=lastLegacy;lastScore=readScoreSettings(scoreValues,120);
     loadedHash.store(parameterHash(),std::memory_order_relaxed);
 }
@@ -355,16 +356,19 @@ void ModulePluginProcessor::setCurrentProgram(int index)
     const int selected=juce::jlimit(0,static_cast<int>(list.size()),index);currentProgram.store(selected,std::memory_order_relaxed);
     for (const auto& spec : getSpec().parameters)
     {
-        double value = spec.defaultValue;
+        double value = selected==0?presets::neutralDefaultValue(spec.id,spec.defaultValue):spec.defaultValue;
         if (selected > 0)
             value = presets::presetValue(list[static_cast<size_t>(selected - 1)], spec.id, value);
         setParameterValue(spec.id, value);
     }
     for(const auto& spec:scoreParameterSpecs())
-        setParameterValue(spec.id,selected>0?presets::presetValue(list[static_cast<size_t>(selected-1)],spec.id,spec.defaultValue):spec.defaultValue);
-    setParameterValue("scoreMixLock",locked?1:0);setParameterValue("scoreRouting",routing);
-    if(locked){setParameterValue("mix",oldMix);setParameterValue("scoreMix",scoreMix);}
+        setParameterValue(spec.id,selected>0?presets::presetValue(list[static_cast<size_t>(selected-1)],spec.id,spec.defaultValue):presets::neutralDefaultValue(spec.id,spec.defaultValue));
+    if(selected>0)
+    {setParameterValue("scoreMixLock",locked?1:0);setParameterValue("scoreRouting",routing);
+        if(locked){setParameterValue("mix",oldMix);setParameterValue("scoreMix",scoreMix);}}
+    else setParameterValue("bypass",0);
     loadedHash.store(parameterHash(),std::memory_order_relaxed);bulkRevision.fetch_add(1,std::memory_order_release);
+    if(selected==0)restorePending.store(true,std::memory_order_release);
 }
 
 } // namespace hpeq::standalone

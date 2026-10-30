@@ -30,4 +30,5 @@ const std::vector<ModulePreset>& factoryModulePresets(FxType);
 
 // The value a preset gives `key`, or `fallback` when it leaves the key alone.
 double presetValue(const ModulePreset&, const juce::String& key, double fallback);
+double neutralDefaultValue(const juce::String& key,double fallback);
 } // namespace hpeq::presets

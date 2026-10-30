@@ -51,14 +51,14 @@ public:
     {
         const auto loop = drums(2.0);
 
-        beginTest("Parameters: every spec of HPEQ's HamloEcho at its default, then bypass");
+        beginTest("Original host parameter defaults remain compatible; fresh Default is a separate recipe");
         {
             auto pOwned = std::make_unique<ModulePluginProcessor>(kKind); // the module engine is large: heap, not stack
             auto& p = *pOwned;
             for (const auto& spec : p.getSpec().parameters)
             {
                 expect(p.parameter(spec.id) != nullptr, spec.id);
-                expectWithinAbsoluteError(p.parameterValue(spec.id), static_cast<double>(spec.defaultValue), 1.0e-3, spec.id);
+                if(auto* parameter=p.parameter(spec.id))expectWithinAbsoluteError(parameter->convertFrom0to1(parameter->getDefaultValue()),spec.defaultValue,1.0e-3f,spec.id);
             }
             expect(p.getBypassParameter() != nullptr && !p.getBypassParameter()->get());
         }
@@ -143,6 +143,7 @@ public:
         {
             auto pOwned = std::make_unique<ModulePluginProcessor>(kKind); // the module engine is large: heap, not stack
             auto& p = *pOwned;
+            p.setParameterValue("echoMode",0); // Inspect the preserved Legacy stage dimensions.
             std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
             auto* editor = dynamic_cast<hpeq::standalone::ModulePluginEditor*>(e.get());
             expect(editor != nullptr);
@@ -151,8 +152,9 @@ public:
             expectEquals(editor->getWidth(), p.getSpec().editorWidth);
             expectEquals(editor->getHeight(), p.getSpec().editorHeight);
             auto& screen = editor->getPresetScreen();
+            screen.setFilter("All","All");
             expect(screen.getBounds() == juce::Rectangle<float>(56.0f, 20.0f, 336.0f, 116.0f).toNearestInt(), screen.getBounds().toString());
-            expectEquals(static_cast<int>(screen.filtered().size()), p.getNumPrograms() - 1);
+            expectEquals(static_cast<int>(screen.filtered().size()), p.getNumPrograms());
             if (p.getNumPrograms() > 1)
             {
                 screen.setCurrent(0, false);

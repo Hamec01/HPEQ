@@ -209,3 +209,6 @@ APVTS; `onPatternChange` пишет в этот набор; при сборке 
 - [ ] pluginval 5–10 и Steinberg validator 537 / 537;
 - [ ] отчёт с цифрами, невыполненное — честно, все изменения методики раскрыты;
 - [ ] версия, README, установщик, dist; коммит; владельцу — короткий отчёт по-русски с путями к файлам.
+
+## Default 0.2.1 checkpoint (2026-10-30)
+Neutral program 0 and new-instance initialization are complete. See docs/reports/default_021/REPORT.md: 1234 expectations, 160 M0 cases, pluginval5..10, Steinberg537/537; all DSP files and 200 compiled recipes unchanged. Installer/ZIP0.2.1 hash-verified, not installed. Next authorized stage: QUICK, a simplified Note Score page with TIME/MOTION/SPACE; full Note Score remains. No active jobs or model switch. Continue without confirmation requests.

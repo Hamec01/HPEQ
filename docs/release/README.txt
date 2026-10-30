@@ -1,7 +1,9 @@
-HamloEcho 0.2.0 - musical echo machine, VST3, Windows x64 (HamloProd)
+HamloEcho 0.2.1 - musical echo machine, VST3, Windows x64 (HamloProd)
 
-Choose NOTE SCORE in Engine, or load a Boom Bap / Trap / Techno / DnB preset.
-Legacy remains the default for compatibility with older projects.
+Default starts NOTE SCORE with Mix, feedback, space, glitch and pitch shifts at0.
+Choose Default under Factory / General to clear all effects/tails, even with
+Send, Mix Lock or Freeze active. Raise Mix and Time to explore the first echo.
+Older saved projects retain their stored engine/settings. Genre recipes are unchanged.
 
 Score engine
   Eight editable note reflections, piano/text input, host sync and Swing.

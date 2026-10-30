@@ -184,8 +184,6 @@ int run(bool capture, const juce::File& reference, const juce::File& report)
         for (const auto& value : c.initial) p->setParameterValue(value.first, value.second);
         juce::MemoryBlock state;
         p->getStateInformation(state);
-        std::array<float,28> originalValues{};
-        for(int i=0;i<28;++i)originalValues[static_cast<size_t>(i)]=p->getParameters()[i]->getValue();
         const auto stateFile = reference.getChildFile(c.name + ".state");
         const auto rawFile = reference.getChildFile(c.name + ".f32");
         bool statePass = true;
@@ -207,7 +205,13 @@ int run(bool capture, const juce::File& reference, const juce::File& report)
             p->getStateInformation(restored);
             // First M0 extraction used whole-state byte equality. Added fields
             // legitimately change XML; preserve all old values and neutral additions.
-            for(int i=0;i<28;++i)statePass=statePass&&std::abs(p->getParameters()[i]->getValue()-originalValues[static_cast<size_t>(i)])<=1e-6f;
+            // 0.2.1 intentionally changes program0 initialisation. Expected old
+            // values come from its immutable XML, not today's Default recipe.
+            const auto oldXml=juce::AudioProcessor::getXmlFromBinary(oldState.getData(),static_cast<int>(oldState.getSize()));
+            statePass=oldXml!=nullptr;
+            if(oldXml!=nullptr)for(auto* child:oldXml->getChildIterator())
+            {auto* parameter=p->parameter(child->getStringAttribute("id"));statePass=statePass&&parameter!=nullptr;
+                if(parameter!=nullptr)statePass=statePass&&std::abs(parameter->getValue()-parameter->convertTo0to1(static_cast<float>(child->getDoubleAttribute("value"))))<=1e-6f;}
             for(const auto& spec:hpeq::standalone::scoreParameterSpecs())
             {auto* parameter=p->parameter(spec.id);statePass=statePass&&std::abs(parameter->getValue()-parameter->getDefaultValue())<=1e-6f;}
         }
