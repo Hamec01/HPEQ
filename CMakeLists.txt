@@ -128,9 +128,11 @@ target_link_libraries(HamloEcho
         juce::juce_recommended_warning_flags)
 
 # --- Tests and the page snapshot ----------------------------------------------------------------------
-foreach(tool Tests Snapshot)
+foreach(tool Tests Snapshot Lab)
     if (tool STREQUAL "Tests")
         add_executable(HamloEcho_Tests Tests/TestMain.cpp Tests/PluginTests.cpp)
+    elseif(tool STREQUAL "Lab")
+        add_executable(HamloEcho_Lab Tests/EchoLabMain.cpp)
     else()
         add_executable(HamloEcho_Snapshot Tests/SnapshotMain.cpp)
     endif()
