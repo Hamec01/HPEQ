@@ -1,0 +1,2 @@
+# Preserve raw validator output, including vendor lines with trailing spaces.
+docs/reports/**/validators/** -whitespace

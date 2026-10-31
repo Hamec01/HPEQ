@@ -1,0 +1,6408 @@
+{
+  "method": "Shirota S1 v1: immutable signals, schedules, contract, raw renders and states",
+  "cases": [
+    {
+      "case": "program_0_44100_ch1_b127",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_44100_ch1_b127",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_44100_ch1_b127",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_44100_ch1_b127",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_44100_ch1_b127",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_44100_ch1_b127",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_44100_ch1_b127",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_44100_ch1_b512",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_44100_ch1_b512",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_44100_ch1_b512",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_44100_ch1_b512",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_44100_ch1_b512",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_44100_ch1_b512",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_44100_ch1_b512",
+      "rate": 44100.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "ab6367d34ef4df486093671c2adc5bb4f801e28df73f25c3f6ead0dfca28b1cf",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.254700899124146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_44100_ch2_b127",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "ef4d34fc6803234b5a82ba6465cf27e8d64e9a73eb837ab20fbeed4e910995c4",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.278081208467484,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_44100_ch2_b127",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "3447903a18f91f1674297f80066a4ef55ccd4dea62e8bc2b406ac44fb434f1ec",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.278083205223083,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_44100_ch2_b127",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "09c7b2be59e6642c8ea3533dcbb4ebe06b3aad2bb1d77d01c26a018bb8b19a34",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.300331890583038,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_44100_ch2_b127",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "7bb3c3187f86fc073c6c799883f07c2ce263fb3c8a38c881a089fa5ee9c9c585",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.29807448387146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_44100_ch2_b127",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "3b57d442a7de7b3e2d527a8fafc17b7feec66a913f2ba34a089418ba9c25676d",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.277692079544067,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_44100_ch2_b127",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "3fdb5de8218368f6da57b07e241fcd299704e3197ef9c712968ced8b83558fd7",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.314009070396423,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_44100_ch2_b127",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 15876,
+      "render_sha256": "8c41b722285c6a28036e36742ac2de9a447c6d9cba0b25de942eab7fb641be84",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.392049759626389,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_44100_ch2_b512",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "ef4d34fc6803234b5a82ba6465cf27e8d64e9a73eb837ab20fbeed4e910995c4",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.278081208467484,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_44100_ch2_b512",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "3447903a18f91f1674297f80066a4ef55ccd4dea62e8bc2b406ac44fb434f1ec",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.278083205223083,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_44100_ch2_b512",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "09c7b2be59e6642c8ea3533dcbb4ebe06b3aad2bb1d77d01c26a018bb8b19a34",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.300331890583038,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_44100_ch2_b512",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "7bb3c3187f86fc073c6c799883f07c2ce263fb3c8a38c881a089fa5ee9c9c585",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.29807448387146,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_44100_ch2_b512",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "3b57d442a7de7b3e2d527a8fafc17b7feec66a913f2ba34a089418ba9c25676d",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.277692079544067,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_44100_ch2_b512",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "3fdb5de8218368f6da57b07e241fcd299704e3197ef9c712968ced8b83558fd7",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.314009070396423,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_44100_ch2_b512",
+      "rate": 44100.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 15876,
+      "render_sha256": "8c41b722285c6a28036e36742ac2de9a447c6d9cba0b25de942eab7fb641be84",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        },
+        {
+          "latency": 110,
+          "tail": 0.00249433106576
+        }
+      ],
+      "finite": true,
+      "peak": 0.392049759626389,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_48000_ch1_b127",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_48000_ch1_b127",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_48000_ch1_b127",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_48000_ch1_b127",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_48000_ch1_b127",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_48000_ch1_b127",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_48000_ch1_b127",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_48000_ch1_b512",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_48000_ch1_b512",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_48000_ch1_b512",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_48000_ch1_b512",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_48000_ch1_b512",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_48000_ch1_b512",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_48000_ch1_b512",
+      "rate": 48000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "4ac409b2b9138b13caaeb1318de0b944f2b67437853dd142cb4a243386cf12e8",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_48000_ch2_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_48000_ch2_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "5d0c7c6d0734c5f5399e57f4947199795faea828a5985602746aadf95a61ba98",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.271772742271423,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_48000_ch2_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "d9c56ed28a9a485d3de6bbd4d0606b0a0ed70b8247e42ec5e2c0bddf4b8c58d0",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.299145549535751,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_48000_ch2_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "4e95a598d68d984009cf90c46e1586d55423c45cbcfe032b83641d9d293e5431",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.297282546758652,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_48000_ch2_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "4aef80aaf737991dc92db86ed8c12c27da3aea910316ea2682b5f285ce65ca50",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.255866229534149,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_48000_ch2_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "b0b321532433e259c1c5e167926e42d945180778b51bcb24afcdc1887a9fa023",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.31715327501297,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_48000_ch2_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "ef2f53e592d334a19f5872db1c1666be1578cf617fafa206432dd2a16016d1bc",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.39782053232193,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_48000_ch2_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_48000_ch2_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "5d0c7c6d0734c5f5399e57f4947199795faea828a5985602746aadf95a61ba98",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.271772742271423,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_48000_ch2_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "d9c56ed28a9a485d3de6bbd4d0606b0a0ed70b8247e42ec5e2c0bddf4b8c58d0",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.299145549535751,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_48000_ch2_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "4e95a598d68d984009cf90c46e1586d55423c45cbcfe032b83641d9d293e5431",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.297282546758652,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_48000_ch2_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "4aef80aaf737991dc92db86ed8c12c27da3aea910316ea2682b5f285ce65ca50",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.255866229534149,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_48000_ch2_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "b0b321532433e259c1c5e167926e42d945180778b51bcb24afcdc1887a9fa023",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.31715327501297,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_48000_ch2_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "ef2f53e592d334a19f5872db1c1666be1578cf617fafa206432dd2a16016d1bc",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.39782053232193,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_96000_ch1_b127",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_96000_ch1_b127",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_96000_ch1_b127",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_96000_ch1_b127",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_96000_ch1_b127",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_96000_ch1_b127",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_96000_ch1_b127",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_96000_ch1_b512",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_96000_ch1_b512",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_96000_ch1_b512",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_96000_ch1_b512",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_96000_ch1_b512",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_96000_ch1_b512",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_96000_ch1_b512",
+      "rate": 96000.0,
+      "channels": 1,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "32e34175669f9c11a6ec53429e26191d382873c110adec85732b75938beb835e",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.452054262161255,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_96000_ch2_b127",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "53941b55fb1aa3c03f45108363c5e810a59ea11ab6dcb03e278ec986d6d83c91",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.462101846933365,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_96000_ch2_b127",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "365f237ed9168ada039dcb5933065f1188d30c679b42d7c84d2f5f105029601d",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.462108939886093,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_96000_ch2_b127",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "6d6fdacb1540eff6e733d8d6d6df884a83d8c0c35a48b22babcc6a34113b7a8e",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.462052255868912,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_96000_ch2_b127",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "7ac7f05de306a8a7132e4a4616e6fd967da8acb1691f2c6d9d6cca63fda2931d",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.46207582950592,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_96000_ch2_b127",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "ea5a6f2e9d04a5c264b2d39d22afb8b26871af0288c2b3a7c3f3b4396396df7f",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.461830466985703,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_96000_ch2_b127",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "1b2c85e2ed0510ab586acf3fffcb07fa52da6f5d313b1a476c8f1647a8176225",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.462240278720856,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_96000_ch2_b127",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 34560,
+      "render_sha256": "36e9f516415e55cf24cded66d9699719ffa783da42950a2270582ff7208e74c7",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.463197350502014,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_0_96000_ch2_b512",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "53941b55fb1aa3c03f45108363c5e810a59ea11ab6dcb03e278ec986d6d83c91",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.462101846933365,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_1_96000_ch2_b512",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "365f237ed9168ada039dcb5933065f1188d30c679b42d7c84d2f5f105029601d",
+      "state_sha256": "b729a31de7e8474fb9c43f57f5a81c2b71eff0ddcdb070f11d6cc2f2a7043018",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.462108939886093,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_2_96000_ch2_b512",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "6d6fdacb1540eff6e733d8d6d6df884a83d8c0c35a48b22babcc6a34113b7a8e",
+      "state_sha256": "6d1ac3f5972deb3d600ade8d36dd9a3acbff8edbace12c91072af02f6901f599",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.462052255868912,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_3_96000_ch2_b512",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "7ac7f05de306a8a7132e4a4616e6fd967da8acb1691f2c6d9d6cca63fda2931d",
+      "state_sha256": "579d03c3c7c2dfecfccff7fa4901340c1fb2eaa9d1441f39e6f31cb1bb0e3900",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.46207582950592,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_4_96000_ch2_b512",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "ea5a6f2e9d04a5c264b2d39d22afb8b26871af0288c2b3a7c3f3b4396396df7f",
+      "state_sha256": "55d65244e332449c126b2290be10ede89304068c5cfa456c54196455ab259c3d",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.461830466985703,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_5_96000_ch2_b512",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "1b2c85e2ed0510ab586acf3fffcb07fa52da6f5d313b1a476c8f1647a8176225",
+      "state_sha256": "025f15e835306083059f3dc2317a43d2504c83e0b0938fe0d4dd2416db4b2b68",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.462240278720856,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "program_6_96000_ch2_b512",
+      "rate": 96000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 34560,
+      "render_sha256": "36e9f516415e55cf24cded66d9699719ffa783da42950a2270582ff7208e74c7",
+      "state_sha256": "f6da3d3c2dad4f8513d6d205fd963b8ec459073f8a76473b50cca484daef6501",
+      "latency_events": [
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        },
+        {
+          "latency": 240,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.463197350502014,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_width_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "54c6e1e0dd22f2fc42e1d277155e4bff65069f7f1e8abef39bcee874ae5c92aa",
+      "state_sha256": "8b4ba7ea922b4a8ca8689e7e9a77343c6d75e33d6e564e20fc4d11c791246bd6",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.255471765995026,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_width_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "08535bee8a184292075f484cca5fd2e111997c99824d33ef305f1c93b8488f98",
+      "state_sha256": "7e00fa740b8a8f753c2712c755ced29c4720bbf1344c6be801af95756314a706",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.273872375488281,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_stereoize_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "da4d5c991e282bcb4594ecd5815f7edc7aa2791342905e25fe1fb6a9fbb72e3a",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_stereoize_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "07c3a27e7aee98a473a864b087d2610dfdfb6b7ebdce588b592a1422cd140843",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_space_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "20af0d10b1699c0a9f1605b4564b95fc83f6536120a143dc668fbbdc0d5e0bdf",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_space_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "1b4138644d578228f98b1722ad58152b0e66ab0d211e218cce1c2a9911ed11ca",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_monoBassHz_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_monoBassHz_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "230ad38335a17669d6cd98df9c3afa1f99cdca7e98dd44b5711357688edc4be6",
+      "state_sha256": "3aa08dfc991bf716c96b8c9eb901cb42be502f7afadd984156bd786afed07031",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.309075057506561,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_rotation_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "8594878e3dc4eda6dab643ad875e451bd417ceda6b969b2da7483f4649b180ff",
+      "state_sha256": "c5a5a171f65d4164ab89a41e6b87f9015a17851dede52ba3b45148f47dbbf40f",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.361291646957397,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_rotation_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "0edc195a62743cb067ba31834577c1d7a05ef87a44e5a88a84ec34693a3142aa",
+      "state_sha256": "d52647944aec944ecb137ad44fda490726811a2a51d75b0955f9cc7d3b82be62",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.361291646957397,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_style_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_style_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "deb0d8c75feadf9ba6052ee2ea3410f68df18204c786816cb61f2f656aa38c44",
+      "state_sha256": "b60bcced332896b6c107f04220546d4dc27f623ad094b6be0751dd54b01537f6",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.377189010381699,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_balance_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "9b4f6859ee34cccc525fe623b7a274185d82c5983e0a3efef38d89ad549c662e",
+      "state_sha256": "066620684fc60f8f249c08abcdb42af8d75dc141db4f49ef50fa9b538f28ff09",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_balance_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "b31532100eb41f4484299bba87b17ba9e2b8123987bdc9b7dd9bfe7933e2a147",
+      "state_sha256": "a31d1b422715f0660fa93b14fb060959edaad786d4326788f43085ea7d3ee80e",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256123840808868,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_mix_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "a8b076f3481cb4244162238332a7820b2b12b65495409bd99ca8fc836262fe58",
+      "state_sha256": "933d3e502a3616253542cfa4ed65400dfcefb9fa2ca607d9c81381d03a243e24",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256981551647186,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_mix_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_outputDb_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "17d030ca251d6015d32fd9286b74730695be19d9dac5dbd01e81f2f6cd601c1b",
+      "state_sha256": "f4d6a41efb3e31cee5287a4bdf93801e62ac3700d57e659c560cf7a236c70d09",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.230983585119247,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_outputDb_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "eb98d5abefb5e13d81beb88caa5fe7e51ad44fdb1423577e623c539c3dea4f59",
+      "state_sha256": "b981cc88bde148ab9955e789b25cfd9d5acaa96b7a0547a242131598453ef0cc",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 1.021529793739319,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_safe_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "a8b076f3481cb4244162238332a7820b2b12b65495409bd99ca8fc836262fe58",
+      "state_sha256": "8f36c2cd7d2fd5dd7a8022bfcdb3f3c8000902a95e73ffc28102407a63129ba7",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256981551647186,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_safe_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_monoListen_min",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2abdcceda480d04017f1f7d71f3ac7641dd5462d865628a62a2182028aa1889e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256596684455872,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "boundary_monoListen_max",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "6303f36ddd075a08b6a2623aed6d2472153bf632c327a2ef2b7dec58f05b9ca7",
+      "state_sha256": "31d60135326fd58c0742afac3debde1812ef4f922f7a0fb528b1da1d73de975e",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.255471765995026,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_0_b1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 1,
+      "samples": 17280,
+      "render_sha256": "c31dd587eeb08c3a35aa104ad63a06173e4b4e27c52bc3454e0e14bff38267fb",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.415116846561432,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_1_b1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 1,
+      "samples": 17280,
+      "render_sha256": "7a089b78b7c2036e97797c425832b47a68b5f4c9475d2c22126538b83319f64f",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.370388776063919,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_2_b1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 1,
+      "samples": 17280,
+      "render_sha256": "ea20dfcd8058f133abfc479fc9a75824d03edf8ec8a08486fd02eb80346e99be",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.271155834197998,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_3_b1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 1,
+      "samples": 17280,
+      "render_sha256": "1ebebf3d8cbac907ed132eaee5e3a0a0b37106b697b01f5d62d9958d80e2e747",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 1.230449914932251,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_0_b64",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 64,
+      "samples": 17280,
+      "render_sha256": "c31dd587eeb08c3a35aa104ad63a06173e4b4e27c52bc3454e0e14bff38267fb",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.415116846561432,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_1_b64",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 64,
+      "samples": 17280,
+      "render_sha256": "d6e98777e209e5f2bea2a336bf8e3758a3e2a640f29f386086c9fdb05761af2e",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.370388776063919,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_2_b64",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 64,
+      "samples": 17280,
+      "render_sha256": "ea20dfcd8058f133abfc479fc9a75824d03edf8ec8a08486fd02eb80346e99be",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.271155834197998,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_3_b64",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 64,
+      "samples": 17280,
+      "render_sha256": "1ebebf3d8cbac907ed132eaee5e3a0a0b37106b697b01f5d62d9958d80e2e747",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 1.230449914932251,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_0_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "c31dd587eeb08c3a35aa104ad63a06173e4b4e27c52bc3454e0e14bff38267fb",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.415116846561432,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_1_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "fdb746fc01ea50d3e307d7b4cfc6816fea4b2f918f3e8bea9516373ed3b42775",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.370388776063919,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_2_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "ea20dfcd8058f133abfc479fc9a75824d03edf8ec8a08486fd02eb80346e99be",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.271155834197998,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_3_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "1ebebf3d8cbac907ed132eaee5e3a0a0b37106b697b01f5d62d9958d80e2e747",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 1.230449914932251,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_0_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "c31dd587eeb08c3a35aa104ad63a06173e4b4e27c52bc3454e0e14bff38267fb",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.415116846561432,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_1_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "5c2ffc11063d5b299c0471c2004acea43dbbc499cb362b63ebd6accbb950709f",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.370388776063919,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_2_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "ea20dfcd8058f133abfc479fc9a75824d03edf8ec8a08486fd02eb80346e99be",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.271155834197998,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_3_b512",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 512,
+      "samples": 17280,
+      "render_sha256": "1ebebf3d8cbac907ed132eaee5e3a0a0b37106b697b01f5d62d9958d80e2e747",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 1.230449914932251,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_0_b4096",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 4096,
+      "samples": 17280,
+      "render_sha256": "c31dd587eeb08c3a35aa104ad63a06173e4b4e27c52bc3454e0e14bff38267fb",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.415116846561432,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_1_b4096",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 4096,
+      "samples": 17280,
+      "render_sha256": "5c2ffc11063d5b299c0471c2004acea43dbbc499cb362b63ebd6accbb950709f",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.370388776063919,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_2_b4096",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 4096,
+      "samples": 17280,
+      "render_sha256": "ea20dfcd8058f133abfc479fc9a75824d03edf8ec8a08486fd02eb80346e99be",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.271155834197998,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "events_3_b4096",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 4096,
+      "samples": 17280,
+      "render_sha256": "1ebebf3d8cbac907ed132eaee5e3a0a0b37106b697b01f5d62d9958d80e2e747",
+      "state_sha256": "82310e8dd0ca97382ea0e96ed0c363688b8edd71360534cac22309ee57280ade",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 1.230449914932251,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "m6_b1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 1,
+      "samples": 17280,
+      "render_sha256": "28373a2e12f1b733bbdb89e1b1af735250a89ff73b60474adcbe177bb46839af",
+      "state_sha256": "7655e3bec5cd59386409774e2604f834b9b2ec9f2d1a01f0c682a070f9ab8b4e",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.356699168682098,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "m6_b127",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "28373a2e12f1b733bbdb89e1b1af735250a89ff73b60474adcbe177bb46839af",
+      "state_sha256": "7655e3bec5cd59386409774e2604f834b9b2ec9f2d1a01f0c682a070f9ab8b4e",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.356699168682098,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "m6_b4096",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 4096,
+      "samples": 17280,
+      "render_sha256": "28373a2e12f1b733bbdb89e1b1af735250a89ff73b60474adcbe177bb46839af",
+      "state_sha256": "7655e3bec5cd59386409774e2604f834b9b2ec9f2d1a01f0c682a070f9ab8b4e",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.356699168682098,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_1_style0_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "f220044e3c5fe2111121c2324031a0a2365432d427ebdbb287056bb675668150",
+      "state_sha256": "0227d2ba3ab0f237c34b2ece60e472ec9802a43a5ffa12b8126816e3535cff23",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.0,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_1_style0_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "f220044e3c5fe2111121c2324031a0a2365432d427ebdbb287056bb675668150",
+      "state_sha256": "7e00fa740b8a8f753c2712c755ced29c4720bbf1344c6be801af95756314a706",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.0,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_1_style1_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "f220044e3c5fe2111121c2324031a0a2365432d427ebdbb287056bb675668150",
+      "state_sha256": "f8e6e9bd7e3a0c49ad90c684cdd5338346650783192309d0a514434466671b13",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.0,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_1_style1_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "f220044e3c5fe2111121c2324031a0a2365432d427ebdbb287056bb675668150",
+      "state_sha256": "78d3822325a4852513f0032d522d8003223bbf3ec8121268b077f5d484308f0f",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.0,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_1_style2_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "f220044e3c5fe2111121c2324031a0a2365432d427ebdbb287056bb675668150",
+      "state_sha256": "cb34ae6c1091d668cc57e0a4cdfb0e16e9043e97cdbbb17a0b6a0cbe3d2e8fba",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.0,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_1_style2_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "f220044e3c5fe2111121c2324031a0a2365432d427ebdbb287056bb675668150",
+      "state_sha256": "132ba879f6504c158fe82728248b5dd64bf947cd8ec21604c06dc03d0f834137",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.0,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_2_style0_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "a4f1ec83b74b5277f8769f439db571c5680fdabca18960fa70444d8de5f476ee",
+      "state_sha256": "0227d2ba3ab0f237c34b2ece60e472ec9802a43a5ffa12b8126816e3535cff23",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_2_style0_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "a4f1ec83b74b5277f8769f439db571c5680fdabca18960fa70444d8de5f476ee",
+      "state_sha256": "7e00fa740b8a8f753c2712c755ced29c4720bbf1344c6be801af95756314a706",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_2_style1_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "069a26ff9b73fd0b2a53350233a24d6dc8272443ef3d28a35e12a5bf6bc6de46",
+      "state_sha256": "f8e6e9bd7e3a0c49ad90c684cdd5338346650783192309d0a514434466671b13",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.289679884910583,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_2_style1_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "9d4030a5372740c524770fc733e351b1dd1a6d0fbca2f1d34242f64add2d83a6",
+      "state_sha256": "78d3822325a4852513f0032d522d8003223bbf3ec8121268b077f5d484308f0f",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.289679884910583,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_2_style2_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "36f1bb0a52904959981584ffaaa52fecb7634d21fd5c14ce3ce914ac4dce8608",
+      "state_sha256": "cb34ae6c1091d668cc57e0a4cdfb0e16e9043e97cdbbb17a0b6a0cbe3d2e8fba",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.392497539520264,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_2_style2_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "39c2eb13241875f717239e121e02969040abcf46d87622f30838ce371c4a4bd2",
+      "state_sha256": "132ba879f6504c158fe82728248b5dd64bf947cd8ec21604c06dc03d0f834137",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.392497539520264,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_3_style0_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "ec734b34a571fe38817659dd891c94fcbacb87ad66fdd51cd2c160653dd74c99",
+      "state_sha256": "0227d2ba3ab0f237c34b2ece60e472ec9802a43a5ffa12b8126816e3535cff23",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.513339459896088,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_3_style0_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "56178ddf0ee2d24a7412ab9b44cc00cb90cf5c268d8690e9d297dca9d77b4f68",
+      "state_sha256": "7e00fa740b8a8f753c2712c755ced29c4720bbf1344c6be801af95756314a706",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.229993373155594,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_3_style1_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "ec734b34a571fe38817659dd891c94fcbacb87ad66fdd51cd2c160653dd74c99",
+      "state_sha256": "f8e6e9bd7e3a0c49ad90c684cdd5338346650783192309d0a514434466671b13",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.513339459896088,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_3_style1_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "56178ddf0ee2d24a7412ab9b44cc00cb90cf5c268d8690e9d297dca9d77b4f68",
+      "state_sha256": "78d3822325a4852513f0032d522d8003223bbf3ec8121268b077f5d484308f0f",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.229993373155594,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_3_style2_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "9eeaa44588e4de22435624740de50c74c19b62ad9bfbfd4116b68bc451d1c904",
+      "state_sha256": "cb34ae6c1091d668cc57e0a4cdfb0e16e9043e97cdbbb17a0b6a0cbe3d2e8fba",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.946529388427734,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_3_style2_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "56178ddf0ee2d24a7412ab9b44cc00cb90cf5c268d8690e9d297dca9d77b4f68",
+      "state_sha256": "132ba879f6504c158fe82728248b5dd64bf947cd8ec21604c06dc03d0f834137",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.229993373155594,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_4_style0_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "9c866aa43285f386c835106f594e51898d5ca7ef03014f3cb9ba2affce85a779",
+      "state_sha256": "0227d2ba3ab0f237c34b2ece60e472ec9802a43a5ffa12b8126816e3535cff23",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.385004580020905,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_4_style0_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "1058a82151714b0470c8dfcafd3a7f05ccff25089c0f8795ae7e5cf1431f0ecb",
+      "state_sha256": "7e00fa740b8a8f753c2712c755ced29c4720bbf1344c6be801af95756314a706",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256669729948044,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_4_style1_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "162d22c024c685a49d03fc6880081ccc93bc56d1c225ac9fa809c0b8d22c0947",
+      "state_sha256": "f8e6e9bd7e3a0c49ad90c684cdd5338346650783192309d0a514434466671b13",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.392799824476242,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_4_style1_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2641493ccf8534ff141dc76a114bf0205a30d73074a9c37a0a1162c5d0e94f98",
+      "state_sha256": "78d3822325a4852513f0032d522d8003223bbf3ec8121268b077f5d484308f0f",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.25515878200531,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_4_style2_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "2cb23de36907c845eabdac946f5b3873ebbb0fea686f38bb7316c045ace27f40",
+      "state_sha256": "cb34ae6c1091d668cc57e0a4cdfb0e16e9043e97cdbbb17a0b6a0cbe3d2e8fba",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.648179590702057,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_4_style2_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "0fe71770900c58b36e587b863771ac04e72cba58a0eae03b177650a8bcd29f4f",
+      "state_sha256": "132ba879f6504c158fe82728248b5dd64bf947cd8ec21604c06dc03d0f834137",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.314963221549988,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_5_style0_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "a829601e94f914bf852bbe8248ed37b07665ebac378af0a202e484c1c3b4fddb",
+      "state_sha256": "0227d2ba3ab0f237c34b2ece60e472ec9802a43a5ffa12b8126816e3535cff23",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.300000011920929,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_5_style0_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "a829601e94f914bf852bbe8248ed37b07665ebac378af0a202e484c1c3b4fddb",
+      "state_sha256": "7e00fa740b8a8f753c2712c755ced29c4720bbf1344c6be801af95756314a706",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.300000011920929,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_5_style1_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "0f76f81cdd22378ae7dc0d03f8bf2010320a4477f3c5eb6b050b1891587491fc",
+      "state_sha256": "f8e6e9bd7e3a0c49ad90c684cdd5338346650783192309d0a514434466671b13",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.300000905990601,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_5_style1_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "0f3cc16fa863f262cf88576e6b1a05551ab6b048d354504b823c3ecd3d9470fe",
+      "state_sha256": "78d3822325a4852513f0032d522d8003223bbf3ec8121268b077f5d484308f0f",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.300019830465317,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_5_style2_safe0",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "3d8d1a46631e6f01d166c7961386699a279f6318c5034507018e609f7af23b15",
+      "state_sha256": "cb34ae6c1091d668cc57e0a4cdfb0e16e9043e97cdbbb17a0b6a0cbe3d2e8fba",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.300014078617096,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "signal_5_style2_safe1",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "ea52d571dd55e9db99325eb3e5eac6ac78a401dab96117769125a85a33dd2ce7",
+      "state_sha256": "132ba879f6504c158fe82728248b5dd64bf947cd8ec21604c06dc03d0f834137",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.300317376852036,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    },
+    {
+      "case": "bypass_at_prepare",
+      "rate": 48000.0,
+      "channels": 2,
+      "block": 127,
+      "samples": 17280,
+      "render_sha256": "a8b076f3481cb4244162238332a7820b2b12b65495409bd99ca8fc836262fe58",
+      "state_sha256": "f5e93d5e6d1f076597eeff3708fd2084f9099094d783d095f530a2497ed749a0",
+      "latency_events": [
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        },
+        {
+          "latency": 120,
+          "tail": 0.0025
+        }
+      ],
+      "finite": true,
+      "peak": 0.256981551647186,
+      "bit_exact": "n/a: capture",
+      "state_exact": true,
+      "latency_exact": true
+    }
+  ],
+  "failures": 0,
+  "processor_bytes": 844152,
+  "new_features": "n/a: STEREO/SPACE/MOTION/Binaural V2"
+}

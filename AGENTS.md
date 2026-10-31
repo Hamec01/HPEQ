@@ -23,7 +23,7 @@
 | HamloComp (компрессор, 0.2.0) | `E:\HamloComp` (git, ветка `main`) |
 | HamloUdarnik (транзиент-шейпер, 0.2.0) | `E:\HamloUdarnik` (`main`) |
 | HamloRedWall (лимитер, 0.3.0) | `E:\HamloRedWall` (`main`) |
-| HamloMag (сатуратор, 0.1.0 закоммичен, **v2 не закоммичен**) | `E:\HamloMag` (`master`) |
+| HamloMag (saturator, complete per owner; do not modify) | `E:\HamloMag` (`master`) |
 | HPEQ (источник кода модулей) | `E:\HPEQ` (ветка `feature/hpeq-m0-m1`) — **исходники HPEQ не трогать** |
 | Все четыре плагина в HPEQ (для пуша) | worktree `E:\HPEQ-hamlo-plugins`, ветка `feature/hamlo-plugins`, папки `Plugins/<name>` (git subtree) |
 | HPDG (жанры, стили, темпы) | `C:\DRUMENGINE\Source\Engine\StyleDefaults.cpp`, `DnB\DnBStyleProfile.cpp`, `Techno\TechnoStyleProfile.cpp` |
@@ -171,44 +171,40 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Текущее состояние — с чего начать (HamloMag v2)
+## 9. Current local handoff - HamloShirota S1 (2026-10-31)
 
-HamloMag v2 сделан, но **не закоммичен** (`E:\HamloMag`, `git status` — ~25 файлов): SAMPLER (SP-1200 / MPC60 / S950),
-PHONE, SUB, DYNAMICS, MATCH, DELTA, 8x, переименованные тумблеры, нижняя полоса панели (1180×940), 200 рецептов
-пресетов в `Tools/genre_presets.py`, `Tests/V2Tests.cpp`, `Tests/PresetLabMain.cpp`. Лаборатория: 13 / 15
-(G2 8x −77.8 дБ при цели −90; G12 MATCH 0.58 LU при цели 0.5 — честные пределы). Юнит-тесты 707 / 707.
-Эталонные рендеры G1 лежат в `...\scratchpad\mag_g1` (если пропали — G1 сравнивать нечем: собрать 0.1.0 из коммита
-09c6d45 и записать заново).
+Work only in E:/HamloShirota. Owner confirmed Verb, Echo and Mag are complete;
+do not modify those products or HPEQ, subtree, push or use subagents. Apply
+C:/Users/Ham_h/.codex/skills/efficient-staged-work/SKILL.md. No model switch.
 
-Осталось:
-1. **Калибровка пресетов прервалась на 48 / 200** (готов Boom Bap, в `Tools/genre_presets_cal.tsv`). Досчитать остальные
-   (фильтр по именам или полный прогон в фоне), сгенерировать `.inc`, `check` → 200 / 200 (провалы чинить рецептами,
-   раскрывать).
-2. Проверить латентность в README (сейчас написано 351 сэмпл; после FIR сэмплера стала больше — взять из теста «Latency»).
-3. `docs/GENRE_PRESETS.md` — вместо `{result}` вписать результат проверки и раскрытия; `docs/reports/v2/V2_REPORT.md` —
-   по образцу HamloRedWall (что сделано, таблица «до → после», что не выполнено и почему, все раскрытия: G4/G6/G11/G13
-   переписаны, DYNAMICS переделан, PHONE до H6, FIR вместо Баттерворта, MATCH с гейтом).
-4. Снимок панели в `docs/reports/v2/panel_v2.png`, pluginval 5–10 + validator, установщик 0.2.0, `dist/`, коммит.
-5. `git subtree pull` в `E:\HPEQ-hamlo-plugins` (Plugins/HamloMag) и обновить строку HamloMag в `Plugins/README.md`;
-   пуш ветки `feature/hamlo-plugins` — когда владелец скажет.
+Owner requested stronger width, precise STEREO/SPACE/MOTION, timed left/right
+and behind-head movement, QUICK and a full editor. Listening reference:AKG K712.
+Scope:docs/SHIROTA_V2_SCOPE.md. New spatial V2 is not yet implemented.
 
-Дальше по плану владельца (после HamloMag): HamloVerb, HamloEcho, затем HamloZastava, HamloShirota — тем же порядком
-(M0 → эталоны и цели → замеры → код → 200 пресетов → валидаторы → отчёт).
+S1 is complete: original standalone baseline93d965f captured before isolation;
+production now uses10Shirota-owned units.160/160M0 renders, original12parameter/
+7program/state/class-ID contract and latency match. Original59expectations plus
+new RT/block tests yield115/115. Pluginval5..10 and Steinberg537/537 pass.
+Processor sizeof844152->3032bytes; byte-identical core/panel/screen sources.
+VST3 SHA256:ff712038bf196a3f75077ca2ed5545e43c334ba0c3ca20a77e77669a10ffb3a1.
+Version0.1.0 remains; this is not a new installer or spatial-feature release.
 
-### M0 остальных модулей (сделано 2026-10-29)
+Preserve out/s1/reference,binaries,original_sources. Never regenerate immutable
+M0 into that directory. Current handoff:docs/NEXT_STAGE.md; report/evidence:
+docs/reports/s1. No active jobs. Latest local commit is the S1 completion.
 
-`E:\HamloEcho` (дилей, HmEc), `E:\HamloVerb` (реверб, HmVb), `E:\HamloZastava` (гейт, HmZa), `E:\HamloShirota`
-(стерео, HmSh), `E:\HamloFader` (гейн-утилита, HmFd). Устроены иначе, чем первые четыре: `Source/` — это **весь стек
-модульного плагина HPEQ без изменений** (исходники `HPEQ_ModuleShared` из `E:\HPEQ\CMakeLists.txt` и их заголовки,
-namespace `hpeq`), собранный с `HPEQ_MODULE_KIND=<n>`; сверху добавлен только экран пресетов (`Source/UI/PresetScreen.*`,
-namespace `hpeq::ui`) в `Source/Standalone/ModulePluginEditor.*`. HamloFader: у HPEQ нет модульного VST3 для слота Gain —
-в копию добавлены `ModuleKind::Fader` (kind 8) и `makeFader()` с диапазонами из `LayerSnapshot.cpp`.
-Генератор: `make_module_repo.py` (+ `make_fader.py`) — скрипты лежали в рабочей папке прошлого агента; повторять не нужно.
-Тесты: процессор модуля HPEQ огромный (LayerEngine) — в тестах создавать **в куче** (`std::make_unique`), на стеке два
-экземпляра переполняют стек (0xC00000FD).
+Known legacy exception: bypass/mix automation has block-dependent state clocks
+(4distinct renders across5sizes); isolation preserves it for each schedule.
+New modes must be sample-clocked. SAFE visibly needs study: captured synthetic
+Width100->200% withSAFEon increases Side/Mid only0.6734dB. Diagnostic introduced
+after capture, with no acceptance threshold; method/disclosure is in the report.
 
-Первый шаг V2 для каждого из них — **сузить `Source/`** до своего модуля (как HamloMag: свой `<X>Settings.h` с HPEQ-индексами,
-свой процессор без LayerEngine, своя `Parameters.h`), доказать бит-в-бит против текущей M0-сборки, и только потом эталоны и цели.
+Next S2: numeric targets before prototyping width, mono-to-stereo, spatial
+characters and guard behaviour, then timed paths/binaural. No HRTF data has been
+bundled; SADIE II licensing/profile selection still require inspection. K712 is
+a listening reference, not a personalized calibration.200presets and release
+checks follow the completed DSP. Prefer Astra xhigh for this design/diagnosis;
+medium for routine execution. Owner controls model/effort selection.
 
 ### HamloRevolution — ещё не вынесен (план)
 

@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "DSP/DspConfig.h"
-#include "DSP/LayerSnapshot.h"
+#include "DSP/ShirotaSettings.h"
 
 namespace hpeq::dsp
 {

@@ -1,0 +1,20 @@
+{
+  "method": "Post-capture diagnostic only; no acceptance threshold. Original mixed-sine/noise input,48kHz stereo, discard first100ms; total channel M=(L+R)/2,S=(L-R)/2 energy ratio and Pearson correlation.",
+  "cases": [
+    {
+      "case": "program_0_48000_ch2_b127",
+      "side_to_mid_db": -2.413232902841586,
+      "correlation": 0.2708485849279509
+    },
+    {
+      "case": "boundary_width_max",
+      "side_to_mid_db": -1.739873170251149,
+      "correlation": 0.19762120314266562
+    },
+    {
+      "case": "boundary_safe_min",
+      "side_to_mid_db": -2.3875490212533186,
+      "correlation": 0.2681063510164735
+    }
+  ]
+}

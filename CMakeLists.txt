@@ -42,34 +42,13 @@ file(GLOB HAMLO_SHIROTA_TUBES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Asse
 juce_add_binary_data(HamloShirota_Assets NAMESPACE HpeqAssets SOURCES ${HAMLO_SHIROTA_SCRATCHES} ${HAMLO_SHIROTA_HARDWARE} ${HAMLO_SHIROTA_TUBES})
 set_target_properties(HamloShirota_Assets PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-# --- Shared code: HPEQ's module-plug-in stack (Source/ is HPEQ's, verbatim; docs/SYNC_WITH_HPEQ.md) -----------
+# --- Shirota-owned processor; immutable M0 comparison: docs/HAMLOSHIROTA_V2.md -----------
 add_library(HamloShirota_Shared STATIC
     Source/Core/ModulePresets.cpp
-    Source/DSP/Biquad.cpp
-    Source/DSP/FxNodeProcessor.cpp
-    Source/DSP/LayerEngine.cpp
-    Source/DSP/PreEqProcessor.cpp
-    Source/DSP/Processors.cpp
-    Source/DSP/ReverbProcessor.cpp
-    Source/DSP/HamloVerb.cpp
-    Source/DSP/HamloEcho.cpp
-    Source/DSP/HamloMag.cpp
-    Source/DSP/ProcessorsM6.cpp
-    Source/DSP/HamloRevolution.cpp
-    Source/DSP/HamloRedWall.cpp
-    Source/DSP/HamloUdarnik.cpp
-    Source/DSP/HamloZastava.cpp
     Source/DSP/HamloShirota.cpp
-    Source/DSP/CrossoverTree.cpp
-    Source/DSP/EqDesign.cpp
+    Source/DSP/LegacyStereoProcessor.cpp
+    Source/DSP/LegacyShirotaCore.cpp
     Source/UI/BlackSteel.cpp
-    Source/UI/HamloCompPanel.cpp
-    Source/UI/HamloVerbPanel.cpp
-    Source/UI/HamloEchoPanel.cpp
-    Source/UI/HamloMagPanel.cpp
-    Source/UI/HamloRedWallPanel.cpp
-    Source/UI/HamloUdarnikPanel.cpp
-    Source/UI/HamloZastavaPanel.cpp
     Source/UI/HamloShirotaPanel.cpp
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ModulePluginProcessor.cpp
@@ -128,9 +107,11 @@ target_link_libraries(HamloShirota
         juce::juce_recommended_warning_flags)
 
 # --- Tests and the page snapshot ----------------------------------------------------------------------
-foreach(tool Tests Snapshot)
+foreach(tool Tests Snapshot Lab)
     if (tool STREQUAL "Tests")
-        add_executable(HamloShirota_Tests Tests/TestMain.cpp Tests/PluginTests.cpp)
+        add_executable(HamloShirota_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/IsolationTests.cpp Tests/AllocationAudit.cpp)
+    elseif(tool STREQUAL "Lab")
+        add_executable(HamloShirota_Lab Tests/ShirotaLabMain.cpp)
     else()
         add_executable(HamloShirota_Snapshot Tests/SnapshotMain.cpp)
     endif()
