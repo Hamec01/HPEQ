@@ -1,6 +1,39 @@
-HamloVerb 0.1.0 - reverb, VST3, Windows x64 (HamloProd)
+HamloVerb 0.2.0 - algorithmic reverb, VST3, Windows x64 (HamloProd)
 
-Controls
+NEW CHARACTERS AND WORKFLOW
+  Clean: spatial FDN and natural reflections. Warm: cross-coupled diffusion and colour.
+  Velvet: nested diffusion and soft density. Crisp: short dense plate for percussion.
+  Deep: sparse early space and a developed distant tail. Bloom: cascaded build-up.
+  New characters support 0-500 ms predelay and 0.1-30 s base decay.
+  Insert blends dry/wet; Send outputs wet only and remembers Insert MIX.
+  Mix Lock protects MIX on preset loading. Routing also survives preset changes.
+  Output trims the complete Insert mix or Send return. Early/Tail have separate levels.
+  Material buttons only filter presets; LOAD START changes the sound.
+  Default + 7 original Factory + 200 new genre recipes = 208 host programs.
+  Boom Bap, Trap, Techno and DnB: 50 each; Vocal, Drums, Samples/Keys, Synth, Atmosphere/FX.
+
+ADVANCED
+  Six Decay EQ bands and six Post EQ bands. Decay Value is an octave multiplier:
+  +1 doubles the decay, -1 halves it. The curve displays a target, not a measured IR.
+  Overlapping boosts are bounded by loop stability and may reduce attainable decay.
+  Texture contains diffusion, modulation, bass/high decay, cuts and duck timing.
+  Effects: input-triggered Gated, Reverse Swell, real Reverse Audio and independent
+  Shimmer (-12 to +24 semitones). Reverse Audio reads overlapping captured wet
+  fragments backwards (50-2000 ms); accumulation is part of wet timing, not host PDC.
+  Freeze closes input/Shimmer injection, bypasses Time Shape and holds delay geometry
+  and modulation. Output EQ, Width and Output remain available. Frozen tail is infinite.
+  Character changes preserve one outgoing tail; repeated changes retire the oldest
+  tail over 50 ms. At most two tanks run; outgoing Freeze releases.
+
+COMPATIBILITY
+  Old states restore Legacy and neutral new controls. Original parameter IDs, ranges,
+  host order, Factory programs and plug-in identity are retained. Host latency: 0 samples.
+  Legacy MIX adds wet over full dry. Insert/Send routing applies to new characters.
+  Legacy Space/Color apply only to Legacy. Classic retains 250 ms / 20 s limits and
+  its supported controls; it does not implement the later Freeze/Color features.
+  Legacy Space switching retains its original block-dependent fade boundary.
+
+Legacy controls (retained for old projects)
   PRE-DELAY    Time before the reverb starts. Keeps the dry hit clear in front of the room.
   SIZE         How big the space sounds.
   DECAY        How long the tail lasts (RT60 at 1 kHz).

@@ -5,7 +5,7 @@
 
 #include <juce_core/juce_core.h>
 
-#include "Core/FxProjectState.h"
+#include "DSP/VerbSettings.h"
 
 namespace hpeq::presets
 {
@@ -17,6 +17,13 @@ struct ModulePreset
     const char* name;
     float mix;
     std::vector<std::pair<const char*, double>> values;
+    const char* id = "";
+    const char* genre = "";
+    const char* group = "";
+    const char* note = "";
+    const char* material = "";
+    const char* depth = "";
+    double tempo = 120;
 };
 
 const std::vector<ModulePreset>& factoryModulePresets(FxType);

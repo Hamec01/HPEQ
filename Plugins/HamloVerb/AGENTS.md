@@ -23,7 +23,7 @@
 | HamloComp (компрессор, 0.2.0) | `E:\HamloComp` (git, ветка `main`) |
 | HamloUdarnik (транзиент-шейпер, 0.2.0) | `E:\HamloUdarnik` (`main`) |
 | HamloRedWall (лимитер, 0.3.0) | `E:\HamloRedWall` (`main`) |
-| HamloMag (сатуратор, 0.1.0 закоммичен, **v2 не закоммичен**) | `E:\HamloMag` (`master`) |
+| HamloMag (сатуратор, 0.2.1, завершён и закоммичен) | `E:\HamloMag` (`master`) |
 | HPEQ (источник кода модулей) | `E:\HPEQ` (ветка `feature/hpeq-m0-m1`) — **исходники HPEQ не трогать** |
 | Все четыре плагина в HPEQ (для пуша) | worktree `E:\HPEQ-hamlo-plugins`, ветка `feature/hamlo-plugins`, папки `Plugins/<name>` (git subtree) |
 | HPDG (жанры, стили, темпы) | `C:\DRUMENGINE\Source\Engine\StyleDefaults.cpp`, `DnB\DnBStyleProfile.cpp`, `Techno\TechnoStyleProfile.cpp` |
@@ -171,26 +171,32 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Текущее состояние — с чего начать (HamloMag v2)
+## 9. Current handover — HamloVerb 0.2.0 (2026-10-30)
 
-HamloMag v2 сделан, но **не закоммичен** (`E:\HamloMag`, `git status` — ~25 файлов): SAMPLER (SP-1200 / MPC60 / S950),
-PHONE, SUB, DYNAMICS, MATCH, DELTA, 8x, переименованные тумблеры, нижняя полоса панели (1180×940), 200 рецептов
-пресетов в `Tools/genre_presets.py`, `Tests/V2Tests.cpp`, `Tests/PresetLabMain.cpp`. Лаборатория: 13 / 15
-(G2 8x −77.8 дБ при цели −90; G12 MATCH 0.58 LU при цели 0.5 — честные пределы). Юнит-тесты 707 / 707.
-Эталонные рендеры G1 лежат в `...\scratchpad\mag_g1` (если пропали — G1 сравнивать нечем: собрать 0.1.0 из коммита
-09c6d45 и записать заново).
+HamloMag is finished (0.2.1); the former unfinished Mag calibration/target list is obsolete.
+Do not resume that work from historical examples in this file.
 
-Осталось:
-1. **Калибровка пресетов прервалась на 48 / 200** (готов Boom Bap, в `Tools/genre_presets_cal.tsv`). Досчитать остальные
-   (фильтр по именам или полный прогон в фоне), сгенерировать `.inc`, `check` → 200 / 200 (провалы чинить рецептами,
-   раскрывать).
-2. Проверить латентность в README (сейчас написано 351 сэмпл; после FIR сэмплера стала больше — взять из теста «Latency»).
-3. `docs/GENRE_PRESETS.md` — вместо `{result}` вписать результат проверки и раскрытия; `docs/reports/v2/V2_REPORT.md` —
-   по образцу HamloRedWall (что сделано, таблица «до → после», что не выполнено и почему, все раскрытия: G4/G6/G11/G13
-   переписаны, DYNAMICS переделан, PHONE до H6, FIR вместо Баттерворта, MATCH с гейтом).
-4. Снимок панели в `docs/reports/v2/panel_v2.png`, pluginval 5–10 + validator, установщик 0.2.0, `dist/`, коммит.
-5. `git subtree pull` в `E:\HPEQ-hamlo-plugins` (Plugins/HamloMag) и обновить строку HamloMag в `Plugins/README.md`;
-   пуш ветки `feature/hamlo-plugins` — когда владелец скажет.
+HamloVerb now has a standalone production core, six new characters, six-band Decay/Post EQ,
+Gated, two Reverse forms, Shimmer, stable Freeze, tail-preserving handover, Insert/Send and Mix Lock.
+Default remains Legacy. Old state/parameter/program identity is preserved; M0 renders: 390/390 exact.
+Unit tests: 1154/1154. Final calibration and independent compiled-bank check: 200/200 each.
+pluginval 5..10 passes; Steinberg: 537/537. See docs/reports/v2/V2_REPORT.md and PACKAGE_MANIFEST.txt.
+
+The approved reverb preset distribution overrides generic section6: per genre Vocal10, Drums12,
+Samples/Keys10, Synth8, Atmosphere/FX10. Four genres x50, appended after seven original programs.
+Do not change this back to compressor/limiter categories.
+
+The full acoustic run retains seven CPU failures under concurrent compilation/calibration.
+An unchanged isolated CPU rerun passed (single 2.91..4.91%, handover8.89%). No threshold was relaxed.
+Freeze/spectral/temporal/material reports and reviewed panel snapshots are under docs/reports/v2.
+Manual FL Studio loading/listening and administrator installer execution remain unverified; these
+are explicitly disclosed, not automated passes. Protected install paths denied writes and the
+alternative folder dialog did not accept automation; the owner's trap.flp was not edited.
+
+Current owner preferences: no subagents; targeted reads. For this assignment the owner explicitly
+requested continuous execution through all stages, overriding the default one-stage-per-chat preference.
+Do not integrate subtree or push. HPEQ source has not been changed.
+Final installer/ZIP/VST3 and twenty A/B sets are in dist/. See docs/NEXT_STAGE.md for handoff.
 
 Дальше по плану владельца (после HamloMag): HamloVerb, HamloEcho, затем HamloZastava, HamloShirota — тем же порядком
 (M0 → эталоны и цели → замеры → код → 200 пресетов → валидаторы → отчёт).

@@ -23,8 +23,6 @@ public:
     juce::Component* getPanel() noexcept { return panel.get(); }
 
 private:
-    template <typename Panel>
-    void installPanel(std::unique_ptr<Panel>);
     void beginGesture(const juce::String& id);
     void endGesture();
     void setImmediate(const juce::String& id, double value);
@@ -35,7 +33,8 @@ private:
     std::unique_ptr<juce::Component> panel;
     std::unique_ptr<ui::PresetScreen> presets;
     std::function<void()> refreshPanel;
-    juce::RangedAudioParameter* activeGesture = nullptr;
+    std::vector<juce::RangedAudioParameter*> activeGestures;
+    juce::TooltipWindow tooltips { this, 450 };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulePluginEditor)
 };
