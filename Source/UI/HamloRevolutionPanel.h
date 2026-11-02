@@ -27,7 +27,7 @@ namespace hpeq::ui
 // Owner, 2026-10-26: each lane has GEN (a new pattern for this lane only) and LOCK (GENERATE keeps the lane:
 // every step of it locked); the SEED counter became a wave screen — input and output of the pattern cycle
 // per 1/8 step, the play head and the step grid, the seed written small in its corner.
-class HamloRevolutionPanel final : public juce::Component, public HelpTarget, private juce::Timer
+class HamloRevolutionPanel final : public juce::Component, public HelpTarget, public juce::TooltipClient, private juce::Timer
 {
 public:
     enum Param { Mix, Rate, Steps, Swing, Humanize, Fade, TimeMix, TimeDepth, GlitchMix, GlitchDepth, MotionMix, MotionDepth, MotionSmooth,
@@ -64,6 +64,7 @@ public:
     HamloRevolutionPanel();
     juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
     juce::Rectangle<float> contentBounds() const override;
+    juce::String getTooltip() override; // R6: the help text of the control under the mouse
     ~HamloRevolutionPanel() override;
 
     void setValues(const Values&); // from the project (no callbacks)
@@ -106,6 +107,9 @@ public:
     // R2: a level lane's step (MOTION, SHAPE A / B), a lane's band
     void setLevel(int lane, int cell, int level);
     void setLaneBand(int lane, int band);
+    // R6: a TIME / GLITCH cell set to a value (dragging across cells paints the first cell's new value; locked
+    // steps are skipped)
+    void paintStep(int engine, int cell, int value);
     // R3: a THROW lane's target window: click = next target, right click = TARGET / TIME / NOTE menu
     void showThrowMenu(int lane);
     void showSecondHalf(int engine, bool);
@@ -153,6 +157,7 @@ private:
     float scale = 1.0f;
     juce::Point<float> offset;
     int dragKnob = -1, dragMotionStep = -1, dragLevelLane = -1;
+    int paintLane = -1, paintValue = 0, paintCell = -1; // R6: painting TIME / GLITCH cells
     double dragStartNorm = 0.0;
     float dragStartY = 0.0f;
     int generateFlash = 0;

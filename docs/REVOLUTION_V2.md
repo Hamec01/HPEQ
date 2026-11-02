@@ -318,6 +318,34 @@ the grid and on the odd 1/16s 15 ms late except 10 and 12, which have no hit):
 - Key: linked, HPDG's key A then D: NOTE 9 then 2 on both throws (ADVANCED too); LOCK keeps NOTE.
 - V1 GoldenTests unchanged (the analysis only listens); V3; V7 rerun; V13 (feel, heard groove round trip); V14.
 
+## 11. R6 as designed (2026-11-02, before the code)
+
+Owner: "R6". The last stage: presets, the ADVANCED page's editing, help, version 0.2.0, installer, the final report.
+
+**200 genre presets** (programs 25 .. 224 after Default and HPEQ's 24, which stay where they are: GoldenTests).
+4 genres (BOOM BAP, TRAP, TECHNO, DNB) x 50, in 6 groups: Drum Bus (10), Hats / Percussion (9), Loops / Samples (9),
+Vocals (7), Transitions / Fills (9), Master FX (6). A preset is a SIMPLE recipe, not a stored pattern: genre, INTENT,
+AMOUNT, VARIATION, GROOVE, FILL, TARGET, MIX and a seed; loading it resets the parameters, opens SIMPLE and runs the
+generator (unlinked: the genre's template; linked: HPDG's pattern, so a preset follows the beat it is put on).
+Recipes per group: Drum Bus - TOPS / FULL, GROOVE .. FILLS, MIX 70 .. 100 %; Hats - HATS, GROOVE / CHAOS; Loops -
+FULL, GROOVE / BREAKDOWN, VARIATION up; Vocals - FULL, SUBTLE / GROOVE (the throws do the work), MIX 40 .. 70 %;
+Transitions - FILL every 4 / 8, FILLS / BREAKDOWN; Master FX - FULL, SUBTLE, MIX 25 .. 50 %. Written by
+Tools/revolution_presets.py into Source/Core/RevolutionPresets.inc (names, notes, recipes); the preset screen shows
+genre / group / name / note.
+**ADVANCED editing.** Dragging across TIME / GLITCH cells paints the first cell's new value over the cells passed
+(level lanes already draw by dragging); a SHAPE lane in CURVE shows the curve it plays through its levels.
+**Help.** Hovering any control of either page shows what it does and what it is for (a tooltip; texts in
+UI/RevolutionHelp.cpp, English).
+**Version 0.2.0**, the installer and the zip in dist.
+
+R6 targets:
+- Presets: 225 programs; names unique; every genre preset loads deterministically (the same slot twice), opens SIMPLE,
+  writes >= 1 event, is finite and bounded (peak <= +6 dBFS on the drum loop at -1 dBFS), and its genre / group shows
+  on the preset screen (4 genres + Factory; each genre 6 groups, 50 presets); V1: programs 0 .. 24 bit for bit.
+- Painting: a drag over 5 GLITCH cells sets all 5 to the first cell's value.
+- Help: every knob / switch key of both pages has a non-empty text.
+- V3, V7, V14 rerun; the installer builds; the final report sums V1 .. V14 over R0 .. R6.
+
 ## Sources
 
 1. [Sound On Sound: ShaperBox 3](https://www.soundonsound.com/reviews/cableguys-shaperbox-3), [MusicRadar: ShaperBox 3](https://www.musicradar.com/reviews/cableguys-shaperbox-3), [ShaperBox 3 manual](https://www.cableguys.com/downloads/Cableguys-ShaperBox-3-Manual.pdf?v=3.3.1)

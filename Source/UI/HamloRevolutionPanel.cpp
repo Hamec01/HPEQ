@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "UI/RevolutionHelp.h"
+
 namespace hpeq::ui
 {
 namespace
@@ -447,6 +449,29 @@ void HamloRevolutionPanel::clickStep(int engine, int cell, bool shift)
     changePattern(p, values.seed, "Step");
 }
 
+void HamloRevolutionPanel::paintStep(int engine, int cell, int value)
+{
+    if (engine < 0 || engine >= rev::Motion)
+        return;
+    const int index = cellIndex(engine, cell);
+    value = juce::jlimit(0, rev::numValues(engine) - 1, value);
+    if (cellValue(engine, index) == value)
+        return;
+    if (index >= rev::kSteps)
+    {
+        auto l = values.lanes;
+        l[static_cast<size_t>(engine)].extra[static_cast<size_t>(index - rev::kSteps)] = static_cast<std::uint8_t>(value);
+        changeLanes(l, "Paint");
+        return;
+    }
+    const auto e = static_cast<size_t>(engine);
+    if (((values.pattern.locks[e] >> index) & 1) != 0)
+        return;
+    auto p = values.pattern;
+    p.steps[e][static_cast<size_t>(index)] = static_cast<std::uint8_t>(value);
+    changePattern(p, values.seed, "Paint");
+}
+
 void HamloRevolutionPanel::showThrowMenu(int lane)
 {
     juce::PopupMenu menu, targets, times, notes;
@@ -824,6 +849,31 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
             g.fillRoundedRectangle(r.withHeight(r.getHeight() * 0.35f).reduced(2.0f, 2.0f), 3.0f);
         }
     }
+    // R6: a SHAPE lane in CURVE shows the curve it plays (Catmull-Rom through the level tops, as the engine)
+    for (int lane = rev::kFirstShape; lane < rev::kFirstThrow; ++lane)
+    {
+        if (values.switches[static_cast<size_t>(curveSwitchFor(lane))] == 0)
+            continue;
+        const auto level = [&](int s) { return static_cast<float>(cellValue(lane, cellIndex(lane, juce::jlimit(0, rev::kSteps - 1, s)))) / 15.0f; };
+        const auto yOf = [&](int s, float v) { const auto r = cellRect(lane, s); return r.getBottom() - 6.0f - (r.getHeight() - 14.0f) * v; };
+        juce::Path path;
+        for (int s = 0; s < rev::kSteps - 1; ++s)
+            for (int i = 0; i <= 8; ++i)
+            {
+                const float t = static_cast<float>(i) / 8.0f, t2 = t * t, t3 = t2 * t;
+                const float p0 = level(s - 1), p1 = level(s), p2 = level(s + 1), p3 = level(s + 2);
+                const float v = juce::jlimit(0.0f, 1.0f, 0.5f * (2.0f * p1 + (-p0 + p2) * t + (2.0f * p0 - 5.0f * p1 + 4.0f * p2 - p3) * t2
+                                                               + (-p0 + 3.0f * p1 - 3.0f * p2 + p3) * t3));
+                const float x = cellRect(lane, s).getX() + kCellPitch * t;
+                const float y = yOf(s, v) * (1.0f - t) + yOf(s + 1, v) * t;
+                if (s == 0 && i == 0)
+                    path.startNewSubPath(x, y);
+                else
+                    path.lineTo(x, y);
+            }
+        g.setColour(inkFor(lane).withAlpha(0.9f));
+        g.strokePath(path, juce::PathStrokeType(2.0f));
+    }
     lcdText(g, kTargetWindow, rev::targetName(values.switches[MotionTarget]), 12.0f);
     for (int lane = 0; lane < rev::kLanes; ++lane)
     {
@@ -1174,7 +1224,13 @@ void HamloRevolutionPanel::mouseDown(const juce::MouseEvent& e)
         if (e.mods.isShiftDown())
             return clickStep(engine, step, true);
         if (engine < rev::Motion)
-            return clickStep(engine, step, false);
+        {
+            clickStep(engine, step, false);
+            paintLane = engine; // a drag paints this value over the cells it passes
+            paintCell = step;
+            paintValue = cellValue(engine, cellIndex(engine, step));
+            return;
+        }
         dragMotionStep = step;
         dragLevelLane = engine;
         const auto r = cellRect(engine, step);
@@ -1188,6 +1244,19 @@ void HamloRevolutionPanel::mouseDrag(const juce::MouseEvent& e)
     {
         const float pixelsPerRange = (e.mods.isShiftDown() ? 900.0f : 200.0f) * scale;
         setKnob(static_cast<Param>(dragKnob), valueFor(static_cast<Param>(dragKnob), dragStartNorm + (dragStartY - e.position.y) / pixelsPerRange), true);
+        return;
+    }
+    if (paintLane >= 0)
+    {
+        const auto d = toDesign(e.position);
+        const int cell = juce::jlimit(0, rev::kSteps - 1, static_cast<int>(std::floor((d.x - kCellX) / kCellPitch)));
+        if (cell != paintCell)
+        {
+            for (int c = juce::jmin(cell, paintCell); c <= juce::jmax(cell, paintCell); ++c) // no gaps on a fast drag
+                if (c != paintCell)
+                    paintStep(paintLane, c, paintValue);
+            paintCell = cell;
+        }
         return;
     }
     if (dragMotionStep >= 0)
@@ -1208,6 +1277,7 @@ void HamloRevolutionPanel::mouseUp(const juce::MouseEvent&)
     dragKnob = -1;
     dragMotionStep = -1;
     dragLevelLane = -1;
+    paintLane = paintCell = -1;
 }
 
 void HamloRevolutionPanel::mouseDoubleClick(const juce::MouseEvent& e)
@@ -1260,7 +1330,40 @@ juce::String HamloRevolutionPanel::helpKeyAt(juce::Point<float> local) const
         return keyFor(static_cast<Param>(k));
     if (const int sel = selectorAt(d); sel >= 0)
         return keyFor(static_cast<Switch>(sel));
+    // R6: the rest of the page
+    if (kSimpleButton.contains(d))
+        return "simplePage";
+    if (kStatusLcd.contains(d))
+        return "scene";
+    if (kStretchWindow.contains(d))
+        return "timeStretch";
+    if (kTargetWindow.contains(d))
+        return "motionTarget";
+    if (d.getDistanceFrom(kListen) <= 14.0f || juce::Rectangle<float>(kListen.x + 14.0f, kListen.y - 10.0f, 64.0f, 20.0f).contains(d))
+        return "listen";
+    if (d.getDistanceFrom(kTriplet) <= 30.0f)
+        return "triplet";
+    if (d.getDistanceFrom(kFree) <= 30.0f)
+        return "free";
+    for (int lane = 0; lane < rev::kLanes; ++lane)
+    {
+        const auto lv = onLever(lane);
+        if (juce::Rectangle<float>(lv.x - 24.0f, lv.y - 32.0f, 48.0f, 56.0f).contains(d) || d.getDistanceFrom(onLamp(lane)) <= 12.0f)
+            return keyFor(onSwitchFor(lane));
+        if (lane >= rev::kEngines && shapeTargetWindow(lane).contains(d))
+            return keyFor(targetSwitchFor(lane));
+        if (plateRect(lane).contains(d))
+            return "lanePlate";
+        for (int s = 0; s < rev::kSteps; ++s)
+            if (cellRect(lane, s).contains(d))
+                return "laneCells";
+    }
     return {};
+}
+
+juce::String HamloRevolutionPanel::getTooltip()
+{
+    return revolutionHelp(helpKeyAt(getMouseXYRelative().toFloat()));
 }
 
 juce::Rectangle<float> HamloRevolutionPanel::contentBounds() const

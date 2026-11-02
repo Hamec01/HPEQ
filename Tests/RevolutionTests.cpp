@@ -95,7 +95,7 @@ public:
         beginTest("V1: the slot of Default and of every preset = the slot HPEQ makes from the same module (bit-exact)");
         {
             auto probe = make();
-            for (int i = 0; i < probe->getNumPrograms(); ++i)
+            for (int i = 0; i < probe->getNumPrograms() && probe->genrePresetFor(i) == nullptr; ++i) // HPEQ's programs (R6)
             {
                 auto p = make();
                 p->setCurrentProgram(i);
@@ -222,9 +222,12 @@ public:
             page->clickStep(rev::Glitch, 3);
             expect(p->getRevolutionState().pattern.steps[rev::Glitch][3] != afterGen.pattern.steps[rev::Glitch][3], "step click");
             // a program from the preset screen: the page follows
-            p->setCurrentProgram(p->getNumPrograms() - 1);
-            editor->getPresetScreen().setCurrent(p->getNumPrograms() - 1, false);
-            p->setCurrentProgram(p->getNumPrograms() - 1);
+            int last = 1; // HPEQ's last program (R6's genre presets open SIMPLE: PresetTests)
+            while (p->genrePresetFor(last + 1) == nullptr && last + 1 < p->getNumPrograms())
+                ++last;
+            p->setCurrentProgram(last);
+            editor->getPresetScreen().setCurrent(last, false);
+            p->setCurrentProgram(last);
             juce::MessageManager::getInstance()->runDispatchLoopUntil(100);
             expect(page->getValues().pattern == p->getRevolutionState().pattern, "after a program");
         }

@@ -192,6 +192,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
                 applyPage();
             };
             installSimplePage();
+            tooltips = std::make_unique<juce::TooltipWindow>(this, 600);
             break;
         }
         case ModuleKind::Shirota:
@@ -217,7 +218,10 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     {
         std::vector<ui::PresetScreen::Entry> entries;
         for (int i = 1; i < processor.getNumPrograms(); ++i)
-            entries.push_back({ i, {}, {}, processor.getProgramName(i), {} });
+            if (const auto* g = processor.genrePresetFor(i)) // R6: genre / group / name / what it is for
+                entries.push_back({ i, g->genre, g->group, g->name, g->note });
+            else
+                entries.push_back({ i, {}, {}, processor.getProgramName(i), {} });
         presets->setEntries(std::move(entries));
     }
     presets->onSelect = [this](int program)
@@ -250,6 +254,7 @@ ModulePluginEditor::~ModulePluginEditor()
     stopTimer();
     refreshPanel = {};
     refreshSimple = {};
+    tooltips.reset();
     endGesture();
     simplePage.reset();
     panel.reset();

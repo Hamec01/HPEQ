@@ -6,6 +6,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "Core/Revolution.h"
+#include "Core/RevolutionPresets.h"
 #include "Core/RevolutionSimple.h"
 #include "DSP/DelayLine.h"
 #include "DSP/LayerEngine.h"
@@ -95,6 +96,8 @@ public:
     bool followHpdg();     // a new HPDG pattern taken (and regenerated from, in SIMPLE without LOCK)
     revolution::simple::Settings simpleSettings() const;
     revolution::simple::Result lastSimple() const;
+    // R6: the genre preset a program number loads (programs after Default and HPEQ's), else nullptr
+    const revolution::GenrePreset* genrePresetFor(int program) const;
 
 private:
     dsp::Transport currentTransport() noexcept;

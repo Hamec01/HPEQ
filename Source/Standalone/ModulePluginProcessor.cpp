@@ -1,5 +1,6 @@
 #include "Standalone/ModulePluginProcessor.h"
 #include "Core/ModulePresets.h"
+#include "Core/RevolutionPresets.h"
 
 #include "DSP/ProcessorsM6.h"
 #include "DSP/ReverbProcessor.h"
@@ -517,11 +518,22 @@ void ModulePluginProcessor::setParameterValue(const juce::String& id, double act
 
 int ModulePluginProcessor::getNumPrograms()
 {
-    return 1 + static_cast<int>(presets::factoryModulePresets(getSpec().type).size());
+    const int genre = kind == ModuleKind::Revolution ? static_cast<int>(revolution::genrePresets().size()) : 0;
+    return 1 + static_cast<int>(presets::factoryModulePresets(getSpec().type).size()) + genre;
+}
+
+const revolution::GenrePreset* ModulePluginProcessor::genrePresetFor(int program) const
+{
+    const int first = 1 + static_cast<int>(presets::factoryModulePresets(getSpec().type).size());
+    if (kind != ModuleKind::Revolution || program < first || program >= first + static_cast<int>(revolution::genrePresets().size()))
+        return nullptr;
+    return &revolution::genrePresets()[static_cast<size_t>(program - first)];
 }
 
 const juce::String ModulePluginProcessor::getProgramName(int index)
 {
+    if (const auto* g = genrePresetFor(index))
+        return g->name;
     const auto& list = presets::factoryModulePresets(getSpec().type);
     if (index <= 0 || index > static_cast<int>(list.size()))
         return "Default";
@@ -530,6 +542,27 @@ const juce::String ModulePluginProcessor::getProgramName(int index)
 
 void ModulePluginProcessor::setCurrentProgram(int index)
 {
+    if (const auto* g = genrePresetFor(index))
+    {
+        // R6: a SIMPLE recipe - defaults, the recipe, SIMPLE shown, the generator run (HPDG's beat when linked)
+        currentProgram = index;
+        for (const auto& spec : getSpec().parameters)
+            setParameterValue(spec.id, spec.defaultValue);
+        setParameterValue("simpleGenre", g->simpleGenre);
+        setParameterValue("simpleIntent", g->intent);
+        setParameterValue("simpleAmount", g->amount);
+        setParameterValue("simpleVariation", g->variation);
+        setParameterValue("simpleGroove", g->groove);
+        setParameterValue("simpleFill", g->fill);
+        setParameterValue("simpleTarget", g->target);
+        setParameterValue("mix", g->mix);
+        setPage(Page::Simple);
+        RevolutionState first;
+        first.seed = static_cast<juce::int64>(g->seed);
+        resetScenes(first);
+        generateSimple(false);
+        return;
+    }
     const auto& list = presets::factoryModulePresets(getSpec().type);
     currentProgram = juce::jlimit(0, static_cast<int>(list.size()), index);
     for (const auto& spec : getSpec().parameters)

@@ -40,6 +40,7 @@ private:
     std::unique_ptr<ui::PresetScreen> presets;
     std::function<void()> refreshPanel, refreshSimple;
     std::unique_ptr<ui::HamloRevolutionSimplePage> simplePage;
+    std::unique_ptr<juce::TooltipWindow> tooltips; // R6: HamloRevolution's help
     juce::RangedAudioParameter* activeGesture = nullptr;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulePluginEditor)

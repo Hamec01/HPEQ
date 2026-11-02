@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloRevolution VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloRevolution VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -70,8 +70,10 @@ add_library(HamloRevolution_Shared STATIC
     Source/UI/HamloRedWallPanel.cpp
     Source/UI/HamloRevolutionPanel.cpp
     Source/UI/HamloRevolutionSimplePage.cpp
+    Source/UI/RevolutionHelp.cpp
     Source/Core/Revolution.cpp
     Source/Core/RevolutionSimple.cpp
+    Source/Core/RevolutionPresets.cpp
     Source/Link/HamloLinkProtocol.cpp
     Source/Link/HamloLinkClient.cpp
     Source/UI/HamloUdarnikPanel.cpp
@@ -136,7 +138,7 @@ target_link_libraries(HamloRevolution
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp
+        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp
             Source/DSP/LayerSnapshot.cpp Source/Core/FxProjectState.cpp) # HPEQ's slot mapping: the reference of V1
     else()
         add_executable(HamloRevolution_Snapshot Tests/SnapshotMain.cpp)

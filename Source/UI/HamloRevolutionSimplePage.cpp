@@ -4,6 +4,7 @@
 
 #include "Core/RevolutionSimple.h"
 #include "UI/BlackSteel.h"
+#include "UI/RevolutionHelp.h"
 
 namespace hpeq::ui
 {
@@ -205,6 +206,39 @@ void HamloRevolutionSimplePage::paint(juce::Graphics& g)
             }
         }
     }
+}
+
+juce::String HamloRevolutionSimplePage::helpKeyAt(juce::Point<float> local) const
+{
+    const auto d = toDesign(local);
+    if (kConnect.contains(d) || kLinkLcd.contains(d) || d.getDistanceFrom(kLinkLamp) <= 16.0f)
+        return "connect";
+    if (kAdvanced.contains(d))
+        return "advancedPage";
+    if (d.getDistanceFrom(kGenerate) <= 38.0f)
+        return "simpleGenerate";
+    if (kLock.contains(d))
+        return "simpleLock";
+    for (int i = 0; i < simple::kGenres; ++i)
+        if (genreRect(i).contains(d))
+            return "simpleGenre";
+    for (int f = 0; f < simple::kFills; ++f)
+        if (fillRect(f).contains(d))
+            return "simpleFill";
+    for (int t = 0; t < simple::kTargets; ++t)
+        if (targetRect(t).contains(d))
+            return "simpleTarget";
+    for (int k = 0; k < NumKnobs; ++k)
+        if (d.getDistanceFrom({ kKnobs[static_cast<size_t>(k)].x, kKnobs[static_cast<size_t>(k)].y }) <= 62.0f * kKnobs[static_cast<size_t>(k)].s)
+            return keyFor(static_cast<Knob>(k));
+    if (d.y >= kPreviewY && d.y < kPreviewY + kPreviewRow * static_cast<float>(rev::kLanes))
+        return "preview";
+    return {};
+}
+
+juce::String HamloRevolutionSimplePage::getTooltip()
+{
+    return revolutionHelp(helpKeyAt(getMouseXYRelative().toFloat()));
 }
 
 void HamloRevolutionSimplePage::pressGenerate()

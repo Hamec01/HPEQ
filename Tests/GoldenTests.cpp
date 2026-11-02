@@ -113,7 +113,10 @@ public:
         const auto loop = drums(6.0);
         beginTest("V1: every program and the clock / stretch variants = the R0 output, bit for bit (blocks 256)");
         auto probe = std::make_unique<ModulePluginProcessor>(ModuleKind::Revolution);
-        const int programs = probe->getNumPrograms() - 1;
+        // HPEQ's programs (R6's genre presets after them are SIMPLE recipes: PresetTests)
+        int programs = 0;
+        while (programs + 1 < probe->getNumPrograms() && probe->genrePresetFor(programs + 1) == nullptr)
+            ++programs;
         const bool recording = sizeof(kPrograms) / sizeof(kPrograms[0]) != static_cast<size_t>(programs);
         juce::String table;
         for (int i = 1; i <= programs; ++i)

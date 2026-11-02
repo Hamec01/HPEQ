@@ -13,7 +13,7 @@ namespace hpeq::ui
 // (INTENT, AMOUNT, VARIATION, GROOVE, MIX), FILL, TARGET, GENERATE, LOCK and a read-only preview of the seven lanes
 // the generator wrote. Drawn in the ADVANCED page's 1180 x 1280 frame (scaled the same, so the preset screen sits at
 // the same place); the editor owns both pages and shows one.
-class HamloRevolutionSimplePage final : public juce::Component
+class HamloRevolutionSimplePage final : public juce::Component, public juce::TooltipClient
 {
 public:
     enum Knob { Intent, Amount, Variation, Groove, Mix, NumKnobs };
@@ -54,6 +54,10 @@ public:
     void chooseTarget(int);
     void toggleLock();
     void setKnob(Knob, double);
+
+    // R6: the help key of the control at a point (component coordinates), and its text as the tooltip
+    juce::String helpKeyAt(juce::Point<float> local) const;
+    juce::String getTooltip() override;
 
     void paint(juce::Graphics&) override;
     void resized() override;

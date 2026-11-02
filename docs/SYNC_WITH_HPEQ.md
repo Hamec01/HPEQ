@@ -49,3 +49,8 @@ this module (as HamloComp / HamloUdarnik / HamloRedWall / HamloMag did) and reco
 
 - `DSP/HamloRevolution.*`: `listenTiming` (onsets at sample resolution, per 1/16 of the bar), `getTiming`.
 - `DSP/FxNodeProcessor.*`: `getRevolutionTiming`.
+
+## R6 (presets, painting, help) - changes to HPEQ's files
+
+- `UI/HamloRevolutionPanel.*`: `paintStep` and drag painting, the CURVE drawn on SHAPE rows, tooltips
+  (`UI/RevolutionHelp.*`). The 200 presets (`Core/RevolutionPresets.*`) are the plug-in's own programs.
