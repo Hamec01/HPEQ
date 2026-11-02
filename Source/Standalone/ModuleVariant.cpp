@@ -256,7 +256,9 @@ ModuleSpec makeRevolution()
                choice("motionOn", "Motion", 1, s::kMotionOn, { "Off", "On" }),
                choice("motionTarget", "Motion Target", 1, s::kMotionTarget, { "Volume", "Low Pass", "High Pass", "Width", "Crush" }),
                choice("timeStretch", "Stretch", 1, s::kTimeStretch, { "Tape", "Rhythm", "Clean" }),
-               choice("listen", "Listen", 0, kPageOnly, { "Off", "On" }) } };
+               choice("listen", "Listen", 0, kPageOnly, { "Off", "On" }),
+               // R1: which of the 8 scenes plays (automatable; the processor puts its pattern and lanes in the slot)
+               choice("scene", "Scene", 0, kPageOnly, { "1", "2", "3", "4", "5", "6", "7", "8" }) } };
 }
 
 float transformed(float value, ValueTransform transform) noexcept

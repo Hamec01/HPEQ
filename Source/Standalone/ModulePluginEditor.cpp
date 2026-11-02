@@ -143,8 +143,21 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
             auto* const page = p.get();
             p->onPatternChange = [this](const revolution::Pattern& pattern, juce::int64 seed, const revolution::Feel& feel, const juce::String&)
             {
-                processor.setRevolutionState({ pattern, feel, seed });
+                auto state = processor.getRevolutionState(); // the scene shown; its lanes stay
+                state.pattern = pattern;
+                state.feel = feel;
+                state.seed = seed;
+                processor.setRevolutionState(state);
             };
+            p->onLanesChange = [this](const revolution::Lanes& lanes, const juce::String&)
+            {
+                auto state = processor.getRevolutionState();
+                state.lanes = lanes;
+                processor.setRevolutionState(state);
+            };
+            p->onSceneSelect = [this](int scene) { setImmediate("scene", scene); };
+            p->onSceneCopyTo = [this](int target) { processor.setScene(target, processor.getRevolutionState()); };
+            p->onSceneClear = [this] { processor.clearScene(processor.currentScene()); };
             p->onUpgrade = [] {}; // the plug-in never runs the legacy M6 Monsta
             p->readStatus = [this]() -> HamloRevolutionPanel::Status
             {
@@ -166,6 +179,10 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
                 values.pattern = state.pattern;
                 values.feel = state.feel;
                 values.seed = state.seed;
+                values.lanes = state.lanes;
+                values.scene = processor.currentScene();
+                for (int s = 0; s < revolution::kScenes; ++s)
+                    values.sceneUsed[static_cast<size_t>(s)] = processor.isSceneUsed(s);
                 values.on = processor.isModuleOn();
                 page->setValues(values);
             };

@@ -42,6 +42,10 @@ public:
         juce::int64 seed = 1;
         bool on = true;
         bool legacy = false; // the slot still runs the M6 Monsta (no "mode")
+        // R1 (HamloRevolution plug-in): the lanes of the scene shown, which scene, which scenes are edited
+        revolution::Lanes lanes {};
+        int scene = 0;
+        std::array<bool, revolution::kScenes> sceneUsed { true };
     };
     struct Status
     {
@@ -67,6 +71,11 @@ public:
     // A new pattern (and seed), one undo step named `what`.
     std::function<void(const revolution::Pattern&, juce::int64 seed, const revolution::Feel&, const juce::String& what)> onPatternChange;
     std::function<void()> onUpgrade;
+    // R1: a lane's settings or steps 17 .. 32 changed; SCENE chosen / the scene shown copied to another / cleared.
+    std::function<void(const revolution::Lanes&, const juce::String& what)> onLanesChange;
+    std::function<void(int scene)> onSceneSelect;
+    std::function<void(int target)> onSceneCopyTo;
+    std::function<void()> onSceneClear;
     std::function<Status()> readStatus; // polled at 30 Hz
 
     static double defaultFor(Param);
@@ -82,6 +91,13 @@ public:
     static bool laneLocked(const revolution::Pattern&, int engine) noexcept;
     void clickStep(int engine, int step, bool shift = false);
     void setMotionLevel(int step, int level);
+    // R1, as the menus do (tests): lane settings, a step's probability code (step 0 .. 31), the cells' half, SCENE.
+    void setLaneLength(int engine, int length);
+    void setLaneRate(int engine, int rate);
+    void setLaneCondition(int engine, int condition);
+    void setStepProbability(int engine, int step, int code);
+    void showSecondHalf(int engine, bool);
+    void selectScene(int scene);
     void settleStatus(const Status&);
 
     void paint(juce::Graphics&) override;
@@ -107,6 +123,11 @@ private:
     void generateWith(juce::int64 seed, const juce::String& what);
     void showStepMenu(int engine, int step);
     void showPlateMenu(int engine);
+    void showSceneMenu();
+    void changeLanes(const revolution::Lanes&, const juce::String& what);
+    int laneLength(int engine) const noexcept;
+    int cellIndex(int engine, int cell) const noexcept { return cell + (secondHalf[static_cast<size_t>(engine)] ? revolution::kSteps : 0); }
+    int cellValue(int engine, int index) const noexcept;
     void renderStatic(juce::Graphics&) const;
     void drawSelectors(juce::Graphics&) const;
     void drawKnobs(juce::Graphics&) const;
@@ -123,5 +144,6 @@ private:
     double dragStartNorm = 0.0;
     float dragStartY = 0.0f;
     int generateFlash = 0;
+    std::array<bool, revolution::kEngines> secondHalf {}; // the cells show steps 17 .. 32
 };
 } // namespace hpeq::ui

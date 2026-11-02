@@ -66,6 +66,44 @@ double shapeAt(int shape, int step)
 }
 } // namespace
 
+const char* laneConditionName(int condition)
+{
+    static constexpr const char* names[kLaneConditions] { "ALWAYS", "1:2", "2:2", "1:4", "4:4", "8:8", "NOT 1:4" };
+    return names[condition < 0 || condition >= kLaneConditions ? 0 : condition];
+}
+
+juce::String laneToText(const Lane& lane)
+{
+    juce::String extra, codes;
+    for (auto v : lane.extra)
+        extra << juce::String::toHexString(v & 15);
+    for (auto v : lane.probability)
+        codes << juce::String::toHexString(v & 15);
+    return juce::String(lane.length) + "," + juce::String(lane.rate) + "," + juce::String(lane.condition) + "," + extra + "," + codes;
+}
+
+Lane laneFromText(const juce::String& text)
+{
+    Lane lane;
+    const auto parts = juce::StringArray::fromTokens(text, ",", "");
+    if (parts.size() != 5)
+        return lane;
+    lane.length = juce::jlimit(0, kMaxLaneLength, parts[0].getIntValue());
+    lane.rate = juce::jlimit(0, 8, parts[1].getIntValue());
+    lane.condition = juce::jlimit(0, kLaneConditions - 1, parts[2].getIntValue());
+    for (int i = 0; i < kSteps && i < parts[3].length(); ++i)
+        lane.extra[static_cast<size_t>(i)] = static_cast<std::uint8_t>(juce::CharacterFunctions::getHexDigitValue(parts[3][i]) & 15);
+    for (int i = 0; i < 2 * kSteps && i < parts[4].length(); ++i)
+        lane.probability[static_cast<size_t>(i)] = static_cast<std::uint8_t>(juce::jlimit(0, kProbabilityCodes - 1, juce::CharacterFunctions::getHexDigitValue(parts[4][i])));
+    return lane;
+}
+
+const char* laneRateName(int rate)
+{
+    static constexpr const char* names[9] { "FOLLOW", "1/4", "1/8", "1/16", "1/32", "1/4T", "1/8T", "1/16T", "1/32T" };
+    return names[rate < 0 || rate > 8 ? 0 : rate];
+}
+
 const char* orderName(int order)
 {
     static constexpr const char* names[kOrders] { "T-G-M", "T-M-G", "G-T-M", "G-M-T", "M-T-G", "M-G-T" };

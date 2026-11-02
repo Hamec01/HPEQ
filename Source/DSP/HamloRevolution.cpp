@@ -220,6 +220,8 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
     bool changed = false;
     for (int i : formula)
         changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
+    for (int i = slot::kLaneBase; i < slot::kLaneBase + 3 * slot::kLaneStride; ++i)
+        changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
     for (int i = 0; i < 4; ++i)
         changed = changed || v[static_cast<size_t>(slot::kTimePattern + i)] != lastValues[static_cast<size_t>(slot::kTimePattern + i)]
                   || v[static_cast<size_t>(slot::kGlitchPattern + i)] != lastValues[static_cast<size_t>(slot::kGlitchPattern + i)];
@@ -251,6 +253,24 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
             patternQuads[static_cast<size_t>(4 * e + q)] = v[b + 3 + static_cast<size_t>(q)];
     }
     stepQ = freeMode ? 1.0 : kBeats[grid] * (triplet ? 2.0 / 3.0 : 1.0);
+    for (int e = 0; e < 3; ++e)
+    {
+        const auto b = static_cast<size_t>(slot::kLaneBase + e * slot::kLaneStride);
+        const auto le = static_cast<size_t>(e);
+        laneLength[le] = std::clamp(static_cast<int>(std::lround(v[b + slot::kLaneLength])), 0, 2 * rev::kSteps);
+        const int rate = std::clamp(static_cast<int>(std::lround(v[b + slot::kLaneRate])), 0, 8);
+        laneQ[le] = rate == 0 || freeMode ? stepQ : kBeats[(rate - 1) % 4] * (rate > 4 ? 2.0 / 3.0 : 1.0);
+        laneCondition[le] = std::clamp(static_cast<int>(std::lround(v[b + slot::kLaneCondition])), 0, rev::kLaneConditions - 1);
+        bool chance = false;
+        for (int q = 0; q < 4; ++q)
+            extraQuads[4 * le + static_cast<size_t>(q)] = v[b + slot::kLaneSteps + static_cast<size_t>(q)];
+        for (int q = 0; q < 8; ++q)
+        {
+            probabilityQuads[8 * le + static_cast<size_t>(q)] = v[b + slot::kLaneProbability + static_cast<size_t>(q)];
+            chance = chance || v[b + slot::kLaneProbability + static_cast<size_t>(q)] != 0.0f;
+        }
+        laneChance[le] = chance;
+    }
     wantedOrder = std::clamp(static_cast<int>(std::lround(v[slot::kRevOrder])), 0, rev::kOrders - 1);
     if (fresh)
     {
@@ -304,30 +324,43 @@ void RevolutionEngine::syncClock(const FxSlotParams&, const Transport& transport
 }
 
 // ------------------------------------------------------------------------------------------ grid
-double RevolutionEngine::stepStartQ(long long k) const noexcept
+double RevolutionEngine::stepStartQ(long long k, double sq) const noexcept
 {
-    const double pair = 2.0 * stepQ;
+    const double pair = 2.0 * sq;
     double start = static_cast<double>(floorDiv(k, 2)) * pair + ((k & 1) != 0 ? pair * swing : 0.0);
     if (humanize > 0.0)
-        start += humanize * 0.12 * stepQ * (2.0 * unitHash(humanSeed, k) - 1.0);
+        start += humanize * 0.12 * sq * (2.0 * unitHash(humanSeed, k) - 1.0);
     return start;
 }
 
-RevolutionEngine::Step RevolutionEngine::stepAt(double q) const noexcept
+RevolutionEngine::Step RevolutionEngine::stepAt(double q, double sq) const noexcept
 {
-    const double pair = 2.0 * stepQ, qe = q + kEps * dq;
+    const double pair = 2.0 * sq, qe = q + kEps * dq;
     const auto p = static_cast<long long>(std::floor(qe / pair));
     long long k = 2 * p + (qe - static_cast<double>(p) * pair >= pair * swing ? 1 : 0);
-    while (qe < stepStartQ(k))
+    while (qe < stepStartQ(k, sq))
         --k;
-    while (qe >= stepStartQ(k + 1))
+    while (qe >= stepStartQ(k + 1, sq))
         ++k;
-    return { k, stepStartQ(k), stepStartQ(k + 1) };
+    return { k, stepStartQ(k, sq), stepStartQ(k + 1, sq) };
 }
 
 int RevolutionEngine::value(int engine, long long k) const noexcept
 {
-    const int v = rev::stepValue(&patternQuads[static_cast<size_t>(4 * engine)], wrap(k, steps));
+    const auto le = static_cast<size_t>(engine);
+    const int length = laneSteps(engine);
+    const int index = wrap(k, length);
+    // R1: the lane's condition (per cycle of the lane, counted from bar 1) and the step's probability
+    if (laneCondition[le] != 0 && !rev::laneConditionPasses(laneCondition[le], floorDiv(k, length)))
+        return 0;
+    if (laneChance[le])
+    {
+        const int code = rev::stepValue(&probabilityQuads[8 * le], index);
+        if (code != 0 && unitHash(humanSeed ^ (0x9E3779B9u * static_cast<std::uint32_t>(engine + 1)), k) >= rev::laneProbability(code))
+            return 0;
+    }
+    const int v = index < rev::kSteps ? rev::stepValue(&patternQuads[4 * le], index)
+                                      : rev::stepValue(&extraQuads[4 * le], index - rev::kSteps);
     if (engine == rev::Time)
         return v < rev::kTimeActions ? v : 0;
     if (engine == rev::Glitch)
@@ -371,7 +404,9 @@ RevolutionEngine::Segment RevolutionEngine::segmentFor(int engine, double q) con
     Segment s;
     s.valid = true;
     s.stamp = stamp;
-    const auto st = stepAt(q);
+    const double sq = laneQ[static_cast<size_t>(engine)];
+    const int length = laneSteps(engine);
+    const auto st = stepAt(q, sq);
     s.startN = sampleOf(st.start);
     s.endN = sampleOf(st.end);
     const int a = value(engine, st.k);
@@ -379,15 +414,15 @@ RevolutionEngine::Segment RevolutionEngine::segmentFor(int engine, double q) con
         return s;
 
     long long kStart = st.k, kEnd = st.k + 1;
-    while (wrap(kStart, steps) != 0 && value(engine, kStart - 1) == a)
+    while (wrap(kStart, length) != 0 && value(engine, kStart - 1) == a)
         --kStart;
-    while (wrap(kEnd, steps) != 0 && value(engine, kEnd) == a)
+    while (wrap(kEnd, length) != 0 && value(engine, kEnd) == a)
         ++kEnd;
     const auto capacity = static_cast<long long>(tapes[static_cast<size_t>(engine)].size) - 8;
     for (int attempt = 0; attempt < 2; ++attempt)
     {
-        const double b = sampleOf(stepStartQ(kStart)), end = sampleOf(stepStartQ(kEnd));
-        const double wStep = sampleOf(stepStartQ(kStart + 1)) - b;
+        const double b = sampleOf(stepStartQ(kStart, sq)), end = sampleOf(stepStartQ(kEnd, sq));
+        const double wStep = sampleOf(stepStartQ(kStart + 1, sq)) - b;
         long long loop = 0;
         if (engine == rev::Time && a == rev::Freeze)
             loop = std::max(16LL, std::llround(wStep / static_cast<double>(1 << (1 + std::lround((1.0 - depth[0]) * 3.0)))));
@@ -1035,7 +1070,7 @@ double RevolutionEngine::motionLevel(double q) noexcept
 {
     if (!motionStepValid || motionStamp != stamp || q + kEps * dq >= motionStep.end || q + kEps * dq < motionStep.start)
     {
-        motionStep = stepAt(q);
+        motionStep = stepAt(q, laneQ[rev::Motion]);
         motionStepValid = true;
         motionStamp = stamp;
     }

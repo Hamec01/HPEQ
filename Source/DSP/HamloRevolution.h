@@ -115,8 +115,11 @@ private:
     void readParams(const FxSlotParams&) noexcept;
     void syncClock(const FxSlotParams&, const Transport&, int blockOffset) noexcept;
     void newEpoch() noexcept;
-    double stepStartQ(long long k) const noexcept;
-    Step stepAt(double q) const noexcept;
+    double stepStartQ(long long k, double sq) const noexcept;
+    Step stepAt(double q, double sq) const noexcept;
+    double stepStartQ(long long k) const noexcept { return stepStartQ(k, stepQ); }
+    Step stepAt(double q) const noexcept { return stepAt(q, stepQ); }
+    int laneSteps(int engine) const noexcept { return laneLength[static_cast<size_t>(engine)] > 0 ? laneLength[static_cast<size_t>(engine)] : steps; }
     double sampleOf(double q) const noexcept { return static_cast<double>(n0) + (q - q0) / dq; }
     int value(int engine, long long k) const noexcept;
     Segment segmentFor(int engine, double q) const noexcept;
@@ -165,7 +168,7 @@ private:
     std::array<std::atomic<float>, kFeelSteps> feel {};
 
     // parameters of the current block
-    std::array<float, 48> lastValues {};
+    std::array<float, 112> lastValues {};
     unsigned stamp = 0;
     int steps = 16, grid = 2, motionTarget = 0;
     bool triplet = false, freeMode = false;
@@ -174,6 +177,12 @@ private:
     std::array<bool, 3> on { true, true, true };
     std::array<double, 3> mixTarget { 1.0, 1.0, 1.0 }, depth { 1.0, 1.0, 0.6 };
     std::array<float, 4 * 3> patternQuads {};
+    // R1 lanes (0 = as before): length, the lane's step in quarter notes, condition, steps 17 .. 32, probability codes
+    std::array<int, 3> laneLength {}, laneCondition {};
+    std::array<double, 3> laneQ { 0.25, 0.25, 0.25 };
+    std::array<float, 4 * 3> extraQuads {};
+    std::array<float, 8 * 3> probabilityQuads {};
+    std::array<bool, 3> laneChance {}; // any probability code set
     std::array<int, 3> order { 0, 1, 2 };
     int activeOrder = 0, wantedOrder = 0;
     double orderGain = 1.0;

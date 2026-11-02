@@ -59,14 +59,23 @@ public:
 
     // HamloRevolution: the pattern, the LISTEN feel it was generated from and the seed - the module's state in HPEQ
     // (FxSlotState keys timeA .. revSeed), here the plug-in's (saved in its state, set by the page, made by programs).
+    // R1: a scene = the pattern, feel, seed and the lanes' settings. 8 scenes; the SCENE parameter picks the one that
+    // plays (and that the page shows and edits). A scene never edited is a copy of scene 1.
     struct RevolutionState
     {
         revolution::Pattern pattern;
         revolution::Feel feel {};
         juce::int64 seed = 1;
+        revolution::Lanes lanes {};
     };
-    RevolutionState getRevolutionState() const;
-    void setRevolutionState(const RevolutionState&);
+    RevolutionState getRevolutionState() const;          // the current scene
+    void setRevolutionState(const RevolutionState&);     // the current scene
+    int currentScene() const noexcept;
+    RevolutionState getScene(int) const;
+    void setScene(int, const RevolutionState&);
+    bool isSceneUsed(int) const;
+    void clearScene(int);                                // back to following scene 1 (scene 1: no change)
+    void resetScenes(const RevolutionState&);            // scene 1 = this, the others follow it (a program)
 
     // CONNECT TO HPDG (docs/HPDG_LINK.md): the link to a running HPDG; on / off and the HPDG followed are saved.
     hamlo::link::Client& getHpdgLink() noexcept { return hpdgLink; }
@@ -91,9 +100,13 @@ private:
     std::atomic<double> hostBpm { 120.0 };
 
     juce::CriticalSection revolutionLock; // message thread and the host's state calls; never the audio thread
-    RevolutionState revolutionState;
-    std::array<std::atomic<float>, 4 * revolution::kEngines> revolutionQuads {}; // packQuad per engine
-    std::atomic<float> revolutionHumanSeed { 1.0f };
+    std::array<RevolutionState, revolution::kScenes> scenes;
+    std::array<bool, revolution::kScenes> sceneUsed { true };
+    void publishScene(int) noexcept; // lock held
+    // per scene, for the audio thread: 12 pattern quads, the humanize seed, 3 x 15 lane floats
+    static constexpr int kSceneFloats = 4 * revolution::kEngines + 1 + revolution::kEngines * revolution::kLaneFloats;
+    std::array<std::array<std::atomic<float>, kSceneFloats>, revolution::kScenes> sceneSlots {};
+    int sceneParameterIndex = -1;
     hamlo::link::Client hpdgLink;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulePluginProcessor)

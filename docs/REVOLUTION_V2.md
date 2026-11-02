@@ -106,6 +106,39 @@ The generator's genre rules (first version; every rule is a test in the lab):
 7. **R6 - ADVANCED page** (grid painting, curve editor, lanes), help texts, 200 genre presets (groups: Drum Bus, Hats /
    Percussion, Loops / Samples, Vocals, Transitions / Fills, Master FX), lab "after", validators, installer, report.
 
+## 6. R1 as designed (2026-11-02, before the code)
+
+Owner: "R1 lanes first". R1 grows the three engines into lanes **inside the HPEQ engine** (TIME, GLITCH, MOTION keep
+their DSP); the 3-band split is R2 (with SHAPE). Every new setting has a default that means "as before", so the
+Legacy scene (all defaults) must give R0's output bit for bit (Tests/GoldenTests.cpp: R0's hashes, recorded first).
+
+Per lane (TIME, GLITCH, MOTION):
+- **LENGTH**: FOLLOW (= STEPS, legacy) or 1 .. 32 steps; lanes of different lengths run as a polymeter, each from bar 1.
+  Steps 17 .. 32 are their own pattern values (4 more packed quads per lane).
+- **RATE**: FOLLOW (= GRID / TRIPLET, legacy) or 1/4, 1/8, 1/16, 1/32 and their triplets. Swing and humanize apply
+  to every lane on its own grid. In FREE mode lanes follow (free steps have no note value).
+- **CONDITION** (per pattern cycle of the lane, counted from bar 1): ALWAYS, 1:2, 2:2, 1:4, 4:4 (the fill cycle),
+  8:8, NOT 1:4. A cycle that does not pass plays through (dry for that engine).
+- **PROBABILITY** per step: 100 % (legacy), 88, 75, 63, 50, 38, 25, 13 %. The draw is a hash of (seed, lane, absolute
+  step), so it differs per cycle, is the same on every playback and does not depend on the host block size.
+
+Engine slot: `FxSlotParams::values` grows from 48 to 112 floats in this repository (HPEQ keeps 48); new indices
+48 .. 92: per lane length, rate, condition, 4 quads for steps 17 .. 32, 8 quads of probability codes (4 bits per step,
+0 = 100 %).
+
+**Scenes**: 8 per instance (pattern, feel, seed and the lane settings each), chosen by the automatable **SCENE**
+parameter (1 .. 8; it changes at once, the engine crossfades as for any pattern edit). Scene 1 is what R0 had; GENERATE
+and every edit act on the scene shown. A new scene is a copy of scene 1 until edited (COPY / CLEAR on the page).
+
+Page (until R6 redraws it): right click on a lane plate - LENGTH, RATE, CONDITION, "show steps 17 - 32"; right click on
+a step - PROBABILITY; a SCENE selector (1 .. 8) with COPY TO / CLEAR in the top row.
+
+R1 targets: V1 (the slot of every program = HPEQ's; GoldenTests: R0's hashes, scenes and lanes at defaults), V2 (a lane
+at 1/8 with a 1/16 grid: the GLITCH gap starts within 1 sample of the lane's step boundary, swing included), V3 (blocks
+1 / 64 / 127 / 4096 bit-identical with lengths 3 / 5 / 32, rates, conditions and probabilities on), V6 (latency 0).
+Lane checks: length 3 repeats every 3 steps; 1:2 silences the even cycles; 50 % keeps 40 .. 60 % of the events over
+64 cycles and 100 % all of them; SCENE 2 plays scene 2's pattern; scenes and lanes survive the state.
+
 ## Sources
 
 1. [Sound On Sound: ShaperBox 3](https://www.soundonsound.com/reviews/cableguys-shaperbox-3), [MusicRadar: ShaperBox 3](https://www.musicradar.com/reviews/cableguys-shaperbox-3), [ShaperBox 3 manual](https://www.cableguys.com/downloads/Cableguys-ShaperBox-3-Manual.pdf?v=3.3.1)

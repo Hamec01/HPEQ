@@ -31,7 +31,7 @@ struct FxSlotParams
     bool active = false;
     FxType type = FxType::Gain;
     float mix = 1.0f;
-    std::array<float, 48> values {};
+    std::array<float, 112> values {}; // HamloRevolution R1: 48 in HPEQ; 48 .. 92 = the lanes (slot::kLane*)
 };
 
 namespace slot
@@ -87,6 +87,11 @@ constexpr int kDivision = 0, kChance = 1, kSeed = 2, kCrushBits = 3, kGateDepth 
               kMotionTarget = 37, kMotionSmooth = 38, kRevFadeMs = 39,
               // pass 10b: TIME stretch 0 TAPE / 1 RHYTHM (WSOLA) / 2 CLEAN (phase vocoder); smart join 0/1 (C-ATD)
               kTimeStretch = 40, kRevSmartJoin = 41;
+// HamloRevolution R1 (this repository only): per lane (TIME, GLITCH, MOTION) from kLaneBase + lane * kLaneStride:
+// length 0 = follow STEPS / 1 .. 32, rate 0 = follow GRID / 1 .. 8 (1/4, 1/8, 1/16, 1/32, then their triplets),
+// condition 0 .. 6 (revolution::laneConditionName), steps 17 .. 32 as 4 packed quads, the probability codes of
+// steps 1 .. 32 as 8 packed quads (4 bits, 0 = 100 %). All 0 = the lane as before R1.
+constexpr int kLaneBase = 48, kLaneStride = 15, kLaneLength = 0, kLaneRate = 1, kLaneCondition = 2, kLaneSteps = 3, kLaneProbability = 7;
 // Stereo (insert; needs a stereo work domain)
 constexpr int kStereoWidth = 0, kStereoBalance = 1,
               // HamloShirota (module pass 8): style 0 EDINSTVO / 1 PROSTOR / 2 KOSMOS; stereoize 0..1; space 0..1;

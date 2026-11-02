@@ -269,8 +269,112 @@ void HamloRevolutionPanel::pressLaneGenerate(int engine)
     generateFlash = 10;
 }
 
-void HamloRevolutionPanel::clickStep(int engine, int step, bool shift)
+void HamloRevolutionPanel::changeLanes(const rev::Lanes& lanes, const juce::String& what)
 {
+    values.lanes = lanes;
+    if (onLanesChange)
+        onLanesChange(lanes, what);
+    repaint();
+}
+
+int HamloRevolutionPanel::laneLength(int engine) const noexcept
+{
+    const int length = values.lanes[static_cast<size_t>(engine)].length;
+    return length > 0 ? length : juce::roundToInt(values.knobs[Steps]);
+}
+
+int HamloRevolutionPanel::cellValue(int engine, int index) const noexcept
+{
+    const auto e = static_cast<size_t>(engine);
+    return index < rev::kSteps ? values.pattern.steps[e][static_cast<size_t>(index)] : values.lanes[e].extra[static_cast<size_t>(index - rev::kSteps)];
+}
+
+void HamloRevolutionPanel::setLaneLength(int engine, int length)
+{
+    auto l = values.lanes;
+    l[static_cast<size_t>(engine)].length = juce::jlimit(0, rev::kMaxLaneLength, length);
+    if (laneLength(engine) <= rev::kSteps && l[static_cast<size_t>(engine)].length <= rev::kSteps)
+        secondHalf[static_cast<size_t>(engine)] = false;
+    changeLanes(l, juce::String(rev::engineName(engine)) + " length");
+}
+
+void HamloRevolutionPanel::setLaneRate(int engine, int rate)
+{
+    auto l = values.lanes;
+    l[static_cast<size_t>(engine)].rate = juce::jlimit(0, 8, rate);
+    changeLanes(l, juce::String(rev::engineName(engine)) + " rate");
+}
+
+void HamloRevolutionPanel::setLaneCondition(int engine, int condition)
+{
+    auto l = values.lanes;
+    l[static_cast<size_t>(engine)].condition = juce::jlimit(0, rev::kLaneConditions - 1, condition);
+    changeLanes(l, juce::String(rev::engineName(engine)) + " condition");
+}
+
+void HamloRevolutionPanel::setStepProbability(int engine, int step, int code)
+{
+    auto l = values.lanes;
+    l[static_cast<size_t>(engine)].probability[static_cast<size_t>(juce::jlimit(0, rev::kMaxLaneLength - 1, step))]
+        = static_cast<std::uint8_t>(juce::jlimit(0, rev::kProbabilityCodes - 1, code));
+    changeLanes(l, "Step probability");
+}
+
+void HamloRevolutionPanel::showSecondHalf(int engine, bool show)
+{
+    secondHalf[static_cast<size_t>(engine)] = show;
+    repaint();
+}
+
+void HamloRevolutionPanel::selectScene(int scene)
+{
+    values.scene = juce::jlimit(0, rev::kScenes - 1, scene);
+    secondHalf = {};
+    if (onSceneSelect)
+        onSceneSelect(values.scene);
+    repaint();
+}
+
+void HamloRevolutionPanel::showSceneMenu()
+{
+    juce::PopupMenu menu, copyTo;
+    menu.addSectionHeader("Scene (the SCENE parameter)");
+    for (int s = 0; s < rev::kScenes; ++s)
+        menu.addItem(500 + s, "Scene " + juce::String(s + 1) + (s > 0 && !values.sceneUsed[static_cast<size_t>(s)] ? "  (= scene 1)" : ""), true, s == values.scene);
+    for (int s = 0; s < rev::kScenes; ++s)
+        if (s != values.scene)
+            copyTo.addItem(520 + s, "Scene " + juce::String(s + 1));
+    menu.addSeparator();
+    menu.addSubMenu("Copy this scene to", copyTo);
+    menu.addItem(540, "Clear this scene (follow scene 1)", values.scene > 0 && values.sceneUsed[static_cast<size_t>(values.scene)]);
+    juce::Component::SafePointer<HamloRevolutionPanel> self(this);
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self](int result)
+    {
+        if (self == nullptr || result <= 0)
+            return;
+        if (result >= 500 && result < 500 + rev::kScenes)
+            self->selectScene(result - 500);
+        else if (result >= 520 && result < 520 + rev::kScenes && self->onSceneCopyTo)
+            self->onSceneCopyTo(result - 520);
+        else if (result == 540 && self->onSceneClear)
+            self->onSceneClear();
+    });
+}
+
+void HamloRevolutionPanel::clickStep(int engine, int cell, bool shift)
+{
+    const int index = cellIndex(engine, cell);
+    if (index >= rev::kSteps)
+    {
+        if (shift)
+            return; // GENERATE writes steps 1 .. 16 only: there is nothing to lock on 17 .. 32
+        auto l = values.lanes;
+        auto& v = l[static_cast<size_t>(engine)].extra[static_cast<size_t>(index - rev::kSteps)];
+        v = static_cast<std::uint8_t>((v + 1) % rev::numValues(engine));
+        changeLanes(l, "Step");
+        return;
+    }
+    const int step = index;
     auto p = values.pattern;
     const auto e = static_cast<size_t>(engine);
     if (shift)
@@ -284,8 +388,19 @@ void HamloRevolutionPanel::clickStep(int engine, int step, bool shift)
     changePattern(p, values.seed, "Step");
 }
 
-void HamloRevolutionPanel::setMotionLevel(int step, int level)
+void HamloRevolutionPanel::setMotionLevel(int cell, int level)
 {
+    const int step = cellIndex(rev::Motion, cell);
+    if (step >= rev::kSteps)
+    {
+        auto l = values.lanes;
+        auto& v = l[rev::Motion].extra[static_cast<size_t>(step - rev::kSteps)];
+        if (v == static_cast<std::uint8_t>(level))
+            return;
+        v = static_cast<std::uint8_t>(juce::jlimit(0, rev::kMotionLevels - 1, level));
+        changeLanes(l, "Motion level");
+        return;
+    }
     auto p = values.pattern;
     auto& v = p.steps[rev::Motion][static_cast<size_t>(step)];
     if (v == static_cast<std::uint8_t>(level))
@@ -458,7 +573,7 @@ void HamloRevolutionPanel::drawTop(juce::Graphics& g) const
 
     const int steps = juce::roundToInt(values.knobs[Steps]);
     static constexpr const char* grids[] { "1/4", "1/8", "1/16", "1/32" };
-    juce::String line1 = "STEP " + (live.step >= 0 ? juce::String(live.step + 1).paddedLeft('0', 2) : juce::String("--")) + "/"
+    juce::String line1 = "S" + juce::String(values.scene + 1) + " STEP " + (live.step >= 0 ? juce::String(live.step + 1).paddedLeft('0', 2) : juce::String("--")) + "/"
                          + juce::String(steps) + "  " + rev::orderName(values.switches[Order]);
     juce::String line2;
     if (values.legacy)
@@ -502,14 +617,18 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
         lever(g, onLever(e), 0.0f, 0.75f, engineOn ? LeverPosition::Up : LeverPosition::Down);
         lamp(g, onLamp(e), engineOn && values.on, 0.28f, inkFor(e));
         const auto ink = inkFor(e);
+        const auto& lane = values.lanes[static_cast<size_t>(e)];
+        const bool follows = lane.length == 0 && lane.rate == 0 && lane.condition == 0;
+        const int length = lane.length > 0 ? lane.length : steps;
         for (int s = 0; s < rev::kSteps; ++s)
         {
             const auto r = cellRect(e, s);
-            const bool active = s < steps, here = active && s == live.step;
-            const int v = values.pattern.steps[static_cast<size_t>(e)][static_cast<size_t>(s)];
+            const int index = cellIndex(e, s);
+            const bool active = index < length, here = active && follows && index == live.step;
+            const int v = cellValue(e, index);
             g.setColour(here ? juce::Colour(0xff17231b) : juce::Colour(0xff0a0d0b));
             g.fillRoundedRectangle(r, 4.0f);
-            if (e == rev::Time)
+            if (e == rev::Time && index < rev::kSteps)
             {
                 // what LISTEN hears on this step (live), or the snapshot the pattern was made from
                 const float f = values.switches[Listen] != 0 ? live.feel[static_cast<size_t>(s)] : values.feel[static_cast<size_t>(s)] / 15.0f;
@@ -552,10 +671,22 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
                 g.setColour(ink.withAlpha(0.25f * alpha));
                 g.fillEllipse(r.getCentreX() - 1.8f, r.getCentreY() - 1.8f, 3.6f, 3.6f);
             }
-            if (((values.pattern.locks[static_cast<size_t>(e)] >> s) & 1) != 0)
+            if (index < rev::kSteps && ((values.pattern.locks[static_cast<size_t>(e)] >> index) & 1) != 0)
             {
                 g.setColour(juce::Colour(0xffff3b2d));
                 g.fillEllipse(r.getRight() - 10.0f, r.getY() + 4.0f, 6.0f, 6.0f);
+            }
+            if (const int code = lane.probability[static_cast<size_t>(index)]; code > 0 && active)
+            {
+                g.setFont(monoFont(10.0f));
+                g.setColour(ink.withAlpha(0.8f * alpha));
+                g.drawText(juce::String(juce::roundToInt(100.0 * rev::laneProbability(code))) + "%", r.reduced(3.0f, 2.0f), juce::Justification::bottomLeft);
+            }
+            if (s == 0 && secondHalf[static_cast<size_t>(e)])
+            {
+                g.setFont(monoFont(10.0f));
+                g.setColour(ink.withAlpha(0.8f));
+                g.drawText("17", r.reduced(3.0f, 2.0f), juce::Justification::topLeft);
             }
             if (here)
             {
@@ -656,14 +787,19 @@ bool HamloRevolutionPanel::stepAt(juce::Point<float> d, int& engine, int& step) 
 
 void HamloRevolutionPanel::showStepMenu(int engine, int step)
 {
-    juce::PopupMenu menu;
-    const int current = values.pattern.steps[static_cast<size_t>(engine)][static_cast<size_t>(step)];
+    juce::PopupMenu menu, chance;
+    const int index = cellIndex(engine, step);
+    const int current = cellValue(engine, index);
     for (int v = 0; v < rev::numValues(engine); ++v)
         menu.addItem(1 + v, rev::valueName(engine, v), true, v == current);
     menu.addSeparator();
-    menu.addItem(100, "Lock step", true, ((values.pattern.locks[static_cast<size_t>(engine)] >> step) & 1) != 0);
+    const int code = values.lanes[static_cast<size_t>(engine)].probability[static_cast<size_t>(index)];
+    for (int c = 0; c < rev::kProbabilityCodes; ++c)
+        chance.addItem(300 + c, juce::String(juce::roundToInt(100.0 * rev::laneProbability(c))) + " %", true, c == code);
+    menu.addSubMenu("Probability", chance);
+    menu.addItem(100, "Lock step", index < rev::kSteps, index < rev::kSteps && ((values.pattern.locks[static_cast<size_t>(engine)] >> index) & 1) != 0);
     juce::Component::SafePointer<HamloRevolutionPanel> self(this);
-    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self, engine, step](int result)
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self, engine, step, index](int result)
     {
         if (self == nullptr || result <= 0)
             return;
@@ -672,8 +808,20 @@ void HamloRevolutionPanel::showStepMenu(int engine, int step)
             self->clickStep(engine, step, true);
             return;
         }
+        if (result >= 300)
+        {
+            self->setStepProbability(engine, index, result - 300);
+            return;
+        }
+        if (index >= rev::kSteps)
+        {
+            auto l = self->values.lanes;
+            l[static_cast<size_t>(engine)].extra[static_cast<size_t>(index - rev::kSteps)] = static_cast<std::uint8_t>(result - 1);
+            self->changeLanes(l, "Step");
+            return;
+        }
         auto p = self->values.pattern;
-        p.steps[static_cast<size_t>(engine)][static_cast<size_t>(step)] = static_cast<std::uint8_t>(result - 1);
+        p.steps[static_cast<size_t>(engine)][static_cast<size_t>(index)] = static_cast<std::uint8_t>(result - 1);
         self->changePattern(p, self->values.seed, "Step");
     });
 }
@@ -692,11 +840,35 @@ void HamloRevolutionPanel::showPlateMenu(int engine)
     menu.addItem(200, "Clear unlocked steps");
     menu.addItem(201, "Lock all steps");
     menu.addItem(202, "Unlock all steps");
+    // R1: the lane
+    const auto& lane = values.lanes[e];
+    juce::PopupMenu length, rate, condition;
+    length.addItem(400, "FOLLOW STEPS", true, lane.length == 0);
+    for (int l = 1; l <= rev::kMaxLaneLength; ++l)
+        length.addItem(400 + l, juce::String(l), true, lane.length == l);
+    for (int r = 0; r <= 8; ++r)
+        rate.addItem(450 + r, r == 0 ? juce::String("FOLLOW GRID") : juce::String(rev::laneRateName(r)), true, lane.rate == r);
+    for (int c = 0; c < rev::kLaneConditions; ++c)
+        condition.addItem(470 + c, rev::laneConditionName(c), true, lane.condition == c);
+    menu.addSeparator();
+    menu.addSectionHeader("Lane");
+    menu.addSubMenu("Length", length);
+    menu.addSubMenu("Rate", rate);
+    menu.addSubMenu("Condition", condition);
+    menu.addItem(490, "Show steps 17 - 32", laneLength(engine) > rev::kSteps, secondHalf[e]);
     juce::Component::SafePointer<HamloRevolutionPanel> self(this);
-    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self, e](int result)
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self, e, engine](int result)
     {
         if (self == nullptr || result <= 0)
             return;
+        if (result >= 400 && result <= 400 + rev::kMaxLaneLength)
+            return self->setLaneLength(engine, result - 400);
+        if (result >= 450 && result <= 458)
+            return self->setLaneRate(engine, result - 450);
+        if (result >= 470 && result < 470 + rev::kLaneConditions)
+            return self->setLaneCondition(engine, result - 470);
+        if (result == 490)
+            return self->showSecondHalf(engine, !self->secondHalf[e]);
         auto p = self->values.pattern;
         juce::String what = "Pattern";
         if (result == 200)
@@ -770,6 +942,8 @@ void HamloRevolutionPanel::mouseDown(const juce::MouseEvent& e)
         if (plateRect(eng).contains(d))
             return showPlateMenu(eng);
     }
+    if (kStatusLcd.contains(d))
+        return showSceneMenu();
     if (kStretchWindow.contains(d))
         return setSwitch(Stretch, (values.switches[Stretch] + (e.mods.isPopupMenu() ? 2 : 1)) % 3);
     if (d.getDistanceFrom(kListen) <= 14.0f || juce::Rectangle<float>(kListen.x + 14.0f, kListen.y - 10.0f, 64.0f, 20.0f).contains(d))

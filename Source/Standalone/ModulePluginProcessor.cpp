@@ -29,26 +29,92 @@ ModulePluginProcessor::ModulePluginProcessor(ModuleKind moduleKind)
     }
     bypassParameter = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter("bypass"));
     jassert(bypassParameter != nullptr);
+    for (size_t i = 0; i < getSpec().parameters.size(); ++i)
+        if (getSpec().parameters[i].id == "scene")
+            sceneParameterIndex = static_cast<int>(i);
     if (kind == ModuleKind::Revolution) // as presetBaseModule: a Musical pattern from seed 1
-        setRevolutionState({ revolution::generate({}, 1, revolution::Musical), {}, 1 });
+        resetScenes({ revolution::generate({}, 1, revolution::Musical), {}, 1 });
+}
+
+int ModulePluginProcessor::currentScene() const noexcept
+{
+    if (sceneParameterIndex < 0)
+        return 0;
+    return juce::jlimit(0, revolution::kScenes - 1, juce::roundToInt(rawValues[static_cast<size_t>(sceneParameterIndex)]->load(std::memory_order_relaxed)));
 }
 
 ModulePluginProcessor::RevolutionState ModulePluginProcessor::getRevolutionState() const
 {
-    const juce::ScopedLock lock(revolutionLock);
-    return revolutionState;
+    return getScene(currentScene());
 }
 
 void ModulePluginProcessor::setRevolutionState(const RevolutionState& state)
 {
+    setScene(currentScene(), state);
+}
+
+ModulePluginProcessor::RevolutionState ModulePluginProcessor::getScene(int index) const
+{
     const juce::ScopedLock lock(revolutionLock);
-    revolutionState = state;
+    const auto i = static_cast<size_t>(juce::jlimit(0, revolution::kScenes - 1, index));
+    return scenes[sceneUsed[i] ? i : 0];
+}
+
+bool ModulePluginProcessor::isSceneUsed(int index) const
+{
+    const juce::ScopedLock lock(revolutionLock);
+    return sceneUsed[static_cast<size_t>(juce::jlimit(0, revolution::kScenes - 1, index))];
+}
+
+void ModulePluginProcessor::setScene(int index, const RevolutionState& state)
+{
+    const juce::ScopedLock lock(revolutionLock);
+    const int i = juce::jlimit(0, revolution::kScenes - 1, index);
+    scenes[static_cast<size_t>(i)] = state;
+    sceneUsed[static_cast<size_t>(i)] = true;
+    if (i == 0)
+        for (int s = 0; s < revolution::kScenes; ++s)
+            publishScene(s); // the scenes that follow scene 1 change with it
+    else
+        publishScene(i);
+}
+
+void ModulePluginProcessor::clearScene(int index)
+{
+    const juce::ScopedLock lock(revolutionLock);
+    const int i = juce::jlimit(0, revolution::kScenes - 1, index);
+    if (i == 0)
+        return;
+    sceneUsed[static_cast<size_t>(i)] = false;
+    publishScene(i);
+}
+
+void ModulePluginProcessor::resetScenes(const RevolutionState& first)
+{
+    const juce::ScopedLock lock(revolutionLock);
+    scenes = {};
+    sceneUsed = { true };
+    scenes[0] = first;
+    for (int s = 0; s < revolution::kScenes; ++s)
+        publishScene(s);
+}
+
+void ModulePluginProcessor::publishScene(int index) noexcept
+{
+    const auto& state = scenes[sceneUsed[static_cast<size_t>(index)] ? static_cast<size_t>(index) : 0];
+    auto& out = sceneSlots[static_cast<size_t>(index)];
     for (int e = 0; e < revolution::kEngines; ++e)
         for (int q = 0; q < 4; ++q)
-            revolutionQuads[static_cast<size_t>(4 * e + q)].store(revolution::packQuad(state.pattern.steps[static_cast<size_t>(e)], q),
-                                                                 std::memory_order_relaxed);
+            out[static_cast<size_t>(4 * e + q)].store(revolution::packQuad(state.pattern.steps[static_cast<size_t>(e)], q), std::memory_order_relaxed);
     // LayerSnapshot.cpp: the seed's low 24 bits (exact in a float)
-    revolutionHumanSeed.store(static_cast<float>(static_cast<std::uint64_t>(state.seed) & 0xffffffu), std::memory_order_relaxed);
+    out[12].store(static_cast<float>(static_cast<std::uint64_t>(state.seed) & 0xffffffu), std::memory_order_relaxed);
+    for (int e = 0; e < revolution::kEngines; ++e)
+    {
+        float lane[revolution::kLaneFloats] {};
+        revolution::packLane(state.lanes[static_cast<size_t>(e)], lane);
+        for (int f = 0; f < revolution::kLaneFloats; ++f)
+            out[static_cast<size_t>(13 + e * revolution::kLaneFloats + f)].store(lane[f], std::memory_order_relaxed);
+    }
 }
 
 void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSize)
@@ -87,10 +153,13 @@ dsp::FxSlotParams ModulePluginProcessor::currentSlot(bool active) const noexcept
     if (kind == ModuleKind::Revolution)
     {
         static constexpr int base[revolution::kEngines] { dsp::slot::kTimeOn, dsp::slot::kGlitchOn, dsp::slot::kMotionOn };
+        const auto& scene = sceneSlots[static_cast<size_t>(currentScene())];
         for (int e = 0; e < revolution::kEngines; ++e)
             for (int q = 0; q < 4; ++q)
-                slot.values[static_cast<size_t>(base[e] + 3 + q)] = revolutionQuads[static_cast<size_t>(4 * e + q)].load(std::memory_order_relaxed);
-        slot.values[dsp::slot::kRevHumanSeed] = revolutionHumanSeed.load(std::memory_order_relaxed);
+                slot.values[static_cast<size_t>(base[e] + 3 + q)] = scene[static_cast<size_t>(4 * e + q)].load(std::memory_order_relaxed);
+        slot.values[dsp::slot::kRevHumanSeed] = scene[12].load(std::memory_order_relaxed);
+        for (int f = 0; f < revolution::kEngines * revolution::kLaneFloats; ++f)
+            slot.values[static_cast<size_t>(dsp::slot::kLaneBase + f)] = scene[static_cast<size_t>(13 + f)].load(std::memory_order_relaxed);
     }
     return slot;
 }
@@ -199,14 +268,28 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
             // The pattern state as HPEQ keeps it in the module (writePattern / writeFeel / revSeed), one element.
             while (auto* old = xml->getChildByName(kRevolutionTag))
                 xml->removeChildElement(old, true);
-            const auto state = getRevolutionState();
-            juce::NamedValueSet set;
-            revolution::writePattern(set, state.pattern);
-            revolution::writeFeel(set, state.feel);
-            set.set("revSeed", state.seed);
+            // Scene 1 on the element itself (as R0 saved it), the lanes as lane0 .. lane2, edited scenes 2 .. 8 as children.
+            const auto writeScene = [](juce::XmlElement& to, const RevolutionState& state)
+            {
+                juce::NamedValueSet set;
+                revolution::writePattern(set, state.pattern);
+                revolution::writeFeel(set, state.feel);
+                set.set("revSeed", state.seed);
+                for (const auto& value : set)
+                    to.setAttribute(value.name, value.value.toString());
+                for (int l = 0; l < revolution::kEngines; ++l)
+                    if (state.lanes[static_cast<size_t>(l)] != revolution::Lane {})
+                        to.setAttribute("lane" + juce::String(l), revolution::laneToText(state.lanes[static_cast<size_t>(l)]));
+            };
             auto* e = xml->createNewChildElement(kRevolutionTag);
-            for (const auto& value : set)
-                e->setAttribute(value.name, value.value.toString());
+            writeScene(*e, getScene(0));
+            for (int s = 1; s < revolution::kScenes; ++s)
+                if (isSceneUsed(s))
+                {
+                    auto* child = e->createNewChildElement("SCENE");
+                    child->setAttribute("index", s);
+                    writeScene(*child, getScene(s));
+                }
             // HPDG Link: on / off and which HPDG (its instance id, kept in HPDG's project too)
             e->setAttribute("hpdgLink", hpdgLink.isConnected() ? 1 : 0);
             e->setAttribute("hpdgId", juce::String::toHexString(static_cast<juce::int64>(hpdgLink.getInstanceId())));
@@ -223,17 +306,33 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
             if (kind == ModuleKind::Revolution)
                 if (const auto* e = xml->getChildByName(kRevolutionTag))
                 {
-                    juce::NamedValueSet set;
-                    for (int i = 0; i < e->getNumAttributes(); ++i)
-                        if (!e->getAttributeName(i).startsWith("hpdg"))
-                            set.set(juce::Identifier(e->getAttributeName(i)), juce::var(e->getAttributeValue(i).getLargeIntValue()));
+                    const auto readScene = [](const juce::XmlElement& from)
+                    {
+                        juce::NamedValueSet set;
+                        for (int i = 0; i < from.getNumAttributes(); ++i)
+                        {
+                            const auto name = from.getAttributeName(i);
+                            if (!name.startsWith("hpdg") && !name.startsWith("lane") && name != "index")
+                                set.set(juce::Identifier(name), juce::var(from.getAttributeValue(i).getLargeIntValue()));
+                        }
+                        const auto* seed = set.getVarPointer("revSeed");
+                        RevolutionState state { revolution::readPattern(set), revolution::readFeel(set), seed != nullptr ? static_cast<juce::int64>(*seed) : 1 };
+                        for (int l = 0; l < revolution::kEngines; ++l)
+                            if (from.hasAttribute("lane" + juce::String(l)))
+                                state.lanes[static_cast<size_t>(l)] = revolution::laneFromText(from.getStringAttribute("lane" + juce::String(l)));
+                        return state;
+                    };
                     if (e->getIntAttribute("hpdgLink", 0) != 0)
                         hpdgLink.connect(static_cast<std::uint64_t>(e->getStringAttribute("hpdgId").getHexValue64()));
                     else
                         hpdgLink.disconnect();
-                    const auto* seed = set.getVarPointer("revSeed");
-                    setRevolutionState({ revolution::readPattern(set), revolution::readFeel(set),
-                                         seed != nullptr ? static_cast<juce::int64>(*seed) : 1 });
+                    resetScenes(readScene(*e));
+                    for (auto* child : e->getChildWithTagNameIterator("SCENE"))
+                    {
+                        const int s = child->getIntAttribute("index", 0);
+                        if (s > 0 && s < revolution::kScenes)
+                            setScene(s, readScene(*child));
+                    }
                 }
             while (auto* old = xml->getChildByName(kRevolutionTag))
                 xml->removeChildElement(old, true);
@@ -290,7 +389,7 @@ void ModulePluginProcessor::setCurrentProgram(int index)
         if (currentProgram > 0)
             seed = static_cast<juce::int64>(presets::presetValue(list[static_cast<size_t>(currentProgram - 1)], "revSeed", 1.0));
         const int character = juce::roundToInt(parameterValue("character"));
-        setRevolutionState({ revolution::generate({}, static_cast<std::uint64_t>(seed), character), {}, seed });
+        resetScenes({ revolution::generate({}, static_cast<std::uint64_t>(seed), character), {}, seed });
     }
 }
 

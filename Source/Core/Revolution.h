@@ -101,5 +101,67 @@ bool hasFeel(const Feel&) noexcept;
 // variety, a seeded preference per action; locks, allowed actions and the event limit are hard rules.
 // MOTION's levels are lowered on the hits. Without a feel this is generate().
 constexpr std::uint32_t kFollowingVersion = 2;
+
+// R1 lanes (HamloRevolution plug-in): conditions per cycle of a lane, counted from bar 1 (cycle 0).
+enum LaneCondition { Always, OneOfTwo, TwoOfTwo, OneOfFour, FourOfFour, EightOfEight, NotOneOfFour, kLaneConditions };
+inline bool laneConditionPasses(int condition, long long cycle) noexcept
+{
+    const auto m = [cycle](long long d) { const auto r = cycle % d; return r < 0 ? r + d : r; };
+    switch (condition)
+    {
+        case OneOfTwo: return m(2) == 0;
+        case TwoOfTwo: return m(2) == 1;
+        case OneOfFour: return m(4) == 0;
+        case FourOfFour: return m(4) == 3;
+        case EightOfEight: return m(8) == 7;
+        case NotOneOfFour: return m(4) != 0;
+        default: return true;
+    }
+}
+const char* laneConditionName(int condition);
+// Probability codes: 0 = 100 %, 1 .. 7 = 88, 75, 63, 50, 38, 25, 13 % (steps of 1/8).
+constexpr int kProbabilityCodes = 8;
+inline double laneProbability(int code) noexcept { return 1.0 - 0.125 * (code < 0 ? 0 : code > 7 ? 7 : code); }
+const char* laneRateName(int rate); // 0 FOLLOW, 1/4 .. 1/32T
+
+// A lane's settings (all 0 = as before R1): length 0 = follow STEPS / 1 .. 32, rate 0 = follow GRID / 1 .. 8,
+// condition, the values of steps 17 .. 32, a probability code per step (0 = 100 %).
+struct Lane
+{
+    int length = 0, rate = 0, condition = 0;
+    std::array<std::uint8_t, kSteps> extra {};
+    std::array<std::uint8_t, 2 * kSteps> probability {};
+    bool operator==(const Lane& o) const noexcept
+    {
+        return length == o.length && rate == o.rate && condition == o.condition && extra == o.extra && probability == o.probability;
+    }
+    bool operator!=(const Lane& o) const noexcept { return !(*this == o); }
+};
+using Lanes = std::array<Lane, kEngines>;
+constexpr int kMaxLaneLength = 2 * kSteps;
+constexpr int kLaneFloats = 15; // slot::kLaneStride
+constexpr int kScenes = 8;
+
+// The lane as the engine reads it (slot::kLane*): length, rate, condition, 4 quads of steps 17 .. 32, 8 quads of codes.
+inline void packLane(const Lane& lane, float* dst) noexcept
+{
+    const auto quad = [](const std::uint8_t* a, int q)
+    {
+        int v = 0;
+        for (int i = 0; i < 4; ++i)
+            v |= (a[4 * q + i] & 15) << (4 * i);
+        return static_cast<float>(v);
+    };
+    dst[0] = static_cast<float>(lane.length);
+    dst[1] = static_cast<float>(lane.rate);
+    dst[2] = static_cast<float>(lane.condition);
+    for (int q = 0; q < 4; ++q)
+        dst[3 + q] = quad(lane.extra.data(), q);
+    for (int q = 0; q < 8; ++q)
+        dst[7 + q] = quad(lane.probability.data(), q);
+}
+// Saved form: "length,rate,condition,<16 hex digits: steps 17 .. 32>,<32 hex digits: codes>".
+juce::String laneToText(const Lane&);
+Lane laneFromText(const juce::String&);
 Pattern generateFollowing(const Pattern& current, std::uint64_t seed, int character, const Feel& feel);
 } // namespace hpeq::revolution
