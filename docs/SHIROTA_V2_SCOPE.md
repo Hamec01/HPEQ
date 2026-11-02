@@ -1,7 +1,9 @@
 # HamloShirota V2: owner requirements and initial audit
 
 Status: owner approved implementation2026-10-31. S1 isolation is complete; see
-reports/s1/REPORT.md. New spatial features remain planned. The audit notes below
+reports/s1/REPORT.md. S2 offline width/early-space prototypes pass181checks;
+see reports/s2/REPORT.md. Production integration and motion/binaural remain planned.
+The audit notes below
 describe the pre-isolation M0 and are retained as the starting point.
 Work only in E:/HamloShirota; no Verb/Echo/HPEQ edits, subtree, push or subagents.
 

@@ -171,7 +171,7 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Current local handoff - HamloShirota S1 (2026-10-31)
+## 9. Current local handoff - HamloShirota S2 (2026-11-02)
 
 Work only in E:/HamloShirota. Owner confirmed Verb, Echo and Mag are complete;
 do not modify those products or HPEQ, subtree, push or use subagents. Apply
@@ -179,7 +179,8 @@ C:/Users/Ham_h/.codex/skills/efficient-staged-work/SKILL.md. No model switch.
 
 Owner requested stronger width, precise STEREO/SPACE/MOTION, timed left/right
 and behind-head movement, QUICK and a full editor. Listening reference:AKG K712.
-Scope:docs/SHIROTA_V2_SCOPE.md. New spatial V2 is not yet implemented.
+Scope:docs/SHIROTA_V2_SCOPE.md. Offline S2 prototypes are complete; new spatial
+features are not yet linked into the production VST3.
 
 S1 is complete: original standalone baseline93d965f captured before isolation;
 production now uses10Shirota-owned units.160/160M0 renders, original12parameter/
@@ -191,7 +192,8 @@ Version0.1.0 remains; this is not a new installer or spatial-feature release.
 
 Preserve out/s1/reference,binaries,original_sources. Never regenerate immutable
 M0 into that directory. Current handoff:docs/NEXT_STAGE.md; report/evidence:
-docs/reports/s1. No active jobs. Latest local commit is the S1 completion.
+docs/reports/s1. S2 report:docs/reports/s2/REPORT.md. No active jobs. Latest local
+commit after this handoff is the S2 completion; inspect git log and status.
 
 Known legacy exception: bypass/mix automation has block-dependent state clocks
 (4distinct renders across5sizes); isolation preserves it for each schedule.
@@ -199,12 +201,23 @@ New modes must be sample-clocked. SAFE visibly needs study: captured synthetic
 Width100->200% withSAFEon increases Side/Mid only0.6734dB. Diagnostic introduced
 after capture, with no acceptance threshold; method/disclosure is in the report.
 
-Next S2: numeric targets before prototyping width, mono-to-stereo, spatial
-characters and guard behaviour, then timed paths/binaural. No HRTF data has been
-bundled; SADIE II licensing/profile selection still require inspection. K712 is
-a listening reference, not a personalized calibration.200presets and release
-checks follow the completed DSP. Prefer Astra xhigh for this design/diagnosis;
-medium for routine execution. Owner controls model/effort selection.
+S2 acceptance:181/181assertions over58render cases; four provenance rejection
+tests;40owner-material A/B WAVs in out/s2/listen, worst prepared8xpeak-1.5477dBTP.
+Three mono generators and three early spatial fields; width/bands/mono-bass
+govern generated as well as original Side. Guard is separately enabled, default
+off. Final paired dry/candidate methods match. Preserve all failed/source/raw
+archives; startup ramp, mixed build and12routing regressions are disclosed.
+Fixed prototype delay64samples at48k is not the production PDC contract.
+See docs/NEXT_STAGE.md for exact source identity, commands, limitations and logs.
+
+Next S3: targets before timed path and binaural experiments. No HRTF data has
+been bundled; archive licensing/profile selection still require inspection.
+Size/predelay moving reads and immediate mono-bass coefficient changes need
+transition/click policies before integration. Guard is a stationary energy
+budget, not a universal correlation promise. K712 is a listening reference,
+not a personalized calibration. UI, motion,200presets and release checks remain.
+Original7programs plus200new means207host programs. Prefer Astra xhigh for
+design/diagnosis; medium for routine execution. Owner controls model/effort.
 
 ### HamloRevolution — ещё не вынесен (план)
 

@@ -1,0 +1,413 @@
+{
+  "source_id": "a00303ddd9211a0a704fddca745e0ee3c6034ab25c0a74f23033c5049ef8d667",
+  "groups": [
+    {
+      "material": "vocal_lead1",
+      "identity": {
+        "source_id": "a00303ddd9211a0a704fddca745e0ee3c6034ab25c0a74f23033c5049ef8d667",
+        "input_sha256": "0bbc75206faf6e046a789f58183470557ec7bf014c194b9c682f807bef70a92e",
+        "original_sha256": "d8f4d6f7936574b373651bd8a90ce8e9bfde0f699ab64ef8adfda3177af9feb9",
+        "tool_id": "ff22528508cb5082204f5f7d94b40e6b53736645c8e8f2d9509cac3627144a50"
+      },
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead1.wav",
+      "selected_start_48k": 1572000,
+      "source_frames": 240000,
+      "preparation_gain_db": -5.526033762715013,
+      "common_demo_gain_db": 0.0,
+      "tail_seconds": 2.5,
+      "measured_headroom": "8x polyphase reconstruction estimate",
+      "recipes": [
+        {
+          "scene": "dry",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\dry.wav",
+          "raw_peak_dbtp": -5.978580145568012,
+          "prepared_peak_dbtp": -5.978580145568012
+        },
+        {
+          "scene": "width2",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\width2.wav",
+          "raw_peak_dbtp": -5.978580145568012,
+          "prepared_peak_dbtp": -5.978580145568012
+        },
+        {
+          "scene": "phase",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\phase.wav",
+          "raw_peak_dbtp": -2.7411677039257896,
+          "prepared_peak_dbtp": -2.7411677039257896
+        },
+        {
+          "scene": "micro",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\micro.wav",
+          "raw_peak_dbtp": -1.547724618337286,
+          "prepared_peak_dbtp": -1.547724618337286
+        },
+        {
+          "scene": "diffuse",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\diffuse.wav",
+          "raw_peak_dbtp": -4.509319796223677,
+          "prepared_peak_dbtp": -4.509319796223677
+        },
+        {
+          "scene": "tight",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\tight.wav",
+          "raw_peak_dbtp": -7.509947239073957,
+          "prepared_peak_dbtp": -7.509947239073957
+        },
+        {
+          "scene": "open",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\open.wav",
+          "raw_peak_dbtp": -7.192632394053792,
+          "prepared_peak_dbtp": -7.192632394053792
+        },
+        {
+          "scene": "scatter",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\scatter.wav",
+          "raw_peak_dbtp": -7.268154701294758,
+          "prepared_peak_dbtp": -7.268154701294758
+        },
+        {
+          "scene": "phase_open",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\phase_open.wav",
+          "raw_peak_dbtp": -3.8086181144520035,
+          "prepared_peak_dbtp": -3.8086181144520035
+        },
+        {
+          "scene": "diffuse_scatter",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\vocal_lead1\\ffea50d3dacc619fe678\\diffuse_scatter.wav",
+          "raw_peak_dbtp": -5.9572882797251285,
+          "prepared_peak_dbtp": -5.9572882797251285
+        }
+      ],
+      "files": {
+        "demo_manifest.json": "dc2789fb23476ab0d1629a44375ab3a8c85c499d76a6ddc49f699994810be718",
+        "diffuse.f32": "84466d785b93b6aab1121bc9f92abee35adc8a5c651f0de0373095b0ac51d8fd",
+        "diffuse.wav": "bf6a6fb37612d619264dce300a35b6dfc1e9f2ce867fc93df6ddf6295d612dfd",
+        "diffuse_scatter.f32": "df5a523bdc0d509db11decd6e3d50ef07c0c7ee4cc88d224b1bf3771004ac55c",
+        "diffuse_scatter.wav": "5c48a2b87781c7d5f768fd3500bc596ac8603c1942d11ea64edbb2e9f081ce7d",
+        "dry.f32": "267e3d4c9d1e24daa99069c19e1f12462b452d7074b2754320e36494020fe069",
+        "dry.wav": "b6d3af41ae6fe7e4dd2953e1a783dc3bf1cf412987369ebc3179d17d4bb57a6c",
+        "input.f32": "0bbc75206faf6e046a789f58183470557ec7bf014c194b9c682f807bef70a92e",
+        "micro.f32": "b0dbeb29d80251dae78921a63e85667378ecee030c94d882871a776c75c69b9b",
+        "micro.wav": "af5b1b81b5babf4d9b3d43299ca9c463299d04c960aeb684551c0e1f955e7a42",
+        "open.f32": "541022b92098457a0b4f9c7a6ea8c49e606bf3e1b72de35d9ef5f8348d52c143",
+        "open.wav": "85d872e4bbf6120d6eb4455c81d9c247127b58e2fc8c804b3bff278ed0e1f378",
+        "phase.f32": "2f5dc164be2dbe0e4ad3763473b1e982a9abb340e942f3717dd1d121d4c1a1c1",
+        "phase.wav": "e5e0d8c665edaf3086177e420d6809348af0346d7c0f54be8203450f2790c9dd",
+        "phase_open.f32": "a951801a1e1fd4f1db5888ffd05d072efad31a3b651de25f089c062941db78e2",
+        "phase_open.wav": "d27d7532900df3e9e3feaa8f50f0916e0b4d30579050c0288047aa3aab90dcf8",
+        "scatter.f32": "899d7b052e9ace56be8ab9c4d9475e11811e16b45ef2c3faa7d910e57d43fd1e",
+        "scatter.wav": "1c9411297349e98f7399d344492e40cc8ff01c83a8c2da9119006be477d47d64",
+        "tight.f32": "513965d5fc26a6826625a327c89fe7e5c509c450359cd933deedc34d61f25a88",
+        "tight.wav": "41a2a8dc91f6a1f3852c932021d36a0ab14f391925e938a97b02ce3612d0b068",
+        "width2.f32": "267e3d4c9d1e24daa99069c19e1f12462b452d7074b2754320e36494020fe069",
+        "width2.wav": "b6d3af41ae6fe7e4dd2953e1a783dc3bf1cf412987369ebc3179d17d4bb57a6c"
+      }
+    },
+    {
+      "material": "keys",
+      "identity": {
+        "source_id": "a00303ddd9211a0a704fddca745e0ee3c6034ab25c0a74f23033c5049ef8d667",
+        "input_sha256": "b34e7b3aa06d373a19d9acc770cb0dd14bab0dcf3f999618fe2fe7accf6be3cb",
+        "original_sha256": "251f5c79b7248078a9d4be68621728acee75f923e02a8a8adfe0e9f601942c4f",
+        "tool_id": "ff22528508cb5082204f5f7d94b40e6b53736645c8e8f2d9509cac3627144a50"
+      },
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\keys.wav",
+      "selected_start_48k": 384000,
+      "source_frames": 240000,
+      "preparation_gain_db": 0.34038758986507356,
+      "common_demo_gain_db": 0.0,
+      "tail_seconds": 2.5,
+      "measured_headroom": "8x polyphase reconstruction estimate",
+      "recipes": [
+        {
+          "scene": "dry",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\dry.wav",
+          "raw_peak_dbtp": -5.987838074511935,
+          "prepared_peak_dbtp": -5.987838074511935
+        },
+        {
+          "scene": "width2",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\width2.wav",
+          "raw_peak_dbtp": -2.552429134805478,
+          "prepared_peak_dbtp": -2.552429134805478
+        },
+        {
+          "scene": "phase",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\phase.wav",
+          "raw_peak_dbtp": -5.22794139371011,
+          "prepared_peak_dbtp": -5.22794139371011
+        },
+        {
+          "scene": "micro",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\micro.wav",
+          "raw_peak_dbtp": -4.625513682966142,
+          "prepared_peak_dbtp": -4.625513682966142
+        },
+        {
+          "scene": "diffuse",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\diffuse.wav",
+          "raw_peak_dbtp": -5.195865099293383,
+          "prepared_peak_dbtp": -5.195865099293383
+        },
+        {
+          "scene": "tight",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\tight.wav",
+          "raw_peak_dbtp": -7.412980361079135,
+          "prepared_peak_dbtp": -7.412980361079135
+        },
+        {
+          "scene": "open",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\open.wav",
+          "raw_peak_dbtp": -7.257120394519829,
+          "prepared_peak_dbtp": -7.257120394519829
+        },
+        {
+          "scene": "scatter",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\scatter.wav",
+          "raw_peak_dbtp": -7.3810209302379,
+          "prepared_peak_dbtp": -7.3810209302379
+        },
+        {
+          "scene": "phase_open",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\phase_open.wav",
+          "raw_peak_dbtp": -6.312201165792351,
+          "prepared_peak_dbtp": -6.312201165792351
+        },
+        {
+          "scene": "diffuse_scatter",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\keys\\9f4304c4912d4c5820bf\\diffuse_scatter.wav",
+          "raw_peak_dbtp": -6.64448558084854,
+          "prepared_peak_dbtp": -6.64448558084854
+        }
+      ],
+      "files": {
+        "demo_manifest.json": "dc2789fb23476ab0d1629a44375ab3a8c85c499d76a6ddc49f699994810be718",
+        "diffuse.f32": "b8fd3dc1bb69f2a9ab1d89d1a0af2d22fd84169179fc4e49bb56b6c92febb004",
+        "diffuse.wav": "4bf1f9639fd4817c57c9352fe31854938fc414713a057e2afa394f7d023cb22a",
+        "diffuse_scatter.f32": "3911b46f8d56554c635b17875aef6b1e1183fd61e5dc25354e5a35f1f6a4af87",
+        "diffuse_scatter.wav": "13363ca298d1517888c80e2cce11fcd8e08d4015c774675d7259edf033333fd0",
+        "dry.f32": "b9e7dff5816f4e7dc1addaa379e26b55bd37b2876901d4af01c5f08a1cc11e5a",
+        "dry.wav": "0bfb102bee18d0a1ff824d83f8595fac800158c157db37e92037e6708a1faccd",
+        "input.f32": "b34e7b3aa06d373a19d9acc770cb0dd14bab0dcf3f999618fe2fe7accf6be3cb",
+        "micro.f32": "b282299a3e80a247e9d01b1efb6347b3a0af5c7cac77da5b9817a8724d7bd2c2",
+        "micro.wav": "67babdb2b5ea9fa46edc0aa0dc195dda6bf3a2087f36a7bb0eb6772352a9d553",
+        "open.f32": "281035093e10fb9c784a9f64434553aa0f8274d99cb589a01da0581c9dc76c27",
+        "open.wav": "8be19766df712ecc29d50fd5fb4940faf69ba12bfa604445ab74c5b163843a72",
+        "phase.f32": "49476218316a0a1753fb68d6578b39f0ba274d24440a0c7f36d9d1bfc04499f8",
+        "phase.wav": "c2d5120d16b738dea850f800e260dc7d22f80a34ed3769e4091ece85faaf6c3a",
+        "phase_open.f32": "4567e7de309c6300e89834dd406d26212f4db91c2702dd80960771cad97fac5b",
+        "phase_open.wav": "324154abbe48bf0ecf62afaad576e6e8070790a91315240c7dc7e406210ee57d",
+        "scatter.f32": "2ae5f71a964852e0c785344ead954a506ed370d4222631a8aba4b41d3a60340f",
+        "scatter.wav": "816f411fd2a771d8877d5bb354fca0d0ab0bd02e35f139295bb272eaffd6e6e3",
+        "tight.f32": "d430ae01d087f1d5e106678702a2cf74da391218857c9741a1ace3c63e91251e",
+        "tight.wav": "83b035b9987eb76a25b04f63bafcd5490566e759680bd439bb38219429ea3133",
+        "width2.f32": "2514d65ccc009c80bf947c8294e4bdbc020947b1621c19857729f3c58534aa65",
+        "width2.wav": "c42f5a4a44a5610be86bcc650b3b120971d33dfe7cb2c661d351c7341aa32644"
+      }
+    },
+    {
+      "material": "drumbus1",
+      "identity": {
+        "source_id": "a00303ddd9211a0a704fddca745e0ee3c6034ab25c0a74f23033c5049ef8d667",
+        "input_sha256": "110470a1da775ff3492c78340f882ba959a6af272f01af23c4d8c35637e78c2b",
+        "original_sha256": "faa8f04bdfa337cab344b8d7635a8c520ec1174261cefd8aa27c37a6cc3ada27",
+        "tool_id": "ff22528508cb5082204f5f7d94b40e6b53736645c8e8f2d9509cac3627144a50"
+      },
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\drumbus1.wav",
+      "selected_start_48k": 396000,
+      "source_frames": 240000,
+      "preparation_gain_db": 2.0666679845933276,
+      "common_demo_gain_db": 0.0,
+      "tail_seconds": 2.5,
+      "measured_headroom": "8x polyphase reconstruction estimate",
+      "recipes": [
+        {
+          "scene": "dry",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\dry.wav",
+          "raw_peak_dbtp": -5.769100109165021,
+          "prepared_peak_dbtp": -5.769100109165021
+        },
+        {
+          "scene": "width2",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\width2.wav",
+          "raw_peak_dbtp": -5.6105635049001314,
+          "prepared_peak_dbtp": -5.6105635049001314
+        },
+        {
+          "scene": "phase",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\phase.wav",
+          "raw_peak_dbtp": -2.3665365638398486,
+          "prepared_peak_dbtp": -2.3665365638398486
+        },
+        {
+          "scene": "micro",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\micro.wav",
+          "raw_peak_dbtp": -5.7272347360701525,
+          "prepared_peak_dbtp": -5.7272347360701525
+        },
+        {
+          "scene": "diffuse",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\diffuse.wav",
+          "raw_peak_dbtp": -4.843882318560747,
+          "prepared_peak_dbtp": -4.843882318560747
+        },
+        {
+          "scene": "tight",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\tight.wav",
+          "raw_peak_dbtp": -7.250932944544984,
+          "prepared_peak_dbtp": -7.250932944544984
+        },
+        {
+          "scene": "open",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\open.wav",
+          "raw_peak_dbtp": -7.257701371939572,
+          "prepared_peak_dbtp": -7.257701371939572
+        },
+        {
+          "scene": "scatter",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\scatter.wav",
+          "raw_peak_dbtp": -7.25669580196687,
+          "prepared_peak_dbtp": -7.25669580196687
+        },
+        {
+          "scene": "phase_open",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\phase_open.wav",
+          "raw_peak_dbtp": -3.51328285857216,
+          "prepared_peak_dbtp": -3.51328285857216
+        },
+        {
+          "scene": "diffuse_scatter",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\drumbus1\\54155c0772a76fbfa867\\diffuse_scatter.wav",
+          "raw_peak_dbtp": -6.331522375434696,
+          "prepared_peak_dbtp": -6.331522375434696
+        }
+      ],
+      "files": {
+        "demo_manifest.json": "dc2789fb23476ab0d1629a44375ab3a8c85c499d76a6ddc49f699994810be718",
+        "diffuse.f32": "e5cf2a410033db2aac2de88bdbd29d7fb9594f5a9fbd94b703168d5dd06a0ba7",
+        "diffuse.wav": "831e4d05f1f4c8924b3c21393b26af5fe574b51c96aabe6bd1fbda2b7f6e8041",
+        "diffuse_scatter.f32": "d91e7ec88684d0b4acb4b6cce83b5a3baa56b1e6cbd97284dbcdd79abb21c26f",
+        "diffuse_scatter.wav": "8d9e43d967d8fe4f2a6df0c78ec32a1082a2af47003cecc33f452e9f9afad8cc",
+        "dry.f32": "cc398231a7a934ab52d82ae17e4438a40707a58953a15811d6b6dd6ec47f475a",
+        "dry.wav": "5534744c5f482e454b699d22150c1da090bec02d9e418fccbcdcdf1a14069447",
+        "input.f32": "110470a1da775ff3492c78340f882ba959a6af272f01af23c4d8c35637e78c2b",
+        "micro.f32": "6aeae636751a92482004ec935aca336446a2b2a21caf007b1de93d8af73f2fca",
+        "micro.wav": "253a04ed523c71407d3affeea0dffd9eedcb6ea96902826c2a6bfb273dea12c1",
+        "open.f32": "c90d0c6735d766240ace5197c51e606ef9ac7ce5060e29cb122d3b0317a89a3b",
+        "open.wav": "859f130f11e0ab7dacf170daf7f697875d6d1cefcc489fcae6dcc8b899ffa342",
+        "phase.f32": "9d81a0949db6cf5f2eb4320c923976e2dce38dceb5eea854741128cafe399e1e",
+        "phase.wav": "66819b01fa85505ffe9d5aadce3dcec2225a90648f671b597af798e916612291",
+        "phase_open.f32": "52f1afa49154df61ca30bc7bf50a8ed4a6d657ddfa8f99b6c4d2fcb7fce9df74",
+        "phase_open.wav": "e70420c7af98309d68a90862f9aaffce3b1df2b040676840012dc3146e753e79",
+        "scatter.f32": "160a0a8157cf93b840a0b046653ad7c6b78d4a04de58c4a5b39b0a89ef0523cf",
+        "scatter.wav": "ae7f89d3eafe133be210bfea6b63eef01161dec3cf5a63e4dbbf4f0dda4de29d",
+        "tight.f32": "fa444cf09a23f90027cf1de9a2bbdde5daadff30445f1850ceced9e11c73dfac",
+        "tight.wav": "b00910cebd2943621747af8b132ccc08e692781b50752e9b94818a88f08e896c",
+        "width2.f32": "b07d6f9dac5e9ebfb9089a7157dbd4bb29a0d24d860477ed0492c393d7088b1d",
+        "width2.wav": "91936724e80f8cf1d09bf83266ecac55e5f3fe28db899629917b9ca8d0a16513"
+      }
+    },
+    {
+      "material": "synth",
+      "identity": {
+        "source_id": "a00303ddd9211a0a704fddca745e0ee3c6034ab25c0a74f23033c5049ef8d667",
+        "input_sha256": "79053fc6deeb966a3d5f86cbe722155439199636988f48bc00304bed13466b68",
+        "original_sha256": "5d5a9c193f335bb5030f13a136fe95333fcb8f0a117306c39223b4d0decc7eeb",
+        "tool_id": "ff22528508cb5082204f5f7d94b40e6b53736645c8e8f2d9509cac3627144a50"
+      },
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\synth.wav",
+      "selected_start_48k": 408000,
+      "source_frames": 240000,
+      "preparation_gain_db": 4.790236332220419,
+      "common_demo_gain_db": 0.0,
+      "tail_seconds": 2.5,
+      "measured_headroom": "8x polyphase reconstruction estimate",
+      "recipes": [
+        {
+          "scene": "dry",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\dry.wav",
+          "raw_peak_dbtp": -5.994221534777694,
+          "prepared_peak_dbtp": -5.994221534777694
+        },
+        {
+          "scene": "width2",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\width2.wav",
+          "raw_peak_dbtp": -2.125953256839953,
+          "prepared_peak_dbtp": -2.125953256839953
+        },
+        {
+          "scene": "phase",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\phase.wav",
+          "raw_peak_dbtp": -5.17391487675175,
+          "prepared_peak_dbtp": -5.17391487675175
+        },
+        {
+          "scene": "micro",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\micro.wav",
+          "raw_peak_dbtp": -5.547078530252561,
+          "prepared_peak_dbtp": -5.547078530252561
+        },
+        {
+          "scene": "diffuse",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\diffuse.wav",
+          "raw_peak_dbtp": -4.651111120980946,
+          "prepared_peak_dbtp": -4.651111120980946
+        },
+        {
+          "scene": "tight",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\tight.wav",
+          "raw_peak_dbtp": -7.415052800578792,
+          "prepared_peak_dbtp": -7.415052800578792
+        },
+        {
+          "scene": "open",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\open.wav",
+          "raw_peak_dbtp": -7.837896269494053,
+          "prepared_peak_dbtp": -7.837896269494053
+        },
+        {
+          "scene": "scatter",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\scatter.wav",
+          "raw_peak_dbtp": -7.350071801309391,
+          "prepared_peak_dbtp": -7.350071801309391
+        },
+        {
+          "scene": "phase_open",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\phase_open.wav",
+          "raw_peak_dbtp": -6.312377678478207,
+          "prepared_peak_dbtp": -6.312377678478207
+        },
+        {
+          "scene": "diffuse_scatter",
+          "path": "E:\\HamloShirota\\out\\s2\\demos\\synth\\f934f4b25b49af2e127f\\diffuse_scatter.wav",
+          "raw_peak_dbtp": -5.471928278714109,
+          "prepared_peak_dbtp": -5.471928278714109
+        }
+      ],
+      "files": {
+        "demo_manifest.json": "dc2789fb23476ab0d1629a44375ab3a8c85c499d76a6ddc49f699994810be718",
+        "diffuse.f32": "ab3fd9867dfcd3d2f299847c02a11a02475976902c35489c1456c44ccab92ef1",
+        "diffuse.wav": "8b25e942ea0589036d10174072af063fd119883c99abc6271c0693909500a682",
+        "diffuse_scatter.f32": "6d3c12f269629324f1881f346400d4e90e68cb13bb5e985c5b3042d3da1390c1",
+        "diffuse_scatter.wav": "3da84827bc3da7515bfa5b70dacc93e7fc1c9b58479c3fc1b1d6e2d584036d3d",
+        "dry.f32": "4eb45400d890393cf4d8300e7e3044b5c3c3b2c7702341ad7929620d77967617",
+        "dry.wav": "11c0346b85a634f7d39d4d01f31fd03c220596fde4a894c1438e4920dc0de367",
+        "input.f32": "79053fc6deeb966a3d5f86cbe722155439199636988f48bc00304bed13466b68",
+        "micro.f32": "13f598f115214b790c8f0d53128352a2f098f1a74f532b92076a8ab464c32daf",
+        "micro.wav": "0205bba7bc69b4635da61661aa2076f25a9aeb8d28eadceef709b66f16ea3cf4",
+        "open.f32": "4f53694da4161b18ad34d12307093b7ff747bc4f069ed889dde120afead88a01",
+        "open.wav": "1961e7b1df404cdcccd5c6737c48b0391e6e3ce43c05047a739f44ecd8d92969",
+        "phase.f32": "0602b0d4176dc9047467861569c879aa191cbfcc65e20726659d24d36e667ceb",
+        "phase.wav": "3f56b0edde0d4a1571d761135dda2b1f54a4298db0631e25219f046e89f92c30",
+        "phase_open.f32": "652731fd6214a2d13b65dfa9bfb70ac076ddb141c2ae1ba7a248f35eb44fcc02",
+        "phase_open.wav": "aabe48a8fc9d0e395f99069699277d5796cfc5e4c7065b4c0fc910abb4502340",
+        "scatter.f32": "5b3e865331b5d5c0ac426615a093a60556cfe6fa6ea9de358e7924933e972bea",
+        "scatter.wav": "8ac1328ec77d1a9614af2ddd0623cd5d1c843dd8a6799e7399b50e9a8c3f1bc1",
+        "tight.f32": "5f957438180cffa34c44f4e4965617aa44750cad4c7ee7d8aa9866dc7868be87",
+        "tight.wav": "0d007601c7584331ac052f5f1fb25c1a47c27c775d6caf5c69b7b820d4ff471e",
+        "width2.f32": "dd43510f50a43c066cd8ee6e62678a7c7dc991e844b77a7304def44dd16e005d",
+        "width2.wav": "5e3c0ff77a57080d1bd7862f11469ae012c36db488e843263dd28ec02f3148f0"
+      }
+    }
+  ]
+}

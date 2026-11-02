@@ -128,3 +128,22 @@ foreach(tool Tests Snapshot Lab)
             juce::juce_recommended_warning_flags)
 endforeach()
 add_test(NAME HamloShirota_Tests COMMAND HamloShirota_Tests)
+
+# S2 offline prototype: deliberately not linked into the production plug-in.
+add_executable(HamloShirota_SpatialLab Tests/SpatialLabMain.cpp Tests/AllocationAudit.cpp Source/DSP/SpatialPrototype.cpp)
+add_custom_target(HamloShirota_SpatialIdentity
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/SpatialIdentity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteSpatialIdentity.cmake")
+add_dependencies(HamloShirota_SpatialLab HamloShirota_SpatialIdentity)
+target_include_directories(HamloShirota_SpatialLab PRIVATE Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(HamloShirota_SpatialLab PRIVATE juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)
+
+add_executable(HamloShirota_SpatialDemo Tests/SpatialDemoMain.cpp Source/DSP/SpatialPrototype.cpp)
+add_dependencies(HamloShirota_SpatialDemo HamloShirota_SpatialIdentity)
+target_include_directories(HamloShirota_SpatialDemo PRIVATE Source "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(HamloShirota_SpatialDemo PRIVATE juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)
+
+# Fault probe links a deliberately stale DSP implementation against the real lab.
+add_executable(HamloShirota_StaleBuildProbe EXCLUDE_FROM_ALL Tests/SpatialLabMain.cpp Tests/AllocationAudit.cpp Tests/StaleSpatialBuildProbe.cpp)
+add_dependencies(HamloShirota_StaleBuildProbe HamloShirota_SpatialIdentity)
+target_include_directories(HamloShirota_StaleBuildProbe PRIVATE Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(HamloShirota_StaleBuildProbe PRIVATE juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)

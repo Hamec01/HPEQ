@@ -1,2 +1,9 @@
 # Preserve raw validator output, including vendor lines with trailing spaces.
 docs/reports/**/validators/** -whitespace
+# S2 source/raw-evidence fingerprints bind exact bytes, including line endings.
+Source/DSP/SpatialPrototype.* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Tests/SpatialLabMain.cpp -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Tests/SpatialBaseline.cpp -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Tools/analyze_s2.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/S2_METHODS.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/reports/s2/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

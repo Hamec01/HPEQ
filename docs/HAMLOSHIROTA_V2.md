@@ -35,11 +35,20 @@ change to the immutable lab): width100->200% with SAFE increased Side/Mid0.6734d
 on the synthetic input. Its method is disclosed in that report and
 Tools/analyze_s1_width.py; it guides S2 and is not a newly imposed S1 criterion.
 
+## Stage S2: offline width and early space
+
+Completed2026-11-02; targets and all method disclosures: S2_METHODS.md.
+Final paired result:181/181checks over58render cases,4provenance fault tests,
+40owner-material A/B examples. Original115native/160M0checks and production
+VST3hash remain unchanged. See reports/s2/REPORT.md for measurements, the initial
+startup failure, the mixed incremental build and12routing regressions caught by
+extended coverage. New effects are not linked into the production plug-in yet.
+
 ## Later V2 stages
 
-After S1, measure width/SAFE behaviour and prototype the new stereo/spatial
-algorithms. Define numeric sound/CPU/latency targets before those experiments.
-Then implement precise STEREO/SPACE/MOTION, selectable binaural profiles, editable
+After S2, define motion/binaural targets and prototype timing, profiles and
+transitions before integration. Then implement precise STEREO/SPACE/MOTION,
+selectable binaural profiles, editable
 timed paths, QUICK, neutral Default,200genre presets, source-pinned calibration,
 validators, screenshots, installer/ZIP/SHA256 and owner FL listening examples.
 Objective HRTF/filter tests do not replace owner front/back audition on K712.

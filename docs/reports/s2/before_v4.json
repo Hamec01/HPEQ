@@ -1,0 +1,782 @@
+{
+  "method": "Shirota S2 numerical method v1",
+  "implemented": false,
+  "source_id": "80a30381498cae1ab39565613ad215feb4e31b2627061ad517fe84da6051f3ae",
+  "identity_sha256": "906c792e204bb6672037e8cb7aec21351c4aeee72652b9493c2fb3ba28280f18",
+  "files": {
+    "Tests/SpatialLabMain.cpp": "51d93cffc1c70696904e7692c21e596554c470ce816332338dbae1426befe739",
+    "Tools/analyze_s2.py": "f138e864b6376e2220521cf83db8ae4a7cac735635aabf73f97c0b57a0e3a2b8",
+    "docs/S2_METHODS.md": "4b7f02f01c2a6514a725eab00d17dbf335503167376a39dd04ea44645899f868",
+    "Source/DSP/SpatialPrototype.h": "9997f66aa320bdc4b94930e76e517347864168f5aa9524c8d1afe0b74dc6e2fd",
+    "Source/DSP/SpatialPrototype.cpp": "e47a5fbbbbea39fa3627c0793b899ce843edde5ef42888518e2d588013afc490"
+  },
+  "cases": 58,
+  "checks": [
+    {
+      "goal": "P01",
+      "name": "neutral_44100",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "neutral_44100_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "neutral_44100_finite",
+      "passed": true,
+      "peak": 0.19977861642837524
+    },
+    {
+      "goal": "P01",
+      "name": "disabled_44100",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "disabled_44100_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "disabled_44100_finite",
+      "passed": true,
+      "peak": 0.19977861642837524
+    },
+    {
+      "goal": "P01",
+      "name": "neutral_48000",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "neutral_48000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "neutral_48000_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P01",
+      "name": "disabled_48000",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "disabled_48000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "disabled_48000_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P01",
+      "name": "neutral_96000",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "neutral_96000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "neutral_96000_finite",
+      "passed": true,
+      "peak": 0.19970905780792236
+    },
+    {
+      "goal": "P01",
+      "name": "disabled_96000",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "disabled_96000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "disabled_96000_finite",
+      "passed": true,
+      "peak": 0.19970905780792236
+    },
+    {
+      "goal": "P11",
+      "name": "width_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "width_0_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "width_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "width_1_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "width_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "width_2_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "width_4_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "width_4_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "generate_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_0_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_1_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_2_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_zero_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_zero_0_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_double_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_double_0_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_ref60_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_ref60_0_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "generate_bass60_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_bass60_0_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "generate_band60_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_band60_0_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "generate_zero_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_zero_1_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_double_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_double_1_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_ref60_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_ref60_1_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "generate_bass60_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_bass60_1_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "generate_band60_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_band60_1_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "generate_zero_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_zero_2_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_double_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_double_2_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_ref60_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_ref60_2_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "generate_bass60_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_bass60_2_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "generate_band60_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_band60_2_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "bass_anti60_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "bass_anti60_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "ref_anti60_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "ref_anti60_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "bass_anti1000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "bass_anti1000_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "ref_anti1000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "ref_anti1000_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "band_anti60_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "band_anti60_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "band_anti8000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "band_anti8000_finite",
+      "passed": true,
+      "peak": 0.08660253882408142
+    },
+    {
+      "goal": "P11",
+      "name": "ref_anti8000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "ref_anti8000_finite",
+      "passed": true,
+      "peak": 0.08660253882408142
+    },
+    {
+      "goal": "P11",
+      "name": "guard_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "guard_0_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "guard_4_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "guard_4_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "space_noise_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_noise_0_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "space_impulse_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_impulse_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "tail_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "tail_0_finite",
+      "passed": true,
+      "peak": 0.07495517283678055
+    },
+    {
+      "goal": "P11",
+      "name": "space_noise_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_noise_1_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "space_impulse_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_impulse_1_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "tail_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "tail_1_finite",
+      "passed": true,
+      "peak": 0.07495517283678055
+    },
+    {
+      "goal": "P11",
+      "name": "space_noise_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_noise_2_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "space_impulse_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_impulse_2_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "tail_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "tail_2_finite",
+      "passed": true,
+      "peak": 0.07495517283678055
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_44100_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_44100_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_44100_23_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_44100_23_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_48000_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_48000_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_48000_23_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_48000_23_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_96000_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_96000_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_96000_23_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_96000_23_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "events_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_1_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "events_64_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_64_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "events_127_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_127_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "events_512_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_512_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "events_4096_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_4096_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "stress_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "stress_finite",
+      "passed": true,
+      "peak": 0.1999608874320984
+    },
+    {
+      "goal": "P11",
+      "name": "event_blocks_64",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "event_blocks_127",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "event_blocks_512",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "event_blocks_4096",
+      "passed": true
+    },
+    {
+      "goal": "P02",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P03",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P04",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P05",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P06",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P07",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P08",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P09",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P10_features",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P12",
+      "name": "cpu_0",
+      "passed": true,
+      "mean_fraction": 0.00036691120426829177,
+      "largest_fraction": 0.0029625000000000003
+    },
+    {
+      "goal": "P12",
+      "name": "cpu_1",
+      "passed": true,
+      "mean_fraction": 0.0003912919207317056,
+      "largest_fraction": 0.005418750000000001
+    },
+    {
+      "goal": "P12",
+      "name": "cpu_2",
+      "passed": true,
+      "mean_fraction": 0.0003731993140243902,
+      "largest_fraction": 0.00091875
+    }
+  ],
+  "passed": 129,
+  "failed": 0,
+  "unavailable": 9
+}
