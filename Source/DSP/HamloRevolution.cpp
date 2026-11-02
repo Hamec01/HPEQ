@@ -181,6 +181,10 @@ void RevolutionEngine::prepare(double newSampleRate, std::array<std::vector<floa
         f.store(0.0f, std::memory_order_relaxed);
     onsetCoef = 1.0 - std::exp(-1.0 / (0.02 * sampleRate));
     onsetDeadSamples = static_cast<int>(std::lround(0.03 * sampleRate));
+    dynFrame = std::max(16, static_cast<int>(std::lround(0.01 * sampleRate)));
+    dynFill = dynCount = dynPos = 0;
+    dynEnergy = 0.0;
+    dynamics.store(0.0f, std::memory_order_relaxed);
     for (int i = 0; i < 16; ++i)
     {
         timing[static_cast<size_t>(i)].store(0.0f, std::memory_order_relaxed);
@@ -258,6 +262,7 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
         changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
     for (int i = slot::kBandBase; i < slot::kBandBase + 2; ++i)
         changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
+    changed = changed || v[slot::kGlitchEngine] != lastValues[slot::kGlitchEngine]; // GLITCH 2: another head formula
     for (int i = slot::kGrooveBase; i <= slot::kGrooveAmount; ++i) // R4: the groove moves step boundaries
         changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
     for (int i = 0; i < 4; ++i)
@@ -291,6 +296,7 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
             patternQuads[static_cast<size_t>(4 * e + q)] = v[b + 3 + static_cast<size_t>(q)];
     }
     stepQ = freeMode ? 1.0 : kBeats[grid] * (triplet ? 2.0 / 3.0 : 1.0);
+    blockGlitch = v[slot::kGlitchEngine] >= 0.5f;
     {
         const double amount = std::clamp(static_cast<double>(v[slot::kGrooveAmount]), 0.0, 1.0);
         grooved = false;
@@ -469,7 +475,7 @@ int RevolutionEngine::value(int engine, long long k) const noexcept
     if (engine == rev::Time)
         return v < rev::kTimeActions ? v : 0;
     if (engine == rev::Glitch)
-        return v < rev::kGlitchActions ? v : 0;
+        return v < (blockGlitch ? static_cast<int>(rev::kBlockActions) : static_cast<int>(rev::kGlitchActions)) ? v : 0;
     return v;
 }
 
@@ -492,6 +498,20 @@ long long RevolutionEngine::maxAge(int engine, int action, double w, double wSte
             case rev::Double: age = w + 16.0; break;
             default: break;
         }
+    else if (blockGlitch)
+    {
+        const double quarter = 1.0 / dq;
+        switch (action)
+        {
+            case rev::BlockRepeat: age = w + wStep + 2.0; break;
+            case rev::BlockRoll: case rev::BlockChop: case rev::BlockRise: age = w + 2.0; break;
+            case rev::BlockDrop: age = w + 0.5 * quarter + 4.0; break;
+            case rev::BlockShuffle: age = 2.0 * quarter + 4.0; break;
+            case rev::BlockReverse: age = 2.0 * w + 2.0; break;
+            case rev::BlockStop: age = w + 4.0; break;
+            default: break;
+        }
+    }
     else
         switch (action)
         {
@@ -585,6 +605,8 @@ bool RevolutionEngine::headAt(int engine, const Segment& s, long long nn, long l
     };
     if (!s.valid || s.action == 0)
         return dry();
+    if (engine == rev::Glitch && blockGlitch)
+        return blockHead(s, nn, ahead, in, out, numChannels);
     const auto& t = tapes[static_cast<size_t>(engine)];
     const double u = std::max(0.0, static_cast<double>(nn) - s.b);
     const long long uI = std::max(0LL, nn - static_cast<long long>(std::ceil(s.b - kEps)));
@@ -686,6 +708,145 @@ bool RevolutionEngine::headAt(int engine, const Segment& s, long long nn, long l
             const double a = s.w * (0.06 + 0.19 * depth[1]);
             return fractional(a * (1.0 - std::cos(2.0 * kPiD * u / std::max(1.0, s.w))) + 2.0, 1.0f);
         }
+        default: return dry();
+    }
+}
+
+// ------------------------------------------------------------------------------------ GLITCH 2: the block engine
+// docs/GLITCH_RESEARCH.md: an action is a grab (where the audio comes from) + repeats (note-valued) + a shape per
+// repeat (decay, gate, pitch). What plays is always the stage's own input, cut and re-ordered (insert); no repeat is
+// shorter than 30 ms except inside RISE's accelerating roll, so nothing turns into a steady buzz.
+double RevolutionEngine::rollPeriod() const noexcept
+{
+    const double quarter = 1.0 / dq, floor30 = 0.03 * sampleRate;
+    const double preferred = quarter / (triplet ? 12.0 : 8.0); // 1/48 on a triplet grid, else 1/32
+    if (preferred >= floor30)
+        return preferred;
+    return quarter / 8.0 >= floor30 ? quarter / 8.0 : quarter / 4.0;
+}
+
+bool RevolutionEngine::blockHead(const Segment& s, long long nn, long long ahead, const float* in, float* out, int numChannels) const noexcept
+{
+    const auto dry = [&]
+    {
+        if (ahead > 0)
+            return false;
+        for (int ch = 0; ch < numChannels; ++ch)
+            out[ch] = in[ch];
+        return true;
+    };
+    const auto& t = tapes[1];
+    const double u = std::max(0.0, static_cast<double>(nn) - s.b);
+    const double quarter = 1.0 / dq;
+    // the source sample `age` before nn, times gain; age 0 = the live input (that is the stage input itself)
+    const auto read = [&](double age, double gain)
+    {
+        age -= static_cast<double>(ahead);
+        if (age < 0.5)
+        {
+            if (ahead > 0)
+                return false;
+            for (int ch = 0; ch < numChannels; ++ch)
+                out[ch] = static_cast<float>(gain) * in[ch];
+            return true;
+        }
+        if (!t.holds(age + 2.0))
+            return dry();
+        const double whole = std::floor(age);
+        for (int ch = 0; ch < numChannels; ++ch)
+            out[ch] = static_cast<float>(gain * (age - whole < 1.0e-9 ? t.at(ch, static_cast<long long>(whole)) : readFrac(t, ch, age)));
+        return true;
+    };
+    // a grain's envelope: a 1.5 ms raised-cosine attack (not for the live first grain), open for `gate` of the grain,
+    // a release of up to 4 ms that reaches 0 at the gate's end
+    const auto grain = [&](double v, double length, double gate, bool attack)
+    {
+        const double a = 0.0015 * sampleRate, end = std::max(1.0, gate * length);
+        const double release = std::min(0.004 * sampleRate, 0.25 * end);
+        double g = 1.0;
+        if (attack && v < a)
+            g *= raisedCos((v + 1.0) / (a + 1.0));
+        if (v >= end)
+            return 0.0;
+        if (v > end - release)
+            g *= raisedCos((end - v) / (release + 1.0));
+        return g;
+    };
+    const double strength = depth[1]; // DEPTH: how far each repeat decays (and how deep DROP / RISE go)
+    // the audio before the run that the action reaches back to; when the tape did not hold that much at the run's
+    // start (just after play or a jump), the whole run plays dry - a switch inside it would click
+    {
+        double need = 0.0;
+        switch (s.action)
+        {
+            case rev::BlockRepeat: need = std::max(1.0, s.wStep) + 2.0; break;
+            case rev::BlockDrop: need = 0.5 * quarter + 2.0; break;
+            case rev::BlockShuffle: need = 2.0 * quarter + 2.0; break;
+            case rev::BlockReverse: need = s.w + 2.0; break;
+            default: break;
+        }
+        if (need > 0.0 && static_cast<double>(std::min<long long>(t.written, t.size)) - u < need)
+            return dry();
+    }
+    switch (s.action)
+    {
+        case rev::BlockRepeat: // the step before the run, played again, each repeat a little quieter
+        {
+            const double g = std::max(1.0, s.wStep), v = std::fmod(u, g), r = std::floor(u / g);
+            const double gain = std::pow(1.0 - 0.2 * strength, r) * grain(v, g, 1.0, true);
+            return read(u + g - v, gain);
+        }
+        case rev::BlockRoll: // the run's own start retriggered at 1/32, -1 .. -3 dB per repeat, gated to 85 %
+        case rev::BlockChop: // ... at 1/16, gated to 45 %: the dry pieces with silence between
+        {
+            const bool roll = s.action == rev::BlockRoll;
+            const double period = roll ? rollPeriod() : quarter / 4.0;
+            const double v = std::fmod(u, period), r = std::floor(u / period);
+            const double decay = roll ? 1.0 - 0.3 * strength : 1.0 - 0.1 * strength;
+            const double gain = std::pow(decay, r) * grain(v, period, roll ? 0.85 : 0.45, r > 0.0);
+            return read(u - v, gain); // r = 0: the live input
+        }
+        case rev::BlockRise: // an accelerating roll from 1/16 down to 1/64 (>= 5 ms), the pitch rising to +7 st
+        {
+            const double first = quarter / 4.0, shortest = std::max(0.005 * sampleRate, quarter / 16.0);
+            double start = 0.0, length = first;
+            int r = 0;
+            while (u >= start + length && r < 400)
+            {
+                start += length;
+                length = std::max(shortest, length * 0.82);
+                ++r;
+            }
+            const double v = u - start;
+            const double x = std::clamp(u / std::max(1.0, s.w), 0.0, 1.0);
+            const double speed = r == 0 ? 1.0 : std::pow(2.0, strength * 7.0 * x / 12.0);
+            const double from = std::min(v * speed, std::max(0.0, u - 1.0)); // never ahead of what was heard
+            return read(u - from, grain(v, length, 0.85, r > 0));
+        }
+        case rev::BlockDrop: // the 1/8 before the run at half speed (an octave down), repeats decaying
+        {
+            const double g = 0.5 * quarter, period = 2.0 * g, v = std::fmod(u, period), r = std::floor(u / period);
+            const double gain = std::pow(1.0 - 0.25 * strength, r) * grain(v, period, 1.0, true);
+            return read(u + g - 0.5 * v, gain);
+        }
+        case rev::BlockShuffle: // another piece of the bar plays here: 3/16, 1/4, 3/8 or 1/2 earlier (BBCut offsets)
+        {
+            static constexpr double offsets[] { 0.75, 1.0, 1.5, 2.0 };
+            const auto pick = static_cast<size_t>(std::min(3.0, std::floor(4.0 * unitHash(0x5A0FF1E5u ^ humanSeed, s.runK))));
+            return read(offsets[pick] * quarter, 1.0);
+        }
+        case rev::BlockReverse: // the window before the run, backwards
+            return read(2.0 * u + 1.0, 1.0);
+        case rev::BlockStop: // a tape stop over the run: speed and level fall to zero
+        {
+            const double p = 2.0, x = u / std::max(1.0, s.w);
+            const double moved = x < 1.0 ? s.w / (p + 1.0) * (1.0 - std::pow(1.0 - x, p + 1.0)) : s.w / (p + 1.0);
+            return read(u - moved + 2.0, x < 1.0 ? 1.0 - x : 0.0);
+        }
+        case rev::BlockGap:
+            for (int ch = 0; ch < numChannels; ++ch)
+                out[ch] = 0.0f;
+            return true;
         default: return dry();
     }
 }
@@ -1048,7 +1209,9 @@ void RevolutionEngine::tapeStage(int engine, float* x, int numChannels, double q
                 voiceNext = -1;
             }
             st.cur = next;
-            if (smartJoin)
+            // GLITCH 2's grains carry their own envelopes; C-ATD's level correction (capped at +3 dB) put a kink in a
+            // fade whenever one head was nearly silent (a gate, a grain's attack)
+            if (smartJoin && !(engine == rev::Glitch && blockGlitch))
                 estimateJoin(engine, st, prevStretch, timeStage && voiceCur >= 0, numChannels);
             else
                 st.join = false;
@@ -1182,6 +1345,28 @@ void RevolutionEngine::getTiming(std::array<float, 16>& offsets, std::array<floa
 
 void RevolutionEngine::listenTiming(const float* in, int numChannels, double q) noexcept
 {
+    {
+        // the dynamics measure (any mode)
+        double e = 0.0;
+        for (int ch = 0; ch < numChannels; ++ch)
+            e += static_cast<double>(in[ch]) * in[ch];
+        dynEnergy += e / numChannels;
+        if (++dynFill >= dynFrame)
+        {
+            dynFrames[static_cast<size_t>(dynPos)] = static_cast<float>(10.0 * std::log10(dynEnergy / dynFrame + 1.0e-12));
+            dynPos = (dynPos + 1) % static_cast<int>(dynFrames.size());
+            dynCount = std::min(dynCount + 1, static_cast<int>(dynFrames.size()));
+            dynFill = 0;
+            dynEnergy = 0.0;
+            if (dynCount == static_cast<int>(dynFrames.size()))
+            {
+                auto sorted = dynFrames;
+                std::nth_element(sorted.begin(), sorted.begin() + 50, sorted.end());
+                const float median = sorted[50], loudest = *std::max_element(dynFrames.begin(), dynFrames.end());
+                dynamics.store(median < -90.0f ? 0.0f : loudest - median, std::memory_order_relaxed);
+            }
+        }
+    }
     if (freeMode)
         return;
     double level = 0.0;

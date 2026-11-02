@@ -321,7 +321,9 @@ ModuleSpec makeRevolution()
                choice("simpleGenre", "Genre", 0, kPageOnly, { "Auto", "Boom Bap", "Trap", "Techno", "DnB" }),
                choice("simpleFill", "Fill", 3, kPageOnly, { "Off", "Every Bar", "Every 2 Bars", "Every 4 Bars", "Every 8 Bars" }),
                choice("simpleTarget", "Target", 2, kPageOnly, { "Hats", "Snare", "Tops", "Full" }),
-               choice("simpleLock", "Lock", 0, kPageOnly, { "Off", "On" }) } };
+               choice("simpleLock", "Lock", 0, kPageOnly, { "Off", "On" }),
+               // GLITCH 2: the block engine (SIMPLE and the genre presets turn it on; old projects stay Legacy)
+               choice("glitchEngine", "Glitch Engine", 0, s::kGlitchEngine, { "Legacy", "Block" }) } };
 }
 
 float transformed(float value, ValueTransform transform) noexcept

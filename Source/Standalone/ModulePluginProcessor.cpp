@@ -79,6 +79,17 @@ void ModulePluginProcessor::generateSimple(bool newSeed)
         state.seed = static_cast<juce::int64>(revolution::nextSeed(static_cast<std::uint64_t>(state.seed)));
     auto settings = simpleSettings();
     settings.seed = static_cast<std::uint64_t>(state.seed);
+    // GLITCH 2: what the input is - drums (sharp attacks) or sustained (vocal, pad, keys); heard by LISTEN, kept in
+    // the scene from the first generation that heard something (GENERATE listens again)
+    {
+        // percussive = the loudest 10 ms of the last second >= 9 dB above its median 10 ms (drums: hits and gaps); a pad
+        // or a held vocal stays within a few dB (the energy novelty and the onset detector both read a chord's beating
+        // as attacks)
+        const float dyn = moduleNode().getRevolutionDynamics(0);
+        if (dyn > 0.0f && (newSeed || state.material == 0))
+            state.material = dyn >= 9.0f ? 1 : 2;
+        settings.sustained = state.material == 2;
+    }
     // the hits: HPDG's pattern when linked (the last one, also after LOST), else LISTEN's feel, else the genre's template
     simple::Hits hits;
     auto snapshot = std::make_unique<hamlo::link::Snapshot>();
@@ -120,6 +131,48 @@ void ModulePluginProcessor::generateSimple(bool newSeed)
     setRevolutionState(state);
     const juce::ScopedLock lock(revolutionLock);
     simpleResult = result;
+}
+
+void ModulePluginProcessor::generateLane(int lane)
+{
+    namespace simple = revolution::simple;
+    if (lane < revolution::kEngines || lane >= revolution::kLanes)
+        return;
+    auto state = getRevolutionState();
+    auto settings = simpleSettings();
+    settings.sustained = state.material == 2;
+    simple::Hits hits;
+    auto snapshot = std::make_unique<hamlo::link::Snapshot>();
+    if (hpdgLink.isConnected() && hpdgLink.last(*snapshot))
+        hits = simple::hitsFromSnapshot(*snapshot);
+    else
+    {
+        const int genre = simple::resolveGenre(settings.genre, {}, getHostBpm());
+        hits = revolution::hasFeel(state.feel) ? simple::hitsFromFeel(state.feel, genre) : simple::templateHits(genre);
+    }
+    // each press: a new seed, an INTENT zone and an AMOUNT drawn from it (the lane's rules hang on the hits more than on
+    // the seed); a result that is empty or the same as now is drawn again (up to 12 times)
+    const auto current = state.lanes[static_cast<size_t>(lane)].first;
+    for (int attempt = 0; attempt < 12; ++attempt)
+    {
+        settings.seed = revolution::mix64(static_cast<std::uint64_t>(state.seed) ^ (0x9E3779B97F4A7C15ull * static_cast<std::uint64_t>(lane + 1))
+                                          ^ (static_cast<std::uint64_t>(++laneGenerations) << 20));
+        settings.intent = (static_cast<double>(settings.seed % simple::kIntents) + 0.5) / simple::kIntents;
+        settings.amount = 0.3 + 0.6 * revolution::unitOf(revolution::mix64(settings.seed));
+        const auto r = simple::generate(settings, hits, getHostBpm());
+        const auto& from = r.lanes[static_cast<size_t>(lane)];
+        const bool empty = std::all_of(from.first.begin(), from.first.end(), [](auto v) { return v == 0; });
+        if ((empty || from.first == current) && attempt < 11)
+            continue;
+        auto& to = state.lanes[static_cast<size_t>(lane)];
+        to.first = from.first;
+        to.extra = from.extra;
+        to.probability = from.probability;
+        to.length = from.length;
+        to.rate = from.rate;
+        break;
+    }
+    setRevolutionState(state);
 }
 
 void ModulePluginProcessor::simpleEdited()
@@ -412,6 +465,8 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
                 for (int l = 0; l < revolution::kLanes; ++l)
                     if (state.lanes[static_cast<size_t>(l)] != revolution::Lane {})
                         to.setAttribute("lane" + juce::String(l), revolution::laneToText(state.lanes[static_cast<size_t>(l)]));
+                if (state.material != 0)
+                    to.setAttribute("material", state.material);
                 if (state.heardMask != 0)
                 {
                     juce::StringArray heard;
@@ -461,7 +516,7 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                         {
                             const auto name = from.getAttributeName(i);
                             if (!name.startsWith("hpdg") && !name.startsWith("lane") && name != "index" && name != "groove" && name != "mode"
-                                && !name.startsWith("heard"))
+                                && !name.startsWith("heard") && name != "material")
                                 set.set(juce::Identifier(name), juce::var(from.getAttributeValue(i).getLargeIntValue()));
                         }
                         const auto* seed = set.getVarPointer("revSeed");
@@ -476,6 +531,7 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                         for (int i = 0; i < revolution::kSteps && i < heard.size(); ++i)
                             state.heard[static_cast<size_t>(i)] = heard[i].getFloatValue();
                         state.heardMask = static_cast<std::uint16_t>(from.getIntAttribute("heardMask", 0));
+                        state.material = juce::jlimit(0, 2, from.getIntAttribute("material", 0));
                         return state;
                     };
                     // a state from before R4 has no mode: its pattern is hand-made, ADVANCED shows it
@@ -494,7 +550,11 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                 }
             while (auto* old = xml->getChildByName(kRevolutionTag))
                 xml->removeChildElement(old, true);
+            // GLITCH 2: a state saved before it has no glitchEngine: its GLITCH steps are the legacy actions
+            const bool knowsGlitchEngine = kind == ModuleKind::Revolution && xml->getChildByAttribute("id", "glitchEngine") != nullptr;
             parameters.replaceState(juce::ValueTree::fromXml(*xml));
+            if (kind == ModuleKind::Revolution && !knowsGlitchEngine)
+                setParameterValue("glitchEngine", 0);
         }
 }
 

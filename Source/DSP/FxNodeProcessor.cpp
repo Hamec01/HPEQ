@@ -626,6 +626,15 @@ bool FxNodeProcessor::getRevolutionTiming(int slotIndex, std::array<float, 16>& 
     return true;
 }
 
+float FxNodeProcessor::getRevolutionDynamics(int slotIndex) const noexcept
+{
+    const auto& slot = slots[static_cast<size_t>(slotIndex)];
+    if (!slot.running || slot.type != FxType::MonstaFx || slot.pooled < 0 || pools == nullptr)
+        return -1.0f;
+    const auto& m = pools->monstas.get(slot.pooled);
+    return m.runsRevolution() ? m.getRevolution().dynamicsDb() : -1.0f;
+}
+
 float FxNodeProcessor::getFaderInputDb(int slotIndex) const noexcept
 {
     const auto& slot = slots[static_cast<size_t>(slotIndex)];

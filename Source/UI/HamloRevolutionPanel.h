@@ -35,14 +35,14 @@ public:
                  ThrowAMix, ThrowADepth, ThrowATail, ThrowATone, ThrowBMix, ThrowBDepth, ThrowBTail, ThrowBTone, NumParams };
     enum Switch { Order, Character, Grid, Triplet, Free, TimeOn, GlitchOn, MotionOn, MotionTarget, Stretch, Listen,
                   ShapeAOn, ShapeATarget, ShapeACurve, ShapeBOn, ShapeBTarget, ShapeBCurve,
-                  ThrowAOn, ThrowATarget, ThrowATime, ThrowANote, ThrowBOn, ThrowBTarget, ThrowBTime, ThrowBNote, NumSwitches };
+                  ThrowAOn, ThrowATarget, ThrowATime, ThrowANote, ThrowBOn, ThrowBTarget, ThrowBTime, ThrowBNote, GlitchEngine, NumSwitches };
 
     struct Values
     {
         std::array<double, NumParams> knobs { 1.0, 125.0, 16.0, 0.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.6, 0.3,
                                               1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 200.0, 2500.0,
                                               1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5 };
-        std::array<int, NumSwitches> switches { 0, 1, 2, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 7, 0, 1, 2, 7, 0 };
+        std::array<int, NumSwitches> switches { 0, 1, 2, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 7, 0, 1, 2, 7, 0, 0 };
         revolution::Pattern pattern;
         revolution::Feel feel {}; // the LISTEN snapshot the pattern was generated from (all 0 = none)
         juce::int64 seed = 1;
@@ -84,6 +84,7 @@ public:
     std::function<void(int target)> onSceneCopyTo;
     std::function<void()> onSceneClear;
     std::function<void()> onSimple; // R4: back to the SIMPLE page
+    std::function<void(int lane)> onLevelLaneGenerate; // GEN on SHAPE A / B, THROW A / B
     std::function<Status()> readStatus; // polled at 30 Hz
 
     static double defaultFor(Param);
@@ -110,6 +111,10 @@ public:
     // R6: a TIME / GLITCH cell set to a value (dragging across cells paints the first cell's new value; locked
     // steps are skipped)
     void paintStep(int engine, int cell, int value);
+    // GLITCH 2: the values a lane's cells take and their names (GLITCH in block mode: the block actions)
+    int actionCount(int engine) const noexcept;
+    juce::String actionName(int engine, int value) const;
+    juce::String actionShortName(int engine, int value) const;
     // R3: a THROW lane's target window: click = next target, right click = TARGET / TIME / NOTE menu
     void showThrowMenu(int lane);
     void showSecondHalf(int engine, bool);

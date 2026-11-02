@@ -31,7 +31,7 @@ struct FxSlotParams
     bool active = false;
     FxType type = FxType::Gain;
     float mix = 1.0f;
-    std::array<float, 228> values {}; // HamloRevolution: 48 in HPEQ; R1 lanes 48 .. 92, R2 shapes / bands 93 .. 151, R3 throws 152 .. 207,
+    std::array<float, 232> values {}; // HamloRevolution: 48 in HPEQ; R1 lanes 48 .. 92, R2 shapes / bands 93 .. 151, R3 throws 152 .. 207,
                                       // R4 groove 208 .. 224
 };
 
@@ -105,6 +105,8 @@ constexpr int kThrowBase = 152, kThrowStride = 12, kThrowOn = 0, kThrowMix = 1, 
 constexpr int kThrowLaneBase = 176, kThrowBandBase = 206;
 // R4: the groove table (an offset in quarter notes per 1/16 of the bar) and GROOVE (0 .. 1)
 constexpr int kGrooveBase = 208, kGrooveSteps = 16, kGrooveAmount = 224;
+// GLITCH 2: 0 = the legacy GLITCH (HPEQ's actions), 1 = the block engine (docs/GLITCH_RESEARCH.md)
+constexpr int kGlitchEngine = 228;
 // where lane l's settings and band are (TIME, GLITCH, MOTION, SHAPE A, SHAPE B, THROW A, THROW B)
 constexpr int laneSettings(int lane)
 {

@@ -196,7 +196,8 @@ void HamloRevolutionSimplePage::paint(juce::Graphics& g)
             {
                 g.setFont(stencilFont(15.0f));
                 g.setColour(ink);
-                g.drawText(rev::valueShortName(l, v), r, juce::Justification::centred);
+                g.drawText(l == rev::Glitch && values.glitchBlock ? rev::blockActionShortName(v) : rev::valueShortName(l, v), r,
+                           juce::Justification::centred);
             }
             else
             {

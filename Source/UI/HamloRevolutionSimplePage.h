@@ -30,6 +30,7 @@ public:
         std::array<std::array<std::uint8_t, revolution::kSteps>, revolution::kLanes> preview {};
         std::array<int, revolution::kLanes> bands {};
         int step = -1;
+        bool glitchBlock = false; // GLITCH 2: name the GLITCH steps as block actions
     };
 
     HamloRevolutionSimplePage();

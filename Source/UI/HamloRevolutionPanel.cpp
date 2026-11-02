@@ -14,8 +14,8 @@ namespace rev = hpeq::revolution;
 constexpr float kW = 1180.0f, kH = 1280.0f; // R2: two SHAPE rows and the band footer, R3: two THROW rows (HPEQ: 700)
 constexpr float kPi = juce::MathConstants<float>::pi;
 
-const juce::Rectangle<float> kPlate { 30.0f, 26.0f, 330.0f, 92.0f };
-const juce::Rectangle<float> kWaveBezel { 374.0f, 22.0f, 242.0f, 92.0f }, kWaveScreen { 384.0f, 30.0f, 222.0f, 64.0f };
+// the preset screen (PresetScreen::kDesignBounds, 56 .. 392) has the top left; the wave screen starts right of it
+const juce::Rectangle<float> kWaveBezel { 404.0f, 22.0f, 212.0f, 92.0f }, kWaveScreen { 414.0f, 30.0f, 192.0f, 64.0f };
 const juce::Rectangle<float> kStatusLcd { 915.0f, 176.0f, 240.0f, 68.0f };
 const juce::Point<float> kGenerate { 652.0f, 69.0f }, kNewSeed { 730.0f, 69.0f }, kLamp { 1112.0f, 62.0f };
 const juce::Point<float> kTriplet { 335.0f, 206.0f }, kFree { 410.0f, 206.0f };
@@ -52,21 +52,21 @@ const std::array<KnobInfo, HamloRevolutionPanel::NumParams> kKnobs { {
     { 198.0f, kRowY[3] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
     { 274.0f, kRowY[3] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
     { 350.0f, kRowY[3] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "SMOOTH" },
-    { 1138.0f, kRowY[3] + kRowKnobDy, 0.36f, 0.0, 1.0, false, "RES" },
+    { 1138.0f, kRowY[3] + 96.0f, 0.3f, 0.0, 1.0, false, "RES" }, // R7: below GEN
     { 198.0f, kRowY[4] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
     { 274.0f, kRowY[4] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
     { 350.0f, kRowY[4] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "SMOOTH" },
-    { 1138.0f, kRowY[4] + kRowKnobDy, 0.36f, 0.0, 1.0, false, "RES" },
+    { 1138.0f, kRowY[4] + 96.0f, 0.3f, 0.0, 1.0, false, "RES" }, // R7: below GEN
     { 860.0f, kFooterY, 0.3f, 40.0, 1000.0, true, "LOW / MID" },
     { 980.0f, kFooterY, 0.3f, 1000.0, 12000.0, true, "MID / HIGH" },
     { 198.0f, kRowY[5] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
     { 274.0f, kRowY[5] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
     { 350.0f, kRowY[5] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "TAIL" },
-    { 1138.0f, kRowY[5] + kRowKnobDy, 0.36f, 0.0, 1.0, false, "TONE" },
+    { 1138.0f, kRowY[5] + 96.0f, 0.3f, 0.0, 1.0, false, "TONE" }, // R7: below GEN
     { 198.0f, kRowY[6] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
     { 274.0f, kRowY[6] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
     { 350.0f, kRowY[6] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "TAIL" },
-    { 1138.0f, kRowY[6] + kRowKnobDy, 0.36f, 0.0, 1.0, false, "TONE" },
+    { 1138.0f, kRowY[6] + 96.0f, 0.3f, 0.0, 1.0, false, "TONE" }, // R7: below GEN
 } };
 
 // Selectors: centre, number of positions, the labels around them, the title under them.
@@ -96,7 +96,12 @@ juce::Rectangle<float> cellRect(int engine, int step)
     return { kCellX + kCellPitch * static_cast<float>(step), kRowY[static_cast<size_t>(engine)] + kCellTop, kCellW, kCellH };
 }
 juce::Rectangle<float> plateRect(int engine) { return { 26.0f, kRowY[static_cast<size_t>(engine)] + 6.0f, 124.0f, 34.0f }; }
-juce::Rectangle<float> laneGenRect(int engine) { return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 18.0f, 56.0f, 34.0f }; }
+juce::Rectangle<float> laneGenRect(int engine)
+{
+    if (engine >= rev::kEngines) // SHAPE / THROW: GEN above RES / TONE
+        return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 12.0f, 56.0f, 28.0f };
+    return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 18.0f, 56.0f, 34.0f };
+}
 juce::Rectangle<float> laneLockRect(int engine) { return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 62.0f, 56.0f, 34.0f }; }
 juce::Point<float> onLever(int engine) { return { 56.0f, kRowY[static_cast<size_t>(engine)] + 74.0f }; }
 juce::Point<float> onLamp(int engine) { return { 108.0f, kRowY[static_cast<size_t>(engine)] + 60.0f }; }
@@ -188,7 +193,7 @@ const char* HamloRevolutionPanel::keyFor(Switch s)
     static constexpr const char* keys[] { "order", "character", "grid", "triplet", "free", "timeOn", "glitchOn", "motionOn", "motionTarget",
                                           "timeStretch", "listen", "shapeAOn", "shapeATarget", "shapeACurve", "shapeBOn", "shapeBTarget",
                                           "shapeBCurve", "throwAOn", "throwATarget", "throwATime", "throwANote", "throwBOn", "throwBTarget",
-                                          "throwBTime", "throwBNote" };
+                                          "throwBTime", "throwBNote", "glitchEngine" };
     return keys[s];
 }
 
@@ -282,7 +287,15 @@ void HamloRevolutionPanel::generateWith(juce::int64 seed, const juce::String& wh
     }
     else
         values.feel = {};
-    changePattern(rev::generateFollowing(values.pattern, static_cast<std::uint64_t>(seed), values.switches[Character], values.feel), seed, what);
+    auto generated = rev::generateFollowing(values.pattern, static_cast<std::uint64_t>(seed), values.switches[Character], values.feel);
+    if (values.switches[GlitchEngine] != 0) // GLITCH 2: the generated legacy actions as their block counterparts
+        for (int s = 0; s < rev::kSteps; ++s)
+            if (((values.pattern.locks[rev::Glitch] >> s) & 1) == 0)
+            {
+                auto& v = generated.steps[rev::Glitch][static_cast<size_t>(s)];
+                v = static_cast<std::uint8_t>(rev::blockFromLegacy(v));
+            }
+    changePattern(generated, seed, what);
     generateFlash = 10;
 }
 
@@ -301,6 +314,13 @@ void HamloRevolutionPanel::pressLaneLock(int engine)
 
 void HamloRevolutionPanel::pressLaneGenerate(int engine)
 {
+    if (engine >= rev::kEngines) // SHAPE / THROW: the generator's steps for this lane only (the processor runs it)
+    {
+        if (onLevelLaneGenerate)
+            onLevelLaneGenerate(engine);
+        generateFlash = 10;
+        return;
+    }
     if (laneLocked(values.pattern, engine))
         return; // a locked lane is kept, as GENERATE keeps it
     // the other lanes are held as they are (all their steps locked for this one generate), a new seed
@@ -425,7 +445,7 @@ void HamloRevolutionPanel::clickStep(int engine, int cell, bool shift)
             return; // GENERATE writes steps 1 .. 16 only: there is nothing to lock on 17 .. 32
         auto l = values.lanes;
         auto& v = l[static_cast<size_t>(engine)].extra[static_cast<size_t>(index - rev::kSteps)];
-        v = static_cast<std::uint8_t>((v + 1) % rev::numValues(engine));
+        v = static_cast<std::uint8_t>((v + 1) % actionCount(engine));
         changeLanes(l, "Step");
         return;
     }
@@ -445,8 +465,23 @@ void HamloRevolutionPanel::clickStep(int engine, int cell, bool shift)
         return;
     }
     auto& v = p.steps[e][static_cast<size_t>(step)];
-    v = static_cast<std::uint8_t>((v + 1) % rev::numValues(engine));
+    v = static_cast<std::uint8_t>((v + 1) % actionCount(engine));
     changePattern(p, values.seed, "Step");
+}
+
+int HamloRevolutionPanel::actionCount(int engine) const noexcept
+{
+    return engine == rev::Glitch && values.switches[GlitchEngine] != 0 ? static_cast<int>(rev::kBlockActions) : rev::numValues(engine);
+}
+
+juce::String HamloRevolutionPanel::actionName(int engine, int value) const
+{
+    return engine == rev::Glitch && values.switches[GlitchEngine] != 0 ? rev::blockActionName(value) : rev::valueName(engine, value);
+}
+
+juce::String HamloRevolutionPanel::actionShortName(int engine, int value) const
+{
+    return engine == rev::Glitch && values.switches[GlitchEngine] != 0 ? rev::blockActionShortName(value) : rev::valueShortName(engine, value);
 }
 
 void HamloRevolutionPanel::paintStep(int engine, int cell, int value)
@@ -454,7 +489,7 @@ void HamloRevolutionPanel::paintStep(int engine, int cell, int value)
     if (engine < 0 || engine >= rev::Motion)
         return;
     const int index = cellIndex(engine, cell);
-    value = juce::jlimit(0, rev::numValues(engine) - 1, value);
+    value = juce::jlimit(0, actionCount(engine) - 1, value);
     if (cellValue(engine, index) == value)
         return;
     if (index >= rev::kSteps)
@@ -561,7 +596,6 @@ void HamloRevolutionPanel::renderStatic(juce::Graphics& g) const
 {
     panel(g, kW, kH, 1917);
     scratches(g, { { 3, { 1078.0f, 112.0f, 44.0f, 62.0f }, 8.0f }, { 14, { 22.0f, 122.0f, 32.0f, 46.0f }, -4.0f } });
-    nameplate(g, kPlate, "HamloRevolution", juce::String::fromUTF8("MODEL \xd0\xa0\xd0\x92-1"), juce::String::fromUTF8("\xe2\x84\x96 1917"));
     crtBezel(g, kWaveBezel, kWaveScreen, "", kWaveBezel.getBottom());
     lcdWindow(g, kStatusLcd);
     engraved(g, "GENERATE", { kGenerate.x - 60.0f, 14.0f, 120.0f, 20.0f }, 14.0f);
@@ -742,10 +776,10 @@ void HamloRevolutionPanel::drawTop(juce::Graphics& g) const
 void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
 {
     const int steps = juce::roundToInt(values.knobs[Steps]);
-    for (int e = 0; e < rev::kEngines; ++e) // GEN and LOCK of each lane
+    for (int e = 0; e < rev::kLanes; ++e) // GEN and LOCK of each lane (SHAPE / THROW: GEN only)
     {
-        const bool locked = laneLocked(values.pattern, e);
-        for (int b = 0; b < 2; ++b)
+        const bool locked = e < rev::kEngines && laneLocked(values.pattern, e);
+        for (int b = 0; b < (e < rev::kEngines ? 2 : 1); ++b)
         {
             const auto r = b == 0 ? laneGenRect(e) : laneLockRect(e);
             const bool lit = b == 1 && locked;
@@ -810,7 +844,7 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
             }
             else if (v > 0)
             {
-                const auto text = rev::valueShortName(e, v);
+                const auto text = actionShortName(e, v);
                 g.setFont(monoFont(e == rev::Time ? 22.0f : 17.0f).withStyle("Bold"));
                 g.setColour(ink.withAlpha(0.22f * alpha));
                 g.drawText(text, r.translated(0.0f, 1.5f).expanded(1.0f), juce::Justification::centred);
@@ -994,8 +1028,8 @@ void HamloRevolutionPanel::showStepMenu(int engine, int step)
     juce::PopupMenu menu, chance;
     const int index = cellIndex(engine, step);
     const int current = cellValue(engine, index);
-    for (int v = 0; v < rev::numValues(engine); ++v)
-        menu.addItem(1 + v, rev::valueName(engine, v), true, v == current);
+    for (int v = 0; v < actionCount(engine); ++v)
+        menu.addItem(1 + v, actionName(engine, v), true, v == current);
     menu.addSeparator();
     const int code = values.lanes[static_cast<size_t>(engine)].probability[static_cast<size_t>(index)];
     for (int c = 0; c < rev::kProbabilityCodes; ++c)
@@ -1041,7 +1075,12 @@ void HamloRevolutionPanel::showPlateMenu(int engine)
 {
     juce::PopupMenu menu;
     const auto e = static_cast<size_t>(engine);
-    if (engine < rev::Motion)
+    if (engine == rev::Glitch)
+    {
+        menu.addItem(630, "Engine: GLITCH 2 (musical repeats of the playing audio)", true, values.switches[GlitchEngine] != 0);
+        menu.addSeparator();
+    }
+    if (engine < rev::Motion && !(engine == rev::Glitch && values.switches[GlitchEngine] != 0))
     {
         menu.addSectionHeader("Generate may use");
         for (int a = 1; a < rev::numValues(engine); ++a)
@@ -1091,6 +1130,8 @@ void HamloRevolutionPanel::showPlateMenu(int engine)
             return self->setLaneCondition(engine, result - 470);
         if (result == 490)
             return self->showSecondHalf(engine, !self->secondHalf[e]);
+        if (result == 630)
+            return self->setSwitch(GlitchEngine, self->values.switches[GlitchEngine] != 0 ? 0 : 1);
         if (result >= 600 && result < 600 + rev::kBands)
             return self->setLaneBand(engine, result - 600);
         if (result == 620)
@@ -1149,11 +1190,11 @@ void HamloRevolutionPanel::mouseDown(const juce::MouseEvent& e)
     }
     if (d.getDistanceFrom(kGenerate) <= 32.0f)
         return pressGenerate();
-    for (int eng = 0; eng < rev::kEngines; ++eng)
+    for (int eng = 0; eng < rev::kLanes; ++eng)
     {
         if (laneGenRect(eng).contains(d))
             return pressLaneGenerate(eng);
-        if (laneLockRect(eng).contains(d))
+        if (eng < rev::kEngines && laneLockRect(eng).contains(d))
             return pressLaneLock(eng);
     }
     if (d.getDistanceFrom(kNewSeed) <= 20.0f)
@@ -1319,11 +1360,11 @@ juce::String HamloRevolutionPanel::helpKeyAt(juce::Point<float> local) const
     const auto d = toDesign(local);
     if (d.getDistanceFrom(kGenerate) <= 32.0f)
         return "generate";
-    for (int eng = 0; eng < rev::kEngines; ++eng)
+    for (int eng = 0; eng < rev::kLanes; ++eng)
     {
         if (laneGenRect(eng).contains(d))
             return "laneGenerate";
-        if (laneLockRect(eng).contains(d))
+        if (eng < rev::kEngines && laneLockRect(eng).contains(d))
             return "laneLock";
     }
     if (const int k = knobAt(d); k >= 0)

@@ -48,7 +48,7 @@ juce::String revolutionHelp(const juce::String& key)
         { "lanePlate", "The lane's menu: LENGTH (polymeter), RATE, CONDITION, BAND, steps 17 - 32, CURVE (SHAPE)." },
         { "laneCells", "The steps. TIME / GLITCH: click for the next action, drag to paint it over more steps, right click for the "
                        "action and its probability. Level lanes: drag up / down and across to draw." },
-        { "laneGenerate", "GEN: a new pattern for this lane only." },
+        { "laneGenerate", "GEN: a new pattern for this lane only (SHAPE / THROW: from SIMPLE's genre and intent, a new seed each press)." },
         { "laneLock", "LOCK: lock every step of this lane (GENERATE keeps them)." },
         // ---- lanes
         { "timeOn", "TIME on / off: half speed, reverse, freeze, tape stop, double speed." },
@@ -92,6 +92,8 @@ juce::String revolutionHelp(const juce::String& key)
                           "VINYL, DOWNSAMPLE - on the step only. Right click: TIME and NOTE." },
         { "throwATime", "THROW A TIME: the delay time, or the LFO period of PHASER / FLANGER / VINYL." },
         { "throwBTime", "THROW B TIME: the delay time, or the LFO period of PHASER / FLANGER / VINYL." },
+        { "glitchEngine", "GLITCH ENGINE: LEGACY (HPEQ's actions, old projects) or BLOCK - the playing audio itself cut and repeated "
+                            "in musical pieces: REPEAT, ROLL, RISE, CHOP, DROP, SHUFFLE, REVERSE, STOP, GAP (the lane's menu)." },
         { "throwANote", "THROW A NOTE: TONAL's pitch (follows HPDG's key when linked)." },
         { "throwBNote", "THROW B NOTE: TONAL's pitch (follows HPDG's key when linked)." },
     };

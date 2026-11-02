@@ -72,6 +72,7 @@ public:
         std::array<float, revolution::kSteps> groove {}; // R4: the groove table (quarter notes per 1/16), all 0 = none
         std::array<float, revolution::kSteps> heard {};  // R5: the input's timing per 1/16 captured by SIMPLE's GENERATE
         std::uint16_t heardMask = 0;                     // ... bit s: 1/16 s had an onset (presence >= 0.5)
+        int material = 0;                                // GLITCH 2: 0 not heard yet, 1 percussive, 2 sustained (LISTEN)
     };
     RevolutionState getRevolutionState() const;          // the current scene
     void setRevolutionState(const RevolutionState&);     // the current scene
@@ -93,6 +94,9 @@ public:
     void setPage(Page p) noexcept { page.store(p == Page::Simple ? 0 : 1); }
     void generateSimple(bool newSeed);
     void simpleEdited();   // a SIMPLE setting changed: regenerate unless LOCK
+    // GEN on a SHAPE / THROW lane (ADVANCED): the generator's steps for that lane (SIMPLE's settings, a new seed per
+    // press); the other lanes, the lane's band and every parameter stay
+    void generateLane(int lane);
     bool followHpdg();     // a new HPDG pattern taken (and regenerated from, in SIMPLE without LOCK)
     revolution::simple::Settings simpleSettings() const;
     revolution::simple::Result lastSimple() const;
@@ -131,6 +135,7 @@ private:
     int sceneParameterIndex = -1;
     hamlo::link::Client hpdgLink;
     std::atomic<int> page { 0 };
+    std::uint32_t laneGenerations = 0;
     revolution::simple::Result simpleResult; // revolutionLock
     struct Follower;
     std::unique_ptr<Follower> follower; // after hpdgLink: stopped first

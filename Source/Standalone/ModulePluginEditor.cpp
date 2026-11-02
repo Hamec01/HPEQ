@@ -186,6 +186,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
                 values.on = processor.isModuleOn();
                 page->setValues(values);
             };
+            page->onLevelLaneGenerate = [this](int lane) { processor.generateLane(lane); };
             page->onSimple = [this]
             {
                 processor.setPage(ModulePluginProcessor::Page::Simple);
@@ -432,6 +433,7 @@ void ModulePluginEditor::installSimplePage()
             v.bands[static_cast<size_t>(l)] = state.lanes[static_cast<size_t>(l)].band;
         }
         v.step = processor.moduleNode().getRevolutionStep(0);
+        v.glitchBlock = processor.parameterValue("glitchEngine") >= 0.5;
         sp->setValues(v);
     };
     addAndMakeVisible(*sp);

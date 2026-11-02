@@ -30,6 +30,15 @@ const char* orderName(int order);
 enum TimeAction { TimePass, Half, TimeReverse, Freeze, TapeStop, Double, kTimeActions };
 // GLITCH actions on a step.
 enum GlitchAction { GlitchPass, Repeat, Stutter, Ratchet, GlitchReverse, Gap, Jump, Scratch, kGlitchActions };
+// GLITCH 2 (docs/GLITCH_RESEARCH.md): the block engine's actions - the playing audio itself, cut, repeated in musical
+// pieces with a shape per repeat (decay, gate), pitched, re-ordered. Chosen per scene by the glitchEngine parameter;
+// the actions above stay for old projects (Legacy).
+enum BlockAction { BlockPass, BlockRepeat, BlockRoll, BlockRise, BlockChop, BlockDrop, BlockShuffle, BlockReverse, BlockStop, BlockGap,
+                   kBlockActions };
+juce::String blockActionName(int action);      // "REPEAT" ...
+juce::String blockActionShortName(int action); // "RP" ...
+// the ADVANCED GENERATE in block mode: a legacy GLITCH action -> its block counterpart
+int blockFromLegacy(int glitchAction) noexcept;
 // MOTION: a level 0..15 per step (0 = untouched) applied to the target.
 constexpr int kMotionLevels = 16;
 enum MotionTarget { Volume, LowPass, HighPass, Width, Crush, kMotionTargets };

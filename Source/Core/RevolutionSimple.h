@@ -37,6 +37,7 @@ struct Settings
     int genre = AutoGenre, fill = FillEvery4, target = TopsTarget;
     double intent = 0.3, amount = 0.5, variation = 0.25;
     std::uint64_t seed = 1;
+    bool sustained = false; // GLITCH 2: the input is not drums (vocal, pad, keys) - fewer glitches, on the beats
 };
 
 // The source's hits per 1/16 of the bar: the share of bars with a hit per role (0 .. 1) and the groove (the mean

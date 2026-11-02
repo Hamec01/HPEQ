@@ -59,6 +59,9 @@ public:
     // R5: the input's onset timing per 1/16 of the bar: the offset from the straight grid (quarter notes) and the
     // presence (1 = an onset there every bar), each averaged bar by bar (half old, half new).
     void getTiming(std::array<float, 16>& offsets, std::array<float, 16>& presence) const noexcept;
+    // GLITCH 2: the input's dynamics - the loudest 10 ms against the median 10 ms over the last second (dB); drums
+    // sit far above 9 dB, a pad or a held vocal below
+    float dynamicsDb() const noexcept { return dynamics.load(std::memory_order_relaxed); }
     // The wave screen (owner, 2026-10-26): input and output peak per 1/8 step over the pattern cycle, the
     // latest cycle written over the previous one.
     static constexpr int kWaveBins = 8 * kFeelSteps;
@@ -131,6 +134,9 @@ private:
     // only give the stage's input and that is not known yet (ahead > 0).
     bool headAt(int engine, const Segment&, long long nn, long long ahead, const float* in, float* out, int numChannels) const noexcept;
     bool isStretch(int engine, const Segment&) const noexcept;
+    // GLITCH 2: the block engine's head (the same contract as headAt)
+    bool blockHead(const Segment&, long long nn, long long ahead, const float* in, float* out, int numChannels) const noexcept;
+    double rollPeriod() const noexcept; // ROLL's repeat in samples: 1/32 (1/48 on a triplet grid), never below 30 ms
     void startVoice(int index, const Segment&) noexcept;
     void advanceVoice(StretchVoice&) noexcept;
     void lookAhead(const Stage&) noexcept;
@@ -188,9 +194,14 @@ private:
     bool windowHit = false;
     double windowOffset = 0.0;
     std::array<std::atomic<float>, 16> timing {}, presence {};
+    std::array<float, 100> dynFrames {};
+    int dynFill = 0, dynCount = 0, dynPos = 0, dynFrame = 480;
+    double dynEnergy = 0.0;
+    std::atomic<float> dynamics { 0.0f };
 
     // parameters of the current block
-    std::array<float, 228> lastValues {};
+    std::array<float, 232> lastValues {};
+    bool blockGlitch = false; // GLITCH 2: the block engine
     // R4: the groove (offsets per 1/16 of the bar, in quarter notes, times GROOVE); all 0 = the straight grid
     std::array<double, 16> groove {};
     bool grooved = false;

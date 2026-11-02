@@ -564,4 +564,32 @@ const char* noteName(int note)
 
 double noteHz(int note) noexcept { return 130.8127826502993 * std::pow(2.0, juce::jlimit(0, kNotes - 1, note) / 12.0); }
 
+// ---------------------------------------------------------------------------------------------- GLITCH 2
+juce::String blockActionName(int action)
+{
+    static constexpr const char* names[kBlockActions] { "PASS", "REPEAT", "ROLL", "RISE", "CHOP", "DROP", "SHUFFLE", "REVERSE", "STOP", "GAP" };
+    return names[juce::jlimit(0, kBlockActions - 1, action)];
+}
+
+juce::String blockActionShortName(int action)
+{
+    static constexpr const char* names[kBlockActions] { "", "RP", "RL", "RS", "CH", "DR", "SH", "RV", "ST", "GP" };
+    return names[juce::jlimit(0, kBlockActions - 1, action)];
+}
+
+int blockFromLegacy(int a) noexcept
+{
+    switch (a)
+    {
+        case Repeat: return BlockRepeat;
+        case Stutter: return BlockChop;
+        case Ratchet: return BlockRoll;
+        case GlitchReverse: return BlockReverse;
+        case Gap: return BlockGap;
+        case Jump: return BlockShuffle;
+        case Scratch: return BlockDrop;
+        default: return BlockPass;
+    }
+}
+
 } // namespace hpeq::revolution
