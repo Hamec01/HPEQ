@@ -18,3 +18,11 @@ this module (as HamloComp / HamloUdarnik / HamloRedWall / HamloMag did) and reco
   take the lane's step length. All lane values 0 = HPEQ's engine bit for bit (Tests/GoldenTests.cpp).
 - `Core/Revolution.*`: the lane vocabulary (`Lane`, conditions, probability codes, rate names, packing, saved text).
 - `UI/HamloRevolutionPanel.*`: lane / step / scene menus, the second half of the cells, probability marks, scene on the LCD.
+
+## R2 (SHAPE lanes, bands) - changes to HPEQ's files
+
+- `DSP/LayerSnapshot.h`: `values` 112 -> 160; `slot::kShape*`, `kShapeLaneBase`, `kBandBase`, `kCrossover*`.
+- `DSP/HamloRevolution.*`: `runLane` (FULL = the lane as before; a band = the Linkwitz-Riley split), `shapeStage`,
+  `shapeLevel`; every lane through `runLane`, the shapes after the three engines.
+- `Core/Revolution.*`: `kLanes`, `ShapeTarget`, `Band`, `Lane::band` / `Lane::first`, engine names for the shapes.
+- `UI/HamloRevolutionPanel.*`: 1180 x 1016, SHAPE rows, BANDS footer, band / curve menus and tags.

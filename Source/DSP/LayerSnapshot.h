@@ -31,7 +31,7 @@ struct FxSlotParams
     bool active = false;
     FxType type = FxType::Gain;
     float mix = 1.0f;
-    std::array<float, 112> values {}; // HamloRevolution R1: 48 in HPEQ; 48 .. 92 = the lanes (slot::kLane*)
+    std::array<float, 160> values {}; // HamloRevolution: 48 in HPEQ; R1 lanes 48 .. 92, R2 shapes / bands 93 .. 151
 };
 
 namespace slot
@@ -92,6 +92,12 @@ constexpr int kDivision = 0, kChance = 1, kSeed = 2, kCrushBits = 3, kGateDepth 
 // condition 0 .. 6 (revolution::laneConditionName), steps 17 .. 32 as 4 packed quads, the probability codes of
 // steps 1 .. 32 as 8 packed quads (4 bits, 0 = 100 %). All 0 = the lane as before R1.
 constexpr int kLaneBase = 48, kLaneStride = 15, kLaneLength = 0, kLaneRate = 1, kLaneCondition = 2, kLaneSteps = 3, kLaneProbability = 7;
+// R2: SHAPE A / B from kShapeBase + shape * kShapeStride: on, mix, depth, target (revolution::ShapeTarget), smooth,
+// resonance, curve 0/1, steps 1 .. 16 as 4 packed quads; their lane settings (as kLane*) from kShapeLaneBase; BAND
+// (0 FULL, 1 LOW, 2 MID, 3 HIGH) of TIME, GLITCH, MOTION, SHAPE A, SHAPE B from kBandBase; the crossovers in Hz.
+constexpr int kShapeBase = 93, kShapeStride = 11, kShapeOn = 0, kShapeMix = 1, kShapeDepth = 2, kShapeTarget = 3, kShapeSmooth = 4,
+              kShapeRes = 5, kShapeCurve = 6, kShapePattern = 7;
+constexpr int kShapeLaneBase = 115, kBandBase = 145, kCrossoverLow = 150, kCrossoverHigh = 151;
 // Stereo (insert; needs a stereo work domain)
 constexpr int kStereoWidth = 0, kStereoBalance = 1,
               // HamloShirota (module pass 8): style 0 EDINSTVO / 1 PROSTOR / 2 KOSMOS; stereoize 0..1; space 0..1;

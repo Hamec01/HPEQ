@@ -9,7 +9,7 @@ namespace
 using namespace steel;
 namespace rev = hpeq::revolution;
 
-constexpr float kW = 1180.0f, kH = 700.0f;
+constexpr float kW = 1180.0f, kH = 1016.0f; // R2: two SHAPE rows and the band footer (HPEQ: 700)
 constexpr float kPi = juce::MathConstants<float>::pi;
 
 const juce::Rectangle<float> kPlate { 30.0f, 26.0f, 330.0f, 92.0f };
@@ -17,7 +17,8 @@ const juce::Rectangle<float> kWaveBezel { 374.0f, 22.0f, 242.0f, 92.0f }, kWaveS
 const juce::Rectangle<float> kStatusLcd { 915.0f, 176.0f, 240.0f, 68.0f };
 const juce::Point<float> kGenerate { 652.0f, 69.0f }, kNewSeed { 730.0f, 69.0f }, kLamp { 1112.0f, 62.0f };
 const juce::Point<float> kTriplet { 335.0f, 206.0f }, kFree { 410.0f, 206.0f };
-constexpr std::array<float, 3> kRowY { 288.0f, 420.0f, 552.0f };
+constexpr std::array<float, 5> kRowY { 288.0f, 420.0f, 552.0f, 684.0f, 816.0f };
+constexpr float kFooterY = 968.0f;
 constexpr float kCellX = 400.0f, kCellPitch = 44.0f, kCellW = 41.0f, kCellTop = 16.0f, kCellH = 84.0f;
 // per-lane GEN and LOCK, right of the cells
 juce::Rectangle<float> laneGenRect(int engine);
@@ -46,6 +47,16 @@ const std::array<KnobInfo, HamloRevolutionPanel::NumParams> kKnobs { {
     { 198.0f, kRowY[2] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
     { 274.0f, kRowY[2] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
     { 350.0f, kRowY[2] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "SMOOTH" },
+    { 198.0f, kRowY[3] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[3] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
+    { 350.0f, kRowY[3] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "SMOOTH" },
+    { 1138.0f, kRowY[3] + kRowKnobDy, 0.36f, 0.0, 1.0, false, "RES" },
+    { 198.0f, kRowY[4] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[4] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
+    { 350.0f, kRowY[4] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "SMOOTH" },
+    { 1138.0f, kRowY[4] + kRowKnobDy, 0.36f, 0.0, 1.0, false, "RES" },
+    { 860.0f, kFooterY, 0.3f, 40.0, 1000.0, true, "LOW / MID" },
+    { 980.0f, kFooterY, 0.3f, 1000.0, 12000.0, true, "MID / HIGH" },
 } };
 
 // Selectors: centre, number of positions, the labels around them, the title under them.
@@ -80,12 +91,26 @@ juce::Rectangle<float> laneLockRect(int engine) { return { 1110.0f, kRowY[static
 juce::Point<float> onLever(int engine) { return { 56.0f, kRowY[static_cast<size_t>(engine)] + 74.0f }; }
 juce::Point<float> onLamp(int engine) { return { 108.0f, kRowY[static_cast<size_t>(engine)] + 60.0f }; }
 const juce::Rectangle<float> kTargetWindow { 88.0f, kRowY[2] + 84.0f, 84.0f, 24.0f };
+juce::Rectangle<float> shapeTargetWindow(int lane) { return { 88.0f, kRowY[static_cast<size_t>(lane)] + 84.0f, 84.0f, 24.0f }; }
+juce::Rectangle<float> bandTag(int lane) { return { 122.0f, kRowY[static_cast<size_t>(lane)] + 50.0f, 52.0f, 14.0f }; }
 const juce::Rectangle<float> kStretchWindow { 88.0f, kRowY[0] + 84.0f, 84.0f, 24.0f };
 const juce::Point<float> kListen { 410.0f, 124.0f };
 constexpr std::array<const char*, 3> kStretchNames { "TAPE", "RHYTHM", "CLEAN" };
 
 const juce::Colour kTimeInk { 0xff6dff9a }, kGlitchInk { 0xffffb347 }, kMotionInk { 0xff8fd8ff };
-juce::Colour inkFor(int engine) { return engine == rev::Time ? kTimeInk : engine == rev::Glitch ? kGlitchInk : kMotionInk; }
+const juce::Colour kShapeAInk { 0xffff7ad9 }, kShapeBInk { 0xffb58cff };
+juce::Colour inkFor(int engine)
+{
+    return engine == rev::Time ? kTimeInk : engine == rev::Glitch ? kGlitchInk : engine == rev::Motion ? kMotionInk : engine == 3 ? kShapeAInk : kShapeBInk;
+}
+// the ON switch of a lane
+HamloRevolutionPanel::Switch onSwitchFor(int lane)
+{
+    return lane < rev::kEngines ? static_cast<HamloRevolutionPanel::Switch>(HamloRevolutionPanel::TimeOn + lane)
+                                : lane == 3 ? HamloRevolutionPanel::ShapeAOn : HamloRevolutionPanel::ShapeBOn;
+}
+HamloRevolutionPanel::Switch targetSwitchFor(int lane) { return lane == 3 ? HamloRevolutionPanel::ShapeATarget : HamloRevolutionPanel::ShapeBTarget; }
+HamloRevolutionPanel::Switch curveSwitchFor(int lane) { return lane == 3 ? HamloRevolutionPanel::ShapeACurve : HamloRevolutionPanel::ShapeBCurve; }
 
 void shadowText(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> r, juce::FontOptions font, juce::Colour colour,
                 juce::Justification just = juce::Justification::centred)
@@ -130,14 +155,17 @@ HamloRevolutionPanel::~HamloRevolutionPanel()
 const char* HamloRevolutionPanel::keyFor(Param p)
 {
     static constexpr const char* keys[] { "mix", "freeMs", "steps", "swing", "humanize", "fadeMs", "timeMix", "timeDepth",
-                                          "glitchMix", "glitchDepth", "motionMix", "motionDepth", "motionSmooth" };
+                                          "glitchMix", "glitchDepth", "motionMix", "motionDepth", "motionSmooth",
+                                          "shapeAMix", "shapeADepth", "shapeASmooth", "shapeARes", "shapeBMix", "shapeBDepth", "shapeBSmooth", "shapeBRes",
+                                          "bandLowHz", "bandHighHz" };
     return keys[p];
 }
 
 const char* HamloRevolutionPanel::keyFor(Switch s)
 {
     static constexpr const char* keys[] { "order", "character", "grid", "triplet", "free", "timeOn", "glitchOn", "motionOn", "motionTarget",
-                                          "timeStretch", "listen" };
+                                          "timeStretch", "listen", "shapeAOn", "shapeATarget", "shapeACurve", "shapeBOn", "shapeBTarget",
+                                          "shapeBCurve" };
     return keys[s];
 }
 
@@ -154,6 +182,8 @@ juce::String HamloRevolutionPanel::format(Param p, double v)
         case Steps: return juce::String(juce::roundToInt(v));
         case Swing: return v < 0.005 ? juce::String("STRAIGHT") : juce::String(juce::roundToInt(50.0 + 25.0 * v)) + " %";
         case Fade: return juce::String(v, 1) + " ms";
+        case BandLow: return juce::String(juce::roundToInt(v)) + " Hz";
+        case BandHigh: return juce::String(v / 1000.0, 1) + " kHz";
         default: return juce::String(juce::roundToInt(v * 100.0)) + " %";
     }
 }
@@ -286,7 +316,9 @@ int HamloRevolutionPanel::laneLength(int engine) const noexcept
 int HamloRevolutionPanel::cellValue(int engine, int index) const noexcept
 {
     const auto e = static_cast<size_t>(engine);
-    return index < rev::kSteps ? values.pattern.steps[e][static_cast<size_t>(index)] : values.lanes[e].extra[static_cast<size_t>(index - rev::kSteps)];
+    if (index >= rev::kSteps)
+        return values.lanes[e].extra[static_cast<size_t>(index - rev::kSteps)];
+    return engine < rev::kEngines ? values.pattern.steps[e][static_cast<size_t>(index)] : values.lanes[e].first[static_cast<size_t>(index)];
 }
 
 void HamloRevolutionPanel::setLaneLength(int engine, int length)
@@ -374,6 +406,12 @@ void HamloRevolutionPanel::clickStep(int engine, int cell, bool shift)
         changeLanes(l, "Step");
         return;
     }
+    if (engine >= rev::kEngines)
+    {
+        if (!shift)
+            setLevel(engine, cell, (cellValue(engine, index) + 1) % rev::kMotionLevels);
+        return;
+    }
     const int step = index;
     auto p = values.pattern;
     const auto e = static_cast<size_t>(engine);
@@ -386,6 +424,27 @@ void HamloRevolutionPanel::clickStep(int engine, int cell, bool shift)
     auto& v = p.steps[e][static_cast<size_t>(step)];
     v = static_cast<std::uint8_t>((v + 1) % rev::numValues(engine));
     changePattern(p, values.seed, "Step");
+}
+
+void HamloRevolutionPanel::setLaneBand(int lane, int band)
+{
+    auto l = values.lanes;
+    l[static_cast<size_t>(lane)].band = juce::jlimit(0, rev::kBands - 1, band);
+    changeLanes(l, juce::String(rev::engineName(lane)) + " band");
+}
+
+void HamloRevolutionPanel::setLevel(int lane, int cell, int level)
+{
+    if (lane == rev::Motion)
+        return setMotionLevel(cell, level);
+    const int step = cellIndex(lane, cell);
+    auto l = values.lanes;
+    auto& v = step < rev::kSteps ? l[static_cast<size_t>(lane)].first[static_cast<size_t>(step)]
+                                 : l[static_cast<size_t>(lane)].extra[static_cast<size_t>(step - rev::kSteps)];
+    if (v == static_cast<std::uint8_t>(level))
+        return;
+    v = static_cast<std::uint8_t>(juce::jlimit(0, rev::kMotionLevels - 1, level));
+    changeLanes(l, juce::String(rev::engineName(lane)) + " level");
 }
 
 void HamloRevolutionPanel::setMotionLevel(int cell, int level)
@@ -458,8 +517,8 @@ void HamloRevolutionPanel::renderStatic(juce::Graphics& g) const
         engraved(g, k.label, { k.x - 50.0f, k.y - k.s * 60.0f - 22.0f, 100.0f, 16.0f }, p >= TimeMix ? 11.0f : 12.5f);
     }
 
-    // engine rows: a groove between them, the plates, step numbers over TIME
-    for (int e = 0; e < rev::kEngines; ++e)
+    // lane rows: a groove between them, the plates, step numbers over TIME
+    for (int e = 0; e < rev::kLanes; ++e)
     {
         const float y = kRowY[static_cast<size_t>(e)] - 6.0f;
         g.setColour(juce::Colours::black);
@@ -498,6 +557,21 @@ void HamloRevolutionPanel::renderStatic(juce::Graphics& g) const
     }
     lcdWindow(g, kTargetWindow);
     engraved(g, "TARGET", { kTargetWindow.getX(), kTargetWindow.getBottom() + 2.0f, kTargetWindow.getWidth(), 14.0f }, 10.0f);
+    for (int lane = rev::kEngines; lane < rev::kLanes; ++lane)
+    {
+        const auto w = shapeTargetWindow(lane);
+        lcdWindow(g, w);
+        engraved(g, "TARGET", { w.getX(), w.getBottom() + 2.0f, w.getWidth(), 14.0f }, 10.0f);
+    }
+    // the band footer: the two crossovers every lane on a band splits at
+    {
+        const float y = kRowY[4] + 128.0f;
+        g.setColour(juce::Colours::black);
+        g.drawHorizontalLine(juce::roundToInt(y), 20.0f, kW - 20.0f);
+        g.setColour(juce::Colours::white.withAlpha(0.07f));
+        g.drawHorizontalLine(juce::roundToInt(y) - 1, 20.0f, kW - 20.0f);
+        engraved(g, "BANDS", { 700.0f, kFooterY - 10.0f, 90.0f, 20.0f }, 14.0f, stencil, juce::Justification::centredRight);
+    }
     lcdWindow(g, kStretchWindow);
     engraved(g, "STRETCH", { kStretchWindow.getX(), kStretchWindow.getBottom() + 2.0f, kStretchWindow.getWidth(), 14.0f }, 10.0f);
     engraved(g, "LISTEN", { kListen.x + 16.0f, kListen.y - 9.0f, 70.0f, 18.0f }, 12.0f, stencil, juce::Justification::centredLeft);
@@ -522,7 +596,9 @@ void HamloRevolutionPanel::drawKnobs(juce::Graphics& g) const
         const auto param = static_cast<Param>(p);
         const bool dim = (param == Rate && values.switches[Free] == 0) || (param >= TimeMix && param <= TimeDepth && values.switches[TimeOn] == 0)
                          || (param >= GlitchMix && param <= GlitchDepth && values.switches[GlitchOn] == 0)
-                         || (param >= MotionMix && values.switches[MotionOn] == 0);
+                         || (param >= MotionMix && param <= MotionSmooth && values.switches[MotionOn] == 0)
+                         || (param >= ShapeAMix && param <= ShapeARes && values.switches[ShapeAOn] == 0)
+                         || (param >= ShapeBMix && param <= ShapeBRes && values.switches[ShapeBOn] == 0);
         const float angle = (-135.0f + static_cast<float>(normFor(param)) * 270.0f) * kPi / 180.0f;
         brassKnob(g, { k.x, k.y }, angle, k.s, dim ? 0.55f : 1.0f, p >= TimeMix ? KnobAsset::LatheSteelRust : KnobAsset::AluminumBrassInsert,
                   PointerAsset::WhiteEnamel);
@@ -610,9 +686,9 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
                        lit ? juce::Colour(0xff1a0f02) : (b == 0 ? inkFor(e) : stencil));
         }
     }
-    for (int e = 0; e < rev::kEngines; ++e)
+    for (int e = 0; e < rev::kLanes; ++e)
     {
-        const bool engineOn = values.switches[static_cast<size_t>(TimeOn + e)] != 0;
+        const bool engineOn = values.switches[static_cast<size_t>(onSwitchFor(e))] != 0;
         g.setColour(juce::Colours::white); // steel::lamp leaves a gradient fill, under which drawImage draws nothing
         lever(g, onLever(e), 0.0f, 0.75f, engineOn ? LeverPosition::Up : LeverPosition::Down);
         lamp(g, onLamp(e), engineOn && values.on, 0.28f, inkFor(e));
@@ -640,7 +716,7 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
                 }
             }
             const float alpha = (active ? 1.0f : 0.3f) * (engineOn ? 1.0f : 0.45f);
-            if (e == rev::Motion)
+            if (e >= rev::Motion)
             {
                 if (v > 0)
                 {
@@ -671,7 +747,7 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
                 g.setColour(ink.withAlpha(0.25f * alpha));
                 g.fillEllipse(r.getCentreX() - 1.8f, r.getCentreY() - 1.8f, 3.6f, 3.6f);
             }
-            if (index < rev::kSteps && ((values.pattern.locks[static_cast<size_t>(e)] >> index) & 1) != 0)
+            if (e < rev::kEngines && index < rev::kSteps && ((values.pattern.locks[static_cast<size_t>(e)] >> index) & 1) != 0)
             {
                 g.setColour(juce::Colour(0xffff3b2d));
                 g.fillEllipse(r.getRight() - 10.0f, r.getY() + 4.0f, 6.0f, 6.0f);
@@ -699,6 +775,23 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
         }
     }
     lcdText(g, kTargetWindow, rev::targetName(values.switches[MotionTarget]), 12.0f);
+    for (int lane = 0; lane < rev::kLanes; ++lane)
+    {
+        if (lane >= rev::kEngines)
+            lcdText(g, shapeTargetWindow(lane), rev::shapeTargetName(values.switches[static_cast<size_t>(targetSwitchFor(lane))]), 12.0f);
+        // the lane's band (and CURVE) beside its lamp
+        juce::String tag;
+        if (values.lanes[static_cast<size_t>(lane)].band != rev::Full)
+            tag = rev::bandName(values.lanes[static_cast<size_t>(lane)].band);
+        if (lane >= rev::kEngines && values.switches[static_cast<size_t>(curveSwitchFor(lane))] != 0)
+            tag = tag.isEmpty() ? juce::String("CURVE") : tag + " C";
+        if (tag.isNotEmpty())
+        {
+            g.setFont(monoFont(11.0f).withStyle("Bold"));
+            g.setColour(inkFor(lane).withAlpha(0.9f));
+            g.drawText(tag, bandTag(lane), juce::Justification::centredLeft);
+        }
+    }
     lcdText(g, kStretchWindow, kStretchNames[static_cast<size_t>(juce::jlimit(0, 2, values.switches[Stretch]))], 12.0f);
     lamp(g, kListen, values.switches[Listen] != 0, 0.3f, kGlitchInk);
 }
@@ -774,7 +867,7 @@ int HamloRevolutionPanel::selectorAt(juce::Point<float> d) const
 
 bool HamloRevolutionPanel::stepAt(juce::Point<float> d, int& engine, int& step) const
 {
-    for (int e = 0; e < rev::kEngines; ++e)
+    for (int e = 0; e < rev::kLanes; ++e)
         for (int s = 0; s < rev::kSteps; ++s)
             if (cellRect(e, s).expanded(1.5f, 0.0f).contains(d))
             {
@@ -830,16 +923,21 @@ void HamloRevolutionPanel::showPlateMenu(int engine)
 {
     juce::PopupMenu menu;
     const auto e = static_cast<size_t>(engine);
-    if (engine != rev::Motion)
+    if (engine < rev::Motion)
     {
         menu.addSectionHeader("Generate may use");
         for (int a = 1; a < rev::numValues(engine); ++a)
             menu.addItem(1 + a, rev::valueName(engine, a), true, ((values.pattern.allow[e] >> a) & 1) != 0);
         menu.addSeparator();
     }
-    menu.addItem(200, "Clear unlocked steps");
-    menu.addItem(201, "Lock all steps");
-    menu.addItem(202, "Unlock all steps");
+    if (engine < rev::kEngines)
+    {
+        menu.addItem(200, "Clear unlocked steps");
+        menu.addItem(201, "Lock all steps");
+        menu.addItem(202, "Unlock all steps");
+    }
+    else
+        menu.addItem(203, "Clear steps");
     // R1: the lane
     const auto& lane = values.lanes[e];
     juce::PopupMenu length, rate, condition;
@@ -856,6 +954,12 @@ void HamloRevolutionPanel::showPlateMenu(int engine)
     menu.addSubMenu("Rate", rate);
     menu.addSubMenu("Condition", condition);
     menu.addItem(490, "Show steps 17 - 32", laneLength(engine) > rev::kSteps, secondHalf[e]);
+    juce::PopupMenu bands;
+    for (int b = 0; b < rev::kBands; ++b)
+        bands.addItem(600 + b, rev::bandName(b), true, lane.band == b);
+    menu.addSubMenu("Band", bands);
+    if (engine >= rev::kEngines)
+        menu.addItem(620, "Curve (through the step levels)", true, values.switches[static_cast<size_t>(curveSwitchFor(engine))] != 0);
     juce::Component::SafePointer<HamloRevolutionPanel> self(this);
     menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self, e, engine](int result)
     {
@@ -869,6 +973,20 @@ void HamloRevolutionPanel::showPlateMenu(int engine)
             return self->setLaneCondition(engine, result - 470);
         if (result == 490)
             return self->showSecondHalf(engine, !self->secondHalf[e]);
+        if (result >= 600 && result < 600 + rev::kBands)
+            return self->setLaneBand(engine, result - 600);
+        if (result == 620)
+        {
+            const auto sw = curveSwitchFor(engine);
+            return self->setSwitch(sw, self->values.switches[static_cast<size_t>(sw)] != 0 ? 0 : 1);
+        }
+        if (result == 203)
+        {
+            auto l = self->values.lanes;
+            l[e].first = {};
+            l[e].extra = {};
+            return self->changeLanes(l, "Clear steps");
+        }
         auto p = self->values.pattern;
         juce::String what = "Pattern";
         if (result == 200)
@@ -931,12 +1049,12 @@ void HamloRevolutionPanel::mouseDown(const juce::MouseEvent& e)
         return setSwitch(Triplet, values.switches[Triplet] != 0 ? 0 : 1);
     if (juce::Rectangle<float>(kFree.x - 26.0f, kFree.y - 36.0f, 52.0f, 64.0f).contains(d))
         return setSwitch(Free, values.switches[Free] != 0 ? 0 : 1);
-    for (int eng = 0; eng < rev::kEngines; ++eng)
+    for (int eng = 0; eng < rev::kLanes; ++eng)
     {
         const auto lv = onLever(eng);
         if (juce::Rectangle<float>(lv.x - 24.0f, lv.y - 32.0f, 48.0f, 56.0f).contains(d) || d.getDistanceFrom(onLamp(eng)) <= 12.0f)
         {
-            const auto sw = static_cast<Switch>(TimeOn + eng);
+            const auto sw = onSwitchFor(eng);
             return setSwitch(sw, values.switches[static_cast<size_t>(sw)] != 0 ? 0 : 1);
         }
         if (plateRect(eng).contains(d))
@@ -950,6 +1068,12 @@ void HamloRevolutionPanel::mouseDown(const juce::MouseEvent& e)
         return setSwitch(Listen, values.switches[Listen] != 0 ? 0 : 1);
     if (kTargetWindow.contains(d))
         return setSwitch(MotionTarget, (values.switches[MotionTarget] + (e.mods.isPopupMenu() ? rev::kMotionTargets - 1 : 1)) % rev::kMotionTargets);
+    for (int lane = rev::kEngines; lane < rev::kLanes; ++lane)
+        if (shapeTargetWindow(lane).contains(d))
+        {
+            const auto sw = targetSwitchFor(lane);
+            return setSwitch(sw, (values.switches[static_cast<size_t>(sw)] + (e.mods.isPopupMenu() ? rev::kShapeTargets - 1 : 1)) % rev::kShapeTargets);
+        }
     if (const int k = knobAt(d); k >= 0)
     {
         dragKnob = k;
@@ -972,11 +1096,12 @@ void HamloRevolutionPanel::mouseDown(const juce::MouseEvent& e)
         }
         if (e.mods.isShiftDown())
             return clickStep(engine, step, true);
-        if (engine != rev::Motion)
+        if (engine < rev::Motion)
             return clickStep(engine, step, false);
         dragMotionStep = step;
+        dragLevelLane = engine;
         const auto r = cellRect(engine, step);
-        setMotionLevel(step, juce::roundToInt(15.0f * juce::jlimit(0.0f, 1.0f, (r.getBottom() - 6.0f - d.y) / (r.getHeight() - 14.0f))));
+        setLevel(engine, step, juce::roundToInt(15.0f * juce::jlimit(0.0f, 1.0f, (r.getBottom() - 6.0f - d.y) / (r.getHeight() - 14.0f))));
     }
 }
 
@@ -992,9 +1117,10 @@ void HamloRevolutionPanel::mouseDrag(const juce::MouseEvent& e)
     {
         const auto d = toDesign(e.position);
         const int step = juce::jlimit(0, rev::kSteps - 1, static_cast<int>(std::floor((d.x - kCellX) / kCellPitch)));
-        const auto r = cellRect(rev::Motion, step);
+        const int lane = dragLevelLane >= 0 ? dragLevelLane : static_cast<int>(rev::Motion);
+        const auto r = cellRect(lane, step);
         dragMotionStep = step;
-        setMotionLevel(step, juce::roundToInt(15.0f * juce::jlimit(0.0f, 1.0f, (r.getBottom() - 6.0f - d.y) / (r.getHeight() - 14.0f))));
+        setLevel(lane, step, juce::roundToInt(15.0f * juce::jlimit(0.0f, 1.0f, (r.getBottom() - 6.0f - d.y) / (r.getHeight() - 14.0f))));
     }
 }
 
@@ -1004,6 +1130,7 @@ void HamloRevolutionPanel::mouseUp(const juce::MouseEvent&)
         onKnobGestureEnd();
     dragKnob = -1;
     dragMotionStep = -1;
+    dragLevelLane = -1;
 }
 
 void HamloRevolutionPanel::mouseDoubleClick(const juce::MouseEvent& e)

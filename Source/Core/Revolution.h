@@ -102,6 +102,14 @@ bool hasFeel(const Feel&) noexcept;
 // MOTION's levels are lowered on the hits. Without a feel this is generate().
 constexpr std::uint32_t kFollowingVersion = 2;
 
+// R2: SHAPE A / B, lanes 3 and 4 after TIME, GLITCH, MOTION (levels 0 .. 15 like MOTION).
+constexpr int kShapes = 2;
+constexpr int kLanes = kEngines + kShapes;
+enum ShapeTarget { ShapeVolume, ShapeLowPass, ShapeHighPass, ShapeBandPass, ShapePan, ShapeWidth, ShapeDrive, ShapeCrush, kShapeTargets };
+const char* shapeTargetName(int target);
+enum Band { Full, Low, Mid, High, kBands };
+const char* bandName(int band);
+
 // R1 lanes (HamloRevolution plug-in): conditions per cycle of a lane, counted from bar 1 (cycle 0).
 enum LaneCondition { Always, OneOfTwo, TwoOfTwo, OneOfFour, FourOfFour, EightOfEight, NotOneOfFour, kLaneConditions };
 inline bool laneConditionPasses(int condition, long long cycle) noexcept
@@ -126,18 +134,22 @@ const char* laneRateName(int rate); // 0 FOLLOW, 1/4 .. 1/32T
 
 // A lane's settings (all 0 = as before R1): length 0 = follow STEPS / 1 .. 32, rate 0 = follow GRID / 1 .. 8,
 // condition, the values of steps 17 .. 32, a probability code per step (0 = 100 %).
+// R2: the lane's band, and for SHAPE A / B their steps 1 .. 16 (TIME, GLITCH, MOTION keep theirs in Pattern).
 struct Lane
 {
     int length = 0, rate = 0, condition = 0;
     std::array<std::uint8_t, kSteps> extra {};
     std::array<std::uint8_t, 2 * kSteps> probability {};
+    int band = 0;
+    std::array<std::uint8_t, kSteps> first {};
     bool operator==(const Lane& o) const noexcept
     {
-        return length == o.length && rate == o.rate && condition == o.condition && extra == o.extra && probability == o.probability;
+        return length == o.length && rate == o.rate && condition == o.condition && extra == o.extra && probability == o.probability
+               && band == o.band && first == o.first;
     }
     bool operator!=(const Lane& o) const noexcept { return !(*this == o); }
 };
-using Lanes = std::array<Lane, kEngines>;
+using Lanes = std::array<Lane, kLanes>;
 constexpr int kMaxLaneLength = 2 * kSteps;
 constexpr int kLaneFloats = 15; // slot::kLaneStride
 constexpr int kScenes = 8;
@@ -160,7 +172,8 @@ inline void packLane(const Lane& lane, float* dst) noexcept
     for (int q = 0; q < 8; ++q)
         dst[7 + q] = quad(lane.probability.data(), q);
 }
-// Saved form: "length,rate,condition,<16 hex digits: steps 17 .. 32>,<32 hex digits: codes>".
+// Saved form: "length,rate,condition,<16 hex digits: steps 17 .. 32>,<32 hex digits: codes>,band,<16 hex: steps 1 .. 16>"
+// (R1 wrote the first five parts; the rest default).
 juce::String laneToText(const Lane&);
 Lane laneFromText(const juce::String&);
 Pattern generateFollowing(const Pattern& current, std::uint64_t seed, int character, const Feel& feel);

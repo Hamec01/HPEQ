@@ -66,6 +66,18 @@ double shapeAt(int shape, int step)
 }
 } // namespace
 
+const char* shapeTargetName(int target)
+{
+    static constexpr const char* names[kShapeTargets] { "VOLUME", "LOW PASS", "HIGH PASS", "BAND PASS", "PAN", "WIDTH", "DRIVE", "CRUSH" };
+    return names[target < 0 || target >= kShapeTargets ? 0 : target];
+}
+
+const char* bandName(int band)
+{
+    static constexpr const char* names[kBands] { "FULL", "LOW", "MID", "HIGH" };
+    return names[band < 0 || band >= kBands ? 0 : band];
+}
+
 const char* laneConditionName(int condition)
 {
     static constexpr const char* names[kLaneConditions] { "ALWAYS", "1:2", "2:2", "1:4", "4:4", "8:8", "NOT 1:4" };
@@ -79,14 +91,18 @@ juce::String laneToText(const Lane& lane)
         extra << juce::String::toHexString(v & 15);
     for (auto v : lane.probability)
         codes << juce::String::toHexString(v & 15);
-    return juce::String(lane.length) + "," + juce::String(lane.rate) + "," + juce::String(lane.condition) + "," + extra + "," + codes;
+    juce::String first;
+    for (auto v : lane.first)
+        first << juce::String::toHexString(v & 15);
+    return juce::String(lane.length) + "," + juce::String(lane.rate) + "," + juce::String(lane.condition) + "," + extra + "," + codes + ","
+           + juce::String(lane.band) + "," + first;
 }
 
 Lane laneFromText(const juce::String& text)
 {
     Lane lane;
     const auto parts = juce::StringArray::fromTokens(text, ",", "");
-    if (parts.size() != 5)
+    if (parts.size() < 5)
         return lane;
     lane.length = juce::jlimit(0, kMaxLaneLength, parts[0].getIntValue());
     lane.rate = juce::jlimit(0, 8, parts[1].getIntValue());
@@ -95,6 +111,12 @@ Lane laneFromText(const juce::String& text)
         lane.extra[static_cast<size_t>(i)] = static_cast<std::uint8_t>(juce::CharacterFunctions::getHexDigitValue(parts[3][i]) & 15);
     for (int i = 0; i < 2 * kSteps && i < parts[4].length(); ++i)
         lane.probability[static_cast<size_t>(i)] = static_cast<std::uint8_t>(juce::jlimit(0, kProbabilityCodes - 1, juce::CharacterFunctions::getHexDigitValue(parts[4][i])));
+    if (parts.size() >= 7)
+    {
+        lane.band = juce::jlimit(0, kBands - 1, parts[5].getIntValue());
+        for (int i = 0; i < kSteps && i < parts[6].length(); ++i)
+            lane.first[static_cast<size_t>(i)] = static_cast<std::uint8_t>(juce::CharacterFunctions::getHexDigitValue(parts[6][i]) & 15);
+    }
     return lane;
 }
 
@@ -139,8 +161,8 @@ juce::String valueShortName(int engine, int value)
 
 const char* engineName(int engine)
 {
-    static constexpr const char* names[kEngines] { "TIME", "GLITCH", "MOTION" };
-    return names[juce::jlimit(0, kEngines - 1, engine)];
+    static constexpr const char* names[kLanes] { "TIME", "GLITCH", "MOTION", "SHAPE A", "SHAPE B" };
+    return names[juce::jlimit(0, kLanes - 1, engine)];
 }
 
 const char* characterName(int character)

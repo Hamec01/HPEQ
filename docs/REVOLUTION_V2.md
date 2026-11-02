@@ -139,6 +139,44 @@ at 1/8 with a 1/16 grid: the GLITCH gap starts within 1 sample of the lane's ste
 Lane checks: length 3 repeats every 3 steps; 1:2 silences the even cycles; 50 % keeps 40 .. 60 % of the events over
 64 cycles and 100 % all of them; SCENE 2 plays scene 2's pattern; scenes and lanes survive the state.
 
+## 7. R2 as designed (2026-11-02, before the code)
+
+Owner: "R2 SHAPE + bands".
+
+**Bands.** Every lane (TIME, GLITCH, MOTION, SHAPE A, SHAPE B) gets BAND: FULL (as before), LOW, MID, HIGH. A lane on a
+band splits its input with a 3-band Linkwitz-Riley tree (4th order; the low band through the mid / high crossover's
+all-pass so the three bands sum to an all-pass), processes only its band and adds the others back - glitch the hats,
+leave the kick and the 808 alone. Zero latency (IIR). Two automatable crossovers for the whole plug-in: LOW / MID
+(40 .. 1000 Hz, default 200) and MID / HIGH (1 .. 12 kHz, default 2.5 kHz). FULL = no split = R0 / R1 bit for bit.
+
+**SHAPE A, SHAPE B** - two new lanes after TIME / GLITCH / MOTION (in that order, after the three in any ORDER). Each:
+ON, MIX, DEPTH, SMOOTH, RES (filter resonance), a TARGET - VOLUME (gate / trance / pump), LOW PASS, HIGH PASS, BAND
+PASS, PAN (alternating left / right per step), WIDTH, DRIVE (tanh, level-matched at -10 dBFS), CRUSH - and STEPS or
+CURVE (a Catmull-Rom curve through the step levels instead of steps with SMOOTH ramps); 16 levels per step, steps
+17 .. 32, and the R1 lane settings (length, rate, condition, probability). Level 0 = untouched; an empty SHAPE lane =
+dry exactly. Defaults: ON, VOLUME / LOW PASS, empty pattern (a new instance sounds as R1). The pattern is per scene.
+
+**Page** (grows to 1180 x 964): two more rows (SHAPE A, SHAPE B: plate, ON, MIX, DEPTH, SMOOTH, RES, TARGET window,
+16 level cells; no GEN / LOCK until the generator, R4). Lane plates' menu: BAND, CURVE (shape lanes), crossover presets.
+A small tag beside the lamp shows a lane's band (and CURVE).
+
+R2 targets:
+- V1: GoldenTests unchanged (bands FULL, shape lanes empty).
+- V3: blocks 1 / 64 / 127 / 4096 bit-identical with bands and both SHAPE lanes on (every target over the test).
+- V4: SHAPE VOLUME as a 1/16 gate (levels 15 / 0) on a DC input (the output is the gain itself): the largest second
+  difference of the gain, |g[n] - 2 g[n-1] + g[n-2]| (the residual of a straight line through three samples; a hard
+  step = 0 dB), <= -40 dB with SMOOTH 0 (the 2 ms fade) and in CURVE mode. *Fixed before the measurement: the first
+  wording, the gain's change between two samples, is 0.016 (-36 dB) for the 2 ms raised-cosine fade by its design
+  and is not a click measure.*
+- V5: every lane on a band with an empty pattern, crossovers 200 Hz / 2.5 kHz: output magnitude 20 Hz .. 20 kHz flat
+  within 0.1 dB (impulse response).
+- Band isolation: GLITCH GAP on HIGH over a 60 Hz + 6 kHz pair: the 60 Hz level within 0.5 dB of dry, 6 kHz down
+  >= 30 dB in the gap.
+- SHAPE checks: LOW PASS at full level takes 8 kHz down >= 20 dB; PAN step levels move the balance by >= 10 dB with the
+  sign alternating per step; DRIVE adds harmonics (THD >= 5 % at level 15) and keeps a -10 dBFS sine within 1 dB;
+  CURVE passes through the step levels at step starts.
+- V6 latency 0; V13 shape lanes and bands in the state; V14 validators.
+
 ## Sources
 
 1. [Sound On Sound: ShaperBox 3](https://www.soundonsound.com/reviews/cableguys-shaperbox-3), [MusicRadar: ShaperBox 3](https://www.musicradar.com/reviews/cableguys-shaperbox-3), [ShaperBox 3 manual](https://www.cableguys.com/downloads/Cableguys-ShaperBox-3-Manual.pdf?v=3.3.1)

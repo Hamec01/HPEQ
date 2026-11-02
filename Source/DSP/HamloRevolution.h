@@ -139,6 +139,11 @@ private:
     float readHalfband(const Tape&, int ch, long long age) const noexcept;
     void tapeStage(int engine, float* x, int numChannels, double q) noexcept;
     void motionStage(float* x, int numChannels, double q) noexcept;
+    // R2: a lane on its band (FULL: the lane on x as before), SHAPE A / B
+    void runLane(int lane, float* x, int numChannels, double q) noexcept;
+    void shapeStage(int shape, float* x, int numChannels, double q) noexcept;
+    double shapeLevel(int shape, double q) noexcept;
+    void updateCrossovers() noexcept;
     double motionLevel(double q) noexcept;
 
     double sampleRate = 48000.0;
@@ -168,7 +173,7 @@ private:
     std::array<std::atomic<float>, kFeelSteps> feel {};
 
     // parameters of the current block
-    std::array<float, 112> lastValues {};
+    std::array<float, 160> lastValues {};
     unsigned stamp = 0;
     int steps = 16, grid = 2, motionTarget = 0;
     bool triplet = false, freeMode = false;
@@ -178,11 +183,52 @@ private:
     std::array<double, 3> mixTarget { 1.0, 1.0, 1.0 }, depth { 1.0, 1.0, 0.6 };
     std::array<float, 4 * 3> patternQuads {};
     // R1 lanes (0 = as before): length, the lane's step in quarter notes, condition, steps 17 .. 32, probability codes
-    std::array<int, 3> laneLength {}, laneCondition {};
-    std::array<double, 3> laneQ { 0.25, 0.25, 0.25 };
-    std::array<float, 4 * 3> extraQuads {};
-    std::array<float, 8 * 3> probabilityQuads {};
-    std::array<bool, 3> laneChance {}; // any probability code set
+    std::array<int, 5> laneLength {}, laneCondition {};
+    std::array<double, 5> laneQ { 0.25, 0.25, 0.25, 0.25, 0.25 };
+    std::array<float, 4 * 5> extraQuads {};
+    std::array<float, 8 * 5> probabilityQuads {};
+    std::array<bool, 5> laneChance {}; // any probability code set
+
+    // R2: the band split (Linkwitz-Riley 4th order = two Butterworth sections; the low band through the upper
+    // crossover's all-pass so the bands sum to an all-pass) and SHAPE A / B
+    struct Section
+    {
+        double b0 = 1.0, b1 = 0.0, b2 = 0.0, a1 = 0.0, a2 = 0.0;
+        std::array<double, 2> z1 {}, z2 {};
+        double run(int ch, double x) noexcept
+        {
+            const double y = b0 * x + z1[static_cast<size_t>(ch)];
+            z1[static_cast<size_t>(ch)] = b1 * x - a1 * y + z2[static_cast<size_t>(ch)];
+            z2[static_cast<size_t>(ch)] = b2 * x - a2 * y;
+            return y;
+        }
+        void clear() noexcept { z1 = {}; z2 = {}; }
+    };
+    struct Splitter
+    {
+        // [0..1] low pass at f1, [2..3] high pass at f1, [4..5] low pass at f2, [6..7] high pass at f2,
+        // [8..11] the low band's all-pass at f2 (low pass + high pass of f2 on it)
+        std::array<Section, 12> s;
+        int band = 0;
+        void clear() noexcept { for (auto& x : s) x.clear(); }
+    };
+    struct ShapeLane
+    {
+        bool on = true, curve = false, empty = true;
+        int target = 0;
+        double mixTarget = 1.0, depth = 1.0, smooth = 0.0, res = 0.0, mix = 0.0;
+        std::array<float, 4> quads {};
+        Step step;
+        bool stepValid = false;
+        unsigned stamp = 0;
+        double svfG = 0.0;
+        std::array<double, 2> ic1 {}, ic2 {};
+        std::array<float, 2> held {};
+    };
+    std::array<Splitter, 5> splitters;
+    std::array<int, 5> band {};
+    double crossoverLow = 200.0, crossoverHigh = 2500.0, appliedLow = -1.0, appliedHigh = -1.0;
+    std::array<ShapeLane, 2> shapes;
     std::array<int, 3> order { 0, 1, 2 };
     int activeOrder = 0, wantedOrder = 0;
     double orderGain = 1.0;

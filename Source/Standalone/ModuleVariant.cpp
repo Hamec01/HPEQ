@@ -232,7 +232,15 @@ ModuleSpec makeRevolution()
     steps.interval = 1.0f;
     auto rate = knob("freeMs", "Rate", 20, 2000, 125, s::kRevFreeMs, 0.4f, "ms");
     rate.interval = 1.0f;
-    return { ModuleKind::Revolution, FxType::MonstaFx, "HamloRevolution", 1180, 700, 13,
+    const auto shape = [](const char* id, const char* name, int index, float lo, float hi, float def)
+    {
+        return knob(id, name, lo, hi, def, dsp::slot::kShapeBase + index);
+    };
+    const int a = 0, b = dsp::slot::kShapeStride;
+    auto bandLow = knob("bandLowHz", "Band Low / Mid", 40, 1000, 200, s::kCrossoverLow, 0.4f, "Hz");
+    auto bandHigh = knob("bandHighHz", "Band Mid / High", 1000, 12000, 2500, s::kCrossoverHigh, 0.4f, "Hz");
+    bandLow.interval = bandHigh.interval = 1.0f;
+    return { ModuleKind::Revolution, FxType::MonstaFx, "HamloRevolution", 1180, 1016, 13,
              { knob("mix", "Mix", 0, 1, 1, -1),
                rate,
                steps,
@@ -258,7 +266,26 @@ ModuleSpec makeRevolution()
                choice("timeStretch", "Stretch", 1, s::kTimeStretch, { "Tape", "Rhythm", "Clean" }),
                choice("listen", "Listen", 0, kPageOnly, { "Off", "On" }),
                // R1: which of the 8 scenes plays (automatable; the processor puts its pattern and lanes in the slot)
-               choice("scene", "Scene", 0, kPageOnly, { "1", "2", "3", "4", "5", "6", "7", "8" }) } };
+               choice("scene", "Scene", 0, kPageOnly, { "1", "2", "3", "4", "5", "6", "7", "8" }),
+               // R2: SHAPE A / B (their steps are scene state) and the band crossovers
+               shape("shapeAMix", "Shape A Mix", a + s::kShapeMix, 0, 1, 1),
+               shape("shapeADepth", "Shape A Depth", a + s::kShapeDepth, 0, 1, 1),
+               shape("shapeASmooth", "Shape A Smooth", a + s::kShapeSmooth, 0, 1, 0),
+               shape("shapeARes", "Shape A Resonance", a + s::kShapeRes, 0, 1, 0),
+               shape("shapeBMix", "Shape B Mix", b + s::kShapeMix, 0, 1, 1),
+               shape("shapeBDepth", "Shape B Depth", b + s::kShapeDepth, 0, 1, 1),
+               shape("shapeBSmooth", "Shape B Smooth", b + s::kShapeSmooth, 0, 1, 0),
+               shape("shapeBRes", "Shape B Resonance", b + s::kShapeRes, 0, 1, 0),
+               bandLow,
+               bandHigh,
+               choice("shapeAOn", "Shape A", 1, s::kShapeBase + a + s::kShapeOn, { "Off", "On" }),
+               choice("shapeATarget", "Shape A Target", 0, s::kShapeBase + a + s::kShapeTarget,
+                      { "Volume", "Low Pass", "High Pass", "Band Pass", "Pan", "Width", "Drive", "Crush" }),
+               choice("shapeACurve", "Shape A Curve", 0, s::kShapeBase + a + s::kShapeCurve, { "Steps", "Curve" }),
+               choice("shapeBOn", "Shape B", 1, s::kShapeBase + b + s::kShapeOn, { "Off", "On" }),
+               choice("shapeBTarget", "Shape B Target", 1, s::kShapeBase + b + s::kShapeTarget,
+                      { "Volume", "Low Pass", "High Pass", "Band Pass", "Pan", "Width", "Drive", "Crush" }),
+               choice("shapeBCurve", "Shape B Curve", 0, s::kShapeBase + b + s::kShapeCurve, { "Steps", "Curve" }) } };
 }
 
 float transformed(float value, ValueTransform transform) noexcept

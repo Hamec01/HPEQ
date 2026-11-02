@@ -30,13 +30,16 @@ namespace hpeq::ui
 class HamloRevolutionPanel final : public juce::Component, public HelpTarget, private juce::Timer
 {
 public:
-    enum Param { Mix, Rate, Steps, Swing, Humanize, Fade, TimeMix, TimeDepth, GlitchMix, GlitchDepth, MotionMix, MotionDepth, MotionSmooth, NumParams };
-    enum Switch { Order, Character, Grid, Triplet, Free, TimeOn, GlitchOn, MotionOn, MotionTarget, Stretch, Listen, NumSwitches };
+    enum Param { Mix, Rate, Steps, Swing, Humanize, Fade, TimeMix, TimeDepth, GlitchMix, GlitchDepth, MotionMix, MotionDepth, MotionSmooth,
+                 ShapeAMix, ShapeADepth, ShapeASmooth, ShapeARes, ShapeBMix, ShapeBDepth, ShapeBSmooth, ShapeBRes, BandLow, BandHigh, NumParams };
+    enum Switch { Order, Character, Grid, Triplet, Free, TimeOn, GlitchOn, MotionOn, MotionTarget, Stretch, Listen,
+                  ShapeAOn, ShapeATarget, ShapeACurve, ShapeBOn, ShapeBTarget, ShapeBCurve, NumSwitches };
 
     struct Values
     {
-        std::array<double, NumParams> knobs { 1.0, 125.0, 16.0, 0.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.6, 0.3 };
-        std::array<int, NumSwitches> switches { 0, 1, 2, 0, 0, 1, 1, 1, 1, 1, 0 };
+        std::array<double, NumParams> knobs { 1.0, 125.0, 16.0, 0.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.6, 0.3,
+                                              1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 200.0, 2500.0 };
+        std::array<int, NumSwitches> switches { 0, 1, 2, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0 };
         revolution::Pattern pattern;
         revolution::Feel feel {}; // the LISTEN snapshot the pattern was generated from (all 0 = none)
         juce::int64 seed = 1;
@@ -96,6 +99,9 @@ public:
     void setLaneRate(int engine, int rate);
     void setLaneCondition(int engine, int condition);
     void setStepProbability(int engine, int step, int code);
+    // R2: a level lane's step (MOTION, SHAPE A / B), a lane's band
+    void setLevel(int lane, int cell, int level);
+    void setLaneBand(int lane, int band);
     void showSecondHalf(int engine, bool);
     void selectScene(int scene);
     void settleStatus(const Status&);
@@ -140,7 +146,7 @@ private:
     juce::Image staticLayer;
     float scale = 1.0f;
     juce::Point<float> offset;
-    int dragKnob = -1, dragMotionStep = -1;
+    int dragKnob = -1, dragMotionStep = -1, dragLevelLane = -1;
     double dragStartNorm = 0.0;
     float dragStartY = 0.0f;
     int generateFlash = 0;

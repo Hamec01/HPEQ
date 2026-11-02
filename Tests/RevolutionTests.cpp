@@ -103,7 +103,9 @@ public:
                 const auto ref = hpeqSlot(hpeqModule(i));
                 int differing = 0;
                 double largest = 0.0;
-                for (size_t k = 0; k < mine.values.size(); ++k)
+                // HPEQ's slot is values 0 .. 47; 48 on are R1 / R2 (lanes, shapes, bands) - their sound at defaults is
+                // checked by GoldenTests
+                for (size_t k = 0; k < 48; ++k)
                     if (mine.values[k] != ref.values[k])
                     {
                         ++differing;

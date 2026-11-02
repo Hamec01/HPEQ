@@ -108,12 +108,18 @@ void ModulePluginProcessor::publishScene(int index) noexcept
             out[static_cast<size_t>(4 * e + q)].store(revolution::packQuad(state.pattern.steps[static_cast<size_t>(e)], q), std::memory_order_relaxed);
     // LayerSnapshot.cpp: the seed's low 24 bits (exact in a float)
     out[12].store(static_cast<float>(static_cast<std::uint64_t>(state.seed) & 0xffffffu), std::memory_order_relaxed);
-    for (int e = 0; e < revolution::kEngines; ++e)
+    for (int e = 0; e < revolution::kLanes; ++e)
     {
+        const auto& source = state.lanes[static_cast<size_t>(e)];
         float lane[revolution::kLaneFloats] {};
-        revolution::packLane(state.lanes[static_cast<size_t>(e)], lane);
+        revolution::packLane(source, lane);
         for (int f = 0; f < revolution::kLaneFloats; ++f)
-            out[static_cast<size_t>(13 + e * revolution::kLaneFloats + f)].store(lane[f], std::memory_order_relaxed);
+            out[static_cast<size_t>(kSceneLanes + e * revolution::kLaneFloats + f)].store(lane[f], std::memory_order_relaxed);
+        out[static_cast<size_t>(kSceneBands + e)].store(static_cast<float>(source.band), std::memory_order_relaxed);
+        if (e >= revolution::kEngines)
+            for (int q = 0; q < 4; ++q)
+                out[static_cast<size_t>(kSceneShapes + 4 * (e - revolution::kEngines) + q)].store(revolution::packQuad(source.first, q),
+                                                                                                  std::memory_order_relaxed);
     }
 }
 
@@ -158,8 +164,18 @@ dsp::FxSlotParams ModulePluginProcessor::currentSlot(bool active) const noexcept
             for (int q = 0; q < 4; ++q)
                 slot.values[static_cast<size_t>(base[e] + 3 + q)] = scene[static_cast<size_t>(4 * e + q)].load(std::memory_order_relaxed);
         slot.values[dsp::slot::kRevHumanSeed] = scene[12].load(std::memory_order_relaxed);
-        for (int f = 0; f < revolution::kEngines * revolution::kLaneFloats; ++f)
-            slot.values[static_cast<size_t>(dsp::slot::kLaneBase + f)] = scene[static_cast<size_t>(13 + f)].load(std::memory_order_relaxed);
+        for (int e = 0; e < revolution::kLanes; ++e)
+        {
+            const int to = e < revolution::kEngines ? dsp::slot::kLaneBase + e * dsp::slot::kLaneStride
+                                                    : dsp::slot::kShapeLaneBase + (e - revolution::kEngines) * dsp::slot::kLaneStride;
+            for (int f = 0; f < revolution::kLaneFloats; ++f)
+                slot.values[static_cast<size_t>(to + f)] = scene[static_cast<size_t>(kSceneLanes + e * revolution::kLaneFloats + f)].load(std::memory_order_relaxed);
+            slot.values[static_cast<size_t>(dsp::slot::kBandBase + e)] = scene[static_cast<size_t>(kSceneBands + e)].load(std::memory_order_relaxed);
+        }
+        for (int i = 0; i < revolution::kShapes; ++i)
+            for (int q = 0; q < 4; ++q)
+                slot.values[static_cast<size_t>(dsp::slot::kShapeBase + i * dsp::slot::kShapeStride + dsp::slot::kShapePattern + q)]
+                    = scene[static_cast<size_t>(kSceneShapes + 4 * i + q)].load(std::memory_order_relaxed);
     }
     return slot;
 }
@@ -277,7 +293,7 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
                 set.set("revSeed", state.seed);
                 for (const auto& value : set)
                     to.setAttribute(value.name, value.value.toString());
-                for (int l = 0; l < revolution::kEngines; ++l)
+                for (int l = 0; l < revolution::kLanes; ++l)
                     if (state.lanes[static_cast<size_t>(l)] != revolution::Lane {})
                         to.setAttribute("lane" + juce::String(l), revolution::laneToText(state.lanes[static_cast<size_t>(l)]));
             };
@@ -317,7 +333,7 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                         }
                         const auto* seed = set.getVarPointer("revSeed");
                         RevolutionState state { revolution::readPattern(set), revolution::readFeel(set), seed != nullptr ? static_cast<juce::int64>(*seed) : 1 };
-                        for (int l = 0; l < revolution::kEngines; ++l)
+                        for (int l = 0; l < revolution::kLanes; ++l)
                             if (from.hasAttribute("lane" + juce::String(l)))
                                 state.lanes[static_cast<size_t>(l)] = revolution::laneFromText(from.getStringAttribute("lane" + juce::String(l)));
                         return state;

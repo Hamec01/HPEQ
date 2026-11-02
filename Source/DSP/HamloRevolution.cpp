@@ -222,6 +222,8 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
         changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
     for (int i = slot::kLaneBase; i < slot::kLaneBase + 3 * slot::kLaneStride; ++i)
         changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
+    for (int i = slot::kBandBase; i < slot::kBandBase + 2; ++i)
+        changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
     for (int i = 0; i < 4; ++i)
         changed = changed || v[static_cast<size_t>(slot::kTimePattern + i)] != lastValues[static_cast<size_t>(slot::kTimePattern + i)]
                   || v[static_cast<size_t>(slot::kGlitchPattern + i)] != lastValues[static_cast<size_t>(slot::kGlitchPattern + i)];
@@ -253,9 +255,9 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
             patternQuads[static_cast<size_t>(4 * e + q)] = v[b + 3 + static_cast<size_t>(q)];
     }
     stepQ = freeMode ? 1.0 : kBeats[grid] * (triplet ? 2.0 / 3.0 : 1.0);
-    for (int e = 0; e < 3; ++e)
+    for (int e = 0; e < 5; ++e)
     {
-        const auto b = static_cast<size_t>(slot::kLaneBase + e * slot::kLaneStride);
+        const auto b = static_cast<size_t>(e < 3 ? slot::kLaneBase + e * slot::kLaneStride : slot::kShapeLaneBase + (e - 3) * slot::kLaneStride);
         const auto le = static_cast<size_t>(e);
         laneLength[le] = std::clamp(static_cast<int>(std::lround(v[b + slot::kLaneLength])), 0, 2 * rev::kSteps);
         const int rate = std::clamp(static_cast<int>(std::lround(v[b + slot::kLaneRate])), 0, 8);
@@ -270,6 +272,39 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
             chance = chance || v[b + slot::kLaneProbability + static_cast<size_t>(q)] != 0.0f;
         }
         laneChance[le] = chance;
+        // R2: the lane's band (a change starts its split from silence: the filters' state is cleared)
+        const int newBand = std::clamp(static_cast<int>(std::lround(v[static_cast<size_t>(slot::kBandBase + e)])), 0, rev::kBands - 1);
+        if (newBand != band[le])
+            splitters[le].clear();
+        band[le] = newBand;
+    }
+    crossoverLow = std::clamp(static_cast<double>(v[slot::kCrossoverLow]), 40.0, 1000.0);
+    crossoverHigh = std::clamp(static_cast<double>(v[slot::kCrossoverHigh]), 1000.0, 12000.0);
+    if (v[slot::kCrossoverLow] == 0.0f)
+        crossoverLow = 200.0; // a slot without R2 values
+    if (v[slot::kCrossoverHigh] == 0.0f)
+        crossoverHigh = 2500.0;
+    crossoverHigh = std::max(crossoverHigh, 2.0 * crossoverLow);
+    for (int i = 0; i < rev::kShapes; ++i)
+    {
+        auto& sh = shapes[static_cast<size_t>(i)];
+        const auto b = static_cast<size_t>(slot::kShapeBase + i * slot::kShapeStride);
+        sh.on = v[b + slot::kShapeOn] >= 0.5f;
+        sh.mixTarget = std::clamp(static_cast<double>(v[b + slot::kShapeMix]), 0.0, 1.0);
+        sh.depth = std::clamp(static_cast<double>(v[b + slot::kShapeDepth]), 0.0, 1.0);
+        sh.target = std::clamp(static_cast<int>(std::lround(v[b + slot::kShapeTarget])), 0, rev::kShapeTargets - 1);
+        sh.smooth = std::clamp(static_cast<double>(v[b + slot::kShapeSmooth]), 0.0, 1.0);
+        sh.res = std::clamp(static_cast<double>(v[b + slot::kShapeRes]), 0.0, 1.0);
+        sh.curve = v[b + slot::kShapeCurve] >= 0.5f;
+        bool empty = true;
+        for (int q = 0; q < 4; ++q)
+        {
+            sh.quads[static_cast<size_t>(q)] = v[b + slot::kShapePattern + static_cast<size_t>(q)];
+            empty = empty && sh.quads[static_cast<size_t>(q)] == 0.0f;
+        }
+        for (int q = 0; q < 4; ++q)
+            empty = empty && extraQuads[static_cast<size_t>(4 * (3 + i) + q)] == 0.0f;
+        sh.empty = empty;
     }
     wantedOrder = std::clamp(static_cast<int>(std::lround(v[slot::kRevOrder])), 0, rev::kOrders - 1);
     if (fresh)
@@ -359,8 +394,8 @@ int RevolutionEngine::value(int engine, long long k) const noexcept
         if (code != 0 && unitHash(humanSeed ^ (0x9E3779B9u * static_cast<std::uint32_t>(engine + 1)), k) >= rev::laneProbability(code))
             return 0;
     }
-    const int v = index < rev::kSteps ? rev::stepValue(&patternQuads[4 * le], index)
-                                      : rev::stepValue(&extraQuads[4 * le], index - rev::kSteps);
+    const float* first = engine < 3 ? &patternQuads[4 * le] : shapes[le - 3].quads.data();
+    const int v = index < rev::kSteps ? rev::stepValue(first, index) : rev::stepValue(&extraQuads[4 * le], index - rev::kSteps);
     if (engine == rev::Time)
         return v < rev::kTimeActions ? v : 0;
     if (engine == rev::Glitch)
@@ -1163,6 +1198,206 @@ void RevolutionEngine::motionStage(float* x, int numChannels, double q) noexcept
             x[ch] += static_cast<float>(motionMix) * (wet[ch] - x[ch]);
 }
 
+// ------------------------------------------------------------------------------------ R2: bands, SHAPE
+void RevolutionEngine::updateCrossovers() noexcept
+{
+    if (appliedLow == crossoverLow && appliedHigh == crossoverHigh)
+        return;
+    appliedLow = crossoverLow;
+    appliedHigh = crossoverHigh;
+    // Butterworth sections (bilinear, prewarped); two in series = Linkwitz-Riley 4th order
+    const auto design = [this](Section& s, double f, bool high)
+    {
+        const double w = std::tan(kPiD * std::min(f, 0.45 * sampleRate) / sampleRate), w2 = w * w, r = std::sqrt(2.0) * w;
+        const double a0 = 1.0 + r + w2;
+        s.b0 = (high ? 1.0 : w2) / a0;
+        s.b1 = (high ? -2.0 : 2.0 * w2) / a0;
+        s.b2 = s.b0;
+        s.a1 = 2.0 * (w2 - 1.0) / a0;
+        s.a2 = (1.0 - r + w2) / a0;
+    };
+    for (auto& sp : splitters)
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            design(sp.s[static_cast<size_t>(0 + i)], crossoverLow, false);
+            design(sp.s[static_cast<size_t>(2 + i)], crossoverLow, true);
+            design(sp.s[static_cast<size_t>(4 + i)], crossoverHigh, false);
+            design(sp.s[static_cast<size_t>(6 + i)], crossoverHigh, true);
+            design(sp.s[static_cast<size_t>(8 + i)], crossoverHigh, false);
+            design(sp.s[static_cast<size_t>(10 + i)], crossoverHigh, true);
+        }
+    }
+}
+
+void RevolutionEngine::runLane(int lane, float* x, int numChannels, double q) noexcept
+{
+    const auto run = [&](float* y)
+    {
+        if (lane == rev::Motion)
+            motionStage(y, numChannels, q);
+        else if (lane < rev::kEngines)
+            tapeStage(lane, y, numChannels, q);
+        else
+            shapeStage(lane - rev::kEngines, y, numChannels, q);
+    };
+    const int b = band[static_cast<size_t>(lane)];
+    if (b == rev::Full)
+    {
+        if (lane >= rev::kEngines && shapes[static_cast<size_t>(lane - rev::kEngines)].empty)
+            return; // an empty SHAPE lane: exactly dry
+        run(x);
+        return;
+    }
+    updateCrossovers();
+    auto& sp = splitters[static_cast<size_t>(lane)];
+    float bands[3][2] {};
+    for (int ch = 0; ch < numChannels; ++ch)
+    {
+        const double in = x[ch];
+        double low = sp.s[1].run(ch, sp.s[0].run(ch, in));
+        const double rest = sp.s[3].run(ch, sp.s[2].run(ch, in));
+        const double mid = sp.s[5].run(ch, sp.s[4].run(ch, rest));
+        const double high = sp.s[7].run(ch, sp.s[6].run(ch, rest));
+        low = sp.s[9].run(ch, sp.s[8].run(ch, low)) + sp.s[11].run(ch, sp.s[10].run(ch, low));
+        // LR4's high pass is in phase with its low pass: low + mid + high = an all-pass of the input
+        bands[0][ch] = static_cast<float>(low);
+        bands[1][ch] = static_cast<float>(mid);
+        bands[2][ch] = static_cast<float>(high);
+    }
+    run(bands[b - 1]);
+    for (int ch = 0; ch < numChannels; ++ch)
+        x[ch] = bands[0][ch] + bands[1][ch] + bands[2][ch];
+}
+
+double RevolutionEngine::shapeLevel(int shape, double q) noexcept
+{
+    auto& sh = shapes[static_cast<size_t>(shape)];
+    const int lane = rev::kEngines + shape;
+    if (!sh.stepValid || sh.stamp != stamp || q + kEps * dq >= sh.step.end || q + kEps * dq < sh.step.start)
+    {
+        sh.step = stepAt(q, laneQ[static_cast<size_t>(lane)]);
+        sh.stepValid = true;
+        sh.stamp = stamp;
+    }
+    const auto level = [this, lane, &sh](long long k) { return sh.depth * value(lane, k) / 15.0; };
+    const double here = level(sh.step.k);
+    const double x = (q - sh.step.start) / std::max(1.0e-12, sh.step.end - sh.step.start);
+    if (sh.curve)
+    {
+        // Catmull-Rom through the step levels (at the step starts), kept inside 0 .. depth
+        const double p0 = level(sh.step.k - 1), p1 = here, p2 = level(sh.step.k + 1), p3 = level(sh.step.k + 2);
+        const double t = std::clamp(x, 0.0, 1.0), t2 = t * t, t3 = t2 * t;
+        const double c = 0.5 * ((2.0 * p1) + (-p0 + p2) * t + (2.0 * p0 - 5.0 * p1 + 4.0 * p2 - p3) * t2 + (-p0 + 3.0 * p1 - 3.0 * p2 + p3) * t3);
+        return std::clamp(c, 0.0, sh.depth);
+    }
+    if (sh.smooth > 0.0 && x > 1.0 - sh.smooth)
+        return here + (level(sh.step.k + 1) - here) * (x - (1.0 - sh.smooth)) / sh.smooth;
+    const double u = (q - sh.step.start) / dq;
+    if (sh.smooth <= 0.0 && u < fadeSamples)
+    {
+        const double before = level(sh.step.k - 1);
+        return before + (here - before) * raisedCos((u + 1.0) / (fadeSamples + 1.0));
+    }
+    return here;
+}
+
+void RevolutionEngine::shapeStage(int shape, float* x, int numChannels, double q) noexcept
+{
+    auto& sh = shapes[static_cast<size_t>(shape)];
+    const double target = sh.on ? sh.mixTarget : 0.0;
+    const double ramp = 1.0 / (0.01 * sampleRate);
+    sh.mix = sh.mix < target ? std::min(target, sh.mix + ramp) : std::max(target, sh.mix - ramp);
+    if (sh.mix <= 0.0 && target <= 0.0)
+        return;
+    const double m = shapeLevel(shape, q);
+    float wet[2] { x[0], numChannels > 1 ? x[1] : 0.0f };
+    const auto blend = static_cast<float>(std::min(1.0, m / 0.1)); // filters and drive fade in from exactly dry
+    switch (sh.target)
+    {
+        case rev::ShapeVolume:
+            for (int ch = 0; ch < numChannels; ++ch)
+                wet[ch] = x[ch] * static_cast<float>(1.0 - m);
+            break;
+        case rev::ShapeLowPass:
+        case rev::ShapeHighPass:
+        case rev::ShapeBandPass:
+        {
+            if (sh.svfG <= 0.0 || n % 16 == 0)
+            {
+                const double f = sh.target == rev::ShapeLowPass    ? 20000.0 * std::pow(150.0 / 20000.0, m)
+                                 : sh.target == rev::ShapeHighPass ? 20.0 * std::pow(8000.0 / 20.0, m)
+                                                                   : 200.0 * std::pow(8000.0 / 200.0, m);
+                sh.svfG = std::tan(kPiD * std::min(f, 0.45 * sampleRate) / sampleRate);
+            }
+            const double k = 1.4142135623730951 * (1.0 - 0.9 * sh.res); // RES: Q 0.7 .. 7
+            const double a1 = 1.0 / (1.0 + sh.svfG * (sh.svfG + k)), a2 = sh.svfG * a1, a3 = sh.svfG * a2;
+            for (int ch = 0; ch < numChannels; ++ch)
+            {
+                auto& s1 = sh.ic1[static_cast<size_t>(ch)];
+                auto& s2 = sh.ic2[static_cast<size_t>(ch)];
+                const double v3 = x[ch] - s2, v1 = a1 * s1 + a2 * v3, v2 = s2 + a2 * s1 + a3 * v3;
+                s1 = 2.0 * v1 - s1;
+                s2 = 2.0 * v2 - s2;
+                const double y = sh.target == rev::ShapeLowPass ? v2 : sh.target == rev::ShapeHighPass ? x[ch] - k * v1 - v2 : k * v1;
+                wet[ch] = x[ch] + blend * (static_cast<float>(y) - x[ch]);
+            }
+            break;
+        }
+        case rev::ShapePan:
+            if (numChannels > 1 && m > 0.0)
+            {
+                // alternating: even steps of the lane to the left, odd ones to the right
+                const double pan = (sh.step.k % 2 == 0 ? -1.0 : 1.0) * m;
+                wet[0] = x[0] * static_cast<float>(pan > 0.0 ? 1.0 - pan : 1.0);
+                wet[1] = x[1] * static_cast<float>(pan < 0.0 ? 1.0 + pan : 1.0);
+            }
+            break;
+        case rev::ShapeWidth:
+            if (numChannels > 1 && m > 0.0)
+            {
+                const float mid = 0.5f * (x[0] + x[1]), side = 0.5f * (x[0] - x[1]) * static_cast<float>(1.0 - m);
+                wet[0] = mid + side;
+                wet[1] = mid - side;
+            }
+            break;
+        case rev::ShapeDrive:
+            if (m > 0.0)
+            {
+                // tanh with the gain that keeps a -10 dBFS peak where it was
+                const double g = 1.0 + 15.0 * m, ref = 0.31622776601683794;
+                const double norm = ref / std::tanh(g * ref);
+                for (int ch = 0; ch < numChannels; ++ch)
+                    wet[ch] = x[ch] + blend * (static_cast<float>(norm * std::tanh(g * x[ch])) - x[ch]);
+            }
+            break;
+        case rev::ShapeCrush:
+            if (m > 0.0)
+            {
+                const long long hold = 1 + static_cast<long long>(15.0 * m * m);
+                const auto scale = static_cast<float>(std::pow(2.0, 15.0 - 12.0 * m));
+                for (int ch = 0; ch < numChannels; ++ch)
+                {
+                    if (n % hold == 0)
+                        sh.held[static_cast<size_t>(ch)] = x[ch];
+                    const float y = std::round(sh.held[static_cast<size_t>(ch)] * scale) / scale;
+                    wet[ch] = x[ch] + blend * (y - x[ch]);
+                }
+            }
+            else
+                for (int ch = 0; ch < numChannels; ++ch)
+                    sh.held[static_cast<size_t>(ch)] = x[ch];
+            break;
+        default: break;
+    }
+    if (sh.mix >= 1.0)
+        for (int ch = 0; ch < numChannels; ++ch)
+            x[ch] = wet[ch];
+    else
+        for (int ch = 0; ch < numChannels; ++ch)
+            x[ch] += static_cast<float>(sh.mix) * (wet[ch] - x[ch]);
+}
+
 // --------------------------------------------------------------------------------------- process
 void RevolutionEngine::process(float* const* channels, int numChannels, int numSamples, const FxSlotParams& p, const Transport& transport,
                                int blockOffset) noexcept
@@ -1194,12 +1429,9 @@ void RevolutionEngine::process(float* const* channels, int numChannels, int numS
         const float in[2] { channels[0][i], numChannels > 1 ? channels[1][i] : 0.0f };
         float x[2] { in[0], in[1] };
         for (int e : order)
-        {
-            if (e == rev::Motion)
-                motionStage(x, numChannels, q);
-            else
-                tapeStage(e, x, numChannels, q);
-        }
+            runLane(e, x, numChannels, q);
+        for (int s = 0; s < rev::kShapes; ++s)
+            runLane(rev::kEngines + s, x, numChannels, q);
         analyse(in, numChannels, wrap(motionStep.k, steps));
         float inPeak = 0.0f, outPeak = 0.0f;
         for (int ch = 0; ch < numChannels; ++ch)
