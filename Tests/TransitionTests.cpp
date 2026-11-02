@@ -204,20 +204,20 @@ public:
         beginTest("RISE: N bars long, the last quarter >= 6 dB louder, the centroid rising, the fade to 0 at the bar line");
         for (const auto* source : { "drums", "pad" })
         {
-            const juce::String name(source);
-            const auto src = name == "drums" ? lastBars(loop, 2) : pad(2 * kBar);
+            const juce::String label(source);
+            const auto src = label == "drums" ? lastBars(loop, 2) : pad(2 * kBar);
             const auto out = tr::render(src, settings(tr::Rise, 2, tr::defaultKnobs(tr::Rise)));
             const int q = out.getNumSamples() / 4;
             const double rise = rmsDb(out, 3 * q, q) - rmsDb(out, 0, q);
             const double c0 = centroid(out, q / 2), c1 = centroid(out, out.getNumSamples() - 8192 - 400);
-            logMessage("  " + name + ": " + juce::String(out.getNumSamples()) + " samples; last quarter " + juce::String(rise, 1)
+            logMessage("  " + label + ": " + juce::String(out.getNumSamples()) + " samples; last quarter " + juce::String(rise, 1)
                        + " dB above the first; centroid " + juce::String(c0, 0) + " -> " + juce::String(c1, 0) + " Hz");
             expectEquals(out.getNumSamples(), 2 * kBar);
             expect(rise >= 6.0, juce::String(rise));
             expect(c1 > c0, "brighter");
             expect(std::abs(out.getSample(0, out.getNumSamples() - 1)) < 1.0e-4f, "lands on the bar");
-            writeWav(src, "rise_" + name + "_source");
-            writeWav(out, "rise_" + name);
+            writeWav(src, "rise_" + label + "_source");
+            writeWav(out, "rise_" + label);
         }
 
         beginTest("RISE on a 440 Hz sine, PITCH 100 %: the end an octave up (within 3 %); grain edges click-free (<= -40 dB)");
@@ -336,6 +336,62 @@ public:
                 played = played && block.getSample(0, i) == clip.getSample(0, i);
             expect(played, "the clip through the output");
             p->setPreview(false);
+            testFolder.deleteRecursively();
+        }
+
+        beginTest("A sample dropped on the page: the source (resampled 44.1 -> 48 kHz, repeated to the bars); USE INPUT goes back");
+        {
+            testFolder.createDirectory();
+            // a 0.8 s, 44.1 kHz mono WAV of 1 kHz
+            const auto sample = testFolder.getChildFile("dropped_1k.wav");
+            {
+                juce::AudioBuffer<float> b(1, static_cast<int>(0.8 * 44100.0));
+                for (int i = 0; i < b.getNumSamples(); ++i)
+                    b.setSample(0, i, static_cast<float>(0.5 * std::sin(2.0 * kPi * 1000.0 * i / 44100.0)));
+                juce::WavAudioFormat wav;
+                std::unique_ptr<juce::OutputStream> stream(sample.createOutputStream().release());
+                if (auto writer = wav.createWriterFor(stream, juce::AudioFormatWriterOptions {}.withSampleRate(44100.0).withNumChannels(1).withBitsPerSample(24)))
+                    writer->writeFromAudioSampleBuffer(b, 0, b.getNumSamples());
+            }
+            auto p = std::make_unique<ModulePluginProcessor>(ModuleKind::Revolution);
+            p->setRendersFolder(testFolder.getChildFile("renders"));
+            feed(*p, loop);
+            std::unique_ptr<juce::AudioProcessorEditor> ed(p->createEditor());
+            auto* editor = dynamic_cast<hpeq::standalone::ModulePluginEditor*>(ed.get());
+            expect(editor != nullptr);
+            if (editor == nullptr)
+                return;
+            editor->getSimplePage()->pressTransition(1); // FILL
+            auto* page = editor->getTransitionPage();
+            page->setKnob(0, 0.0, false);
+            page->setKnob(1, 0.0, false);
+            page->setKnob(2, 0.0, false);
+            page->setKnob(3, 0.0, true); // no chops, no roll, no ending: the source itself
+            expect(page->isInterestedInFileDrag({ sample.getFullPathName() }));
+            expect(!page->isInterestedInFileDrag({ testFolder.getChildFile("notes.txt").getFullPathName() }));
+            page->filesDropped({ sample.getFullPathName() }, 10, 10);
+            const auto t = p->lastTransition();
+            expect(t.sourceFile == sample, t.sourceFile.getFullPathName());
+            const auto clip = p->transitionClip();
+            const double hz = crossingHz(clip, 1000, 24000);
+            // the repeat: 0.8 s at 48 kHz later, the same samples (up to one gain)
+            const int period = static_cast<int>(std::floor(0.8 * 44100.0 / (44100.0 / kFs)));
+            double num = 0.0, ea = 0.0, eb = 0.0;
+            for (int i = 2000; i < 6000; ++i)
+            {
+                const double a = clip.getSample(0, i), b = clip.getSample(0, i + period);
+                num += a * b;
+                ea += a * a;
+                eb += b * b;
+            }
+            const double repeat = num / std::sqrt(std::max(1.0e-20, ea * eb));
+            logMessage("  from " + t.sourceFile.getFileName() + ": " + juce::String(hz, 1) + " Hz at 48 kHz (1000 expected); repeated after "
+                       + juce::String(period) + " samples (correlation " + juce::String(repeat, 4) + ")");
+            expect(std::abs(hz - 1000.0) < 2.0, juce::String(hz));
+            expect(repeat > 0.999, juce::String(repeat));
+            page->pressUseInput();
+            expect(p->lastTransition().sourceFile == juce::File(), "USE INPUT: the input again");
+            expect(!p->useSampleForTransition(testFolder.getChildFile("missing.wav")), "an unreadable file is refused");
             testFolder.deleteRecursively();
         }
 

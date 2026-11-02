@@ -31,6 +31,8 @@ juce::String revolutionHelp(const juce::String& key)
         { "simpleFill2", "FILL: a fill (chops, a roll into the downbeat, a reverse or a tape stop) made from the last bars - preview, drag "
                          "the WAV into the DAW." },
         { "transitionBack", "BACK: to the SIMPLE page." },
+        { "transitionUseInput", "USE INPUT: make the transition from the track's last bars again (after a sample was dropped on the page). "
+                                "Drop any WAV / AIFF / FLAC / MP3 from the DAW or Explorer onto the page to use it instead." },
         { "transitionKind", "RISE builds up into the next downbeat (roll, pitch, reverse swell, filter); FILL re-cuts the last bar and rolls "
                             "into the downbeat." },
         { "transitionBars", "BARS: how many of the last bars are used - and how long the transition is." },

@@ -102,6 +102,7 @@ public:
         bool aligned = false, complete = false; // the capture: on the bar line / the whole N bars were heard
         juce::File file;
         bool valid = false;
+        juce::File sourceFile; // a sample dropped on the page (none: the track's input)
     };
     // GENERATE on the page: capture now (newCapture) and / or a new seed, render, write the WAV
     Transition makeTransition(int kind, int bars, const std::array<double, 4>& knobs, bool newCapture, bool newSeed);
@@ -110,6 +111,10 @@ public:
     // the input of the last N bars: bar-aligned when playing, else the latest audio; false when nothing was heard
     bool captureLastBars(int bars, juce::AudioBuffer<float>& out, double& bpm, bool& aligned, bool& complete) const;
     void setPreview(bool on) noexcept;
+    // a sample (WAV / AIFF / FLAC / MP3 ...) as the transition's source instead of the input: its start, repeated to
+    // fill the bars, at the session rate; false when it cannot be read. useInputForTransition goes back to the input.
+    bool useSampleForTransition(const juce::File&);
+    void useInputForTransition();
     bool isPreviewing() const noexcept { return previewOn.load(); }
     int previewPosition() const noexcept { return previewPos.load(); }
     static juce::File rendersFolder();
@@ -172,6 +177,8 @@ private:
     juce::AudioBuffer<float> transitionSource; // the capture the knobs re-render (message thread)
     Transition transitionState;               // revolutionLock
     juce::File rendersOverride;
+    juce::AudioBuffer<float> droppedSample; // at the session rate (message thread)
+    juce::File droppedFile;
     std::uint32_t laneGenerations = 0;
     revolution::simple::Result simpleResult; // revolutionLock
     struct Follower;

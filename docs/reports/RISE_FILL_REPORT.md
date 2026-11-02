@@ -40,6 +40,12 @@ choice), preview it, drag the WAV into the DAW; a mini mode on its own page." Th
   - SIMPLE has [RISE] and [FILL] beside LOCK; each opens the page with a fresh clip.
   - Help texts for every new control.
 
+- **A sample as the source** (owner: "and dropping a sample from the DAW into the same window"). Drop any WAV, AIFF,
+  FLAC, MP3, OGG, WMA or M4A from the DAW or Explorer onto the page. RISE / FILL are then made from it: from its
+  start, repeated to fill the bars at the host's tempo, resampled to the session rate (Lagrange), at most 60 s read.
+  The status line names the sample. USE INPUT goes back to the track's input, and GENERATE keeps the sample, with a
+  new seed.
+
 ## Checks
 
 | Check | Result (target) |
@@ -53,7 +59,8 @@ choice), preview it, drag the WAV into the DAW; a mini mode on its own page." Th
 | WAV | 192000 samples, read back within 1.2e-7 (2^-22); the clip <= -0.1 dBFS |
 | preview | processBlock outputs the clip |
 | page | SIMPLE's [RISE] opens the page with a clip; FILL and BARS 4 re-render; BACK returns |
-| the full suite / validators | 1088 / 1088 (GoldenTests: R0 bit for bit) / pluginval 5 .. 10, Steinberg 537 / 537 |
+| a dropped sample (0.8 s, 1 kHz, 44.1 kHz mono WAV) | the source; 1000.0 Hz at 48 kHz; repeated every 38400 samples (correlation 1.0000); USE INPUT returns to the input; a missing file is refused |
+| the full suite / validators | 1096 / 1096 (GoldenTests: R0 bit for bit) / pluginval 5 .. 10, Steinberg 537 / 537 |
 
 Renders for listening (`E:\HPDG_Revolution_Live\renders_rise_fill\`): rises from drums (1, 2, 4 bars) and from a pad,
 fills from drums (2 and 4 bars), with their sources. Page: [transition_page.png](transition_page.png).

@@ -15,7 +15,7 @@ namespace tr = hpeq::dsp::transition;
 
 constexpr float kW = 1180.0f, kH = 1080.0f;
 constexpr float kPi = juce::MathConstants<float>::pi;
-const juce::Rectangle<float> kBack { 960.0f, 28.0f, 180.0f, 44.0f };
+const juce::Rectangle<float> kBack { 960.0f, 28.0f, 180.0f, 44.0f }, kUseInput { 800.0f, 28.0f, 150.0f, 44.0f };
 juce::Rectangle<float> kindRect(int k) { return { 60.0f + 216.0f * static_cast<float>(k), 196.0f, 200.0f, 48.0f }; }
 juce::Rectangle<float> barsRect(int i) { return { 700.0f + 110.0f * static_cast<float>(i), 196.0f, 96.0f, 48.0f }; }
 constexpr std::array<int, 3> kBarChoices { 1, 2, 4 };
@@ -85,7 +85,7 @@ void HamloRevolutionTransitionPage::resized()
         g.drawHorizontalLine(juce::roundToInt(y) - 1, 20.0f, kW - 20.0f);
     }
     crtBezel(g, kWave.expanded(10.0f), kWave, "", kWave.getBottom() + 10.0f);
-    engraved(g, "DRAG THE WAVE INTO YOUR DAW", { kWave.getX(), kWave.getBottom() + 18.0f, kWave.getWidth(), 22.0f }, 14.0f);
+    engraved(g, "DRAG THE WAVE INTO YOUR DAW  /  DROP A SAMPLE ONTO THE PAGE", { kWave.getX(), kWave.getBottom() + 18.0f, kWave.getWidth(), 22.0f }, 14.0f);
 }
 
 void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
@@ -94,6 +94,7 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
         g.drawImageAt(staticLayer, 0, 0);
     g.addTransform(juce::AffineTransform::scale(scale).translated(offset));
     crtButton(g, kBack, "BACK", false);
+    crtButton(g, kUseInput, "USE INPUT", values.sourceName.isEmpty());
     crtButton(g, kindRect(0), "RISE", values.kind == tr::Rise);
     crtButton(g, kindRect(1), "FILL", values.kind == tr::Fill);
     for (int i = 0; i < 3; ++i)
@@ -118,7 +119,8 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     crtButton(g, kShowFile, "SHOW FILE", false);
     const juce::String line1 = juce::String(values.kind == tr::Rise ? "RISE" : "FILL") + "  /  " + juce::String(values.bars) + (values.bars == 1 ? " BAR" : " BARS")
                                + "  /  " + juce::String(juce::roundToInt(values.bpm)) + " BPM";
-    const juce::String line2 = !values.valid      ? juce::String("PRESS GENERATE")
+    const juce::String line2 = values.sourceName.isNotEmpty() ? "FROM THE SAMPLE: " + values.sourceName.toUpperCase()
+                               : !values.valid      ? juce::String("PRESS GENERATE")
                                : !values.complete ? juce::String("NOT ENOUGH HEARD - PLAY THE TRACK, THEN GENERATE")
                                : values.aligned   ? juce::String("FROM THE LAST BARS, ON THE BAR LINE")
                                                   : juce::String("FROM THE LAST AUDIO (TRANSPORT STOPPED)");
@@ -152,12 +154,54 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     if (values.valid)
         crtText(g, values.fileName, { kWave.getX() + 8.0f, kWave.getY() + 6.0f, 600.0f, 16.0f }, 11.0f, juce::Justification::centredLeft, 0.7f);
     crtEnd(g, kWave);
+    if (dropHover)
+    {
+        g.setColour(juce::Colour(0xff6dff9a).withAlpha(0.12f));
+        g.fillRect(kWave);
+        g.setColour(juce::Colour(0xff6dff9a).withAlpha(0.8f));
+        g.drawRect(kWave, 2.0f);
+        crtText(g, "DROP THE SAMPLE: RISE / FILL ARE MADE FROM IT", kWave, 20.0f, juce::Justification::centred, 0.95f);
+    }
 }
 
 void HamloRevolutionTransitionPage::pressGenerate() { if (onGenerate) onGenerate(); }
 void HamloRevolutionTransitionPage::pressPlay() { if (onPlay) onPlay(); }
 void HamloRevolutionTransitionPage::pressBack() { if (onBack) onBack(); }
 void HamloRevolutionTransitionPage::pressShowFile() { if (onShowFile) onShowFile(); }
+void HamloRevolutionTransitionPage::pressUseInput() { if (onUseInput) onUseInput(); }
+
+bool HamloRevolutionTransitionPage::isInterestedInFileDrag(const juce::StringArray& files)
+{
+    for (const auto& f : files)
+        if (juce::File(f).hasFileExtension("wav;aif;aiff;flac;mp3;ogg;wma;m4a"))
+            return true;
+    return false;
+}
+
+void HamloRevolutionTransitionPage::fileDragEnter(const juce::StringArray&, int, int)
+{
+    dropHover = true;
+    repaint();
+}
+
+void HamloRevolutionTransitionPage::fileDragExit(const juce::StringArray&)
+{
+    dropHover = false;
+    repaint();
+}
+
+void HamloRevolutionTransitionPage::filesDropped(const juce::StringArray& files, int, int)
+{
+    dropHover = false;
+    for (const auto& f : files)
+        if (juce::File(f).hasFileExtension("wav;aif;aiff;flac;mp3;ogg;wma;m4a"))
+        {
+            if (onSampleDropped)
+                onSampleDropped(juce::File(f));
+            break;
+        }
+    repaint();
+}
 
 void HamloRevolutionTransitionPage::chooseKind(int k)
 {
@@ -190,6 +234,8 @@ juce::String HamloRevolutionTransitionPage::helpKeyAt(juce::Point<float> local) 
     const auto d = toDesign(local);
     if (kBack.contains(d))
         return "transitionBack";
+    if (kUseInput.contains(d))
+        return "transitionUseInput";
     if (kindRect(0).contains(d) || kindRect(1).contains(d))
         return "transitionKind";
     for (int i = 0; i < 3; ++i)
@@ -217,6 +263,8 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
     waveDown = dragged = false;
     if (kBack.contains(d))
         return pressBack();
+    if (kUseInput.contains(d))
+        return pressUseInput();
     for (int k = 0; k < 2; ++k)
         if (kindRect(k).contains(d))
             return chooseKind(k);

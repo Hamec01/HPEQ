@@ -497,6 +497,16 @@ void ModulePluginEditor::installTransitionPage()
         applyPage();
     };
     tp->fileToDrag = [this] { return processor.lastTransition().file; };
+    tp->onSampleDropped = [this, render](const juce::File& file)
+    {
+        if (processor.useSampleForTransition(file))
+            render(true, true);
+    };
+    tp->onUseInput = [this, render]
+    {
+        processor.useInputForTransition();
+        render(true, true);
+    };
     refreshTransition = [this, tp]
     {
         auto v = tp->getValues();
@@ -506,6 +516,7 @@ void ModulePluginEditor::installTransitionPage()
         v.complete = t.complete;
         v.bpm = t.valid ? t.settings.bpm : processor.getHostBpm();
         v.fileName = t.valid ? t.file.getFileName() : juce::String();
+        v.sourceName = t.sourceFile.getFileName();
         v.previewing = processor.isPreviewing();
         const int length = t.valid ? tr::lengthSamples(t.settings) : 0;
         v.playhead = v.previewing && length > 0 ? static_cast<double>(processor.previewPosition()) / length : -1.0;

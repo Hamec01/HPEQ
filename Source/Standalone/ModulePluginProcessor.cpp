@@ -536,8 +536,23 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
     s.sampleRate = currentSampleRate.load();
     if (newSeed || !t.valid)
         s.seed = revolution::mix64(s.seed + static_cast<std::uint64_t>(juce::Time::getHighResolutionTicks()));
-    if (newCapture || !t.valid || transitionSource.getNumSamples() != dsp::transition::lengthSamples(s))
+    if (droppedFile != juce::File())
     {
+        // the dropped sample: from its start, repeated to fill the bars (the host's tempo sets the bars)
+        s.bpm = getHostBpm();
+        const int length = dsp::transition::lengthSamples(s), n = droppedSample.getNumSamples();
+        transitionSource.setSize(2, length, false, true, false);
+        transitionSource.clear();
+        for (int i = 0; n > 0 && i < length; ++i)
+            for (int ch = 0; ch < 2; ++ch)
+                transitionSource.setSample(ch, i, droppedSample.getSample(juce::jmin(ch, droppedSample.getNumChannels() - 1), i % n));
+        t.aligned = true;
+        t.complete = n > 0;
+        t.sourceFile = droppedFile;
+    }
+    else if (newCapture || !t.valid || transitionSource.getNumSamples() != dsp::transition::lengthSamples(s))
+    {
+        t.sourceFile = juce::File();
         double bpm = getHostBpm();
         bool aligned = false, complete = false;
         if (!captureLastBars(s.bars, transitionSource, bpm, aligned, complete))
@@ -589,6 +604,37 @@ juce::AudioBuffer<float> ModulePluginProcessor::transitionClip() const
     juce::AudioBuffer<float> copy;
     copy.makeCopyOf(clips[static_cast<size_t>(clipActive.load())]);
     return copy;
+}
+
+bool ModulePluginProcessor::useSampleForTransition(const juce::File& file)
+{
+    juce::AudioFormatManager formats;
+    formats.registerBasicFormats();
+    std::unique_ptr<juce::AudioFormatReader> reader(formats.createReaderFor(file));
+    if (reader == nullptr || reader->lengthInSamples <= 0 || reader->sampleRate <= 0.0)
+        return false;
+    const auto length = static_cast<int>(juce::jmin<juce::int64>(reader->lengthInSamples, static_cast<juce::int64>(60.0 * reader->sampleRate))); // <= 60 s
+    juce::AudioBuffer<float> raw(2, length);
+    reader->read(&raw, 0, length, 0, true, reader->numChannels > 1);
+    if (reader->numChannels == 1)
+        raw.copyFrom(1, 0, raw, 0, 0, length);
+    // to the session rate (Lagrange)
+    const double ratio = reader->sampleRate / currentSampleRate.load();
+    const int out = juce::jmax(1, static_cast<int>(std::floor(length / ratio)));
+    droppedSample.setSize(2, out, false, true, false);
+    for (int ch = 0; ch < 2; ++ch)
+    {
+        juce::LagrangeInterpolator interpolator;
+        interpolator.process(ratio, raw.getReadPointer(ch), droppedSample.getWritePointer(ch), out, length, 0);
+    }
+    droppedFile = file;
+    return true;
+}
+
+void ModulePluginProcessor::useInputForTransition()
+{
+    droppedFile = juce::File();
+    droppedSample.setSize(2, 0);
 }
 
 void ModulePluginProcessor::setPreview(bool on) noexcept
