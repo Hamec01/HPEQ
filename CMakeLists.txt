@@ -165,3 +165,25 @@ target_compile_definitions(HamloZastava_M0CompatLab PRIVATE HPEQ_MODULE_KIND=6 J
 target_link_libraries(HamloZastava_M0CompatLab PRIVATE HamloZastava_M0Shared HamloZastava_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
 
 endif()
+
+# S2 kernel laboratory is independent of the shipping Legacy binary.
+add_custom_target(HamloZastava_S2Identity
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/ZastavaS2Identity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteS2Identity.cmake")
+add_executable(HamloZastava_V2Lab Tests/V2LabMain.cpp Tests/AllocationAudit.cpp Source/DSP/V2Gate.cpp)
+add_dependencies(HamloZastava_V2Lab HamloZastava_S2Identity)
+target_include_directories(HamloZastava_V2Lab PRIVATE Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
+add_executable(HamloZastava_V2Render Tests/V2RenderMain.cpp Tests/AllocationAudit.cpp Source/DSP/V2Gate.cpp)
+add_dependencies(HamloZastava_V2Render HamloZastava_S2Identity)
+target_include_directories(HamloZastava_V2Render PRIVATE Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
+
+# Optional, API-compatible pre-DSP control built with the identical current driver.
+option(HAMLO_ZASTAVA_BUILD_S2_REFERENCE "Build archived S2 neutral control" OFF)
+if(HAMLO_ZASTAVA_BUILD_S2_REFERENCE)
+    set(ZASTAVA_S2_REFERENCE "${CMAKE_CURRENT_SOURCE_DIR}/out/s2/before_sources" CACHE PATH "Archived API-compatible S2 control or regression sources")
+    add_custom_target(HamloZastava_S2ReferenceIdentity
+        COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/s2_reference"
+        COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${ZASTAVA_S2_REFERENCE}" "-DMETHOD_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/s2_reference/ZastavaS2Identity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteS2Identity.cmake")
+    add_executable(HamloZastava_V2Reference EXCLUDE_FROM_ALL Tests/V2LabMain.cpp Tests/AllocationAudit.cpp "${ZASTAVA_S2_REFERENCE}/Source/DSP/V2Gate.cpp")
+    add_dependencies(HamloZastava_V2Reference HamloZastava_S2ReferenceIdentity)
+    target_include_directories(HamloZastava_V2Reference BEFORE PRIVATE "${ZASTAVA_S2_REFERENCE}/Source" Tests "${CMAKE_CURRENT_BINARY_DIR}/s2_reference")
+endif()

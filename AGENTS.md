@@ -6,7 +6,7 @@
 
 ---
 
-## Current project checkpoint - HamloZastava S1 (2026-11-02)
+## Current project checkpoint - HamloZastava S2 (2026-11-02)
 
 Owner approved all four V2roles(cleanup,drum tails,external-key ducking,rhythm)
 and separate soft/hard profiles. Decisions settled, do not ask again.
@@ -31,11 +31,21 @@ in191roundtrips, while serialized state bytes remain unchanged; Legacy preserves
 that behavior. Final lab compares actual original restored bytes/PCM/readings.
 V2harness append-to-nonempty-buffer bug fixed, disclosed; final v3paired method.
 
-Next:S2 numerical targets and identical before/after lab before new DSP. Build
-four approved modes, soft/hard profiles, external IO, exact timing/neutral modern
-state, QUICK/ADVANCED and later200presets. No scope question pending. Source/
-method changes invalidate dependent cached results. Preserve shared PresetScreen.
-No active jobs. Stage commit follows this handoff; verify git status next time.
+S2 offline kernel complete:Clean/Drum/Duck/Rhythm, separate Soft/Hard profiles,
+detector/filter/lookahead, fixed5msPDC, expansion/drum-tail/rhythm and recovery.
+Final paired66cases:218control passes/9n-a,275kernel passes/0fail; block1..4096
+PCM exact, zero measured audio allocations, five-minute192kstress. Eight owner
+A/B renders prepared, not ear-approved. Worst48k256mean1.20825% of block time.
+Reports:docs/reports/s2/REPORT.md,acceptance.json,before_v3/after_v3.json.
+Initial49case method missed a real queue-capacity fault; expanded66case method
+detects all4 archived regressions. Final comment-only revision recaptured both
+sides,132PCM files unchanged; no targets loosened. Retain all prior evidence.
+New engine is not wired to VST/editor/state yet. Shipping S1DLL remains exact.
+Next:S3 host adapter, appended IDs/state/program restoration and external bus;
+then QUICK/ADVANCED,200genre presets and final VST/FL acceptance. No scope
+question pending. Preserve shared PresetScreen. Source/method changes invalidate
+dependent caches. One benign C4244 (float fill with literal0) disclosed in report.
+No active jobs. S2commit follows handoff; verify git log/status on continuation.
 
 ## 1. Продукт и владелец
 

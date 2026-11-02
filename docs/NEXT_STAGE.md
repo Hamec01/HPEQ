@@ -1,102 +1,134 @@
-# HamloZastava: S1 complete, approved V2 next
+# HamloZastava: S2 complete, S3 host integration next
 
-2026-11-02; parent69901fb audit, production sourcef7330fd. S1completion commit
-follows this handoff; latest git log identifies it. No active jobs. All source/
-doc changes belong to S1. No other products/HPEQ, subagents, push/subtree,
-installed plug-in change or model switch. Apply efficient-staged-work.
+2026-11-02. S1 parent 894abf8; the S2 completion commit follows this handoff.
+Find it with git log -1. No active jobs or unrelated changes. No subagents,
+other products/HPEQ, installed plugin change, installer, push/subtree or model
+switch. Apply efficient-staged-work; keep one coherent stage per chat.
 
-## Settled owner choices
+## Settled scope
 
-All four roles with separate modes:natural cleanup, drum-tail control,
-external-key ducking, rhythmic gate. Separate soft/hard profiles. Do not ask
-these scope questions again. Approved scope:ZASTAVA_V2_SCOPE.md. QUICK/ADVANCED,
-Black Steel/shared top-left PresetScreen,200genre recipes and VST-first delivery.
-Installer is not immediate. Do not infer extra ML instrument classification.
+All four roles: natural cleanup, drum-tail shaping, external-key ducking and
+rhythm, with separate Soft/Hard profiles. QUICK/ADVANCED, Black Steel and the
+unchanged shared top-left PresetScreen. Later 200 genre recipes, 207 host
+programs total. Owner's answers are settled; do not repeat scope questions.
+VST-first delivery, no immediate installer.
 
-## Accepted isolation
+## S2 delivered
 
-Version0.1.0; original15specs+bypass,7programs,state/class identity,5msPDC preserved.
-Ten own translation units,25file local include closure. LayerEngine/FxNodeProcessor,
-graph/project state/unrelated effect and panel units excluded. LegacyGateProcessor
-copies both M6 and extended ZastavaCore behavior, including branch changes/reset.
-LegacyZastavaCore preserves original slot mix/node delta/layer sum/alignment.
-Source enum numeric values/parameter slot indices preserved in ZastavaSettings.h.
+Own pure-C++ kernel: Source/DSP/V2Gate.h/.cpp. Modes Clean/Drum/Duck/Rhythm.
+Gate/expansion, knee/range/hysteresis/hold, Peak/RMS, HP/LP key filters, main or
+external key, stereo link, 0..5 ms opening lookahead, Mix/Output/bypass. Soft has
+a two-pole envelope; Hard one pole, both T90. Drum uses finite Attack/Body/Tail
+and fast/slow onset contrast; Soft quintic, Hard linear. Rhythm supports 16..32
+levels, free time or beat time, tempo and seek. Missing key/stopped synced
+Rhythm fail open. All audio/key history allocated in prepare; fixed 5 ms PDC.
 
-229primary PCM/input-state/latency cases exact to M0;458fresh/edited restored
-state/audio/parameter/metadata observations exact to actual M0 restoration.
-127native(71old+56isolation), zero C++ audio allocations first call and automated
-branch/filter/bypass/lookahead; static7programs bit exact for1/64/127/512/4096after
-prepare256. Six measured automation schedules also each identical across blocks.
-pluginval5..10 and Steinberg537pass. Existing panel snapshot inspected.
-Processor sizeof844152->2176bytes, not total heap/private working set.
-Validated DLL SHA256:ef62bb5f012c8faacf50de92a9fe916828888dd92e6da18d95b3bc3b4522e738.
+No host/UI integration in S2: production remains the accepted S1 Legacy 0.1.0.
+Do not tell the owner these new modes are already available in the VST.
+
+Final same-method pair: 66 cases, control 218 passes/0 failures/9 unavailable;
+kernel 275 passes/0 failures. Exact blocks1/64/127/512/4096, zero C++ audio/set
+allocations, five-minute192k stress, recovery and phase checks. Five negative
+cache/source/method/role guards rejected. Eight real owner-material A/B WAVs
+in out/s2/auditions_01, finite/allocation-free/peak <= -6 dBTP. No listening
+verdict or FL test recorded. Full observations/limits:docs/reports/s2/REPORT.md.
+
+Source ID:c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084.
+Method ID:0567998ff0e306a19cf7a981d2902b05d304b5a3d954f926bc8406964dcb1ff9.
+Worst48k256mean1.20825% of audio time; broader mean1.319%; stress192k1.87305%.
+Recorded one-sample callback wall outlier204.48%; no host-deadline claim.
+Nonfatal C4244 is std::fill of float storage with exactly representable literal0;
+archived stub has same warning. No warning suppression or acceptance relaxation.
+
+## Evidence and disclosed revisions
+
+Final:docs/reports/s2/{acceptance,before_v3,after_v3,regression_v3,auditions}.json.
+Primary methods:docs/S2_METHODS.md,Tests/V2LabMain.cpp,Tools/analyze_zastava_s2.py.
+Audit:Tools/verify_zastava_s2.py; audition:Tests/V2RenderMain.cpp and
+Tools/render_zastava_s2.py. Source/method/binary/material/raw hashes bind results.
+
+Initial49cases:167control passes/9n-a and200candidate01 passes. Independent
+Hold/knee/RMS/HP, tempo/seek, recovery, CPU max/cycles and full-window expiry
+checks were missing. Expanded66case method found a real queue-capacity defect:
+insert-before-expire filled the circular queue. Candidate02 reserves one more
+slot. Archived candidate01 reproduces four failures with the final driver.
+Final v3 added the required disclosure comments, so both sides were recaptured;
+all132PCM outputs equal revision2. No numerical targets changed. Keep all runs.
+
+out/s2/before_sources is the API-compatible unavailable neutral stub; its source
+snapshot JSON and before.exe are retained. out/s2/candidate_01_sources is the
+faulty initial kernel, candidate_01.exe retained. v1_method holds original test
+sources. Final dirs/exes:before_v3,after_v3,regression_v3. Earlier before,
+before_final,candidate_01,candidate_02,regression_01_final_method and acceptance_01
+remain diagnostic history, not the final same-method pair. Do not overwrite runs.
+
+## S1 compatibility checkpoint retained
+
+S1report:docs/reports/s1/REPORT.md. Original archive:out/s1/original; accepted
+reference:out/s1/reference_v3. Ten production units,25local include files, no
+LayerEngine/FxNodeProcessor/project graph/foreign effects/panels. 15old specs
+plus bypass,Default+6programs,class/state IDs,ranges/order and5msPDC unchanged.
+229primary M0 matches +458fresh/edited actual restored matches,127native,
+pluginval5..10 and Steinberg537/537. S1production DLL remains byte-identical:
+ef62bb5f012c8faacf50de92a9fe916828888dd92e6da18d95b3bc3b4522e738.
 Bundle:build/HamloZastava_artefacts/Release/VST3/HamloZastava.vst3.
-No V2sound/features/presets implemented or installer built in this stage.
 
-Authoritative:docs/reports/s1/REPORT.md,acceptance.json,before_v3.json,
-capture_v3.json,after_v3.json,native.txt,validators_final/,panel.png.
-Original archive:out/s1/original(Source,configuration,VST,oldTests/CompatLab exes).
-Final fixtures:out/s1/reference_v3. Preserve reference(v1),reference_v2,
-isolated_observed_v2,debug outputs and all candidate/self-check reports.
+Original normalized readback changes in191roundtrips despite stable serialized
+bytes; preserve historical Legacy behavior. Final S1harness compares actual M0
+restores. The earlier MemoryBlock append mistake and its fix are disclosed.
+Do not rerun Tools/isolate_s1.py. S1global source stamp includes all Source files;
+S2audit instead verifies retained accepted files, shipping units and exact DLL.
+S3rebuilds need fresh compatibility evidence, not relabeled S1validator outputs.
 
-## Disclosed method work
+## Reproduce S2
 
-V1all229audio/latency pass but191combined state/readback assertions failed;
-archived M0 against itself reproduces191. Serialized bytes unchanged in all229;
-normalized parameter readback differs. Preserve this Legacy behavior, do not call
-it a new V2state-quality pass. V2method records actual M0fresh/edited restored
-bytes/PCM/readings. Its verification initially appended into a populated
-MemoryBlock(File::loadFileAsData appends), falsely failing size comparisons.
-Clearing the buffer fixes harness; no audio code/tolerances changed. Final v3
-captures and verifies with the same driver. All229primary PCM/state/latency
-fixtures still equal original v1. Diagnostics/old methods are retained in out/s1.
+PowerShell at E:/HamloZastava; Python/numpy/scipy available at
+E:/HamloShirota/build/s3_venv/Scripts/python.exe. No environment upgrades.
 
-## Build and audit
+cmake --build build --config Release --target HamloZastava_V2Lab -- /m:2 /v:minimal
+build/Release/HamloZastava_V2Lab.exe out/s2/NEW_run
+E:/HamloShirota/build/s3_venv/Scripts/python.exe -I -X utf8 Tools/analyze_zastava_s2.py out/s2/NEW_run out/s2/NEW_report.json
+E:/HamloShirota/build/s3_venv/Scripts/python.exe -I -X utf8 Tools/verify_zastava_s2.py NEW_audit_label
 
-PowerShell7 at E:/HamloZastava. Python available at
-E:/HamloShirota/build/s3_venv/Scripts/python.exe; -I -X utf8, standard library only
-for S1 scripts. No environment/global upgrades. Commands:
+The paired archived control is optional, EXCLUDE_FROM_ALL, defaultOFF. Current
+local cache has HAMLO_ZASTAVA_BUILD_S2_REFERENCE=ON and ZASTAVA_S2_REFERENCE set
+to E:/HamloZastava/out/s2/before_sources. Build target HamloZastava_V2Reference
+before running it. Normal production builds do not need archived controls.
+ReferenceIdentity uses the current method but the selected archived source.
+Do not accidentally select faulty candidate01 as the neutral control; analyzer
+rejects a role/source mismatch. Archived accepted exes remain authoritative.
 
-```powershell
-cmake --build build --config Release --target HamloZastava_VST3 HamloZastava_CompatLab HamloZastava_Tests HamloZastava_Snapshot -- /m:2 /v:minimal
-build/Release/HamloZastava_CompatLab.exe verify E:/HamloZastava/out/s1/reference_v3 E:/HamloZastava/out/s1/NEW_verify.json
-build/Release/HamloZastava_Tests.exe
-E:/HamloShirota/build/s3_venv/Scripts/python.exe -I -X utf8 Tools/verify_zastava_s1.py audit
-build/Release/HamloZastava_Snapshot.exe out/s1/NEW_panel.png 1
-pwsh -NoProfile -File Tools/validate_s1.ps1 -Label NEW_LABEL
-```
+Do not build the shipping targets just to recheck S2: this changes their global
+source stamp even while the kernel is unconnected. Do not silently replace the
+audition renderer exe either; its SHA binds auditions.json. A changed kernel,
+method or renderer needs corresponding fresh measured/rendered evidence.
 
-Do not overwrite original native directories. Tools/verify_zastava_s1.py audit
-is tied to this accepted checkpoint and current binary; new source requires new
-matching evidence, not relabeling. Fixture hashes, compiled source/method stamps,
-current include closure, reference/class IDs and validator DLL are checked.
-Text identity normalizesCRLF; raw states/audio/binaries exact.
+## S3 next coherent stage
 
-Frozen full M0 build:configure-DHAMLO_ZASTAVA_BUILD_M0_REFERENCE=ON, explicitly
-build HamloZastava_M0CompatLab. It uses out/s1/original headers/sources and current
-same lab, with separate generated header. EXCLUDE_FROM_ALL; OFF by default for
-fresh production builds. Archive required only for that optional baseline tool.
-Tools/isolate_s1.py is the one-time reviewed extraction procedure from the local
-frozen snapshot; do not rerun it after new V2changes. It uses the already-reviewed
-local Shirota layer-sum skeleton only as an extraction aid, not a build dependency.
-Do not build while validators fingerprint the DLL.
+Connect the kernel through an appended engine selector Legacy/Clean/Drum/Duck/
+Rhythm and new stable parameter IDs, retaining all old IDs/ranges/order and seven
+program numbers. Keep the Legacy path mathematically exact; use the fixed PDC
+only once on either path. Add optional external mono/stereo key bus without
+changing main mono/stereo layouts. Add host BPM/PPQ/transport adapter and explicit
+key-missing status. Inspect existing processor before deciding buffer routing.
+Kernel common attackMs/releaseMs mean rising/falling gain T90. In Duck map user
+onset/recovery to falling/rising gain respectively (the demo uses releaseMs2,
+attackMs100). Do not expose reversed Duck timing labels by accident. Drum's
+Attack/Body/Tail are finite full-duration segments, a separate documented model.
 
-## Next coherent stage
+Specify and test the neutral modern startup, full new state restoration, and
+old state load into both fresh and already-edited modern instances. Missing
+new fields must select Legacy and clear every new control; don't infer Legacy
+from new parameter defaults. Preserve old program recipes. Include bypass and
+main/key alias/routing tests, mono key -> stereo main, automation/clock at exact
+sample positions, state/audio roundtrips and no audio allocations. Prove Legacy
+against archived M0 using fresh matching S1driver evidence for rebuilt binary.
 
-S2write numerical goals/methods BEFORE new sound, capture n/a for unavailable
-features, then implement own four-role processing with two profiles. Shared
-legacy data fields/controllers cannot be repurposed or old normalized choices
-expanded. Preserve old-state loading on an already edited new instance. Define
-neutral modern startup and stable new-mode state/audio roundtrip explicitly;
-Legacy's readback quirks are historical. Keep fixed5msPDC unless a separately
-resolved design can prove compatibility/host notifications.
+Later stages:QUICK/ADVANCED numerical editor and contextual help/key audition,
+200calibrated unique recipes with guarded continuation, final VST validators,
+visual snapshots and owner FL listening. No plugin release claim before these.
+Recommend owner's Astra xhigh for adapter/state/clock ambiguities, medium for
+known builds/checks. No model or effort switch has been applied by the agent.
 
-Key tests:noise/wanted signal distinction; quiet notes/word endings; attack and
-body/tail windows; false/missed/chattering openings; detector/sidechain alignment;
-lookahead/open/hold/release timing; stereo link/mono safety; rhythmic grid and
-transport events; parameter transitions; sample/block determinism and zero audio
-allocations. Use per-role metrics, not arbitrary compressor GR or reverb wet/dry.
-Then numerical UI/QUICK,200genre recipes(207programs total), calibrated unique
-recipes and cache guards, final VST validators/report/owner FL audition.
-Recommend owner's Astra xhigh for new DSP/diagnosis, medium for known fixture/
-build/package/git runs. Owner controls selector; no switch occurred.
+Continuation prompt: Continue HamloZastava with S3 from this handoff; keep all
+four approved modes and both profiles; no subagents or repeat scope questions.
