@@ -7,6 +7,7 @@
 
 #include "DSP/DelayLine.h"
 #include "DSP/LegacyShirotaCore.h"
+#include "DSP/V2Integrated.h"
 #include "DSP/Ramp.h"
 #include "Standalone/ModuleVariant.h"
 
@@ -53,6 +54,9 @@ public:
     bool isModuleOn() const noexcept { return bypassParameter != nullptr && !bypassParameter->get(); }
     double getHostBpm() const noexcept { return hostBpm.load(std::memory_order_relaxed); }
     const dsp::LegacyShirotaCore& moduleNode() const noexcept { return engine; }
+    struct ModernReading {double correlation,guardDb,azimuth;};
+    ModernReading modernReading() const noexcept {return {modernCorrelation.load(),modernGuard.load(),modernPosition.load()};}
+    bool presetModified() const noexcept;
 
 private:
     dsp::FxSlotParams currentSlot(bool active) const noexcept;
@@ -64,6 +68,17 @@ private:
     juce::AudioParameterBool* bypassParameter = nullptr;
 
     dsp::LegacyShirotaCore engine;
+    dsp::V2Integrated modern;
+    std::array<std::atomic<float>*,dsp::v2::kControlCount> modernRaw{};
+    std::array<std::atomic<float>,12+dsp::v2::kControlCount> programAnchor{};
+    std::atomic<bool> loadedModified{false};
+    void captureProgramAnchor() noexcept;
+    dsp::v2::Controls modernControls() const noexcept;
+    juce::AudioBuffer<float> modernBuffer;
+    dsp::LinearRamp modernAmount;
+    bool previousModern=false;
+    int modernWarm=0,modeSteps=1,warmSteps=1;
+    std::atomic<double> modernCorrelation{1},modernGuard{0},modernPosition{0};
     juce::AudioBuffer<float> dry;
     dsp::AlignmentDelay wetAlign, dryAlign;
     dsp::LinearRamp wetAmount;

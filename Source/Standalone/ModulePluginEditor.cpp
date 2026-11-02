@@ -3,6 +3,7 @@
 #include "UI/HamloShirotaPanel.h"
 #include "UI/ModuleHelp.h"
 #include "UI/PresetScreen.h"
+#include "UI/ShirotaV2Panel.h"
 
 namespace hpeq::standalone
 {
@@ -59,7 +60,8 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
             installPanel(std::move(p));
     }
 
-    // Hamlo line (2026-10-29): the preset screen top left, as on HamloComp / HamloUdarnik / HamloRedWall / HamloMag
+    {auto original=std::move(panel);removeChildComponent(original.get());auto wrapped=std::make_unique<ui::ShirotaV2Panel>(processor,std::move(original));auto* p=wrapped.get();auto oldRefresh=std::move(refreshPanel);refreshPanel=[p,oldRefresh]{if(oldRefresh)oldRefresh();p->refresh();};panel=std::move(wrapped);addAndMakeVisible(*panel);}
+    // Hamlo line: shared preset screen remains unchanged and top-left.
     presets = std::make_unique<ui::PresetScreen>();
     {
         std::vector<ui::PresetScreen::Entry> entries;
@@ -75,7 +77,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
             refreshPanel();
     };
     addAndMakeVisible(*presets);
-    presets->setCurrent(processor.getCurrentProgram(), false);
+    presets->setCurrent(processor.getCurrentProgram(), processor.presetModified());
 
     const auto& spec = processor.getSpec();
     setResizable(true, true);
@@ -128,7 +130,7 @@ void ModulePluginEditor::timerCallback()
     if (refreshPanel)
         refreshPanel();
     if (presets != nullptr)
-        presets->setCurrent(processor.getCurrentProgram(), false);
+        presets->setCurrent(processor.getCurrentProgram(), processor.presetModified());
 }
 
 void ModulePluginEditor::visibilityChanged()

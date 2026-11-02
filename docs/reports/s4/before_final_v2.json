@@ -1,0 +1,568 @@
+{
+  "method_id": "25e82f3b9cc72d178ac1210050865157b8dadbbd0cc857f001f86480cf764674",
+  "source_id": "d1ef423 frozen facade",
+  "implemented": false,
+  "methods": {
+    "Tests/IntegrationLabMain.cpp": "922bb66de6f88d404058fddb0682e6df4310bcb4afb8619f2346306b91c84682",
+    "Tools/analyze_s4.py": "f49dd7457a93c3bbbae0dd545769d6e718e282e7f7378ec25707eb1f635267e5",
+    "docs/S4_METHODS.md": "00011c3cd808a0f34cb0d8c4f6fc9f0f5308117eb268de63c27ef1cc8423f936"
+  },
+  "source_files": null,
+  "cases": 31,
+  "checks": [
+    {
+      "goal": "I03",
+      "name": "rate_8000_m1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_8000_m1_finite_PDC",
+      "passed": true,
+      "peak": 0.099971324205399,
+      "latency": 20
+    },
+    {
+      "goal": "I12",
+      "name": "rate_8000_m1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_8000_m2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_8000_m2_finite_PDC",
+      "passed": true,
+      "peak": 0.099971324205399,
+      "latency": 20
+    },
+    {
+      "goal": "I12",
+      "name": "rate_8000_m2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_32000_m1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_32000_m1_finite_PDC",
+      "passed": true,
+      "peak": 0.099997103214264,
+      "latency": 80
+    },
+    {
+      "goal": "I12",
+      "name": "rate_32000_m1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_32000_m2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_32000_m2_finite_PDC",
+      "passed": true,
+      "peak": 0.099997103214264,
+      "latency": 80
+    },
+    {
+      "goal": "I12",
+      "name": "rate_32000_m2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_44100_m1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_44100_m1_finite_PDC",
+      "passed": true,
+      "peak": 0.099993504583836,
+      "latency": 110
+    },
+    {
+      "goal": "I12",
+      "name": "rate_44100_m1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_44100_m2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_44100_m2_finite_PDC",
+      "passed": true,
+      "peak": 0.099993504583836,
+      "latency": 110
+    },
+    {
+      "goal": "I12",
+      "name": "rate_44100_m2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_48000_m1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_48000_m1_finite_PDC",
+      "passed": true,
+      "peak": 0.099994741380215,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "rate_48000_m1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_48000_m2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_48000_m2_finite_PDC",
+      "passed": true,
+      "peak": 0.099994741380215,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "rate_48000_m2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_88200_m1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_88200_m1_finite_PDC",
+      "passed": true,
+      "peak": 0.0999935567379,
+      "latency": 221
+    },
+    {
+      "goal": "I12",
+      "name": "rate_88200_m1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_88200_m2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_88200_m2_finite_PDC",
+      "passed": true,
+      "peak": 0.0999935567379,
+      "latency": 221
+    },
+    {
+      "goal": "I12",
+      "name": "rate_88200_m2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_96000_m1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_96000_m1_finite_PDC",
+      "passed": true,
+      "peak": 0.09999967366457,
+      "latency": 240
+    },
+    {
+      "goal": "I12",
+      "name": "rate_96000_m1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_96000_m2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_96000_m2_finite_PDC",
+      "passed": true,
+      "peak": 0.09999967366457,
+      "latency": 240
+    },
+    {
+      "goal": "I12",
+      "name": "rate_96000_m2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_176400_m1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_176400_m1_finite_PDC",
+      "passed": true,
+      "peak": 0.099993482232094,
+      "latency": 441
+    },
+    {
+      "goal": "I12",
+      "name": "rate_176400_m1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_176400_m2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_176400_m2_finite_PDC",
+      "passed": true,
+      "peak": 0.099993482232094,
+      "latency": 441
+    },
+    {
+      "goal": "I12",
+      "name": "rate_176400_m2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_192000_m1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_192000_m1_finite_PDC",
+      "passed": true,
+      "peak": 0.09999967366457,
+      "latency": 480
+    },
+    {
+      "goal": "I12",
+      "name": "rate_192000_m1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "rate_192000_m2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "rate_192000_m2_finite_PDC",
+      "passed": true,
+      "peak": 0.09999967366457,
+      "latency": 480
+    },
+    {
+      "goal": "I12",
+      "name": "rate_192000_m2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "events_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "events_1_finite_PDC",
+      "passed": true,
+      "peak": 0.099994741380215,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "events_1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "events_64_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "events_64_finite_PDC",
+      "passed": true,
+      "peak": 0.099994741380215,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "events_64_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "events_127_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "events_127_finite_PDC",
+      "passed": true,
+      "peak": 0.099994741380215,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "events_127_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "events_512_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "events_512_finite_PDC",
+      "passed": true,
+      "peak": 0.099994741380215,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "events_512_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "events_4096_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "events_4096_finite_PDC",
+      "passed": true,
+      "peak": 0.099994741380215,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "events_4096_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "neutral_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "neutral_1_finite_PDC",
+      "passed": true,
+      "peak": 0.099994741380215,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "neutral_1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "bypass_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "bypass_1_finite_PDC",
+      "passed": true,
+      "peak": 0.100000001490116,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "bypass_1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "neutral_2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "neutral_2_finite_PDC",
+      "passed": true,
+      "peak": 0.099994741380215,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "neutral_2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "bypass_2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "bypass_2_finite_PDC",
+      "passed": true,
+      "peak": 0.100000001490116,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "bypass_2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "timing_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "timing_1_finite_PDC",
+      "passed": true,
+      "peak": 0.100000001490116,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "timing_1_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "timing_2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "timing_2_finite_PDC",
+      "passed": true,
+      "peak": 0.100000001490116,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "timing_2_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "timing_3_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "timing_3_finite_PDC",
+      "passed": true,
+      "peak": 0.100000001490116,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "timing_3_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "timing_4_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "timing_4_finite_PDC",
+      "passed": true,
+      "peak": 0.177833646535873,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "timing_4_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "timing_5_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "timing_5_finite_PDC",
+      "passed": true,
+      "peak": 0.177833646535873,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "timing_5_raw",
+      "passed": true
+    },
+    {
+      "goal": "I03",
+      "name": "timing_6_allocations",
+      "passed": true
+    },
+    {
+      "goal": "I05",
+      "name": "timing_6_finite_PDC",
+      "passed": true,
+      "peak": 0.177833646535873,
+      "latency": 120
+    },
+    {
+      "goal": "I12",
+      "name": "timing_6_raw",
+      "passed": true
+    },
+    {
+      "goal": "I02",
+      "name": "not_implemented",
+      "passed": null
+    },
+    {
+      "goal": "I03_events",
+      "name": "not_implemented",
+      "passed": null
+    },
+    {
+      "goal": "I01_append",
+      "name": "not_implemented",
+      "passed": null
+    },
+    {
+      "goal": "I04",
+      "name": "native_filter",
+      "passed": true,
+      "maximum_magnitude_error_db": 1.94904458140505e-05,
+      "maximum_ITD_error_samples": 0,
+      "maximum_tail_energy_loss": 1.2636010016109367e-09
+    }
+  ],
+  "passed": 94,
+  "failed": 0,
+  "unavailable": 3,
+  "identity_sha256": "6afac07a3ecf936e5f2ed9985c19c59861f1e24ae11d6e4a64921580ec90c328"
+}

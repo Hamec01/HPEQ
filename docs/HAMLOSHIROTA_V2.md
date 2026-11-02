@@ -53,10 +53,16 @@ D1/H3/H4profiles carry their upstream license/attribution in Assets/Hrtf.
 Owner K712 front/back audition remains pending. Mean CPU passes; individual
 wall-time outliers require host/performance investigation before release.
 
-After S3, integrate the accepted prototypes and resolve PDC/transitions/state
-compatibility. Implement precise STEREO/SPACE/MOTION,
-selectable binaural profiles, editable
-timed paths, QUICK, neutral Default,200genre presets, source-pinned calibration,
-validators, screenshots, installer/ZIP/SHA256 and owner FL listening examples.
-Objective HRTF/filter tests do not replace owner front/back audition on K712.
-The licensed prototype profiles are selected; no headphone EQ is claimed.
+S4 completed2026-11-02: actual VST Stereo/Space/Binaural, QUICK/STEREO/SPACE/
+MOTION/LEGACY, typed16node paths, embedded prepared profiles and state migration.
+451native expectations,160M0cases,106integration checks,5identity rejections,
+pluginval5..10 and Steinberg537/537 pass. Targets:S4_METHODS.md;
+evidence/limits:reports/s4/REPORT.md. PDC stays original round2.5ms at all modes.
+Final combined means12.42..12.63percent meet25percent, maximum0.3342periods;
+a prior callback1.0062periods leaves live-host deadline assessment open. Native48k spectral
+fidelity is measured; complete resampled spectral validation before release.
+
+Next S5:200genre presets (207total host programs), source-pinned resumable
+calibration and production A/B examples, owner FL/K712 listening, final0.2.0
+installer/ZIP/SHA256. Objective filter tests do not replace owner front/back
+audition. Profiles are horizontal measurements, not personalized headphone EQ.

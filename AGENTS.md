@@ -171,49 +171,52 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Current local handoff - HamloShirota S3 (2026-11-02)
+## 9. Current local handoff - HamloShirota S4 (2026-11-02)
 
-Work only in E:/HamloShirota; Verb/Echo/Mag are complete. No other product/HPEQ
-edits, subtree, push or subagents. Apply efficient-staged-work. No model switch.
-Owner wants precise STEREO/SPACE/MOTION and QUICK, timed left/right/behind-head
-movement. Listening reference AKG K712, not a personalized HRTF/headphone EQ.
-Scope:docs/SHIROTA_V2_SCOPE.md; current handoff:docs/NEXT_STAGE.md.
+Work only in E:/HamloShirota; no Verb/Echo/Mag/HPEQ changes, push, subtree or
+subagents. Apply efficient-staged-work. No model/effort switch has occurred.
+Owner wants exact stereo/space/timed headphone motion; AKG K712 reference.
+Scope:docs/SHIROTA_V2_SCOPE.md; detailed continuation:docs/NEXT_STAGE.md.
 
-Production remains0.1.0/S1, ten Shirota-owned units, original12parameter/7program
-contract, state root and class IDs. M0 baseline93d965f, isolated S1 commit5ba304c.
-S1 pluginval5..10 and Steinberg537/537 apply to the unchanged production DLL:
-ff712038bf196a3f75077ca2ed5545e43c334ba0c3ca20a77e77669a10ffb3a1.
-Fresh S3 native115/115 and160/160M0renders pass; no new VST release claimed.
-Preserve out/s1/reference,binaries,original_sources and all S2/S3 archives.
-Legacy bypass/mix retains its M0 block dependency; new modes are sample-clocked.
+S4 production integration is complete, version0.1.0 development, not final0.2.0.
+Parent d1ef423; stage commit follows this handoff (git log identifies it).
+Actual VST:Legacy/Stereo-Space/Binaural, QUICK/STEREO/SPACE/MOTION/LEGACY pages,
+16editable timed nodes, three embedded horizontal profiles, fixed original
+round2.5ms PDC, old-state migration. Original12parameter prefix and seven host
+programs remain;147controls append,159total. Shared PresetScreen untouched.
+Default restores original Legacy recipe and resets modern fields; modern
+neutral/PositionOff is aligned dry. Compact Legacy preserves M0 state bytes and
+its omission of program metadata; full modern state preserves nodes/view/program.
 
-S2 commit2b7ff77: offline width/bands/mono-bass/guard, three mono generators and
-three spatial fields;181/181checks,40A/Bs. S3: offline timed paths and horizontal
-binaural renderer,211/211assertions over67cases,5provenance rejection tests,
-five-minute stress,68owner auditions in out/s3/listen. S2 source/evidence intact.
-Latest local commit after this handoff is S3 completion. No active jobs.
-Reports:docs/reports/s2 and s3; exact identity/commands/limits in NEXT_STAGE.md.
+Accepted:451native,160M0bit-exact audio/state/latency,106integration checks over
+31cases,5identity/corruption rejections, pluginval5..10 and Steinberg537/537.
+Baseline94pass/3n-a uses same final method and frozen d1ef423 facade.
+Final evidence:docs/reports/s4/REPORT.md and acceptance.json; raw:out/s4/stage_final.
+Validated DLL SHA256:10565fadcadcb279831ba8016483743638627ff2a3699d777fddbdcc2c854498.
+Do not run S2/S3 old audit scripts against current DLL: their historic DLL guards
+are intentionally tied to S1. S4 report audits their immutable source/evidence.
+Preserve M0/S1 archives and all S2/S3 sources, data and reports. Legacy block
+schedule dependence remains. All current acceptance jobs have finished.
 
-S3 data: SADIE II v2-1 D1/H3/H4, native full-tap44.1/48/96k, horizontal5degree
-plane; license/notice/hashes in Assets/Hrtf. File prefixes profile0/1/2 correspond
-to Profile1/2/3. Owner front/back listening remains pending. Native bank SHA256
-verified in prepare; all audio/RT-setter allocations zero. Common S3 dry delay
-128/128/256samples and S2 delay58/64/128 are prototype references, not shipping PDC.
+Production minimum-phase48k bank preserves S3 magnitude/ITD; original horizontal.bin
+and S3 demos unchanged. Native magnitude error1.949e-5dB, ITD0samples. Prepared
+resampling/finite/PDC tested8..192k; full non-native spectra remain release work.
+S4 own DSP adaptations are separate V2Spatial/V2Motion/V2Integrated files. Do not
+edit old prototypes to change production. Source/method/bank identity invalidates
+cached results. Embedded bank verified in prepare; no runtime file/download.
 
-Mean S3 CPU passes25percent block target, but large wall-time callback outliers
-occurred. Cause unresolved; investigate combined live-host behavior before
-release. No deadline-safety claim. S3 supports three native rates only; shipping
-needs full host-rate support and prepared data embedding. S2 size/predelay and
-mono-bass coefficient automation still need transition policies. Guard is a
-stationary energy budget; stereo mono conservation excludes Space/binaural.
+Final worst-case mean CPU12.42..12.63percent passes25percent target. A previous
+callback reached1.0062block periods: live-host deadline assessment remains OPEN.
+Thread cycles recorded, cause unestablished. Owner FL/K712 listening pending;
+profiles are not personalized HRTF/headphone EQ. No installed VST was overwritten.
 
-Next S4: numeric integration targets first, then actual VST STEREO/SPACE/MOTION
-and QUICK with precise values, PDC/routing/state migration and transition tests.
-Preserve Legacy IDs/order/ranges, old project reset semantics and original7host
-programs. Add200new programs later for207total. Shared PresetScreen stays intact
-and top-left. Validators/UI/FL audition/report/packages follow integration.
-Prefer owner's Astra xhigh for design/diagnosis, medium for established checks;
-owner controls model/effort unless a supported tool confirms a change.
+Next S5:200new genre recipes with stable IDs, meaningful unique sound, resumable
+source-bound calibration and production A/Bs,207total programs (7old+200new).
+Complete non-native spectral checks, owner audition/performance checks and final
+0.2.0 installer/ZIP/SHA256 with validated binary identity. No release claim until
+these pass; report unresolved goals explicitly. Prefer owner's Astra xhigh for
+DSP/diagnosis, medium for established builds/calibration/package/git; owner
+controls model/effort unless a supported tool confirms an actual change.
 
 ### HamloRevolution — ещё не вынесен (план)
 

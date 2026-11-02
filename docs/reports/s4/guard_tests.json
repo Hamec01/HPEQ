@@ -1,0 +1,37 @@
+{
+  "source_id": "97c386dcc63aac2ed6dd75b5efe26262b6ac8e9ef5fd581552ac2b5114b04d94",
+  "method_id": "25e82f3b9cc72d178ac1210050865157b8dadbbd0cc857f001f86480cf764674",
+  "checks": [
+    {
+      "name": "wrong_method",
+      "passed": true,
+      "rejection": "Stale compiled laboratory method",
+      "exit_code": 1
+    },
+    {
+      "name": "wrong_production",
+      "passed": true,
+      "rejection": "Stale compiled production identity",
+      "exit_code": 1
+    },
+    {
+      "name": "unimplemented_candidate",
+      "passed": true,
+      "rejection": "Wrong experiment role",
+      "exit_code": 1
+    },
+    {
+      "name": "changed_raw_cache",
+      "passed": true,
+      "rejection": "Corrupt or stale cached render",
+      "exit_code": 1
+    },
+    {
+      "name": "actual_embedded_bank_fault",
+      "passed": true,
+      "exit_code": 0,
+      "rejection": "Stale embedded HRIR bank",
+      "scope": "one byte in this disposable process memory only; no file/DLL changed"
+    }
+  ]
+}

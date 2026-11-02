@@ -3,7 +3,8 @@
 Status: owner approved implementation2026-10-31. S1 isolation is complete; see
 reports/s1/REPORT.md. S2 offline width/early-space prototypes pass181checks;
 see reports/s2/REPORT.md. S3 timed/horizontal-binaural prototypes pass211checks;
-see reports/s3/REPORT.md. Production integration remains planned.
+see reports/s3/REPORT.md. S4 production integration passes451native/160M0/106lab checks; see
+reports/s4/REPORT.md. Presets/calibration/owner audition/final packages remain S5.
 The audit notes below
 describe the pre-isolation M0 and are retained as the starting point.
 Work only in E:/HamloShirota; no Verb/Echo/HPEQ edits, subtree, push or subagents.
@@ -83,7 +84,7 @@ choosing latency for new modes. Do not promise zero PDC without measurement.
 - University of York SADIE II database and Apache2 licensing: https://www.york.ac.uk/sadie-project/database.html
 - Pinned SADIE II publication/download record: https://zenodo.org/records/10886409
 
-SADIE II is a candidate measurement source, not yet bundled or selected. Inspect
-exact archive licensing, attribution, processing and file hashes before reuse.
+S3 selected SADIE II v2-1 D1/H3/H4. S4 embeds a separately prepared horizontal
+bank, with bundled license/attribution/change notice and verified hashes.
 No listening test, headphone EQ, HRTF calibration or model/effort switch has been
 performed by the agent.

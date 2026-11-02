@@ -1,4 +1,5 @@
 #include "Standalone/ModuleVariant.h"
+#include "Standalone/V2Parameters.h"
 #include "DSP/HamloShirota.h"
 #include <cmath>
 
@@ -42,7 +43,7 @@ P choice(const char* id, const char* name, int def, int target, std::initializer
 ModuleSpec makeShirota()
 {
     namespace s = dsp::slot;
-    return { ModuleKind::Shirota, FxType::StereoProcessor, "HamloShirota", 1180, 780, 9,
+    return { ModuleKind::Shirota, FxType::StereoProcessor, "HamloShirota", 1180, 900, 9,
              { knob("width", "Width", 0, 2, 1, s::kStereoWidth),
                knob("stereoize", "Stereoize", 0, 1, 0.5f, s::kStStereoize),
                knob("space", "Space", 0, 1, 0.5f, s::kStSpace),
@@ -90,6 +91,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout(Module
         layout.add(std::make_unique<juce::AudioParameterFloat>(id, p.name, range, p.defaultValue, attributes));
     }
     layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID { "bypass", 1 }, "Bypass", false));
+    addV2Parameters(layout);
     return layout;
 }
 
