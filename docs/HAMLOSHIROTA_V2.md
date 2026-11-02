@@ -62,7 +62,12 @@ Final combined means12.42..12.63percent meet25percent, maximum0.3342periods;
 a prior callback1.0062periods leaves live-host deadline assessment open. Native48k spectral
 fidelity is measured; complete resampled spectral validation before release.
 
-Next S5:200genre presets (207total host programs), source-pinned resumable
-calibration and production A/B examples, owner FL/K712 listening, final0.2.0
-installer/ZIP/SHA256. Objective filter tests do not replace owner front/back
-audition. Profiles are horizontal measurements, not personalized headphone EQ.
+S5 completed2026-11-02 as VST-only0.2.0:200/200genre presets,207total programs,
+2457native expectations,160M0cases,106integration checks,96resampled actual FIRs,
+5identity faults,47production WAVs,pluginval5..10/Steinberg537pass. Targets:
+S5_METHODS.md; final audit:reports/s5/REPORT.md. Fixed APVTS restore synchronization;
+new/current Width no longer diverges on project load. Targets not relaxed.
+
+Owner FL/K712 front/back and live-host deadline checks remain pending. No
+personalized headphone EQ/elevation claimed. Installer intentionally excluded
+by the owner's latest VST-only request; no installed VST was overwritten.

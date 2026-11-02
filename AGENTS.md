@@ -171,52 +171,53 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Current local handoff - HamloShirota S4 (2026-11-02)
+## 9. Current local handoff - HamloShirota S5 (2026-11-02)
 
-Work only in E:/HamloShirota; no Verb/Echo/Mag/HPEQ changes, push, subtree or
-subagents. Apply efficient-staged-work. No model/effort switch has occurred.
-Owner wants exact stereo/space/timed headphone motion; AKG K712 reference.
-Scope:docs/SHIROTA_V2_SCOPE.md; detailed continuation:docs/NEXT_STAGE.md.
+Work only in E:/HamloShirota. No subagents, other products/HPEQ changes, subtree
+or push. Follow efficient-staged-work; no model/effort switch occurred.
+Owner's latest instruction: VST only, NO INSTALLER for this stage. This overrides
+the generic installer checklist below. Do not build one without a new request.
+S5 parent5765c5e; completion commit follows this handoff (latest git log).
 
-S4 production integration is complete, version0.1.0 development, not final0.2.0.
-Parent d1ef423; stage commit follows this handoff (git log identifies it).
-Actual VST:Legacy/Stereo-Space/Binaural, QUICK/STEREO/SPACE/MOTION/LEGACY pages,
-16editable timed nodes, three embedded horizontal profiles, fixed original
-round2.5ms PDC, old-state migration. Original12parameter prefix and seven host
-programs remain;147controls append,159total. Shared PresetScreen untouched.
-Default restores original Legacy recipe and resets modern fields; modern
-neutral/PositionOff is aligned dry. Compact Legacy preserves M0 state bytes and
-its omission of program metadata; full modern state preserves nodes/view/program.
+Version0.2.0 VST with207host programs:Default+six old+200new(4genres x50),
+permanent IDs/metadata/group filters, calibrated Spatial Mix/peak trim. Categories
+follow section6 counts. Stereo/Space/Binaural, five pages and16-node paths remain.
+Original12parameter prefix/ranges/class IDs preserved;147appended=159total.
+All modes keep round2.5ms PDC; modern neutral is aligned dry. Default preserves
+original Legacy recipe and clears modern fields. Compact Legacy keeps M0's
+program-metadata omission; modern genre projects preserve ID/program/exact audio.
 
-Accepted:451native,160M0bit-exact audio/state/latency,106integration checks over
-31cases,5identity/corruption rejections, pluginval5..10 and Steinberg537/537.
-Baseline94pass/3n-a uses same final method and frozen d1ef423 facade.
-Final evidence:docs/reports/s4/REPORT.md and acceptance.json; raw:out/s4/stage_final.
-Validated DLL SHA256:10565fadcadcb279831ba8016483743638627ff2a3699d777fddbdcc2c854498.
-Do not run S2/S3 old audit scripts against current DLL: their historic DLL guards
-are intentionally tied to S1. S4 report audits their immutable source/evidence.
-Preserve M0/S1 archives and all S2/S3 sources, data and reports. Legacy block
-schedule dependence remains. All current acceptance jobs have finished.
+Accepted:200/200 depth/peak/finite/state/program/audio,200unique recipes excluding
+Mix/Output,2457native,160M0bit-exact,106integration,31S4PCM unchanged,96filter cases,
+5identity rejections,pluginval5..10/Steinberg537. Five final UIshots inspected;
+47production owner-material A/B/profile examples in out/s5/listen.
+Report:docs/reports/s5/REPORT.md; acceptance.json; library:docs/GENRE_PRESETS.md.
 
-Production minimum-phase48k bank preserves S3 magnitude/ITD; original horizontal.bin
-and S3 demos unchanged. Native magnitude error1.949e-5dB, ITD0samples. Prepared
-resampling/finite/PDC tested8..192k; full non-native spectra remain release work.
-S4 own DSP adaptations are separate V2Spatial/V2Motion/V2Integrated files. Do not
-edit old prototypes to change production. Source/method/bank identity invalidates
-cached results. Embedded bank verified in prepare; no runtime file/download.
+Ready VST:dist/HamloShirota-0.2.0-VST3/HamloShirota.vst3 (whole folder/resources).
+Validated DLL SHA256:49864b3ddcfb8f34608d3201f9ab3e6beba14dd44df59f10156f148417e9b73e.
+Delivery matches validators_release exact bytes. No installer/installed VST edit.
 
-Final worst-case mean CPU12.42..12.63percent passes25percent target. A previous
-callback reached1.0062block periods: live-host deadline assessment remains OPEN.
-Thread cycles recorded, cause unestablished. Owner FL/K712 listening pending;
-profiles are not personalized HRTF/headphone EQ. No installed VST was overwritten.
+S5 fixed a state synchronization bug: silent default reset could leave UI Width
+at1 while saved/DSP Width3. New-parameter resets now notify listeners before
+replaceState; equal pre-load values/stale program index/default reset tested.
+Conservatively repeated all calibration/filter/state checks. Full-strength200PCM
+unchanged by repair. Changed node numbers to inside circle to avoid BACK overlap.
+DSP kernels, bank, old programs and shared PresetScreen remain unchanged.
 
-Next S5:200new genre recipes with stable IDs, meaningful unique sound, resumable
-source-bound calibration and production A/Bs,207total programs (7old+200new).
-Complete non-native spectral checks, owner audition/performance checks and final
-0.2.0 installer/ZIP/SHA256 with validated binary identity. No release claim until
-these pass; report unresolved goals explicitly. Prefer owner's Astra xhigh for
-DSP/diagnosis, medium for established builds/calibration/package/git; owner
-controls model/effort unless a supported tool confirms an actual change.
+Depth is output-change residual vs PDC-aligned dry, with Output gain removed:
+Gentle-24..-16,Medium-16..-8,Heavy-8..0dB. Actual targets-20/-12/-4. Caches bind
+sound/routing/parameter/method/recipe/input/tempo, generated table/UI excluded from
+sound ID. Each actual compiled recipe is checked separately. Never reuse changed
+DSP results or rewrite old accepted runs. Full commands:docs/NEXT_STAGE.md.
+Use HamloShirota_V2Compat for original first7/12 projection; older Lab and
+LegacyCompat total-program assumptions no longer describe the current catalog.
+Do not run S1..S4 historical audits against this current binary/source ID.
+
+Open owner checks:FL Studio/AKG K712 front-back listening and live-host deadlines.
+Mean CPU11.16..11.45percent passes25percent; current max0.27314periods, but earlier
+S4callback1.0062periods and larger S3outliers remain unexplained. No deadline-safety
+claim. Profiles horizontal, not personalized HRTF/headphone EQ; no elevation.
+All stage jobs have finished. Preserve out/s1..s5 and historical source/evidence.
 
 ### HamloRevolution — ещё не вынесен (план)
 

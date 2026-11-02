@@ -120,7 +120,7 @@ void ShirotaV2Panel::paint(juce::Graphics& graphics)
         for(int i=0;i<count;++i)
         {
             const auto prefix="v2Node"+juce::String(i);const double angle=processor.parameterValue(prefix+"Angle");const auto at=point(angle);
-            g.setColour(i==selectedNode?green:steel::stencil);g.fillEllipse(at.x-6,at.y-6,12,12);g.drawText(juce::String(i+1),juce::Rectangle<float>(at.x-15,at.y+7,30,18),juce::Justification::centred);
+            g.setColour(i==selectedNode?green:steel::stencil);g.fillEllipse(at.x-6,at.y-6,12,12);g.drawText(juce::String(i+1),juce::Rectangle<float>(center.x+(at.x-center.x)*.75f-15,center.y+(at.y-center.y)*.75f-9,30,18),juce::Justification::centred);
             if(i==count-1&&processor.parameterValue("v2Loop")<.5)continue;
             const double next=processor.parameterValue("v2Node"+juce::String((i+1)%count)+"Angle");double delta=std::fmod(next-angle+720.,360.);const int arc=juce::roundToInt(processor.parameterValue(prefix+"Arc"));
             if(arc==1)delta=delta==0?-360:delta-360;else if(arc==2)delta=delta==0?360:delta;else if(delta>180)delta-=360;

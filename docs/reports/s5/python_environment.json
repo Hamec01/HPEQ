@@ -1,0 +1,8 @@
+{
+  "python": "3.11.9",
+  "numpy": "2.4.6",
+  "scipy": "1.17.1",
+  "platform": "Windows-10-10.0.26300-SP0",
+  "compiler_cache": "build/CMakeCache.txt",
+  "configuration": "Release x64, Visual Studio18 2026, existing local JUCE8.0.12"
+}

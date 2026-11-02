@@ -1,0 +1,501 @@
+{
+  "sound_id": "dbd05bd7b13e92b9c0b2bbe4cf0c907e396edd3e86ecede5ad49dddf924a4677",
+  "groups": [
+    {
+      "identity": {
+        "sound": "dbd05bd7b13e92b9c0b2bbe4cf0c907e396edd3e86ecede5ad49dddf924a4677",
+        "method": "2d3719606ec34b4074f894886185ca557b7363503aa69784d90f50bc915c70ec",
+        "tool": "6f42155ae423f76eed18636289411a815c8b0cbe4a68ceee2c49e07e0c9cd161",
+        "input": {
+          "original": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead1.wav",
+          "original_sha256": "d8f4d6f7936574b373651bd8a90ce8e9bfde0f699ab64ef8adfda3177af9feb9",
+          "input_sha256": "8e69ada105831fb93e7d3c0777a0cce94462728b4be8e376be3bb1650924a22b",
+          "source_start_samples": 1526400,
+          "rate": 48000,
+          "frames": 528000,
+          "gain": 0.5279919636522161,
+          "prepared_peak_dbtp": -5.99999994969251,
+          "method_id": "2d3719606ec34b4074f894886185ca557b7363503aa69784d90f50bc915c70ec"
+        },
+        "presets": {
+          "shirota.v2.bb.07.01": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.07.01\\0553dc63974aacccbfa6\\run_0\\actual.f32": "bf13a05ac192d6d94e4a7384ddf4f8de1243daf5b2ec749df67b8cbc3a07db51",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.07.01\\0553dc63974aacccbfa6\\run_0\\result.json": "ae912216ab61d632e36d681e255382af08b91933497bbdeed79e03db44fda549"
+          },
+          "shirota.v2.trap.07.01": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.07.01\\ce51dd3b8d7303d00b43\\run_0\\actual.f32": "112fe7fe4128f63a077e417f5adb0094cd4b3b32b6c87b23c413a7a43f77ec58",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.07.01\\ce51dd3b8d7303d00b43\\run_0\\result.json": "eed3b3ab7e1fb8a234ac4a9a017615116fe1be0e1bb36b6986416b98e4ab3d57"
+          },
+          "shirota.v2.techno.07.01": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.07.01\\cb4159f158bb90ea36a7\\run_0\\actual.f32": "a6f216633fbe5d86a1f92bed35f0fd32c9c3988907cc25202269bdd1833a17ae",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.07.01\\cb4159f158bb90ea36a7\\run_0\\result.json": "7daafcdf76117ee5209d1bb47305c435acdc0378c99f5e567e859b0d8edcc93e"
+          },
+          "shirota.v2.dnb.07.01": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.07.01\\cf0427747def405e0d85\\run_0\\actual.f32": "b65c25314685da70b63d51948271da6e6f79b9dd35593e46a67b997ca3750598",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.07.01\\cf0427747def405e0d85\\run_0\\result.json": "3436be189c89bd08920915f927fba568a79d49edd52880ac21293dc0685cfa73"
+          }
+        }
+      },
+      "common_gain": 0.8456553569543895,
+      "files": {
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\00_Dry.wav": "db3601e73c53c98951f5ae5ace1bec1261514bc8819f335812ce62588e79be72",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\BB Gold Lead Frame.wav": "602f1a53bd177523672f91b27f5198bb309a23b68908a24801947a503e5f6801",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Trap Rage Lead Frame.wav": "853faf13f3c6755c627a6af66fe210666771131ac2c8f4c3eb66ab8f22890023",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Techno Acid Lead Frame.wav": "0c9c061a361db5b65344e3dffc980acf6ebd4dabd70c2bf05e145d39713f110e",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\DnB Neuro Lead Frame.wav": "ceb068db0ba9121c1711c337c43c6ef2ec9175be0b1d81520e1512b9dd620c5e",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Front.wav": "37028acbb23508b539587af0a50f0a1967273ab90d66448bad73a36681e2d897",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Left.wav": "f120d6bb6f543773978ab743221cfa5d6f7aa8b983c2aef9892d589c00b5fff0",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Back.wav": "0887bea46b2379d942a317e60764e75575dba18c0ecaf267b546f87e95fc619d",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Right.wav": "c88432d39cae1b72808352a04e9f7fb4ee79ab3656d052e85c8e86410bc922f1",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Orbit.wav": "3ec1b6583555837c6f3feae29df8c324dc45de54d3dc2ec97b7f01ef36d384e9",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Front.wav": "d6dc533f2c8266bb30c5b7f2e77a2f08f69948141f06c77e5ed06d3b555d350a",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Left.wav": "2e4ace000e47e7b5d154dc4908810775191515ce1aff1e5c4d684ecb131f4a40",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Back.wav": "6029ccaa0c53a5aafbde08e63f7df37c41c7400e0ad1948781794ce3530a86c0",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Right.wav": "a358ede344da96290093bbbb15d05de11a78d6656e576d4c0d58eea9e2e7673b",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Orbit.wav": "2c14e4d0b347ca29944f299423198561841798b167c43a3ca8e30d335ad62789",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Front.wav": "e84c86b5e3afb626954e4e3256a11e0845adc35dea936829a130d633cc6c8431",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Left.wav": "69562b462b639d01720b12d52692e9c1a0e703cada1d5383c0e557523da5e5df",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Back.wav": "a55a08429f121c8769fd5dc0de440331d97cd49a33166ca8bf67b7f04a3aaa86",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Right.wav": "c4dfa216fc101d17f063aa5abc7bd632ece735e3a0a02196d54c6dbba47ee45f",
+        "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Orbit.wav": "e1433b4536312ffefaed606f9161e87561ca9e1863de0db5f1e662c6cba0274d"
+      },
+      "clips": [
+        {
+          "name": "00_Dry",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\00_Dry.wav",
+          "peak_dbtp": -7.4561319826166255
+        },
+        {
+          "name": "BB Gold Lead Frame",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\BB Gold Lead Frame.wav",
+          "peak_dbtp": -7.008611904347829
+        },
+        {
+          "name": "Trap Rage Lead Frame",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Trap Rage Lead Frame.wav",
+          "peak_dbtp": -6.962061694692859
+        },
+        {
+          "name": "Techno Acid Lead Frame",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Techno Acid Lead Frame.wav",
+          "peak_dbtp": -7.030205306499121
+        },
+        {
+          "name": "DnB Neuro Lead Frame",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\DnB Neuro Lead Frame.wav",
+          "peak_dbtp": -6.999529090787826
+        },
+        {
+          "name": "Profile_1_Front",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Front.wav",
+          "peak_dbtp": -7.279010114338124
+        },
+        {
+          "name": "Profile_1_Left",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Left.wav",
+          "peak_dbtp": -2.7266635846597094
+        },
+        {
+          "name": "Profile_1_Back",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Back.wav",
+          "peak_dbtp": -7.3929034874787245
+        },
+        {
+          "name": "Profile_1_Right",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Right.wav",
+          "peak_dbtp": -2.731849307592774
+        },
+        {
+          "name": "Profile_1_Orbit",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_1_Orbit.wav",
+          "peak_dbtp": -3.943989853825692
+        },
+        {
+          "name": "Profile_2_Front",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Front.wav",
+          "peak_dbtp": -5.790845923077631
+        },
+        {
+          "name": "Profile_2_Left",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Left.wav",
+          "peak_dbtp": -1.6084442735173046
+        },
+        {
+          "name": "Profile_2_Back",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Back.wav",
+          "peak_dbtp": -6.709710898385037
+        },
+        {
+          "name": "Profile_2_Right",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Right.wav",
+          "peak_dbtp": -1.519548904771146
+        },
+        {
+          "name": "Profile_2_Orbit",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_2_Orbit.wav",
+          "peak_dbtp": -3.018636039342139
+        },
+        {
+          "name": "Profile_3_Front",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Front.wav",
+          "peak_dbtp": -5.5962733112924745
+        },
+        {
+          "name": "Profile_3_Left",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Left.wav",
+          "peak_dbtp": -1.0499998390193035
+        },
+        {
+          "name": "Profile_3_Back",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Back.wav",
+          "peak_dbtp": -6.783950599496529
+        },
+        {
+          "name": "Profile_3_Right",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Right.wav",
+          "peak_dbtp": -1.329597520484401
+        },
+        {
+          "name": "Profile_3_Orbit",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\vocal_lead1\\dc90a9e0b83a7044ed71\\Profile_3_Orbit.wav",
+          "peak_dbtp": -3.2905847591949837
+        }
+      ]
+    },
+    {
+      "identity": {
+        "sound": "dbd05bd7b13e92b9c0b2bbe4cf0c907e396edd3e86ecede5ad49dddf924a4677",
+        "method": "2d3719606ec34b4074f894886185ca557b7363503aa69784d90f50bc915c70ec",
+        "tool": "6f42155ae423f76eed18636289411a815c8b0cbe4a68ceee2c49e07e0c9cd161",
+        "input": {
+          "original": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\keys.wav",
+          "original_sha256": "251f5c79b7248078a9d4be68621728acee75f923e02a8a8adfe0e9f601942c4f",
+          "input_sha256": "c0af8172e373bf130624fe058af430700aa591684a8106f41f0903a1701bb151",
+          "source_start_samples": 336000,
+          "rate": 48000,
+          "frames": 528000,
+          "gain": 1.0385114054233242,
+          "prepared_peak_dbtp": -5.999999673776447,
+          "method_id": "2d3719606ec34b4074f894886185ca557b7363503aa69784d90f50bc915c70ec"
+        },
+        "presets": {
+          "shirota.v2.bb.08.01": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.08.01\\badff3bb66a2e31e42ff\\run_0\\actual.f32": "0cc43e9a389c7db9b420820f9fef0bab806dbc69d3d775e919dad015d730662b",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.08.01\\badff3bb66a2e31e42ff\\run_0\\result.json": "21eaa47b956deaa437b3fde99a7e4266791dd1b4b8989ad7901819cdb331e59a"
+          },
+          "shirota.v2.bb.08.03": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.08.03\\48b7201e8951d5021ab2\\run_0\\actual.f32": "0ebc93f7c266abfaddfcb4ba7259af8c1cfab1bb5664162efa9ccf19a3dbbacf",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.08.03\\48b7201e8951d5021ab2\\run_0\\result.json": "6c94d56f3344ba8dde166238819b51ce119ba66aa16f6db68060f98f553716ce"
+          },
+          "shirota.v2.trap.08.01": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.08.01\\b4cbde96d8d29873c171\\run_0\\actual.f32": "134b31dee948cbf00ae0728f5f93e9e12f575f9c64ba442e9fc270ec58fdcf71",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.08.01\\b4cbde96d8d29873c171\\run_0\\result.json": "f184d88a512edd181e03c7f19b26e54c5ce5c2b8dee69dfb6304c6858e495f5e"
+          },
+          "shirota.v2.trap.08.03": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.08.03\\e69bcdd292b9144df05c\\run_0\\actual.f32": "4844e263e575720193d57e4aff00f32a05e47996eb1e9ef187eb2c7715936108",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.08.03\\e69bcdd292b9144df05c\\run_0\\result.json": "d79dcb05a6f59d51c782d5d6dc5df6ef040397d58472ae9fd883d06b5d4b5737"
+          },
+          "shirota.v2.techno.08.01": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.08.01\\77f19b1139daf758aa6d\\run_0\\actual.f32": "72a9d1b2dc9cc74ef7839b8a380eb9b1e21853622b88fdd172f6ad244c5b0f50",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.08.01\\77f19b1139daf758aa6d\\run_0\\result.json": "fd237b3a2056c7728f75479ee207b1aa6f20e3f325ba5175ca70b978a5ca6838"
+          },
+          "shirota.v2.techno.08.03": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.08.03\\b36d0f126d9270317d62\\run_0\\actual.f32": "260f33457f3b4e758982f9525280af62e4879a4089eefb923773b096affd5105",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.08.03\\b36d0f126d9270317d62\\run_0\\result.json": "3eff62e1efb08bf0af0dbb8cae519f12f30edf1f7885ec6664db486683113d5e"
+          },
+          "shirota.v2.dnb.08.01": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.08.01\\6d739bde4723fede66e6\\run_0\\actual.f32": "cb103435afe8ecb90c7068263cbc0c73aaed1b37f3c21f12ee2c0182f356464c",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.08.01\\6d739bde4723fede66e6\\run_0\\result.json": "92be45f91bec5609fe3fb890964161f346665b4e0bd8bc69f067b1f8883be7d7"
+          },
+          "shirota.v2.dnb.08.03": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.08.03\\08557c71f169b61ececc\\run_0\\actual.f32": "a666d09379116fff5c76d3e4c9aee8d2cd128345fde9f10646bf22d4b66004e5",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.08.03\\08557c71f169b61ececc\\run_0\\result.json": "daa598e1632b4707ca6c1346e065618f24c3f1b628e6dec368a90963de97101d"
+          }
+        }
+      },
+      "common_gain": 1.0,
+      "files": {
+        "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\00_Dry.wav": "4e166fed1b78f21d657b8a6b485a024cac9c3f183ee10bea34e3f3aed3317d59",
+        "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\BB Jazzy Felt Sides.wav": "9fca1076d1aeea301dca1fefeb4d74ee7a38439502e869d55ce626f4c5563c86",
+        "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\BB Underground Window Room.wav": "9939dbd337a56e0fb7abf73d260d077088f9295b9dd7b3decde3e328f9effaf6",
+        "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\Trap Cloud Felt Sides.wav": "d6163d8c90177a8308a5d48e71885091ecb7704a1b2cbae360e359f8020df0e6",
+        "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\Trap Memphis Window Room.wav": "3fe2f2c9910c078145e3afe117260a7b0c2cda535f5a0003e7802840cae5eb06",
+        "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\Techno Detroit Felt Sides.wav": "17c54ad7282c0eb016070d2ea8af596d247fc045405f9c37f0f4cd9de638f2a3",
+        "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\Techno Acid Window Room.wav": "8acb415e3e998bec0bd93b25293978950d2cc6737417be5de20a7c44598b8636",
+        "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\DnB Liquid Felt Sides.wav": "804c444d48455cfc910650cdf78c97bb9cc25588ae175f5aaa412ecc63863744",
+        "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\DnB Jump-Up Window Room.wav": "510d23eb08d05a9525752ebd280c840ab0be78772f691e927aab4b5d7780004c"
+      },
+      "clips": [
+        {
+          "name": "00_Dry",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\00_Dry.wav",
+          "peak_dbtp": -5.999999673776447
+        },
+        {
+          "name": "BB Jazzy Felt Sides",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\BB Jazzy Felt Sides.wav",
+          "peak_dbtp": -6.066484790281155
+        },
+        {
+          "name": "BB Underground Window Room",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\BB Underground Window Room.wav",
+          "peak_dbtp": -5.881866623756576
+        },
+        {
+          "name": "Trap Cloud Felt Sides",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\Trap Cloud Felt Sides.wav",
+          "peak_dbtp": -6.067867124564459
+        },
+        {
+          "name": "Trap Memphis Window Room",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\Trap Memphis Window Room.wav",
+          "peak_dbtp": -5.905456613844786
+        },
+        {
+          "name": "Techno Detroit Felt Sides",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\Techno Detroit Felt Sides.wav",
+          "peak_dbtp": -6.145160172050408
+        },
+        {
+          "name": "Techno Acid Window Room",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\Techno Acid Window Room.wav",
+          "peak_dbtp": -6.65918552726358
+        },
+        {
+          "name": "DnB Liquid Felt Sides",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\DnB Liquid Felt Sides.wav",
+          "peak_dbtp": -6.139686225481659
+        },
+        {
+          "name": "DnB Jump-Up Window Room",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\keys\\61fa3bc8cd2cae03af49\\DnB Jump-Up Window Room.wav",
+          "peak_dbtp": -5.638197048652744
+        }
+      ]
+    },
+    {
+      "identity": {
+        "sound": "dbd05bd7b13e92b9c0b2bbe4cf0c907e396edd3e86ecede5ad49dddf924a4677",
+        "method": "2d3719606ec34b4074f894886185ca557b7363503aa69784d90f50bc915c70ec",
+        "tool": "6f42155ae423f76eed18636289411a815c8b0cbe4a68ceee2c49e07e0c9cd161",
+        "input": {
+          "original": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\drumbus1.wav",
+          "original_sha256": "faa8f04bdfa337cab344b8d7635a8c520ec1174261cefd8aa27c37a6cc3ada27",
+          "input_sha256": "4d182be08377fd5ddb0919c21317e5159a0a878e16118fb2abdd06fb8cda86ac",
+          "source_start_samples": 144000,
+          "rate": 48000,
+          "frames": 528000,
+          "gain": 1.2353453470793763,
+          "prepared_peak_dbtp": -5.9999998355169915,
+          "method_id": "2d3719606ec34b4074f894886185ca557b7363503aa69784d90f50bc915c70ec"
+        },
+        "presets": {
+          "shirota.v2.bb.05.02": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.05.02\\f5fa07414874d589ac51\\run_0\\actual.f32": "77065a4cca6cef19d908b9f16b89b67de41a31fcd8ec508be69f20b86c710870",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.05.02\\f5fa07414874d589ac51\\run_0\\result.json": "2b01423f668416f8e8d7b3ae84804272d551360847d75c9b2a8e2906f542fee5"
+          },
+          "shirota.v2.bb.05.06": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.05.06\\26c2a7f2236135fcf3fd\\run_0\\actual.f32": "874747fbe3c9b0c32c538c37c1df3f21db84392cd65c769c69f001de04da166c",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.05.06\\26c2a7f2236135fcf3fd\\run_0\\result.json": "32b6082acbf09e7763041fe67ee623d36f4abc81c20e55ec8a3281b648111de9"
+          },
+          "shirota.v2.trap.05.02": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.05.02\\b117da9e7ef98b7b8ff5\\run_0\\actual.f32": "db2de75a329d256ea008bc050455d28c815b0569df57b001a3a799f18858017b",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.05.02\\b117da9e7ef98b7b8ff5\\run_0\\result.json": "514e9c83013b3ca30be4caaa0f74ac41382ea6a90f6e8df1174aecaa3570a5bd"
+          },
+          "shirota.v2.trap.05.06": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.05.06\\eeee1a647308cb370a77\\run_0\\actual.f32": "1cdacfab9c359b6c507018d05c6070d04f3c2cfcd4e2ef49c80cc3d8007c91f5",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.05.06\\eeee1a647308cb370a77\\run_0\\result.json": "7ba82c84aac9d6c5b0607c2affdaca02c971707fcd868cfda315e14ff04b8a36"
+          },
+          "shirota.v2.techno.05.02": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.05.02\\cbe350ef4d9110ccf88d\\run_0\\actual.f32": "ec73af750fc1c35ade01e43b01e48fa3eb4218870df1dfefadab1cbbee505aed",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.05.02\\cbe350ef4d9110ccf88d\\run_0\\result.json": "852dcefef8c6fa0b86ec186f3e526a311fde4597bb1e8be5f1dff2f58b6884c4"
+          },
+          "shirota.v2.techno.05.06": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.05.06\\84838c714f88fd8790b8\\run_0\\actual.f32": "6e543045bf4a5e573ce0e0cb8cbc98d9e21abcc2f5282737bbaca840c0a83708",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.05.06\\84838c714f88fd8790b8\\run_0\\result.json": "6e4ee56ce0b3731520bd58dd845e52f60a5aea43ced82c59884902b48efddd8c"
+          },
+          "shirota.v2.dnb.05.02": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.05.02\\b624da45032819b540f7\\run_0\\actual.f32": "efa9d87505d349b14171a20144769f43bf6db1adb3a07ab000facefe967d617b",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.05.02\\b624da45032819b540f7\\run_0\\result.json": "d8f24dd588d24f419f520eca71e45a7d11c0cd7242e086a81eb87879d535e70d"
+          },
+          "shirota.v2.dnb.05.06": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.05.06\\69ff0a5ccaa9b06e8109\\run_0\\actual.f32": "ec384b2c5d1df69c0886a8c4341d33368aa22c6ed5f28afec9c46cd7f3bb8a01",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.05.06\\69ff0a5ccaa9b06e8109\\run_0\\result.json": "5ab6f1f4aa1f60a89e01526d89e67a10780a96578a756059e0b4ac7ab5a5a27f"
+          }
+        }
+      },
+      "common_gain": 0.9999999111419875,
+      "files": {
+        "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\00_Dry.wav": "f48900818dbdc3f9e70528bb1db8eab518d419a7aaa10cb35efb1ea340750b8c",
+        "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\BB Underground Break Panorama.wav": "238ab5f0094dc79b68123eeed39ba174cb1fc527ab629bb32defcc13f3320be3",
+        "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\BB Jazzy Moving Break.wav": "14434554cc5a78cd950524ddaa55994a37501f24c273b7637fe767591d060818",
+        "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\Trap Memphis Break Panorama.wav": "3e8d24c8eaa51b16c3cf1d24d73c6785347ec2dd89eee44b6cb22aae9cf60356",
+        "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\Trap Cloud Moving Break.wav": "6fe83aec6d3977d0bc23e346dafc084faa24e520bd73bf2d98b98f4080335f96",
+        "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\Techno Hypnotic Break Panorama.wav": "cc11fdf3812ccce693c225515393407d1f92b863a03a9f8133b97547557f2bc1",
+        "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\Techno Acid Moving Break.wav": "5106b340a2ddff642ff4723ff428ef86ddd480ea99353930e52e0666314eeed9",
+        "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\DnB Jump-Up Break Panorama.wav": "1855a7197819a5aa25c199444d44466088ca4213d09fadf9b48c93b502ac771c",
+        "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\DnB Liquid Moving Break.wav": "c2babde2128dd714055cc74155b6c81554ab55e92922e72cb61c89d77c0db6a6"
+      },
+      "clips": [
+        {
+          "name": "00_Dry",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\00_Dry.wav",
+          "peak_dbtp": -6.000000383839402
+        },
+        {
+          "name": "BB Underground Break Panorama",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\BB Underground Break Panorama.wav",
+          "peak_dbtp": -1.0500002134734456
+        },
+        {
+          "name": "BB Jazzy Moving Break",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\BB Jazzy Moving Break.wav",
+          "peak_dbtp": -4.7371009721930255
+        },
+        {
+          "name": "Trap Memphis Break Panorama",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\Trap Memphis Break Panorama.wav",
+          "peak_dbtp": -1.0499998905219536
+        },
+        {
+          "name": "Trap Cloud Moving Break",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\Trap Cloud Moving Break.wav",
+          "peak_dbtp": -5.044279424143219
+        },
+        {
+          "name": "Techno Hypnotic Break Panorama",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\Techno Hypnotic Break Panorama.wav",
+          "peak_dbtp": -3.9514285940421634
+        },
+        {
+          "name": "Techno Acid Moving Break",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\Techno Acid Moving Break.wav",
+          "peak_dbtp": -5.998777164525157
+        },
+        {
+          "name": "DnB Jump-Up Break Panorama",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\DnB Jump-Up Break Panorama.wav",
+          "peak_dbtp": -1.050000158175244
+        },
+        {
+          "name": "DnB Liquid Moving Break",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\drumbus1\\12d9972b85ccbd3bb90d\\DnB Liquid Moving Break.wav",
+          "peak_dbtp": -2.953912656111313
+        }
+      ]
+    },
+    {
+      "identity": {
+        "sound": "dbd05bd7b13e92b9c0b2bbe4cf0c907e396edd3e86ecede5ad49dddf924a4677",
+        "method": "2d3719606ec34b4074f894886185ca557b7363503aa69784d90f50bc915c70ec",
+        "tool": "6f42155ae423f76eed18636289411a815c8b0cbe4a68ceee2c49e07e0c9cd161",
+        "input": {
+          "original": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\synth.wav",
+          "original_sha256": "5d5a9c193f335bb5030f13a136fe95333fcb8f0a117306c39223b4d0decc7eeb",
+          "input_sha256": "758f23fd609a23a9fc73b3a66e6a2013874f238cf04a5584a4fd06d400eed4cb",
+          "source_start_samples": 220800,
+          "rate": 48000,
+          "frames": 528000,
+          "gain": 1.7346939699400734,
+          "prepared_peak_dbtp": -5.99999991412695,
+          "method_id": "2d3719606ec34b4074f894886185ca557b7363503aa69784d90f50bc915c70ec"
+        },
+        "presets": {
+          "shirota.v2.bb.09.02": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.09.02\\e62351d8e088ca19028b\\run_0\\actual.f32": "773ad6acc720f81aaf8a2bab5e633298f49bc66ca1d99ef82413d0e33ed97b2f",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.09.02\\e62351d8e088ca19028b\\run_0\\result.json": "981c037265912d6a408da9880d75f3a0c0e8e23d78e402b8ebe85fc658223b16"
+          },
+          "shirota.v2.bb.09.03": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.09.03\\a438fbfefd6325e5045b\\run_0\\actual.f32": "d6f811e1aa0c20a550a600867cacc1e7209935bc160c4538e3111bee15733212",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.bb.09.03\\a438fbfefd6325e5045b\\run_0\\result.json": "829bde98fe4342e9e243e8015f2c37b832f7bb6079c42b4bfff49fea75b74bea"
+          },
+          "shirota.v2.trap.09.02": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.09.02\\b206939ba3740a139ccd\\run_0\\actual.f32": "cff3e06a0837fbf0bc5831f79fd1fac60694f8725005721438b34655cfce2385",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.09.02\\b206939ba3740a139ccd\\run_0\\result.json": "0d4fd969f6040ea1e7454e9191d2009804989e1d6af7681c74d1e93c3dac18ae"
+          },
+          "shirota.v2.trap.09.03": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.09.03\\224ea87c3c762b8e5ace\\run_0\\actual.f32": "3ab24ba70df94a57c0465d172bc013c903439c708c8547249f5199556605ab69",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.trap.09.03\\224ea87c3c762b8e5ace\\run_0\\result.json": "d0cf1fe3e12df472e4da08bb3baa62851544d5e6d99016b4e2e18869dc602c61"
+          },
+          "shirota.v2.techno.09.02": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.09.02\\2348fd9dcb89f585f777\\run_0\\actual.f32": "b926b4283739a5b40a8aa093dbef52978de0d43fb22d450339a1ffe6b0a268f0",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.09.02\\2348fd9dcb89f585f777\\run_0\\result.json": "46ef945f4ce52e55350b2e0ea0cd70cf266e1cf37ea7035ad152c57db0d1ae66"
+          },
+          "shirota.v2.techno.09.03": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.09.03\\2dcefcd0a38ad7997f42\\run_0\\actual.f32": "7e159b9517fd2a559af0e6736de782249b649617a2c226419e1746b1a16ca275",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.techno.09.03\\2dcefcd0a38ad7997f42\\run_0\\result.json": "0dd188ec8b597253be293232eb9bb1f228072e3857f05d4deac1942cbfe0523d"
+          },
+          "shirota.v2.dnb.09.02": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.09.02\\6c518bead0cba60250a9\\run_0\\actual.f32": "9447ad4562b53496c0fb4af47d3f39366f65b077923caf7bec23057300bf5d81",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.09.02\\6c518bead0cba60250a9\\run_0\\result.json": "2d4f67aa68cfd7c02240d3a3e73cab6b63e95c551805e59ac46c3cf0153d0ba3"
+          },
+          "shirota.v2.dnb.09.03": {
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.09.03\\da86bc862be04fee6d5b\\run_0\\actual.f32": "e400f501b88f2c764eb0ad34343c97df188e185fefd1a09b3bd741b431d2b610",
+            "E:\\HamloShirota\\out\\s5\\verified\\shirota.v2.dnb.09.03\\da86bc862be04fee6d5b\\run_0\\result.json": "a074011e246702056e7711fede568d995821d11fc4526be7ec8c23cbdb339abf"
+          }
+        }
+      },
+      "common_gain": 1.0,
+      "files": {
+        "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\00_Dry.wav": "f074c06e6df913c20f8ce8ec0674bd8a7f71f4a773a2a5e1d112c8d277e64ed8",
+        "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\BB Dusty Dub Corner.wav": "0c740828313e3cfc2e1825355a7e58d45d748b90f3446227ff7a0ab953c11750",
+        "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\BB Jazzy Passing Texture.wav": "4638c24eecf119eb118313dba0f3ca52f57726d865ba4a607b14ce7b0df75eed",
+        "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\Trap Dark Dub Corner.wav": "765b6570b3aeeed6cce3ddbfb9de72f14553ffb0a186ff0e82262ea014fc4d3a",
+        "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\Trap Cloud Passing Texture.wav": "3b119da4b8d6bb1a9d88b1e38acf18d2660d7ba79b629320842382384395c06a",
+        "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\Techno Hypnotic Dub Corner.wav": "ec8eecb20971b60ca5c8cd0598b504ced3172426fdf11b26a7d6902268f8260b",
+        "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\Techno Minimal Passing Texture.wav": "0cb6c4bd8a80c24f4125c8f02b0c7f40c1630e23ddebc6d4f3918efa8e871719",
+        "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\DnB Roller Dub Corner.wav": "b391b33e5e75c143d86d74cf93e9c8b2f8b459a86654e9ca213373983b910388",
+        "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\DnB Liquid Passing Texture.wav": "fb1020eea49f3b902b9ba6ad02e2aef4a7d06f342fd26ef6d5b369689f7d793c"
+      },
+      "clips": [
+        {
+          "name": "00_Dry",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\00_Dry.wav",
+          "peak_dbtp": -5.99999991412695
+        },
+        {
+          "name": "BB Dusty Dub Corner",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\BB Dusty Dub Corner.wav",
+          "peak_dbtp": -5.905918467762072
+        },
+        {
+          "name": "BB Jazzy Passing Texture",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\BB Jazzy Passing Texture.wav",
+          "peak_dbtp": -6.3209473615752
+        },
+        {
+          "name": "Trap Dark Dub Corner",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\Trap Dark Dub Corner.wav",
+          "peak_dbtp": -6.080031809301449
+        },
+        {
+          "name": "Trap Cloud Passing Texture",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\Trap Cloud Passing Texture.wav",
+          "peak_dbtp": -7.499173941629166
+        },
+        {
+          "name": "Techno Hypnotic Dub Corner",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\Techno Hypnotic Dub Corner.wav",
+          "peak_dbtp": -5.409305216567089
+        },
+        {
+          "name": "Techno Minimal Passing Texture",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\Techno Minimal Passing Texture.wav",
+          "peak_dbtp": -7.381701204635008
+        },
+        {
+          "name": "DnB Roller Dub Corner",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\DnB Roller Dub Corner.wav",
+          "peak_dbtp": -5.967586583623498
+        },
+        {
+          "name": "DnB Liquid Passing Texture",
+          "path": "E:\\HamloShirota\\out\\s5\\listen\\synth\\b0baaf628b716df33cce\\DnB Liquid Passing Texture.wav",
+          "peak_dbtp": -6.709603912180756
+        }
+      ]
+    }
+  ],
+  "count": 47,
+  "owner_listening": "pending"
+}

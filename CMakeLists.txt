@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloShirota VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloShirota VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -56,6 +56,7 @@ add_library(HamloShirota_Shared STATIC
     Source/UI/BlackSteel.cpp
     Source/UI/HamloShirotaPanel.cpp
     Source/UI/ShirotaV2Panel.cpp
+    Source/Standalone/GenrePresets.cpp
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
@@ -199,3 +200,15 @@ add_executable(HamloShirota_StaleMotionProbe EXCLUDE_FROM_ALL Tests/MotionLabMai
 add_dependencies(HamloShirota_StaleMotionProbe HamloShirota_MotionIdentity)
 target_include_directories(HamloShirota_StaleMotionProbe PRIVATE Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
 target_link_libraries(HamloShirota_StaleMotionProbe PRIVATE juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)
+
+# S5 native library/calibration runner; generated table is excluded from sound ID.
+add_custom_target(HamloShirota_PresetIdentity
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/S5Identity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteS5Identity.cmake")
+add_executable(HamloShirota_PresetLab Tests/PresetLabMain.cpp Tests/AllocationAudit.cpp)
+add_dependencies(HamloShirota_PresetLab HamloShirota_PresetIdentity)
+target_compile_definitions(HamloShirota_PresetLab PRIVATE HPEQ_MODULE_KIND=7 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloShirota_PresetLab PRIVATE HamloShirota_Shared HamloShirota_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
+
+add_executable(HamloShirota_V2Compat Tests/V2CompatMain.cpp)
+target_compile_definitions(HamloShirota_V2Compat PRIVATE HPEQ_MODULE_KIND=7 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloShirota_V2Compat PRIVATE HamloShirota_Shared HamloShirota_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)

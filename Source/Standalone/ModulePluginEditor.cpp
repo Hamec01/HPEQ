@@ -4,6 +4,7 @@
 #include "UI/ModuleHelp.h"
 #include "UI/PresetScreen.h"
 #include "UI/ShirotaV2Panel.h"
+#include "Standalone/GenrePresets.h"
 
 namespace hpeq::standalone
 {
@@ -65,8 +66,14 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     presets = std::make_unique<ui::PresetScreen>();
     {
         std::vector<ui::PresetScreen::Entry> entries;
+        const int firstGenre=processor.getNumPrograms()-static_cast<int>(genrePresets().size());
         for (int i = 1; i < processor.getNumPrograms(); ++i)
-            entries.push_back({ i, {}, {}, processor.getProgramName(i), {} });
+            if(i<firstGenre)entries.push_back({i,{}, {},processor.getProgramName(i),{}});
+            else
+            {
+                const auto& preset=genrePresets()[static_cast<size_t>(i-firstGenre)];
+                entries.push_back({i,preset.genre,preset.group,preset.name,preset.note});
+            }
         presets->setEntries(std::move(entries));
     }
     presets->onSelect = [this](int program)

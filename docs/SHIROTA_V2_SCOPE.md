@@ -4,7 +4,8 @@ Status: owner approved implementation2026-10-31. S1 isolation is complete; see
 reports/s1/REPORT.md. S2 offline width/early-space prototypes pass181checks;
 see reports/s2/REPORT.md. S3 timed/horizontal-binaural prototypes pass211checks;
 see reports/s3/REPORT.md. S4 production integration passes451native/160M0/106lab checks; see
-reports/s4/REPORT.md. Presets/calibration/owner audition/final packages remain S5.
+reports/s4/REPORT.md. S5 VST-only0.2.0 adds200verified recipes,207programs; see reports/s5/REPORT.md.
+Owner audition/live-host checks pending; installer excluded by latest request.
 The audit notes below
 describe the pre-isolation M0 and are retained as the starting point.
 Work only in E:/HamloShirota; no Verb/Echo/HPEQ edits, subtree, push or subagents.

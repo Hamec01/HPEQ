@@ -3,6 +3,7 @@
 
 #include "Standalone/ModulePluginEditor.h"
 #include "Standalone/V2Parameters.h"
+#include "Standalone/GenrePresets.h"
 #include "S4Identity.h"
 
 namespace hpeq::standalone
@@ -177,8 +178,14 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
     auto state=parameters.copyState();bool neutral=true;
     for(const auto& spec:v2Parameters()){auto* p=parameter(spec.id);neutral=neutral&&p->getValue()==p->getDefaultValue();}
     if(neutral)
-    {for(int i=state.getNumChildren()-1;i>=0;--i)if(state.getChild(i).getProperty("id").toString().startsWith("v2"))state.removeChild(i,nullptr);state.removeProperty("v2Program",nullptr);state.removeProperty("v2Modified",nullptr);}
-    else{state.setProperty("v2Program",currentProgram,nullptr);state.setProperty("v2Modified",presetModified(),nullptr);}
+    {for(int i=state.getNumChildren()-1;i>=0;--i)if(state.getChild(i).getProperty("id").toString().startsWith("v2"))state.removeChild(i,nullptr);state.removeProperty("v2Program",nullptr);state.removeProperty("v2Modified",nullptr);state.removeProperty("v2PresetID",nullptr);}
+    else
+    {
+        state.setProperty("v2Program",currentProgram,nullptr);state.setProperty("v2Modified",presetModified(),nullptr);
+        const int firstGenre=getNumPrograms()-static_cast<int>(genrePresets().size());
+        if(currentProgram>=firstGenre)state.setProperty("v2PresetID",genrePresets()[static_cast<size_t>(currentProgram-firstGenre)].id,nullptr);
+        else state.removeProperty("v2PresetID",nullptr);
+    }
     if(auto xml=state.createXml())copyXmlToBinary(*xml,destination);
 }
 
@@ -187,9 +194,13 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
     if (auto xml = getXmlFromBinary(data, size))
         if (xml->hasTagName(parameters.state.getType().toString()))
         {
-            for(const auto& spec:v2Parameters()){auto* p=parameter(spec.id);p->setValue(p->getDefaultValue());}
+            for(const auto& spec:v2Parameters()){auto* p=parameter(spec.id);p->setValueNotifyingHost(p->getDefaultValue());}
             parameters.replaceState(juce::ValueTree::fromXml(*xml));
             currentProgram=juce::jlimit(0,getNumPrograms()-1,xml->getIntAttribute("v2Program",0));
+            const auto presetID=xml->getStringAttribute("v2PresetID");
+            if(presetID.isNotEmpty())
+                for(size_t i=0;i<genrePresets().size();++i)
+                    if(presetID==genrePresets()[i].id)currentProgram=getNumPrograms()-static_cast<int>(genrePresets().size())+static_cast<int>(i);
             captureProgramAnchor();loadedModified.store(xml->getBoolAttribute("v2Modified",false));
         }
 }
@@ -214,12 +225,14 @@ void ModulePluginProcessor::setParameterValue(const juce::String& id, double act
 
 int ModulePluginProcessor::getNumPrograms()
 {
-    return 1 + static_cast<int>(presets::factoryModulePresets(getSpec().type).size());
+    return 1 + static_cast<int>(presets::factoryModulePresets(getSpec().type).size()+genrePresets().size());
 }
 
 const juce::String ModulePluginProcessor::getProgramName(int index)
 {
     const auto& list = presets::factoryModulePresets(getSpec().type);
+    if(index>static_cast<int>(list.size())&&index<getNumPrograms())
+        return genrePresets()[static_cast<size_t>(index-static_cast<int>(list.size())-1)].name;
     if (index <= 0 || index > static_cast<int>(list.size()))
         return "Default";
     return list[static_cast<size_t>(index - 1)].name;
@@ -228,15 +241,18 @@ const juce::String ModulePluginProcessor::getProgramName(int index)
 void ModulePluginProcessor::setCurrentProgram(int index)
 {
     const auto& list = presets::factoryModulePresets(getSpec().type);
-    currentProgram = juce::jlimit(0, static_cast<int>(list.size()), index);
+    currentProgram = juce::jlimit(0, getNumPrograms()-1, index);
     for (const auto& spec : getSpec().parameters)
     {
         double value = spec.defaultValue;
-        if (currentProgram > 0)
+        if (currentProgram > 0 && currentProgram <= static_cast<int>(list.size()))
             value = presets::presetValue(list[static_cast<size_t>(currentProgram - 1)], spec.id, value);
         setParameterValue(spec.id, value);
     }
     for(const auto& spec:v2Parameters())setParameterValue(spec.id,spec.defaultValue);
+    if(currentProgram>static_cast<int>(list.size()))
+        for(const auto& value:genrePresets()[static_cast<size_t>(currentProgram-static_cast<int>(list.size())-1)].values)
+            setParameterValue(value.first,value.second);
     captureProgramAnchor();
 }
 

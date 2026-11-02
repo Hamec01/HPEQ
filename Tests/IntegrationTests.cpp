@@ -1,5 +1,6 @@
 #include "Standalone/ModulePluginProcessor.h"
 #include "Standalone/V2Parameters.h"
+#include "Standalone/GenrePresets.h"
 #include "AllocationAudit.h"
 #include "TestSignals.h"
 #include "ShirotaHrtf.h"
@@ -51,6 +52,26 @@ public:
         beginTest("Travel Rate changes speed without rewinding path phase");
         hamlo::shirota::v2::MotionClock clock;clock.prepare(48000);hamlo::shirota::v2::MotionPath path;path.count=1;path.nodes[0]={0,0,1000,hamlo::shirota::v2::MotionArc::Counterclockwise,hamlo::shirota::v2::MotionCurve::Linear};clock.setPath(path);
         for(int i=0;i<24000;++i)clock.next();clock.setRate(2);expectWithinAbsoluteError(clock.next().azimuth,180.,1e-7);for(int i=0;i<11999;++i)clock.next();expectWithinAbsoluteError(std::remainder(clock.next().azimuth,360.),0.,1e-7);
+        beginTest("Stable genre ID restores selection despite a stale numeric index, then Default clears the modern state");
+        {
+            struct StateCodec:juce::AudioProcessor
+            {using juce::AudioProcessor::getXmlFromBinary;using juce::AudioProcessor::copyXmlToBinary;};
+            auto saved=instance();saved->setCurrentProgram(7);juce::MemoryBlock state;saved->getStateInformation(state);
+            auto xml=StateCodec::getXmlFromBinary(state.getData(),static_cast<int>(state.getSize()));
+            expect(xml!=nullptr);
+            if(xml)
+            {
+                expectEquals(xml->getStringAttribute("v2PresetID"),juce::String(hpeq::standalone::genrePresets().front().id));
+                xml->setAttribute("v2Program",206);StateCodec::copyXmlToBinary(*xml,state);
+                auto restored=instance(2);restored->setCurrentProgram(206);
+                restored->setParameterValue("v2Width",saved->parameterValue("v2Width"));
+                restored->setStateInformation(state.getData(),static_cast<int>(state.getSize()));
+                expectEquals(restored->getCurrentProgram(),7);expect(!restored->presetModified());
+                expectWithinAbsoluteError(restored->parameterValue("v2Width"),saved->parameterValue("v2Width"),1e-7,"Saved value equal to the pre-load value must not leave the UI at its default");
+                restored->setCurrentProgram(0);juce::MemoryBlock actual,expected;restored->getStateInformation(actual);
+                auto clean=instance(0);clean->getStateInformation(expected);expect(actual==expected,"Default returns to the original compact state after a genre project");
+            }
+        }
         beginTest("Actual integrated binaural impulse equals the independent embedded filter for all profiles and both sides");
         juce::AudioBuffer<float> impulse(2,4096);impulse.clear();impulse.setSample(0,512,.5f);impulse.setSample(1,512,.5f);
         std::vector<float> bank(3*72*2*512);std::memcpy(bank.data(),ShirotaHrtf::production_bin,bank.size()*4);
