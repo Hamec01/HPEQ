@@ -298,7 +298,7 @@ public:
             expectEquals(juce::roundToInt(r->parameterValue("glitchEngine")), 1, "a GLITCH 2 state keeps it");
         }
 
-        beginTest("The glitch formula: events per bar within the INTENT budget, never side by side, RISE only in the tail, SHAPE always written");
+        beginTest("The glitch formula: events per bar within the INTENT budget, never side by side, within the INTENT's share, RISE in the second half, SHAPE always written");
         {
             const auto hits = simple::templateHits(simple::Trap);
             static constexpr int budget[simple::kIntents] { 1, 2, 2, 3, 6 };
@@ -332,14 +332,15 @@ public:
                                 if (v == rev::BlockRise)
                                 {
                                     ++rises;
-                                    riseTail += st >= 12;
+                                    riseTail += st >= 8; // R8: RISE takes the bar's second half at most
                                 }
                             }
                             // two runs of the same action side by side read as one run: count them through the gaps
                             ++cases;
                             inBudget += runs <= budget[intent];
                             apart += !touching;
-                            glitchShare += intent == simple::Chaos || steps <= 4;
+                            static constexpr int caps[simple::kIntents] { 4, 6, 8, 8, 16 }; // R8: GLITCH's share per INTENT
+                            glitchShare += steps <= caps[intent];
                             bool shapeWritten = false;
                             for (int l = rev::kFirstShape; l < rev::kFirstThrow; ++l)
                                 for (auto v : r.lanes[static_cast<size_t>(l)].first)
@@ -347,7 +348,7 @@ public:
                             shaped += shapeWritten;
                         }
             logMessage("  " + juce::String(cases) + " cases: within the budget " + juce::String(inBudget) + ", never side by side "
-                       + juce::String(apart) + ", GLITCH <= 25 % of the steps (not CHAOS) " + juce::String(glitchShare) + ", RISE in the tail "
+                       + juce::String(apart) + ", GLITCH within its INTENT's share " + juce::String(glitchShare) + ", RISE in the tail "
                        + juce::String(riseTail) + " / " + juce::String(rises) + ", SHAPE written " + juce::String(shaped));
             expectEquals(inBudget, cases);
             expectEquals(apart, cases);
@@ -407,6 +408,66 @@ public:
             expectEquals(d->getRevolutionState().material, 1, "drums");
             logMessage("  pad: " + juce::String(events) + " glitch events, off the beats " + juce::String(off));
             expect(off == 0);
+        }
+
+        beginTest("Lengths (owner: SIMPLE's effects are too short): SHAPE coverage, the mean event length of GLITCH / THROW in beats");
+        {
+            double shapeCover = 0.0, glitchBeats = 0.0, throwBeats = 0.0;
+            int shapeN = 0, glitchRuns = 0, throwRuns = 0;
+            static constexpr double rateQ[] { 0.25, 1.0, 0.5, 0.25, 0.125, 2.0 / 3.0, 1.0 / 3.0, 1.0 / 6.0, 1.0 / 12.0 };
+            for (int genre = simple::BoomBap; genre < simple::kGenres; ++genre)
+                for (int intent = 0; intent < simple::kIntents; ++intent)
+                    for (std::uint64_t seed : { 2ull, 4ull, 8ull })
+                    {
+                        simple::Settings s;
+                        s.genre = genre;
+                        s.intent = (intent + 0.5) / simple::kIntents;
+                        s.seed = seed;
+                        const auto r = simple::generate(s, simple::templateHits(genre), 120.0);
+                        const auto valueAt = [&](int l, int st)
+                        {
+                            const auto& lane = r.lanes[static_cast<size_t>(l)];
+                            if (st >= 16)
+                                return static_cast<int>(lane.extra[static_cast<size_t>(st - 16)]);
+                            return static_cast<int>(l < rev::kEngines ? r.pattern.steps[static_cast<size_t>(l)][static_cast<size_t>(st)] : lane.first[static_cast<size_t>(st)]);
+                        };
+                        for (int l = rev::Glitch; l < rev::kLanes; ++l)
+                        {
+                            if (l == rev::Motion)
+                                continue;
+                            const auto& lane = r.lanes[static_cast<size_t>(l)];
+                            const int length = lane.length > 0 ? lane.length : 16;
+                            const double q = rateQ[juce::jlimit(0, 8, lane.rate)];
+                            int on = 0, run = 0;
+                            for (int st = 0; st <= length; ++st)
+                            {
+                                const int v = st < length ? valueAt(l, st) : 0;
+                                const int before = st > 0 ? valueAt(l, st - 1) : 0;
+                                on += v != 0 && st < length;
+                                const bool newRun = v != 0 && (before == 0 || (l == rev::Glitch && before != v));
+                                const bool runEnds = run > 0 && (v == 0 || (l == rev::Glitch && before != v));
+                                if (runEnds)
+                                {
+                                    if (l == rev::Glitch) { glitchBeats += run * q; ++glitchRuns; }
+                                    else if (l >= rev::kFirstThrow) { throwBeats += run * q; ++throwRuns; }
+                                    run = 0;
+                                }
+                                if (newRun || (v != 0 && run > 0))
+                                    ++run;
+                            }
+                            if (l >= rev::kFirstShape && l < rev::kFirstThrow)
+                            {
+                                shapeCover += static_cast<double>(on) / length;
+                                ++shapeN;
+                            }
+                        }
+                    }
+            const double cover = shapeCover / std::max(1, shapeN), glitch = glitchBeats / std::max(1, glitchRuns), thr = throwBeats / std::max(1, throwRuns);
+            logMessage("  SHAPE coverage " + juce::String(100.0 * cover, 1) + " % of its cycle; GLITCH events " + juce::String(glitch, 2)
+                       + " beats; THROW events " + juce::String(thr, 2) + " beats (" + juce::String(glitchRuns) + " / " + juce::String(throwRuns) + " events)");
+            expect(cover >= 0.5, "SHAPE moves over at least half its cycle");
+            expect(glitch >= 0.5, "GLITCH events >= an eighth");
+            expect(thr >= 0.5, "THROW events >= an eighth");
         }
 
         beginTest("GEN on SHAPE A / B and THROW A / B: that lane gets steps, the others stay; each press a new pattern");

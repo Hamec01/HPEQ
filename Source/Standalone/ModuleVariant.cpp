@@ -249,8 +249,8 @@ ModuleSpec makeRevolution()
     const std::initializer_list<const char*> throwTimes { "1/32", "1/16T", "1/16", "1/8T", "1/16D", "1/8", "1/4T",
                                                           "1/8D", "1/4", "1/4D", "1/2", "1 Bar", "2 Bars", "4 Bars" };
     const std::initializer_list<const char*> notes { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
-    // R3: the page is 1180 x 1280; the editor opens at 75 % so it fits a 1080p screen
-    return { ModuleKind::Revolution, FxType::MonstaFx, "HamloRevolution", 885, 960, 13,
+    // R8: the page is 1180 x 1080; the editor opens at 75 % (885 x 810)
+    return { ModuleKind::Revolution, FxType::MonstaFx, "HamloRevolution", 885, 810, 13,
              { knob("mix", "Mix", 0, 1, 1, -1),
                rate,
                steps,

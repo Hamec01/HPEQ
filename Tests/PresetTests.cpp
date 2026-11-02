@@ -166,7 +166,7 @@ public:
             if (page == nullptr)
                 return;
             const float scale = static_cast<float>(page->getWidth()) / 1180.0f;
-            const auto cell = [scale](int s) { return juce::Point<float>(420.5f + 44.0f * static_cast<float>(s), 420.0f + 58.0f) * scale; };
+            const auto cell = [scale](int s) { return juce::Point<float>(420.5f + 44.0f * static_cast<float>(s), 392.0f + 45.0f) * scale; }; // R8 rows
             const auto down = cell(2);
             page->mouseDown(mouse(*page, down, down, true));
             for (int s = 3; s <= 6; ++s)

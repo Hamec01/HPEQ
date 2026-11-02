@@ -11,7 +11,7 @@ namespace
 using namespace steel;
 namespace rev = hpeq::revolution;
 
-constexpr float kW = 1180.0f, kH = 1280.0f; // R2: two SHAPE rows and the band footer, R3: two THROW rows (HPEQ: 700)
+constexpr float kW = 1180.0f, kH = 1080.0f; // R2 / R3: seven lanes and the band footer; R8: rows 104 apart (HPEQ: 700)
 constexpr float kPi = juce::MathConstants<float>::pi;
 
 // the preset screen (PresetScreen::kDesignBounds, 56 .. 392) has the top left; the wave screen starts right of it
@@ -19,9 +19,9 @@ const juce::Rectangle<float> kWaveBezel { 404.0f, 22.0f, 212.0f, 92.0f }, kWaveS
 const juce::Rectangle<float> kStatusLcd { 915.0f, 176.0f, 240.0f, 68.0f };
 const juce::Point<float> kGenerate { 652.0f, 69.0f }, kNewSeed { 730.0f, 69.0f }, kLamp { 1112.0f, 62.0f };
 const juce::Point<float> kTriplet { 335.0f, 206.0f }, kFree { 410.0f, 206.0f };
-constexpr std::array<float, 7> kRowY { 288.0f, 420.0f, 552.0f, 684.0f, 816.0f, 948.0f, 1080.0f };
-constexpr float kFooterY = 1232.0f;
-constexpr float kCellX = 400.0f, kCellPitch = 44.0f, kCellW = 41.0f, kCellTop = 16.0f, kCellH = 84.0f;
+constexpr std::array<float, 7> kRowY { 288.0f, 392.0f, 496.0f, 600.0f, 704.0f, 808.0f, 912.0f };
+constexpr float kFooterY = 1040.0f;
+constexpr float kCellX = 400.0f, kCellPitch = 44.0f, kCellW = 41.0f, kCellTop = 12.0f, kCellH = 66.0f;
 // per-lane GEN and LOCK, right of the cells
 juce::Rectangle<float> laneGenRect(int engine);
 juce::Rectangle<float> laneLockRect(int engine);
@@ -34,7 +34,7 @@ struct KnobInfo
     bool log;
     const char* label;
 };
-constexpr float kRowKnobDy = 66.0f;
+constexpr float kRowKnobDy = 50.0f;
 const std::array<KnobInfo, HamloRevolutionPanel::NumParams> kKnobs { {
     { 1000.0f, 82.0f, 0.5f, 0.0, 1.0, false, "MIX" },
     { 495.0f, 212.0f, 0.44f, 20.0, 2000.0, true, "RATE" },
@@ -42,31 +42,31 @@ const std::array<KnobInfo, HamloRevolutionPanel::NumParams> kKnobs { {
     { 675.0f, 212.0f, 0.44f, 0.0, 1.0, false, "SWING" },
     { 765.0f, 212.0f, 0.44f, 0.0, 1.0, false, "HUMAN" },
     { 855.0f, 212.0f, 0.44f, 0.5, 8.0, false, "FADE" },
-    { 198.0f, kRowY[0] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
-    { 274.0f, kRowY[0] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
-    { 198.0f, kRowY[1] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
-    { 274.0f, kRowY[1] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
-    { 198.0f, kRowY[2] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
-    { 274.0f, kRowY[2] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
-    { 350.0f, kRowY[2] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "SMOOTH" },
-    { 198.0f, kRowY[3] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
-    { 274.0f, kRowY[3] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
-    { 350.0f, kRowY[3] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "SMOOTH" },
-    { 1138.0f, kRowY[3] + 96.0f, 0.3f, 0.0, 1.0, false, "RES" }, // R7: below GEN
-    { 198.0f, kRowY[4] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
-    { 274.0f, kRowY[4] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
-    { 350.0f, kRowY[4] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "SMOOTH" },
-    { 1138.0f, kRowY[4] + 96.0f, 0.3f, 0.0, 1.0, false, "RES" }, // R7: below GEN
-    { 860.0f, kFooterY, 0.3f, 40.0, 1000.0, true, "LOW / MID" },
-    { 980.0f, kFooterY, 0.3f, 1000.0, 12000.0, true, "MID / HIGH" },
-    { 198.0f, kRowY[5] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
-    { 274.0f, kRowY[5] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
-    { 350.0f, kRowY[5] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "TAIL" },
-    { 1138.0f, kRowY[5] + 96.0f, 0.3f, 0.0, 1.0, false, "TONE" }, // R7: below GEN
-    { 198.0f, kRowY[6] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
-    { 274.0f, kRowY[6] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
-    { 350.0f, kRowY[6] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "TAIL" },
-    { 1138.0f, kRowY[6] + 96.0f, 0.3f, 0.0, 1.0, false, "TONE" }, // R7: below GEN
+    { 198.0f, kRowY[0] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[0] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "DEPTH" },
+    { 198.0f, kRowY[1] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[1] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "DEPTH" },
+    { 198.0f, kRowY[2] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[2] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "DEPTH" },
+    { 350.0f, kRowY[2] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "SMOOTH" },
+    { 198.0f, kRowY[3] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[3] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "DEPTH" },
+    { 350.0f, kRowY[3] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "SMOOTH" },
+    { 1138.0f, kRowY[3] + 70.0f, 0.26f, 0.0, 1.0, false, "RES" }, // R7: below GEN
+    { 198.0f, kRowY[4] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[4] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "DEPTH" },
+    { 350.0f, kRowY[4] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "SMOOTH" },
+    { 1138.0f, kRowY[4] + 70.0f, 0.26f, 0.0, 1.0, false, "RES" }, // R7: below GEN
+    { 860.0f, kFooterY, 0.26f, 40.0, 1000.0, true, "LOW / MID" },
+    { 980.0f, kFooterY, 0.26f, 1000.0, 12000.0, true, "MID / HIGH" },
+    { 198.0f, kRowY[5] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[5] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "DEPTH" },
+    { 350.0f, kRowY[5] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "TAIL" },
+    { 1138.0f, kRowY[5] + 70.0f, 0.26f, 0.0, 1.0, false, "TONE" }, // R7: below GEN
+    { 198.0f, kRowY[6] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[6] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "DEPTH" },
+    { 350.0f, kRowY[6] + kRowKnobDy, 0.33f, 0.0, 1.0, false, "TAIL" },
+    { 1138.0f, kRowY[6] + 70.0f, 0.26f, 0.0, 1.0, false, "TONE" }, // R7: below GEN
 } };
 
 // Selectors: centre, number of positions, the labels around them, the title under them.
@@ -95,21 +95,21 @@ juce::Rectangle<float> cellRect(int engine, int step)
 {
     return { kCellX + kCellPitch * static_cast<float>(step), kRowY[static_cast<size_t>(engine)] + kCellTop, kCellW, kCellH };
 }
-juce::Rectangle<float> plateRect(int engine) { return { 26.0f, kRowY[static_cast<size_t>(engine)] + 6.0f, 124.0f, 34.0f }; }
+juce::Rectangle<float> plateRect(int engine) { return { 26.0f, kRowY[static_cast<size_t>(engine)] + 4.0f, 124.0f, 30.0f }; }
 juce::Rectangle<float> laneGenRect(int engine)
 {
     if (engine >= rev::kEngines) // SHAPE / THROW: GEN above RES / TONE
-        return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 12.0f, 56.0f, 28.0f };
-    return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 18.0f, 56.0f, 34.0f };
+        return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 6.0f, 56.0f, 22.0f };
+    return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 8.0f, 56.0f, 28.0f };
 }
-juce::Rectangle<float> laneLockRect(int engine) { return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 62.0f, 56.0f, 34.0f }; }
-juce::Point<float> onLever(int engine) { return { 56.0f, kRowY[static_cast<size_t>(engine)] + 74.0f }; }
-juce::Point<float> onLamp(int engine) { return { 108.0f, kRowY[static_cast<size_t>(engine)] + 60.0f }; }
-const juce::Rectangle<float> kTargetWindow { 88.0f, kRowY[2] + 84.0f, 84.0f, 24.0f };
-juce::Rectangle<float> shapeTargetWindow(int lane) { return { 88.0f, kRowY[static_cast<size_t>(lane)] + 84.0f, 84.0f, 24.0f }; }
-juce::Rectangle<float> bandTag(int lane) { return { 122.0f, kRowY[static_cast<size_t>(lane)] + 50.0f, 52.0f, 14.0f }; }
-const juce::Rectangle<float> kSimpleButton { 40.0f, 1214.0f, 160.0f, 40.0f }; // R4
-const juce::Rectangle<float> kStretchWindow { 88.0f, kRowY[0] + 84.0f, 84.0f, 24.0f };
+juce::Rectangle<float> laneLockRect(int engine) { return { 1110.0f, kRowY[static_cast<size_t>(engine)] + 44.0f, 56.0f, 28.0f }; }
+juce::Point<float> onLever(int engine) { return { 56.0f, kRowY[static_cast<size_t>(engine)] + 64.0f }; }
+juce::Point<float> onLamp(int engine) { return { 108.0f, kRowY[static_cast<size_t>(engine)] + 46.0f }; }
+const juce::Rectangle<float> kTargetWindow { 88.0f, kRowY[2] + 66.0f, 84.0f, 20.0f };
+juce::Rectangle<float> shapeTargetWindow(int lane) { return { 88.0f, kRowY[static_cast<size_t>(lane)] + 66.0f, 84.0f, 20.0f }; }
+juce::Rectangle<float> bandTag(int lane) { return { 122.0f, kRowY[static_cast<size_t>(lane)] + 39.0f, 52.0f, 14.0f }; }
+const juce::Rectangle<float> kSimpleButton { 40.0f, 1030.0f, 160.0f, 36.0f }; // R4
+const juce::Rectangle<float> kStretchWindow { 88.0f, kRowY[0] + 66.0f, 84.0f, 20.0f };
 const juce::Point<float> kListen { 410.0f, 124.0f };
 constexpr std::array<const char*, 3> kStretchNames { "TAPE", "RHYTHM", "CLEAN" };
 
@@ -662,16 +662,16 @@ void HamloRevolutionPanel::renderStatic(juce::Graphics& g) const
                  s % 4 == 0 ? stencil : stencilDim, juce::Justification::centred, 0.02f);
     }
     lcdWindow(g, kTargetWindow);
-    engraved(g, "TARGET", { kTargetWindow.getX(), kTargetWindow.getBottom() + 2.0f, kTargetWindow.getWidth(), 14.0f }, 10.0f);
+    engraved(g, "TARGET", { kTargetWindow.getX(), kTargetWindow.getBottom() + 1.0f, kTargetWindow.getWidth(), 11.0f }, 8.5f);
     for (int lane = rev::kEngines; lane < rev::kLanes; ++lane)
     {
         const auto w = shapeTargetWindow(lane);
         lcdWindow(g, w);
-        engraved(g, "TARGET", { w.getX(), w.getBottom() + 2.0f, w.getWidth(), 14.0f }, 10.0f);
+        engraved(g, "TARGET", { w.getX(), w.getBottom() + 1.0f, w.getWidth(), 11.0f }, 8.5f);
     }
     // the band footer: the two crossovers every lane on a band splits at
     {
-        const float y = kRowY[6] + 128.0f;
+        const float y = kRowY[6] + 104.0f;
         g.setColour(juce::Colours::black);
         g.drawHorizontalLine(juce::roundToInt(y), 20.0f, kW - 20.0f);
         g.setColour(juce::Colours::white.withAlpha(0.07f));
@@ -799,7 +799,7 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
     {
         const bool engineOn = values.switches[static_cast<size_t>(onSwitchFor(e))] != 0;
         g.setColour(juce::Colours::white); // steel::lamp leaves a gradient fill, under which drawImage draws nothing
-        lever(g, onLever(e), 0.0f, 0.75f, engineOn ? LeverPosition::Up : LeverPosition::Down);
+        lever(g, onLever(e), 0.0f, 0.62f, engineOn ? LeverPosition::Up : LeverPosition::Down);
         lamp(g, onLamp(e), engineOn && values.on, 0.28f, inkFor(e));
         const auto ink = inkFor(e);
         const auto& lane = values.lanes[static_cast<size_t>(e)];
@@ -845,7 +845,7 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
             else if (v > 0)
             {
                 const auto text = actionShortName(e, v);
-                g.setFont(monoFont(e == rev::Time ? 22.0f : 17.0f).withStyle("Bold"));
+                g.setFont(monoFont(e == rev::Time ? 18.0f : 14.5f).withStyle("Bold"));
                 g.setColour(ink.withAlpha(0.22f * alpha));
                 g.drawText(text, r.translated(0.0f, 1.5f).expanded(1.0f), juce::Justification::centred);
                 g.setColour(ink.withAlpha(0.95f * alpha));

@@ -275,16 +275,12 @@ Result generate(const Settings& settings, const Hits& hits, double hostBpm)
             {
                 if (!hitAt(s))
                     add(kMotionLane, s, 7 + (s % 4), in(0.4, 0.5, 0.3, 0.9, 0.5));
-                if (s >= 8)
-                    add(kShapeA, s, 2 + (s - 8), in(0.5, 0.6, 0.6, 0.9, 0.3)); // a low-pass swell into the bar end
                 if (snareAt(s) && s >= 8)
                     add(kThrowA, s, 12, in(0.3, 0.7, 0.8, 0.4, 0.6)); // a delay throw on the last snare
-                if (s >= 12)
-                    add(kShapeB, s, 3 + 3 * (s - 12), in(0.4, 0.5, 0.7, 0.8, 0.5)); // a filter dip into the next bar
             }
             for (int s = 12; s < kSteps; ++s)
             {
-                addFill(kTimeLane, s, zone == Breakdown ? Half : s >= 14 ? TapeStop : 0, in(0.3, 0.5, 1.0, 1.0, 0.8));
+                addFill(kTimeLane, s, zone == Breakdown ? Half : TapeStop, in(0.3, 0.5, 1.0, 1.0, 0.8)); // the last beat
                 addFill(kThrowB, s, s == 15 ? 15 : 0, in(0.4, 0.6, 1.0, 0.8, 0.8)); // the vinyl brake at the phrase end
             }
             shapeACurve = true;
@@ -302,9 +298,6 @@ Result generate(const Settings& settings, const Hits& hits, double hostBpm)
             {
                 if (hitAt(s))
                 {
-                    add(kShapeA, s, 8, in(0.4, 0.5, 0.4, 0.3, 0.6), true);           // pan moves on the hits
-                if (s >= 12)
-                    add(kShapeB, s, 3 + 3 * (s - 12), in(0.4, 0.5, 0.7, 0.8, 0.5)); // a filter dip into the next bar
                 }
                 add(kMotionLane, s, 1 + (s * 11) / 15, in(0.0, 0.0, 0.0, 0.8, 0.3)); // a high-pass build
                 if (s % 4 == 3)
@@ -325,11 +318,6 @@ Result generate(const Settings& settings, const Hits& hits, double hostBpm)
         {
             for (int s = 0; s < kSteps; ++s)
             {
-                // the pump: down on the kick, back up over the next steps
-                const int pump = kickAt(s) ? 14 : kickAt(s - 1) ? 7 : 0;
-                add(kShapeA, s, pump, in(0.6, 1.0, 0.8, 0.5, 0.6));
-                add(kShapeA, s, s % 2 == 0 ? 15 : 0, in(0.0, 0.0, 0.0, 0.0, 0.9)); // CHAOS: a 1/16 gate
-                add(kShapeB, s, 1 + (s * 13) / 15, in(0.3, 0.4, 0.7, 1.0, 0.5));     // the filter sweep
                 if (s % 4 == 2 && (snareAt(s) || hits.hats[static_cast<size_t>(s)] >= kHit))
                     add(kThrowA, s, 13, in(0.3, 0.9, 0.9, 0.5, 0.7), hitAt(s)); // delay on the off-beat
                 if (s == 0 || s == 8)
@@ -356,12 +344,9 @@ Result generate(const Settings& settings, const Hits& hits, double hostBpm)
             {
                 if (snareAt(s))
                 {
-                    add(kShapeA, s, 5, in(0.5, 0.5, 0.3, 0.0, 0.4), hitAt(s)); // a little drive on the snare
                     add(kThrowA, s, 9, in(0.2, 0.5, 0.6, 0.3, 0.6), hitAt(s));
                 }
                 add(kMotionLane, s, 10, in(0.0, 0.0, 0.0, 0.9, 0.0));
-                if (s >= 12)
-                    add(kShapeB, s, 3 + 3 * (s - 12), in(0.4, 0.5, 0.7, 0.8, 0.5)); // a high-pass lift into the next bar
             }
             for (int s = 0; s < kSteps; ++s)
                 addFill(kTimeLane, s, zone == Breakdown ? (s >= 8 ? Half : 0) : s >= 12 ? TapeStop : 0, in(0.3, 0.5, 1.0, 1.0, 0.8));
@@ -402,6 +387,77 @@ Result generate(const Settings& settings, const Hits& hits, double hostBpm)
             r.fills[static_cast<size_t>(e.lane)] |= 1u << e.step;
         if (!e.fill && !e.core && code > 0)
             lane.probability[s] = static_cast<std::uint8_t>(code);
+    }
+
+    // ---- SHAPE: movements, not blips (ShaperBox: a drawn curve looping over a beat, a bar or bars) -----------
+    // Each genre has a movement per lane; INTENT scales its depth (SUBTLE half), AMOUNT how deep it goes, so a higher
+    // AMOUNT never writes fewer levels. SHAPE B sweeps over 4 bars (rate 1/4) from VARIATION 25 %, else over a bar.
+    {
+        static constexpr double zoneScale[kIntents] { 0.5, 0.75, 0.85, 1.0, 1.0 };
+        const double scale = (0.35 + 0.65 * amount) * zoneScale[zone];
+        const auto write = [&](int laneIndex, int rate, int length, std::initializer_list<int> levels)
+        {
+            auto& lane = r.lanes[static_cast<size_t>(laneIndex)];
+            lane.rate = rate;
+            lane.length = length == kSteps ? 0 : length;
+            int i = 0;
+            for (int v : levels)
+            {
+                const auto level = static_cast<std::uint8_t>(juce::jlimit(0, 15, static_cast<int>(std::lround(v * scale))));
+                if (i < kSteps)
+                    lane.first[static_cast<size_t>(i)] = level;
+                else
+                    lane.extra[static_cast<size_t>(i - kSteps)] = level;
+                r.events += level != 0;
+                ++i;
+            }
+        };
+        const bool longSweep = variation >= 0.25;
+        switch (g)
+        {
+            case Techno: // the pump on every beat (down on the kick, back up), CHAOS: a 1/16 gate; a low-pass sweep
+                // written over the whole bar (the page shows all 16 cells; a 4-step lane would look empty after beat 1)
+                if (zone == Chaos)
+                    write(kShapeA, 0, kSteps, { 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0 });
+                else
+                    write(kShapeA, 0, kSteps, { 15, 10, 5, 1, 15, 10, 5, 1, 15, 10, 5, 1, 15, 10, 5, 1 });
+                shapeACurve = zone != Chaos;
+                break;
+            case Trap: // the pan moves a beat at a time, left / right
+                write(kShapeA, 1, 4, { 9, 9, 9, 9 });
+                break;
+            case DnB: // drive breathing on the snares (2 and 4), over the eighth after each
+                write(kShapeA, 0, kSteps, { 0, 0, 1, 3, 9, 6, 3, 1, 0, 0, 1, 3, 9, 6, 3, 1 });
+                shapeACurve = true;
+                break;
+            default: // BOOM BAP: a dusty low-pass that opens into the bar end, at 1/8
+                write(kShapeA, 2, 8, { 6, 3, 1, 0, 1, 3, 6, 10 });
+                shapeACurve = true;
+                break;
+        }
+        // SHAPE B: the sweep (TECHNO / BOOM BAP / TRAP low pass, DNB high pass) - 4 bars at 1/4, or one bar at 1/16
+        if (longSweep)
+            write(kShapeB, 1, kSteps, { 0, 0, 1, 1, 2, 3, 3, 4, 5, 6, 7, 8, 9, 11, 13, 6 });
+        else
+            write(kShapeB, 0, kSteps, { 0, 0, 0, 1, 1, 2, 2, 3, 4, 5, 6, 7, 8, 10, 12, 4 });
+        shapeBCurve = true;
+        shapeBRate = longSweep ? 1 : 0;
+    }
+    // ---- THROW: a send of an eighth (A) or the rest of the beat (B, the fill throw), not a 1/16 blip ---------------
+    for (const int laneIndex : { kThrowA, kThrowB })
+    {
+        auto& lane = r.lanes[static_cast<size_t>(laneIndex)];
+        const int extend = laneIndex == kThrowA ? 1 : 3;
+        for (int st = kSteps - 1; st >= 0; --st) // backwards: a written step's extension is not extended again
+            if (lane.first[static_cast<size_t>(st)] != 0 && (st == 0 || lane.first[static_cast<size_t>(st - 1)] == 0))
+                for (int k = 1; k <= extend && st + k < kSteps && (laneIndex == kThrowA || (st + k) / 4 == st / 4); ++k) // B: within its beat
+                    if (lane.first[static_cast<size_t>(st + k)] == 0)
+                    {
+                        lane.first[static_cast<size_t>(st + k)] = static_cast<std::uint8_t>(std::max(1, lane.first[static_cast<size_t>(st)] * 3 / 4));
+                        ++r.events;
+                        if (((r.fills[static_cast<size_t>(laneIndex)] >> st) & 1u) != 0)
+                            r.fills[static_cast<size_t>(laneIndex)] |= 1u << (st + k);
+                    }
     }
 
     // ---- GLITCH 2 (docs/GLITCH_RESEARCH.md): the playing audio cut and repeated, as events, not a texture -------
@@ -457,12 +513,15 @@ Result generate(const Settings& settings, const Hits& hits, double hostBpm)
             for (const auto& [st, weight] : places)
                 for (const auto& [action, w] : onHits)
                 {
-                    const bool two = (action == BlockShuffle || action == BlockDrop || action == BlockChop) && st + 2 <= 12;
-                    events.push_back({ st, two ? 2 : 1, action, weight * w * hitZone[zone] * boost(action) * rank(st, action, 61), onTheHits, false });
+                    // R8: an eighth for REPEAT / ROLL / SHUFFLE, a beat for DROP / CHOP (ShaperBox-length moves, not blips)
+                    const int length = action == BlockDrop || action == BlockChop ? 4 : 2;
+                    if (st + length > 12)
+                        continue;
+                    events.push_back({ st, length, action, weight * w * hitZone[zone] * boost(action) * rank(st, action, 61), onTheHits, false });
                 }
             for (const auto& [action, w] : tails)
             {
-                const int start = action == BlockRise && (zone == Fills || zone == Chaos) ? 12 : 14;
+                const int start = action == BlockRise && (zone == Fills || zone == Chaos) ? 8 : 12; // R8: the last beat, RISE half a bar
                 events.push_back({ start, 16 - start, action, w * tailZone[zone] * (bar == 1 ? 1.3 : 1.0) * boost(action) * rank(start, action, 67), false, true });
             }
             std::stable_sort(events.begin(), events.end(), [](const Event& a, const Event& b)
@@ -473,7 +532,8 @@ Result generate(const Settings& settings, const Hits& hits, double hostBpm)
             });
             std::uint32_t used = 0;
             int picked = 0, stepsUsed = 0;
-            const int stepCap = zone == Chaos ? kSteps : kSteps / 4; // GLITCH takes <= 25 % of the bar (CHAOS: no cap)
+            static constexpr int caps[kIntents] { 4, 6, 8, 8, kSteps }; // R8: GLITCH's share of the bar per INTENT
+            const int stepCap = caps[zone];
             bool tailTaken = false;
             for (const auto& e : events)
             {

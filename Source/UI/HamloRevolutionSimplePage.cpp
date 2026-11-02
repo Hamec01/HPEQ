@@ -14,7 +14,7 @@ namespace rev = hpeq::revolution;
 namespace simple = hpeq::revolution::simple;
 using namespace hpeq::ui::steel;
 
-constexpr float kW = 1180.0f, kH = 1280.0f; // the ADVANCED page's frame
+constexpr float kW = 1180.0f, kH = 1080.0f; // the ADVANCED page's frame (R8)
 constexpr float kPi = juce::MathConstants<float>::pi;
 
 const juce::Rectangle<float> kConnect { 800.0f, 28.0f, 270.0f, 48.0f };
@@ -22,12 +22,12 @@ const juce::Point<float> kLinkLamp { 1110.0f, 52.0f };
 const juce::Rectangle<float> kLinkLcd { 800.0f, 88.0f, 340.0f, 44.0f };
 const juce::Rectangle<float> kAdvanced { 960.0f, 196.0f, 180.0f, 44.0f };
 juce::Rectangle<float> genreRect(int g) { return { 60.0f + 166.0f * static_cast<float>(g), 196.0f, 150.0f, 44.0f }; }
-juce::Rectangle<float> fillRect(int f) { return { 60.0f + 96.0f * static_cast<float>(f), 600.0f, 86.0f, 44.0f }; }
-juce::Rectangle<float> targetRect(int t) { return { 640.0f + 126.0f * static_cast<float>(t), 600.0f, 114.0f, 44.0f }; }
-const juce::Point<float> kGenerate { 150.0f, 750.0f };
-const juce::Rectangle<float> kLock { 250.0f, 726.0f, 140.0f, 48.0f };
-const juce::Rectangle<float> kInfoLcd { 430.0f, 706.0f, 710.0f, 88.0f };
-constexpr float kPreviewY = 850.0f, kPreviewRow = 54.0f, kCellX = 230.0f, kCellPitch = 56.0f;
+juce::Rectangle<float> fillRect(int f) { return { 60.0f + 96.0f * static_cast<float>(f), 556.0f, 86.0f, 40.0f }; }
+juce::Rectangle<float> targetRect(int t) { return { 640.0f + 126.0f * static_cast<float>(t), 556.0f, 114.0f, 40.0f }; }
+const juce::Point<float> kGenerate { 150.0f, 672.0f };
+const juce::Rectangle<float> kLock { 250.0f, 650.0f, 140.0f, 44.0f };
+const juce::Rectangle<float> kInfoLcd { 430.0f, 634.0f, 710.0f, 76.0f };
+constexpr float kPreviewY = 752.0f, kPreviewRow = 44.0f, kCellX = 230.0f, kCellPitch = 56.0f;
 
 struct KnobInfo
 {
@@ -35,11 +35,11 @@ struct KnobInfo
     const char* label;
 };
 const std::array<KnobInfo, HamloRevolutionSimplePage::NumKnobs> kKnobs { {
-    { 140.0f, 410.0f, 0.95f, "INTENT" },
-    { 360.0f, 410.0f, 0.95f, "AMOUNT" },
-    { 590.0f, 410.0f, 0.95f, "VARIATION" },
-    { 820.0f, 410.0f, 0.95f, "GROOVE" },
-    { 1040.0f, 410.0f, 0.8f, "MIX" },
+    { 140.0f, 392.0f, 0.85f, "INTENT" },
+    { 360.0f, 392.0f, 0.85f, "AMOUNT" },
+    { 590.0f, 392.0f, 0.85f, "VARIATION" },
+    { 820.0f, 392.0f, 0.85f, "GROOVE" },
+    { 1040.0f, 392.0f, 0.72f, "MIX" },
 } };
 
 const juce::Colour kLaneInk[rev::kLanes] { juce::Colour(0xff6dff9a), juce::Colour(0xffffb347), juce::Colour(0xff8fd8ff), juce::Colour(0xffff7ad9),
@@ -93,12 +93,12 @@ void HamloRevolutionSimplePage::drawStatic(juce::Graphics& g) const
         knobScale(g, { k.x, k.y }, k.s);
         engraved(g, k.label, { k.x - 90.0f, k.y - k.s * 60.0f - 34.0f, 180.0f, 20.0f }, 15.0f);
     }
-    engraved(g, "FILL EVERY", { 60.0f, 570.0f, 300.0f, 22.0f }, 13.0f, stencil, juce::Justification::centredLeft);
-    engraved(g, "TARGET", { 640.0f, 570.0f, 300.0f, 22.0f }, 13.0f, stencil, juce::Justification::centredLeft);
+    engraved(g, "FILL EVERY", { 60.0f, 530.0f, 300.0f, 22.0f }, 13.0f, stencil, juce::Justification::centredLeft);
+    engraved(g, "TARGET", { 640.0f, 530.0f, 300.0f, 22.0f }, 13.0f, stencil, juce::Justification::centredLeft);
     engraved(g, "GENERATE", { kGenerate.x - 70.0f, kGenerate.y + 42.0f, 140.0f, 20.0f }, 12.0f);
     lcdWindow(g, kLinkLcd);
     lcdWindow(g, kInfoLcd);
-    for (const float y : { 160.0f, 270.0f, 560.0f, 680.0f, 820.0f })
+    for (const float y : { 160.0f, 262.0f, 520.0f, 614.0f, 730.0f })
     {
         g.setColour(juce::Colours::black);
         g.drawHorizontalLine(juce::roundToInt(y), 20.0f, kW - 20.0f);
@@ -108,10 +108,10 @@ void HamloRevolutionSimplePage::drawStatic(juce::Graphics& g) const
     for (int l = 0; l < rev::kLanes; ++l)
     {
         const float y = kPreviewY + kPreviewRow * static_cast<float>(l);
-        engraved(g, rev::engineName(l), { 50.0f, y, 150.0f, 40.0f }, 13.0f, stencil, juce::Justification::centredLeft);
+        engraved(g, rev::engineName(l), { 50.0f, y, 150.0f, 34.0f }, 12.0f, stencil, juce::Justification::centredLeft);
         for (int s = 0; s < rev::kSteps; ++s)
         {
-            const juce::Rectangle<float> r { kCellX + kCellPitch * static_cast<float>(s), y, kCellPitch - 4.0f, 40.0f };
+            const juce::Rectangle<float> r { kCellX + kCellPitch * static_cast<float>(s), y, kCellPitch - 4.0f, 34.0f };
             g.setColour(juce::Colour(0xff030403));
             g.fillRoundedRectangle(r, 4.0f);
         }
@@ -179,11 +179,11 @@ void HamloRevolutionSimplePage::paint(juce::Graphics& g)
         {
             g.setFont(monoFont(11.0f).withStyle("Bold"));
             g.setColour(ink.withAlpha(0.85f));
-            g.drawText(rev::bandName(values.bands[static_cast<size_t>(l)]), juce::Rectangle<float>(150.0f, y, 70.0f, 40.0f), juce::Justification::centred);
+            g.drawText(rev::bandName(values.bands[static_cast<size_t>(l)]), juce::Rectangle<float>(150.0f, y, 70.0f, 34.0f), juce::Justification::centred);
         }
         for (int s = 0; s < rev::kSteps; ++s)
         {
-            const juce::Rectangle<float> r { kCellX + kCellPitch * static_cast<float>(s), y, kCellPitch - 4.0f, 40.0f };
+            const juce::Rectangle<float> r { kCellX + kCellPitch * static_cast<float>(s), y, kCellPitch - 4.0f, 34.0f };
             const int v = values.preview[static_cast<size_t>(l)][static_cast<size_t>(s)];
             if (s == values.step)
             {
