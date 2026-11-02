@@ -193,6 +193,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
                 applyPage();
             };
             installSimplePage();
+            installTransitionPage();
             tooltips = std::make_unique<juce::TooltipWindow>(this, 600);
             break;
         }
@@ -255,7 +256,10 @@ ModulePluginEditor::~ModulePluginEditor()
     stopTimer();
     refreshPanel = {};
     refreshSimple = {};
+    refreshTransition = {};
     tooltips.reset();
+    processor.setPreview(false);
+    transitionPage.reset();
     endGesture();
     simplePage.reset();
     panel.reset();
@@ -295,6 +299,11 @@ void ModulePluginEditor::timerCallback()
         if (refreshSimple)
             refreshSimple();
     }
+    else if (transitionPage != nullptr && transitionPage->isVisible())
+    {
+        if (refreshTransition)
+            refreshTransition();
+    }
     else if (refreshPanel)
         refreshPanel();
     if (presets != nullptr)
@@ -315,16 +324,25 @@ void ModulePluginEditor::applyPage()
 {
     if (simplePage == nullptr)
         return;
-    const bool simple = processor.getPage() == ModulePluginProcessor::Page::Simple;
-    if (simplePage->isVisible() == simple && (panel == nullptr || panel->isVisible() != simple))
+    const auto page = processor.getPage();
+    const bool simple = page == ModulePluginProcessor::Page::Simple, transition = page == ModulePluginProcessor::Page::Transition && transitionPage != nullptr;
+    const bool advanced = !simple && !transition;
+    if (simplePage->isVisible() == simple && (panel == nullptr || panel->isVisible() == advanced)
+        && (transitionPage == nullptr || transitionPage->isVisible() == transition))
         return;
     simplePage->setVisible(simple);
     if (panel != nullptr)
-        panel->setVisible(!simple);
+        panel->setVisible(advanced);
+    if (transitionPage != nullptr)
+        transitionPage->setVisible(transition);
+    if (!transition)
+        processor.setPreview(false);
     // the page coming up shows the processor's state at once (the hidden one is not refreshed)
     if (simple && refreshSimple)
         refreshSimple();
-    else if (!simple && refreshPanel)
+    else if (transition && refreshTransition)
+        refreshTransition();
+    else if (advanced && refreshPanel)
         refreshPanel();
 }
 
@@ -349,6 +367,7 @@ void ModulePluginEditor::installSimplePage()
             processor.simpleEdited();
     };
     sp->onGenerate = [this] { processor.generateSimple(true); };
+    sp->onTransition = [this](int kind) { openTransition(kind); };
     sp->onAdvanced = [this]
     {
         processor.setPage(ModulePluginProcessor::Page::Advanced);
@@ -439,6 +458,77 @@ void ModulePluginEditor::installSimplePage()
     addAndMakeVisible(*sp);
 }
 
+void ModulePluginEditor::installTransitionPage()
+{
+    using Page = ui::HamloRevolutionTransitionPage;
+    namespace tr = dsp::transition;
+    transitionPage = std::make_unique<Page>();
+    auto* const tp = transitionPage.get();
+    const auto render = [this, tp](bool capture, bool seed)
+    {
+        const auto& v = tp->getValues();
+        processor.makeTransition(v.kind, v.bars, v.knobs, capture, seed);
+        tp->setClip(processor.transitionClip());
+        if (refreshTransition)
+            refreshTransition();
+    };
+    tp->onKind = [this, tp, render](int kind)
+    {
+        auto v = tp->getValues();
+        v.kind = kind;
+        v.knobs = tr::defaultKnobs(kind);
+        tp->setValues(v);
+        render(false, false); // the same capture and seed, the other recipe
+    };
+    tp->onBars = [render](int) { render(true, false); };
+    tp->onKnobsDone = [render] { render(false, false); };
+    tp->onGenerate = [render] { render(true, true); };
+    tp->onPlay = [this] { processor.setPreview(!processor.isPreviewing()); };
+    tp->onShowFile = [this]
+    {
+        const auto t = processor.lastTransition();
+        if (t.valid && t.file.existsAsFile())
+            t.file.revealToUser();
+    };
+    tp->onBack = [this]
+    {
+        processor.setPreview(false);
+        processor.setPage(ModulePluginProcessor::Page::Simple);
+        applyPage();
+    };
+    tp->fileToDrag = [this] { return processor.lastTransition().file; };
+    refreshTransition = [this, tp]
+    {
+        auto v = tp->getValues();
+        const auto t = processor.lastTransition();
+        v.valid = t.valid;
+        v.aligned = t.aligned;
+        v.complete = t.complete;
+        v.bpm = t.valid ? t.settings.bpm : processor.getHostBpm();
+        v.fileName = t.valid ? t.file.getFileName() : juce::String();
+        v.previewing = processor.isPreviewing();
+        const int length = t.valid ? tr::lengthSamples(t.settings) : 0;
+        v.playhead = v.previewing && length > 0 ? static_cast<double>(processor.previewPosition()) / length : -1.0;
+        tp->setValues(v);
+    };
+    addChildComponent(*tp);
+    if (processor.lastTransition().valid) // a clip made before the editor opened
+        tp->setClip(processor.transitionClip());
+}
+
+void ModulePluginEditor::openTransition(int kind)
+{
+    if (transitionPage == nullptr)
+        return;
+    auto v = transitionPage->getValues();
+    v.kind = kind;
+    v.knobs = dsp::transition::defaultKnobs(kind);
+    transitionPage->setValues(v);
+    processor.setPage(ModulePluginProcessor::Page::Transition);
+    applyPage();
+    transitionPage->pressGenerate(); // capture the last bars now, a new seed
+}
+
 void ModulePluginEditor::selectSoftwareRenderer()
 {
    #if JUCE_WINDOWS
@@ -457,6 +547,8 @@ void ModulePluginEditor::resized()
         panel->setBounds(getLocalBounds());
     if (simplePage != nullptr)
         simplePage->setBounds(getLocalBounds());
+    if (transitionPage != nullptr)
+        transitionPage->setBounds(getLocalBounds());
     if (presets != nullptr && panel != nullptr)
         if (auto* target = dynamic_cast<ui::HelpTarget*>(panel.get()))
             presets->placeOnStage(target->contentBounds());

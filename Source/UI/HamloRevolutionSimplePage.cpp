@@ -26,7 +26,8 @@ juce::Rectangle<float> fillRect(int f) { return { 60.0f + 96.0f * static_cast<fl
 juce::Rectangle<float> targetRect(int t) { return { 640.0f + 126.0f * static_cast<float>(t), 556.0f, 114.0f, 40.0f }; }
 const juce::Point<float> kGenerate { 150.0f, 672.0f };
 const juce::Rectangle<float> kLock { 250.0f, 650.0f, 140.0f, 44.0f };
-const juce::Rectangle<float> kInfoLcd { 430.0f, 634.0f, 710.0f, 76.0f };
+const juce::Rectangle<float> kInfoLcd { 700.0f, 634.0f, 440.0f, 76.0f };
+const juce::Rectangle<float> kRise { 430.0f, 650.0f, 120.0f, 44.0f }, kFill { 562.0f, 650.0f, 120.0f, 44.0f }; // the transition page
 constexpr float kPreviewY = 752.0f, kPreviewRow = 44.0f, kCellX = 230.0f, kCellPitch = 56.0f;
 
 struct KnobInfo
@@ -165,10 +166,12 @@ void HamloRevolutionSimplePage::paint(juce::Graphics& g)
         g.fillEllipse(kGenerate.x - 31.0f, kGenerate.y - 31.0f, 62.0f, 62.0f);
     }
     crtButton(g, kLock, values.lock ? "LOCKED" : "LOCK", values.lock);
+    crtButton(g, kRise, "RISE", false);
+    crtButton(g, kFill, "FILL", false);
     const juce::String line1 = juce::String(simple::genreName(values.shownGenre)) + "  /  " + simple::intentName(values.shownIntent) + "  /  AMOUNT "
                                + juce::String(juce::roundToInt(100.0 * values.knobs[Amount])) + " %";
-    lcdText(g, kInfoLcd.withHeight(kInfoLcd.getHeight() * 0.5f).translated(0.0f, 4.0f), line1, 16.0f);
-    lcdText(g, kInfoLcd.withTrimmedTop(kInfoLcd.getHeight() * 0.5f).translated(0.0f, -4.0f), values.source, 14.0f);
+    lcdText(g, kInfoLcd.withHeight(kInfoLcd.getHeight() * 0.5f).translated(0.0f, 4.0f), line1, 14.0f);
+    lcdText(g, kInfoLcd.withTrimmedTop(kInfoLcd.getHeight() * 0.5f).translated(0.0f, -4.0f), values.source, 11.5f);
 
     // the preview: what the generator wrote (TIME / GLITCH actions, the levels of the others), the band, the play head
     for (int l = 0; l < rev::kLanes; ++l)
@@ -220,6 +223,10 @@ juce::String HamloRevolutionSimplePage::helpKeyAt(juce::Point<float> local) cons
         return "simpleGenerate";
     if (kLock.contains(d))
         return "simpleLock";
+    if (kRise.contains(d))
+        return "simpleRise";
+    if (kFill.contains(d))
+        return "simpleFill2";
     for (int i = 0; i < simple::kGenres; ++i)
         if (genreRect(i).contains(d))
             return "simpleGenre";
@@ -252,6 +259,12 @@ void HamloRevolutionSimplePage::pressConnect()
 {
     if (onConnect)
         onConnect();
+}
+
+void HamloRevolutionSimplePage::pressTransition(int kind)
+{
+    if (onTransition)
+        onTransition(kind);
 }
 
 void HamloRevolutionSimplePage::pressAdvanced()
@@ -320,6 +333,10 @@ void HamloRevolutionSimplePage::mouseDown(const juce::MouseEvent& e)
         return pressGenerate();
     if (kLock.contains(d))
         return toggleLock();
+    if (kRise.contains(d))
+        return pressTransition(0);
+    if (kFill.contains(d))
+        return pressTransition(1);
     for (int i = 0; i < simple::kGenres; ++i)
         if (genreRect(i).contains(d))
             return chooseGenre(i);

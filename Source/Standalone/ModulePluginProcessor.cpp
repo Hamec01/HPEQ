@@ -1,4 +1,6 @@
 #include "Standalone/ModulePluginProcessor.h"
+
+#include <juce_audio_formats/juce_audio_formats.h>
 #include "Core/ModulePresets.h"
 #include "Core/RevolutionPresets.h"
 
@@ -309,6 +311,12 @@ void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSi
     snapshot.mix.slots[0] = currentSlot(isModuleOn());
     engine.publish(snapshot);
     engine.update();
+    if (kind == ModuleKind::Revolution)
+    {
+        // RISE / FILL: 20 s of input (4 bars down to 48 BPM)
+        captureRing.setSize(2, static_cast<int>(std::ceil(20.0 * sampleRate)), false, true, false);
+        captureWritten.store(0);
+    }
 }
 
 bool ModulePluginProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
@@ -395,6 +403,26 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     engine.update();
     const int extraWetDelay = juce::jmax(0, fixedLatency - engine.getLatencySamples());
     const auto transport = currentTransport();
+    if (kind == ModuleKind::Revolution && captureRing.getNumSamples() > 0)
+    {
+        // RISE / FILL: the input as it came in, and where this block sits in the bar
+        captureSequence.fetch_add(1);
+        const long long written = captureWritten.load();
+        anchorSample.store(written);
+        anchorPpq.store(transport.hasPosition ? transport.ppqAtBlockStart : 0.0);
+        anchorBpm.store(transport.bpm);
+        anchorPlaying.store(transport.playing && transport.hasPosition);
+        const int size = captureRing.getNumSamples();
+        for (int i = 0; i < samples;)
+        {
+            const int at = static_cast<int>((written + i) % size), count = juce::jmin(samples - i, size - at);
+            for (int ch = 0; ch < 2; ++ch)
+                captureRing.copyFrom(ch, at, buffer, juce::jmin(ch, juce::jmax(0, channels - 1)), i, count);
+            i += count;
+        }
+        captureWritten.store(written + samples);
+        captureSequence.fetch_add(1);
+    }
 
     for (int start = 0; start < samples; start += maximumBlockSize)
     {
@@ -425,6 +453,149 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
                 wet[channel][i] = dryPointers[channel][i] + amount * (wet[channel][i] - dryPointers[channel][i]);
         }
     }
+    // RISE / FILL preview: the clip replaces the output until it ends
+    if (previewOn.load())
+    {
+        const int index = clipActive.load();
+        clipReading.store(index);
+        const auto& clip = clips[static_cast<size_t>(index)];
+        int pos = previewPos.load();
+        for (int i = 0; i < samples; ++i, ++pos)
+            for (int channel = 0; channel < channels; ++channel)
+                buffer.setSample(channel, i, pos < clip.getNumSamples() ? clip.getSample(juce::jmin(channel, clip.getNumChannels() - 1), pos) : 0.0f);
+        previewPos.store(pos);
+        if (pos >= clip.getNumSamples())
+            previewOn.store(false);
+        clipReading.store(-1);
+    }
+}
+
+juce::File ModulePluginProcessor::rendersFolder()
+{
+    return juce::File::getSpecialLocation(juce::File::userDocumentsDirectory).getChildFile("HamloProd").getChildFile("HamloRevolution").getChildFile("Renders");
+}
+
+bool ModulePluginProcessor::captureLastBars(int bars, juce::AudioBuffer<float>& out, double& bpm, bool& aligned, bool& complete) const
+{
+    const int size = captureRing.getNumSamples();
+    if (size == 0)
+        return false;
+    long long written = 0, anchor = 0;
+    double ppq = 0.0;
+    bool playing = false;
+    for (int attempt = 0; attempt < 100; ++attempt) // a consistent read of the newest block's position
+    {
+        const int before = captureSequence.load();
+        if ((before & 1) != 0)
+        {
+            juce::Thread::yield();
+            continue;
+        }
+        written = captureWritten.load();
+        anchor = anchorSample.load();
+        ppq = anchorPpq.load();
+        bpm = anchorBpm.load();
+        playing = anchorPlaying.load();
+        if (captureSequence.load() == before)
+            break;
+    }
+    if (written == 0)
+        return false;
+    const double sr = currentSampleRate.load(), barSamples = 4.0 * 60.0 / std::max(20.0, bpm) * sr;
+    const auto length = static_cast<long long>(std::llround(bars * barSamples));
+    long long end = written;
+    aligned = false;
+    if (playing)
+    {
+        // the last bar line at or before the end of what was written (a bar that just ended counts)
+        const double endPpq = ppq + static_cast<double>(written - anchor) * bpm / (60.0 * sr);
+        const double barPpq = 4.0 * std::floor(endPpq / 4.0 + 1.0e-9);
+        end = anchor + static_cast<long long>(std::llround((barPpq - ppq) * 60.0 / bpm * sr));
+        aligned = end > 0 && end <= written;
+        if (!aligned)
+            end = written;
+    }
+    out.setSize(2, static_cast<int>(length), false, true, false);
+    out.clear();
+    const long long start = end - length, oldest = std::max(0LL, written - size + 1);
+    complete = start >= oldest;
+    for (long long i = std::max(start, oldest); i < end; ++i)
+        for (int ch = 0; ch < 2; ++ch)
+            out.setSample(ch, static_cast<int>(i - start), captureRing.getSample(ch, static_cast<int>(i % size)));
+    return true;
+}
+
+ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int transitionKind, int bars, const std::array<double, 4>& knobs,
+                                                                       bool newCapture, bool newSeed)
+{
+    auto t = lastTransition();
+    auto& s = t.settings;
+    s.kind = transitionKind;
+    s.bars = bars == 1 || bars == 4 ? bars : 2;
+    s.knobs = knobs;
+    s.sampleRate = currentSampleRate.load();
+    if (newSeed || !t.valid)
+        s.seed = revolution::mix64(s.seed + static_cast<std::uint64_t>(juce::Time::getHighResolutionTicks()));
+    if (newCapture || !t.valid || transitionSource.getNumSamples() != dsp::transition::lengthSamples(s))
+    {
+        double bpm = getHostBpm();
+        bool aligned = false, complete = false;
+        if (!captureLastBars(s.bars, transitionSource, bpm, aligned, complete))
+            transitionSource.setSize(2, 0);
+        s.bpm = bpm;
+        t.aligned = aligned;
+        t.complete = complete;
+    }
+    const auto clip = dsp::transition::render(transitionSource, s);
+    // write the WAV (24-bit, the session rate): the page drags this file into the DAW
+    const auto folder = rendersOverride != juce::File() ? rendersOverride : rendersFolder();
+    folder.createDirectory();
+    const auto name = juce::String(transitionKind == dsp::transition::Rise ? "Rise" : "Fill") + "_" + juce::String(juce::roundToInt(s.bpm)) + "bpm_"
+                      + juce::String(s.bars) + "bars_" + juce::String::toHexString(static_cast<juce::int64>(s.seed & 0xffffffu)) + ".wav";
+    t.file = folder.getChildFile(name);
+    t.file.deleteFile();
+    {
+        juce::WavAudioFormat wav;
+        auto stream = t.file.createOutputStream();
+        if (stream != nullptr)
+        {
+            const auto options = juce::AudioFormatWriterOptions {}.withSampleRate(s.sampleRate).withNumChannels(2).withBitsPerSample(24);
+            std::unique_ptr<juce::OutputStream> owned(stream.release());
+            if (auto writer = wav.createWriterFor(owned, options))
+                writer->writeFromAudioSampleBuffer(clip, 0, clip.getNumSamples());
+        }
+    }
+    // the clip for the preview: the buffer the audio thread is not playing
+    setPreview(false);
+    const int next = 1 - clipActive.load();
+    while (clipReading.load() == next)
+        juce::Thread::yield();
+    clips[static_cast<size_t>(next)].makeCopyOf(clip);
+    clipActive.store(next);
+    t.valid = true;
+    const juce::ScopedLock lock(revolutionLock);
+    transitionState = t;
+    return t;
+}
+
+ModulePluginProcessor::Transition ModulePluginProcessor::lastTransition() const
+{
+    const juce::ScopedLock lock(revolutionLock);
+    return transitionState;
+}
+
+juce::AudioBuffer<float> ModulePluginProcessor::transitionClip() const
+{
+    juce::AudioBuffer<float> copy;
+    copy.makeCopyOf(clips[static_cast<size_t>(clipActive.load())]);
+    return copy;
+}
+
+void ModulePluginProcessor::setPreview(bool on) noexcept
+{
+    if (on)
+        previewPos.store(0);
+    previewOn.store(on);
 }
 
 double ModulePluginProcessor::getTailLengthSeconds() const
@@ -493,7 +664,7 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
                     writeScene(*child, getScene(s));
                 }
             // HPDG Link: on / off and which HPDG (its instance id, kept in HPDG's project too)
-            e->setAttribute("mode", getPage() == Page::Simple ? "simple" : "advanced");
+            e->setAttribute("mode", getPage() == Page::Advanced ? "advanced" : "simple"); // TRANSITION reopens on SIMPLE
             e->setAttribute("hpdgLink", hpdgLink.isConnected() ? 1 : 0);
             e->setAttribute("hpdgId", juce::String::toHexString(static_cast<juce::int64>(hpdgLink.getInstanceId())));
         }

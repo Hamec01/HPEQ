@@ -8,6 +8,7 @@
 #include "Core/Revolution.h"
 #include "Core/RevolutionPresets.h"
 #include "Core/RevolutionSimple.h"
+#include "DSP/TransitionRender.h"
 #include "DSP/DelayLine.h"
 #include "DSP/LayerEngine.h"
 #include "DSP/Ramp.h"
@@ -89,9 +90,30 @@ public:
     // R4: the SIMPLE page. Its settings are the simple* parameters; GENERATE writes the shown scene and the lane
     // parameters from the generator (Core/RevolutionSimple). Linked to HPDG, a new HPDG pattern regenerates (not when
     // LOCK is on); a 4 Hz message-thread timer looks for one.
-    enum class Page { Simple, Advanced };
-    Page getPage() const noexcept { return page.load() == 0 ? Page::Simple : Page::Advanced; }
-    void setPage(Page p) noexcept { page.store(p == Page::Simple ? 0 : 1); }
+    enum class Page { Simple, Advanced, Transition };
+    Page getPage() const noexcept { return static_cast<Page>(page.load()); }
+    void setPage(Page p) noexcept { page.store(static_cast<int>(p)); }
+
+    // RISE / FILL (docs/RISE_FILL.md): the last N bars heard (bar-aligned while playing) rendered into a transition,
+    // written as a WAV for dragging into the DAW, and previewed through the plug-in's output.
+    struct Transition
+    {
+        dsp::transition::Settings settings;
+        bool aligned = false, complete = false; // the capture: on the bar line / the whole N bars were heard
+        juce::File file;
+        bool valid = false;
+    };
+    // GENERATE on the page: capture now (newCapture) and / or a new seed, render, write the WAV
+    Transition makeTransition(int kind, int bars, const std::array<double, 4>& knobs, bool newCapture, bool newSeed);
+    Transition lastTransition() const;
+    juce::AudioBuffer<float> transitionClip() const; // a copy for the page's waveform
+    // the input of the last N bars: bar-aligned when playing, else the latest audio; false when nothing was heard
+    bool captureLastBars(int bars, juce::AudioBuffer<float>& out, double& bpm, bool& aligned, bool& complete) const;
+    void setPreview(bool on) noexcept;
+    bool isPreviewing() const noexcept { return previewOn.load(); }
+    int previewPosition() const noexcept { return previewPos.load(); }
+    static juce::File rendersFolder();
+    void setRendersFolder(const juce::File& f) { rendersOverride = f; } // tests: not Documents
     void generateSimple(bool newSeed);
     void simpleEdited();   // a SIMPLE setting changed: regenerate unless LOCK
     // GEN on a SHAPE / THROW lane (ADVANCED): the generator's steps for that lane (SIMPLE's settings, a new seed per
@@ -135,6 +157,21 @@ private:
     int sceneParameterIndex = -1;
     hamlo::link::Client hpdgLink;
     std::atomic<int> page { 0 };
+    // RISE / FILL: the input ring and the position of its newest block (a seqlock: odd while the audio thread writes)
+    juce::AudioBuffer<float> captureRing;
+    std::atomic<long long> captureWritten { 0 };
+    std::atomic<int> captureSequence { 0 };
+    std::atomic<long long> anchorSample { 0 };
+    std::atomic<double> anchorPpq { 0.0 }, anchorBpm { 120.0 };
+    std::atomic<bool> anchorPlaying { false };
+    // the clip: two buffers, the audio thread plays `clipActive` from `previewPos`
+    std::array<juce::AudioBuffer<float>, 2> clips;
+    std::atomic<int> clipActive { 0 }, clipReading { -1 };
+    std::atomic<bool> previewOn { false };
+    std::atomic<int> previewPos { 0 };
+    juce::AudioBuffer<float> transitionSource; // the capture the knobs re-render (message thread)
+    Transition transitionState;               // revolutionLock
+    juce::File rendersOverride;
     std::uint32_t laneGenerations = 0;
     revolution::simple::Result simpleResult; // revolutionLock
     struct Follower;

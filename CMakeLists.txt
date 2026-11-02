@@ -70,10 +70,12 @@ add_library(HamloRevolution_Shared STATIC
     Source/UI/HamloRedWallPanel.cpp
     Source/UI/HamloRevolutionPanel.cpp
     Source/UI/HamloRevolutionSimplePage.cpp
+    Source/UI/HamloRevolutionTransitionPage.cpp
     Source/UI/RevolutionHelp.cpp
     Source/Core/Revolution.cpp
     Source/Core/RevolutionSimple.cpp
     Source/Core/RevolutionPresets.cpp
+    Source/DSP/TransitionRender.cpp
     Source/Link/HamloLinkProtocol.cpp
     Source/Link/HamloLinkClient.cpp
     Source/UI/HamloUdarnikPanel.cpp
@@ -138,7 +140,7 @@ target_link_libraries(HamloRevolution
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp
+        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp Tests/TransitionTests.cpp
             Source/DSP/LayerSnapshot.cpp Source/Core/FxProjectState.cpp) # HPEQ's slot mapping: the reference of V1
     else()
         add_executable(HamloRevolution_Snapshot Tests/SnapshotMain.cpp)

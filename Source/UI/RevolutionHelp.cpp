@@ -26,6 +26,26 @@ juce::String revolutionHelp(const juce::String& key)
         { "simpleGenerate", "GENERATE: a new pattern (a new seed). Unlinked, it also takes the hits and timing the plug-in heard "
                             "from the input." },
         { "advancedPage", "ADVANCED: the full editor. It shows exactly what SIMPLE wrote, to change by hand." },
+        { "simpleRise", "RISE: a riser for a transition, made from the last 1 / 2 / 4 bars this track played - preview it, then drag the WAV "
+                        "into the DAW." },
+        { "simpleFill2", "FILL: a fill (chops, a roll into the downbeat, a reverse or a tape stop) made from the last bars - preview, drag "
+                         "the WAV into the DAW." },
+        { "transitionBack", "BACK: to the SIMPLE page." },
+        { "transitionKind", "RISE builds up into the next downbeat (roll, pitch, reverse swell, filter); FILL re-cuts the last bar and rolls "
+                            "into the downbeat." },
+        { "transitionBars", "BARS: how many of the last bars are used - and how long the transition is." },
+        { "transitionRise0", "PITCH: how far the roll climbs - up to an octave at 100 %." },
+        { "transitionRise1", "ROLL: the main motion - the last beat repeated at 1/4, 1/8, 1/16, 1/32 into the downbeat." },
+        { "transitionRise2", "SWELL: the last bar reversed through a long reverb - a swell into the end." },
+        { "transitionRise3", "SWEEP: a rising, resonant high pass, the level and the width opening towards the end." },
+        { "transitionFill0", "CHOP: how much the last bar is re-cut (blocks of 3 + 3 + 2 eighths from other places in the bar)." },
+        { "transitionFill1", "ROLL: the last beat rolled 1/8 -> 1/16 -> 1/32, released on the downbeat." },
+        { "transitionFill2", "REVERSE: how likely the last eighth plays backwards." },
+        { "transitionFill3", "STOP: how likely the last eighth ends in a tape stop." },
+        { "transitionGenerate", "GENERATE: take the last bars again and make a new variation." },
+        { "transitionPlay", "PLAY / STOP: hear the transition through the plug-in's output." },
+        { "transitionShowFile", "SHOW FILE: the WAV in Explorer (Documents / HamloProd / HamloRevolution / Renders), if dragging does not work in your host." },
+        { "transitionWave", "Drag the wave into your DAW: it drops the WAV (24-bit, the session rate) where you let go." },
         { "simplePage", "SIMPLE: back to the five-knob page (it rewrites the pattern when you turn something there)." },
         { "preview", "What the generator wrote: TIME / GLITCH actions and the levels of the other lanes, with each lane's band." },
         // ---- ADVANCED: global

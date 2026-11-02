@@ -1,6 +1,7 @@
 // HamloRevolution_Snapshot <out.png> [program] [scale] [generate]: the page (the editor with the preset screen) at its opening size x scale
 // (R3: the page opens at 75 %; scale 1.3333 = the design size 1180 x 1280).
 
+#include <cmath>
 #include <memory>
 
 #include <juce_audio_processors/juce_audio_processors.h>
@@ -23,6 +24,28 @@ int main(int argc, char* argv[])
         p.generateSimple(false);
     if (argc > 4 && juce::String(argv[4]).contains("advanced")) // R6: the ADVANCED page
         p.setPage(hpeq::standalone::ModulePluginProcessor::Page::Advanced);
+    if (argc > 4 && juce::String(argv[4]).contains("transition")) // RISE / FILL: 4 bars of a beat heard, a riser made
+    {
+        p.prepareToPlay(48000.0, 512);
+        juce::AudioBuffer<float> block(2, 512);
+        juce::MidiBuffer midi;
+        juce::Random rng(3);
+        for (int start = 0; start < 4 * 96000; start += 512)
+        {
+            for (int i = 0; i < 512; ++i)
+            {
+                const int n = start + i, inBeat = n % 24000;
+                const double t = inBeat / 48000.0, v = 0.7 * std::exp(-t / 0.08) * std::sin(2.0 * 3.14159265 * (50.0 + 90.0 * std::exp(-t / 0.012)) * t)
+                                                       + 0.15 * std::exp(-(n % 12000) / 600.0) * (2.0 * rng.nextDouble() - 1.0);
+                block.setSample(0, i, static_cast<float>(v));
+                block.setSample(1, i, static_cast<float>(v));
+            }
+            p.processBlock(block, midi);
+        }
+        p.setRendersFolder(juce::File::getSpecialLocation(juce::File::tempDirectory).getChildFile("HamloRevolutionSnapshot"));
+        p.makeTransition(0, 2, { 0.6, 0.8, 0.5, 0.7 }, true, true);
+        p.setPage(hpeq::standalone::ModulePluginProcessor::Page::Transition);
+    }
 #endif
     std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
     e->setSize(p.getSpec().editorWidth, p.getSpec().editorHeight);

@@ -45,11 +45,13 @@ public:
     std::function<void()> onKnobGestureEnd;
     std::function<void(const char* id, int value)> onChoice; // simpleGenre, simpleFill, simpleTarget, simpleLock
     std::function<void()> onGenerate, onAdvanced, onConnect, onConnectMenu;
+    std::function<void(int kind)> onTransition; // [RISE] = 0, [FILL] = 1: the transition page
 
     // the controls, also for tests
     void pressGenerate();
     void pressConnect();
     void pressAdvanced();
+    void pressTransition(int kind);
     void chooseGenre(int);
     void chooseFill(int);
     void chooseTarget(int);
