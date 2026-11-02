@@ -1,5 +1,6 @@
 #include "Standalone/ModuleVariant.h"
 #include "DSP/LegacyGateProcessor.h"
+#include "Standalone/ModernParameters.h"
 #include <cmath>
 namespace hpeq::standalone
 {
@@ -91,6 +92,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout(Module
         layout.add(std::make_unique<juce::AudioParameterFloat>(id, p.name, range, p.defaultValue, attributes));
     }
     layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID { "bypass", 1 }, "Bypass", false));
+    modern::append(layout);
     return layout;
 }
 

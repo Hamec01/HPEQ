@@ -1,0 +1,24 @@
+Random seed: 0x3dd352d
+-----------------------------------------------------------------
+Starting tests in: S3 integration / External key may share the main input memory...
+!!! Test 2 failed: main1 key1
+!!! Test 5 failed: main1 key2
+!!! Test 8 failed: main2 key1
+!!! Test 11 failed: main2 key2
+
+FAILED!!  4 tests failed, out of a total of 12
+
+-----------------------------------------------------------------
+Starting tests in: S3 integration / Host direct bypass preserves fixed PDC and allocates nothing...
+Completed tests in S3 integration / Host direct bypass preserves fixed PDC and allocates nothing
+-----------------------------------------------------------------
+Starting tests in: S3 integration / Every appended parameter retains its quantized state...
+Completed tests in S3 integration / Every appended parameter retains its quantized state
+-----------------------------------------------------------------
+Starting tests in: S3 integration / Full modern serialized bytes remain stable...
+Completed tests in S3 integration / Full modern serialized bytes remain stable
+-----------------------------------------------------------------
+Starting tests in: S3 integration / New nonfinite, out-of-range and wrong-root states are contained...
+Completed tests in S3 integration / New nonfinite, out-of-range and wrong-root states are contained
+
+HamloZastava_Tests: 88 expectations passed, 4 failed

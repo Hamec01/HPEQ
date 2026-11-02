@@ -2,3 +2,5 @@
 docs/reports/s1/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/reports/s1/validators*/** -whitespace
 docs/reports/s2/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/reports/s3/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/reports/s3/validators*/** -whitespace

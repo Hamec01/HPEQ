@@ -48,10 +48,12 @@ add_library(HamloZastava_Shared STATIC
     Source/DSP/HamloZastava.cpp
     Source/DSP/LegacyGateProcessor.cpp
     Source/DSP/LegacyZastavaCore.cpp
+    Source/DSP/V2Gate.cpp
     Source/UI/BlackSteel.cpp
     Source/UI/HamloZastavaPanel.cpp
     Source/UI/PresetScreen.cpp
     Source/Standalone/ModuleVariant.cpp
+    Source/Standalone/ModernParameters.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
 )
@@ -110,7 +112,7 @@ target_link_libraries(HamloZastava
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloZastava_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/IsolationTests.cpp Tests/AllocationAudit.cpp)
+        add_executable(HamloZastava_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/IsolationTests.cpp Tests/S3IntegrationTests.cpp Tests/AllocationAudit.cpp)
     else()
         add_executable(HamloZastava_Snapshot Tests/SnapshotMain.cpp)
     endif()
@@ -132,6 +134,7 @@ add_test(NAME HamloZastava_Tests COMMAND HamloZastava_Tests)
 add_custom_target(HamloZastava_S1Identity
     COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/ZastavaS1Identity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteS1Identity.cmake")
 add_dependencies(HamloZastava_Shared HamloZastava_S1Identity)
+add_dependencies(HamloZastava_Shared HamloZastava_S2Identity)
 add_executable(HamloZastava_CompatLab Tests/ZastavaLabMain.cpp)
 target_compile_definitions(HamloZastava_CompatLab PRIVATE HPEQ_MODULE_KIND=6 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
 target_link_libraries(HamloZastava_CompatLab PRIVATE HamloZastava_Shared HamloZastava_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
@@ -187,3 +190,38 @@ if(HAMLO_ZASTAVA_BUILD_S2_REFERENCE)
     add_dependencies(HamloZastava_V2Reference HamloZastava_S2ReferenceIdentity)
     target_include_directories(HamloZastava_V2Reference BEFORE PRIVATE "${ZASTAVA_S2_REFERENCE}/Source" Tests "${CMAKE_CURRENT_BINARY_DIR}/s2_reference")
 endif()
+
+# S3 host integration uses the same test sources for archived M0 and current.
+foreach(pair Host Legacy)
+    if(pair STREQUAL "Host")
+        set(driver Tests/S3HostLabMain.cpp)
+    else()
+        set(driver Tests/S3LegacyLabMain.cpp)
+    endif()
+    foreach(flavour Current Reference)
+        if(flavour STREQUAL "Reference")
+            if(NOT HAMLO_ZASTAVA_BUILD_M0_REFERENCE)
+                continue()
+            endif()
+            set(source_root "${ZASTAVA_M0_ROOT}")
+            set(shared HamloZastava_M0Shared)
+        else()
+            set(source_root "${CMAKE_CURRENT_SOURCE_DIR}")
+            set(shared HamloZastava_Shared)
+        endif()
+        set(target HamloZastava_S3${pair}${flavour})
+        set(identity_dir "${CMAKE_CURRENT_BINARY_DIR}/s3_${flavour}")
+        add_custom_target(${target}Identity
+            COMMAND "${CMAKE_COMMAND}" -E make_directory "${identity_dir}"
+            COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${source_root}" "-DMETHOD_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${identity_dir}/ZastavaS3Identity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteS3Identity.cmake")
+        add_executable(${target} EXCLUDE_FROM_ALL ${driver} Tests/AllocationAudit.cpp)
+        if(pair STREQUAL "Host")
+            target_sources(${target} PRIVATE Source/DSP/V2Gate.cpp)
+            add_dependencies(${target} HamloZastava_S2Identity)
+        endif()
+        add_dependencies(${target} ${target}Identity)
+        target_include_directories(${target} BEFORE PRIVATE "${source_root}/Source" "${identity_dir}" Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
+        target_compile_definitions(${target} PRIVATE HPEQ_MODULE_KIND=6 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+        target_link_libraries(${target} PRIVATE ${shared} HamloZastava_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
+    endforeach()
+endforeach()

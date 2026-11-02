@@ -1,23 +1,29 @@
 # HamloZastava
 
-Standalone gate/expander/duck processor, version0.1.0 with S1 isolation complete.
-Production uses ten Zastava-owned translation units, without LayerEngine, project
+Standalone gate/expander/duck processor, internal version0.1.0 with S3 host
+integration complete. Production uses twelve Zastava-owned translation units, without LayerEngine, project
 state or other effect/panel modules. Original15parameters+bypass, seven programs,
 state/class identity and5msPDC(240samples at48k) are preserved.
 
-Verified:229primary PCM/input-state cases plus458fresh/edited restored-state
+At S1,229primary PCM/input-state cases plus458fresh/edited restored-state
 observations match actual M0 exactly;127native checks, zero prepared audio
 allocations, pluginval5..10 and Steinberg537/537. Existing Black Steel and shared
 preset screen remain. See [S1 report](docs/reports/s1/REPORT.md) and its disclosed
 method corrections, including normalized-readback quirks of the original M0.
 
-The S2 offline V2 kernel implements Clean, Drum, Duck and Rhythm with separate
-Soft/Hard profiles, detector/key filters, lookahead and exact fixed PDC.
-Its paired laboratory passes 275 checks across 66 cases, including block
-determinism and a five-minute stress; eight owner-material A/B renders are
-prepared. [S2 measurements and limits](docs/reports/s2/REPORT.md).
-The production VST remains the accepted S1 Legacy build. V2 host/state/sidechain
-integration, QUICK/ADVANCED and 200 genre recipes are still required.
+The VST now connects Clean, Drum, Duck and Rhythm with separate Soft/Hard
+profiles, detector/key filters, lookahead, mono/stereo external key and fixed
+5msPDC. The new neutral startup is Clean with processing off. Old seven host
+programs retain their Legacy recipes. New parameters append after bypass;
+modern state/project restoration and host clock/bypass routing are verified.
+283host and219native checks pass, with229M0matches and fresh pluginval5..10 /
+Steinberg537/537. [S3 report and limits](docs/reports/s3/REPORT.md).
+
+The editor is still the old Legacy panel; it does not yet control new modes.
+QUICK/ADVANCED, detector audition and200genre recipes remain. This is an internal
+integration build, not a finished V2 release. The unchanged S2 kernel's offline
+275checks/five-minute stress and eight owner-material A/B renders are documented
+separately in [S2 measurements](docs/reports/s2/REPORT.md).
 [Scope](docs/ZASTAVA_V2_SCOPE.md), [handoff](docs/NEXT_STAGE.md).
 
 ```powershell
@@ -27,7 +33,7 @@ build/Release/HamloZastava_Tests.exe
 ```
 
 Bundle:build/HamloZastava_artefacts/Release/VST3/HamloZastava.vst3.
-No installer or installed plug-in change in S1. Frozen M0 lab is optional,
+No installer or installed plug-in change in S3. Frozen M0 lab is optional,
 EXCLUDE_FROM_ALL and requires local captured sources plus
 -DHAMLO_ZASTAVA_BUILD_M0_REFERENCE=ON. Normal builds do not need that archive.
 Product UI/documentation are English; chat with the owner is Russian.

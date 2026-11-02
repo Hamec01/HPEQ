@@ -6,7 +6,7 @@
 
 ---
 
-## Current project checkpoint - HamloZastava S2 (2026-11-02)
+## Current project checkpoint - HamloZastava S3 (2026-11-02)
 
 Owner approved all four V2roles(cleanup,drum tails,external-key ducking,rhythm)
 and separate soft/hard profiles. Decisions settled, do not ask again.
@@ -40,12 +40,22 @@ Reports:docs/reports/s2/REPORT.md,acceptance.json,before_v3/after_v3.json.
 Initial49case method missed a real queue-capacity fault; expanded66case method
 detects all4 archived regressions. Final comment-only revision recaptured both
 sides,132PCM files unchanged; no targets loosened. Retain all prior evidence.
-New engine is not wired to VST/editor/state yet. Shipping S1DLL remains exact.
-Next:S3 host adapter, appended IDs/state/program restoration and external bus;
-then QUICK/ADVANCED,200genre presets and final VST/FL acceptance. No scope
-question pending. Preserve shared PresetScreen. Source/method changes invalidate
-dependent caches. One benign C4244 (float fill with literal0) disclosed in report.
-No active jobs. S2commit follows handoff; verify git log/status on continuation.
+S3 connects the unchanged kernel to VST:61new IDs after original16 (77total),
+optional mono/stereo External Key, clock, fixedPDC and host bypass. Modern startup
+is Clean/processing off. Seven original programs retain Legacy. Full state/schema1
+and prepared/fresh restoration pass. Legacy old encoding is retained when modern
+controls are neutral; old-state load clears all new controls. Grid canonicalization
+fixes17initial new-state byte failures without changing Legacy or tolerances.
+Prepared key copy fixes4main/key alias regressions; their failing binary is saved.
+Final283host/219native,229primary+458restored exact M0, pluginval5..10/Steinberg537.
+Reports:docs/reports/s3/REPORT.md,acceptance.json,before_v3,after_host_v4,
+after_legacy_v4,native_v3,validators_v3. Earlier failed/intermediate evidence stays.
+DLL SHA:fe8d11b5e7b2ae908b988c6a3a130b5a26b3934c9907ffebdbbb8e427cdd03f3.
+Internal version0.1.0;12production units,3304object bytes (not heap footprint).
+Editor still controls Legacy only. Next:S4modern QUICK/ADVANCED/help/key audition;
+then200genre recipes/207host programs and final VST/FL release. No scope question
+pending. Preserve shared PresetScreen. Source/method changes invalidate caches.
+No active jobs. S3commit follows handoff; verify git log/status on continuation.
 
 ## 1. Продукт и владелец
 
