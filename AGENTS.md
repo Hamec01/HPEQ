@@ -6,6 +6,17 @@
 
 ---
 
+## Current project checkpoint - HamloZastava (2026-11-02)
+
+Owner selected Zastava. Current audit:docs/ZASTAVA_V2_AUDIT.md; continuation:
+docs/NEXT_STAGE.md. Section9 below is historical and stale:do not resume Mag or
+Revolution tasks from it. Mag/Verb/Echo/Shirota are complete per owner/history;
+other products/HPEQ untouched. Work only here, no subagents, push/subtree or
+model switch. VST-first; installer is not an immediate requirement. Follow the
+standing efficient-staged-work skill. Existing binary71/71 checks; no new DSP
+or source-fingerprinted clean build claimed. Scope questions pending; baseline/
+isolation can proceed independently. Preserve M0 before changing its sound.
+
 ## 1. Продукт и владелец
 
 - Владелец — продюсер (Boom Bap / Trap / Techno / DnB), автор HPDG (генератор барабанов, `C:\DRUMENGINE`) и HPEQ
