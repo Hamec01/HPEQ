@@ -202,7 +202,15 @@ namespace `hpeq::ui`) в `Source/Standalone/ModulePluginEditor.*`. HamloFader: �
 Первый шаг V2 для каждого из них — **сузить `Source/`** до своего модуля (как HamloMag: свой `<X>Settings.h` с HPEQ-индексами,
 свой процессор без LayerEngine, своя `Parameters.h`), доказать бит-в-бит против текущей M0-сборки, и только потом эталоны и цели.
 
-### HamloRevolution — ещё не вынесен (план)
+### HamloRevolution — дизайн готов: `E:\HamloRevolution\docs\REVOLUTION_V2.md` и `docs\HPDG_LINK.md`
+
+Владелец (2026-11-02): не «эффект-скринсейвер», а ритмический мульти-эффект-секвенсор (ориентиры ShaperBox,
+Looperator, Effectrix — идеи, не копия). Нынешняя страница = режим ADVANCED; новый режим SIMPLE (GENRE, INTENT, AMOUNT,
+VARIATION, GROOVE, FILL, TARGET) и кнопка CONNECT TO HPDG (HPDG отдаёт темп, жанр, грув и паттерн через общий
+файл-слот с seqlock). Этапы R0 .. R6 — по одному на чат; цели V1 .. V14 зафиксированы до кода. Изменения в HPDG
+(`C:\DRUMENGINE`, публикатор ссылки) — отдельный коммит там и только с согласия владельца.
+
+#### R0 (M0) — техническая часть
 
 У Revolution нет модульного VST3, и одной правкой его не добавить: панель (`UI/HamloRevolutionPanel.*`) кроме ручек
 редактирует паттерн, «feel» и seed (`onPatternChange`, `onUpgrade`, `readStatus` — см. `E:\HPEQ\Source\UI\NodeInspector.cpp`,
