@@ -1,0 +1,59 @@
+// HamloRevolution_Snapshot <out.png> [program] [scale] [generate]: the page (the editor with the preset screen) at its opening size x scale
+// (R3: the page opens at 75 %; scale 1.3333 = the design size 1180 x 1280).
+
+#include <cmath>
+#include <memory>
+
+#include <juce_audio_processors/juce_audio_processors.h>
+#include <juce_gui_basics/juce_gui_basics.h>
+
+#include "Standalone/ModulePluginEditor.h"
+#include "Standalone/ModulePluginProcessor.h"
+
+int main(int argc, char* argv[])
+{
+    juce::ScopedJuceInitialiser_GUI gui;
+    if (argc < 2)
+        return 2;
+    auto owned = std::make_unique<hpeq::standalone::ModulePluginProcessor>(static_cast<hpeq::standalone::ModuleKind>(HPEQ_MODULE_KIND)); // large: heap
+    auto& p = *owned;
+    p.setCurrentProgram(argc > 2 ? juce::String(argv[2]).getIntValue() : 1);
+#if HPEQ_MODULE_KIND == 9
+    // R4: "generate" = the SIMPLE page with a generated pattern
+    if (argc > 4 && juce::String(argv[4]).contains("generate"))
+        p.generateSimple(false);
+    if (argc > 4 && juce::String(argv[4]).contains("advanced")) // R6: the ADVANCED page
+        p.setPage(hpeq::standalone::ModulePluginProcessor::Page::Advanced);
+    if (argc > 4 && juce::String(argv[4]).contains("transition")) // RISE / FILL: 4 bars of a beat heard, a riser made
+    {
+        p.prepareToPlay(48000.0, 512);
+        juce::AudioBuffer<float> block(2, 512);
+        juce::MidiBuffer midi;
+        juce::Random rng(3);
+        for (int start = 0; start < 4 * 96000; start += 512)
+        {
+            for (int i = 0; i < 512; ++i)
+            {
+                const int n = start + i, inBeat = n % 24000;
+                const double t = inBeat / 48000.0, v = 0.7 * std::exp(-t / 0.08) * std::sin(2.0 * 3.14159265 * (50.0 + 90.0 * std::exp(-t / 0.012)) * t)
+                                                       + 0.15 * std::exp(-(n % 12000) / 600.0) * (2.0 * rng.nextDouble() - 1.0);
+                block.setSample(0, i, static_cast<float>(v));
+                block.setSample(1, i, static_cast<float>(v));
+            }
+            p.processBlock(block, midi);
+        }
+        p.setRendersFolder(juce::File::getSpecialLocation(juce::File::tempDirectory).getChildFile("HamloRevolutionSnapshot"));
+        p.makeTransition(0, 2, { 0.6, 0.8, 0.5, 0.7 }, true, true);
+        p.setPage(hpeq::standalone::ModulePluginProcessor::Page::Transition);
+    }
+#endif
+    std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
+    e->setSize(p.getSpec().editorWidth, p.getSpec().editorHeight);
+    const float scale = argc > 3 ? static_cast<float>(juce::String(argv[3]).getDoubleValue()) : 1.0f;
+    const auto image = e->createComponentSnapshot(e->getLocalBounds(), true, scale);
+    juce::File out = juce::File::getCurrentWorkingDirectory().getChildFile(argv[1]);
+    out.deleteFile();
+    juce::FileOutputStream stream(out);
+    juce::PNGImageFormat png;
+    return stream.openedOk() && png.writeImageToStream(image, stream) ? 0 : 1;
+}

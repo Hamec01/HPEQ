@@ -1,0 +1,171 @@
+#pragma once
+
+#include <array>
+#include <functional>
+
+#include <juce_gui_basics/juce_gui_basics.h>
+
+#include "UI/ModuleHelp.h"
+
+#include "Core/Revolution.h"
+#include "UI/BlackSteel.h"
+
+namespace hpeq::ui
+{
+// The Monsta FX slot as HamloRevolution (module pass 10), Black Steel, design coordinates 1180 x 700.
+// Top: nameplate, SEED counter with GENERATE (red) and NEW SEED, CHARACTER selector, module MIX, ON lamp.
+// Second row: ORDER (six serial orders) and GRID selectors, TRIPLET and SYNC / FREE levers, RATE (free
+// step length), STEPS, SWING, HUMAN, FADE knobs, status LCD. Then one row per engine (TIME, GLITCH,
+// MOTION): plate with ON lever, MIX and DEPTH knobs (MOTION: SMOOTH and the TARGET window too) and 16
+// step cells. A click on a TIME / GLITCH cell steps through its actions, right click picks one; MOTION
+// cells take a level from where they are clicked or dragged; shift-click locks a step (Generate keeps
+// it); right click on a plate: which actions Generate may use, clear, lock / unlock all. Projects saved
+// before this pass show the legacy M6 Monsta with an UPGRADE button (their sound is kept until then).
+// Pass 10b: STRETCH (TAPE / RHYTHM / CLEAN) under the TIME plate; LISTEN under the seed: GENERATE then
+// follows the attacks the engine heard on each step (shown faintly in the TIME cells), and that snapshot
+// is saved with the pattern.
+// Owner, 2026-10-26: each lane has GEN (a new pattern for this lane only) and LOCK (GENERATE keeps the lane:
+// every step of it locked); the SEED counter became a wave screen — input and output of the pattern cycle
+// per 1/8 step, the play head and the step grid, the seed written small in its corner.
+class HamloRevolutionPanel final : public juce::Component, public HelpTarget, public juce::TooltipClient, private juce::Timer
+{
+public:
+    enum Param { Mix, Rate, Steps, Swing, Humanize, Fade, TimeMix, TimeDepth, GlitchMix, GlitchDepth, MotionMix, MotionDepth, MotionSmooth,
+                 ShapeAMix, ShapeADepth, ShapeASmooth, ShapeARes, ShapeBMix, ShapeBDepth, ShapeBSmooth, ShapeBRes, BandLow, BandHigh,
+                 ThrowAMix, ThrowADepth, ThrowATail, ThrowATone, ThrowBMix, ThrowBDepth, ThrowBTail, ThrowBTone, NumParams };
+    enum Switch { Order, Character, Grid, Triplet, Free, TimeOn, GlitchOn, MotionOn, MotionTarget, Stretch, Listen,
+                  ShapeAOn, ShapeATarget, ShapeACurve, ShapeBOn, ShapeBTarget, ShapeBCurve,
+                  ThrowAOn, ThrowATarget, ThrowATime, ThrowANote, ThrowBOn, ThrowBTarget, ThrowBTime, ThrowBNote, GlitchEngine, NumSwitches };
+
+    struct Values
+    {
+        std::array<double, NumParams> knobs { 1.0, 125.0, 16.0, 0.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.6, 0.3,
+                                              1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 200.0, 2500.0,
+                                              1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5 };
+        std::array<int, NumSwitches> switches { 0, 1, 2, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 7, 0, 1, 2, 7, 0, 0 };
+        revolution::Pattern pattern;
+        revolution::Feel feel {}; // the LISTEN snapshot the pattern was generated from (all 0 = none)
+        juce::int64 seed = 1;
+        bool on = true;
+        bool legacy = false; // the slot still runs the M6 Monsta (no "mode")
+        // R1 (HamloRevolution plug-in): the lanes of the scene shown, which scene, which scenes are edited
+        revolution::Lanes lanes {};
+        int scene = 0;
+        std::array<bool, revolution::kScenes> sceneUsed { true };
+    };
+    struct Status
+    {
+        int step = -1;
+        bool warming = false;
+        std::array<float, revolution::kSteps> feel {}; // live attack strength per step, 0..1
+        std::array<float, 8 * revolution::kSteps> waveIn {}, waveOut {}; // peaks per 1/8 step (wave screen)
+    };
+
+    HamloRevolutionPanel();
+    juce::String helpKeyAt(juce::Point<float> local) const override; // HelpTarget: the control under a point
+    juce::Rectangle<float> contentBounds() const override;
+    juce::String getTooltip() override; // R6: the help text of the control under the mouse
+    ~HamloRevolutionPanel() override;
+
+    void setValues(const Values&); // from the project (no callbacks)
+    const Values& getValues() const noexcept { return values; }
+
+    std::function<void(Param)> onKnobGestureStart;
+    std::function<void(Param, double)> onKnobChange;
+    std::function<void()> onKnobGestureEnd;
+    std::function<void(Switch, int)> onSwitchChange;
+    std::function<void(bool)> onPowerChange;
+    // A new pattern (and seed), one undo step named `what`.
+    std::function<void(const revolution::Pattern&, juce::int64 seed, const revolution::Feel&, const juce::String& what)> onPatternChange;
+    std::function<void()> onUpgrade;
+    // R1: a lane's settings or steps 17 .. 32 changed; SCENE chosen / the scene shown copied to another / cleared.
+    std::function<void(const revolution::Lanes&, const juce::String& what)> onLanesChange;
+    std::function<void(int scene)> onSceneSelect;
+    std::function<void(int target)> onSceneCopyTo;
+    std::function<void()> onSceneClear;
+    std::function<void()> onSimple; // R4: back to the SIMPLE page
+    std::function<void(int lane)> onLevelLaneGenerate; // GEN on SHAPE A / B, THROW A / B
+    std::function<Status()> readStatus; // polled at 30 Hz
+
+    static double defaultFor(Param);
+    static juce::String format(Param, double);
+    static const char* keyFor(Param);  // "mix" for Mix (the module's mix)
+    static const char* keyFor(Switch);
+
+    // As the clicks on the page (tests, screenshots).
+    void pressGenerate();
+    void pressNewSeed();
+    void pressLaneGenerate(int engine); // GEN on a lane: only that lane gets a new pattern (unless locked)
+    void pressLaneLock(int engine);     // LOCK on a lane: every step of it locked / unlocked
+    static bool laneLocked(const revolution::Pattern&, int engine) noexcept;
+    void clickStep(int engine, int step, bool shift = false);
+    void setMotionLevel(int step, int level);
+    // R1, as the menus do (tests): lane settings, a step's probability code (step 0 .. 31), the cells' half, SCENE.
+    void setLaneLength(int engine, int length);
+    void setLaneRate(int engine, int rate);
+    void setLaneCondition(int engine, int condition);
+    void setStepProbability(int engine, int step, int code);
+    // R2: a level lane's step (MOTION, SHAPE A / B), a lane's band
+    void setLevel(int lane, int cell, int level);
+    void setLaneBand(int lane, int band);
+    // R6: a TIME / GLITCH cell set to a value (dragging across cells paints the first cell's new value; locked
+    // steps are skipped)
+    void paintStep(int engine, int cell, int value);
+    // GLITCH 2: the values a lane's cells take and their names (GLITCH in block mode: the block actions)
+    int actionCount(int engine) const noexcept;
+    juce::String actionName(int engine, int value) const;
+    juce::String actionShortName(int engine, int value) const;
+    // R3: a THROW lane's target window: click = next target, right click = TARGET / TIME / NOTE menu
+    void showThrowMenu(int lane);
+    void showSecondHalf(int engine, bool);
+    void selectScene(int scene);
+    void settleStatus(const Status&);
+
+    void paint(juce::Graphics&) override;
+    void resized() override;
+    void mouseDown(const juce::MouseEvent&) override;
+    void mouseDrag(const juce::MouseEvent&) override;
+    void mouseUp(const juce::MouseEvent&) override;
+    void mouseDoubleClick(const juce::MouseEvent&) override;
+    void mouseWheelMove(const juce::MouseEvent&, const juce::MouseWheelDetails&) override;
+
+private:
+    void timerCallback() override;
+    juce::AffineTransform toScreen() const;
+    juce::Point<float> toDesign(juce::Point<float>) const;
+    double normFor(Param) const;
+    double valueFor(Param, double norm) const;
+    void setKnob(Param, double value, bool notify);
+    void setSwitch(Switch, int value);
+    int knobAt(juce::Point<float>) const;
+    int selectorAt(juce::Point<float>) const;
+    bool stepAt(juce::Point<float>, int& engine, int& step) const;
+    void changePattern(const revolution::Pattern&, juce::int64 seed, const juce::String& what);
+    void generateWith(juce::int64 seed, const juce::String& what);
+    void showStepMenu(int engine, int step);
+    void showPlateMenu(int engine);
+    void showSceneMenu();
+    void changeLanes(const revolution::Lanes&, const juce::String& what);
+    int laneLength(int engine) const noexcept;
+    int cellIndex(int engine, int cell) const noexcept { return cell + (secondHalf[static_cast<size_t>(engine)] ? revolution::kSteps : 0); }
+    int cellValue(int engine, int index) const noexcept;
+    void renderStatic(juce::Graphics&) const;
+    void drawSelectors(juce::Graphics&) const;
+    void drawKnobs(juce::Graphics&) const;
+    void drawRows(juce::Graphics&) const;
+    void drawTop(juce::Graphics&) const;
+    void drawLegacy(juce::Graphics&) const;
+
+    Values values;
+    Status live;
+    juce::Image staticLayer;
+    float scale = 1.0f;
+    juce::Point<float> offset;
+    int dragKnob = -1, dragMotionStep = -1, dragLevelLane = -1;
+    int paintLane = -1, paintValue = 0, paintCell = -1; // R6: painting TIME / GLITCH cells
+    double dragStartNorm = 0.0;
+    float dragStartY = 0.0f;
+    int generateFlash = 0;
+    std::array<bool, revolution::kLanes> secondHalf {}; // the cells show steps 17 .. 32 (every lane: R2 indexed past kEngines)
+};
+} // namespace hpeq::ui
