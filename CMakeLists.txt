@@ -70,6 +70,8 @@ add_library(HamloRevolution_Shared STATIC
     Source/UI/HamloRedWallPanel.cpp
     Source/UI/HamloRevolutionPanel.cpp
     Source/Core/Revolution.cpp
+    Source/Link/HamloLinkProtocol.cpp
+    Source/Link/HamloLinkClient.cpp
     Source/UI/HamloUdarnikPanel.cpp
     Source/UI/HamloZastavaPanel.cpp
     Source/UI/HamloShirotaPanel.cpp
@@ -132,7 +134,7 @@ target_link_libraries(HamloRevolution
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp
+        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp
             Source/DSP/LayerSnapshot.cpp Source/Core/FxProjectState.cpp) # HPEQ's slot mapping: the reference of V1
     else()
         add_executable(HamloRevolution_Snapshot Tests/SnapshotMain.cpp)

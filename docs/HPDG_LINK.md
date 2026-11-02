@@ -25,6 +25,15 @@ Consistency: a **seqlock**. HPDG increments `sequence` to odd, writes the payloa
 the slot, then re-reads `sequence`: equal and even = a consistent copy, else retry (at most a few times, on a
 background thread). No locks, no waits on the audio threads.
 
+As built (2026-11-02): the mapping is Win32 (`CreateFileW` + `CreateFileMappingW`) with share read / write / delete on
+both sides - `juce::MemoryMappedFile`'s read-only mode does not share write access, so a reader could not open a slot
+HPDG has open; other platforms use `juce::MemoryMappedFile` read-write on both sides. HPDG publishes from a 4 Hz
+message-thread timer: the project is read (under its lock, microseconds) only when the processor's revision moved (every
+pattern rebuild) or a carried parameter moved; otherwise a heartbeat once a second. On close HPDG writes heartbeat 0
+and deletes the file. A duplicated HPDG (the DAW copied the track and its state) finds its id alive and takes a new one.
+Protocol code: `HamloLinkProtocol.{h,cpp}`, the same file in both repositories (HPDG `Source/Services`, here
+`Source/Link`).
+
 ## 3. Snapshot (little-endian, packed; version 1.0)
 
 | Field | Type | Meaning |
@@ -52,7 +61,7 @@ ticks (hats for rolls, the snare for stutters, the phrase end for fills).
 
 ## 4. Sides
 
-- **HPDG (`C:\DRUMENGINE`)**: `Source/Services/HamloLinkPublisher.{h,cpp}` - built from `PatternProject` on the message
+- **HPDG (`C:\DRUMENGINE`, commit 9790ce0)**: `Source/Services/HamloLinkPublisher.{h,cpp}` - built from `PatternProject` on the message
   thread after generate / mutate / parameter changes; a 1 s timer for the heartbeat; the instance id in the plug-in
   state; a small "LINK" indicator. Tests: the snapshot equals the project (every field), the seqlock under a reader
   thread, no work on the audio thread. This is a change to HPDG: its own commit there, and only with the owner's go.

@@ -9,6 +9,7 @@
 #include "DSP/DelayLine.h"
 #include "DSP/LayerEngine.h"
 #include "DSP/Ramp.h"
+#include "Link/HamloLinkClient.h"
 #include "Standalone/ModuleVariant.h"
 
 namespace hpeq::standalone
@@ -67,6 +68,9 @@ public:
     RevolutionState getRevolutionState() const;
     void setRevolutionState(const RevolutionState&);
 
+    // CONNECT TO HPDG (docs/HPDG_LINK.md): the link to a running HPDG; on / off and the HPDG followed are saved.
+    hamlo::link::Client& getHpdgLink() noexcept { return hpdgLink; }
+
 private:
     dsp::Transport currentTransport() noexcept;
 
@@ -90,6 +94,7 @@ private:
     RevolutionState revolutionState;
     std::array<std::atomic<float>, 4 * revolution::kEngines> revolutionQuads {}; // packQuad per engine
     std::atomic<float> revolutionHumanSeed { 1.0f };
+    hamlo::link::Client hpdgLink;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulePluginProcessor)
 };

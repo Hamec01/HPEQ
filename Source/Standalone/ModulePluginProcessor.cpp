@@ -207,6 +207,9 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
             auto* e = xml->createNewChildElement(kRevolutionTag);
             for (const auto& value : set)
                 e->setAttribute(value.name, value.value.toString());
+            // HPDG Link: on / off and which HPDG (its instance id, kept in HPDG's project too)
+            e->setAttribute("hpdgLink", hpdgLink.isConnected() ? 1 : 0);
+            e->setAttribute("hpdgId", juce::String::toHexString(static_cast<juce::int64>(hpdgLink.getInstanceId())));
         }
         copyXmlToBinary(*xml, destination);
     }
@@ -222,7 +225,12 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                 {
                     juce::NamedValueSet set;
                     for (int i = 0; i < e->getNumAttributes(); ++i)
-                        set.set(juce::Identifier(e->getAttributeName(i)), juce::var(e->getAttributeValue(i).getLargeIntValue()));
+                        if (!e->getAttributeName(i).startsWith("hpdg"))
+                            set.set(juce::Identifier(e->getAttributeName(i)), juce::var(e->getAttributeValue(i).getLargeIntValue()));
+                    if (e->getIntAttribute("hpdgLink", 0) != 0)
+                        hpdgLink.connect(static_cast<std::uint64_t>(e->getStringAttribute("hpdgId").getHexValue64()));
+                    else
+                        hpdgLink.disconnect();
                     const auto* seed = set.getVarPointer("revSeed");
                     setRevolutionState({ revolution::readPattern(set), revolution::readFeel(set),
                                          seed != nullptr ? static_cast<juce::int64>(*seed) : 1 });
