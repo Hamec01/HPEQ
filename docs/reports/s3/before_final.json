@@ -1,0 +1,900 @@
+{
+  "method": "S3v1",
+  "source_id": "e2740dd81826301139e485de63add4d696e87d4b558dcd297a8fc0dc42a33ecb",
+  "files": {
+    "Assets/Hrtf/horizontal.bin": "4d100e0d8c4e619d52d3b0f85e60228dde5ba79a2d5816eb4b7f46ec9570f998",
+    "Assets/Hrtf/manifest.json": "74d116dba7006966378b93d8852a72409cff90eea7d9e9c6e62beba1b4de6093",
+    "Source/DSP/MotionPrototype.cpp": "fc55859aae8447e47727f60d4fe2308673d6f8a320c20503cf47ea326a3771a7",
+    "Source/DSP/MotionPrototype.h": "ff5f80915f34e2c02b3d1936d22d33be00f344223d4dce4c50c3f0b9150a9edc",
+    "Tests/MotionLabMain.cpp": "a8f5e2bec298f541808a23a2e21857fea938e341c15905047ce2ccc52421bd2b",
+    "Tools/analyze_s3.py": "9f807eedd2aa55ea3e455a9e1f1a2062e2d6eec3a858fff95be3b3f02f82a408",
+    "docs/S3_METHODS.md": "e9004c67dde0010f61ba255301cdfd4b1209e94b3b5e2f09053bf04b4f5f3722"
+  },
+  "implemented": false,
+  "cases": 67,
+  "checks": [
+    {
+      "goal": "M03",
+      "name": "neutral_44100_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_44100_complex_finite",
+      "passed": true,
+      "peak": 0.11999905109405518
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_44100_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_44100_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_44100_complex_finite",
+      "passed": true,
+      "peak": 0.11999905109405518
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_44100_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_44100_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_44100_mono_finite",
+      "passed": true,
+      "peak": 0.12996062636375427
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_44100_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_44100_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_44100_mono_finite",
+      "passed": true,
+      "peak": 0.12996062636375427
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_44100_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_48000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_48000_complex_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_48000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_48000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_48000_complex_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_48000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_48000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_48000_mono_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_48000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_48000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_48000_mono_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_48000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_96000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_96000_complex_finite",
+      "passed": true,
+      "peak": 0.11999258399009705
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_96000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_96000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_96000_complex_finite",
+      "passed": true,
+      "peak": 0.11999258399009705
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_96000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_96000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_96000_mono_finite",
+      "passed": true,
+      "peak": 0.1299823522567749
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_96000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_96000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_96000_mono_finite",
+      "passed": true,
+      "peak": 0.1299823522567749
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_96000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "pan_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "pan_0_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M03",
+      "name": "pan_90_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "pan_90_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M03",
+      "name": "pan_270_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "pan_270_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M03",
+      "name": "balance_-1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "balance_-1_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "balance_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "balance_1_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "spread_anti_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_anti_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "point_anti_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "point_anti_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_900_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_900_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_1800_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_1800_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_2700_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_2700_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_25_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_25_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "binaural_spread_anti_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "binaural_spread_anti_0_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_0_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_0_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_0_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_0_1_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_900_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_900_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_1800_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_1800_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_2700_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_2700_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_25_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_25_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "binaural_spread_anti_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "binaural_spread_anti_1_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_1_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_1_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_1_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_1_1_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_900_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_900_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_1800_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_1800_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_2700_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_2700_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_25_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_25_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "binaural_spread_anti_2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "binaural_spread_anti_2_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_2_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_2_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_2_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_2_1_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_rate_44100_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_rate_44100_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_rate_96000_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_rate_96000_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "path_free_44100_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_free_44100_finite",
+      "passed": true,
+      "peak": 0.11999905109405518
+    },
+    {
+      "goal": "M03",
+      "name": "path_free_48000_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_free_48000_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_free_96000_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_free_96000_finite",
+      "passed": true,
+      "peak": 0.11999258399009705
+    },
+    {
+      "goal": "M03",
+      "name": "path_beats_90_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_beats_90_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_beats_140_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_beats_140_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_beats_174_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_beats_174_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_tempo_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_tempo_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_reset_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_reset_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_cw_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_cw_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_ccw_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_ccw_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_zero_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_zero_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_nonloop_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_nonloop_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_1_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_64_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_64_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_127_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_127_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_512_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_512_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_4096_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_4096_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "transition_pre_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_pre_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "transition_post_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_post_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "transition_change_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_change_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "transition_sweep_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_sweep_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "transition_enable_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_enable_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "events_64",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "events_127",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "events_512",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "events_4096",
+      "passed": true
+    },
+    {
+      "goal": "M06",
+      "name": "native_FIR_fidelity",
+      "passed": true,
+      "minimum_retained_energy": 0.9999999458975126,
+      "worst_magnitude_error_db": 2.2946751486514838e-05
+    },
+    {
+      "goal": "M02",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "aligned-dry baseline"
+    },
+    {
+      "goal": "M04",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "aligned-dry baseline"
+    },
+    {
+      "goal": "M05",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "aligned-dry baseline"
+    },
+    {
+      "goal": "M07",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "aligned-dry baseline"
+    },
+    {
+      "goal": "M08",
+      "name": "five_minute_stress",
+      "passed": true,
+      "frames": 14400000,
+      "finite": true,
+      "peak": 0.10000000149011612,
+      "allocations": 0,
+      "l1_bound": 3.1586910012799905
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_0",
+      "passed": true,
+      "mean_fraction": 0.00040582602896341644,
+      "largest_fraction": 0.012975
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_1",
+      "passed": true,
+      "mean_fraction": 0.00040163871951220026,
+      "largest_fraction": 0.006450000000000001
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_2",
+      "passed": true,
+      "mean_fraction": 0.0003973227896341442,
+      "largest_fraction": 0.00406875
+    }
+  ],
+  "passed": 155,
+  "failed": 0,
+  "unavailable": 4,
+  "identity_sha256": "784e24570ef62b05528938850ed07f52700c7fdf9c20a908320764bd9748c18b"
+}

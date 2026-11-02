@@ -147,3 +147,15 @@ add_executable(HamloShirota_StaleBuildProbe EXCLUDE_FROM_ALL Tests/SpatialLabMai
 add_dependencies(HamloShirota_StaleBuildProbe HamloShirota_SpatialIdentity)
 target_include_directories(HamloShirota_StaleBuildProbe PRIVATE Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
 target_link_libraries(HamloShirota_StaleBuildProbe PRIVATE juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)
+
+# S3 experiments remain separate from Legacy and the accepted S2 prototype.
+add_custom_target(HamloShirota_MotionIdentity
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/MotionIdentity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteMotionIdentity.cmake")
+add_executable(HamloShirota_MotionLab Tests/MotionLabMain.cpp Tests/AllocationAudit.cpp Source/DSP/MotionPrototype.cpp)
+add_dependencies(HamloShirota_MotionLab HamloShirota_MotionIdentity)
+target_include_directories(HamloShirota_MotionLab PRIVATE Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(HamloShirota_MotionLab PRIVATE bcrypt juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)
+add_executable(HamloShirota_StaleMotionProbe EXCLUDE_FROM_ALL Tests/MotionLabMain.cpp Tests/AllocationAudit.cpp Tests/StaleMotionBuildProbe.cpp)
+add_dependencies(HamloShirota_StaleMotionProbe HamloShirota_MotionIdentity)
+target_include_directories(HamloShirota_StaleMotionProbe PRIVATE Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_libraries(HamloShirota_StaleMotionProbe PRIVATE juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)

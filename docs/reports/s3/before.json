@@ -1,0 +1,823 @@
+{
+  "method": "S3v1",
+  "source_id": "9a8a13ef50e2450072d40b04490a7eb2e039020dfc7f895a92bc32ee503584ef",
+  "files": {
+    "Assets/Hrtf/horizontal.bin": "4d100e0d8c4e619d52d3b0f85e60228dde5ba79a2d5816eb4b7f46ec9570f998",
+    "Assets/Hrtf/manifest.json": "74d116dba7006966378b93d8852a72409cff90eea7d9e9c6e62beba1b4de6093",
+    "Source/DSP/MotionPrototype.cpp": "fc55859aae8447e47727f60d4fe2308673d6f8a320c20503cf47ea326a3771a7",
+    "Source/DSP/MotionPrototype.h": "ff5f80915f34e2c02b3d1936d22d33be00f344223d4dce4c50c3f0b9150a9edc",
+    "Tests/MotionLabMain.cpp": "ded5dbdcbef5bea26f2ce873d25953555016ed0d253bc2cd1778083f5849e6ad",
+    "Tools/analyze_s3.py": "de8ef8188a16f9e4695fb2863d06eeb468a3d6ffb9845331fb12867ce0011224",
+    "docs/S3_METHODS.md": "b26c2eaec820d61c8e1d25b01761c5de2cb34403fe218388703ba896295c3524"
+  },
+  "implemented": false,
+  "cases": 60,
+  "checks": [
+    {
+      "goal": "M03",
+      "name": "neutral_44100_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_44100_complex_finite",
+      "passed": true,
+      "peak": 0.11999905109405518
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_44100_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_44100_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_44100_complex_finite",
+      "passed": true,
+      "peak": 0.11999905109405518
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_44100_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_44100_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_44100_mono_finite",
+      "passed": true,
+      "peak": 0.12996062636375427
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_44100_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_44100_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_44100_mono_finite",
+      "passed": true,
+      "peak": 0.12996062636375427
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_44100_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_48000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_48000_complex_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_48000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_48000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_48000_complex_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_48000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_48000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_48000_mono_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_48000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_48000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_48000_mono_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_48000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_96000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_96000_complex_finite",
+      "passed": true,
+      "peak": 0.11999258399009705
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_96000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_96000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_96000_complex_finite",
+      "passed": true,
+      "peak": 0.11999258399009705
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_96000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_96000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_96000_mono_finite",
+      "passed": true,
+      "peak": 0.1299823522567749
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_96000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_96000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_96000_mono_finite",
+      "passed": true,
+      "peak": 0.1299823522567749
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_96000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "pan_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "pan_0_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M03",
+      "name": "pan_90_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "pan_90_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M03",
+      "name": "pan_270_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "pan_270_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M03",
+      "name": "balance_-1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "balance_-1_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "balance_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "balance_1_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "spread_anti_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_anti_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "point_anti_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "point_anti_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_900_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_900_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_1800_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_1800_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_2700_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_2700_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_25_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_25_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "binaural_spread_anti_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "binaural_spread_anti_0_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_900_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_900_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_1800_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_1800_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_2700_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_2700_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_25_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_25_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "binaural_spread_anti_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "binaural_spread_anti_1_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_900_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_900_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_1800_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_1800_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_2700_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_2700_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_25_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_25_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "binaural_spread_anti_2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "binaural_spread_anti_2_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_rate_44100_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_rate_44100_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_rate_96000_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_rate_96000_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "M03",
+      "name": "path_free_44100_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_free_44100_finite",
+      "passed": true,
+      "peak": 0.11999905109405518
+    },
+    {
+      "goal": "M03",
+      "name": "path_free_48000_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_free_48000_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_free_96000_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_free_96000_finite",
+      "passed": true,
+      "peak": 0.11999258399009705
+    },
+    {
+      "goal": "M03",
+      "name": "path_beats_90_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_beats_90_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_beats_140_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_beats_140_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_beats_174_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_beats_174_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_tempo_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_tempo_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_reset_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_reset_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_cw_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_cw_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_ccw_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_ccw_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_zero_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_zero_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_nonloop_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_nonloop_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_1_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_64_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_64_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_127_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_127_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_512_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_512_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_4096_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_4096_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "transition_pre_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_pre_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "transition_post_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_post_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "transition_change_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_change_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "transition_sweep_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_sweep_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "M03",
+      "name": "events_64",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "events_127",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "events_512",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "events_4096",
+      "passed": true
+    },
+    {
+      "goal": "M06",
+      "name": "native_FIR_fidelity",
+      "passed": true,
+      "minimum_retained_energy": 0.9999999458975126,
+      "worst_magnitude_error_db": 2.2946751486514838e-05
+    },
+    {
+      "goal": "M02",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "aligned-dry baseline"
+    },
+    {
+      "goal": "M04",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "aligned-dry baseline"
+    },
+    {
+      "goal": "M05",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "aligned-dry baseline"
+    },
+    {
+      "goal": "M07",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "aligned-dry baseline"
+    },
+    {
+      "goal": "M08",
+      "name": "five_minute_stress",
+      "passed": true,
+      "frames": 14400000,
+      "finite": true,
+      "peak": 0.10000000149011612,
+      "allocations": 0,
+      "l1_bound": 3.1586910012799905
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_0",
+      "passed": true,
+      "mean_fraction": 0.00038664729420731975,
+      "largest_fraction": 0.0038062499999999997
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_1",
+      "passed": true,
+      "mean_fraction": 0.00038760480182927187,
+      "largest_fraction": 0.0015
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_2",
+      "passed": true,
+      "mean_fraction": 0.0003853753810975641,
+      "largest_fraction": 0.00106875
+    }
+  ],
+  "passed": 141,
+  "failed": 0,
+  "unavailable": 4,
+  "identity_sha256": "e81b6188305eb873bda8587fbd5ac1fdf1f6cb7ea6defe74065d38d44272de13"
+}

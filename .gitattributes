@@ -7,3 +7,10 @@ Tests/SpatialBaseline.cpp -text whitespace=blank-at-eol,blank-at-eof,space-befor
 Tools/analyze_s2.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/S2_METHODS.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/reports/s2/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Assets/Hrtf/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Assets/Hrtf/LICENSE-SADIE-II.txt -whitespace
+Source/DSP/MotionPrototype.* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Tests/*Motion*.cpp -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+Tools/*s3*.py -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/S3_METHODS.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/reports/s3/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

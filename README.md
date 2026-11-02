@@ -7,8 +7,10 @@ isolation checkpoint complete. Production now uses its own Shirota processor;
 S2 offline prototypes now provide measured width, three mono-to-stereo choices
 and three early spatial fields:181/181 checks and40owner-material A/B examples.
 See the [S2 report](docs/reports/s2/REPORT.md). These prototypes are not yet in
-the production VST3. Binaural rendering, programmable movement, UI integration,
-200presets and release checks remain in development. Owner listening reference:
+the production VST3. S3 adds timed path and horizontal binaural prototypes with
+three measured profiles:211/211checks and68auditions. See the
+[S3 report](docs/reports/s3/REPORT.md). UI/host integration,200presets and release
+checks remain in development. Owner listening reference:
 AKG K712. See the [scope](docs/SHIROTA_V2_SCOPE.md),
 [acceptance plan](docs/HAMLOSHIROTA_V2.md) and [S1 report](docs/reports/s1/REPORT.md).
 This checkpoint preserves the existing sound; it is not the spatial V2 release.
@@ -21,3 +23,6 @@ Working rules and the hand-over: AGENTS.md.
 
 Offline prototype targets: `HamloShirota_SpatialLab`, `HamloShirota_SpatialDemo`.
 Methods: `docs/S2_METHODS.md`. Listening WAVs: `out/s2/listen` (local, not packaged).
+
+Motion target: `HamloShirota_MotionLab`; methods:`docs/S3_METHODS.md`;
+listening WAVs:`out/s3/listen`. SADIE II data attribution/license:`Assets/Hrtf`.

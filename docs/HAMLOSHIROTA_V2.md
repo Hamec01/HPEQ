@@ -46,10 +46,17 @@ extended coverage. New effects are not linked into the production plug-in yet.
 
 ## Later V2 stages
 
-After S2, define motion/binaural targets and prototype timing, profiles and
-transitions before integration. Then implement precise STEREO/SPACE/MOTION,
+S3 completed2026-11-02:211assertions/67cases,5provenance rejection tests,
+68auditions, unchanged Legacy/S2. Targets/disclosures:S3_METHODS.md;
+results/remaining limits:reports/s3/REPORT.md. Prepared horizontal SADIE II
+D1/H3/H4profiles carry their upstream license/attribution in Assets/Hrtf.
+Owner K712 front/back audition remains pending. Mean CPU passes; individual
+wall-time outliers require host/performance investigation before release.
+
+After S3, integrate the accepted prototypes and resolve PDC/transitions/state
+compatibility. Implement precise STEREO/SPACE/MOTION,
 selectable binaural profiles, editable
 timed paths, QUICK, neutral Default,200genre presets, source-pinned calibration,
 validators, screenshots, installer/ZIP/SHA256 and owner FL listening examples.
 Objective HRTF/filter tests do not replace owner front/back audition on K712.
-Licensing/profile selection is not yet complete; no headphone EQ is claimed.
+The licensed prototype profiles are selected; no headphone EQ is claimed.

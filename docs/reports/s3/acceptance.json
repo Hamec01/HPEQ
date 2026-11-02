@@ -1,0 +1,66 @@
+{
+  "stage": "S3 offline timed paths and horizontal binaural; production remains S1",
+  "source_id": "70140105adecb392b8a168e95dce1d29dc025d8c0f7eaef9ed5f836bb9e83705",
+  "assertions": 211,
+  "render_cases": 67,
+  "stress_seconds": 300,
+  "zero_audio_and_setter_allocations": true,
+  "unchanged_original_baseline": true,
+  "unchanged_S2": true,
+  "native_legacy_expectations": 115,
+  "M0_bit_exact_cases": 160,
+  "production_dll_sha256": "ff712038bf196a3f75077ca2ed5545e43c334ba0c3ca20a77e77669a10ffb3a1",
+  "production_unchanged": true,
+  "linked_into_VST": false,
+  "prototype_executable_sha256": "8af37baaaa55b6fc10aba83a0ccfeee3f9beccdbc457fbb1d72d328b0354ef3d",
+  "provenance_rejections": 5,
+  "profiles": [
+    "D1",
+    "H3",
+    "H4"
+  ],
+  "bank_sha256": "4d100e0d8c4e619d52d3b0f85e60228dde5ba79a2d5816eb4b7f46ec9570f998",
+  "native_filter_energy_retained": 0.9999999458975126,
+  "magnitude_error_db": 2.2946751486514838e-05,
+  "max_clock_error_degrees": 1.0100507097376976e-09,
+  "enable_ramp_error_db": -172.560515716514,
+  "cpu": [
+    {
+      "goal": "M09",
+      "name": "cpu_0",
+      "passed": true,
+      "mean_fraction": 0.12737273723323175,
+      "largest_fraction": 2.2733624999999997
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_1",
+      "passed": true,
+      "mean_fraction": 0.13160136242378037,
+      "largest_fraction": 8.58226875
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_2",
+      "passed": true,
+      "mean_fraction": 0.1158694121570122,
+      "largest_fraction": 0.9815625
+    }
+  ],
+  "demo_count": 68,
+  "demo_worst_peak_dbtp": -1.0099995398639754,
+  "owner_listening": "pending on AKG K712; front/back perception not certified",
+  "artifacts": {
+    "before.json": "c95f83369e744f06e13e5a797a51c438202e9c730daa931d0b898c97c599cd8a",
+    "before_final.json": "34432281b108e781e70884128f9d8201ffb88b6e1067237cec08a8dc7fcdc754",
+    "candidate_01.json": "8fb76006edaf6862be82592e4035933fe97e97cc6ba5840e04b25f69017262a9",
+    "demos.json": "3803b2c8a8d80abaca125b313659ff90e9b669d9a55013ed62bb1def9db5dc75",
+    "final.json": "4fe4d5cf6848b30a00c9e8416ade5edebf7901b33e0650e2c541805d1bd7e699",
+    "front_back_responses.png": "799a985fdae9e2bef3d8d65ccd90df97bdc1a9ffe956e5f05a3f794e6f3ed251",
+    "guard_tests.json": "002d66a640f40f4392310f1d6d79a4fb3440b916349141b5077aad45cacb20e5",
+    "legacy_160.json": "57a587a6b4d237325cb3696ee3f4f349ce94632a30e1dc85c01a95569a94b99e",
+    "path_timing.png": "f974add3c514f887704c380da6ef61bcc6a6a06720bede298e045ab6c5c4a812",
+    "python_environment.json": "f74e26d65e025d253ae11f3c5243f95e1626a36134f1aa6dadb709e4391970f5",
+    "REPORT.md": "fd2b9aaf88029c4b387eed5e3875cd32445f3939d06fa665bc1e9dc1d2625d4f"
+  }
+}

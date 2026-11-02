@@ -1,0 +1,633 @@
+{
+  "source_id": "70140105adecb392b8a168e95dce1d29dc025d8c0f7eaef9ed5f836bb9e83705",
+  "groups": [
+    {
+      "material": "vocal_lead1",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead1.wav",
+      "identity": {
+        "source_id": "70140105adecb392b8a168e95dce1d29dc025d8c0f7eaef9ed5f836bb9e83705",
+        "original_sha256": "d8f4d6f7936574b373651bd8a90ce8e9bfde0f699ab64ef8adfda3177af9feb9",
+        "input_sha256": "99bc7307ad914d429612b91669c0d38f50aa3ba99a843f34c99bc77e86dd02e2",
+        "tool_id": "3f7a681b27d7f2a13fe831b0ce1349fba2321eb78d0453084e515a67194973ab"
+      },
+      "selected_start_48k": 1572000,
+      "source_frames": 240000,
+      "preparation_gain_db": -5.526033762715013,
+      "common_demo_gain_db": -1.7320033357530171,
+      "tail_seconds": 0.25,
+      "recipes": [
+        {
+          "scene": "dry",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\dry.wav",
+          "raw_peak_dbtp": -5.978580145568012,
+          "prepared_peak_dbtp": -7.710583457830305
+        },
+        {
+          "scene": "profile0_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile0_0.wav",
+          "raw_peak_dbtp": -5.6758252913204545,
+          "prepared_peak_dbtp": -7.407829132749304
+        },
+        {
+          "scene": "profile0_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile0_90.wav",
+          "raw_peak_dbtp": -1.414343831961904,
+          "prepared_peak_dbtp": -3.1463473528886987
+        },
+        {
+          "scene": "profile0_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile0_180.wav",
+          "raw_peak_dbtp": -6.2062886446139345,
+          "prepared_peak_dbtp": -7.938291991345644
+        },
+        {
+          "scene": "profile0_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile0_270.wav",
+          "raw_peak_dbtp": -1.007497247383108,
+          "prepared_peak_dbtp": -2.73950116355345
+        },
+        {
+          "scene": "profile0_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile0_orbit.wav",
+          "raw_peak_dbtp": -1.58734049214774,
+          "prepared_peak_dbtp": -3.3193442631577845
+        },
+        {
+          "scene": "profile1_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile1_0.wav",
+          "raw_peak_dbtp": -3.927011099842064,
+          "prepared_peak_dbtp": -5.659014518241726
+        },
+        {
+          "scene": "profile1_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile1_90.wav",
+          "raw_peak_dbtp": 0.4370216975519652,
+          "prepared_peak_dbtp": -1.2949819570378458
+        },
+        {
+          "scene": "profile1_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile1_180.wav",
+          "raw_peak_dbtp": -4.513585049246659,
+          "prepared_peak_dbtp": -6.245588739350863
+        },
+        {
+          "scene": "profile1_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile1_270.wav",
+          "raw_peak_dbtp": 0.33129090991652277,
+          "prepared_peak_dbtp": -1.4007128977247176
+        },
+        {
+          "scene": "profile1_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile1_orbit.wav",
+          "raw_peak_dbtp": -0.24065430572671423,
+          "prepared_peak_dbtp": -1.9726579122737582
+        },
+        {
+          "scene": "profile2_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile2_0.wav",
+          "raw_peak_dbtp": -4.002932287041923,
+          "prepared_peak_dbtp": -5.734935343924908
+        },
+        {
+          "scene": "profile2_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile2_90.wav",
+          "raw_peak_dbtp": 0.6957962335854797,
+          "prepared_peak_dbtp": -1.0362075313731716
+        },
+        {
+          "scene": "profile2_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile2_180.wav",
+          "raw_peak_dbtp": -4.911218485762566,
+          "prepared_peak_dbtp": -6.643221889358549
+        },
+        {
+          "scene": "profile2_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile2_270.wav",
+          "raw_peak_dbtp": 0.722003335753016,
+          "prepared_peak_dbtp": -1.0100004507006486
+        },
+        {
+          "scene": "profile2_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\profile2_orbit.wav",
+          "raw_peak_dbtp": -0.8714389956393337,
+          "prepared_peak_dbtp": -2.603442818123956
+        },
+        {
+          "scene": "spread_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\vocal_lead1\\eff7a0ec66e89ea97c16\\render_0\\spread_orbit.wav",
+          "raw_peak_dbtp": 0.36064727853762624,
+          "prepared_peak_dbtp": -1.3713562734588818
+        }
+      ],
+      "files": {
+        "render_0/demo_manifest.json": "6aaeff3371dd1a19a38dc14d1220d797467d30ab1284f3283b2419bf40e85bbc",
+        "render_0/dry.f32": "570f653ea4e02a57e399b319ff099b03ffa1e16e8fd848d66eafd7f9c0db3989",
+        "render_0/dry.wav": "fca6021f4c38923ce093c32dc8c24716d0a6c65541388f62d4bd4f788ba35fe7",
+        "render_0/profile0_0.f32": "b10cd95c0e19afca05c6d30f1db202886c0520d9afd6d7ac5ef7715ad7bc0a48",
+        "render_0/profile0_0.wav": "b3d7461b08a4e5f7eec7ea325dbf381c4e7fbf4e0f120c6bd7fea7dcac8b8d16",
+        "render_0/profile0_180.f32": "981ea3997287f2eb44e087234eaea01cde75b57b6975fa196eda1cf21c07035e",
+        "render_0/profile0_180.wav": "05a579e27def2d83342610cf3b61af7d844b9b72e2603601952cf6f4621fa196",
+        "render_0/profile0_270.f32": "173c0ccae76cc600b305d1c4b2c6f28dcdd22506c07a86045f0d3625cad27880",
+        "render_0/profile0_270.wav": "0da312bd8bf1098a2356c108b4897a2ea52bb21cdc91e458d1de7f6a400272ed",
+        "render_0/profile0_90.f32": "f14db534acf18a8a800f49a3214f1ad0b10cc390dffee8ac81b42c54b24ce45d",
+        "render_0/profile0_90.wav": "c78adaeb73e244df0b57906e6ac619f2f4bc4d2e52d814c32984667bc0090f82",
+        "render_0/profile0_orbit.f32": "79edde25af403471d95104ef177f8eadcb1f3dd96fd5c46f8deef00642510056",
+        "render_0/profile0_orbit.wav": "c99e04b6ed43db178b0b0c64f335c436b0ce6688bd750055cc2d22a224751703",
+        "render_0/profile1_0.f32": "ccca703ee987784d3bb8db53377a71b8f0c3ef50be499ec8d9fe28d5f907c929",
+        "render_0/profile1_0.wav": "e8cd44f64fed4d9a84e434fd32fc8c039f9ba4197ad8af89062202c227ce509b",
+        "render_0/profile1_180.f32": "9229b71739cc7ad09acbaeef9b502b71c6bcf199982c88c4417cb3e1db9b1f42",
+        "render_0/profile1_180.wav": "a477feded111621bf12175a93292077d9fe221be5cf1499ad300f04b234fa0ed",
+        "render_0/profile1_270.f32": "600eae3dbbe5dcf548a30b1b0640ba8bb0b8e729224609f56bac383066177cd4",
+        "render_0/profile1_270.wav": "67b1b590d58e3de84ff9cfa0375548dcba1dc5d8fe7efec55f8431ca58b9ad03",
+        "render_0/profile1_90.f32": "d780241da84924941a4e2d66f56215389da256bb931703af57d0d21efe4ec249",
+        "render_0/profile1_90.wav": "4539c6a82c3cf56dac43c7592a76799684d5e976cbfb948867a156c8feb286a8",
+        "render_0/profile1_orbit.f32": "079efdf201f8f7d59ed2ff67afead194b0b5efbfa7e6786db140174f7bb7caf1",
+        "render_0/profile1_orbit.wav": "13e7ec99fd5fbf300fd9c3180209fc447386b94cfdc27f6fe7e40966db9c2143",
+        "render_0/profile2_0.f32": "7d048d2367d8f48072c8254955bc56240f3c53572460dfa3443094dd6a117c17",
+        "render_0/profile2_0.wav": "232f40808578410e80399206584af016fbfe5d539b92a8cede7d53e25aa0ddcb",
+        "render_0/profile2_180.f32": "63021dcd4bf5158aabc6d2a2e9d5ed4d5f57bc4708525154802542cadfd28d74",
+        "render_0/profile2_180.wav": "3d60dd4fad45e6ec8d45ff4748d16a00a3867e93ead93002ad81a6210a0d2338",
+        "render_0/profile2_270.f32": "ba62c4239c1c7870b80172b8f42213294103ca632cd3a0952448a5a882c33a38",
+        "render_0/profile2_270.wav": "401a9328f5f78cce351c1cd9d0c80e26b0298a7f1a99c004b4ef7e9fc9a3f987",
+        "render_0/profile2_90.f32": "f4dd66134b3a9341adec05d212189e1beb53df73d8ec9c5d9f86b5a983f95804",
+        "render_0/profile2_90.wav": "9336e2e18f1529b3ba057f5eb22c4fc52c422dbbdb6f223a0226a36555bd7b44",
+        "render_0/profile2_orbit.f32": "0386961cbd864ceccb2317efeaae6b6ddebea9119ea7d0801fa6709ae7aa5c0b",
+        "render_0/profile2_orbit.wav": "8106010ddbfbd3c96819b3914812ff57fdbf36ef0ee35282cca34b6ec51da568",
+        "render_0/spread_orbit.f32": "0cd0d54116350cd40dc7bd53d27000e5d6db053712ac8b32eae6ad8d83582844",
+        "render_0/spread_orbit.wav": "d28ea082ba51dcd56f32b3db26401b38e838b8ee4fe685b42a4c74a578867d8d",
+        "input.f32": "99bc7307ad914d429612b91669c0d38f50aa3ba99a843f34c99bc77e86dd02e2"
+      }
+    },
+    {
+      "material": "keys",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\keys.wav",
+      "identity": {
+        "source_id": "70140105adecb392b8a168e95dce1d29dc025d8c0f7eaef9ed5f836bb9e83705",
+        "original_sha256": "251f5c79b7248078a9d4be68621728acee75f923e02a8a8adfe0e9f601942c4f",
+        "input_sha256": "27e5807c7f2d93909460f72f939093bffb99e15df36d23841b361a58894cbbcf",
+        "tool_id": "3f7a681b27d7f2a13fe831b0ce1349fba2321eb78d0453084e515a67194973ab"
+      },
+      "selected_start_48k": 384000,
+      "source_frames": 240000,
+      "preparation_gain_db": 0.34038758986507356,
+      "common_demo_gain_db": 0.0,
+      "tail_seconds": 0.25,
+      "recipes": [
+        {
+          "scene": "dry",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\dry.wav",
+          "raw_peak_dbtp": -5.987838074511935,
+          "prepared_peak_dbtp": -5.987838074511935
+        },
+        {
+          "scene": "profile0_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile0_0.wav",
+          "raw_peak_dbtp": -8.861602446309716,
+          "prepared_peak_dbtp": -8.861602446309716
+        },
+        {
+          "scene": "profile0_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile0_90.wav",
+          "raw_peak_dbtp": -4.066609184298724,
+          "prepared_peak_dbtp": -4.066609184298724
+        },
+        {
+          "scene": "profile0_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile0_180.wav",
+          "raw_peak_dbtp": -9.018060148881574,
+          "prepared_peak_dbtp": -9.018060148881574
+        },
+        {
+          "scene": "profile0_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile0_270.wav",
+          "raw_peak_dbtp": -4.15818470120659,
+          "prepared_peak_dbtp": -4.15818470120659
+        },
+        {
+          "scene": "profile0_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile0_orbit.wav",
+          "raw_peak_dbtp": -4.745270292563709,
+          "prepared_peak_dbtp": -4.745270292563709
+        },
+        {
+          "scene": "profile1_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile1_0.wav",
+          "raw_peak_dbtp": -7.614520001054617,
+          "prepared_peak_dbtp": -7.614520001054617
+        },
+        {
+          "scene": "profile1_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile1_90.wav",
+          "raw_peak_dbtp": -2.825577974425248,
+          "prepared_peak_dbtp": -2.825577974425248
+        },
+        {
+          "scene": "profile1_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile1_180.wav",
+          "raw_peak_dbtp": -7.177333515347193,
+          "prepared_peak_dbtp": -7.177333515347193
+        },
+        {
+          "scene": "profile1_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile1_270.wav",
+          "raw_peak_dbtp": -2.9572886218496826,
+          "prepared_peak_dbtp": -2.9572886218496826
+        },
+        {
+          "scene": "profile1_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile1_orbit.wav",
+          "raw_peak_dbtp": -3.4124287407010185,
+          "prepared_peak_dbtp": -3.4124287407010185
+        },
+        {
+          "scene": "profile2_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile2_0.wav",
+          "raw_peak_dbtp": -6.979164310387695,
+          "prepared_peak_dbtp": -6.979164310387695
+        },
+        {
+          "scene": "profile2_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile2_90.wav",
+          "raw_peak_dbtp": -2.565352941856174,
+          "prepared_peak_dbtp": -2.565352941856174
+        },
+        {
+          "scene": "profile2_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile2_180.wav",
+          "raw_peak_dbtp": -7.477723976063943,
+          "prepared_peak_dbtp": -7.477723976063943
+        },
+        {
+          "scene": "profile2_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile2_270.wav",
+          "raw_peak_dbtp": -2.717626488377529,
+          "prepared_peak_dbtp": -2.717626488377529
+        },
+        {
+          "scene": "profile2_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\profile2_orbit.wav",
+          "raw_peak_dbtp": -3.1226050962821605,
+          "prepared_peak_dbtp": -3.1226050962821605
+        },
+        {
+          "scene": "spread_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\keys\\cf25eda97b4415fb991b\\render_0\\spread_orbit.wav",
+          "raw_peak_dbtp": -2.5079316496299002,
+          "prepared_peak_dbtp": -2.5079316496299002
+        }
+      ],
+      "files": {
+        "render_0/demo_manifest.json": "6aaeff3371dd1a19a38dc14d1220d797467d30ab1284f3283b2419bf40e85bbc",
+        "render_0/dry.f32": "e5f5835b38ab2af96c41d935fb01526366827819a9c02430640bf6f92c5c914b",
+        "render_0/dry.wav": "156315641eacaebd113dac31c16ea170a36d3f0f0fa50ddeea86d5cf4b2bda68",
+        "render_0/profile0_0.f32": "2ca934826954743e0a9614ef618c366581c65c37b48bd64102b0fbe53c67713d",
+        "render_0/profile0_0.wav": "667a21e329729a3819075bf2d9ccb84e62a0ad510b94f33887761f879bafd3d1",
+        "render_0/profile0_180.f32": "55b40e222e4c2f1cdcbcd6260961773a4ea919f123b894d873b1ee9a06e21658",
+        "render_0/profile0_180.wav": "faf54801b23c1ead485a016f121fe28c35401a9e31761da8dc41dc7b92ce75af",
+        "render_0/profile0_270.f32": "aa0581443771ccd0c20d345a25d48c5d6354f449d2a7927c95969d0c023d4aee",
+        "render_0/profile0_270.wav": "556c12b737788507eb3eba14623ffc5742e44468532303582eecbe4823259ef8",
+        "render_0/profile0_90.f32": "f09141e70c4bbf4313e552f82e7038048eab757a739b9a98403887a556126505",
+        "render_0/profile0_90.wav": "078898642d647986e988e20365d866799238b02c51a2c468f3eee84b2466f4f8",
+        "render_0/profile0_orbit.f32": "053e97a7c6d820be7240afbe863219e5d6b2e8caa8cdb5c6b410f3bc5d8b2363",
+        "render_0/profile0_orbit.wav": "0457389f7e7fc2001c6e6833dedc9a74c49cf41a5d9a61ea858c76b0aad03300",
+        "render_0/profile1_0.f32": "d62db2927f0647f506d70600ae538a55dbca995a1850e18fa3dd73924adcae9b",
+        "render_0/profile1_0.wav": "790e7020cfff9907b2ff4e314485c65d41e53ccc4f3ba78acf8eeb9e15f090cc",
+        "render_0/profile1_180.f32": "263ce0e32dd50e2d85063a4819466276a024c8cc884445b5ad0c16af13845743",
+        "render_0/profile1_180.wav": "9daca93946ae9fb338ad6f9c591415af7887aed6b0aa86a5c370c4e61190525f",
+        "render_0/profile1_270.f32": "2827abf19c0733bd123207b4e5d6c7bf5c22a99d682f58f64eada413ad85b401",
+        "render_0/profile1_270.wav": "a67db4a4f8ab5cde14f38f3b9f1ed34d805e820d86ef742a3524605c56736ca6",
+        "render_0/profile1_90.f32": "c32836e6c0539915ee54f33980bbb2189418318d36c2aa6f5ec6d2f35a7ba48e",
+        "render_0/profile1_90.wav": "799933e9887970c71c731b7aa2c1b924824cd9aa7d4f92dbe6b8779536c44c0f",
+        "render_0/profile1_orbit.f32": "50764ddb8fdf9e252e190d15c1e9f81898ee922effb9475bb84a62f835f7eb3a",
+        "render_0/profile1_orbit.wav": "0fe37a8d7c428afff688a60c08d3b097c8e58e9a125d408acd66433da07de57d",
+        "render_0/profile2_0.f32": "5c910dd1c7e49ffe2093275191eed56016a525880b58e8342086bb042f56bc29",
+        "render_0/profile2_0.wav": "4c33e0782b4cc51299b1320123d6481d0170fbfd91497d2b9c069684ba9a94b9",
+        "render_0/profile2_180.f32": "9a31968199858d97db7f9949bff28b9b337be1d4e3d6192e73d5e049c237f395",
+        "render_0/profile2_180.wav": "d647c6e13af89f5a12674853eadfe9f8fe29ca26b8af265b3f328a1af2590dad",
+        "render_0/profile2_270.f32": "619009380bfa5b720b5953a92696d0c11fd0c8593d308d470cee0afe0518aaf8",
+        "render_0/profile2_270.wav": "c94eb128b2051d4bb51d12a47da57fddff06c015c80295a3c8c759971e5e4b12",
+        "render_0/profile2_90.f32": "f602c785bfca2debb52b6626a2006ac950f4f9b41b5656ffa045aebbeca12325",
+        "render_0/profile2_90.wav": "e3dfdd6793a7e8fce5e97be57bea794afcaf8e9f78d04fa48db42ded26daae6a",
+        "render_0/profile2_orbit.f32": "4047da575b826f0d8dc27eb957687f7a46debaac6fdea67c26ec4cc3aef20ffa",
+        "render_0/profile2_orbit.wav": "a327863c7f203bcb39f8295b7032c370a43e81fe806acbce734278e023eb1d5b",
+        "render_0/spread_orbit.f32": "d874194ee4b974ab2b78f652398f7bb83ff6dc0ffb1caef929b9e1d6771f7017",
+        "render_0/spread_orbit.wav": "0077958d010df91cf210d2f7e1d8231ca28517404c100005b8ccd65e70e08646",
+        "input.f32": "27e5807c7f2d93909460f72f939093bffb99e15df36d23841b361a58894cbbcf"
+      }
+    },
+    {
+      "material": "drumbus1",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\drumbus1.wav",
+      "identity": {
+        "source_id": "70140105adecb392b8a168e95dce1d29dc025d8c0f7eaef9ed5f836bb9e83705",
+        "original_sha256": "faa8f04bdfa337cab344b8d7635a8c520ec1174261cefd8aa27c37a6cc3ada27",
+        "input_sha256": "2046277509c0404a426e66910aad40f04855fbadf1b7defda1abb9ed83397623",
+        "tool_id": "3f7a681b27d7f2a13fe831b0ce1349fba2321eb78d0453084e515a67194973ab"
+      },
+      "selected_start_48k": 396000,
+      "source_frames": 240000,
+      "preparation_gain_db": 2.0666679845933276,
+      "common_demo_gain_db": -2.435946002479648,
+      "tail_seconds": 0.25,
+      "recipes": [
+        {
+          "scene": "dry",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\dry.wav",
+          "raw_peak_dbtp": -5.769100109165021,
+          "prepared_peak_dbtp": -8.2050457240604
+        },
+        {
+          "scene": "profile0_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile0_0.wav",
+          "raw_peak_dbtp": -5.123091217441288,
+          "prepared_peak_dbtp": -7.559036785159352
+        },
+        {
+          "scene": "profile0_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile0_90.wav",
+          "raw_peak_dbtp": -1.7005033159727232,
+          "prepared_peak_dbtp": -4.1364493309656005
+        },
+        {
+          "scene": "profile0_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile0_180.wav",
+          "raw_peak_dbtp": -7.0795200919781,
+          "prepared_peak_dbtp": -9.51546567372115
+        },
+        {
+          "scene": "profile0_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile0_270.wav",
+          "raw_peak_dbtp": -1.0447615508888846,
+          "prepared_peak_dbtp": -3.480707032618608
+        },
+        {
+          "scene": "profile0_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile0_orbit.wav",
+          "raw_peak_dbtp": -0.42927811728639165,
+          "prepared_peak_dbtp": -2.8652234125330986
+        },
+        {
+          "scene": "profile1_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile1_0.wav",
+          "raw_peak_dbtp": -5.287239337824402,
+          "prepared_peak_dbtp": -7.7231851868308
+        },
+        {
+          "scene": "profile1_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile1_90.wav",
+          "raw_peak_dbtp": 1.4259460024796478,
+          "prepared_peak_dbtp": -1.0099995398639754
+        },
+        {
+          "scene": "profile1_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile1_180.wav",
+          "raw_peak_dbtp": -5.939470163623321,
+          "prepared_peak_dbtp": -8.375415905372074
+        },
+        {
+          "scene": "profile1_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile1_270.wav",
+          "raw_peak_dbtp": -0.5245046008174121,
+          "prepared_peak_dbtp": -2.9604500748084033
+        },
+        {
+          "scene": "profile1_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile1_orbit.wav",
+          "raw_peak_dbtp": -0.64669637107756,
+          "prepared_peak_dbtp": -3.08264169253214
+        },
+        {
+          "scene": "profile2_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile2_0.wav",
+          "raw_peak_dbtp": -4.567907734587989,
+          "prepared_peak_dbtp": -7.003853675612736
+        },
+        {
+          "scene": "profile2_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile2_90.wav",
+          "raw_peak_dbtp": -1.7448957527246525,
+          "prepared_peak_dbtp": -4.180841176016964
+        },
+        {
+          "scene": "profile2_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile2_180.wav",
+          "raw_peak_dbtp": -5.7821546069315,
+          "prepared_peak_dbtp": -8.21810058257334
+        },
+        {
+          "scene": "profile2_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile2_270.wav",
+          "raw_peak_dbtp": -1.6898046391502364,
+          "prepared_peak_dbtp": -4.125750098430721
+        },
+        {
+          "scene": "profile2_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\profile2_orbit.wav",
+          "raw_peak_dbtp": -1.781256248864109,
+          "prepared_peak_dbtp": -4.217202030573835
+        },
+        {
+          "scene": "spread_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\drumbus1\\aa548e8d70c2120102bf\\render_0\\spread_orbit.wav",
+          "raw_peak_dbtp": -1.3648079862891616,
+          "prepared_peak_dbtp": -3.8007539541528224
+        }
+      ],
+      "files": {
+        "render_0/demo_manifest.json": "6aaeff3371dd1a19a38dc14d1220d797467d30ab1284f3283b2419bf40e85bbc",
+        "render_0/dry.f32": "dd1285bcb3a903718d47cd0239726bbe413fcec2cf6aa64daf3b843b18b2cf7c",
+        "render_0/dry.wav": "4c867b4df80373e1d152381d0dedc4679e319a13e96b2549336a21d5829dd79e",
+        "render_0/profile0_0.f32": "5a00b82c2116d93458b7222d11a7c141694350010dc04b20aa7bdee45ae92ada",
+        "render_0/profile0_0.wav": "f75ced3674b826515e35446747317f1d60bc805faa3d3409ad929803ad3de97c",
+        "render_0/profile0_180.f32": "d2976d51357717e684c062e2e48b29dad775aeb6a2191438853f62d5b718d08e",
+        "render_0/profile0_180.wav": "b7ce026acff5e77caf74b130c5504318db6d5cd509d061bd097fb24533476bce",
+        "render_0/profile0_270.f32": "092c847dd1cc8a32bd3660ee2b2340e3eff32b74b7107f50aa4c431ec521c2ec",
+        "render_0/profile0_270.wav": "f77710a070ac05c318910a410526dc0a0d06b632489e07e72dcfce7e7a1f921f",
+        "render_0/profile0_90.f32": "36fb6767bc800a88e238821089cddda64691b02a746df6d63cb16d5fb47d1dfa",
+        "render_0/profile0_90.wav": "97b51b32a178b83ca7dba1b2f8eb3af3535cbaaa0da9b4b6f05cc5927ea8351b",
+        "render_0/profile0_orbit.f32": "199b9a60074e15083b9ff9ba3bb02ed5778ae31145d6d0aa9ffb3f2fe775889d",
+        "render_0/profile0_orbit.wav": "10fd811241c9ffadda6a9d3c645c7f237c1aa95352b77895d85b041ad11b3821",
+        "render_0/profile1_0.f32": "96c342da05faf8593fbeb8320f5253f0d88bfde50528eca9530c2a0719aa5b68",
+        "render_0/profile1_0.wav": "f782315c60201af58491195e80f6411869d13e0de784539813aa44d0a3188570",
+        "render_0/profile1_180.f32": "14594384cc4d41674d77b6ba465ff8ac651513d7faab5e9c62fb0305fa7cde30",
+        "render_0/profile1_180.wav": "ab05673827292d83d49a1730bf2b348a5120f16c9b5a8480fa7427583e54238e",
+        "render_0/profile1_270.f32": "7132f8ce70c18bd9967eeddb5892eb830b1206f6454937127a577a8408b259be",
+        "render_0/profile1_270.wav": "a795f4401081fb0e2c4492bd3a1b8d0ea6f373dd4cbdf6dd228f1d78f6d27b8a",
+        "render_0/profile1_90.f32": "2747686097132d6a13dac57923212de636a7212e2c4b4cd68b493b957bbf0136",
+        "render_0/profile1_90.wav": "7aec843fea9760b9d4d0f99c05b2c6c1466a84606cad7e2894184aecb089b32a",
+        "render_0/profile1_orbit.f32": "e3c881cfa74e7fa3e83e03e07894ed9bf6e72c3f3499ace731d97337e441f18d",
+        "render_0/profile1_orbit.wav": "5b99ea5ead3f3b48b082ab3bd6bfd1e5509048b99a25d84e8b93c7ff64c323a9",
+        "render_0/profile2_0.f32": "4a2a8f1a5311eefb24fe324d4109a918a94707b45fb1f3756a6d4ce9910fb8f2",
+        "render_0/profile2_0.wav": "9b24542101227506ab71c8f492d4658d1bb93ae2069d016f7cc6717b2f6d3e82",
+        "render_0/profile2_180.f32": "42cfb0785e6a61ac34c117753fb54e4ea7a35a6368d6e05b018355bbc971397a",
+        "render_0/profile2_180.wav": "24fcde9e591bd37c7315ef29ac5e7ccc52b8b8d725042ecda0f5aa5e1bd114d2",
+        "render_0/profile2_270.f32": "50d47a373f650d953821a6d4e419609b408d981e6f27622c4895b463a1427311",
+        "render_0/profile2_270.wav": "bced84f127ed8558a9746f4c7f1f47fbafc54b0342417e847d86518bee2986f6",
+        "render_0/profile2_90.f32": "1944551694754c22220611ca8542c29955788ec3f40036c31bc2195189cc68dc",
+        "render_0/profile2_90.wav": "e7d82c5579e686b82200e68b9084f4b0fcaab50ab0e7f8b47f2de100db0ea9f7",
+        "render_0/profile2_orbit.f32": "13a033dc1984f4a1d0346e62ddf19512c469816cf694052fa79a450da0ca3e0d",
+        "render_0/profile2_orbit.wav": "775a1d5c399067747819ada0411181029c710121eca11c742b6a0215d744dfce",
+        "render_0/spread_orbit.f32": "8c97d4dcc9e5da53b3024251741de88d72a511cdadf57ff1eb59373e01f23188",
+        "render_0/spread_orbit.wav": "a731e1fafcf837cbccffa310a6c0ec4fa42dc56f75a545fade08d83e19724e2d",
+        "input.f32": "2046277509c0404a426e66910aad40f04855fbadf1b7defda1abb9ed83397623"
+      }
+    },
+    {
+      "material": "synth",
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\synth.wav",
+      "identity": {
+        "source_id": "70140105adecb392b8a168e95dce1d29dc025d8c0f7eaef9ed5f836bb9e83705",
+        "original_sha256": "5d5a9c193f335bb5030f13a136fe95333fcb8f0a117306c39223b4d0decc7eeb",
+        "input_sha256": "8e2eceaa7fde53ee7e65182b2695f95b40a4f5469ac0a604099c17207c3cce77",
+        "tool_id": "3f7a681b27d7f2a13fe831b0ce1349fba2321eb78d0453084e515a67194973ab"
+      },
+      "selected_start_48k": 408000,
+      "source_frames": 240000,
+      "preparation_gain_db": 4.790236332220419,
+      "common_demo_gain_db": 0.0,
+      "tail_seconds": 0.25,
+      "recipes": [
+        {
+          "scene": "dry",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\dry.wav",
+          "raw_peak_dbtp": -5.994221534777694,
+          "prepared_peak_dbtp": -5.994221534777694
+        },
+        {
+          "scene": "profile0_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile0_0.wav",
+          "raw_peak_dbtp": -10.440030638011688,
+          "prepared_peak_dbtp": -10.440030638011688
+        },
+        {
+          "scene": "profile0_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile0_90.wav",
+          "raw_peak_dbtp": -5.591554915286813,
+          "prepared_peak_dbtp": -5.591554915286813
+        },
+        {
+          "scene": "profile0_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile0_180.wav",
+          "raw_peak_dbtp": -10.4617410578267,
+          "prepared_peak_dbtp": -10.4617410578267
+        },
+        {
+          "scene": "profile0_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile0_270.wav",
+          "raw_peak_dbtp": -5.607242714069061,
+          "prepared_peak_dbtp": -5.607242714069061
+        },
+        {
+          "scene": "profile0_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile0_orbit.wav",
+          "raw_peak_dbtp": -6.563408078283923,
+          "prepared_peak_dbtp": -6.563408078283923
+        },
+        {
+          "scene": "profile1_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile1_0.wav",
+          "raw_peak_dbtp": -8.830704726758867,
+          "prepared_peak_dbtp": -8.830704726758867
+        },
+        {
+          "scene": "profile1_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile1_90.wav",
+          "raw_peak_dbtp": -4.502732833972811,
+          "prepared_peak_dbtp": -4.502732833972811
+        },
+        {
+          "scene": "profile1_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile1_180.wav",
+          "raw_peak_dbtp": -8.678466440607513,
+          "prepared_peak_dbtp": -8.678466440607513
+        },
+        {
+          "scene": "profile1_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile1_270.wav",
+          "raw_peak_dbtp": -4.76488698366044,
+          "prepared_peak_dbtp": -4.76488698366044
+        },
+        {
+          "scene": "profile1_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile1_orbit.wav",
+          "raw_peak_dbtp": -5.555392865008873,
+          "prepared_peak_dbtp": -5.555392865008873
+        },
+        {
+          "scene": "profile2_0",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile2_0.wav",
+          "raw_peak_dbtp": -8.926456531658298,
+          "prepared_peak_dbtp": -8.926456531658298
+        },
+        {
+          "scene": "profile2_90",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile2_90.wav",
+          "raw_peak_dbtp": -4.588019699455649,
+          "prepared_peak_dbtp": -4.588019699455649
+        },
+        {
+          "scene": "profile2_180",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile2_180.wav",
+          "raw_peak_dbtp": -9.293014709117578,
+          "prepared_peak_dbtp": -9.293014709117578
+        },
+        {
+          "scene": "profile2_270",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile2_270.wav",
+          "raw_peak_dbtp": -4.726981707537856,
+          "prepared_peak_dbtp": -4.726981707537856
+        },
+        {
+          "scene": "profile2_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\profile2_orbit.wav",
+          "raw_peak_dbtp": -5.496569639182565,
+          "prepared_peak_dbtp": -5.496569639182565
+        },
+        {
+          "scene": "spread_orbit",
+          "path": "E:\\HamloShirota\\out\\s3\\demos\\synth\\8e295010e63465fb7efc\\render_0\\spread_orbit.wav",
+          "raw_peak_dbtp": -3.6801461346543043,
+          "prepared_peak_dbtp": -3.6801461346543043
+        }
+      ],
+      "files": {
+        "render_0/demo_manifest.json": "6aaeff3371dd1a19a38dc14d1220d797467d30ab1284f3283b2419bf40e85bbc",
+        "render_0/dry.f32": "05af0aa1580546db0700a1bbea66ebe95f4c0f4a6d91d128511a3a68d1cf627f",
+        "render_0/dry.wav": "1dba2141c9dd61ae8da2f2dbebd85d77187499de35ab97e30b67fff4625775ea",
+        "render_0/profile0_0.f32": "3b0850363066706c24317f8b253da23204db53ad04e1553a82d5597c95ecbec9",
+        "render_0/profile0_0.wav": "3407d600e23bdc587a5972b0752b5a05b7a798e30c0eb90dfbdaf77dd171f80b",
+        "render_0/profile0_180.f32": "277c694e48290075629eab653965af1d67f744b50d4407dc6f3b1e7865e095b9",
+        "render_0/profile0_180.wav": "82ea433df1ae9d75d99a8dfc1a5dd62f93a05c0003728a8c214b2154988700a2",
+        "render_0/profile0_270.f32": "fe5bf1dac8ff3a1f241739de7b85d1a3ff8d9908f58563eca2d8b8c4bec80f19",
+        "render_0/profile0_270.wav": "6f0d832717d17f8eda862110ff04a82afc8da6b58ac86dffa5c43beca5437410",
+        "render_0/profile0_90.f32": "b4cf8fba396b1d5a2c76090419770d0e2bc81c0036df99cd87caf7dbdd65add2",
+        "render_0/profile0_90.wav": "cc08d38f5d9b5452d3935d2da64118320307d168576c5e57fd63610ed312abc0",
+        "render_0/profile0_orbit.f32": "14c82449a79b1a5369938015c1e18abc21f397d599299e05de789bc9220946f3",
+        "render_0/profile0_orbit.wav": "55f15c390e32688ac1521607303af58f5e8a2cde20f5cb84928862d78e9ecced",
+        "render_0/profile1_0.f32": "d2a4c24676cd36dabae8d0c5c4420d402923a27af90d21fbe852404e962c4de0",
+        "render_0/profile1_0.wav": "02017af5cec91b4b56edbb6cb5b919c2d10178980fefb9c605e41d49ca1f1445",
+        "render_0/profile1_180.f32": "d48a94c77afaaddbc7abaad6b4facbb41be709d3ccba8a43f8fce5b3dc88c221",
+        "render_0/profile1_180.wav": "f0ac1c5addcf5e7c27b3de7332e1b575f34ffb9440fd319d12dc92ef3ef213a3",
+        "render_0/profile1_270.f32": "97d17626fd37d022e864e622c104cd0913cdc1e8b770abdc490c16772d7fef94",
+        "render_0/profile1_270.wav": "cdcfe5617b4f88c38c58f59268265cb756ff0bda916e50f7feb49e9ec0957e80",
+        "render_0/profile1_90.f32": "a2d0bf543bafadb82a712ea4734a74b34f43b30915e1dc7f29da53a1ed12f110",
+        "render_0/profile1_90.wav": "c6a0b0efc652e4fdf63c72559dc0b4cc6e48349edc1bce763ae735b28552a110",
+        "render_0/profile1_orbit.f32": "8f4c7109f938d6d5b2f1ad4756a34e8b097baf771732d7f8ae1c093c0486e129",
+        "render_0/profile1_orbit.wav": "1ad2f6d2b157ccb0ef492cda8955b043fe1982929becb390b2d49e26528f20e1",
+        "render_0/profile2_0.f32": "1cde2e479ffc08ea1540f8bf3006b961ef516d7c73693faae3793f8cf7060ea2",
+        "render_0/profile2_0.wav": "28fd33062080d87961f31613df2e1eebfa4f5b0d1bc1fe406e78a80b78a228d3",
+        "render_0/profile2_180.f32": "f5546df78a28bb3fb9d088af432698bf28b2980e6e75b15742926bd2c9d7dc5e",
+        "render_0/profile2_180.wav": "ad321632df5f5974756bd4429d7c5bc3d7282a2ae1f8757974807a3850a6d9cb",
+        "render_0/profile2_270.f32": "8d490ba7dcf4f6d83df5e05ff4006a0033e017b8734f41d17ab6781cdc506102",
+        "render_0/profile2_270.wav": "775b47b120649f99447062b9f6bbcf7fd1781267fbe18cc4bee1b043338f8054",
+        "render_0/profile2_90.f32": "55c60f4394893c5eb8b7d3fe7e91008109c14dc9514e0f672bc9d299ad3838a0",
+        "render_0/profile2_90.wav": "01bc8e760576e66e6665df738333f64d233a617ae2ddcc627d58140bd9ec5336",
+        "render_0/profile2_orbit.f32": "bf9f62d9ea6e326d084076f2074d47f4b7d81c7d7315d9ee86e121a192145450",
+        "render_0/profile2_orbit.wav": "5bafff4c9d91c44b38315b02325c72526e33611763b56945a11a853e00c4984c",
+        "render_0/spread_orbit.f32": "7a1279fbceee54a48f7d949fbc36cff12807975d68bb37eaf876fb8e94e83243",
+        "render_0/spread_orbit.wav": "e3e0b4bcdeb87d6cdc145550249144bc41d437e2ed2d4ad36c5899fcf7081e7d",
+        "input.f32": "8e2eceaa7fde53ee7e65182b2695f95b40a4f5469ac0a604099c17207c3cce77"
+      }
+    }
+  ]
+}

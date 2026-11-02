@@ -2,7 +2,8 @@
 
 Status: owner approved implementation2026-10-31. S1 isolation is complete; see
 reports/s1/REPORT.md. S2 offline width/early-space prototypes pass181checks;
-see reports/s2/REPORT.md. Production integration and motion/binaural remain planned.
+see reports/s2/REPORT.md. S3 timed/horizontal-binaural prototypes pass211checks;
+see reports/s3/REPORT.md. Production integration remains planned.
 The audit notes below
 describe the pre-isolation M0 and are retained as the starting point.
 Work only in E:/HamloShirota; no Verb/Echo/HPEQ edits, subtree, push or subagents.
