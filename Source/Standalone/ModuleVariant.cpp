@@ -312,7 +312,16 @@ ModuleSpec makeRevolution()
                choice("throwBOn", "Throw B", 1, s::kThrowBase + tb + s::kThrowOn, { "Off", "On" }),
                choice("throwBTarget", "Throw B Target", 2, s::kThrowBase + tb + s::kThrowTarget, throwTargets),
                choice("throwBTime", "Throw B Time", 7, s::kThrowBase + tb + s::kThrowTime, throwTimes),
-               choice("throwBNote", "Throw B Note", 0, s::kThrowBase + tb + s::kThrowNote, notes) } };
+               choice("throwBNote", "Throw B Note", 0, s::kThrowBase + tb + s::kThrowNote, notes),
+               // R4: the SIMPLE page (GROOVE is read by the DSP: it scales the scene's groove table)
+               knob("simpleIntent", "Intent", 0, 1, 0.3f, kPageOnly),
+               knob("simpleAmount", "Amount", 0, 1, 0.5f, kPageOnly),
+               knob("simpleVariation", "Variation", 0, 1, 0.25f, kPageOnly),
+               knob("simpleGroove", "Groove", 0, 1, 1, s::kGrooveAmount),
+               choice("simpleGenre", "Genre", 0, kPageOnly, { "Auto", "Boom Bap", "Trap", "Techno", "DnB" }),
+               choice("simpleFill", "Fill", 3, kPageOnly, { "Off", "Every Bar", "Every 2 Bars", "Every 4 Bars", "Every 8 Bars" }),
+               choice("simpleTarget", "Target", 2, kPageOnly, { "Hats", "Snare", "Tops", "Full" }),
+               choice("simpleLock", "Lock", 0, kPageOnly, { "Off", "On" }) } };
 }
 
 float transformed(float value, ValueTransform transform) noexcept
@@ -387,7 +396,11 @@ dsp::FxSlotParams makeSlot(ModuleKind kind, const std::vector<std::atomic<float>
     for (size_t i = 0; i < count; ++i)
     {
         const auto& p = spec.parameters[i];
-        const float value = values[i]->load(std::memory_order_relaxed);
+        float value = values[i]->load(std::memory_order_relaxed);
+        // R4: a HamloRevolution choice is a whole number in the slot (a 14-way choice came back from a saved state
+        // as 6.9999995; the engine rounds, the slot did not)
+        if (kind == ModuleKind::Revolution && !p.choices.isEmpty())
+            value = std::round(value);
         if (p.slotValueIndex == -1)
             slot.mix = juce::jlimit(0.0f, 1.0f, value);
         else if (p.slotValueIndex >= 0)

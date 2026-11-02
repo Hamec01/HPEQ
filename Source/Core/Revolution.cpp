@@ -74,7 +74,7 @@ const char* shapeTargetName(int target)
 
 const char* bandName(int band)
 {
-    static constexpr const char* names[kBands] { "FULL", "LOW", "MID", "HIGH" };
+    static constexpr const char* names[kBands] { "FULL", "LOW", "MID", "HIGH", "TOPS" };
     return names[band < 0 || band >= kBands ? 0 : band];
 }
 

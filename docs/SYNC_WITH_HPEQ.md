@@ -35,3 +35,12 @@ this module (as HamloComp / HamloUdarnik / HamloRedWall / HamloMag did) and reco
   5 -> 7; the throw buffers allocated in `prepare` (2 x 2.5 s tape + a small FDN per lane); `smoothBlend`.
 - `Core/Revolution.*`: `kThrows`, `kFirstShape`, `kFirstThrow`, `ThrowTarget`, `throwIsSend`, TIME / NOTE tables.
 - `UI/HamloRevolutionPanel.*`: 1180 x 1280 (the editor opens at 75 %), THROW rows, the target window's menu.
+
+## R4 (SIMPLE, CONNECT) - changes to HPEQ's files
+
+- `DSP/LayerSnapshot.h`: `values` 208 -> 228; `slot::kGrooveBase`, `kGrooveSteps`, `kGrooveAmount`.
+- `DSP/HamloRevolution.*`: the groove in `stepStartQ` (a boundary on a 1/16 moves by GROOVE x table); `value()` calls
+  Core's `laneEventValue` (same arithmetic); band TOPS in `runLane`.
+- `Core/Revolution.*`: `Band::Tops`, `laneHash`, `laneEventValue`. New: `Core/RevolutionSimple.*` (the generator; it
+  includes `Link/HamloLinkProtocol.h` - HPEQ would need that file too).
+- New page `UI/HamloRevolutionSimplePage.*`; `UI/HamloRevolutionPanel.*`: the SIMPLE button.

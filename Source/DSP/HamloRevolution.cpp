@@ -249,6 +249,8 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
         changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
     for (int i = slot::kBandBase; i < slot::kBandBase + 2; ++i)
         changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
+    for (int i = slot::kGrooveBase; i <= slot::kGrooveAmount; ++i) // R4: the groove moves step boundaries
+        changed = changed || v[static_cast<size_t>(i)] != lastValues[static_cast<size_t>(i)];
     for (int i = 0; i < 4; ++i)
         changed = changed || v[static_cast<size_t>(slot::kTimePattern + i)] != lastValues[static_cast<size_t>(slot::kTimePattern + i)]
                   || v[static_cast<size_t>(slot::kGlitchPattern + i)] != lastValues[static_cast<size_t>(slot::kGlitchPattern + i)];
@@ -280,6 +282,17 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
             patternQuads[static_cast<size_t>(4 * e + q)] = v[b + 3 + static_cast<size_t>(q)];
     }
     stepQ = freeMode ? 1.0 : kBeats[grid] * (triplet ? 2.0 / 3.0 : 1.0);
+    {
+        const double amount = std::clamp(static_cast<double>(v[slot::kGrooveAmount]), 0.0, 1.0);
+        grooved = false;
+        for (int i = 0; i < slot::kGrooveSteps; ++i)
+        {
+            const double offset = amount * std::clamp(static_cast<double>(v[static_cast<size_t>(slot::kGrooveBase + i)]), -0.1125, 0.1125);
+            groove[static_cast<size_t>(i)] = offset;
+            grooved = grooved || offset != 0.0;
+        }
+        grooved = grooved && !freeMode;
+    }
     for (int e = 0; e < rev::kLanes; ++e)
     {
         const auto b = static_cast<size_t>(slot::laneSettings(e));
@@ -412,6 +425,14 @@ double RevolutionEngine::stepStartQ(long long k, double sq) const noexcept
     double start = static_cast<double>(floorDiv(k, 2)) * pair + ((k & 1) != 0 ? pair * swing : 0.0);
     if (humanize > 0.0)
         start += humanize * 0.12 * sq * (2.0 * unitHash(humanSeed, k) - 1.0);
+    if (grooved)
+    {
+        // R4: a boundary on a 1/16 of the bar (its straight place) moves by the groove of that 1/16
+        const double straight = static_cast<double>(floorDiv(k, 2)) * pair + ((k & 1) != 0 ? sq : 0.0);
+        const double sixteenth = straight / 0.25, nearest = std::round(sixteenth);
+        if (std::abs(sixteenth - nearest) < 1.0e-9)
+            start += groove[static_cast<size_t>(wrap(static_cast<long long>(nearest), 16))];
+    }
     return start;
 }
 
@@ -430,21 +451,12 @@ RevolutionEngine::Step RevolutionEngine::stepAt(double q, double sq) const noexc
 int RevolutionEngine::value(int engine, long long k) const noexcept
 {
     const auto le = static_cast<size_t>(engine);
-    const int length = laneSteps(engine);
-    const int index = wrap(k, length);
-    // R1: the lane's condition (per cycle of the lane, counted from bar 1) and the step's probability
-    if (laneCondition[le] != 0 && !rev::laneConditionPasses(laneCondition[le], floorDiv(k, length)))
-        return 0;
-    if (laneChance[le])
-    {
-        const int code = rev::stepValue(&probabilityQuads[8 * le], index);
-        if (code != 0 && unitHash(humanSeed ^ (0x9E3779B9u * static_cast<std::uint32_t>(engine + 1)), k) >= rev::laneProbability(code))
-            return 0;
-    }
     const float* first = engine < rev::kFirstShape   ? &patternQuads[4 * le]
                          : engine < rev::kFirstThrow ? shapes[le - rev::kFirstShape].quads.data()
                                                      : throws[le - rev::kFirstThrow].quads.data();
-    const int v = index < rev::kSteps ? rev::stepValue(first, index) : rev::stepValue(&extraQuads[4 * le], index - rev::kSteps);
+    // R1: the lane's condition (per cycle of the lane, counted from bar 1) and the step's probability (Core, R4)
+    const int v = rev::laneEventValue(first, &extraQuads[4 * le], &probabilityQuads[8 * le], laneChance[le], laneSteps(engine), laneCondition[le],
+                                      humanSeed, engine, k);
     if (engine == rev::Time)
         return v < rev::kTimeActions ? v : 0;
     if (engine == rev::Glitch)
@@ -1315,6 +1327,17 @@ void RevolutionEngine::runLane(int lane, float* x, int numChannels, double q) no
         bands[0][ch] = static_cast<float>(low);
         bands[1][ch] = static_cast<float>(mid);
         bands[2][ch] = static_cast<float>(high);
+    }
+    if (b == rev::Tops)
+    {
+        // R4: MID + HIGH as one signal, LOW added back
+        float tops[2] {};
+        for (int ch = 0; ch < numChannels; ++ch)
+            tops[ch] = bands[1][ch] + bands[2][ch];
+        run(tops);
+        for (int ch = 0; ch < numChannels; ++ch)
+            x[ch] = bands[0][ch] + tops[ch];
+        return;
     }
     run(bands[b - 1]);
     for (int ch = 0; ch < numChannels; ++ch)

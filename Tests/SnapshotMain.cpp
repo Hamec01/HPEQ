@@ -1,4 +1,4 @@
-// HamloRevolution_Snapshot <out.png> [program] [scale]: the page (the editor with the preset screen) at its opening size x scale
+// HamloRevolution_Snapshot <out.png> [program] [scale] [generate]: the page (the editor with the preset screen) at its opening size x scale
 // (R3: the page opens at 75 %; scale 1.3333 = the design size 1180 x 1280).
 
 #include <memory>
@@ -17,6 +17,11 @@ int main(int argc, char* argv[])
     auto owned = std::make_unique<hpeq::standalone::ModulePluginProcessor>(static_cast<hpeq::standalone::ModuleKind>(HPEQ_MODULE_KIND)); // large: heap
     auto& p = *owned;
     p.setCurrentProgram(argc > 2 ? juce::String(argv[2]).getIntValue() : 1);
+#if HPEQ_MODULE_KIND == 9
+    // R4: "generate" = the SIMPLE page with a generated pattern
+    if (argc > 4 && juce::String(argv[4]) == "generate")
+        p.generateSimple(false);
+#endif
     std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
     e->setSize(p.getSpec().editorWidth, p.getSpec().editorHeight);
     const float scale = argc > 3 ? static_cast<float>(juce::String(argv[3]).getDoubleValue()) : 1.0f;

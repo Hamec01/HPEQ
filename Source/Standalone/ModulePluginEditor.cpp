@@ -186,6 +186,12 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
                 values.on = processor.isModuleOn();
                 page->setValues(values);
             };
+            page->onSimple = [this]
+            {
+                processor.setPage(ModulePluginProcessor::Page::Simple);
+                applyPage();
+            };
+            installSimplePage();
             break;
         }
         case ModuleKind::Shirota:
@@ -224,12 +230,15 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     addAndMakeVisible(*presets);
     presets->setCurrent(processor.getCurrentProgram(), false);
 
+    applyPage();
     const auto& spec = processor.getSpec();
     setResizable(true, true);
     setResizeLimits(spec.editorWidth / 2, spec.editorHeight / 2, spec.editorWidth * 2, spec.editorHeight * 2);
     setSize(spec.editorWidth, spec.editorHeight);
     if (refreshPanel)
         refreshPanel();
+    if (refreshSimple)
+        refreshSimple();
     startTimerHz(30);
 }
 
@@ -240,7 +249,9 @@ ModulePluginEditor::~ModulePluginEditor()
     // already been destroyed. Stop it before touching any callback-owned state.
     stopTimer();
     refreshPanel = {};
+    refreshSimple = {};
     endGesture();
+    simplePage.reset();
     panel.reset();
 }
 
@@ -272,7 +283,13 @@ void ModulePluginEditor::setImmediate(const juce::String& id, double value)
 void ModulePluginEditor::timerCallback()
 {
     selectSoftwareRenderer();
-    if (refreshPanel)
+    applyPage();
+    if (simplePage != nullptr && simplePage->isVisible())
+    {
+        if (refreshSimple)
+            refreshSimple();
+    }
+    else if (refreshPanel)
         refreshPanel();
     if (presets != nullptr)
         presets->setCurrent(processor.getCurrentProgram(), false);
@@ -286,6 +303,133 @@ void ModulePluginEditor::visibilityChanged()
 void ModulePluginEditor::parentHierarchyChanged()
 {
     selectSoftwareRenderer();
+}
+
+void ModulePluginEditor::applyPage()
+{
+    if (simplePage == nullptr)
+        return;
+    const bool simple = processor.getPage() == ModulePluginProcessor::Page::Simple;
+    if (simplePage->isVisible() == simple && (panel == nullptr || panel->isVisible() != simple))
+        return;
+    simplePage->setVisible(simple);
+    if (panel != nullptr)
+        panel->setVisible(!simple);
+    // the page coming up shows the processor's state at once (the hidden one is not refreshed)
+    if (simple && refreshSimple)
+        refreshSimple();
+    else if (!simple && refreshPanel)
+        refreshPanel();
+}
+
+void ModulePluginEditor::installSimplePage()
+{
+    using Page = ui::HamloRevolutionSimplePage;
+    namespace simple = revolution::simple;
+    simplePage = std::make_unique<Page>();
+    auto* const sp = simplePage.get();
+    sp->onKnobGestureStart = [this](Page::Knob k) { beginGesture(Page::keyFor(k)); };
+    sp->onKnobChange = [this](Page::Knob k, double v)
+    {
+        processor.setParameterValue(Page::keyFor(k), v);
+        if (k != Page::Mix && k != Page::Groove) // GROOVE and MIX are read by the DSP, nothing to rewrite
+            processor.simpleEdited();
+    };
+    sp->onKnobGestureEnd = [this] { endGesture(); };
+    sp->onChoice = [this](const char* id, int value)
+    {
+        setImmediate(id, value);
+        if (juce::String(id) != "simpleLock")
+            processor.simpleEdited();
+    };
+    sp->onGenerate = [this] { processor.generateSimple(true); };
+    sp->onAdvanced = [this]
+    {
+        processor.setPage(ModulePluginProcessor::Page::Advanced);
+        applyPage();
+    };
+    sp->onConnect = [this]
+    {
+        auto& link = processor.getHpdgLink();
+        if (link.isConnected())
+            link.disconnect();
+        else
+            link.connect(0); // the first live HPDG
+    };
+    sp->onConnectMenu = [this, sp]
+    {
+        const auto list = hamlo::link::listInstances(juce::Time::currentTimeMillis());
+        juce::PopupMenu menu;
+        menu.addSectionHeader("Running HPDG instances");
+        std::vector<std::uint64_t> ids;
+        for (const auto& l : list)
+            if (l.status == hamlo::link::Status::Ok)
+            {
+                ids.push_back(l.instanceId);
+                menu.addItem(static_cast<int>(ids.size()), l.name + "  -  " + juce::String(juce::roundToInt(l.bpm)) + " BPM", true,
+                             processor.getHpdgLink().getInstanceId() == l.instanceId);
+            }
+        if (ids.empty())
+            menu.addItem(-1, "(none running)", false);
+        menu.addSeparator();
+        menu.addItem(1000, "Disconnect", processor.getHpdgLink().isConnected());
+        juce::Component::SafePointer<Page> safe(sp);
+        menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(sp), [this, safe, ids](int result)
+        {
+            if (safe == nullptr || result == 0)
+                return;
+            if (result == 1000)
+                processor.getHpdgLink().disconnect();
+            else if (result > 0 && result <= static_cast<int>(ids.size()))
+                processor.getHpdgLink().connect(ids[static_cast<size_t>(result - 1)]);
+        });
+    };
+    refreshSimple = [this, sp]
+    {
+        Page::Values v;
+        for (int k = 0; k < Page::NumKnobs; ++k)
+            v.knobs[static_cast<size_t>(k)] = processor.parameterValue(Page::keyFor(static_cast<Page::Knob>(k)));
+        v.genre = juce::roundToInt(processor.parameterValue("simpleGenre"));
+        v.fill = juce::roundToInt(processor.parameterValue("simpleFill"));
+        v.target = juce::roundToInt(processor.parameterValue("simpleTarget"));
+        v.lock = processor.parameterValue("simpleLock") >= 0.5;
+        const auto last = processor.lastSimple();
+        const bool generated = !last.parameters.empty();
+        v.shownGenre = generated ? last.genre : simple::resolveGenre(v.genre, {}, processor.getHostBpm());
+        v.shownIntent = simple::intentOf(v.knobs[Page::Intent]);
+        auto& link = processor.getHpdgLink();
+        auto snapshot = std::make_unique<hamlo::link::Snapshot>();
+        const bool haveSnapshot = link.last(*snapshot);
+        const auto hpdgName = haveSnapshot ? juce::String::fromUTF8(snapshot->instanceName, static_cast<int>(strnlen(snapshot->instanceName, hamlo::link::kNameChars)))
+                                           : juce::String();
+        static constexpr const char* hpdgGenres[] { "BOOM BAP", "RAP", "TRAP", "DRILL", "DNB", "TECHNO", "ATMOSPHERIC" };
+        switch (link.getState())
+        {
+            case hamlo::link::Client::State::Off: v.link = Page::Link::Off; v.linkText = "NOT CONNECTED"; break;
+            case hamlo::link::Client::State::Searching: v.link = Page::Link::Searching; v.linkText = "SEARCHING FOR HPDG..."; break;
+            case hamlo::link::Client::State::Linked:
+                v.link = Page::Link::Linked;
+                v.linkText = haveSnapshot ? (hpdgName.isEmpty() ? juce::String("HPDG") : hpdgName.toUpperCase()) + "  " + juce::String(juce::roundToInt(snapshot->bpm))
+                                                + " BPM  " + hpdgGenres[juce::jlimit(0, 6, static_cast<int>(snapshot->genre))]
+                                          : juce::String("LINKED");
+                break;
+            case hamlo::link::Client::State::Lost: v.link = Page::Link::Lost; v.linkText = "HPDG GONE: LAST PATTERN KEPT"; break;
+            case hamlo::link::Client::State::Update: v.link = Page::Link::Update; v.linkText = "HPDG IS NEWER: UPDATE REVOLUTION"; break;
+        }
+        v.source = !generated     ? juce::String("PRESS GENERATE OR TURN A KNOB")
+                   : last.linked  ? "FROM HPDG: ITS HITS AND GROOVE"
+                   : last.listened ? juce::String("FROM LISTEN: THE INPUT'S HITS")
+                                   : juce::String("FROM THE GENRE'S TEMPLATE");
+        const auto state = processor.getRevolutionState();
+        for (int l = 0; l < revolution::kLanes; ++l)
+        {
+            v.preview[static_cast<size_t>(l)] = l < revolution::kEngines ? state.pattern.steps[static_cast<size_t>(l)] : state.lanes[static_cast<size_t>(l)].first;
+            v.bands[static_cast<size_t>(l)] = state.lanes[static_cast<size_t>(l)].band;
+        }
+        v.step = processor.moduleNode().getRevolutionStep(0);
+        sp->setValues(v);
+    };
+    addAndMakeVisible(*sp);
 }
 
 void ModulePluginEditor::selectSoftwareRenderer()
@@ -304,6 +448,8 @@ void ModulePluginEditor::resized()
 {
     if (panel != nullptr)
         panel->setBounds(getLocalBounds());
+    if (simplePage != nullptr)
+        simplePage->setBounds(getLocalBounds());
     if (presets != nullptr && panel != nullptr)
         if (auto* target = dynamic_cast<ui::HelpTarget*>(panel.get()))
             presets->placeOnStage(target->contentBounds());

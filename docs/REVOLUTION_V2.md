@@ -237,6 +237,61 @@ R3 targets:
   straight ramp; R2's V4 measured VOLUME only - an open item, not changed here.*
 - *A lane on a band passes through the split's all-pass even when idle (as SHAPE in R2): "exactly dry" holds on FULL.*
 
+## 9. R4 as designed (2026-11-02, before the code)
+
+Owner: "R4 SIMPLE + CONNECT". R4 takes the generator + SIMPLE page of stage 5 and the CONNECT button / GENRE AUTO /
+GROOVE from HPDG of stage 6 (the link itself is in since R0); R5 keeps what is left (LISTEN timing, TONAL in HPDG's key).
+
+**SIMPLE writes ADVANCED.** The generator (`Core/RevolutionSimple`) is a pure function of (settings, hits, seed): it
+writes the shown scene's TIME / GLITCH / MOTION steps, the seven lanes (steps, length, rate, condition, probability,
+band), a groove table, and the lane parameters (ons, mixes, depths, targets, TIME / NOTE, TAIL, grid 1/16, STEPS 16,
+swing 0). Switching to ADVANCED shows exactly that. The page's MIX is the plug-in's MIX.
+
+| Control | Values | What it does |
+|---|---|---|
+| GENRE | AUTO, BOOM BAP, TRAP, TECHNO, DNB | AUTO = HPDG's genre when linked (Rap -> Boom Bap, Drill -> Trap, Atmospheric -> Techno), else by tempo (>= 155 DnB, 120 .. 135 Techno, 136 .. 154 Trap, else Boom Bap) |
+| INTENT | 0 .. 100 %: SUBTLE, GROOVE, FILLS, BREAKDOWN, CHAOS (fifths) | which rule families write events (the genre rules of section 3) |
+| AMOUNT | 0 .. 100 % | how many of the candidate events are written (by a seeded priority: a higher AMOUNT keeps every event of a lower one) and the lanes' depth |
+| VARIATION | 0 .. 100 % | 0: every lane one bar long, no probability: bar n = bar n + 1. Up: step probabilities on the weaker events, GLITCH 2 bars with its own second bar, slow sweeps (from 25 %) |
+| GROOVE | 0 .. 100 % (a parameter the DSP reads) | moves each 1/16 boundary toward the groove table: HPDG's average micro-timing per 1/16 (linked) or the genre's swing |
+| FILL | OFF, every 1 / 2 / 4 / 8 bars | the fill lanes (TIME, THROW B) get the condition ALWAYS / 2:2 / 4:4 / 8:8 and events only in the bar's last beat |
+| TARGET | HATS, SNARE, TOPS, FULL | the band of every lane written: HIGH, MID, TOPS (new band: MID + HIGH), FULL; on-hit events go on that role's hits |
+| GENERATE / LOCK | | a new seed; LOCK = knob moves and new HPDG patterns do not rewrite |
+
+**Hits.** Linked: HPDG's events per 1/16 of the bar (kick; snare + clap; hats = hi-hat, open hat, ride, hat FX), the
+share of bars with a hit, and the mean offset of the hits at each 1/16 (ticks -> quarter notes; the groove table; a 1/16
+without hits: HPDG's swing on the odd ones, 0 on the even - *added after V9's first run found step 6 straight*).
+Unlinked: LISTEN's attack strength per step if there is one, else the genre's template (kick / snare / hats).
+**Following HPDG.** When linked, in SIMPLE and not locked, a new HPDG pattern regenerates the scene (message thread, 4 Hz
+check); HPDG gone = the last pattern stays.
+
+**Groove in the engine.** Slot 208 .. 223: the table (16 offsets in quarter notes, |offset| <= 0.45 of a 1/16),
+224: GROOVE. A step boundary that falls on a 1/16 of the bar moves by GROOVE x table[that 1/16] (swing and humanize as
+before on top; FREE mode: none). Table zero or GROOVE 0 = R3 bit for bit.
+
+**Page.** SIMPLE is a page of its own in the same 1180 x 1280 frame (the preset screen at the same place): CONNECT TO
+HPDG (click: connect to the first live HPDG / disconnect; right click: a list of the running HPDGs) with a lamp and a
+status line, GENRE buttons, five big knobs (INTENT, AMOUNT, VARIATION, GROOVE, MIX), FILL and TARGET buttons, GENERATE,
+LOCK, ADVANCED; a read-only preview of the seven lanes. ADVANCED gets a SIMPLE button (bottom left). A new instance opens
+SIMPLE; a state saved before R4 opens ADVANCED (its pattern is hand-made).
+
+R4 targets:
+- V1: GoldenTests unchanged.
+- V8: the generator's on-hit events (marked by the generator) sit only on steps where the TARGET's role has hits; with
+  GROOVE 100 % their boundaries are HPDG's hit times (V9).
+- V9: GROOVE 100 %, linked to an HPDG pattern with a known swing and micro-timing: the GLITCH step boundaries against
+  HPDG's hit times within 1 ms (48 samples at 48 kHz); GROOVE 0 = the straight grid.
+- V10: per genre x intent x 3 seeds: the number of events does not fall as AMOUNT rises (0 .. 100 % by 10 %); every
+  fill event is in the bar's last beat of a lane whose condition is FILL's (>= 90 %; by construction 100 %) - BREAKDOWN's half-time
+  fill takes the bar's second half (*fixed before the measurement: a one-beat half-time switch is not one*); TARGET HATS:
+  every lane with events is on HIGH (never LOW, FULL or TOPS).
+- V11: the lanes' effective step values per bar over 8 bars (the engine's condition / probability rule, shared from
+  Core): VARIATION 0 and FILL OFF: bar n = bar n + 1 for every lane; VARIATION 100 %: at least two bars differ, and the
+  genre checks of V10 still hold.
+- V12: GENRE AUTO follows a linked HPDG's genre; a new HPDG pattern regenerates (unless LOCK); HPDG gone = kept.
+- V3 with GROOVE 100 % and a table; V13: the mode, SIMPLE settings, the groove table round trip; an R3 state opens
+  ADVANCED with nothing changed; V14 validators.
+
 ## Sources
 
 1. [Sound On Sound: ShaperBox 3](https://www.soundonsound.com/reviews/cableguys-shaperbox-3), [MusicRadar: ShaperBox 3](https://www.musicradar.com/reviews/cableguys-shaperbox-3), [ShaperBox 3 manual](https://www.cableguys.com/downloads/Cableguys-ShaperBox-3-Manual.pdf?v=3.3.1)

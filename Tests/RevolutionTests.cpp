@@ -206,6 +206,7 @@ public:
         beginTest("Page: GENERATE / NEW SEED / a step click reach the processor; the page shows the processor's pattern");
         {
             auto p = make();
+            p->setPage(ModulePluginProcessor::Page::Advanced); // R4: a new instance opens SIMPLE; this is the ADVANCED page
             std::unique_ptr<juce::AudioProcessorEditor> e(p->createEditor());
             auto* editor = dynamic_cast<hpeq::standalone::ModulePluginEditor*>(e.get());
             auto* page = editor != nullptr ? dynamic_cast<hpeq::ui::HamloRevolutionPanel*>(editor->getPanel()) : nullptr;

@@ -110,7 +110,7 @@ constexpr int kFirstShape = kEngines, kFirstThrow = kEngines + kShapes;
 constexpr int kLanes = kEngines + kShapes + kThrows;
 enum ShapeTarget { ShapeVolume, ShapeLowPass, ShapeHighPass, ShapeBandPass, ShapePan, ShapeWidth, ShapeDrive, ShapeCrush, kShapeTargets };
 const char* shapeTargetName(int target);
-enum Band { Full, Low, Mid, High, kBands };
+enum Band { Full, Low, Mid, High, Tops, kBands }; // R4: TOPS = MID + HIGH (everything above the kick)
 const char* bandName(int band);
 enum ThrowTarget { ThrowDelay, ThrowTonal, ThrowReverb, ThrowPhaser, ThrowFlanger, ThrowVinyl, ThrowDownsample, kThrowTargets };
 const char* throwTargetName(int target);
@@ -146,6 +146,35 @@ const char* laneConditionName(int condition);
 constexpr int kProbabilityCodes = 8;
 inline double laneProbability(int code) noexcept { return 1.0 - 0.125 * (code < 0 ? 0 : code > 7 ? 7 : code); }
 const char* laneRateName(int rate); // 0 FOLLOW, 1/4 .. 1/32T
+
+// The value lane `lane` plays at its absolute step k (R1: the condition per cycle of the lane, then the step's
+// probability drawn from a hash of (seed, lane, k)). The engine and the generator's checks share this.
+inline double laneHash(std::uint32_t seed, long long k) noexcept
+{
+    std::uint64_t z = (static_cast<std::uint64_t>(seed) << 32) ^ static_cast<std::uint64_t>(k) ^ 0x6A09E667F3BCC909ull;
+    z += 0x9E3779B97F4A7C15ull;
+    z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9ull;
+    z = (z ^ (z >> 27)) * 0x94D049BB133111EBull;
+    z ^= z >> 31;
+    return static_cast<double>(z >> 11) * (1.0 / 9007199254740992.0);
+}
+// firstQuads: steps 1 .. 16, extraQuads: 17 .. 32, probabilityQuads: 8 quads of codes; length = the lane's steps.
+inline int laneEventValue(const float* firstQuads, const float* extraQuads, const float* probabilityQuads, bool chance, int length,
+                          int condition, std::uint32_t seed, int lane, long long k) noexcept
+{
+    const auto r = k % length;
+    const int index = static_cast<int>(r < 0 ? r + length : r);
+    const long long cycle = k >= 0 ? k / length : -((-k + length - 1) / length);
+    if (condition != 0 && !laneConditionPasses(condition, cycle))
+        return 0;
+    if (chance)
+    {
+        const int code = stepValue(probabilityQuads, index);
+        if (code != 0 && laneHash(seed ^ (0x9E3779B9u * static_cast<std::uint32_t>(lane + 1)), k) >= laneProbability(code))
+            return 0;
+    }
+    return index < kSteps ? stepValue(firstQuads, index) : stepValue(extraQuads, index - kSteps);
+}
 
 // A lane's settings (all 0 = as before R1): length 0 = follow STEPS / 1 .. 32, rate 0 = follow GRID / 1 .. 8,
 // condition, the values of steps 17 .. 32, a probability code per step (0 = 100 %).

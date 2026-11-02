@@ -82,6 +82,7 @@ public:
     std::function<void(int scene)> onSceneSelect;
     std::function<void(int target)> onSceneCopyTo;
     std::function<void()> onSceneClear;
+    std::function<void()> onSimple; // R4: back to the SIMPLE page
     std::function<Status()> readStatus; // polled at 30 Hz
 
     static double defaultFor(Param);

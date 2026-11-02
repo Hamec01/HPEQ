@@ -7,6 +7,14 @@
 
 namespace hpeq::standalone
 {
+struct ModulePluginProcessor::Follower final : juce::Timer
+{
+    explicit Follower(ModulePluginProcessor& p) : owner(p) { startTimerHz(4); }
+    ~Follower() override { stopTimer(); }
+    void timerCallback() override { owner.followHpdg(); }
+    ModulePluginProcessor& owner;
+};
+
 namespace
 {
 constexpr double kBypassRampSeconds = 0.02;
@@ -33,7 +41,80 @@ ModulePluginProcessor::ModulePluginProcessor(ModuleKind moduleKind)
         if (getSpec().parameters[i].id == "scene")
             sceneParameterIndex = static_cast<int>(i);
     if (kind == ModuleKind::Revolution) // as presetBaseModule: a Musical pattern from seed 1
+    {
         resetScenes({ revolution::generate({}, 1, revolution::Musical), {}, 1 });
+        follower = std::make_unique<Follower>(*this);
+    }
+}
+
+ModulePluginProcessor::~ModulePluginProcessor()
+{
+    follower.reset();
+}
+
+revolution::simple::Settings ModulePluginProcessor::simpleSettings() const
+{
+    revolution::simple::Settings s;
+    s.genre = juce::roundToInt(parameterValue("simpleGenre"));
+    s.intent = parameterValue("simpleIntent");
+    s.amount = parameterValue("simpleAmount");
+    s.variation = parameterValue("simpleVariation");
+    s.fill = juce::roundToInt(parameterValue("simpleFill"));
+    s.target = juce::roundToInt(parameterValue("simpleTarget"));
+    return s;
+}
+
+revolution::simple::Result ModulePluginProcessor::lastSimple() const
+{
+    const juce::ScopedLock lock(revolutionLock);
+    return simpleResult;
+}
+
+void ModulePluginProcessor::generateSimple(bool newSeed)
+{
+    namespace simple = revolution::simple;
+    auto state = getRevolutionState();
+    if (newSeed)
+        state.seed = static_cast<juce::int64>(revolution::nextSeed(static_cast<std::uint64_t>(state.seed)));
+    auto settings = simpleSettings();
+    settings.seed = static_cast<std::uint64_t>(state.seed);
+    // the hits: HPDG's pattern when linked (the last one, also after LOST), else LISTEN's feel, else the genre's template
+    simple::Hits hits;
+    auto snapshot = std::make_unique<hamlo::link::Snapshot>();
+    if (hpdgLink.isConnected() && hpdgLink.last(*snapshot))
+        hits = simple::hitsFromSnapshot(*snapshot);
+    else
+    {
+        const int genre = simple::resolveGenre(settings.genre, {}, getHostBpm());
+        hits = revolution::hasFeel(state.feel) ? simple::hitsFromFeel(state.feel, genre) : simple::templateHits(genre);
+    }
+    const auto result = simple::generate(settings, hits, getHostBpm());
+    for (const auto& [id, value] : result.parameters)
+        setParameterValue(id, value);
+    state.pattern = result.pattern;
+    state.lanes = result.lanes;
+    state.groove = result.groove;
+    setRevolutionState(state);
+    const juce::ScopedLock lock(revolutionLock);
+    simpleResult = result;
+}
+
+void ModulePluginProcessor::simpleEdited()
+{
+    if (parameterValue("simpleLock") < 0.5)
+        generateSimple(false);
+}
+
+bool ModulePluginProcessor::followHpdg()
+{
+    if (kind != ModuleKind::Revolution || !hpdgLink.isConnected())
+        return false;
+    auto snapshot = std::make_unique<hamlo::link::Snapshot>();
+    if (!hpdgLink.takeIfNew(*snapshot))
+        return false;
+    if (getPage() == Page::Simple && parameterValue("simpleLock") < 0.5)
+        generateSimple(false);
+    return true;
 }
 
 int ModulePluginProcessor::currentScene() const noexcept
@@ -121,6 +202,8 @@ void ModulePluginProcessor::publishScene(int index) noexcept
                 out[static_cast<size_t>(kSceneShapes + 4 * (e - revolution::kEngines) + q)].store(revolution::packQuad(source.first, q),
                                                                                                   std::memory_order_relaxed);
     }
+    for (int i = 0; i < revolution::kSteps; ++i)
+        out[static_cast<size_t>(kSceneGroove + i)].store(state.groove[static_cast<size_t>(i)], std::memory_order_relaxed);
 }
 
 void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSize)
@@ -171,6 +254,8 @@ dsp::FxSlotParams ModulePluginProcessor::currentSlot(bool active) const noexcept
                 slot.values[static_cast<size_t>(to + f)] = scene[static_cast<size_t>(kSceneLanes + e * revolution::kLaneFloats + f)].load(std::memory_order_relaxed);
             slot.values[static_cast<size_t>(dsp::slot::laneBand(e))] = scene[static_cast<size_t>(kSceneBands + e)].load(std::memory_order_relaxed);
         }
+        for (int i = 0; i < revolution::kSteps; ++i)
+            slot.values[static_cast<size_t>(dsp::slot::kGrooveBase + i)] = scene[static_cast<size_t>(kSceneGroove + i)].load(std::memory_order_relaxed);
         for (int i = 0; i < revolution::kLanes - revolution::kEngines; ++i)
         {
             const int to = i < revolution::kShapes ? dsp::slot::kShapeBase + i * dsp::slot::kShapeStride + dsp::slot::kShapePattern
@@ -298,6 +383,13 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
                 for (int l = 0; l < revolution::kLanes; ++l)
                     if (state.lanes[static_cast<size_t>(l)] != revolution::Lane {})
                         to.setAttribute("lane" + juce::String(l), revolution::laneToText(state.lanes[static_cast<size_t>(l)]));
+                if (std::any_of(state.groove.begin(), state.groove.end(), [](float g) { return g != 0.0f; }))
+                {
+                    juce::StringArray groove;
+                    for (auto g : state.groove)
+                        groove.add(juce::String(g, 6));
+                    to.setAttribute("groove", groove.joinIntoString(" "));
+                }
             };
             auto* e = xml->createNewChildElement(kRevolutionTag);
             writeScene(*e, getScene(0));
@@ -309,6 +401,7 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
                     writeScene(*child, getScene(s));
                 }
             // HPDG Link: on / off and which HPDG (its instance id, kept in HPDG's project too)
+            e->setAttribute("mode", getPage() == Page::Simple ? "simple" : "advanced");
             e->setAttribute("hpdgLink", hpdgLink.isConnected() ? 1 : 0);
             e->setAttribute("hpdgId", juce::String::toHexString(static_cast<juce::int64>(hpdgLink.getInstanceId())));
         }
@@ -330,7 +423,7 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                         for (int i = 0; i < from.getNumAttributes(); ++i)
                         {
                             const auto name = from.getAttributeName(i);
-                            if (!name.startsWith("hpdg") && !name.startsWith("lane") && name != "index")
+                            if (!name.startsWith("hpdg") && !name.startsWith("lane") && name != "index" && name != "groove" && name != "mode")
                                 set.set(juce::Identifier(name), juce::var(from.getAttributeValue(i).getLargeIntValue()));
                         }
                         const auto* seed = set.getVarPointer("revSeed");
@@ -338,8 +431,13 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                         for (int l = 0; l < revolution::kLanes; ++l)
                             if (from.hasAttribute("lane" + juce::String(l)))
                                 state.lanes[static_cast<size_t>(l)] = revolution::laneFromText(from.getStringAttribute("lane" + juce::String(l)));
+                        const auto groove = juce::StringArray::fromTokens(from.getStringAttribute("groove"), " ", "");
+                        for (int i = 0; i < revolution::kSteps && i < groove.size(); ++i)
+                            state.groove[static_cast<size_t>(i)] = groove[i].getFloatValue();
                         return state;
                     };
+                    // a state from before R4 has no mode: its pattern is hand-made, ADVANCED shows it
+                    setPage(e->getStringAttribute("mode", "advanced") == "simple" ? Page::Simple : Page::Advanced);
                     if (e->getIntAttribute("hpdgLink", 0) != 0)
                         hpdgLink.connect(static_cast<std::uint64_t>(e->getStringAttribute("hpdgId").getHexValue64()));
                     else

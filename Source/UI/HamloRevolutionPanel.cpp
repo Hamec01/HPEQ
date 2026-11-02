@@ -101,6 +101,7 @@ juce::Point<float> onLamp(int engine) { return { 108.0f, kRowY[static_cast<size_
 const juce::Rectangle<float> kTargetWindow { 88.0f, kRowY[2] + 84.0f, 84.0f, 24.0f };
 juce::Rectangle<float> shapeTargetWindow(int lane) { return { 88.0f, kRowY[static_cast<size_t>(lane)] + 84.0f, 84.0f, 24.0f }; }
 juce::Rectangle<float> bandTag(int lane) { return { 122.0f, kRowY[static_cast<size_t>(lane)] + 50.0f, 52.0f, 14.0f }; }
+const juce::Rectangle<float> kSimpleButton { 40.0f, 1214.0f, 160.0f, 40.0f }; // R4
 const juce::Rectangle<float> kStretchWindow { 88.0f, kRowY[0] + 84.0f, 84.0f, 24.0f };
 const juce::Point<float> kListen { 410.0f, 124.0f };
 constexpr std::array<const char*, 3> kStretchNames { "TAPE", "RHYTHM", "CLEAN" };
@@ -617,6 +618,7 @@ void HamloRevolutionPanel::renderStatic(juce::Graphics& g) const
         g.setColour(juce::Colours::white.withAlpha(0.07f));
         g.drawHorizontalLine(juce::roundToInt(y) - 1, 20.0f, kW - 20.0f);
         engraved(g, "BANDS", { 700.0f, kFooterY - 10.0f, 90.0f, 20.0f }, 14.0f, stencil, juce::Justification::centredRight);
+        crtButton(g, kSimpleButton, "SIMPLE", false);
     }
     lcdWindow(g, kStretchWindow);
     engraved(g, "STRETCH", { kStretchWindow.getX(), kStretchWindow.getBottom() + 2.0f, kStretchWindow.getWidth(), 14.0f }, 10.0f);
@@ -1079,6 +1081,8 @@ void HamloRevolutionPanel::showPlateMenu(int engine)
 void HamloRevolutionPanel::mouseDown(const juce::MouseEvent& e)
 {
     const auto d = toDesign(e.position);
+    if (kSimpleButton.contains(d) && onSimple)
+        return onSimple();
     if (d.getDistanceFrom(kLamp) <= 26.0f)
     {
         values.on = !values.on;

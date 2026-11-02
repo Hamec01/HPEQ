@@ -68,5 +68,10 @@ ticks (hats for rolls, the snare for stutters, the phrase end for fills).
 - **HamloRevolution**: `Source/Link/HamloLinkClient.{h,cpp}` - lists slots, maps the chosen one read-only, polls at
   10 Hz on a background thread, hands a copy to the generator (message thread) and the "linked" state to the page.
   The generator's result reaches the audio thread as a whole new pattern (an atomic swap), never piecewise.
+- **CONNECT TO HPDG (R4, as built)**: the SIMPLE page's button connects to the first live HPDG (click) or to one
+  picked from the running ones (right click; `listInstances`), and disconnects. A 4 Hz message-thread timer in the
+  processor takes a new snapshot (`takeIfNew`); in SIMPLE without LOCK it regenerates the shown scene from HPDG's hits,
+  genre (GENRE AUTO), key (TONAL's NOTE) and groove (`Core/RevolutionSimple::hitsFromSnapshot`). HPDG gone (LOST): the
+  last pattern stays; the page's lamp: off / amber searching / green linked / red lost.
 - The same client can later serve HamloEcho (delay times / tonal key), HamloVerb (pre-delay on the grid), HamloComp
   (sidechain-free pumping on the kick lane).

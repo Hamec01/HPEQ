@@ -176,7 +176,10 @@ private:
     std::array<std::atomic<float>, kFeelSteps> feel {};
 
     // parameters of the current block
-    std::array<float, 208> lastValues {};
+    std::array<float, 228> lastValues {};
+    // R4: the groove (offsets per 1/16 of the bar, in quarter notes, times GROOVE); all 0 = the straight grid
+    std::array<double, 16> groove {};
+    bool grooved = false;
     unsigned stamp = 0;
     int steps = 16, grid = 2, motionTarget = 0;
     bool triplet = false, freeMode = false;
