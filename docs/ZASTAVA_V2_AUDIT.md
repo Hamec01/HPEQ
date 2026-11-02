@@ -101,3 +101,9 @@ automation. Then isolate a Zastava-only processor/build and prove identical
 PCM/state/latency at identical event/block schedules. Preserve the archived M0,
 fixed PDC and allocation discipline. Confirm feature scope from owner answers
 before designing V2 DSP and freezing numerical targets.
+
+## Follow-up checkpoint
+
+Owner answered:all four roles, separate soft/hard profiles. S1isolation now
+complete; see reports/s1/REPORT.md and ZASTAVA_V2_SCOPE.md. Earlier pending/audit
+statements above are historical. New V2algorithms have not been implemented yet.

@@ -45,36 +45,16 @@ set_target_properties(HamloZastava_Assets PROPERTIES POSITION_INDEPENDENT_CODE O
 # --- Shared code: HPEQ's module-plug-in stack (Source/ is HPEQ's, verbatim; docs/SYNC_WITH_HPEQ.md) -----------
 add_library(HamloZastava_Shared STATIC
     Source/Core/ModulePresets.cpp
-    Source/DSP/Biquad.cpp
-    Source/DSP/FxNodeProcessor.cpp
-    Source/DSP/LayerEngine.cpp
-    Source/DSP/PreEqProcessor.cpp
-    Source/DSP/Processors.cpp
-    Source/DSP/ReverbProcessor.cpp
-    Source/DSP/HamloVerb.cpp
-    Source/DSP/HamloEcho.cpp
-    Source/DSP/HamloMag.cpp
-    Source/DSP/ProcessorsM6.cpp
-    Source/DSP/HamloRevolution.cpp
-    Source/DSP/HamloRedWall.cpp
-    Source/DSP/HamloUdarnik.cpp
     Source/DSP/HamloZastava.cpp
-    Source/DSP/HamloShirota.cpp
-    Source/DSP/CrossoverTree.cpp
-    Source/DSP/EqDesign.cpp
+    Source/DSP/LegacyGateProcessor.cpp
+    Source/DSP/LegacyZastavaCore.cpp
     Source/UI/BlackSteel.cpp
-    Source/UI/HamloCompPanel.cpp
-    Source/UI/HamloVerbPanel.cpp
-    Source/UI/HamloEchoPanel.cpp
-    Source/UI/HamloMagPanel.cpp
-    Source/UI/HamloRedWallPanel.cpp
-    Source/UI/HamloUdarnikPanel.cpp
     Source/UI/HamloZastavaPanel.cpp
-    Source/UI/HamloShirotaPanel.cpp
+    Source/UI/PresetScreen.cpp
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
-    Source/UI/PresetScreen.cpp)
+)
 target_include_directories(HamloZastava_Shared
     PUBLIC Source
     PRIVATE
@@ -130,7 +110,7 @@ target_link_libraries(HamloZastava
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloZastava_Tests Tests/TestMain.cpp Tests/PluginTests.cpp)
+        add_executable(HamloZastava_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/IsolationTests.cpp Tests/AllocationAudit.cpp)
     else()
         add_executable(HamloZastava_Snapshot Tests/SnapshotMain.cpp)
     endif()
@@ -147,3 +127,41 @@ foreach(tool Tests Snapshot)
             juce::juce_recommended_warning_flags)
 endforeach()
 add_test(NAME HamloZastava_Tests COMMAND HamloZastava_Tests)
+
+# Immutable S1 capture/verification laboratory.
+add_custom_target(HamloZastava_S1Identity
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/ZastavaS1Identity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteS1Identity.cmake")
+add_dependencies(HamloZastava_Shared HamloZastava_S1Identity)
+add_executable(HamloZastava_CompatLab Tests/ZastavaLabMain.cpp)
+target_compile_definitions(HamloZastava_CompatLab PRIVATE HPEQ_MODULE_KIND=6 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloZastava_CompatLab PRIVATE HamloZastava_Shared HamloZastava_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
+
+target_include_directories(HamloZastava_Shared PUBLIC "${CMAKE_CURRENT_BINARY_DIR}")
+
+option(HAMLO_ZASTAVA_BUILD_M0_REFERENCE "Build the frozen full M0 laboratory (requires captured sources)" OFF)
+if(HAMLO_ZASTAVA_BUILD_M0_REFERENCE)
+# Final paired method against the immutable full M0 source, never current headers.
+set(ZASTAVA_M0_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/out/s1/original")
+file(READ "${ZASTAVA_M0_ROOT}/CMakeLists.txt" m0_cmake)
+string(REGEX MATCH "add_library\\(HamloZastava_Shared STATIC[^)]*" m0_sources "${m0_cmake}")
+string(REGEX MATCHALL "Source/[A-Za-z0-9_/]+\\.cpp" m0_parts "${m0_sources}")
+set(m0_units)
+foreach(part IN LISTS m0_parts)
+    list(APPEND m0_units "${ZASTAVA_M0_ROOT}/${part}")
+endforeach()
+add_library(HamloZastava_M0Shared STATIC EXCLUDE_FROM_ALL ${m0_units})
+target_include_directories(HamloZastava_M0Shared PUBLIC "${ZASTAVA_M0_ROOT}/Source" PRIVATE "${HAMLO_ZASTAVA_JUCE_SOURCE}/modules" "${CMAKE_CURRENT_BINARY_DIR}/juce_binarydata_HamloZastava_Assets/JuceLibraryCode")
+get_target_property(m0_defines HamloZastava_Shared INTERFACE_COMPILE_DEFINITIONS)
+target_compile_definitions(HamloZastava_M0Shared PUBLIC ${m0_defines})
+target_link_libraries(HamloZastava_M0Shared PRIVATE juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)
+add_dependencies(HamloZastava_M0Shared HamloZastava_Assets)
+add_custom_target(HamloZastava_M0Identity
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/m0"
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${ZASTAVA_M0_ROOT}" "-DMETHOD_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/m0/ZastavaS1Identity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteS1Identity.cmake")
+add_executable(HamloZastava_M0CompatLab EXCLUDE_FROM_ALL Tests/ZastavaLabMain.cpp)
+add_dependencies(HamloZastava_M0CompatLab HamloZastava_M0Identity)
+target_include_directories(HamloZastava_M0CompatLab BEFORE PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/m0" "${ZASTAVA_M0_ROOT}/Source")
+target_compile_definitions(HamloZastava_M0CompatLab PRIVATE HPEQ_MODULE_KIND=6 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloZastava_M0CompatLab PRIVATE HamloZastava_M0Shared HamloZastava_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
+
+endif()

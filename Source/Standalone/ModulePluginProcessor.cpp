@@ -1,8 +1,8 @@
 #include "Standalone/ModulePluginProcessor.h"
 #include "Core/ModulePresets.h"
 
-#include "DSP/ProcessorsM6.h"
-#include "DSP/ReverbProcessor.h"
+#include "ZastavaS1Identity.h"
+#include <stdexcept>
 #include "Standalone/ModulePluginEditor.h"
 
 namespace hpeq::standalone
@@ -26,6 +26,7 @@ ModulePluginProcessor::ModulePluginProcessor(ModuleKind moduleKind)
         jassert(value != nullptr);
         rawValues.push_back(value);
     }
+    if(juce::String(dsp::zastavaS1SourceIdentity())!=ZASTAVA_S1_SOURCE_ID)throw std::runtime_error("Mixed Zastava S1 translation units");
     bypassParameter = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter("bypass"));
     jassert(bypassParameter != nullptr);
 }
@@ -44,13 +45,7 @@ void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSi
     wetAmount.reset(isModuleOn() ? 1.0 : 0.0);
     setLatencySamples(fixedLatency);
 
-    dsp::LayerSnapshot snapshot;
-    snapshot.mix.active = true;
-    snapshot.mix.channel = ChannelMode::Stereo;
-    snapshot.mix.numSlots = 1;
-    snapshot.mix.slots[0] = currentSlot(isModuleOn());
-    engine.publish(snapshot);
-    engine.update();
+    engine.setTargets(currentSlot(isModuleOn()));
 }
 
 bool ModulePluginProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
@@ -102,13 +97,7 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     const bool on = isModuleOn();
     wetAmount.setTarget(on ? 1.0 : 0.0, bypassRampSteps);
 
-    dsp::LayerSnapshot snapshot;
-    snapshot.mix.active = true;
-    snapshot.mix.channel = ChannelMode::Stereo;
-    snapshot.mix.numSlots = 1;
-    snapshot.mix.slots[0] = currentSlot(on);
-    engine.publish(snapshot);
-    engine.update();
+    engine.setTargets(currentSlot(on));
     const int extraWetDelay = juce::jmax(0, fixedLatency - engine.getLatencySamples());
     const auto transport = currentTransport();
 
@@ -144,16 +133,8 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
 }
 
 double ModulePluginProcessor::getTailLengthSeconds() const
-{
-    const auto slot = currentSlot(true);
-    const double bpm = hostBpm.load(std::memory_order_relaxed);
-    double tail = 0.0;
-    if (kind == ModuleKind::Verb)
-        tail = dsp::ReverbProcessor::tailSeconds(slot, bpm);
-    else if (kind == ModuleKind::Echo)
-        tail = dsp::DelayProcessor::tailSeconds(slot, bpm);
-    return tail + static_cast<double>(fixedLatency) / currentSampleRate.load(std::memory_order_relaxed);
-}
+{return static_cast<double>(fixedLatency)/currentSampleRate.load(std::memory_order_relaxed);}
+
 
 juce::AudioProcessorEditor* ModulePluginProcessor::createEditor()
 {

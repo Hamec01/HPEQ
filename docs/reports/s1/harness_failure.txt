@@ -1,0 +1,4 @@
+v2verification: reference input state was appended to populated MemoryBlock.
+Diagnostic first restored observation: state=1 audio=1 json=1, while initial input-state size comparison was false.
+JUCE File::loadFileAsData appends to its result argument (documentation recommends clearing first).
+Fixed by clearing loaded before File::loadFileAsData; v3paired run is fresh.

@@ -6,7 +6,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "DSP/DelayLine.h"
-#include "DSP/LayerEngine.h"
+#include "DSP/LegacyZastavaCore.h"
 #include "DSP/Ramp.h"
 #include "Standalone/ModuleVariant.h"
 
@@ -52,7 +52,7 @@ public:
     void setParameterValue(const juce::String& id, double actualValue);
     bool isModuleOn() const noexcept { return bypassParameter != nullptr && !bypassParameter->get(); }
     double getHostBpm() const noexcept { return hostBpm.load(std::memory_order_relaxed); }
-    const dsp::FxNodeProcessor& moduleNode() const noexcept { return engine.getMixNode(); }
+    const dsp::LegacyZastavaCore& moduleNode() const noexcept { return engine; }
 
 private:
     dsp::FxSlotParams currentSlot(bool active) const noexcept;
@@ -63,7 +63,7 @@ private:
     std::vector<std::atomic<float>*> rawValues;
     juce::AudioParameterBool* bypassParameter = nullptr;
 
-    dsp::LayerEngine engine;
+    dsp::LegacyZastavaCore engine;
     juce::AudioBuffer<float> dry;
     dsp::AlignmentDelay wetAlign, dryAlign;
     dsp::LinearRamp wetAmount;

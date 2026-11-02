@@ -6,16 +6,36 @@
 
 ---
 
-## Current project checkpoint - HamloZastava (2026-11-02)
+## Current project checkpoint - HamloZastava S1 (2026-11-02)
 
-Owner selected Zastava. Current audit:docs/ZASTAVA_V2_AUDIT.md; continuation:
-docs/NEXT_STAGE.md. Section9 below is historical and stale:do not resume Mag or
-Revolution tasks from it. Mag/Verb/Echo/Shirota are complete per owner/history;
-other products/HPEQ untouched. Work only here, no subagents, push/subtree or
-model switch. VST-first; installer is not an immediate requirement. Follow the
-standing efficient-staged-work skill. Existing binary71/71 checks; no new DSP
-or source-fingerprinted clean build claimed. Scope questions pending; baseline/
-isolation can proceed independently. Preserve M0 before changing its sound.
+Owner approved all four V2roles(cleanup,drum tails,external-key ducking,rhythm)
+and separate soft/hard profiles. Decisions settled, do not ask again.
+Scope:docs/ZASTAVA_V2_SCOPE.md; continuation:docs/NEXT_STAGE.md. Section9below
+is historical/stale:do not resume Mag/Revolution tasks. No other product/HPEQ,
+subagents, push/subtree or model switch. VST-first; installer not immediate.
+Follow efficient-staged-work. Parent audit69901fb; sourcef7330fd.
+
+S1 isolation complete:ten own production units,25file include closure, no
+LayerEngine/FxNodeProcessor/project graph/unrelated effects/panels. Original
+M6/extended gate branches and resets preserved,15spec parameters+bypass, seven
+host programs and fixed5msPDC. Version remains0.1.0, not the V2 release.
+229primary PCM/input-state cases plus458fresh/edited actual M0 restoration
+observations match exactly;127native, zero prepared audio allocations,
+pluginval5..10/Steinberg537pass; panel inspected. Processor sizeof844152->2176,
+not a heap-footprint measurement. DLL SHA256:ef62bb5f012c8faacf50de92a9fe916828888dd92e6da18d95b3bc3b4522e738.
+
+Final evidence:docs/reports/s1/REPORT.md,acceptance.json,before_v3/after_v3;
+reference:out/s1/reference_v3; original sources/bundle/exes:out/s1/original.
+Keep all v1/v2failed reports. Original normalized parameter readback changes
+in191roundtrips, while serialized state bytes remain unchanged; Legacy preserves
+that behavior. Final lab compares actual original restored bytes/PCM/readings.
+V2harness append-to-nonempty-buffer bug fixed, disclosed; final v3paired method.
+
+Next:S2 numerical targets and identical before/after lab before new DSP. Build
+four approved modes, soft/hard profiles, external IO, exact timing/neutral modern
+state, QUICK/ADVANCED and later200presets. No scope question pending. Source/
+method changes invalidate dependent cached results. Preserve shared PresetScreen.
+No active jobs. Stage commit follows this handoff; verify git status next time.
 
 ## 1. Продукт и владелец
 
