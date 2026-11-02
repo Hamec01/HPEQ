@@ -56,6 +56,9 @@ public:
     int glitchCapacity() const noexcept { return tapes[1].size; }
     // Attack strength 0..1 per pattern step (averaged over the pattern cycles heard so far).
     void getFeel(std::array<float, kFeelSteps>&) const noexcept;
+    // R5: the input's onset timing per 1/16 of the bar: the offset from the straight grid (quarter notes) and the
+    // presence (1 = an onset there every bar), each averaged bar by bar (half old, half new).
+    void getTiming(std::array<float, 16>& offsets, std::array<float, 16>& presence) const noexcept;
     // The wave screen (owner, 2026-10-26): input and output peak per 1/8 step over the pattern cycle, the
     // latest cycle written over the previous one.
     static constexpr int kWaveBins = 8 * kFeelSteps;
@@ -174,6 +177,17 @@ private:
     int feelHistoryCount = 0;
     std::array<double, kFeelSteps> stepPeak {};
     std::array<std::atomic<float>, kFeelSteps> feel {};
+
+    // R5: onsets at sample resolution (the louder channel above 3 x its 20 ms mean and -50 dBFS; 30 ms dead time),
+    // the first one in each 1/16's window (half a 1/16 either side of its grid point, on the musical clock)
+    void listenTiming(const float* in, int numChannels, double q) noexcept;
+    static constexpr long long kNoWindow = -(1LL << 62);
+    double onsetSlow = 0.0, onsetCoef = 0.001;
+    int onsetDead = 0, onsetDeadSamples = 1440;
+    long long timingWindow = kNoWindow;
+    bool windowHit = false;
+    double windowOffset = 0.0;
+    std::array<std::atomic<float>, 16> timing {}, presence {};
 
     // parameters of the current block
     std::array<float, 228> lastValues {};

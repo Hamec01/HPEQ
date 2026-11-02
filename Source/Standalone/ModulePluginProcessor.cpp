@@ -85,8 +85,30 @@ void ModulePluginProcessor::generateSimple(bool newSeed)
         hits = simple::hitsFromSnapshot(*snapshot);
     else
     {
+        // R5: GENERATE takes what the engine heard (its attack strengths and onset timing); knob moves reuse it
+        if (newSeed)
+        {
+            std::array<float, revolution::kSteps> live {}, offsets {}, shares {};
+            const auto& node = moduleNode();
+            if (node.getRevolutionFeel(0, live) && std::any_of(live.begin(), live.end(), [](float f) { return f > 0.05f; })
+                && node.getRevolutionTiming(0, offsets, shares))
+            {
+                state.feel = revolution::feelFrom(live);
+                state.heardMask = 0;
+                for (int s = 0; s < revolution::kSteps; ++s)
+                {
+                    const bool heard = shares[static_cast<size_t>(s)] >= 0.5f;
+                    state.heard[static_cast<size_t>(s)] = heard ? offsets[static_cast<size_t>(s)] : 0.0f;
+                    state.heardMask = static_cast<std::uint16_t>(state.heardMask | (heard ? 1u << s : 0u));
+                }
+            }
+        }
         const int genre = simple::resolveGenre(settings.genre, {}, getHostBpm());
         hits = revolution::hasFeel(state.feel) ? simple::hitsFromFeel(state.feel, genre) : simple::templateHits(genre);
+        if (revolution::hasFeel(state.feel))
+            for (int s = 0; s < revolution::kSteps; ++s)
+                if (((state.heardMask >> s) & 1) != 0)
+                    hits.groove[static_cast<size_t>(s)] = state.heard[static_cast<size_t>(s)];
     }
     const auto result = simple::generate(settings, hits, getHostBpm());
     for (const auto& [id, value] : result.parameters)
@@ -112,7 +134,13 @@ bool ModulePluginProcessor::followHpdg()
     auto snapshot = std::make_unique<hamlo::link::Snapshot>();
     if (!hpdgLink.takeIfNew(*snapshot))
         return false;
-    if (getPage() == Page::Simple && parameterValue("simpleLock") < 0.5)
+    if (parameterValue("simpleLock") >= 0.5)
+        return true; // LOCK keeps everything
+    // R5: TONAL in HPDG's key, on either page
+    const int key = juce::jlimit(0, 11, static_cast<int>(snapshot->keyRoot));
+    setParameterValue("throwANote", key);
+    setParameterValue("throwBNote", key);
+    if (getPage() == Page::Simple)
         generateSimple(false);
     return true;
 }
@@ -383,6 +411,14 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
                 for (int l = 0; l < revolution::kLanes; ++l)
                     if (state.lanes[static_cast<size_t>(l)] != revolution::Lane {})
                         to.setAttribute("lane" + juce::String(l), revolution::laneToText(state.lanes[static_cast<size_t>(l)]));
+                if (state.heardMask != 0)
+                {
+                    juce::StringArray heard;
+                    for (auto h : state.heard)
+                        heard.add(juce::String(h, 6));
+                    to.setAttribute("heard", heard.joinIntoString(" "));
+                    to.setAttribute("heardMask", static_cast<int>(state.heardMask));
+                }
                 if (std::any_of(state.groove.begin(), state.groove.end(), [](float g) { return g != 0.0f; }))
                 {
                     juce::StringArray groove;
@@ -423,7 +459,8 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                         for (int i = 0; i < from.getNumAttributes(); ++i)
                         {
                             const auto name = from.getAttributeName(i);
-                            if (!name.startsWith("hpdg") && !name.startsWith("lane") && name != "index" && name != "groove" && name != "mode")
+                            if (!name.startsWith("hpdg") && !name.startsWith("lane") && name != "index" && name != "groove" && name != "mode"
+                                && !name.startsWith("heard"))
                                 set.set(juce::Identifier(name), juce::var(from.getAttributeValue(i).getLargeIntValue()));
                         }
                         const auto* seed = set.getVarPointer("revSeed");
@@ -434,6 +471,10 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                         const auto groove = juce::StringArray::fromTokens(from.getStringAttribute("groove"), " ", "");
                         for (int i = 0; i < revolution::kSteps && i < groove.size(); ++i)
                             state.groove[static_cast<size_t>(i)] = groove[i].getFloatValue();
+                        const auto heard = juce::StringArray::fromTokens(from.getStringAttribute("heard"), " ", "");
+                        for (int i = 0; i < revolution::kSteps && i < heard.size(); ++i)
+                            state.heard[static_cast<size_t>(i)] = heard[i].getFloatValue();
+                        state.heardMask = static_cast<std::uint16_t>(from.getIntAttribute("heardMask", 0));
                         return state;
                     };
                     // a state from before R4 has no mode: its pattern is hand-made, ADVANCED shows it

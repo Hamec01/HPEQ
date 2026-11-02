@@ -44,3 +44,8 @@ this module (as HamloComp / HamloUdarnik / HamloRedWall / HamloMag did) and reco
 - `Core/Revolution.*`: `Band::Tops`, `laneHash`, `laneEventValue`. New: `Core/RevolutionSimple.*` (the generator; it
   includes `Link/HamloLinkProtocol.h` - HPEQ would need that file too).
 - New page `UI/HamloRevolutionSimplePage.*`; `UI/HamloRevolutionPanel.*`: the SIMPLE button.
+
+## R5 (LISTEN timing, key) - changes to HPEQ's files
+
+- `DSP/HamloRevolution.*`: `listenTiming` (onsets at sample resolution, per 1/16 of the bar), `getTiming`.
+- `DSP/FxNodeProcessor.*`: `getRevolutionTiming`.

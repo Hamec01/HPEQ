@@ -69,6 +69,8 @@ public:
         juce::int64 seed = 1;
         revolution::Lanes lanes {};
         std::array<float, revolution::kSteps> groove {}; // R4: the groove table (quarter notes per 1/16), all 0 = none
+        std::array<float, revolution::kSteps> heard {};  // R5: the input's timing per 1/16 captured by SIMPLE's GENERATE
+        std::uint16_t heardMask = 0;                     // ... bit s: 1/16 s had an onset (presence >= 0.5)
     };
     RevolutionState getRevolutionState() const;          // the current scene
     void setRevolutionState(const RevolutionState&);     // the current scene

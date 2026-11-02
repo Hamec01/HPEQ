@@ -136,7 +136,7 @@ target_link_libraries(HamloRevolution
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SimpleTests.cpp
+        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp
             Source/DSP/LayerSnapshot.cpp Source/Core/FxProjectState.cpp) # HPEQ's slot mapping: the reference of V1
     else()
         add_executable(HamloRevolution_Snapshot Tests/SnapshotMain.cpp)

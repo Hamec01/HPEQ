@@ -179,6 +179,13 @@ void RevolutionEngine::prepare(double newSampleRate, std::array<std::vector<floa
     feelFrame = std::max(16, static_cast<int>(std::lround(64.0 * sampleRate / 48000.0)));
     for (auto& f : feel)
         f.store(0.0f, std::memory_order_relaxed);
+    onsetCoef = 1.0 - std::exp(-1.0 / (0.02 * sampleRate));
+    onsetDeadSamples = static_cast<int>(std::lround(0.03 * sampleRate));
+    for (int i = 0; i < 16; ++i)
+    {
+        timing[static_cast<size_t>(i)].store(0.0f, std::memory_order_relaxed);
+        presence[static_cast<size_t>(i)].store(0.0f, std::memory_order_relaxed);
+    }
     reset();
 }
 
@@ -227,6 +234,8 @@ void RevolutionEngine::newEpoch() noexcept
     upcomingFor = -1.0;
     feelFill = 0;
     feelEnergy = 0.0;
+    timingWindow = kNoWindow; // a jump: the window under way is dropped, not counted as empty
+    onsetDead = 0;
     feelHistoryCount = 0;
     feelLastStep = -1;
     stepPeak = {};
@@ -1162,6 +1171,55 @@ void RevolutionEngine::analyse(const float* in, int numChannels, int step) noexc
     peak = std::max(peak, novelty);
 }
 
+void RevolutionEngine::getTiming(std::array<float, 16>& offsets, std::array<float, 16>& shares) const noexcept
+{
+    for (size_t i = 0; i < 16; ++i)
+    {
+        offsets[i] = timing[i].load(std::memory_order_relaxed);
+        shares[i] = presence[i].load(std::memory_order_relaxed);
+    }
+}
+
+void RevolutionEngine::listenTiming(const float* in, int numChannels, double q) noexcept
+{
+    if (freeMode)
+        return;
+    double level = 0.0;
+    for (int ch = 0; ch < numChannels; ++ch)
+        level = std::max(level, static_cast<double>(std::abs(in[ch])));
+    const bool onset = onsetDead <= 0 && level > 0.0031622776601683794 && level > 3.0 * onsetSlow;
+    onsetSlow += (level - onsetSlow) * onsetCoef;
+    if (onsetDead > 0)
+        --onsetDead;
+    const auto window = static_cast<long long>(std::llround(q / 0.25));
+    if (window != timingWindow)
+    {
+        if (timingWindow != kNoWindow)
+        {
+            const auto i = static_cast<size_t>(wrap(timingWindow, 16));
+            const float was = presence[i].load(std::memory_order_relaxed);
+            if (windowHit)
+            {
+                const float t = timing[i].load(std::memory_order_relaxed);
+                timing[i].store(was < 0.01f ? static_cast<float>(windowOffset) : 0.5f * t + 0.5f * static_cast<float>(windowOffset),
+                                std::memory_order_relaxed);
+            }
+            presence[i].store(0.5f * was + (windowHit ? 0.5f : 0.0f), std::memory_order_relaxed);
+        }
+        timingWindow = window;
+        windowHit = false;
+    }
+    if (onset)
+    {
+        onsetDead = onsetDeadSamples;
+        if (!windowHit)
+        {
+            windowHit = true;
+            windowOffset = q - static_cast<double>(window) * 0.25;
+        }
+    }
+}
+
 double RevolutionEngine::motionLevel(double q) noexcept
 {
     if (!motionStepValid || motionStamp != stamp || q + kEps * dq >= motionStep.end || q + kEps * dq < motionStep.start)
@@ -1814,6 +1872,7 @@ void RevolutionEngine::process(float* const* channels, int numChannels, int numS
         for (int t = 0; t < rev::kThrows; ++t)
             runLane(rev::kFirstThrow + t, x, numChannels, q);
         analyse(in, numChannels, wrap(motionStep.k, steps));
+        listenTiming(in, numChannels, q);
         float inPeak = 0.0f, outPeak = 0.0f;
         for (int ch = 0; ch < numChannels; ++ch)
         {

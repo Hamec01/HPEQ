@@ -292,6 +292,32 @@ R4 targets:
 - V3 with GROOVE 100 % and a table; V13: the mode, SIMPLE settings, the groove table round trip; an R3 state opens
   ADVANCED with nothing changed; V14 validators.
 
+## 10. R5 as designed (2026-11-02, before the code)
+
+Owner: "R5". What R4 left: GROOVE from the input (LISTEN's timing) and TONAL in HPDG's key.
+
+**LISTEN timing.** Besides its attack strength per step, the engine finds the input's onsets at sample resolution: a
+sample whose level (the louder channel) is above 3 x its 20 ms mean and above -50 dBFS starts an onset (then 30 ms
+dead time). Each 1/16 of the bar (its window: half a 1/16 either side of the straight grid point, on the musical
+clock, so swing / groove settings do not move it) keeps its first onset's offset from the grid. Per 1/16 the engine
+averages bar by bar (half old, half new): the offset, and the presence (1 = an onset in that window, 0 = none). FREE
+mode: no timing.
+**SIMPLE, unlinked.** GENERATE takes what the engine heard (if anything): the attack strengths become the scene's
+feel (the hits) and the timing becomes the scene's "heard" groove (offsets of the 1/16s whose presence >= 0.5). Knob
+moves regenerate from the captured ones (the same result every time). The groove table = the heard offset where heard,
+else the genre's swing on the odd 1/16s, 0 on the even. Saved with the scene.
+**TONAL in HPDG's key.** Linked, a new HPDG snapshot sets both throws' NOTE to HPDG's key root, on either page, unless
+LOCK (SIMPLE regenerates as before and writes the same NOTE).
+
+R5 targets (the drum loop of the test: kicks on 1/16s 1 and 9, snares on 5 and 13 10 ms late, hats on 3, 7, 11, 15 on
+the grid and on the odd 1/16s 15 ms late except 10 and 12, which have no hit):
+- Timing: after 4 bars the engine's offsets within 1 ms (48 samples) of the loop's on every 1/16 with a hit; presence
+  >= 0.5 there and < 0.5 on the 1/16s without one.
+- V8 (LISTEN): GENERATE unlinked: on-hit events only on 1/16s the input hits (feel >= 0.5).
+- V9 (LISTEN): GROOVE 100 %: a GLITCH gap on 1/16s 5 and 6 starts at the loop's hit time within 1 ms.
+- Key: linked, HPDG's key A then D: NOTE 9 then 2 on both throws (ADVANCED too); LOCK keeps NOTE.
+- V1 GoldenTests unchanged (the analysis only listens); V3; V7 rerun; V13 (feel, heard groove round trip); V14.
+
 ## Sources
 
 1. [Sound On Sound: ShaperBox 3](https://www.soundonsound.com/reviews/cableguys-shaperbox-3), [MusicRadar: ShaperBox 3](https://www.musicradar.com/reviews/cableguys-shaperbox-3), [ShaperBox 3 manual](https://www.cableguys.com/downloads/Cableguys-ShaperBox-3-Manual.pdf?v=3.3.1)
