@@ -1,0 +1,617 @@
+{
+  "method": "Shirota S2 numerical method v1",
+  "implemented": false,
+  "source_id": "3dffd1852510d6f57d98579670203c4ba298c83978fce5ebe3af3800f0b845cd",
+  "identity_sha256": "6358e8378ab2866ae9a113fc4a72585ed5155fa5b9f61795a63878cb2afbf346",
+  "files": {
+    "Tests/SpatialLabMain.cpp": "c6036b429ef2f725f9c72caf593bcb8a87dff2496254a033bbedde4dd99f9386",
+    "Tools/analyze_s2.py": "109ca86ba9a210a164c1fd0e18bc1f8a63580bbb17a3e4a9d021a094e93ee968",
+    "docs/S2_METHODS.md": "906919c66058255e6a2572ec0693f46b188dc68727791a488e0fa4c6a610bd51",
+    "Source/DSP/SpatialPrototype.h": "db121f9967d99474dbd3c542d96ae26a1c87de3985b6014bbad94d96611be92a",
+    "Source/DSP/SpatialPrototype.cpp": "9cd7daa8d49ba8a67424d391b7480dff43bc33bd12b3602f85048542656a927a"
+  },
+  "cases": 43,
+  "checks": [
+    {
+      "goal": "P01",
+      "name": "neutral_44100",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "neutral_44100_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "neutral_44100_finite",
+      "passed": true,
+      "peak": 0.19977861642837524
+    },
+    {
+      "goal": "P01",
+      "name": "disabled_44100",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "disabled_44100_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "disabled_44100_finite",
+      "passed": true,
+      "peak": 0.19977861642837524
+    },
+    {
+      "goal": "P01",
+      "name": "neutral_48000",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "neutral_48000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "neutral_48000_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P01",
+      "name": "disabled_48000",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "disabled_48000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "disabled_48000_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P01",
+      "name": "neutral_96000",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "neutral_96000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "neutral_96000_finite",
+      "passed": true,
+      "peak": 0.19970905780792236
+    },
+    {
+      "goal": "P01",
+      "name": "disabled_96000",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "disabled_96000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "disabled_96000_finite",
+      "passed": true,
+      "peak": 0.19970905780792236
+    },
+    {
+      "goal": "P11",
+      "name": "width_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "width_0_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "width_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "width_1_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "width_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "width_2_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "width_4_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "width_4_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "generate_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_0_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_1_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "generate_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "generate_2_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "bass_anti60_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "bass_anti60_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "ref_anti60_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "ref_anti60_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "bass_anti1000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "bass_anti1000_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "ref_anti1000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "ref_anti1000_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "band_anti60_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "band_anti60_finite",
+      "passed": true,
+      "peak": 0.10000000149011612
+    },
+    {
+      "goal": "P11",
+      "name": "band_anti8000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "band_anti8000_finite",
+      "passed": true,
+      "peak": 0.08660253882408142
+    },
+    {
+      "goal": "P11",
+      "name": "ref_anti8000_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "ref_anti8000_finite",
+      "passed": true,
+      "peak": 0.08660253882408142
+    },
+    {
+      "goal": "P11",
+      "name": "guard_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "guard_0_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "guard_4_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "guard_4_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "space_noise_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_noise_0_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "space_impulse_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_impulse_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "tail_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "tail_0_finite",
+      "passed": true,
+      "peak": 0.07495517283678055
+    },
+    {
+      "goal": "P11",
+      "name": "space_noise_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_noise_1_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "space_impulse_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_impulse_1_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "tail_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "tail_1_finite",
+      "passed": true,
+      "peak": 0.07495517283678055
+    },
+    {
+      "goal": "P11",
+      "name": "space_noise_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_noise_2_finite",
+      "passed": true,
+      "peak": 0.16886326670646667
+    },
+    {
+      "goal": "P11",
+      "name": "space_impulse_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "space_impulse_2_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "tail_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "tail_2_finite",
+      "passed": true,
+      "peak": 0.07495517283678055
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_44100_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_44100_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_44100_23_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_44100_23_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_48000_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_48000_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_48000_23_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_48000_23_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_96000_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_96000_0_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "arrival_96000_23_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "arrival_96000_23_finite",
+      "passed": true,
+      "peak": 0.5
+    },
+    {
+      "goal": "P11",
+      "name": "events_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_1_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "events_64_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_64_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "events_127_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_127_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "events_512_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_512_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "events_4096_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "events_4096_finite",
+      "passed": true,
+      "peak": 0.19984494149684906
+    },
+    {
+      "goal": "P11",
+      "name": "stress_allocation",
+      "passed": true
+    },
+    {
+      "goal": "P10",
+      "name": "stress_finite",
+      "passed": true,
+      "peak": 0.1999608874320984
+    },
+    {
+      "goal": "P11",
+      "name": "event_blocks_64",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "event_blocks_127",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "event_blocks_512",
+      "passed": true
+    },
+    {
+      "goal": "P11",
+      "name": "event_blocks_4096",
+      "passed": true
+    },
+    {
+      "goal": "P02",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P03",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P04",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P05",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P06",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P07",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P08",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P09",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P10_features",
+      "name": "not_implemented",
+      "passed": null,
+      "reason": "n/a: aligned-dry baseline"
+    },
+    {
+      "goal": "P12",
+      "name": "cpu_0",
+      "passed": true,
+      "mean_fraction": 0.0003646817835365843,
+      "largest_fraction": 0.0010125
+    },
+    {
+      "goal": "P12",
+      "name": "cpu_1",
+      "passed": true,
+      "mean_fraction": 0.00036053734756097416,
+      "largest_fraction": 0.0008062500000000001
+    },
+    {
+      "goal": "P12",
+      "name": "cpu_2",
+      "passed": true,
+      "mean_fraction": 0.000368283155487804,
+      "largest_fraction": 0.0015
+    }
+  ],
+  "passed": 99,
+  "failed": 0,
+  "unavailable": 9
+}

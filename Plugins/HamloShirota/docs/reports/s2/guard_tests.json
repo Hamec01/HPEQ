@@ -1,0 +1,29 @@
+{
+  "source_id": "a00303ddd9211a0a704fddca745e0ee3c6034ab25c0a74f23033c5049ef8d667",
+  "checks": [
+    {
+      "name": "dsp_identity_mismatch",
+      "passed": true,
+      "expected_rejection": "Compiled DSP/method identity differs",
+      "exit_code": 1
+    },
+    {
+      "name": "unimplemented_candidate",
+      "passed": true,
+      "expected_rejection": "Wrong experiment role",
+      "exit_code": 1
+    },
+    {
+      "name": "corrupt_cached_pcm",
+      "passed": true,
+      "expected_rejection": "Stale run",
+      "exit_code": 1
+    },
+    {
+      "name": "mixed_cpp_translation_units",
+      "passed": true,
+      "exit_code": 2,
+      "output_created": false
+    }
+  ]
+}

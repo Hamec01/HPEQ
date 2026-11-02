@@ -23,7 +23,7 @@
 | HamloComp (компрессор, 0.2.0) | `E:\HamloComp` (git, ветка `main`) |
 | HamloUdarnik (транзиент-шейпер, 0.2.0) | `E:\HamloUdarnik` (`main`) |
 | HamloRedWall (лимитер, 0.3.0) | `E:\HamloRedWall` (`main`) |
-| HamloMag (сатуратор, 0.1.0 закоммичен, **v2 не закоммичен**) | `E:\HamloMag` (`master`) |
+| HamloMag (saturator, complete per owner; do not modify) | `E:\HamloMag` (`master`) |
 | HPEQ (источник кода модулей) | `E:\HPEQ` (ветка `feature/hpeq-m0-m1`) — **исходники HPEQ не трогать** |
 | Все четыре плагина в HPEQ (для пуша) | worktree `E:\HPEQ-hamlo-plugins`, ветка `feature/hamlo-plugins`, папки `Plugins/<name>` (git subtree) |
 | HPDG (жанры, стили, темпы) | `C:\DRUMENGINE\Source\Engine\StyleDefaults.cpp`, `DnB\DnBStyleProfile.cpp`, `Techno\TechnoStyleProfile.cpp` |
@@ -171,44 +171,53 @@ E:\Hamlo<Name>\build\Release\Hamlo<Name>_Snapshot.exe panel.png [program]
 ```
 VST3: `build\Hamlo<Name>_artefacts\Release\VST3\Hamlo<Name>.vst3`.
 
-## 9. Текущее состояние — с чего начать (HamloMag v2)
+## 9. Current local handoff - HamloShirota S5 (2026-11-02)
 
-HamloMag v2 сделан, но **не закоммичен** (`E:\HamloMag`, `git status` — ~25 файлов): SAMPLER (SP-1200 / MPC60 / S950),
-PHONE, SUB, DYNAMICS, MATCH, DELTA, 8x, переименованные тумблеры, нижняя полоса панели (1180×940), 200 рецептов
-пресетов в `Tools/genre_presets.py`, `Tests/V2Tests.cpp`, `Tests/PresetLabMain.cpp`. Лаборатория: 13 / 15
-(G2 8x −77.8 дБ при цели −90; G12 MATCH 0.58 LU при цели 0.5 — честные пределы). Юнит-тесты 707 / 707.
-Эталонные рендеры G1 лежат в `...\scratchpad\mag_g1` (если пропали — G1 сравнивать нечем: собрать 0.1.0 из коммита
-09c6d45 и записать заново).
+Work only in E:/HamloShirota. No subagents, other products/HPEQ changes, subtree
+or push. Follow efficient-staged-work; no model/effort switch occurred.
+Owner's latest instruction: VST only, NO INSTALLER for this stage. This overrides
+the generic installer checklist below. Do not build one without a new request.
+S5 parent5765c5e; completion commit follows this handoff (latest git log).
 
-Осталось:
-1. **Калибровка пресетов прервалась на 48 / 200** (готов Boom Bap, в `Tools/genre_presets_cal.tsv`). Досчитать остальные
-   (фильтр по именам или полный прогон в фоне), сгенерировать `.inc`, `check` → 200 / 200 (провалы чинить рецептами,
-   раскрывать).
-2. Проверить латентность в README (сейчас написано 351 сэмпл; после FIR сэмплера стала больше — взять из теста «Latency»).
-3. `docs/GENRE_PRESETS.md` — вместо `{result}` вписать результат проверки и раскрытия; `docs/reports/v2/V2_REPORT.md` —
-   по образцу HamloRedWall (что сделано, таблица «до → после», что не выполнено и почему, все раскрытия: G4/G6/G11/G13
-   переписаны, DYNAMICS переделан, PHONE до H6, FIR вместо Баттерворта, MATCH с гейтом).
-4. Снимок панели в `docs/reports/v2/panel_v2.png`, pluginval 5–10 + validator, установщик 0.2.0, `dist/`, коммит.
-5. `git subtree pull` в `E:\HPEQ-hamlo-plugins` (Plugins/HamloMag) и обновить строку HamloMag в `Plugins/README.md`;
-   пуш ветки `feature/hamlo-plugins` — когда владелец скажет.
+Version0.2.0 VST with207host programs:Default+six old+200new(4genres x50),
+permanent IDs/metadata/group filters, calibrated Spatial Mix/peak trim. Categories
+follow section6 counts. Stereo/Space/Binaural, five pages and16-node paths remain.
+Original12parameter prefix/ranges/class IDs preserved;147appended=159total.
+All modes keep round2.5ms PDC; modern neutral is aligned dry. Default preserves
+original Legacy recipe and clears modern fields. Compact Legacy keeps M0's
+program-metadata omission; modern genre projects preserve ID/program/exact audio.
 
-Дальше по плану владельца (после HamloMag): HamloVerb, HamloEcho, затем HamloZastava, HamloShirota — тем же порядком
-(M0 → эталоны и цели → замеры → код → 200 пресетов → валидаторы → отчёт).
+Accepted:200/200 depth/peak/finite/state/program/audio,200unique recipes excluding
+Mix/Output,2457native,160M0bit-exact,106integration,31S4PCM unchanged,96filter cases,
+5identity rejections,pluginval5..10/Steinberg537. Five final UIshots inspected;
+47production owner-material A/B/profile examples in out/s5/listen.
+Report:docs/reports/s5/REPORT.md; acceptance.json; library:docs/GENRE_PRESETS.md.
 
-### M0 остальных модулей (сделано 2026-10-29)
+Ready VST:dist/HamloShirota-0.2.0-VST3/HamloShirota.vst3 (whole folder/resources).
+Validated DLL SHA256:49864b3ddcfb8f34608d3201f9ab3e6beba14dd44df59f10156f148417e9b73e.
+Delivery matches validators_release exact bytes. No installer/installed VST edit.
 
-`E:\HamloEcho` (дилей, HmEc), `E:\HamloVerb` (реверб, HmVb), `E:\HamloZastava` (гейт, HmZa), `E:\HamloShirota`
-(стерео, HmSh), `E:\HamloFader` (гейн-утилита, HmFd). Устроены иначе, чем первые четыре: `Source/` — это **весь стек
-модульного плагина HPEQ без изменений** (исходники `HPEQ_ModuleShared` из `E:\HPEQ\CMakeLists.txt` и их заголовки,
-namespace `hpeq`), собранный с `HPEQ_MODULE_KIND=<n>`; сверху добавлен только экран пресетов (`Source/UI/PresetScreen.*`,
-namespace `hpeq::ui`) в `Source/Standalone/ModulePluginEditor.*`. HamloFader: у HPEQ нет модульного VST3 для слота Gain —
-в копию добавлены `ModuleKind::Fader` (kind 8) и `makeFader()` с диапазонами из `LayerSnapshot.cpp`.
-Генератор: `make_module_repo.py` (+ `make_fader.py`) — скрипты лежали в рабочей папке прошлого агента; повторять не нужно.
-Тесты: процессор модуля HPEQ огромный (LayerEngine) — в тестах создавать **в куче** (`std::make_unique`), на стеке два
-экземпляра переполняют стек (0xC00000FD).
+S5 fixed a state synchronization bug: silent default reset could leave UI Width
+at1 while saved/DSP Width3. New-parameter resets now notify listeners before
+replaceState; equal pre-load values/stale program index/default reset tested.
+Conservatively repeated all calibration/filter/state checks. Full-strength200PCM
+unchanged by repair. Changed node numbers to inside circle to avoid BACK overlap.
+DSP kernels, bank, old programs and shared PresetScreen remain unchanged.
 
-Первый шаг V2 для каждого из них — **сузить `Source/`** до своего модуля (как HamloMag: свой `<X>Settings.h` с HPEQ-индексами,
-свой процессор без LayerEngine, своя `Parameters.h`), доказать бит-в-бит против текущей M0-сборки, и только потом эталоны и цели.
+Depth is output-change residual vs PDC-aligned dry, with Output gain removed:
+Gentle-24..-16,Medium-16..-8,Heavy-8..0dB. Actual targets-20/-12/-4. Caches bind
+sound/routing/parameter/method/recipe/input/tempo, generated table/UI excluded from
+sound ID. Each actual compiled recipe is checked separately. Never reuse changed
+DSP results or rewrite old accepted runs. Full commands:docs/NEXT_STAGE.md.
+Use HamloShirota_V2Compat for original first7/12 projection; older Lab and
+LegacyCompat total-program assumptions no longer describe the current catalog.
+Do not run S1..S4 historical audits against this current binary/source ID.
+
+Open owner checks:FL Studio/AKG K712 front-back listening and live-host deadlines.
+Mean CPU11.16..11.45percent passes25percent; current max0.27314periods, but earlier
+S4callback1.0062periods and larger S3outliers remain unexplained. No deadline-safety
+claim. Profiles horizontal, not personalized HRTF/headphone EQ; no elevation.
+All stage jobs have finished. Preserve out/s1..s5 and historical source/evidence.
 
 ### HamloRevolution — ещё не вынесен (план)
 

@@ -1,0 +1,3 @@
+v2Width original=3.000000000000 restored=1.000000000000
+program 26 -> 26 audio_error_db=-332.548
+actual finite=1 state=0 allocations=0

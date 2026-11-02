@@ -1,0 +1,1228 @@
+{
+  "method": "S3v1",
+  "source_id": "70140105adecb392b8a168e95dce1d29dc025d8c0f7eaef9ed5f836bb9e83705",
+  "files": {
+    "Assets/Hrtf/horizontal.bin": "4d100e0d8c4e619d52d3b0f85e60228dde5ba79a2d5816eb4b7f46ec9570f998",
+    "Assets/Hrtf/manifest.json": "74d116dba7006966378b93d8852a72409cff90eea7d9e9c6e62beba1b4de6093",
+    "Source/DSP/MotionPrototype.cpp": "e9d9eaec8252f6174f2638323a995840feae1c2be3351a9333b0386f8f02e857",
+    "Source/DSP/MotionPrototype.h": "ff5f80915f34e2c02b3d1936d22d33be00f344223d4dce4c50c3f0b9150a9edc",
+    "Tests/MotionLabMain.cpp": "a8f5e2bec298f541808a23a2e21857fea938e341c15905047ce2ccc52421bd2b",
+    "Tools/analyze_s3.py": "9f807eedd2aa55ea3e455a9e1f1a2062e2d6eec3a858fff95be3b3f02f82a408",
+    "docs/S3_METHODS.md": "e9004c67dde0010f61ba255301cdfd4b1209e94b3b5e2f09053bf04b4f5f3722"
+  },
+  "implemented": true,
+  "cases": 67,
+  "checks": [
+    {
+      "goal": "M03",
+      "name": "neutral_44100_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_44100_complex_finite",
+      "passed": true,
+      "peak": 0.11999905109405518
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_44100_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_44100_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_44100_complex_finite",
+      "passed": true,
+      "peak": 0.11999905109405518
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_44100_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_44100_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_44100_mono_finite",
+      "passed": true,
+      "peak": 0.12996062636375427
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_44100_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_44100_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_44100_mono_finite",
+      "passed": true,
+      "peak": 0.12996062636375427
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_44100_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_48000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_48000_complex_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_48000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_48000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_48000_complex_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_48000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_48000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_48000_mono_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_48000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_48000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_48000_mono_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_48000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_96000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_96000_complex_finite",
+      "passed": true,
+      "peak": 0.11999258399009705
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_96000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_96000_complex_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_96000_complex_finite",
+      "passed": true,
+      "peak": 0.11999258399009705
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_96000_complex",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "neutral_96000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "neutral_96000_mono_finite",
+      "passed": true,
+      "peak": 0.1299823522567749
+    },
+    {
+      "goal": "M01",
+      "name": "neutral_96000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "disabled_96000_mono_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "disabled_96000_mono_finite",
+      "passed": true,
+      "peak": 0.1299823522567749
+    },
+    {
+      "goal": "M01",
+      "name": "disabled_96000_mono",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "pan_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "pan_0_finite",
+      "passed": true,
+      "peak": 0.12995482981204987
+    },
+    {
+      "goal": "M03",
+      "name": "pan_90_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "pan_90_finite",
+      "passed": true,
+      "peak": 0.1837838888168335
+    },
+    {
+      "goal": "M03",
+      "name": "pan_270_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "pan_270_finite",
+      "passed": true,
+      "peak": 0.1837838888168335
+    },
+    {
+      "goal": "M03",
+      "name": "balance_-1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "balance_-1_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "balance_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "balance_1_finite",
+      "passed": true,
+      "peak": 0.11995861679315567
+    },
+    {
+      "goal": "M03",
+      "name": "spread_anti_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_anti_finite",
+      "passed": true,
+      "peak": 0.03660254180431366
+    },
+    {
+      "goal": "M03",
+      "name": "point_anti_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "point_anti_finite",
+      "passed": true,
+      "peak": 0
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_0_finite",
+      "passed": true,
+      "peak": 0.2370523065328598
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_900_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_900_finite",
+      "passed": true,
+      "peak": 0.3689477741718292
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_1800_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_1800_finite",
+      "passed": true,
+      "peak": 0.15463009476661682
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_2700_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_2700_finite",
+      "passed": true,
+      "peak": 0.41391152143478394
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_0_25_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_0_25_finite",
+      "passed": true,
+      "peak": 0.16291534900665283
+    },
+    {
+      "goal": "M03",
+      "name": "binaural_spread_anti_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "binaural_spread_anti_0_finite",
+      "passed": true,
+      "peak": 0.11381640285253525
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_0_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_0_0_finite",
+      "passed": true,
+      "peak": 0.2617509067058563
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_0_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_0_1_finite",
+      "passed": true,
+      "peak": 0.26631930470466614
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_0_finite",
+      "passed": true,
+      "peak": 0.24825109541416168
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_900_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_900_finite",
+      "passed": true,
+      "peak": 0.5834368467330933
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_1800_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_1800_finite",
+      "passed": true,
+      "peak": 0.1432265043258667
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_2700_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_2700_finite",
+      "passed": true,
+      "peak": 0.529689610004425
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_1_25_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_1_25_finite",
+      "passed": true,
+      "peak": 0.17062236368656158
+    },
+    {
+      "goal": "M03",
+      "name": "binaural_spread_anti_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "binaural_spread_anti_1_finite",
+      "passed": true,
+      "peak": 0.13189487159252167
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_1_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_1_0_finite",
+      "passed": true,
+      "peak": 0.37421998381614685
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_1_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_1_1_finite",
+      "passed": true,
+      "peak": 0.30054840445518494
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_0_finite",
+      "passed": true,
+      "peak": 0.22116783261299133
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_900_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_900_finite",
+      "passed": true,
+      "peak": 0.49365904927253723
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_1800_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_1800_finite",
+      "passed": true,
+      "peak": 0.23360717296600342
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_2700_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_2700_finite",
+      "passed": true,
+      "peak": 0.588659942150116
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_2_25_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_2_25_finite",
+      "passed": true,
+      "peak": 0.17514638602733612
+    },
+    {
+      "goal": "M03",
+      "name": "binaural_spread_anti_2_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "binaural_spread_anti_2_finite",
+      "passed": true,
+      "peak": 0.12722133100032806
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_2_0_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_2_0_finite",
+      "passed": true,
+      "peak": 0.2393569052219391
+    },
+    {
+      "goal": "M03",
+      "name": "spread_hrir_2_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "spread_hrir_2_1_finite",
+      "passed": true,
+      "peak": 0.29682227969169617
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_rate_44100_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_rate_44100_finite",
+      "passed": true,
+      "peak": 0.34538963437080383
+    },
+    {
+      "goal": "M03",
+      "name": "hrir_rate_96000_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "hrir_rate_96000_finite",
+      "passed": true,
+      "peak": 0.3978385031223297
+    },
+    {
+      "goal": "M03",
+      "name": "path_free_44100_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_free_44100_finite",
+      "passed": true,
+      "peak": 0.11999905109405518
+    },
+    {
+      "goal": "M03",
+      "name": "path_free_48000_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_free_48000_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_free_96000_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_free_96000_finite",
+      "passed": true,
+      "peak": 0.11999258399009705
+    },
+    {
+      "goal": "M03",
+      "name": "path_beats_90_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_beats_90_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_beats_140_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_beats_140_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_beats_174_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_beats_174_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_tempo_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_tempo_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_reset_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_reset_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_cw_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_cw_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_ccw_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_ccw_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_zero_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_zero_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "path_nonloop_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "path_nonloop_finite",
+      "passed": true,
+      "peak": 0.11997689306735992
+    },
+    {
+      "goal": "M03",
+      "name": "events_1_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_1_finite",
+      "passed": true,
+      "peak": 0.3104589879512787
+    },
+    {
+      "goal": "M03",
+      "name": "events_64_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_64_finite",
+      "passed": true,
+      "peak": 0.3104589879512787
+    },
+    {
+      "goal": "M03",
+      "name": "events_127_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_127_finite",
+      "passed": true,
+      "peak": 0.3104589879512787
+    },
+    {
+      "goal": "M03",
+      "name": "events_512_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_512_finite",
+      "passed": true,
+      "peak": 0.3104589879512787
+    },
+    {
+      "goal": "M03",
+      "name": "events_4096_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "events_4096_finite",
+      "passed": true,
+      "peak": 0.3104589879512787
+    },
+    {
+      "goal": "M03",
+      "name": "transition_pre_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_pre_finite",
+      "passed": true,
+      "peak": 0.1071605458855629
+    },
+    {
+      "goal": "M03",
+      "name": "transition_post_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_post_finite",
+      "passed": true,
+      "peak": 0.1305164396762848
+    },
+    {
+      "goal": "M03",
+      "name": "transition_change_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_change_finite",
+      "passed": true,
+      "peak": 0.18896538019180298
+    },
+    {
+      "goal": "M03",
+      "name": "transition_sweep_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_sweep_finite",
+      "passed": true,
+      "peak": 0.18122915923595428
+    },
+    {
+      "goal": "M03",
+      "name": "transition_enable_allocations",
+      "passed": true
+    },
+    {
+      "goal": "M08",
+      "name": "transition_enable_finite",
+      "passed": true,
+      "peak": 0.1071605458855629
+    },
+    {
+      "goal": "M03",
+      "name": "events_64",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "events_127",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "events_512",
+      "passed": true
+    },
+    {
+      "goal": "M03",
+      "name": "events_4096",
+      "passed": true
+    },
+    {
+      "goal": "M06",
+      "name": "native_FIR_fidelity",
+      "passed": true,
+      "minimum_retained_energy": 0.9999999458975126,
+      "worst_magnitude_error_db": 2.2946751486514838e-05
+    },
+    {
+      "goal": "M02",
+      "name": "path_free_44100",
+      "passed": true,
+      "max_angular_error_degrees": 4.0242298382509034e-10,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_free_48000",
+      "passed": true,
+      "max_angular_error_degrees": 2.318643055332359e-10,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_free_96000",
+      "passed": true,
+      "max_angular_error_degrees": 4.6350123739102855e-10,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_beats_90",
+      "passed": true,
+      "max_angular_error_degrees": 1.9193180378351826e-10,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_beats_140",
+      "passed": true,
+      "max_angular_error_degrees": 2.553122158133192e-10,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_beats_174",
+      "passed": true,
+      "max_angular_error_degrees": 2.829949607985327e-10,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_tempo",
+      "passed": true,
+      "max_angular_error_degrees": 3.369109435880091e-10,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_reset",
+      "passed": true,
+      "max_angular_error_degrees": 2.318643055332359e-10,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_cw",
+      "passed": true,
+      "max_angular_error_degrees": 1.0100507097376976e-09,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_ccw",
+      "passed": true,
+      "max_angular_error_degrees": 1.0100507097376976e-09,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_zero",
+      "passed": true,
+      "max_angular_error_degrees": 0.0,
+      "label_match": true
+    },
+    {
+      "goal": "M02",
+      "name": "path_nonloop",
+      "passed": true,
+      "max_angular_error_degrees": 2.219735506514553e-11,
+      "label_match": true
+    },
+    {
+      "goal": "M04",
+      "name": "pan_power_0",
+      "passed": true,
+      "gain_db": 0.0
+    },
+    {
+      "goal": "M04",
+      "name": "pan_power_90",
+      "passed": true,
+      "gain_db": 7.299312821792384e-10
+    },
+    {
+      "goal": "M04",
+      "name": "pan_separation_90",
+      "passed": true,
+      "separation_db": 279.0436414956214
+    },
+    {
+      "goal": "M04",
+      "name": "pan_power_270",
+      "passed": true,
+      "gain_db": 7.299312821792384e-10
+    },
+    {
+      "goal": "M04",
+      "name": "pan_separation_270",
+      "passed": true,
+      "separation_db": 279.0436414956214
+    },
+    {
+      "goal": "M04",
+      "name": "balance_-1",
+      "passed": true
+    },
+    {
+      "goal": "M04",
+      "name": "balance_1",
+      "passed": true
+    },
+    {
+      "goal": "M04",
+      "name": "point_antiphase_cancelled",
+      "passed": true
+    },
+    {
+      "goal": "M04",
+      "name": "spread_anti_retained",
+      "passed": true,
+      "output_input_energy": 0.13379982681425756
+    },
+    {
+      "goal": "M04",
+      "name": "binaural_spread_anti_0_retained",
+      "passed": true,
+      "output_input_energy": 1.2072025390742354
+    },
+    {
+      "goal": "M04",
+      "name": "binaural_spread_anti_1_retained",
+      "passed": true,
+      "output_input_energy": 0.7428723795196379
+    },
+    {
+      "goal": "M04",
+      "name": "binaural_spread_anti_2_retained",
+      "passed": true,
+      "output_input_energy": 1.1084441819064603
+    },
+    {
+      "goal": "M04",
+      "name": "spread_hrir_0_0_independent_emitter",
+      "passed": true,
+      "relative_error_db": -152.30996327927463
+    },
+    {
+      "goal": "M04",
+      "name": "spread_hrir_0_1_independent_emitter",
+      "passed": true,
+      "relative_error_db": -148.890512556959
+    },
+    {
+      "goal": "M04",
+      "name": "spread_hrir_1_0_independent_emitter",
+      "passed": true,
+      "relative_error_db": -152.14593822478136
+    },
+    {
+      "goal": "M04",
+      "name": "spread_hrir_1_1_independent_emitter",
+      "passed": true,
+      "relative_error_db": -152.2000163134641
+    },
+    {
+      "goal": "M04",
+      "name": "spread_hrir_2_0_independent_emitter",
+      "passed": true,
+      "relative_error_db": -153.14096108943937
+    },
+    {
+      "goal": "M04",
+      "name": "spread_hrir_2_1_independent_emitter",
+      "passed": true,
+      "relative_error_db": -154.25351623408562
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_0_0_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_0_900_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_0_1800_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_0_2700_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_0_25_convolution",
+      "passed": true,
+      "relative_error_db": -152.18954190193847
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_1_0_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_1_900_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_1_1800_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_1_2700_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_1_25_convolution",
+      "passed": true,
+      "relative_error_db": -151.43901196581277
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_2_0_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_2_900_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_2_1800_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_2_2700_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_2_25_convolution",
+      "passed": true,
+      "relative_error_db": -151.21144017954686
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_rate_44100_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "hrir_rate_96000_convolution",
+      "passed": true,
+      "relative_error_db": -300.0
+    },
+    {
+      "goal": "M05",
+      "name": "ear_order_0_90",
+      "passed": true,
+      "right_minus_left_lag": 39,
+      "left_right_highband_db": 22.062652721027362
+    },
+    {
+      "goal": "M05",
+      "name": "ear_order_0_270",
+      "passed": true,
+      "right_minus_left_lag": -38,
+      "left_right_highband_db": -25.388886929263982
+    },
+    {
+      "goal": "M05",
+      "name": "ear_order_1_90",
+      "passed": true,
+      "right_minus_left_lag": 35,
+      "left_right_highband_db": 26.372726567028675
+    },
+    {
+      "goal": "M05",
+      "name": "ear_order_1_270",
+      "passed": true,
+      "right_minus_left_lag": -38,
+      "left_right_highband_db": -27.088051842714446
+    },
+    {
+      "goal": "M05",
+      "name": "ear_order_2_90",
+      "passed": true,
+      "right_minus_left_lag": 36,
+      "left_right_highband_db": 23.920884931021508
+    },
+    {
+      "goal": "M05",
+      "name": "ear_order_2_270",
+      "passed": true,
+      "right_minus_left_lag": -35,
+      "left_right_highband_db": -21.969610181807674
+    },
+    {
+      "goal": "M07",
+      "name": "profile_position_transition",
+      "passed": true,
+      "residual_peak": 0.20534948259592056,
+      "bound": 0.2476769855618477
+    },
+    {
+      "goal": "M07",
+      "name": "enable_ramp_exact",
+      "passed": true,
+      "relative_error_db": -172.560515716514
+    },
+    {
+      "goal": "M07",
+      "name": "angular_boundary_continuity",
+      "passed": true,
+      "worst_boundary_step_db": 0.001789102569398565
+    },
+    {
+      "goal": "M08",
+      "name": "five_minute_stress",
+      "passed": true,
+      "frames": 14400000,
+      "finite": true,
+      "peak": 0.44871261715888977,
+      "allocations": 0,
+      "l1_bound": 3.1586910012799905
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_0",
+      "passed": true,
+      "mean_fraction": 0.12737273723323175,
+      "largest_fraction": 2.2733624999999997
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_1",
+      "passed": true,
+      "mean_fraction": 0.13160136242378037,
+      "largest_fraction": 8.58226875
+    },
+    {
+      "goal": "M09",
+      "name": "cpu_2",
+      "passed": true,
+      "mean_fraction": 0.1158694121570122,
+      "largest_fraction": 0.9815625
+    }
+  ],
+  "passed": 211,
+  "failed": 0,
+  "unavailable": 0,
+  "identity_sha256": "3c33bcba7aaed66d3028e406db911f2b0adae2a934db7ebd8556980fdeeed3d9"
+}

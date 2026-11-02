@@ -1,0 +1,66 @@
+{
+  "stage": "S2 offline prototype; production VST3 remains S1",
+  "source_id": "a00303ddd9211a0a704fddca745e0ee3c6034ab25c0a74f23033c5049ef8d667",
+  "prototype_checks": 181,
+  "prototype_cases": 58,
+  "same_final_before_after_method": true,
+  "initial_baseline_pcm_identical": true,
+  "provenance_fault_tests": 4,
+  "prototype_executable_sha256": "b96bc3a24d032adbfcc893ba9c1f8573b3a6298ee3841544133495ab1c9f287c",
+  "demonstration_executable_sha256": "f172519e9740f2146d77b37e008a20c388b4a3693fd7d337f0df9da0e971360c",
+  "failed_candidate_retained": true,
+  "routing_regressions": 12,
+  "mixed_incremental_build_rejected": true,
+  "native_legacy_expectations": 115,
+  "m0_bit_exact_cases": 160,
+  "production_dll_unchanged": true,
+  "production_dll_sha256": "ff712038bf196a3f75077ca2ed5545e43c334ba0c3ca20a77e77669a10ffb3a1",
+  "production_units": 10,
+  "prototype_linked_into_vst": false,
+  "demos": 40,
+  "worst_demo_peak_dbtp": -1.547724618337286,
+  "listening_folder": "E:\\HamloShirota\\out\\s2\\listen",
+  "owner_listening": "pending; no HRTF/binaural or trajectory yet",
+  "cpu": [
+    {
+      "goal": "P12",
+      "name": "cpu_0",
+      "passed": true,
+      "mean_fraction": 0.025423299352134138,
+      "largest_fraction": 0.055387500000000006
+    },
+    {
+      "goal": "P12",
+      "name": "cpu_1",
+      "passed": true,
+      "mean_fraction": 0.025542601943597604,
+      "largest_fraction": 0.1619625
+    },
+    {
+      "goal": "P12",
+      "name": "cpu_2",
+      "passed": true,
+      "mean_fraction": 0.026994383574695118,
+      "largest_fraction": 0.07385625
+    }
+  ],
+  "artifacts": {
+    "before.json": "886795e0ed7eaba5316aac7b8b86c142942872e3a8d53cc595c7164bd8d49d57",
+    "before_final.json": "e63606b9368c9ba3044c67d2abc0708b1f8e57a24e3ff7000b43dc53f217882d",
+    "before_v3.json": "44c218a43ec2944e3d510fbc0d04d552a0edbed9a95015b88206edc8b4d92b1b",
+    "before_v4.json": "6ece8d05a87effa7d8752882f955f064f0c0acc43b1250c830a5fe6c7a1d8ad7",
+    "candidate_01.json": "e9d87a1e4fbdbc1bb6fd71dd18a47c33eb476970c5a5c4c04f121fb361755ba6",
+    "candidate_02.json": "dbb203fbb44fc1d94e9de99a763cda0da699dcffffd47a484ee0779982b93d35",
+    "demos.json": "6c98b0bec67555f47e8f4deeec8e43916137d820e31f22b01ca3af7437d2501b",
+    "final_mixed.json": "c192885f4148f2754f3119a08669dfbc6c859c45a3de2fc7189345274266bcc1",
+    "final_v3.json": "d15087742c4af6259332155c3ff17451c90c2c476457cd03da9f0f4349d2c1dd",
+    "final_v4.json": "0272b26613fef89ecf5327f47aeb91c04e65308e4e2f8248fe0214fd7cffa132",
+    "guard_tests.json": "46e3f85a9c0ecda0f02f30fd1f965d2e409c58e8f6038d0d016309918c143292",
+    "legacy_160.json": "57a587a6b4d237325cb3696ee3f4f349ce94632a30e1dc85c01a95569a94b99e",
+    "python_environment.json": "3dec7689ebf4f722a946e01e8bb8e777de631f8af781fae45e21d6e42ee47acc",
+    "REPORT.md": "2b41755432acb981e752d09b595a5d8d0b1c827da9d17242ae67690acac52116",
+    "routing_failed_v4.json": "4776d5e4343ee75ea275955306272b968887150f45846a69b400e64b5aa06a40",
+    "spatial_fields.png": "b3317e1754a491ec9278aa0442622bbad27b2cff499a9d7f0c0c49ff08d1b979",
+    "width_response.png": "5de954eb83b34ca78b8dd8e5aa32e1657b23cb9d9131c08775e7bd1012ff1f08"
+  }
+}

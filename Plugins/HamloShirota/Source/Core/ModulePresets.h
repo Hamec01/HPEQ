@@ -5,7 +5,7 @@
 
 #include <juce_core/juce_core.h>
 
-#include "Core/FxProjectState.h"
+#include "DSP/ShirotaSettings.h"
 
 namespace hpeq::presets
 {

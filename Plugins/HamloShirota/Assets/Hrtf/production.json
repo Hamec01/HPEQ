@@ -1,0 +1,12 @@
+{
+  "source_bank_sha256": "4d100e0d8c4e619d52d3b0f85e60228dde5ba79a2d5816eb4b7f46ec9570f998",
+  "production_bank_sha256": "ec0a289b2e7e2d609286cc1bd3278762186a88109f1272910541f5319958b965",
+  "tool_sha256": "4c02d182273a77e2f333b7dd57b3dffd934280491bbc9a1077c975c4b740a72e",
+  "rate": 48000,
+  "taps": 512,
+  "reference": 56,
+  "maximum_magnitude_error_db": 1.94904458140505e-05,
+  "maximum_ITD_error_samples": 0,
+  "maximum_tail_energy_loss": 1.2636010016109367e-09,
+  "method": "Real-cepstrum minimum phase; measured pair correlation lag restored around56samples; float32,512taps. Same profile gains as S3."
+}

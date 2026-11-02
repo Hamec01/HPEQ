@@ -1,15 +1,10 @@
 #include "Standalone/ModulePluginEditor.h"
 
-#include "UI/HamloCompPanel.h"
-#include "UI/HamloEchoPanel.h"
-#include "UI/HamloMagPanel.h"
-#include "UI/HamloRedWallPanel.h"
 #include "UI/HamloShirotaPanel.h"
-#include "UI/HamloUdarnikPanel.h"
-#include "UI/HamloVerbPanel.h"
-#include "UI/HamloZastavaPanel.h"
 #include "UI/ModuleHelp.h"
 #include "UI/PresetScreen.h"
+#include "UI/ShirotaV2Panel.h"
+#include "Standalone/GenrePresets.h"
 
 namespace hpeq::standalone
 {
@@ -51,93 +46,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     : juce::AudioProcessorEditor(owner), processor(owner)
 {
     using namespace hpeq::ui;
-    switch (processor.getKind())
     {
-        case ModuleKind::Comp:
-        {
-            auto p = std::make_unique<HamloCompPanel>();
-            p->readMeters = [this]
-            {
-                const auto& node = processor.moduleNode();
-                return std::pair<float, float> { node.getCompressorInputDb(0), node.getGainReductionDb(0) };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Verb:
-        {
-            auto p = std::make_unique<HamloVerbPanel>();
-            p->readMeters = [this]
-            {
-                const auto& node = processor.moduleNode();
-                return std::pair<float, float> { node.getReverbOutputDb(0), node.getReverbDuckDb(0) };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Echo:
-        {
-            auto p = std::make_unique<HamloEchoPanel>();
-            p->readMeters = [this]
-            {
-                const auto& node = processor.moduleNode();
-                return std::pair<float, float> { node.getDelayOutputDb(0), node.getDelayDuckDb(0) };
-            };
-            p->readTempo = [this] { return processor.getHostBpm(); };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Mag:
-        {
-            auto p = std::make_unique<HamloMagPanel>();
-            p->readMeters = [this]
-            {
-                const auto& node = processor.moduleNode();
-                return std::pair<float, float> { node.getSaturatorInputDb(0), node.getSaturatorOutputDb(0) };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::RedWall:
-        {
-            auto p = std::make_unique<HamloRedWallPanel>();
-            p->readMeters = [this]
-            {
-                const auto& node = processor.moduleNode();
-                return std::pair<float, float> { node.getLimiterOutputDb(0), node.getGainReductionDb(0) };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Udarnik:
-        {
-            auto p = std::make_unique<HamloUdarnikPanel>();
-            p->readMeters = [this]
-            {
-                const auto m = processor.moduleNode().getTransientMeters(0);
-                return HamloUdarnikPanel::Reading { m.impactDb, m.gainMinDb, m.gainMaxDb, m.events, m.confidence, m.strengthDb };
-            };
-            p->readLastHit = [this](std::array<float, HamloUdarnikPanel::kHitPoints>& input,
-                                    std::array<float, HamloUdarnikPanel::kHitPoints>& output)
-            {
-                return processor.moduleNode().getTransientLastHit(0, input, output);
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Zastava:
-        {
-            auto p = std::make_unique<HamloZastavaPanel>();
-            p->readMeters = [this]
-            {
-                const auto m = processor.moduleNode().getGateMeters(0);
-                return HamloZastavaPanel::Reading { m.attenuationDb, m.maxAttenuationDb, m.keyDb, m.open, m.openings };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Shirota:
-        {
             auto p = std::make_unique<HamloShirotaPanel>();
             p->readMeters = [this]
             {
@@ -150,16 +59,21 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
                 return processor.moduleNode().getStereoScope(0, left, right);
             };
             installPanel(std::move(p));
-            break;
-        }
     }
 
-    // Hamlo line (2026-10-29): the preset screen top left, as on HamloComp / HamloUdarnik / HamloRedWall / HamloMag
+    {auto original=std::move(panel);removeChildComponent(original.get());auto wrapped=std::make_unique<ui::ShirotaV2Panel>(processor,std::move(original));auto* p=wrapped.get();auto oldRefresh=std::move(refreshPanel);refreshPanel=[p,oldRefresh]{if(oldRefresh)oldRefresh();p->refresh();};panel=std::move(wrapped);addAndMakeVisible(*panel);}
+    // Hamlo line: shared preset screen remains unchanged and top-left.
     presets = std::make_unique<ui::PresetScreen>();
     {
         std::vector<ui::PresetScreen::Entry> entries;
+        const int firstGenre=processor.getNumPrograms()-static_cast<int>(genrePresets().size());
         for (int i = 1; i < processor.getNumPrograms(); ++i)
-            entries.push_back({ i, {}, {}, processor.getProgramName(i), {} });
+            if(i<firstGenre)entries.push_back({i,{}, {},processor.getProgramName(i),{}});
+            else
+            {
+                const auto& preset=genrePresets()[static_cast<size_t>(i-firstGenre)];
+                entries.push_back({i,preset.genre,preset.group,preset.name,preset.note});
+            }
         presets->setEntries(std::move(entries));
     }
     presets->onSelect = [this](int program)
@@ -170,7 +84,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
             refreshPanel();
     };
     addAndMakeVisible(*presets);
-    presets->setCurrent(processor.getCurrentProgram(), false);
+    presets->setCurrent(processor.getCurrentProgram(), processor.presetModified());
 
     const auto& spec = processor.getSpec();
     setResizable(true, true);
@@ -223,7 +137,7 @@ void ModulePluginEditor::timerCallback()
     if (refreshPanel)
         refreshPanel();
     if (presets != nullptr)
-        presets->setCurrent(processor.getCurrentProgram(), false);
+        presets->setCurrent(processor.getCurrentProgram(), processor.presetModified());
 }
 
 void ModulePluginEditor::visibilityChanged()

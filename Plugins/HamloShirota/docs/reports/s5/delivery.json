@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "bundle": "E:\\HamloShirota\\dist\\HamloShirota-0.2.0-VST3\\HamloShirota.vst3",
+  "dll_sha256": "49864b3ddcfb8f34608d3201f9ab3e6beba14dd44df59f10156f148417e9b73e",
+  "files": {
+    "Contents/Resources/LICENSE-SADIE-II.txt": "49bbe9114e49214df2ccc324cb3ac8d1d1aa1c3a0947f94c286765e86647b32e",
+    "Contents/Resources/moduleinfo.json": "fadbe4fcba0a11fa51ebfa8f4b75aebf107e9395f4ab4e24d9e047bbcf360042",
+    "Contents/Resources/PRODUCTION-NOTICE.md": "7f2cbeaab35c396f5acd4445929c6a23c5f838c808e17bbb51b65741ededaae2",
+    "Contents/Resources/SADIE-II-NOTICE.md": "56894af43b76da3b925d2c2dcce4352a69c95b6b9198071e68e8f860fda813c3",
+    "Contents/x86_64-win/HamloShirota.vst3": "49864b3ddcfb8f34608d3201f9ab3e6beba14dd44df59f10156f148417e9b73e"
+  },
+  "installer_built": false
+}
