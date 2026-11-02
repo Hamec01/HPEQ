@@ -31,15 +31,18 @@ class HamloRevolutionPanel final : public juce::Component, public HelpTarget, pr
 {
 public:
     enum Param { Mix, Rate, Steps, Swing, Humanize, Fade, TimeMix, TimeDepth, GlitchMix, GlitchDepth, MotionMix, MotionDepth, MotionSmooth,
-                 ShapeAMix, ShapeADepth, ShapeASmooth, ShapeARes, ShapeBMix, ShapeBDepth, ShapeBSmooth, ShapeBRes, BandLow, BandHigh, NumParams };
+                 ShapeAMix, ShapeADepth, ShapeASmooth, ShapeARes, ShapeBMix, ShapeBDepth, ShapeBSmooth, ShapeBRes, BandLow, BandHigh,
+                 ThrowAMix, ThrowADepth, ThrowATail, ThrowATone, ThrowBMix, ThrowBDepth, ThrowBTail, ThrowBTone, NumParams };
     enum Switch { Order, Character, Grid, Triplet, Free, TimeOn, GlitchOn, MotionOn, MotionTarget, Stretch, Listen,
-                  ShapeAOn, ShapeATarget, ShapeACurve, ShapeBOn, ShapeBTarget, ShapeBCurve, NumSwitches };
+                  ShapeAOn, ShapeATarget, ShapeACurve, ShapeBOn, ShapeBTarget, ShapeBCurve,
+                  ThrowAOn, ThrowATarget, ThrowATime, ThrowANote, ThrowBOn, ThrowBTarget, ThrowBTime, ThrowBNote, NumSwitches };
 
     struct Values
     {
         std::array<double, NumParams> knobs { 1.0, 125.0, 16.0, 0.0, 0.0, 2.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.6, 0.3,
-                                              1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 200.0, 2500.0 };
-        std::array<int, NumSwitches> switches { 0, 1, 2, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0 };
+                                              1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 200.0, 2500.0,
+                                              1.0, 1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5 };
+        std::array<int, NumSwitches> switches { 0, 1, 2, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 0, 7, 0, 1, 2, 7, 0 };
         revolution::Pattern pattern;
         revolution::Feel feel {}; // the LISTEN snapshot the pattern was generated from (all 0 = none)
         juce::int64 seed = 1;
@@ -102,6 +105,8 @@ public:
     // R2: a level lane's step (MOTION, SHAPE A / B), a lane's band
     void setLevel(int lane, int cell, int level);
     void setLaneBand(int lane, int band);
+    // R3: a THROW lane's target window: click = next target, right click = TARGET / TIME / NOTE menu
+    void showThrowMenu(int lane);
     void showSecondHalf(int engine, bool);
     void selectScene(int scene);
     void settleStatus(const Status&);
@@ -150,6 +155,6 @@ private:
     double dragStartNorm = 0.0;
     float dragStartY = 0.0f;
     int generateFlash = 0;
-    std::array<bool, revolution::kEngines> secondHalf {}; // the cells show steps 17 .. 32
+    std::array<bool, revolution::kLanes> secondHalf {}; // the cells show steps 17 .. 32 (every lane: R2 indexed past kEngines)
 };
 } // namespace hpeq::ui

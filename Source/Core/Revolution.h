@@ -104,11 +104,26 @@ constexpr std::uint32_t kFollowingVersion = 2;
 
 // R2: SHAPE A / B, lanes 3 and 4 after TIME, GLITCH, MOTION (levels 0 .. 15 like MOTION).
 constexpr int kShapes = 2;
-constexpr int kLanes = kEngines + kShapes;
+// R3: THROW A / B, lanes 5 and 6 after the shapes (a step's level 0 .. 15 = its send, or the effect's intensity).
+constexpr int kThrows = 2;
+constexpr int kFirstShape = kEngines, kFirstThrow = kEngines + kShapes;
+constexpr int kLanes = kEngines + kShapes + kThrows;
 enum ShapeTarget { ShapeVolume, ShapeLowPass, ShapeHighPass, ShapeBandPass, ShapePan, ShapeWidth, ShapeDrive, ShapeCrush, kShapeTargets };
 const char* shapeTargetName(int target);
 enum Band { Full, Low, Mid, High, kBands };
 const char* bandName(int band);
+enum ThrowTarget { ThrowDelay, ThrowTonal, ThrowReverb, ThrowPhaser, ThrowFlanger, ThrowVinyl, ThrowDownsample, kThrowTargets };
+const char* throwTargetName(int target);
+// DELAY, TONAL and REVERB are sends (their tail rings on after the step); the others are inserts.
+inline bool throwIsSend(int target) noexcept { return target <= ThrowReverb; }
+// TIME: the delay (DELAY) or the LFO period (PHASER, FLANGER, VINYL wow), 1/32 .. 4 bars, sorted by length.
+constexpr int kThrowTimes = 14, kDefaultThrowTime = 7; // 1/8 dotted
+const char* throwTimeName(int time);
+double throwTimeQ(int time) noexcept; // in quarter notes
+// NOTE: TONAL's pitch, C3 .. B3.
+constexpr int kNotes = 12;
+const char* noteName(int note);
+double noteHz(int note) noexcept;
 
 // R1 lanes (HamloRevolution plug-in): conditions per cycle of a lane, counted from bar 1 (cycle 0).
 enum LaneCondition { Always, OneOfTwo, TwoOfTwo, OneOfFour, FourOfFour, EightOfEight, NotOneOfFour, kLaneConditions };

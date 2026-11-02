@@ -177,6 +177,66 @@ R2 targets:
   CURVE passes through the step levels at step starts.
 - V6 latency 0; V13 shape lanes and bands in the state; V14 validators.
 
+## 8. R3 as designed (2026-11-02, before the code)
+
+Owner: "R3 THROW".
+
+**THROW A, THROW B** - two more lanes after SHAPE A / B (lanes 5 and 6; the R1 lane settings, steps 17 .. 32 and BAND
+work as for every lane). A step's level 0 .. 15 (x DEPTH) is how much that step sends to, or how hard it drives, the
+lane's TARGET:
+
+| Target | Kind | Level = | TAIL | TONE | TIME / NOTE |
+|---|---|---|---|---|---|
+| DELAY | send | the send into a ping-pong delay | feedback 0 .. 0.9 | damping 1 .. 18 kHz | TIME (synced) |
+| TONAL | send | the send into a short delay tuned to NOTE (a pitched comb, C3 .. B3) | feedback 0 .. 0.97 | damping | NOTE (HPDG's key in R5) |
+| REVERB | send | the send into a reverb (8-line FDN) | decay 0.3 .. 8 s | damping 2 .. 16 kHz | - |
+| PHASER | insert | intensity (6 all-pass stages swept by an LFO) | feedback 0 .. 0.85 | centre 200 Hz .. 2 kHz | TIME = LFO period |
+| FLANGER | insert | intensity (0.3 .. 5 ms swept delay) | feedback 0 .. 0.9 | sweep width | TIME = LFO period |
+| VINYL | insert | wow depth (to 2 ms), record EQ (30 .. 150 Hz high pass, 18 .. 4 kHz low pass) | brake: the speed falls to 1 - TAIL over the step | crackle | TIME = wow period |
+| DOWNSAMPLE | insert | the hold factor 1 .. 32 (no bit loss; CRUSH in SHAPE has the bits) | - | - | - |
+
+- A **send** throw's tail keeps ringing after its step (that is the throw); the return is added: out = in + MIX x wet.
+  An **insert** throw blends: out = in + MIX x (fx - in), level 0 = exactly dry.
+- The send is faded like a SHAPE step (the 2 ms raised cosine); LFOs run from the musical position (q), so the
+  result does not depend on the block size and repeats on every playback.
+- An empty THROW lane whose tail has died (or an insert target) is skipped: exactly dry. A lane goes idle after its
+  return stayed below -120 dBFS for its buffer's length; its state is cleared on the way out (and on a target change).
+- Controls per lane: ON, MIX, DEPTH, TAIL, TONE, TARGET, TIME (1/32 .. 4 bars, triplets, dotted), NOTE (C .. B).
+  Defaults: ON, MIX 100 %, DEPTH 100 %, TAIL 50 %, TONE 50 %, TIME 1/8 dotted, NOTE C; A = DELAY, B = REVERB; empty
+  pattern (a new instance sounds as R2).
+- Slot: values grow to 208: THROW A / B 152 .. 175 (stride 12), their lane settings 176 .. 205, their bands 206, 207.
+
+**Page** grows to 1180 x 1280 (two rows; the band footer moves down); the editor opens at 75 % (885 x 960, resizable
+50 .. 200 % as before) so it still fits a 1080p screen. The TARGET window shows target and TIME / NOTE; click =
+next target, right click = a menu with targets, TIME and NOTE. Row knobs: MIX, DEPTH, TAIL; TONE on the right.
+
+R3 targets:
+- V1: GoldenTests unchanged (throws empty).
+- V3: blocks 1 / 64 / 127 / 4096 bit-identical with both THROW lanes on (every target over the test, on a band too).
+- V4: a 100 Hz sine at -6 dBFS, a 1/16 gate pattern (levels 15 / 0) on each target: the largest fourth difference
+  |y[n] - 4 y[n-1] + 6 y[n-2] - 4 y[n-3] + y[n-4]| (the residual of a cubic through the four samples before) within
+  3 ms of a step boundary <= -40 dB re the sine's peak, or not above the same target's own largest value at a constant
+  level 15 (a downsampler's stairs are the effect, not a splice click).
+- V7: one instance, 48 kHz / 256, release build, on this machine (Intel i5-10300H, the owner's): TIME, GLITCH,
+  MOTION patterns, SHAPE A / B on bands, THROW A / B (every pair of targets; the worst counted) on the drum loop:
+  mean processing time <= 15 % of the block's duration.
+- Throw checks: DELAY echoes at TIME within 1 sample, alternating L / R, echo 2 / echo 1 = 0.9 x TAIL within 0.5 dB
+  (TONE 100 %), nothing sent from a level-0 step (<= -90 dB), the tail continues after the step; TONAL's spectrum
+  peaks at NOTE within 1 %; REVERB's T30 within 25 % of the nominal decay (TAIL 50 % = 2.2 s); PHASER and FLANGER move
+  a sine's level by >= 10 dB over the LFO; VINYL's wow moves a 1 kHz sine's frequency by >= 0.3 %, BRAKE (TAIL 100 %)
+  lowers it by >= 40 % over the last quarter of the step; DOWNSAMPLE at level 15 makes the fs/32 alias of 1 kHz
+  (500 Hz) >= -30 dB re the tone; an emptied DELAY lane keeps its tail, then goes idle (output = input exactly).
+- V6 latency 0; V13 throws in the scenes and the state; V14 validators.
+
+*Changed during R3 (each found by a measurement above, written here before the final run):*
+- *VINYL's wow depth glides to the level over about 50 ms instead of following the 2 ms step fade (V4 found the head
+  moving up to 2 ms within 2 ms, a speed jump: -22.8 dB).*
+- *VINYL and DOWNSAMPLE blend in with a smooth step that is full at a quarter of the level, instead of a straight ramp
+  to a tenth (its kink: -27.1 dB), and VINYL's record EQ is redesigned every sample while the level moves instead of
+  every 16 samples (the staircase: -34.5 dB). After both: -48.3 dB. SHAPE's filters and DRIVE (R2) still use the
+  straight ramp; R2's V4 measured VOLUME only - an open item, not changed here.*
+- *A lane on a band passes through the split's all-pass even when idle (as SHAPE in R2): "exactly dry" holds on FULL.*
+
 ## Sources
 
 1. [Sound On Sound: ShaperBox 3](https://www.soundonsound.com/reviews/cableguys-shaperbox-3), [MusicRadar: ShaperBox 3](https://www.musicradar.com/reviews/cableguys-shaperbox-3), [ShaperBox 3 manual](https://www.cableguys.com/downloads/Cableguys-ShaperBox-3-Manual.pdf?v=3.3.1)

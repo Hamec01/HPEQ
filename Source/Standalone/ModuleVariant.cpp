@@ -240,7 +240,17 @@ ModuleSpec makeRevolution()
     auto bandLow = knob("bandLowHz", "Band Low / Mid", 40, 1000, 200, s::kCrossoverLow, 0.4f, "Hz");
     auto bandHigh = knob("bandHighHz", "Band Mid / High", 1000, 12000, 2500, s::kCrossoverHigh, 0.4f, "Hz");
     bandLow.interval = bandHigh.interval = 1.0f;
-    return { ModuleKind::Revolution, FxType::MonstaFx, "HamloRevolution", 1180, 1016, 13,
+    const auto throwKnob = [](const char* id, const char* name, int index, float def)
+    {
+        return knob(id, name, 0, 1, def, dsp::slot::kThrowBase + index);
+    };
+    const int ta = 0, tb = dsp::slot::kThrowStride;
+    const std::initializer_list<const char*> throwTargets { "Delay", "Tonal", "Reverb", "Phaser", "Flanger", "Vinyl", "Downsample" };
+    const std::initializer_list<const char*> throwTimes { "1/32", "1/16T", "1/16", "1/8T", "1/16D", "1/8", "1/4T",
+                                                          "1/8D", "1/4", "1/4D", "1/2", "1 Bar", "2 Bars", "4 Bars" };
+    const std::initializer_list<const char*> notes { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+    // R3: the page is 1180 x 1280; the editor opens at 75 % so it fits a 1080p screen
+    return { ModuleKind::Revolution, FxType::MonstaFx, "HamloRevolution", 885, 960, 13,
              { knob("mix", "Mix", 0, 1, 1, -1),
                rate,
                steps,
@@ -285,7 +295,24 @@ ModuleSpec makeRevolution()
                choice("shapeBOn", "Shape B", 1, s::kShapeBase + b + s::kShapeOn, { "Off", "On" }),
                choice("shapeBTarget", "Shape B Target", 1, s::kShapeBase + b + s::kShapeTarget,
                       { "Volume", "Low Pass", "High Pass", "Band Pass", "Pan", "Width", "Drive", "Crush" }),
-               choice("shapeBCurve", "Shape B Curve", 0, s::kShapeBase + b + s::kShapeCurve, { "Steps", "Curve" }) } };
+               choice("shapeBCurve", "Shape B Curve", 0, s::kShapeBase + b + s::kShapeCurve, { "Steps", "Curve" }),
+               // R3: THROW A / B (their steps are scene state)
+               throwKnob("throwAMix", "Throw A Mix", ta + s::kThrowMix, 1),
+               throwKnob("throwADepth", "Throw A Depth", ta + s::kThrowDepth, 1),
+               throwKnob("throwATail", "Throw A Tail", ta + s::kThrowTail, 0.5f),
+               throwKnob("throwATone", "Throw A Tone", ta + s::kThrowTone, 0.5f),
+               throwKnob("throwBMix", "Throw B Mix", tb + s::kThrowMix, 1),
+               throwKnob("throwBDepth", "Throw B Depth", tb + s::kThrowDepth, 1),
+               throwKnob("throwBTail", "Throw B Tail", tb + s::kThrowTail, 0.5f),
+               throwKnob("throwBTone", "Throw B Tone", tb + s::kThrowTone, 0.5f),
+               choice("throwAOn", "Throw A", 1, s::kThrowBase + ta + s::kThrowOn, { "Off", "On" }),
+               choice("throwATarget", "Throw A Target", 0, s::kThrowBase + ta + s::kThrowTarget, throwTargets),
+               choice("throwATime", "Throw A Time", 7, s::kThrowBase + ta + s::kThrowTime, throwTimes),
+               choice("throwANote", "Throw A Note", 0, s::kThrowBase + ta + s::kThrowNote, notes),
+               choice("throwBOn", "Throw B", 1, s::kThrowBase + tb + s::kThrowOn, { "Off", "On" }),
+               choice("throwBTarget", "Throw B Target", 2, s::kThrowBase + tb + s::kThrowTarget, throwTargets),
+               choice("throwBTime", "Throw B Time", 7, s::kThrowBase + tb + s::kThrowTime, throwTimes),
+               choice("throwBNote", "Throw B Note", 0, s::kThrowBase + tb + s::kThrowNote, notes) } };
 }
 
 float transformed(float value, ValueTransform transform) noexcept

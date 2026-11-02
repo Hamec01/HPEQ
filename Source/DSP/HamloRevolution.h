@@ -144,6 +144,9 @@ private:
     void shapeStage(int shape, float* x, int numChannels, double q) noexcept;
     double shapeLevel(int shape, double q) noexcept;
     void updateCrossovers() noexcept;
+    // R3: THROW A / B
+    void throwStage(int lane, float* x, int numChannels, double q) noexcept;
+    double throwLevel(int lane, double q) noexcept;
     double motionLevel(double q) noexcept;
 
     double sampleRate = 48000.0;
@@ -173,7 +176,7 @@ private:
     std::array<std::atomic<float>, kFeelSteps> feel {};
 
     // parameters of the current block
-    std::array<float, 160> lastValues {};
+    std::array<float, 208> lastValues {};
     unsigned stamp = 0;
     int steps = 16, grid = 2, motionTarget = 0;
     bool triplet = false, freeMode = false;
@@ -183,11 +186,11 @@ private:
     std::array<double, 3> mixTarget { 1.0, 1.0, 1.0 }, depth { 1.0, 1.0, 0.6 };
     std::array<float, 4 * 3> patternQuads {};
     // R1 lanes (0 = as before): length, the lane's step in quarter notes, condition, steps 17 .. 32, probability codes
-    std::array<int, 5> laneLength {}, laneCondition {};
-    std::array<double, 5> laneQ { 0.25, 0.25, 0.25, 0.25, 0.25 };
-    std::array<float, 4 * 5> extraQuads {};
-    std::array<float, 8 * 5> probabilityQuads {};
-    std::array<bool, 5> laneChance {}; // any probability code set
+    std::array<int, 7> laneLength {}, laneCondition {};
+    std::array<double, 7> laneQ { 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25 };
+    std::array<float, 4 * 7> extraQuads {};
+    std::array<float, 8 * 7> probabilityQuads {};
+    std::array<bool, 7> laneChance {}; // any probability code set
 
     // R2: the band split (Linkwitz-Riley 4th order = two Butterworth sections; the low band through the upper
     // crossover's all-pass so the bands sum to an all-pass) and SHAPE A / B
@@ -225,10 +228,48 @@ private:
         std::array<double, 2> ic1 {}, ic2 {};
         std::array<float, 2> held {};
     };
-    std::array<Splitter, 5> splitters;
-    std::array<int, 5> band {};
+    std::array<Splitter, 7> splitters;
+    std::array<int, 7> band {};
     double crossoverLow = 200.0, crossoverHigh = 2500.0, appliedLow = -1.0, appliedHigh = -1.0;
     std::array<ShapeLane, 2> shapes;
+
+    // R3: a THROW lane. One tape per lane serves DELAY / TONAL (the delay line), FLANGER and VINYL (a moving head);
+    // REVERB is an 8-line feedback delay network behind four all-pass diffusers. Only the target's state is used;
+    // it is cleared when the lane wakes up or changes its target.
+    struct ThrowLane
+    {
+        bool on = true, empty = true, asleep = true;
+        int target = 0, applied = -1, time = 7, note = 0;
+        double mixTarget = 1.0, depth = 1.0, tail = 0.5, tone = 0.5, mix = 0.0;
+        std::array<float, 4> quads {};
+        Step step;
+        bool stepValid = false;
+        unsigned stamp = 0;
+        long long quiet = 0;                   // samples the return stayed below -120 dBFS
+        std::array<std::vector<float>, 2> line;
+        int write = 0;                         // the next index written
+        double delay = -1.0;                   // DELAY / TONAL: the delay in samples (smoothed)
+        std::array<double, 2> damp {}, feedback {}, hp {}, lp1 {}, lp2 {};
+        std::array<std::array<double, 6>, 2> allpass {};
+        double coefA = 0.0, coefB = 0.0;       // coefficients refreshed every 16 samples
+        bool coefValid = false;
+        std::array<std::vector<float>, 8> fdn;
+        std::array<int, 8> fdnPos {};
+        std::array<double, 8> fdnLow {}, fdnGain {};
+        std::array<std::vector<float>, 4> diffuser;
+        std::array<int, 4> diffuserPos {};
+        double brakeAge = 0.0, fromAge = 0.0;  // VINYL: the brake's extra age, the head being faded out
+        double wowDepth = 0.0;                 // VINYL: the wow's depth follows the level over ~50 ms (no speed jumps)
+        double eqLevel = -1.0;                 // VINYL: the level its record EQ was designed for
+        int fade = 0;
+        long long brakeStep = 0;
+        bool brakeValid = false;
+        double phase = 0.0;                    // DOWNSAMPLE
+        std::array<float, 2> held {};
+    };
+    std::array<ThrowLane, 2> throws;
+    void clearThrow(ThrowLane&) noexcept;
+    float lineAt(const ThrowLane&, int ch, double age) const noexcept; // age 0 = the newest written sample
     std::array<int, 3> order { 0, 1, 2 };
     int activeOrder = 0, wantedOrder = 0;
     double orderGain = 1.0;

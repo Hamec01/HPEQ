@@ -166,16 +166,18 @@ dsp::FxSlotParams ModulePluginProcessor::currentSlot(bool active) const noexcept
         slot.values[dsp::slot::kRevHumanSeed] = scene[12].load(std::memory_order_relaxed);
         for (int e = 0; e < revolution::kLanes; ++e)
         {
-            const int to = e < revolution::kEngines ? dsp::slot::kLaneBase + e * dsp::slot::kLaneStride
-                                                    : dsp::slot::kShapeLaneBase + (e - revolution::kEngines) * dsp::slot::kLaneStride;
+            const int to = dsp::slot::laneSettings(e);
             for (int f = 0; f < revolution::kLaneFloats; ++f)
                 slot.values[static_cast<size_t>(to + f)] = scene[static_cast<size_t>(kSceneLanes + e * revolution::kLaneFloats + f)].load(std::memory_order_relaxed);
-            slot.values[static_cast<size_t>(dsp::slot::kBandBase + e)] = scene[static_cast<size_t>(kSceneBands + e)].load(std::memory_order_relaxed);
+            slot.values[static_cast<size_t>(dsp::slot::laneBand(e))] = scene[static_cast<size_t>(kSceneBands + e)].load(std::memory_order_relaxed);
         }
-        for (int i = 0; i < revolution::kShapes; ++i)
+        for (int i = 0; i < revolution::kLanes - revolution::kEngines; ++i)
+        {
+            const int to = i < revolution::kShapes ? dsp::slot::kShapeBase + i * dsp::slot::kShapeStride + dsp::slot::kShapePattern
+                                                   : dsp::slot::kThrowBase + (i - revolution::kShapes) * dsp::slot::kThrowStride + dsp::slot::kThrowPattern;
             for (int q = 0; q < 4; ++q)
-                slot.values[static_cast<size_t>(dsp::slot::kShapeBase + i * dsp::slot::kShapeStride + dsp::slot::kShapePattern + q)]
-                    = scene[static_cast<size_t>(kSceneShapes + 4 * i + q)].load(std::memory_order_relaxed);
+                slot.values[static_cast<size_t>(to + q)] = scene[static_cast<size_t>(kSceneShapes + 4 * i + q)].load(std::memory_order_relaxed);
+        }
     }
     return slot;
 }

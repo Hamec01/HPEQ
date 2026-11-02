@@ -21,6 +21,13 @@ int wrap(long long k, int count) noexcept
     return static_cast<int>(r < 0 ? r + count : r);
 }
 double raisedCos(double x) noexcept { return 0.5 - 0.5 * std::cos(kPiD * std::clamp(x, 0.0, 1.0)); }
+// R3: VINYL and DOWNSAMPLE reach their full blend at a quarter of the level, smoothly (a linear ramp to 1/10 had a
+// kink a 2 ms step fade turned into a splice)
+double smoothBlend(double level) noexcept
+{
+    const double t = std::clamp(level / 0.25, 0.0, 1.0);
+    return t * t * (3.0 - 2.0 * t);
+}
 double princarg(double phase) noexcept { return phase - 2.0 * kPiD * std::floor((phase + kPiD) / (2.0 * kPiD)); }
 
 // The humanize offsets: SplitMix64 of (seed, step), fixed so a project renders the same everywhere.
@@ -157,6 +164,18 @@ void RevolutionEngine::prepare(double newSampleRate, std::array<std::vector<floa
         v.prevRef.assign(bins, {});
         v.rot.assign(bins, { 1.0f, 0.0f });
     }
+    // R3: the throw lanes' tapes (2.5 s: the longest DELAY clamps there) and reverb networks
+    static constexpr double fdnMs[8] { 31.1, 37.3, 41.9, 47.3, 53.9, 61.1, 67.7, 73.1 }, diffuserMs[4] { 4.7, 3.6, 2.9, 1.9 };
+    for (auto& th : throws)
+    {
+        for (auto& l : th.line)
+            l.assign(static_cast<size_t>(std::ceil(2.5 * sampleRate)) + 8, 0.0f);
+        for (int i = 0; i < 8; ++i)
+            th.fdn[static_cast<size_t>(i)].assign(static_cast<size_t>(std::max(8L, std::lround(fdnMs[i] * 1.0e-3 * sampleRate))), 0.0f);
+        for (int i = 0; i < 4; ++i)
+            th.diffuser[static_cast<size_t>(i)].assign(static_cast<size_t>(std::max(4L, std::lround(diffuserMs[i] * 1.0e-3 * sampleRate))), 0.0f);
+        th.asleep = true;
+    }
     feelFrame = std::max(16, static_cast<int>(std::lround(64.0 * sampleRate / 48000.0)));
     for (auto& f : feel)
         f.store(0.0f, std::memory_order_relaxed);
@@ -171,6 +190,12 @@ void RevolutionEngine::reset() noexcept
     lastPlaying = lastFree = false;
     fresh = true;
     shownStep.store(-1, std::memory_order_relaxed);
+    for (auto& th : throws)
+    {
+        th.asleep = true;
+        th.mix = 0.0;
+        th.stepValid = false;
+    }
     waveBin = -1;
     waveInPeak = waveOutPeak = 0.0f;
     for (int b = 0; b < kWaveBins; ++b)
@@ -255,9 +280,9 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
             patternQuads[static_cast<size_t>(4 * e + q)] = v[b + 3 + static_cast<size_t>(q)];
     }
     stepQ = freeMode ? 1.0 : kBeats[grid] * (triplet ? 2.0 / 3.0 : 1.0);
-    for (int e = 0; e < 5; ++e)
+    for (int e = 0; e < rev::kLanes; ++e)
     {
-        const auto b = static_cast<size_t>(e < 3 ? slot::kLaneBase + e * slot::kLaneStride : slot::kShapeLaneBase + (e - 3) * slot::kLaneStride);
+        const auto b = static_cast<size_t>(slot::laneSettings(e));
         const auto le = static_cast<size_t>(e);
         laneLength[le] = std::clamp(static_cast<int>(std::lround(v[b + slot::kLaneLength])), 0, 2 * rev::kSteps);
         const int rate = std::clamp(static_cast<int>(std::lround(v[b + slot::kLaneRate])), 0, 8);
@@ -273,7 +298,7 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
         }
         laneChance[le] = chance;
         // R2: the lane's band (a change starts its split from silence: the filters' state is cleared)
-        const int newBand = std::clamp(static_cast<int>(std::lround(v[static_cast<size_t>(slot::kBandBase + e)])), 0, rev::kBands - 1);
+        const int newBand = std::clamp(static_cast<int>(std::lround(v[static_cast<size_t>(slot::laneBand(e))])), 0, rev::kBands - 1);
         if (newBand != band[le])
             splitters[le].clear();
         band[le] = newBand;
@@ -305,6 +330,28 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
         for (int q = 0; q < 4; ++q)
             empty = empty && extraQuads[static_cast<size_t>(4 * (3 + i) + q)] == 0.0f;
         sh.empty = empty;
+    }
+    for (int i = 0; i < rev::kThrows; ++i)
+    {
+        auto& th = throws[static_cast<size_t>(i)];
+        const auto b = static_cast<size_t>(slot::kThrowBase + i * slot::kThrowStride);
+        th.on = v[b + slot::kThrowOn] >= 0.5f;
+        th.mixTarget = std::clamp(static_cast<double>(v[b + slot::kThrowMix]), 0.0, 1.0);
+        th.depth = std::clamp(static_cast<double>(v[b + slot::kThrowDepth]), 0.0, 1.0);
+        th.target = std::clamp(static_cast<int>(std::lround(v[b + slot::kThrowTarget])), 0, rev::kThrowTargets - 1);
+        th.tail = std::clamp(static_cast<double>(v[b + slot::kThrowTail]), 0.0, 1.0);
+        th.tone = std::clamp(static_cast<double>(v[b + slot::kThrowTone]), 0.0, 1.0);
+        th.time = std::clamp(static_cast<int>(std::lround(v[b + slot::kThrowTime])), 0, rev::kThrowTimes - 1);
+        th.note = std::clamp(static_cast<int>(std::lround(v[b + slot::kThrowNote])), 0, rev::kNotes - 1);
+        bool empty = true;
+        for (int q = 0; q < 4; ++q)
+        {
+            th.quads[static_cast<size_t>(q)] = v[b + slot::kThrowPattern + static_cast<size_t>(q)];
+            empty = empty && th.quads[static_cast<size_t>(q)] == 0.0f;
+        }
+        for (int q = 0; q < 4; ++q)
+            empty = empty && extraQuads[static_cast<size_t>(4 * (rev::kFirstThrow + i) + q)] == 0.0f;
+        th.empty = empty;
     }
     wantedOrder = std::clamp(static_cast<int>(std::lround(v[slot::kRevOrder])), 0, rev::kOrders - 1);
     if (fresh)
@@ -394,7 +441,9 @@ int RevolutionEngine::value(int engine, long long k) const noexcept
         if (code != 0 && unitHash(humanSeed ^ (0x9E3779B9u * static_cast<std::uint32_t>(engine + 1)), k) >= rev::laneProbability(code))
             return 0;
     }
-    const float* first = engine < 3 ? &patternQuads[4 * le] : shapes[le - 3].quads.data();
+    const float* first = engine < rev::kFirstShape   ? &patternQuads[4 * le]
+                         : engine < rev::kFirstThrow ? shapes[le - rev::kFirstShape].quads.data()
+                                                     : throws[le - rev::kFirstThrow].quads.data();
     const int v = index < rev::kSteps ? rev::stepValue(first, index) : rev::stepValue(&extraQuads[4 * le], index - rev::kSteps);
     if (engine == rev::Time)
         return v < rev::kTimeActions ? v : 0;
@@ -1238,14 +1287,16 @@ void RevolutionEngine::runLane(int lane, float* x, int numChannels, double q) no
             motionStage(y, numChannels, q);
         else if (lane < rev::kEngines)
             tapeStage(lane, y, numChannels, q);
-        else
+        else if (lane < rev::kFirstThrow)
             shapeStage(lane - rev::kEngines, y, numChannels, q);
+        else
+            throwStage(lane - rev::kFirstThrow, y, numChannels, q);
     };
     const int b = band[static_cast<size_t>(lane)];
     if (b == rev::Full)
     {
-        if (lane >= rev::kEngines && shapes[static_cast<size_t>(lane - rev::kEngines)].empty)
-            return; // an empty SHAPE lane: exactly dry
+        if (lane >= rev::kEngines && lane < rev::kFirstThrow && shapes[static_cast<size_t>(lane - rev::kEngines)].empty)
+            return; // an empty SHAPE lane: exactly dry (an empty THROW lane decides itself: its tail may still ring)
         run(x);
         return;
     }
@@ -1398,6 +1449,311 @@ void RevolutionEngine::shapeStage(int shape, float* x, int numChannels, double q
             x[ch] += static_cast<float>(sh.mix) * (wet[ch] - x[ch]);
 }
 
+// ---------------------------------------------------------------------------------------------- R3: THROW
+void RevolutionEngine::clearThrow(ThrowLane& th) noexcept
+{
+    for (auto& l : th.line)
+        std::fill(l.begin(), l.end(), 0.0f);
+    for (auto& l : th.fdn)
+        std::fill(l.begin(), l.end(), 0.0f);
+    for (auto& l : th.diffuser)
+        std::fill(l.begin(), l.end(), 0.0f);
+    th.write = 0;
+    th.fdnPos = {};
+    th.diffuserPos = {};
+    th.fdnLow = {};
+    th.delay = -1.0;
+    th.damp = {};
+    th.feedback = {};
+    th.hp = {};
+    th.lp1 = {};
+    th.lp2 = {};
+    th.allpass = {};
+    th.coefValid = false;
+    th.brakeAge = th.fromAge = 0.0;
+    th.wowDepth = 0.0;
+    th.eqLevel = -1.0;
+    th.fade = 0;
+    th.brakeValid = false;
+    th.phase = 0.0;
+    th.held = {};
+    th.quiet = 0;
+}
+
+float RevolutionEngine::lineAt(const ThrowLane& th, int ch, double age) const noexcept
+{
+    const auto& l = th.line[static_cast<size_t>(ch)];
+    const int size = static_cast<int>(l.size());
+    const double pos = static_cast<double>(th.write - 1) - std::clamp(age, 0.0, static_cast<double>(size - 4));
+    const double base = std::floor(pos);
+    const auto frac = static_cast<float>(pos - base);
+    const int i0 = wrap(static_cast<long long>(base), size), i1 = i0 + 1 == size ? 0 : i0 + 1;
+    return frac <= 0.0f ? l[static_cast<size_t>(i0)] : l[static_cast<size_t>(i0)] + frac * (l[static_cast<size_t>(i1)] - l[static_cast<size_t>(i0)]);
+}
+
+double RevolutionEngine::throwLevel(int lane, double q) noexcept
+{
+    auto& th = throws[static_cast<size_t>(lane)];
+    const int l = rev::kFirstThrow + lane;
+    if (!th.stepValid || th.stamp != stamp || q + kEps * dq >= th.step.end || q + kEps * dq < th.step.start)
+    {
+        th.step = stepAt(q, laneQ[static_cast<size_t>(l)]);
+        th.stepValid = true;
+        th.stamp = stamp;
+    }
+    const auto level = [this, l, &th](long long k) { return th.depth * value(l, k) / 15.0; };
+    const double here = level(th.step.k), u = (q - th.step.start) / dq;
+    if (u < fadeSamples)
+    {
+        const double before = level(th.step.k - 1);
+        return before + (here - before) * raisedCos((u + 1.0) / (fadeSamples + 1.0));
+    }
+    return here;
+}
+
+void RevolutionEngine::throwStage(int lane, float* x, int numChannels, double q) noexcept
+{
+    auto& th = throws[static_cast<size_t>(lane)];
+    const double target = th.on ? th.mixTarget : 0.0;
+    const double ramp = 1.0 / (0.01 * sampleRate);
+    th.mix = th.mix < target ? std::min(target, th.mix + ramp) : std::max(target, th.mix - ramp);
+    const bool send = rev::throwIsSend(th.target);
+    // a send's return can be quiet for up to its delay between two echoes
+    const double idleAfter = th.target == rev::ThrowReverb ? 0.2 * sampleRate : std::max(0.0, th.delay) + 0.1 * sampleRate;
+    if ((th.mix <= 0.0 && target <= 0.0) || (th.empty && (!send || static_cast<double>(th.quiet) > idleAfter)))
+    {
+        th.asleep = true; // cleared when it wakes up
+        return;
+    }
+    if (th.asleep || th.applied != th.target)
+    {
+        clearThrow(th);
+        th.asleep = false;
+        th.applied = th.target;
+    }
+    const double m = throwLevel(lane, q);
+    const bool stereo = numChannels > 1;
+    // the musical clock for TIME (in FREE mode a quarter note = 4 free steps) and the LFO phase
+    const double timeQ = rev::throwTimeQ(th.time) * (freeMode ? 4.0 : 1.0);
+    const double lfo = q / timeQ - std::floor(q / timeQ);
+    float wet[2] { 0.0f, 0.0f };
+    const auto onePole = [this](double hz) { return std::exp(-2.0 * kPiD * std::min(hz, 0.45 * sampleRate) / sampleRate); };
+    const bool refresh = !th.coefValid || n % 16 == 0;
+    th.coefValid = true;
+    switch (th.target)
+    {
+        case rev::ThrowDelay:
+        case rev::ThrowTonal:
+        {
+            const bool tonal = th.target == rev::ThrowTonal;
+            const double size = static_cast<double>(th.line[0].size()) - 8.0;
+            const double want = std::clamp(tonal ? sampleRate / rev::noteHz(th.note) : timeQ / dq, 1.0, size);
+            // the delay follows tempo and NOTE changes over about 50 ms (no zipper); exact while they hold
+            th.delay = th.delay < 0.0 ? want : th.delay + (want - th.delay) * (1.0 - std::exp(-1.0 / (0.05 * sampleRate)));
+            if (std::abs(th.delay - want) < 1.0e-6)
+                th.delay = want;
+            if (refresh)
+                th.coefA = onePole(1000.0 * std::pow(18.0, th.tone)); // damping in the loop, 1 .. 18 kHz
+            const double fb = (tonal ? 0.97 : 0.9) * th.tail;
+            float echo[2] {};
+            for (int ch = 0; ch < numChannels; ++ch)
+            {
+                echo[ch] = lineAt(th, ch, th.delay - 1.0); // read before this sample is written
+                auto& d = th.damp[static_cast<size_t>(ch)];
+                d = echo[ch] + th.coefA * (d - echo[ch]);
+            }
+            if (tonal || !stereo)
+                for (int ch = 0; ch < numChannels; ++ch)
+                    th.line[static_cast<size_t>(ch)][static_cast<size_t>(th.write)] = static_cast<float>(m * x[ch] + fb * th.damp[static_cast<size_t>(ch)]);
+            else
+            {
+                // ping-pong: the send enters on the left, every echo crosses to the other side
+                th.line[0][static_cast<size_t>(th.write)] = static_cast<float>(m * 0.5 * (x[0] + x[1]) + fb * th.damp[1]);
+                th.line[1][static_cast<size_t>(th.write)] = static_cast<float>(fb * th.damp[0]);
+            }
+            th.write = th.write + 1 == static_cast<int>(th.line[0].size()) ? 0 : th.write + 1;
+            wet[0] = echo[0];
+            wet[1] = echo[1];
+            break;
+        }
+        case rev::ThrowReverb:
+        {
+            if (refresh)
+            {
+                const double decay = 0.3 + 7.7 * th.tail * th.tail; // RT60 in seconds
+                for (int i = 0; i < 8; ++i)
+                    th.fdnGain[static_cast<size_t>(i)]
+                        = std::pow(10.0, -3.0 * static_cast<double>(th.fdn[static_cast<size_t>(i)].size()) / (decay * sampleRate));
+                th.coefA = onePole(2000.0 * std::pow(8.0, th.tone)); // damping 2 .. 16 kHz
+            }
+            double in = m * (stereo ? 0.5 * (x[0] + x[1]) : x[0]);
+            for (int i = 0; i < 4; ++i)
+            {
+                auto& d = th.diffuser[static_cast<size_t>(i)];
+                auto& pos = th.diffuserPos[static_cast<size_t>(i)];
+                const double delayed = d[static_cast<size_t>(pos)], g = 0.6;
+                const double v = in + g * delayed;
+                d[static_cast<size_t>(pos)] = static_cast<float>(v);
+                in = delayed - g * v;
+                pos = pos + 1 == static_cast<int>(d.size()) ? 0 : pos + 1;
+            }
+            std::array<double, 8> out {};
+            double sum = 0.0;
+            for (int i = 0; i < 8; ++i)
+            {
+                const auto s = static_cast<size_t>(i);
+                const double o = th.fdn[s][static_cast<size_t>(th.fdnPos[s])];
+                th.fdnLow[s] = o + th.coefA * (th.fdnLow[s] - o);
+                out[s] = o;
+                sum += th.fdnGain[s] * th.fdnLow[s];
+            }
+            sum *= 0.25; // Householder: v - (2 / 8) sum(v)
+            for (int i = 0; i < 8; ++i)
+            {
+                const auto s = static_cast<size_t>(i);
+                const double v = th.fdnGain[s] * th.fdnLow[s] - sum + (i % 2 == 0 ? in : -in);
+                th.fdn[s][static_cast<size_t>(th.fdnPos[s])] = static_cast<float>(v);
+                th.fdnPos[s] = th.fdnPos[s] + 1 == static_cast<int>(th.fdn[s].size()) ? 0 : th.fdnPos[s] + 1;
+            }
+            const double l = 0.35 * (out[0] - out[2] + out[4] - out[6]), r = 0.35 * (out[1] - out[3] + out[5] - out[7]);
+            wet[0] = static_cast<float>(stereo ? l : 0.5 * (l + r));
+            wet[1] = static_cast<float>(r);
+            break;
+        }
+        case rev::ThrowPhaser:
+        {
+            const double fb = 0.85 * th.tail, centre = 200.0 * std::pow(10.0, th.tone);
+            for (int ch = 0; ch < numChannels; ++ch)
+            {
+                if (refresh)
+                {
+                    const double f = centre * std::pow(4.0, std::sin(2.0 * kPiD * (lfo + 0.25 * ch)));
+                    const double t = std::tan(kPiD * std::min(f, 0.45 * sampleRate) / sampleRate);
+                    (ch == 0 ? th.coefA : th.coefB) = (t - 1.0) / (t + 1.0);
+                }
+                const double a = ch == 0 ? th.coefA : th.coefB;
+                auto& st = th.allpass[static_cast<size_t>(ch)];
+                double y = x[ch] + fb * th.feedback[static_cast<size_t>(ch)];
+                for (auto& z : st)
+                {
+                    const double o = a * y + z;
+                    z = y - a * o;
+                    y = o;
+                }
+                th.feedback[static_cast<size_t>(ch)] = y;
+                const double fx = 0.5 * (x[ch] + y);
+                wet[ch] = static_cast<float>(x[ch] + m * (fx - x[ch]));
+            }
+            break;
+        }
+        case rev::ThrowFlanger:
+        {
+            const double fb = 0.9 * th.tail, ms = 1.0e-3 * sampleRate;
+            for (int ch = 0; ch < numChannels; ++ch)
+                th.line[static_cast<size_t>(ch)][static_cast<size_t>(th.write)] = static_cast<float>(x[ch] + fb * th.feedback[static_cast<size_t>(ch)]);
+            th.write = th.write + 1 == static_cast<int>(th.line[0].size()) ? 0 : th.write + 1;
+            for (int ch = 0; ch < numChannels; ++ch)
+            {
+                const double sweep = 0.5 + 0.5 * std::sin(2.0 * kPiD * (lfo + 0.25 * ch));
+                const double d = lineAt(th, ch, ms * (0.3 + (1.0 + 4.0 * th.tone) * sweep));
+                th.feedback[static_cast<size_t>(ch)] = d;
+                const double fx = 0.5 * (x[ch] + d);
+                wet[ch] = static_cast<float>(x[ch] + m * (fx - x[ch]));
+            }
+            break;
+        }
+        case rev::ThrowVinyl:
+        {
+            // the head: wow (a slow sine on the delay) + the brake's age, which grows as the speed falls to
+            // 1 - TAIL x the step's level over the step; at the next step the old head fades out (fadeSamples)
+            const double stepLevel = th.depth * value(rev::kFirstThrow + lane, th.step.k) / 15.0;
+            const double stepSamples = (th.step.end - th.step.start) / dq;
+            const double xs = std::clamp((q - th.step.start) / std::max(1.0e-12, th.step.end - th.step.start), 0.0, 1.0);
+            const double brake = std::min(0.5 * th.tail * stepLevel * stepSamples * xs * xs, 2.0 * sampleRate);
+            if (!th.brakeValid || th.brakeStep != th.step.k)
+            {
+                if (th.brakeValid && th.brakeAge > 0.5)
+                {
+                    th.fromAge = th.brakeAge; // the old head plays on at speed 1 and fades out
+                    th.fade = static_cast<int>(fadeSamples);
+                }
+                th.brakeStep = th.step.k;
+                th.brakeValid = true;
+            }
+            th.brakeAge = brake;
+            for (int ch = 0; ch < numChannels; ++ch)
+                th.line[static_cast<size_t>(ch)][static_cast<size_t>(th.write)] = x[ch];
+            th.write = th.write + 1 == static_cast<int>(th.line[0].size()) ? 0 : th.write + 1;
+            if (m != th.eqLevel)
+            {
+                // every sample while the level moves (a 16-sample staircase in a 2 ms fade is a row of kinks)
+                th.eqLevel = m;
+                th.coefA = onePole(30.0 * std::pow(5.0, m));           // record EQ: high pass 30 .. 150 Hz
+                th.coefB = onePole(18000.0 * std::pow(4.0 / 18.0, m)); // low pass 18 .. 4 kHz
+            }
+            // the depth glides: following the 2 ms step fade would move the head by up to 2 ms in 2 ms (a speed jump)
+            th.wowDepth += (m - th.wowDepth) * (1.0 - std::exp(-1.0 / (0.05 * sampleRate)));
+            const double wow = th.wowDepth * 2.0e-3 * sampleRate * (0.5 + 0.5 * std::sin(2.0 * kPiD * lfo));
+            const double blend = smoothBlend(m);
+            for (int ch = 0; ch < numChannels; ++ch)
+            {
+                const auto c = static_cast<size_t>(ch);
+                double y = lineAt(th, ch, wow + brake);
+                if (th.fade > 0)
+                {
+                    const double old = lineAt(th, ch, wow + th.fromAge);
+                    y = old + (y - old) * raisedCos(1.0 - static_cast<double>(th.fade) / (fadeSamples + 1.0));
+                }
+                th.hp[c] = y + th.coefA * (th.hp[c] - y); // the low part, taken away
+                y -= th.hp[c];
+                th.lp1[c] = y + th.coefB * (th.lp1[c] - y);
+                th.lp2[c] = th.lp1[c] + th.coefB * (th.lp2[c] - th.lp1[c]);
+                y = th.lp2[c];
+                if (th.tone > 0.0 && m > 0.0)
+                {
+                    // crackle: sparse single-sample ticks from the sample counter (the same on every playback)
+                    const double u = unitHash(0xC4AC41E5u + static_cast<std::uint32_t>(ch + 2 * lane), n);
+                    if (u < 5.0e-4 * th.tone * m * 48000.0 / sampleRate)
+                        y += 0.25 * m * (2.0 * unitHash(0x5EED0001u + static_cast<std::uint32_t>(ch + 2 * lane), n) - 1.0);
+                }
+                wet[ch] = static_cast<float>(x[ch] + blend * (y - x[ch]));
+            }
+            if (th.fade > 0)
+                --th.fade;
+            break;
+        }
+        case rev::ThrowDownsample:
+        {
+            const double factor = 1.0 + 31.0 * m * m;
+            th.phase += 1.0;
+            if (th.phase >= factor)
+            {
+                th.phase -= factor;
+                for (int ch = 0; ch < numChannels; ++ch)
+                    th.held[static_cast<size_t>(ch)] = x[ch];
+            }
+            const auto blend = static_cast<float>(smoothBlend(m));
+            for (int ch = 0; ch < numChannels; ++ch)
+                wet[ch] = x[ch] + blend * (th.held[static_cast<size_t>(ch)] - x[ch]);
+            break;
+        }
+        default: break;
+    }
+    if (send)
+    {
+        const float peak = std::max(std::abs(wet[0]), stereo ? std::abs(wet[1]) : 0.0f);
+        th.quiet = peak < 1.0e-6f ? th.quiet + 1 : 0;
+        for (int ch = 0; ch < numChannels; ++ch)
+            x[ch] += static_cast<float>(th.mix) * wet[ch];
+    }
+    else if (th.mix >= 1.0)
+        for (int ch = 0; ch < numChannels; ++ch)
+            x[ch] = wet[ch];
+    else
+        for (int ch = 0; ch < numChannels; ++ch)
+            x[ch] += static_cast<float>(th.mix) * (wet[ch] - x[ch]);
+}
+
 // --------------------------------------------------------------------------------------- process
 void RevolutionEngine::process(float* const* channels, int numChannels, int numSamples, const FxSlotParams& p, const Transport& transport,
                                int blockOffset) noexcept
@@ -1432,6 +1788,8 @@ void RevolutionEngine::process(float* const* channels, int numChannels, int numS
             runLane(e, x, numChannels, q);
         for (int s = 0; s < rev::kShapes; ++s)
             runLane(rev::kEngines + s, x, numChannels, q);
+        for (int t = 0; t < rev::kThrows; ++t)
+            runLane(rev::kFirstThrow + t, x, numChannels, q);
         analyse(in, numChannels, wrap(motionStep.k, steps));
         float inPeak = 0.0f, outPeak = 0.0f;
         for (int ch = 0; ch < numChannels; ++ch)

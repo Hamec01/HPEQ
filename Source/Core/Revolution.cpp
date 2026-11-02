@@ -161,7 +161,7 @@ juce::String valueShortName(int engine, int value)
 
 const char* engineName(int engine)
 {
-    static constexpr const char* names[kLanes] { "TIME", "GLITCH", "MOTION", "SHAPE A", "SHAPE B" };
+    static constexpr const char* names[kLanes] { "TIME", "GLITCH", "MOTION", "SHAPE A", "SHAPE B", "THROW A", "THROW B" };
     return names[juce::jlimit(0, kLanes - 1, engine)];
 }
 
@@ -536,4 +536,32 @@ Pattern generateFollowing(const Pattern& current, std::uint64_t seed, int charac
     p.allow = current.allow;
     return p;
 }
+// ---------------------------------------------------------------------------------------------- R3
+const char* throwTargetName(int target)
+{
+    static constexpr const char* names[kThrowTargets] { "DELAY", "TONAL", "REVERB", "PHASER", "FLANGER", "VINYL", "DOWNSMP" };
+    return names[juce::jlimit(0, kThrowTargets - 1, target)];
+}
+
+const char* throwTimeName(int time)
+{
+    static constexpr const char* names[kThrowTimes] { "1/32", "1/16T", "1/16", "1/8T", "1/16D", "1/8", "1/4T",
+                                                      "1/8D", "1/4", "1/4D", "1/2", "1 BAR", "2 BARS", "4 BARS" };
+    return names[juce::jlimit(0, kThrowTimes - 1, time)];
+}
+
+double throwTimeQ(int time) noexcept
+{
+    static constexpr double q[kThrowTimes] { 0.125, 1.0 / 6.0, 0.25, 1.0 / 3.0, 0.375, 0.5, 2.0 / 3.0, 0.75, 1.0, 1.5, 2.0, 4.0, 8.0, 16.0 };
+    return q[time < 0 ? 0 : time >= kThrowTimes ? kThrowTimes - 1 : time];
+}
+
+const char* noteName(int note)
+{
+    static constexpr const char* names[kNotes] { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
+    return names[juce::jlimit(0, kNotes - 1, note)];
+}
+
+double noteHz(int note) noexcept { return 130.8127826502993 * std::pow(2.0, juce::jlimit(0, kNotes - 1, note) / 12.0); }
+
 } // namespace hpeq::revolution

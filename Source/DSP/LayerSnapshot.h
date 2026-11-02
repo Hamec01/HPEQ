@@ -31,7 +31,7 @@ struct FxSlotParams
     bool active = false;
     FxType type = FxType::Gain;
     float mix = 1.0f;
-    std::array<float, 160> values {}; // HamloRevolution: 48 in HPEQ; R1 lanes 48 .. 92, R2 shapes / bands 93 .. 151
+    std::array<float, 208> values {}; // HamloRevolution: 48 in HPEQ; R1 lanes 48 .. 92, R2 shapes / bands 93 .. 151, R3 throws 152 .. 207
 };
 
 namespace slot
@@ -98,6 +98,16 @@ constexpr int kLaneBase = 48, kLaneStride = 15, kLaneLength = 0, kLaneRate = 1, 
 constexpr int kShapeBase = 93, kShapeStride = 11, kShapeOn = 0, kShapeMix = 1, kShapeDepth = 2, kShapeTarget = 3, kShapeSmooth = 4,
               kShapeRes = 5, kShapeCurve = 6, kShapePattern = 7;
 constexpr int kShapeLaneBase = 115, kBandBase = 145, kCrossoverLow = 150, kCrossoverHigh = 151;
+// R3: THROW A / B (stride 12; pattern = 4 quads of steps 1 .. 16), their lane settings (stride kLaneStride), their bands
+constexpr int kThrowBase = 152, kThrowStride = 12, kThrowOn = 0, kThrowMix = 1, kThrowDepth = 2, kThrowTarget = 3, kThrowTail = 4,
+              kThrowTone = 5, kThrowTime = 6, kThrowNote = 7, kThrowPattern = 8;
+constexpr int kThrowLaneBase = 176, kThrowBandBase = 206;
+// where lane l's settings and band are (TIME, GLITCH, MOTION, SHAPE A, SHAPE B, THROW A, THROW B)
+constexpr int laneSettings(int lane)
+{
+    return lane < 3 ? kLaneBase + lane * kLaneStride : lane < 5 ? kShapeLaneBase + (lane - 3) * kLaneStride : kThrowLaneBase + (lane - 5) * kLaneStride;
+}
+constexpr int laneBand(int lane) { return lane < 5 ? kBandBase + lane : kThrowBandBase + lane - 5; }
 // Stereo (insert; needs a stereo work domain)
 constexpr int kStereoWidth = 0, kStereoBalance = 1,
               // HamloShirota (module pass 8): style 0 EDINSTVO / 1 PROSTOR / 2 KOSMOS; stereoize 0..1; space 0..1;

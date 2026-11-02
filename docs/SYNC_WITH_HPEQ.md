@@ -26,3 +26,12 @@ this module (as HamloComp / HamloUdarnik / HamloRedWall / HamloMag did) and reco
   `shapeLevel`; every lane through `runLane`, the shapes after the three engines.
 - `Core/Revolution.*`: `kLanes`, `ShapeTarget`, `Band`, `Lane::band` / `Lane::first`, engine names for the shapes.
 - `UI/HamloRevolutionPanel.*`: 1180 x 1016, SHAPE rows, BANDS footer, band / curve menus and tags.
+
+## R3 (THROW lanes) - changes to HPEQ's files
+
+- `DSP/LayerSnapshot.h`: `values` 160 -> 208; `slot::kThrow*`, `kThrowLaneBase`, `kThrowBandBase`, `laneSettings()`,
+  `laneBand()` (where a lane's settings and band live).
+- `DSP/HamloRevolution.*`: lanes 5 / 6 (`ThrowLane`, `throwStage`, `throwLevel`, `clearThrow`, `lineAt`); per-lane arrays
+  5 -> 7; the throw buffers allocated in `prepare` (2 x 2.5 s tape + a small FDN per lane); `smoothBlend`.
+- `Core/Revolution.*`: `kThrows`, `kFirstShape`, `kFirstThrow`, `ThrowTarget`, `throwIsSend`, TIME / NOTE tables.
+- `UI/HamloRevolutionPanel.*`: 1180 x 1280 (the editor opens at 75 %), THROW rows, the target window's menu.

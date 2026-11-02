@@ -103,9 +103,10 @@ private:
     std::array<RevolutionState, revolution::kScenes> scenes;
     std::array<bool, revolution::kScenes> sceneUsed { true };
     void publishScene(int) noexcept; // lock held
-    // per scene, for the audio thread: 12 pattern quads, the humanize seed, 5 x 15 lane floats, 2 x 4 SHAPE quads, 5 bands
+    // per scene, for the audio thread: 12 pattern quads, the humanize seed, 7 x 15 lane floats, 4 x 4 quads of the
+    // SHAPE / THROW lanes' steps 1 .. 16, 7 bands
     static constexpr int kSceneLanes = 13, kSceneShapes = kSceneLanes + revolution::kLanes * revolution::kLaneFloats,
-                         kSceneBands = kSceneShapes + 4 * revolution::kShapes, kSceneFloats = kSceneBands + revolution::kLanes;
+                         kSceneBands = kSceneShapes + 4 * (revolution::kLanes - revolution::kEngines), kSceneFloats = kSceneBands + revolution::kLanes;
     std::array<std::array<std::atomic<float>, kSceneFloats>, revolution::kScenes> sceneSlots {};
     int sceneParameterIndex = -1;
     hamlo::link::Client hpdgLink;

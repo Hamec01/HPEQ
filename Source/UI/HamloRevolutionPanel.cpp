@@ -9,7 +9,7 @@ namespace
 using namespace steel;
 namespace rev = hpeq::revolution;
 
-constexpr float kW = 1180.0f, kH = 1016.0f; // R2: two SHAPE rows and the band footer (HPEQ: 700)
+constexpr float kW = 1180.0f, kH = 1280.0f; // R2: two SHAPE rows and the band footer, R3: two THROW rows (HPEQ: 700)
 constexpr float kPi = juce::MathConstants<float>::pi;
 
 const juce::Rectangle<float> kPlate { 30.0f, 26.0f, 330.0f, 92.0f };
@@ -17,8 +17,8 @@ const juce::Rectangle<float> kWaveBezel { 374.0f, 22.0f, 242.0f, 92.0f }, kWaveS
 const juce::Rectangle<float> kStatusLcd { 915.0f, 176.0f, 240.0f, 68.0f };
 const juce::Point<float> kGenerate { 652.0f, 69.0f }, kNewSeed { 730.0f, 69.0f }, kLamp { 1112.0f, 62.0f };
 const juce::Point<float> kTriplet { 335.0f, 206.0f }, kFree { 410.0f, 206.0f };
-constexpr std::array<float, 5> kRowY { 288.0f, 420.0f, 552.0f, 684.0f, 816.0f };
-constexpr float kFooterY = 968.0f;
+constexpr std::array<float, 7> kRowY { 288.0f, 420.0f, 552.0f, 684.0f, 816.0f, 948.0f, 1080.0f };
+constexpr float kFooterY = 1232.0f;
 constexpr float kCellX = 400.0f, kCellPitch = 44.0f, kCellW = 41.0f, kCellTop = 16.0f, kCellH = 84.0f;
 // per-lane GEN and LOCK, right of the cells
 juce::Rectangle<float> laneGenRect(int engine);
@@ -57,6 +57,14 @@ const std::array<KnobInfo, HamloRevolutionPanel::NumParams> kKnobs { {
     { 1138.0f, kRowY[4] + kRowKnobDy, 0.36f, 0.0, 1.0, false, "RES" },
     { 860.0f, kFooterY, 0.3f, 40.0, 1000.0, true, "LOW / MID" },
     { 980.0f, kFooterY, 0.3f, 1000.0, 12000.0, true, "MID / HIGH" },
+    { 198.0f, kRowY[5] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[5] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
+    { 350.0f, kRowY[5] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "TAIL" },
+    { 1138.0f, kRowY[5] + kRowKnobDy, 0.36f, 0.0, 1.0, false, "TONE" },
+    { 198.0f, kRowY[6] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "MIX" },
+    { 274.0f, kRowY[6] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "DEPTH" },
+    { 350.0f, kRowY[6] + kRowKnobDy, 0.4f, 0.0, 1.0, false, "TAIL" },
+    { 1138.0f, kRowY[6] + kRowKnobDy, 0.36f, 0.0, 1.0, false, "TONE" },
 } };
 
 // Selectors: centre, number of positions, the labels around them, the title under them.
@@ -98,18 +106,28 @@ const juce::Point<float> kListen { 410.0f, 124.0f };
 constexpr std::array<const char*, 3> kStretchNames { "TAPE", "RHYTHM", "CLEAN" };
 
 const juce::Colour kTimeInk { 0xff6dff9a }, kGlitchInk { 0xffffb347 }, kMotionInk { 0xff8fd8ff };
-const juce::Colour kShapeAInk { 0xffff7ad9 }, kShapeBInk { 0xffb58cff };
+const juce::Colour kShapeAInk { 0xffff7ad9 }, kShapeBInk { 0xffb58cff }, kThrowAInk { 0xffffe066 }, kThrowBInk { 0xff6fe3c1 };
 juce::Colour inkFor(int engine)
 {
-    return engine == rev::Time ? kTimeInk : engine == rev::Glitch ? kGlitchInk : engine == rev::Motion ? kMotionInk : engine == 3 ? kShapeAInk : kShapeBInk;
+    static const juce::Colour inks[rev::kLanes] { kTimeInk, kGlitchInk, kMotionInk, kShapeAInk, kShapeBInk, kThrowAInk, kThrowBInk };
+    return inks[juce::jlimit(0, rev::kLanes - 1, engine)];
 }
+bool isThrow(int lane) { return lane >= rev::kFirstThrow; }
+bool isShape(int lane) { return lane >= rev::kFirstShape && lane < rev::kFirstThrow; }
 // the ON switch of a lane
 HamloRevolutionPanel::Switch onSwitchFor(int lane)
 {
-    return lane < rev::kEngines ? static_cast<HamloRevolutionPanel::Switch>(HamloRevolutionPanel::TimeOn + lane)
-                                : lane == 3 ? HamloRevolutionPanel::ShapeAOn : HamloRevolutionPanel::ShapeBOn;
+    using P = HamloRevolutionPanel;
+    static constexpr P::Switch on[rev::kLanes] { P::TimeOn, P::GlitchOn, P::MotionOn, P::ShapeAOn, P::ShapeBOn, P::ThrowAOn, P::ThrowBOn };
+    return on[juce::jlimit(0, rev::kLanes - 1, lane)];
 }
-HamloRevolutionPanel::Switch targetSwitchFor(int lane) { return lane == 3 ? HamloRevolutionPanel::ShapeATarget : HamloRevolutionPanel::ShapeBTarget; }
+HamloRevolutionPanel::Switch targetSwitchFor(int lane)
+{
+    using P = HamloRevolutionPanel;
+    return lane == 3 ? P::ShapeATarget : lane == 4 ? P::ShapeBTarget : lane == 5 ? P::ThrowATarget : P::ThrowBTarget;
+}
+HamloRevolutionPanel::Switch throwTimeSwitch(int lane) { return lane == 5 ? HamloRevolutionPanel::ThrowATime : HamloRevolutionPanel::ThrowBTime; }
+HamloRevolutionPanel::Switch throwNoteSwitch(int lane) { return lane == 5 ? HamloRevolutionPanel::ThrowANote : HamloRevolutionPanel::ThrowBNote; }
 HamloRevolutionPanel::Switch curveSwitchFor(int lane) { return lane == 3 ? HamloRevolutionPanel::ShapeACurve : HamloRevolutionPanel::ShapeBCurve; }
 
 void shadowText(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> r, juce::FontOptions font, juce::Colour colour,
@@ -157,7 +175,8 @@ const char* HamloRevolutionPanel::keyFor(Param p)
     static constexpr const char* keys[] { "mix", "freeMs", "steps", "swing", "humanize", "fadeMs", "timeMix", "timeDepth",
                                           "glitchMix", "glitchDepth", "motionMix", "motionDepth", "motionSmooth",
                                           "shapeAMix", "shapeADepth", "shapeASmooth", "shapeARes", "shapeBMix", "shapeBDepth", "shapeBSmooth", "shapeBRes",
-                                          "bandLowHz", "bandHighHz" };
+                                          "bandLowHz", "bandHighHz", "throwAMix", "throwADepth", "throwATail", "throwATone",
+                                          "throwBMix", "throwBDepth", "throwBTail", "throwBTone" };
     return keys[p];
 }
 
@@ -165,7 +184,8 @@ const char* HamloRevolutionPanel::keyFor(Switch s)
 {
     static constexpr const char* keys[] { "order", "character", "grid", "triplet", "free", "timeOn", "glitchOn", "motionOn", "motionTarget",
                                           "timeStretch", "listen", "shapeAOn", "shapeATarget", "shapeACurve", "shapeBOn", "shapeBTarget",
-                                          "shapeBCurve" };
+                                          "shapeBCurve", "throwAOn", "throwATarget", "throwATime", "throwANote", "throwBOn", "throwBTarget",
+                                          "throwBTime", "throwBNote" };
     return keys[s];
 }
 
@@ -426,6 +446,32 @@ void HamloRevolutionPanel::clickStep(int engine, int cell, bool shift)
     changePattern(p, values.seed, "Step");
 }
 
+void HamloRevolutionPanel::showThrowMenu(int lane)
+{
+    juce::PopupMenu menu, targets, times, notes;
+    for (int t = 0; t < rev::kThrowTargets; ++t)
+        targets.addItem(700 + t, rev::throwTargetName(t), true, values.switches[static_cast<size_t>(targetSwitchFor(lane))] == t);
+    for (int t = 0; t < rev::kThrowTimes; ++t)
+        times.addItem(720 + t, rev::throwTimeName(t), true, values.switches[static_cast<size_t>(throwTimeSwitch(lane))] == t);
+    for (int t = 0; t < rev::kNotes; ++t)
+        notes.addItem(740 + t, rev::noteName(t), true, values.switches[static_cast<size_t>(throwNoteSwitch(lane))] == t);
+    menu.addSectionHeader(rev::engineName(lane));
+    menu.addSubMenu("Target", targets);
+    menu.addSubMenu("Time (DELAY; the LFO of PHASER, FLANGER, VINYL)", times);
+    menu.addSubMenu("Note (TONAL)", notes);
+    juce::Component::SafePointer<HamloRevolutionPanel> self(this);
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self, lane](int result)
+    {
+        if (self == nullptr || result == 0)
+            return;
+        if (result >= 740)
+            return self->setSwitch(throwNoteSwitch(lane), result - 740);
+        if (result >= 720)
+            return self->setSwitch(throwTimeSwitch(lane), result - 720);
+        self->setSwitch(targetSwitchFor(lane), result - 700);
+    });
+}
+
 void HamloRevolutionPanel::setLaneBand(int lane, int band)
 {
     auto l = values.lanes;
@@ -565,7 +611,7 @@ void HamloRevolutionPanel::renderStatic(juce::Graphics& g) const
     }
     // the band footer: the two crossovers every lane on a band splits at
     {
-        const float y = kRowY[4] + 128.0f;
+        const float y = kRowY[6] + 128.0f;
         g.setColour(juce::Colours::black);
         g.drawHorizontalLine(juce::roundToInt(y), 20.0f, kW - 20.0f);
         g.setColour(juce::Colours::white.withAlpha(0.07f));
@@ -598,6 +644,8 @@ void HamloRevolutionPanel::drawKnobs(juce::Graphics& g) const
                          || (param >= GlitchMix && param <= GlitchDepth && values.switches[GlitchOn] == 0)
                          || (param >= MotionMix && param <= MotionSmooth && values.switches[MotionOn] == 0)
                          || (param >= ShapeAMix && param <= ShapeARes && values.switches[ShapeAOn] == 0)
+                         || (param >= ThrowAMix && param <= ThrowATone && values.switches[ThrowAOn] == 0)
+                         || (param >= ThrowBMix && param <= ThrowBTone && values.switches[ThrowBOn] == 0)
                          || (param >= ShapeBMix && param <= ShapeBRes && values.switches[ShapeBOn] == 0);
         const float angle = (-135.0f + static_cast<float>(normFor(param)) * 270.0f) * kPi / 180.0f;
         brassKnob(g, { k.x, k.y }, angle, k.s, dim ? 0.55f : 1.0f, p >= TimeMix ? KnobAsset::LatheSteelRust : KnobAsset::AluminumBrassInsert,
@@ -777,13 +825,24 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
     lcdText(g, kTargetWindow, rev::targetName(values.switches[MotionTarget]), 12.0f);
     for (int lane = 0; lane < rev::kLanes; ++lane)
     {
-        if (lane >= rev::kEngines)
+        if (isShape(lane))
             lcdText(g, shapeTargetWindow(lane), rev::shapeTargetName(values.switches[static_cast<size_t>(targetSwitchFor(lane))]), 12.0f);
+        if (isThrow(lane))
+        {
+            // the target and what it uses: TIME (DELAY, PHASER, FLANGER, VINYL) or NOTE (TONAL)
+            const int target = values.switches[static_cast<size_t>(targetSwitchFor(lane))];
+            juce::String text = rev::throwTargetName(target);
+            if (target == rev::ThrowTonal)
+                text << " " << rev::noteName(values.switches[static_cast<size_t>(throwNoteSwitch(lane))]);
+            else if (target != rev::ThrowReverb && target != rev::ThrowDownsample)
+                text << " " << rev::throwTimeName(values.switches[static_cast<size_t>(throwTimeSwitch(lane))]);
+            lcdText(g, shapeTargetWindow(lane), text, text.length() > 9 ? 10.0f : 12.0f);
+        }
         // the lane's band (and CURVE) beside its lamp
         juce::String tag;
         if (values.lanes[static_cast<size_t>(lane)].band != rev::Full)
             tag = rev::bandName(values.lanes[static_cast<size_t>(lane)].band);
-        if (lane >= rev::kEngines && values.switches[static_cast<size_t>(curveSwitchFor(lane))] != 0)
+        if (isShape(lane) && values.switches[static_cast<size_t>(curveSwitchFor(lane))] != 0)
             tag = tag.isEmpty() ? juce::String("CURVE") : tag + " C";
         if (tag.isNotEmpty())
         {
@@ -890,7 +949,9 @@ void HamloRevolutionPanel::showStepMenu(int engine, int step)
     for (int c = 0; c < rev::kProbabilityCodes; ++c)
         chance.addItem(300 + c, juce::String(juce::roundToInt(100.0 * rev::laneProbability(c))) + " %", true, c == code);
     menu.addSubMenu("Probability", chance);
-    menu.addItem(100, "Lock step", index < rev::kSteps, index < rev::kSteps && ((values.pattern.locks[static_cast<size_t>(engine)] >> index) & 1) != 0);
+    // locks are TIME / GLITCH / MOTION pattern state (R3: the level lanes have none; R2 read past the pattern here)
+    const bool lockable = engine < rev::kEngines && index < rev::kSteps;
+    menu.addItem(100, "Lock step", lockable, lockable && ((values.pattern.locks[static_cast<size_t>(engine)] >> index) & 1) != 0);
     juce::Component::SafePointer<HamloRevolutionPanel> self(this);
     menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self, engine, step, index](int result)
     {
@@ -904,6 +965,11 @@ void HamloRevolutionPanel::showStepMenu(int engine, int step)
         if (result >= 300)
         {
             self->setStepProbability(engine, index, result - 300);
+            return;
+        }
+        if (engine >= rev::kEngines)
+        {
+            self->setLevel(engine, step, result - 1);
             return;
         }
         if (index >= rev::kSteps)
@@ -958,7 +1024,7 @@ void HamloRevolutionPanel::showPlateMenu(int engine)
     for (int b = 0; b < rev::kBands; ++b)
         bands.addItem(600 + b, rev::bandName(b), true, lane.band == b);
     menu.addSubMenu("Band", bands);
-    if (engine >= rev::kEngines)
+    if (isShape(engine))
         menu.addItem(620, "Curve (through the step levels)", true, values.switches[static_cast<size_t>(curveSwitchFor(engine))] != 0);
     juce::Component::SafePointer<HamloRevolutionPanel> self(this);
     menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self, e, engine](int result)
@@ -1069,7 +1135,14 @@ void HamloRevolutionPanel::mouseDown(const juce::MouseEvent& e)
     if (kTargetWindow.contains(d))
         return setSwitch(MotionTarget, (values.switches[MotionTarget] + (e.mods.isPopupMenu() ? rev::kMotionTargets - 1 : 1)) % rev::kMotionTargets);
     for (int lane = rev::kEngines; lane < rev::kLanes; ++lane)
-        if (shapeTargetWindow(lane).contains(d))
+        if (shapeTargetWindow(lane).contains(d) && isThrow(lane))
+        {
+            if (e.mods.isPopupMenu())
+                return showThrowMenu(lane);
+            const auto sw = targetSwitchFor(lane);
+            return setSwitch(sw, (values.switches[static_cast<size_t>(sw)] + 1) % rev::kThrowTargets);
+        }
+        else if (shapeTargetWindow(lane).contains(d))
         {
             const auto sw = targetSwitchFor(lane);
             return setSwitch(sw, (values.switches[static_cast<size_t>(sw)] + (e.mods.isPopupMenu() ? rev::kShapeTargets - 1 : 1)) % rev::kShapeTargets);

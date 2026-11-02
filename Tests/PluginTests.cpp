@@ -151,7 +151,9 @@ public:
             expectEquals(editor->getWidth(), p.getSpec().editorWidth);
             expectEquals(editor->getHeight(), p.getSpec().editorHeight);
             auto& screen = editor->getPresetScreen();
-            expect(screen.getBounds() == juce::Rectangle<float>(56.0f, 20.0f, 336.0f, 116.0f).toNearestInt(), screen.getBounds().toString());
+            // R3: the page is 1180 x 1280 and opens at 75 %; the screen keeps its design place, scaled with the page
+            const float pageScale = juce::jmin(static_cast<float>(editor->getWidth()) / 1180.0f, static_cast<float>(editor->getHeight()) / 1280.0f);
+            expect(screen.getBounds() == (juce::Rectangle<float>(56.0f, 20.0f, 336.0f, 116.0f) * pageScale).toNearestInt(), screen.getBounds().toString());
             expectEquals(static_cast<int>(screen.filtered().size()), p.getNumPrograms() - 1);
             if (p.getNumPrograms() > 1)
             {
