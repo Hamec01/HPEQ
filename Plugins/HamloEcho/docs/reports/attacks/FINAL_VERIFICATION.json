@@ -1,0 +1,5 @@
+{
+  "cases": 2685,
+  "all_bit_identical_to_measured_candidate3": true,
+  "final_executable": "out/attacks/verified.exe"
+}

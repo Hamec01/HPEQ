@@ -378,7 +378,7 @@ void HamloEchoPanel::renderStatic(juce::Graphics& g) const
     g.setColour(juce::Colours::black);
     g.fillEllipse(kSelector.x - 61.0f, kSelector.y - 61.0f, 122.0f, 122.0f);
 
-    crtBezel(g, kBezel, kScreen, juce::String::fromUTF8("\xd0\xad\xd0\x9a\xd0\xa0\xd0\x90\xd0\x9d \xc2\xb7 \xd0\xa1\xd0\x9a\xd0\x9e"), 420.0f); // ЭКРАН · СКО
+    crtBezel(g, kBezel, kScreen, "DISPLAY / SCOPE", 420.0f);
 
     meterFace(g, meter->meter);
     engraved(g, "ON", juce::Rectangle<float>(kLamp.x - 40.0f, 430.0f, 80.0f, 24.0f), 18.0f);

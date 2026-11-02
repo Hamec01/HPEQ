@@ -1,0 +1,74 @@
+{
+  "summary": {
+    "method": "PROTOTYPE_METHODS.md v1; global Hann FFT peak, independent sine fit and offline reverse OLA",
+    "cases": 6,
+    "pitch_cases": 0,
+    "pitch_pass": 0,
+    "pitch_channels": 0,
+    "worst_pitch_cents": null,
+    "worst_residual_dbc": null,
+    "worst_spur_dbc": null,
+    "exact_cases": 6,
+    "exact_pass": 6,
+    "finite_all": true,
+    "allocation_failures": [],
+    "failures": [],
+    "diagnostics": []
+  },
+  "results": [
+    {
+      "case": "wrap_pitch_64",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.21518373489379883,
+      "allocations": 0,
+      "sha256": "e652bcecd51dc4e3dae5847312c3ae8586394e6462dfb923973dd381f1c56d18",
+      "pass": true
+    },
+    {
+      "case": "wrap_pitch_4096",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.21518373489379883,
+      "allocations": 0,
+      "sha256": "e652bcecd51dc4e3dae5847312c3ae8586394e6462dfb923973dd381f1c56d18",
+      "pass": true
+    },
+    {
+      "case": "wrap_reverse_64",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.14655444025993347,
+      "allocations": 0,
+      "sha256": "3a3fcd57c136935e2dd4d3fef857b3fb6ac0b026d7560f569880edc8107653bb",
+      "pass": true
+    },
+    {
+      "case": "wrap_reverse_4096",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.14655444025993347,
+      "allocations": 0,
+      "sha256": "3a3fcd57c136935e2dd4d3fef857b3fb6ac0b026d7560f569880edc8107653bb",
+      "pass": true
+    },
+    {
+      "case": "wrap_dense_64",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.09499596804380417,
+      "allocations": 0,
+      "sha256": "ce295e9b278a6a7aaa034fc7f10a25edac7a858dbc6a1b86316b14b972adcd87",
+      "pass": true
+    },
+    {
+      "case": "wrap_dense_4096",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.09499596804380417,
+      "allocations": 0,
+      "sha256": "ce295e9b278a6a7aaa034fc7f10a25edac7a858dbc6a1b86316b14b972adcd87",
+      "pass": true
+    }
+  ]
+}

@@ -4,7 +4,7 @@
 #include <atomic>
 #include <vector>
 
-#include "DSP/LayerSnapshot.h"
+#include "DSP/EchoSettings.h"
 
 namespace hpeq::dsp
 {

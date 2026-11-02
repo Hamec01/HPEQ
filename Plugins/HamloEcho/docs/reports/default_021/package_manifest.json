@@ -1,0 +1,32 @@
+{
+  "version": "0.2.1",
+  "source_id": "d9e24f36675b7dc3335a98f1bdf4b2efcfed3bb2934e34d923b62e2833209c18",
+  "plugin_sha256": "07b376bd78928777347d5b1f2e80b62dfad261e3ccaaf37b45bc6012a0b4bb05",
+  "core_payload": [
+    {
+      "path": "Contents/Resources/moduleinfo.json",
+      "sha256": "6f98cfe2edeb53833c2f95984369e4ccc1f89bd580d8725d78d1b7ae553f0508"
+    },
+    {
+      "path": "Contents/x86_64-win/HamloEcho.vst3",
+      "sha256": "07b376bd78928777347d5b1f2e80b62dfad261e3ccaaf37b45bc6012a0b4bb05"
+    }
+  ],
+  "zip_payload_verified": true,
+  "installer_input_binary_unchanged": true,
+  "installer_executed": false,
+  "artifacts": [
+    {
+      "name": "HamloEcho_VST3_Setup_0.2.1.exe",
+      "sha256": "dbda9e55596906d70e053e69ae5610367c66b300e3e0f439ee99eda96d450af1",
+      "bytes": 26364622
+    },
+    {
+      "name": "HamloEcho-0.2.1-win64-vst3.zip",
+      "sha256": "fd772eabeffaa2bf4d06204070fa8e4fd9449794ef68eb7c8b5fa858bc1a42f4",
+      "bytes": 7310707
+    }
+  ],
+  "scope": "Neutral Default initialization only; DSP files and all200genre recipe parameters/metadata identical to0.2.0",
+  "dsp_source": "d9e24f36675b7dc3335a98f1bdf4b2efcfed3bb2934e34d923b62e2833209c18"
+}

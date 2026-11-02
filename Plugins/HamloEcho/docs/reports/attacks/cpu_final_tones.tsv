@@ -1,0 +1,3 @@
+instances	reverse	mean_percent	p99_percent	worst_percent	allocations	history_bytes_per_instance	shared_table_bytes	thread_mean_percent
+1	0	17.6772738794	26.40375	29.0175	0	10017024	16087680	17.1966715582
+2	0	36.0626934365	59.565	69.429375	0	10017024	16087680	35.6440101387

@@ -5,7 +5,7 @@
 
 #include <juce_core/juce_core.h>
 
-#include "Core/FxProjectState.h"
+#include "DSP/EchoSettings.h"
 
 namespace hpeq::presets
 {
@@ -17,10 +17,18 @@ struct ModulePreset
     const char* name;
     float mix;
     std::vector<std::pair<const char*, double>> values;
+    const char* id="";
+    const char* genre="";
+    const char* group="";
+    const char* note="";
+    const char* material="";
+    const char* depth="";
+    double bpm=120;
 };
 
 const std::vector<ModulePreset>& factoryModulePresets(FxType);
 
 // The value a preset gives `key`, or `fallback` when it leaves the key alone.
 double presetValue(const ModulePreset&, const juce::String& key, double fallback);
+double neutralDefaultValue(const juce::String& key,double fallback);
 } // namespace hpeq::presets

@@ -48,6 +48,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 Source: "{#SourceVst3Dir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\docs\release\README.txt"; DestDir: "{app}\Documentation"; Flags: ignoreversion
+Source: "..\docs\release\USER-GUIDE.txt"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "..\docs\release\THIRD-PARTY-NOTICES.txt"; DestDir: "{app}\Documentation"; Flags: ignoreversion
 Source: "{#JuceLicense}"; DestDir: "{app}\Documentation\ThirdParty\JUCE"; DestName: "LICENSE.md"; Flags: ignoreversion
 Source: "{#VCRedistFile}"; Flags: dontcopy

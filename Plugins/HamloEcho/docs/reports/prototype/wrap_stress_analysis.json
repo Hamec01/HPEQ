@@ -1,0 +1,56 @@
+{
+  "summary": {
+    "method": "PROTOTYPE_METHODS.md v1; global Hann FFT peak, independent sine fit and offline reverse OLA",
+    "cases": 4,
+    "pitch_cases": 0,
+    "pitch_pass": 0,
+    "pitch_channels": 0,
+    "worst_pitch_cents": null,
+    "worst_residual_dbc": null,
+    "worst_spur_dbc": null,
+    "exact_cases": 4,
+    "exact_pass": 4,
+    "finite_all": true,
+    "allocation_failures": [],
+    "failures": [],
+    "diagnostics": []
+  },
+  "results": [
+    {
+      "case": "wrap_pitch_64",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.20946422219276428,
+      "allocations": 0,
+      "sha256": "d364bcdd776b265361c8708ae22f65e73c88230adc423b526a35c14c11a56eef",
+      "pass": true
+    },
+    {
+      "case": "wrap_pitch_4096",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.20946422219276428,
+      "allocations": 0,
+      "sha256": "d364bcdd776b265361c8708ae22f65e73c88230adc423b526a35c14c11a56eef",
+      "pass": true
+    },
+    {
+      "case": "wrap_reverse_64",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.14655444025993347,
+      "allocations": 0,
+      "sha256": "3a3fcd57c136935e2dd4d3fef857b3fb6ac0b026d7560f569880edc8107653bb",
+      "pass": true
+    },
+    {
+      "case": "wrap_reverse_4096",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.14655444025993347,
+      "allocations": 0,
+      "sha256": "3a3fcd57c136935e2dd4d3fef857b3fb6ac0b026d7560f569880edc8107653bb",
+      "pass": true
+    }
+  ]
+}

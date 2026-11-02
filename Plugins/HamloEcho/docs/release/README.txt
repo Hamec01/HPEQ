@@ -1,6 +1,39 @@
-HamloEcho 0.1.0 - delay, VST3, Windows x64 (HamloProd)
+HamloEcho 0.2.2 - musical echo machine, VST3, Windows x64 (HamloProd)
 
-Controls
+Default starts NOTE SCORE with Mix, feedback, space, glitch and pitch shifts at0.
+Choose Default under Factory / General to clear all effects/tails, even with
+Send, Mix Lock or Freeze active. Raise Mix and Time to explore the first echo.
+Older saved projects retain their stored engine/settings. Genre recipes are unchanged.
+
+QUICK: simplified Note Score with TIME / MOTION / SPACE and separate MIX.
+Eight moves; EDIT IN NOTE SCORE transfers the move into the full editor.
+The complete Note Score and Legacy pages remain available.
+
+Score engine
+  Eight editable note reflections, piano/text input, host sync and Swing.
+  SOURCE is a manual reference, not automatic pitch tracking or chord correction.
+  FL Studio labels: C5 = MIDI60; Standard labels: C4 = MIDI60.
+  Fixed reflection range +/-24 semitones; unsupported notes are visibly muted.
+  Loop Pitch Step accumulates once per circulation, independently of reflection notes.
+  Three frequency bands have independent timing, feedback, level and pan.
+  Room / Plate / Cloud space: Before Echo, After Echo or In Feedback.
+  Per-reflection Space Send, Reverse / Stutter / Tape Stop / Skip.
+  Independent captured Glitch for echoes, spatial tail or both.
+  Insert dry/wet, wet-only Send, Mix Lock, Duck, Width and stable Freeze.
+  Dry and host latency: zero samples. Pitched capture minimum80ms; Reverse/Glitch
+  need their displayed additional fragment capture. High combined band feedback
+  receives a shared safety trim. Wet Output controls wet level only.
+
+200 new stable-ID recipes plus Default and seven original programs:208 total.
+Category buttons filter the library; LOAD START loads the first match.
+Projects restore full saved state and selected program. Mix Lock applies to presets.
+See USER-GUIDE.txt for timing, source-note semantics, routing and headroom.
+
+Compatibility: old effect controls and saved states retain their behaviour.
+The host's extra Program selector expands from eight to208choices; review any
+existing normalised Program-selection automation. Original program numbers stay.
+
+Legacy controls
   TIME L       Delay time of the left echo (or both when linked).
   TIME R       Delay time of the right echo.
   FEEDBACK     How many repeats: each echo comes back this much quieter.

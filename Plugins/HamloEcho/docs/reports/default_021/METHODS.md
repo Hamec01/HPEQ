@@ -1,0 +1,9 @@
+# Neutral Default patch, 0.2.1
+
+Owner request: Default must start with no audible effect and neutral amounts, for exploration from zero. New instances and explicit program0 use a Score initialisation recipe. Mix, feedback, space, glitch, modulation, drive and pitch shifts start at0; notes match the manual source. Output0dB, Width100%, open filters and unity routing gains remain neutral rather than being muted. Time controls use their minimum valid free-time values. Only the first unpitched reflection is enabled, ready when Mix rises.
+
+Explicit Default overrides Mix Lock/Send/bypass and clears existing tails at the next prepared callback. Other factory programs keep their original routing/Mix Lock behaviour. Parameter metadata defaults/IDs/ranges/order and old-state migration are unchanged; saved old projects must retain their sound. Default is added to the editor's library entries without changing the shared PresetScreen or host program count.
+
+Before editing: save the full compiled200-program parameter/metadata manifest and all Source/DSP file hashes under out/default_patch. After editing compare them exactly. No reverb/delay algorithm or calibrated recipe is changed; prior0.2.0 calibration remains historical evidence, not a fabricated new-version calibration. Reject stale calibration through the existing source guard as before.
+
+Verify fresh and dirty/playing Default output bit-identical to dry, including prior Send/Mix Lock/Freeze and live tails; raising Mix must make the prepared first reflection audible. Preserve old states and original parameter metadata. The M0 lab must derive old expected values from immutable archived XML, since program0 is intentionally redefined; retain all160original audio/reference/event schedules. Build VST3, inspect Default screenshot, run unit/compatibility/validator checks, update patch artifacts and local handoff.

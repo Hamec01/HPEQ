@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloEcho VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloEcho VERSION 0.2.2 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -35,6 +35,14 @@ endif()
 
 enable_testing()
 
+# Embed the exact production source identity in every laboratory executable.
+set(SOURCE_ROOT "${CMAKE_CURRENT_SOURCE_DIR}")
+set(SOURCE_VERSION "${PROJECT_VERSION}")
+set(IDENTITY_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/SourceIdentity.h")
+include(cmake/WriteSourceIdentity.cmake)
+add_custom_target(HamloEcho_SourceIdentity
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DSOURCE_VERSION=${PROJECT_VERSION}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/SourceIdentity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteSourceIdentity.cmake")
+
 # --- Assets: HPEQ's Black Steel pictures (scratches, tubes, the hardware pack), embedded as HpeqAssets -------
 file(GLOB HAMLO_ECHO_SCRATCHES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/scratches/*.png)
 file(GLOB_RECURSE HAMLO_ECHO_HARDWARE CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/hardware_pack/*.png)
@@ -42,36 +50,21 @@ file(GLOB HAMLO_ECHO_TUBES CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/Assets/
 juce_add_binary_data(HamloEcho_Assets NAMESPACE HpeqAssets SOURCES ${HAMLO_ECHO_SCRATCHES} ${HAMLO_ECHO_HARDWARE} ${HAMLO_ECHO_TUBES})
 set_target_properties(HamloEcho_Assets PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-# --- Shared code: HPEQ's module-plug-in stack (Source/ is HPEQ's, verbatim; docs/SYNC_WITH_HPEQ.md) -----------
+# --- Echo-only shared code; M0 provenance and bit-exact verification: docs/SYNC_WITH_HPEQ.md -----------
 add_library(HamloEcho_Shared STATIC
     Source/Core/ModulePresets.cpp
-    Source/DSP/Biquad.cpp
-    Source/DSP/FxNodeProcessor.cpp
-    Source/DSP/LayerEngine.cpp
-    Source/DSP/PreEqProcessor.cpp
-    Source/DSP/Processors.cpp
-    Source/DSP/ReverbProcessor.cpp
-    Source/DSP/HamloVerb.cpp
     Source/DSP/HamloEcho.cpp
-    Source/DSP/HamloMag.cpp
-    Source/DSP/ProcessorsM6.cpp
-    Source/DSP/HamloRevolution.cpp
-    Source/DSP/HamloRedWall.cpp
-    Source/DSP/HamloUdarnik.cpp
-    Source/DSP/HamloZastava.cpp
-    Source/DSP/HamloShirota.cpp
-    Source/DSP/CrossoverTree.cpp
-    Source/DSP/EqDesign.cpp
+    Source/DSP/LegacyDelay.cpp
+    Source/DSP/LegacyEchoCore.cpp
+    Source/DSP/ReflectionPrototype.cpp
+    Source/DSP/ScoreEngine.cpp
+    Source/DSP/ScoreEffects.cpp
     Source/UI/BlackSteel.cpp
-    Source/UI/HamloCompPanel.cpp
-    Source/UI/HamloVerbPanel.cpp
     Source/UI/HamloEchoPanel.cpp
-    Source/UI/HamloMagPanel.cpp
-    Source/UI/HamloRedWallPanel.cpp
-    Source/UI/HamloUdarnikPanel.cpp
-    Source/UI/HamloZastavaPanel.cpp
-    Source/UI/HamloShirotaPanel.cpp
+    Source/UI/ScorePanel.cpp
     Source/Standalone/ModuleVariant.cpp
+    Source/Standalone/ScoreParameters.cpp
+    Source/Standalone/QuickControls.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
     Source/UI/PresetScreen.cpp)
@@ -128,9 +121,15 @@ target_link_libraries(HamloEcho
         juce::juce_recommended_warning_flags)
 
 # --- Tests and the page snapshot ----------------------------------------------------------------------
-foreach(tool Tests Snapshot)
+foreach(tool Tests Snapshot Lab ScorePresetLab)
     if (tool STREQUAL "Tests")
-        add_executable(HamloEcho_Tests Tests/TestMain.cpp Tests/PluginTests.cpp)
+        add_executable(HamloEcho_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/LegacyStateTests.cpp Tests/ScoreIntegrationTests.cpp Tests/QuickTests.cpp Tests/AllocationAudit.cpp)
+    elseif(tool STREQUAL "ScorePresetLab")
+        add_executable(HamloEcho_ScorePresetLab Tests/ScorePresetLabMain.cpp)
+        target_include_directories(HamloEcho_ScorePresetLab PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+        add_dependencies(HamloEcho_ScorePresetLab HamloEcho_SourceIdentity)
+    elseif(tool STREQUAL "Lab")
+        add_executable(HamloEcho_Lab Tests/EchoLabMain.cpp)
     else()
         add_executable(HamloEcho_Snapshot Tests/SnapshotMain.cpp)
     endif()
@@ -147,3 +146,16 @@ foreach(tool Tests Snapshot)
             juce::juce_recommended_warning_flags)
 endforeach()
 add_test(NAME HamloEcho_Tests COMMAND HamloEcho_Tests)
+
+# Research only: candidate note/reverse renderer, deliberately not linked into the plugin.
+add_executable(HamloEcho_PrototypeLab Tests/PrototypeLabMain.cpp Source/DSP/ReflectionPrototype.cpp)
+target_include_directories(HamloEcho_PrototypeLab PRIVATE Source)
+target_compile_options(HamloEcho_PrototypeLab PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/W4>)
+
+# The same research harness against immutable 05a1445 DSP for strengthened before/after methods.
+add_executable(HamloEcho_AttackBaselineLab Tests/PrototypeLabMain.cpp Tests/PrototypeReference/DSP/ReflectionPrototype.cpp)
+target_include_directories(HamloEcho_AttackBaselineLab PRIVATE Tests/PrototypeReference)
+
+add_executable(HamloEcho_ScoreLab Tests/ScoreLabMain.cpp Source/DSP/ScoreEngine.cpp Source/DSP/ScoreEffects.cpp Source/DSP/ReflectionPrototype.cpp)
+target_include_directories(HamloEcho_ScoreLab PRIVATE Source "${CMAKE_CURRENT_BINARY_DIR}")
+add_dependencies(HamloEcho_ScoreLab HamloEcho_SourceIdentity)

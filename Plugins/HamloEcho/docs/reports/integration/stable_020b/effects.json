@@ -1,0 +1,583 @@
+{
+  "dsp_sha256": "e854c1d94ba911cff8a5a13c29a2e86e30a2c3ae4fa6a4e0e3743604063cd76e",
+  "analysis_current_dsp_sha256": "782b96c323b44a22339c20cc3ae61beafa82630a931d40a5ec4b1404dccddec9",
+  "source_directory": "out\\score\\stable_020b",
+  "checks": [
+    {
+      "name": "unity impulse exact delay",
+      "value": 2.980232227667301e-09,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "neutral complementary band null",
+      "value": 3.7947076036992655e-19,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "band 0 independent onset error",
+      "value": 0.0,
+      "limit": "<=1 sample",
+      "passed": true
+    },
+    {
+      "name": "band 1 independent onset error",
+      "value": 0.0,
+      "limit": "<=1 sample",
+      "passed": true
+    },
+    {
+      "name": "band 2 independent onset error",
+      "value": 0.0,
+      "limit": "<=1 sample",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step -12, turn 0",
+      "value": 5.073326337463858e-06,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step -12, turn 1",
+      "value": 0.0005477010081784195,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step -12, turn 2",
+      "value": 0.0007236507866122965,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step -12, turn 3",
+      "value": 2.1391384181987078e-05,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step 12, turn 0",
+      "value": 5.073326337463858e-06,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step 12, turn 1",
+      "value": 0.00034601036294653296,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step 12, turn 2",
+      "value": 0.0004504834964304609,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial 0, step 12, turn 3",
+      "value": 0.0005223118354873854,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step -12, turn 0",
+      "value": 0.0006431150172181095,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step -12, turn 1",
+      "value": 0.0011437749682436636,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step -12, turn 2",
+      "value": 0.0010666015749569767,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step 12, turn 0",
+      "value": 0.0006431150172181095,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step 12, turn 1",
+      "value": 0.033880657993613894,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step 12, turn 2",
+      "value": 0.03402390581162506,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "pitch initial -12, step 12, turn 3",
+      "value": 0.030916946165998663,
+      "limit": "<=5 cents",
+      "passed": true
+    },
+    {
+      "name": "space 0/0 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 0/0 decays",
+      "value": 1.3014468909562054e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 0/1 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 0/1 decays",
+      "value": 3.079497924342234e-43,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 0/2 finite",
+      "value": 0.05000000074505806,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 0/2 decays",
+      "value": 1.3131679999861276e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 1/0 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 1/0 decays",
+      "value": 1.3010226062183722e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 1/1 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 1/1 decays",
+      "value": 2.1865178663903774e-44,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 1/2 finite",
+      "value": 0.05000000074505806,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 1/2 decays",
+      "value": 1.3063972903700088e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 2/0 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 2/0 decays",
+      "value": 1.3019764269901741e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 2/1 finite",
+      "value": 0.25,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 2/1 decays",
+      "value": 3.174106384535595e-40,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "space 2/2 finite",
+      "value": 0.05000000074505806,
+      "limit": "finite and <8",
+      "passed": true
+    },
+    {
+      "name": "space 2/2 decays",
+      "value": 1.3267177830452085e-22,
+      "limit": "<1e-8 after 12 s",
+      "passed": true
+    },
+    {
+      "name": "per-reflection Skip",
+      "value": 0.0,
+      "limit": "0",
+      "passed": true
+    },
+    {
+      "name": "full Omit",
+      "value": 0.0,
+      "limit": "0",
+      "passed": true
+    },
+    {
+      "name": "fragment action 1 analytic sample reference",
+      "value": 3.7215427128867162e-09,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "fragment action 2 analytic sample reference",
+      "value": 3.725290298461914e-09,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "fragment action 3 analytic sample reference",
+      "value": 3.725290298461914e-09,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "combined pitch/Reverse note 36",
+      "value": 7.425588033349584e-09,
+      "limit": "<=1e-6; fragment fixed at 100 ms",
+      "passed": true
+    },
+    {
+      "name": "combined pitch/Reverse note 48",
+      "value": 3.7252902707063384e-09,
+      "limit": "<=1e-6; fragment fixed at 100 ms",
+      "passed": true
+    },
+    {
+      "name": "combined pitch/Reverse note 55",
+      "value": 3.725290298461914e-09,
+      "limit": "<=1e-6; fragment fixed at 100 ms",
+      "passed": true
+    },
+    {
+      "name": "combined pitch/Reverse note 67",
+      "value": 3.725290298461914e-09,
+      "limit": "<=1e-6; fragment fixed at 100 ms",
+      "passed": true
+    },
+    {
+      "name": "combined pitch/Reverse note 72",
+      "value": 3.725290242950763e-09,
+      "limit": "<=1e-6; fragment fixed at 100 ms",
+      "passed": true
+    },
+    {
+      "name": "combined pitch/Reverse note 84",
+      "value": 3.725290298461914e-09,
+      "limit": "<=1e-6; fragment fixed at 100 ms",
+      "passed": true
+    },
+    {
+      "name": "texture 1 analytic fragment addressing",
+      "value": 3.725290298461914e-09,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "texture 2 analytic fragment addressing",
+      "value": 3.725290298461914e-09,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "texture 3 analytic fragment addressing",
+      "value": 3.725290298461914e-09,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "texture 4 analytic fragment addressing",
+      "value": 3.725290298461914e-09,
+      "limit": "<=1e-6",
+      "passed": true
+    },
+    {
+      "name": "timing rates and tempo divisions",
+      "value": 0.0,
+      "limit": "<=1 sample",
+      "passed": true
+    },
+    {
+      "name": "Freeze settled 60 s drift",
+      "value": 0.0,
+      "limit": "<=1 dB",
+      "passed": true
+    },
+    {
+      "name": "Freeze 5 min finite",
+      "value": 0.2076720148325,
+      "limit": "<8 and finite",
+      "passed": true
+    },
+    {
+      "name": "Freeze release decay after 6 s",
+      "value": -133.2426432634586,
+      "limit": "<0 dB",
+      "passed": true
+    },
+    {
+      "name": "raw_feedback maximum-feedback impulse decays",
+      "value": 1.480780177914794e-16,
+      "limit": "<1e-4 final/first 5-second energy",
+      "passed": true
+    },
+    {
+      "name": "bands_space maximum-feedback impulse decays",
+      "value": 0.0,
+      "limit": "<1e-4 final/first 5-second energy",
+      "passed": true
+    }
+  ],
+  "pitch": [
+    {
+      "initial": 0,
+      "step": -12,
+      "turn": 0,
+      "expected": 440.0,
+      "measured": 439.999998710594,
+      "cents": -5.073326337463858e-06,
+      "largest_outside_8Hz_db": -48.53838890755553
+    },
+    {
+      "initial": 0,
+      "step": -12,
+      "turn": 1,
+      "expected": 220.0,
+      "measured": 219.99993039981925,
+      "cents": -0.0005477010081784195,
+      "largest_outside_8Hz_db": -48.441045836629414
+    },
+    {
+      "initial": 0,
+      "step": -12,
+      "turn": 2,
+      "expected": 110.0,
+      "measured": 109.99995402033022,
+      "cents": -0.0007236507866122965,
+      "largest_outside_8Hz_db": -48.45052749783839
+    },
+    {
+      "initial": 0,
+      "step": -12,
+      "turn": 3,
+      "expected": 55.0,
+      "measured": 55.00000067958815,
+      "cents": 2.1391384181987078e-05,
+      "largest_outside_8Hz_db": -48.476329412054454
+    },
+    {
+      "initial": 0,
+      "step": 12,
+      "turn": 0,
+      "expected": 440.0,
+      "measured": 439.999998710594,
+      "cents": -5.073326337463858e-06,
+      "largest_outside_8Hz_db": -48.53838890755553
+    },
+    {
+      "initial": 0,
+      "step": 12,
+      "turn": 1,
+      "expected": 880.0,
+      "measured": 880.0001758798297,
+      "cents": 0.00034601036294653296,
+      "largest_outside_8Hz_db": -48.52936769878048
+    },
+    {
+      "initial": 0,
+      "step": 12,
+      "turn": 2,
+      "expected": 1760.0,
+      "measured": 1760.000457968729,
+      "cents": 0.0004504834964304609,
+      "largest_outside_8Hz_db": -48.536690465663945
+    },
+    {
+      "initial": 0,
+      "step": 12,
+      "turn": 3,
+      "expected": 3520.0,
+      "measured": 3520.001061981157,
+      "cents": 0.0005223118354873854,
+      "largest_outside_8Hz_db": -48.542628218868
+    },
+    {
+      "initial": -12,
+      "step": -12,
+      "turn": 0,
+      "expected": 220.0,
+      "measured": 220.00008172513134,
+      "cents": 0.0006431150172181095,
+      "largest_outside_8Hz_db": -48.46250091109914
+    },
+    {
+      "initial": -12,
+      "step": -12,
+      "turn": 1,
+      "expected": 110.0,
+      "measured": 110.00007267376017,
+      "cents": 0.0011437749682436636,
+      "largest_outside_8Hz_db": -48.498241849670066
+    },
+    {
+      "initial": -12,
+      "step": -12,
+      "turn": 2,
+      "expected": 55.0,
+      "measured": 55.000033885138016,
+      "cents": 0.0010666015749569767,
+      "largest_outside_8Hz_db": -48.4770880439195
+    },
+    {
+      "initial": -12,
+      "step": -12,
+      "turn": 3,
+      "expected": 27.5,
+      "measured": 27.50003277912694,
+      "cents": 0.002063574793970856,
+      "largest_outside_8Hz_db": -48.47810658584876
+    },
+    {
+      "initial": -12,
+      "step": 12,
+      "turn": 0,
+      "expected": 220.0,
+      "measured": 220.00008172513134,
+      "cents": 0.0006431150172181095,
+      "largest_outside_8Hz_db": -48.46250091109914
+    },
+    {
+      "initial": -12,
+      "step": 12,
+      "turn": 1,
+      "expected": 440.0,
+      "measured": 439.9913891806514,
+      "cents": -0.033880657993613894,
+      "largest_outside_8Hz_db": -47.38530482674407
+    },
+    {
+      "initial": -12,
+      "step": 12,
+      "turn": 2,
+      "expected": 880.0,
+      "measured": 879.9827055487286,
+      "cents": -0.03402390581162506,
+      "largest_outside_8Hz_db": -46.763183169974
+    },
+    {
+      "initial": -12,
+      "step": 12,
+      "turn": 3,
+      "expected": 1760.0,
+      "measured": 1759.9685696226836,
+      "cents": -0.030916946165998663,
+      "largest_outside_8Hz_db": -47.27629377174615
+    }
+  ],
+  "space": [
+    {
+      "type": 0,
+      "route": 0,
+      "peak": 0.25,
+      "tail_energy": 2.411851416660955e-05,
+      "late_energy": 1.3962853593911796e-23,
+      "correlation": 0.9909325709388334
+    },
+    {
+      "type": 0,
+      "route": 1,
+      "peak": 0.25,
+      "tail_energy": 9.094629988355725e-10,
+      "late_energy": 2.88591390803423e-44,
+      "correlation": 0.9988599379376366
+    },
+    {
+      "type": 0,
+      "route": 2,
+      "peak": 0.05000000074505806,
+      "tail_energy": 1.2325709876130384e-06,
+      "late_energy": 7.1356892786872905e-25,
+      "correlation": 0.8270566473408842
+    },
+    {
+      "type": 1,
+      "route": 0,
+      "peak": 0.25,
+      "tail_energy": 2.402800073709879e-05,
+      "late_energy": 1.3910452574979158e-23,
+      "correlation": 0.9935090035321347
+    },
+    {
+      "type": 1,
+      "route": 1,
+      "peak": 0.25,
+      "tail_energy": 3.9146085023809574e-10,
+      "late_energy": 2.0481863057818915e-45,
+      "correlation": 0.9991875384411888
+    },
+    {
+      "type": 1,
+      "route": 2,
+      "peak": 0.05000000074505806,
+      "tail_energy": 1.1433798589605584e-06,
+      "late_energy": 6.619334752156059e-25,
+      "correlation": 0.8667171900452033
+    },
+    {
+      "type": 2,
+      "route": 0,
+      "peak": 0.25,
+      "tail_energy": 2.410378385359938e-05,
+      "late_energy": 1.3954323915198122e-23,
+      "correlation": 0.9923610442140223
+    },
+    {
+      "type": 2,
+      "route": 1,
+      "peak": 0.25,
+      "tail_energy": 2.198975013559683e-09,
+      "late_energy": 2.9742047947623093e-41,
+      "correlation": 0.9990406193262414
+    },
+    {
+      "type": 2,
+      "route": 2,
+      "peak": 0.05000000074505806,
+      "tail_energy": 1.220644151841815e-06,
+      "late_energy": 7.066633511428473e-25,
+      "correlation": 0.8507030094473872
+    }
+  ],
+  "passed": 59,
+  "failed": 0
+}

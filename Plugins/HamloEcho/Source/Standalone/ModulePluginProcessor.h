@@ -6,9 +6,11 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 
 #include "DSP/DelayLine.h"
-#include "DSP/LayerEngine.h"
+#include "DSP/LegacyEchoCore.h"
 #include "DSP/Ramp.h"
 #include "Standalone/ModuleVariant.h"
+#include "Standalone/ScoreParameters.h"
+#include "DSP/ScoreEngine.h"
 
 namespace hpeq::standalone
 {
@@ -36,7 +38,7 @@ public:
     // Presets pass: the module's factory presets as the host's programs (0 = Default, then the presets
     // HPEQ shows on this module's page).
     int getNumPrograms() override;
-    int getCurrentProgram() override { return currentProgram; }
+    int getCurrentProgram() override { return currentProgram.load(std::memory_order_relaxed); }
     void setCurrentProgram(int) override;
     const juce::String getProgramName(int) override;
     void changeProgramName(int, const juce::String&) override {}
@@ -52,23 +54,47 @@ public:
     void setParameterValue(const juce::String& id, double actualValue);
     bool isModuleOn() const noexcept { return bypassParameter != nullptr && !bypassParameter->get(); }
     double getHostBpm() const noexcept { return hostBpm.load(std::memory_order_relaxed); }
-    const dsp::FxNodeProcessor& moduleNode() const noexcept { return engine.getMixNode(); }
+    const dsp::LegacyEchoCore& moduleNode() const noexcept { return engine; }
+    juce::AudioProcessorValueTreeState& valueTreeState() noexcept { return parameters; }
+    bool presetModified() const noexcept;
+    float scoreOutputDb() const noexcept { return scoreMeter.load(std::memory_order_relaxed); }
+    void setQuickEnabled(bool);
+    void expandQuickToScore();
+    hamlo::echo::ScoreSettings effectiveScoreSettings(double bpm=120) const noexcept {return readScoreSettings(scoreValues,bpm);}
 
 private:
     dsp::FxSlotParams currentSlot(bool active) const noexcept;
     dsp::Transport currentTransport() noexcept;
+    uint64_t parameterHash() const noexcept;
+    void choosePath(int,const hamlo::echo::ScoreSettings&,const dsp::FxSlotParams&) noexcept;
+    void processScorePaths(juce::AudioBuffer<float>&,int,int,const dsp::Transport&,int,const hamlo::echo::ScoreSettings&,const dsp::FxSlotParams&) noexcept;
 
     ModuleKind kind;
     juce::AudioProcessorValueTreeState parameters;
     std::vector<std::atomic<float>*> rawValues;
+    std::vector<std::atomic<float>*> scoreValues;
     juce::AudioParameterBool* bypassParameter = nullptr;
 
-    dsp::LayerEngine engine;
+    dsp::LegacyEchoCore engine;
+    std::array<hamlo::echo::ScoreEngine,2> scoreEngines;
+    std::array<hamlo::echo::ScoreSettings,2> scoreConfigs;
+    std::array<juce::AudioBuffer<float>,2> pathWork;
+    dsp::LinearRamp incomingWeight,retiringWeight,scoreDry;
+    int activePath=-1,retiringPath=-2,forcedRetire=0;
+    int64_t retireAge=0,retireLimit=0;
+    dsp::FxSlotParams retiringLegacy,lastLegacy,activeLegacy;
+    hamlo::echo::ScoreSettings lastScore;
+    int lastMode=0;
+    std::atomic<uint64_t> bulkRevision{0},loadedHash{0};
+    std::atomic<bool> restorePending{false};
+    juce::CriticalSection stateWriter;
+    std::atomic<float> scoreMeter{-120};
+    std::atomic<bool> hasRetiringTail{false};
     juce::AudioBuffer<float> dry;
     dsp::AlignmentDelay wetAlign, dryAlign;
     dsp::LinearRamp wetAmount;
     int maximumBlockSize = 1;
-    int currentProgram = 0;
+    std::atomic<int> currentProgram {0};
     int fixedLatency = 0;
     int bypassRampSteps = 1;
     std::atomic<double> currentSampleRate { 48000.0 };

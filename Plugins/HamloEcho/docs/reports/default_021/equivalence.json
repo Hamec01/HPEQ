@@ -1,0 +1,83 @@
+{
+  "version": "0.2.1",
+  "dsp_files_identical": true,
+  "dsp_files": [
+    {
+      "name": "DelayLine.h",
+      "sha256": "e8397a978a3f2107ec6c23000eee6701326f6b479e28a5b674ad71d43ecec650"
+    },
+    {
+      "name": "DspConfig.h",
+      "sha256": "bcee350c9b988be1ff88027cb61a0ce6e8cfe1be58d9309daa4a8a377db589c0"
+    },
+    {
+      "name": "EchoSettings.h",
+      "sha256": "8994fe7db0dc1411ce51cf2cd56e4b8540f09e7f3c4f0e6266c7969aa2af091e"
+    },
+    {
+      "name": "HamloEcho.cpp",
+      "sha256": "5a0808c8f133d87e1c98114546acb83a7b68195d65c3a3fdfe2647e5a62e802d"
+    },
+    {
+      "name": "HamloEcho.h",
+      "sha256": "55378652915357f843921f7bce042092443073b121e66c8e7ef7c2aadcb20f54"
+    },
+    {
+      "name": "LegacyDelay.cpp",
+      "sha256": "f38073bd399a58141d7ec5018c42781c09edab9358842bb7310c347621f59f17"
+    },
+    {
+      "name": "LegacyDelay.h",
+      "sha256": "75a683ed6be880461e474e76129ae16861ecd02311ce67355636c69f55428dd8"
+    },
+    {
+      "name": "LegacyEchoCore.cpp",
+      "sha256": "0f7921791f80fd693020c894df8866b7388f3aa8e656d3ae39ad61131e6c6d92"
+    },
+    {
+      "name": "LegacyEchoCore.h",
+      "sha256": "93a1a30d677a4840e6ce1884309166637c4900ba68c66587c440fe62bef3db1f"
+    },
+    {
+      "name": "Ramp.h",
+      "sha256": "0298fcb933b437140b4a5588e1f2aab4a3afa1b190f32506a0d724a2036de6b9"
+    },
+    {
+      "name": "ReflectionPrototype.cpp",
+      "sha256": "96db5b1fac1b78b409f959b75392dd2c3dfc2d4323cc611ebc35cd284225ea0b"
+    },
+    {
+      "name": "ReflectionPrototype.h",
+      "sha256": "d87fe5104b0678cadcf57da42d9ea68c765a140ac33891ed4b4aa5ff1e8e02e8"
+    },
+    {
+      "name": "ScoreEffects.cpp",
+      "sha256": "b8333aceca89b255bf98abc743884752d9ae3f33ccda7dd05f440852f9eb1bf1"
+    },
+    {
+      "name": "ScoreEffects.h",
+      "sha256": "4f183ff030e152a700b628357603349e6727b0ad1ef2f1d8de7e44db19baf383"
+    },
+    {
+      "name": "ScoreEngine.cpp",
+      "sha256": "0d541fd2fe49c89fc10a3c6c2f9cffe47493234b8179a98fdc3742ffae73c341"
+    },
+    {
+      "name": "ScoreEngine.h",
+      "sha256": "d07591598588c49513e08a7303fec031fcf9e432dec0a783d35b9fefac53ede2"
+    },
+    {
+      "name": "ScoreSettings.h",
+      "sha256": "374b7bac075bfcb34b6be4c92cb78ffb6da1d50f1f85bfb0343ab8e05bc4fc66"
+    }
+  ],
+  "factory_200_parameters_and_metadata_identical": true,
+  "programs": 208,
+  "tests_passed": 1234,
+  "legacy_cases": 160,
+  "validators": "pluginval5..10 and Steinberg537/537",
+  "note": "Initialisation-only change. Original 0.2.0 calibration/renders remain historical evidence; no new DSP calibration was claimed.",
+  "source_id": "d9e24f36675b7dc3335a98f1bdf4b2efcfed3bb2934e34d923b62e2833209c18",
+  "baseline_source_id": "c5dd2066c79ce00c6887862d740a59a4a94be0b3b9aff09a9760ae22770fa969",
+  "bank_payload_sha256": "aa9a84fd4baa82d10a855c2f632a23424862e64858baaba520e22874f4287096"
+}

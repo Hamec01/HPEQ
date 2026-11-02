@@ -7,7 +7,7 @@
 
 #include "UI/ModuleHelp.h"
 
-#include "DSP/LayerSnapshot.h"
+#include "DSP/EchoSettings.h"
 
 namespace hpeq::ui
 {

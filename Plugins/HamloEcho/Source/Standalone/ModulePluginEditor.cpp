@@ -1,15 +1,10 @@
 #include "Standalone/ModulePluginEditor.h"
 
-#include "UI/HamloCompPanel.h"
 #include "UI/HamloEchoPanel.h"
-#include "UI/HamloMagPanel.h"
-#include "UI/HamloRedWallPanel.h"
-#include "UI/HamloShirotaPanel.h"
-#include "UI/HamloUdarnikPanel.h"
-#include "UI/HamloVerbPanel.h"
-#include "UI/HamloZastavaPanel.h"
 #include "UI/ModuleHelp.h"
 #include "UI/PresetScreen.h"
+#include "Core/ModulePresets.h"
+#include "UI/ScorePanel.h"
 
 namespace hpeq::standalone
 {
@@ -51,32 +46,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     : juce::AudioProcessorEditor(owner), processor(owner)
 {
     using namespace hpeq::ui;
-    switch (processor.getKind())
     {
-        case ModuleKind::Comp:
-        {
-            auto p = std::make_unique<HamloCompPanel>();
-            p->readMeters = [this]
-            {
-                const auto& node = processor.moduleNode();
-                return std::pair<float, float> { node.getCompressorInputDb(0), node.getGainReductionDb(0) };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Verb:
-        {
-            auto p = std::make_unique<HamloVerbPanel>();
-            p->readMeters = [this]
-            {
-                const auto& node = processor.moduleNode();
-                return std::pair<float, float> { node.getReverbOutputDb(0), node.getReverbDuckDb(0) };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Echo:
-        {
             auto p = std::make_unique<HamloEchoPanel>();
             p->readMeters = [this]
             {
@@ -85,81 +55,25 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
             };
             p->readTempo = [this] { return processor.getHostBpm(); };
             installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Mag:
-        {
-            auto p = std::make_unique<HamloMagPanel>();
-            p->readMeters = [this]
-            {
-                const auto& node = processor.moduleNode();
-                return std::pair<float, float> { node.getSaturatorInputDb(0), node.getSaturatorOutputDb(0) };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::RedWall:
-        {
-            auto p = std::make_unique<HamloRedWallPanel>();
-            p->readMeters = [this]
-            {
-                const auto& node = processor.moduleNode();
-                return std::pair<float, float> { node.getLimiterOutputDb(0), node.getGainReductionDb(0) };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Udarnik:
-        {
-            auto p = std::make_unique<HamloUdarnikPanel>();
-            p->readMeters = [this]
-            {
-                const auto m = processor.moduleNode().getTransientMeters(0);
-                return HamloUdarnikPanel::Reading { m.impactDb, m.gainMinDb, m.gainMaxDb, m.events, m.confidence, m.strengthDb };
-            };
-            p->readLastHit = [this](std::array<float, HamloUdarnikPanel::kHitPoints>& input,
-                                    std::array<float, HamloUdarnikPanel::kHitPoints>& output)
-            {
-                return processor.moduleNode().getTransientLastHit(0, input, output);
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Zastava:
-        {
-            auto p = std::make_unique<HamloZastavaPanel>();
-            p->readMeters = [this]
-            {
-                const auto m = processor.moduleNode().getGateMeters(0);
-                return HamloZastavaPanel::Reading { m.attenuationDb, m.maxAttenuationDb, m.keyDb, m.open, m.openings };
-            };
-            installPanel(std::move(p));
-            break;
-        }
-        case ModuleKind::Shirota:
-        {
-            auto p = std::make_unique<HamloShirotaPanel>();
-            p->readMeters = [this]
-            {
-                const auto m = processor.moduleNode().getStereoMeters(0);
-                return HamloShirotaPanel::Reading { m.correlation, m.guardDb, m.oneChannel };
-            };
-            p->readScope = [this](std::array<float, HamloShirotaPanel::kScopePoints>& left,
-                                  std::array<float, HamloShirotaPanel::kScopePoints>& right)
-            {
-                return processor.moduleNode().getStereoScope(0, left, right);
-            };
-            installPanel(std::move(p));
-            break;
-        }
     }
-
+    scorePanel=std::make_unique<ui::ScorePanel>(processor);addChildComponent(*scorePanel);
+    scorePanel->onCategory=[this](juce::String group)
+    {presets->setFilter(presets->genre()==ui::PresetScreen::kFactory?juce::String("All"):presets->genre(),group.isEmpty()?juce::String("All"):group);};
+    scorePanel->onLoadStart=[this]
+    {for(int program:presets->filtered())if(program>=8){processor.setCurrentProgram(program);processor.updateHostDisplay(juce::AudioProcessorListener::ChangeDetails().withProgramChanged(true));break;}};
+    modeSelector.addItem("LEGACY ENGINE",1);modeSelector.addItem("NOTE SCORE",2);
+    modeSelector.setColour(juce::ComboBox::backgroundColourId,juce::Colour(0xff102016));
+    modeSelector.setColour(juce::ComboBox::textColourId,juce::Colour(0xff76f6a0));
+    modeLink=std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(processor.valueTreeState(),"echoMode",modeSelector);
+    addAndMakeVisible(modeSelector);
     // Hamlo line (2026-10-29): the preset screen top left, as on HamloComp / HamloUdarnik / HamloRedWall / HamloMag
     presets = std::make_unique<ui::PresetScreen>();
     {
         std::vector<ui::PresetScreen::Entry> entries;
+        entries.push_back({0,{},{},"Default","Clean start: Mix / feedback / space / glitch / pitch = 0"});
+        const auto& bank=hpeq::presets::factoryModulePresets(processor.getSpec().type);
         for (int i = 1; i < processor.getNumPrograms(); ++i)
-            entries.push_back({ i, {}, {}, processor.getProgramName(i), {} });
+        {const auto& p=bank[static_cast<size_t>(i-1)];entries.push_back({i,p.genre,p.group,p.name,p.note});}
         presets->setEntries(std::move(entries));
     }
     presets->onSelect = [this](int program)
@@ -178,6 +92,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     setSize(spec.editorWidth, spec.editorHeight);
     if (refreshPanel)
         refreshPanel();
+    timerCallback();
     startTimerHz(30);
 }
 
@@ -188,6 +103,7 @@ ModulePluginEditor::~ModulePluginEditor()
     // already been destroyed. Stop it before touching any callback-owned state.
     stopTimer();
     refreshPanel = {};
+    modeLink.reset();scorePanel.reset();
     endGesture();
     panel.reset();
 }
@@ -220,10 +136,21 @@ void ModulePluginEditor::setImmediate(const juce::String& id, double value)
 void ModulePluginEditor::timerCallback()
 {
     selectSoftwareRenderer();
+    const int mode=processor.parameterValue("echoMode")>.5?1:0;
+    if(mode!=shownMode)
+    {
+        shownMode=mode;panel->setVisible(mode==0);scorePanel->setVisible(mode==1);
+        const int height=mode==1?980:760;
+        setResizeLimits(885,juce::roundToInt(height*.75),2360,height*2);
+        float scale=getWidth()/1180.f;
+        if(mode==1)if(const auto* display=juce::Desktop::getInstance().getDisplays().getPrimaryDisplay())scale=juce::jmin(scale,(display->userArea.getHeight()-160)/980.f);
+        scale=juce::jmax(.75f,scale);
+        setSize(juce::roundToInt(1180*scale),juce::roundToInt(height*scale));resized();
+    }
     if (refreshPanel)
         refreshPanel();
     if (presets != nullptr)
-        presets->setCurrent(processor.getCurrentProgram(), false);
+        presets->setCurrent(processor.getCurrentProgram(), processor.presetModified());
 }
 
 void ModulePluginEditor::visibilityChanged()
@@ -252,9 +179,17 @@ void ModulePluginEditor::resized()
 {
     if (panel != nullptr)
         panel->setBounds(getLocalBounds());
-    if (presets != nullptr && panel != nullptr)
-        if (auto* target = dynamic_cast<ui::HelpTarget*>(panel.get()))
+    if(scorePanel!=nullptr)scorePanel->setBounds(getLocalBounds());
+    if (presets != nullptr && getPanel() != nullptr)
+        if (auto* target = dynamic_cast<ui::HelpTarget*>(getPanel()))
+        {
             presets->placeOnStage(target->contentBounds());
+            const auto stage=target->contentBounds();const float scale=stage.getWidth()/1180.f;
+            modeSelector.setBounds(juce::Rectangle<float>(stage.getX()+940*scale,stage.getY()+124*scale,185*scale,26*scale).toNearestInt());
+        }
 }
+
+juce::Component* ModulePluginEditor::getPanel() noexcept{return shownMode==1?static_cast<juce::Component*>(scorePanel.get()):panel.get();}
+void ModulePluginEditor::selectScorePage(int page){if(scorePanel!=nullptr)scorePanel->selectPage(page);}
 
 } // namespace hpeq::standalone

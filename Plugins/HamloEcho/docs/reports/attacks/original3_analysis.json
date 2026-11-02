@@ -1,0 +1,4651 @@
+{
+  "summary": {
+    "method": "PROTOTYPE_METHODS.md v1; global Hann FFT peak, independent sine fit and offline reverse OLA",
+    "cases": 254,
+    "pitch_cases": 204,
+    "pitch_pass": 204,
+    "pitch_channels": 224,
+    "worst_pitch_cents": 0.2375763670850688,
+    "worst_residual_dbc": -30.919123925158747,
+    "worst_spur_dbc": -42.378658794214815,
+    "exact_cases": 44,
+    "exact_pass": 44,
+    "finite_all": true,
+    "allocation_failures": [],
+    "failures": [],
+    "diagnostics": [
+      {
+        "case": "transient_-24",
+        "type": "transient",
+        "finite": true,
+        "peak": 0.44999897480010986,
+        "allocations": 0,
+        "sha256": "66b798bf448b23fa977e74f501d3cfd3f3613fca775dc8ec3d805b1e572ecf5b",
+        "first_nonzero": 5808,
+        "last_above_minus140_dbfs": 6191,
+        "energy_relative_input_db": 5.509702213878347
+      },
+      {
+        "case": "transient_-12",
+        "type": "transient",
+        "finite": true,
+        "peak": 0.44999897480010986,
+        "allocations": 0,
+        "sha256": "ab788744cc7bd9be2fd5e364c405dc47c7c016a91c22105af2034c00d13c23ce",
+        "first_nonzero": 5904,
+        "last_above_minus140_dbfs": 6095,
+        "energy_relative_input_db": 2.4994050372126875
+      },
+      {
+        "case": "transient_7",
+        "type": "transient",
+        "finite": true,
+        "peak": 0.3003385663032532,
+        "allocations": 0,
+        "sha256": "85e041e3704519b5ecc715266460aeee1069ed77a874971afe1897b1885ebd8f",
+        "first_nonzero": 5968,
+        "last_above_minus140_dbfs": 6032,
+        "energy_relative_input_db": -4.049693667369429
+      },
+      {
+        "case": "transient_12",
+        "type": "transient",
+        "finite": true,
+        "peak": 0.22499911487102509,
+        "allocations": 0,
+        "sha256": "f4d09d7a2ffd8ad4f3891738b0e1292f0d9f02703dee9f70d318d408d795deaa",
+        "first_nonzero": 5976,
+        "last_above_minus140_dbfs": 6023,
+        "energy_relative_input_db": -6.585447410947798
+      },
+      {
+        "case": "transient_24",
+        "type": "transient",
+        "finite": true,
+        "peak": 0.11250068992376328,
+        "allocations": 0,
+        "sha256": "0658d8097d9f096511cc55b7a0fb6a38501a3eed8f0603b971efeb223798a287",
+        "first_nonzero": 5988,
+        "last_above_minus140_dbfs": 6011,
+        "energy_relative_input_db": -12.70931081570555
+      },
+      {
+        "case": "out_of_band_10k_plus24",
+        "type": "alias",
+        "finite": true,
+        "peak": 0.027617594227194786,
+        "allocations": 0,
+        "sha256": "02a5da2311359640f1c03c7ffb362da21cf9c2a1b6244bb8378d0b10ac9ff552",
+        "out_of_band_output_dbr": -83.21541830643199
+      }
+    ]
+  },
+  "results": [
+    {
+      "case": "pitch_110_-12",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25011351704597473,
+      "allocations": 0,
+      "sha256": "2aecd3d879affbac501315b964b4569233eba0e3a6bc800badd73e14496102d7",
+      "channels": [
+        {
+          "expected_hz": 55.0,
+          "measured_hz": 55.00001340082012,
+          "cents": 0.0004218173318756768,
+          "residual_dbc": -98.41735137579772,
+          "strongest_spur_dbc": -53.90918878870007,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-11",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "0e20a53cc0bcbc6226e5ee9cc2acfeae2f0aae30105a24408609bf6479cc6362",
+      "channels": [
+        {
+          "expected_hz": 58.27047018976124,
+          "measured_hz": 58.27047849246462,
+          "cents": 0.00024667591846138395,
+          "residual_dbc": -99.46276367911219,
+          "strongest_spur_dbc": -53.931976408022166,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-10",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "773aac9365d719645323e3a911fca8b123851ed96155cf54baa5ed5b29a3d15b",
+      "channels": [
+        {
+          "expected_hz": 61.735412657015516,
+          "measured_hz": 61.73531831817683,
+          "cents": -0.002645527541500568,
+          "residual_dbc": -97.47104676325138,
+          "strongest_spur_dbc": -53.931880969714925,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-9",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "e3a4d9a60058f8243d02fb31b80dae792e20a156a72e8cbc4cee22d47003a91f",
+      "channels": [
+        {
+          "expected_hz": 65.40639132514966,
+          "measured_hz": 65.40638675809015,
+          "cents": -0.00012088496300041254,
+          "residual_dbc": -95.78958565708766,
+          "strongest_spur_dbc": -53.93350271491456,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-8",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "6e7b680ab9dae1060e1e25b775aa886762b087b4f65ace4158d20f97b31bc844",
+      "channels": [
+        {
+          "expected_hz": 69.29565774421802,
+          "measured_hz": 69.29566473886696,
+          "cents": 0.00017474938820960414,
+          "residual_dbc": -101.44494139332126,
+          "strongest_spur_dbc": -53.924074964274226,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-7",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25007542967796326,
+      "allocations": 0,
+      "sha256": "3d61c198db7a2b79141a576cbc09931e633711c67e4af381b8ae9b6658d6dc5f",
+      "channels": [
+        {
+          "expected_hz": 73.4161919793519,
+          "measured_hz": 73.4161759895808,
+          "cents": -0.00037705632007511416,
+          "residual_dbc": -92.30530046302573,
+          "strongest_spur_dbc": -53.934205837730715,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-6",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2501159608364105,
+      "allocations": 0,
+      "sha256": "b5725284a3464b0fd87ea55db7f9cf2244af05992147309d98324070d5598584",
+      "channels": [
+        {
+          "expected_hz": 77.78174593052023,
+          "measured_hz": 77.78173949529527,
+          "cents": -0.00014323259124339073,
+          "residual_dbc": -96.78342955307434,
+          "strongest_spur_dbc": -53.93386081903843,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-5",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "ebf7c3bb9024fa77bcb28e73660428071e6cce55bc1f0e173bb6beba34e72a67",
+      "channels": [
+        {
+          "expected_hz": 82.40688922821748,
+          "measured_hz": 82.40689420372964,
+          "cents": 0.00010452737478919589,
+          "residual_dbc": -101.42054661059998,
+          "strongest_spur_dbc": -53.91571329663205,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-4",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "d495500a5e5d9397ff46bea1b19257158687d156a828405f60873d71e8d68412",
+      "channels": [
+        {
+          "expected_hz": 87.30705785825097,
+          "measured_hz": 87.30715858911248,
+          "cents": 0.0019974169431986127,
+          "residual_dbc": -101.73446856282737,
+          "strongest_spur_dbc": -53.93655712218408,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-3",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "80b91f5df6f7c60d7db3575e0743fe7d6e9bdd2728da7bdde8cde44df1861cd4",
+      "channels": [
+        {
+          "expected_hz": 92.4986056779086,
+          "measured_hz": 92.4980088053857,
+          "cents": -0.01117129670174296,
+          "residual_dbc": -62.35947754127312,
+          "strongest_spur_dbc": -53.902246170184924,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-2",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "c225707961a445f07ef4d719dcdc41d482e7bff446cec05ce2c4f281ef560f62",
+      "channels": [
+        {
+          "expected_hz": 97.99885899543732,
+          "measured_hz": 97.99883840358312,
+          "cents": -0.00036377283608881905,
+          "residual_dbc": -94.86810762463038,
+          "strongest_spur_dbc": -53.93563999816543,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_-1",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "7f38c4d5a1e22d05e978747ac0b88b21f2cfa3950ada6cbce0f1ab623efa0de0",
+      "channels": [
+        {
+          "expected_hz": 103.82617439498628,
+          "measured_hz": 103.82618769174691,
+          "cents": 0.00022171483648724706,
+          "residual_dbc": -97.29910686809197,
+          "strongest_spur_dbc": -53.93272739708284,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_0",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "e079bed1edfafab1d02cdaddc62abaf4efd73dfee3e8404aa51c0be0898ee13b",
+      "channels": [
+        {
+          "expected_hz": 110.0,
+          "measured_hz": 110.00000114400147,
+          "cents": 1.8004857033421647e-05,
+          "residual_dbc": -123.74203791837031,
+          "strongest_spur_dbc": -53.93444238588042,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_1",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500000298023224,
+      "allocations": 0,
+      "sha256": "455936e5071bda1fe8f65b360cca6a4ccc7c38ba373bc0942e7489f2ed9cf739",
+      "channels": [
+        {
+          "expected_hz": 116.54094037952248,
+          "measured_hz": 116.54093839226066,
+          "cents": -2.9521088078278558e-05,
+          "residual_dbc": -97.17619345474064,
+          "strongest_spur_dbc": -53.92612238415666,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_2",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500000298023224,
+      "allocations": 0,
+      "sha256": "a66af408aa6a15b5d6ee7a67a5eec015e7080708e3b9f50cbe979118e5f79a63",
+      "channels": [
+        {
+          "expected_hz": 123.47082531403103,
+          "measured_hz": 123.47081095078224,
+          "cents": -0.00020139289384302705,
+          "residual_dbc": -89.74543806282892,
+          "strongest_spur_dbc": -53.934902501260495,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_3",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "c3d27a0ad4f4808173a564e3233fd51132ca878c22ef4d3697073b7bb9a6d2d4",
+      "channels": [
+        {
+          "expected_hz": 130.8127826502993,
+          "measured_hz": 130.81280634977185,
+          "cents": 0.00031364924168159427,
+          "residual_dbc": -100.53968061776624,
+          "strongest_spur_dbc": -53.91651794862038,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_4",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500000298023224,
+      "allocations": 0,
+      "sha256": "c81153b3137778b04670cb6cfb3040d63cef38f761be46e3f4ebcacdb85945e8",
+      "channels": [
+        {
+          "expected_hz": 138.59131548843604,
+          "measured_hz": 138.59133500579054,
+          "cents": 0.0002438039222020532,
+          "residual_dbc": -78.44334237931933,
+          "strongest_spur_dbc": -53.93456700379034,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_5",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500000596046448,
+      "allocations": 0,
+      "sha256": "c97655864bf6e825b4f87d05b414356e5736dbaf6c11c6156c10880116139684",
+      "channels": [
+        {
+          "expected_hz": 146.8323839587038,
+          "measured_hz": 146.8323674794262,
+          "cents": -0.00019429969929728245,
+          "residual_dbc": -96.86449917505804,
+          "strongest_spur_dbc": -53.9310087589346,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_6",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999701976776,
+      "allocations": 0,
+      "sha256": "7d9e241cdb214527f9da4c37b09471077622c295173e045e6526674aaf33dca2",
+      "channels": [
+        {
+          "expected_hz": 155.56349186104046,
+          "measured_hz": 155.56350131488165,
+          "cents": 0.00010520984759412717,
+          "residual_dbc": -100.3975845878663,
+          "strongest_spur_dbc": -53.91811919618271,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_7",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000011920928955,
+      "allocations": 0,
+      "sha256": "3ecfca0c5db31e61f4d78c4c756d590fb3473caa3a29fe392408d9f669f47b80",
+      "channels": [
+        {
+          "expected_hz": 164.81377845643496,
+          "measured_hz": 164.81379382561218,
+          "cents": 0.00016144063889650753,
+          "residual_dbc": -93.72802481764191,
+          "strongest_spur_dbc": -53.93550584661881,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_8",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999989569187164,
+      "allocations": 0,
+      "sha256": "c22b801418b093a15505e28e433eb9999be2fd3ce88903ae5df97d15ac6da3d8",
+      "channels": [
+        {
+          "expected_hz": 174.61411571650194,
+          "measured_hz": 174.614101964668,
+          "cents": -0.00013634432693678043,
+          "residual_dbc": -94.40818302064602,
+          "strongest_spur_dbc": -53.936802056804254,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_9",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500001788139343,
+      "allocations": 0,
+      "sha256": "18e51912c9c66481d10206b5f6738c4447e0f7cf263f67c81bd206dcd9bc3422",
+      "channels": [
+        {
+          "expected_hz": 184.9972113558172,
+          "measured_hz": 184.9920474168526,
+          "cents": -0.04832565676661361,
+          "residual_dbc": -48.894017988799106,
+          "strongest_spur_dbc": -51.38670671152303,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_10",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500001788139343,
+      "allocations": 0,
+      "sha256": "8f978a6ac54c4050d85e0e92d1eb6bd6af4419842a713c422f9e9bccaf1d2236",
+      "channels": [
+        {
+          "expected_hz": 195.99771799087463,
+          "measured_hz": 195.99770834742782,
+          "cents": -8.517988921438944e-05,
+          "residual_dbc": -96.50736343241057,
+          "strongest_spur_dbc": -53.93499021428429,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_11",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500002682209015,
+      "allocations": 0,
+      "sha256": "84dbd40c4409cff69a051f6ed6359436f88ad2e9e526fd1629fceb76db560e31",
+      "channels": [
+        {
+          "expected_hz": 207.65234878997256,
+          "measured_hz": 207.6523520883487,
+          "cents": 2.7499139961977553e-05,
+          "residual_dbc": -99.09091573484636,
+          "strongest_spur_dbc": -53.920155085534354,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_12",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999980628490448,
+      "allocations": 0,
+      "sha256": "4ccd8d67fb692693a0f133df5209a4140163cb3fffeb8a3ea702282ba05dc1d9",
+      "channels": [
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 219.99982209120526,
+          "cents": -0.001400008580180125,
+          "residual_dbc": -49.821756041211586,
+          "strongest_spur_dbc": -52.6696368762111,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_13",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500004172325134,
+      "allocations": 0,
+      "sha256": "264296983c44cfa83b411251017045936dd2119329b11a37399e2fdd857edad5",
+      "channels": [
+        {
+          "expected_hz": 233.08188075904496,
+          "measured_hz": 233.07619597723377,
+          "cents": -0.04222468010188595,
+          "residual_dbc": -54.14075161027731,
+          "strongest_spur_dbc": -52.464531939198466,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_14",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2504531145095825,
+      "allocations": 0,
+      "sha256": "d4ef476d718cd1dcddec7f24f07f205bdd36c5fa257fe66768b2c56483c125c3",
+      "channels": [
+        {
+          "expected_hz": 246.94165062806206,
+          "measured_hz": 246.94163416388855,
+          "cents": -0.00011542539974082378,
+          "residual_dbc": -96.74585753176126,
+          "strongest_spur_dbc": -53.93568791187647,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_15",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2520616352558136,
+      "allocations": 0,
+      "sha256": "a6d01f11cdc6e4e6e9931e88f23a9e91e8d2c81cb2865657f8b4515a8057d5ec",
+      "channels": [
+        {
+          "expected_hz": 261.6255653005986,
+          "measured_hz": 261.62563568960724,
+          "cents": 0.00046577952693265434,
+          "residual_dbc": -91.04011536681261,
+          "strongest_spur_dbc": -53.93503793694723,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_16",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2505587637424469,
+      "allocations": 0,
+      "sha256": "221cd5883b0ad44c915988b7b252ea32bb4df6beb0dd2b9615d481502ac9202f",
+      "channels": [
+        {
+          "expected_hz": 277.1826309768721,
+          "measured_hz": 277.1826325799538,
+          "cents": 1.0012566936073605e-05,
+          "residual_dbc": -91.98578316236356,
+          "strongest_spur_dbc": -53.93309647387409,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_17",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500004470348358,
+      "allocations": 0,
+      "sha256": "29752663a05eada753162c6ba7810f7e708e03fabec74976ecef28f5a6dd6b3f",
+      "channels": [
+        {
+          "expected_hz": 293.6647679174076,
+          "measured_hz": 293.6647824692985,
+          "cents": 8.578737113509793e-05,
+          "residual_dbc": -102.01453869472759,
+          "strongest_spur_dbc": -53.923234364246426,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_18",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499992549419403,
+      "allocations": 0,
+      "sha256": "774e5bceb1b933e893487c8eb28c857e680f54df8a7d089ebb6997fcf68b05d4",
+      "channels": [
+        {
+          "expected_hz": 311.1269837220809,
+          "measured_hz": 311.12697009531524,
+          "cents": -7.582473547238227e-05,
+          "residual_dbc": -90.63594648683745,
+          "strongest_spur_dbc": -53.93360303429023,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_19",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500005066394806,
+      "allocations": 0,
+      "sha256": "7b5e8411b3fc5f3188126bd45b58587cdfe48b0af701a0c7374f1d80c0e14ced",
+      "channels": [
+        {
+          "expected_hz": 329.6275569128699,
+          "measured_hz": 329.62754597914727,
+          "cents": -5.7424911294585485e-05,
+          "residual_dbc": -100.17143711935563,
+          "strongest_spur_dbc": -53.92347678845234,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_20",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500012218952179,
+      "allocations": 0,
+      "sha256": "ef5e307c0690d825a3b7bdf04a5b78b2115dbe063bc4851caf63c20ac214693c",
+      "channels": [
+        {
+          "expected_hz": 349.2282314330039,
+          "measured_hz": 349.22825299944395,
+          "cents": 0.00010691161502755454,
+          "residual_dbc": -90.84617757047938,
+          "strongest_spur_dbc": -53.9349343141636,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_21",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25218474864959717,
+      "allocations": 0,
+      "sha256": "a100c03986ff1ce081802e04efca4ee4eacf7da58c73e936f3174161fdb28a10",
+      "channels": [
+        {
+          "expected_hz": 369.9944227116344,
+          "measured_hz": 370.0015951257826,
+          "cents": 0.033559984887784895,
+          "residual_dbc": -47.1584444548147,
+          "strongest_spur_dbc": -52.56449533387942,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_22",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2542371153831482,
+      "allocations": 0,
+      "sha256": "18e5329d31f10ac8d86fc816e2be55f88870e8840b391656432fe86623598d2d",
+      "channels": [
+        {
+          "expected_hz": 391.99543598174927,
+          "measured_hz": 392.00219378259703,
+          "cents": 0.029845332385190965,
+          "residual_dbc": -51.396344597699006,
+          "strongest_spur_dbc": -52.074345779395934,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_23",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.250194251537323,
+      "allocations": 0,
+      "sha256": "dfb1912ff3e812da149e4ade6308b0fb110f5ec3b415deae07ebcf8ce2d9ecce",
+      "channels": [
+        {
+          "expected_hz": 415.3046975799451,
+          "measured_hz": 415.3046911166456,
+          "cents": -2.694283110097921e-05,
+          "residual_dbc": -95.52344286185813,
+          "strongest_spur_dbc": -53.93535785315082,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_110_24",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500021755695343,
+      "allocations": 0,
+      "sha256": "33c4c6ac211554dcb62dfc5dfa4883817ded13aa704133cedae432f8f3c277f8",
+      "channels": [
+        {
+          "expected_hz": 440.0,
+          "measured_hz": 440.00002687811275,
+          "cents": 0.00010575523322963888,
+          "residual_dbc": -99.84496453254515,
+          "strongest_spur_dbc": -53.930187716552865,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-24",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.29517170786857605,
+      "allocations": 0,
+      "sha256": "ba29a739206f4c43b515a8083aecc44e954aa691f40b353ac191aceb68d0e122",
+      "channels": [
+        {
+          "expected_hz": 55.0,
+          "measured_hz": 55.000031012481344,
+          "cents": 0.0009761790638552733,
+          "residual_dbc": -99.52394826614336,
+          "strongest_spur_dbc": -53.92878960766883,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-23",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "d53f2d22d47e150d1bd8de8c01c1e7527eb5d7b8caa959ab4b20673fb5d76215",
+      "channels": [
+        {
+          "expected_hz": 58.27047018976124,
+          "measured_hz": 58.27043402690151,
+          "cents": -0.0010744103024360118,
+          "residual_dbc": -91.97564239750788,
+          "strongest_spur_dbc": -53.90936614163167,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-22",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "b0455706264a9704d2541d354b3040933f962ee7b2e2eb381a6e77efb7a2ae19",
+      "channels": [
+        {
+          "expected_hz": 61.735412657015516,
+          "measured_hz": 61.73558218094493,
+          "cents": 0.004753919722001464,
+          "residual_dbc": -89.3351711237072,
+          "strongest_spur_dbc": -53.9315787209823,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-21",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "f3ee6bf9e2c2b47f5d1e95bddd03b8c95040224ec6fd65cc95f9ae1a52da70a6",
+      "channels": [
+        {
+          "expected_hz": 65.40639132514966,
+          "measured_hz": 65.4063895251263,
+          "cents": -4.7644606229032706e-05,
+          "residual_dbc": -88.37731337175762,
+          "strongest_spur_dbc": -53.93536522113203,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-20",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "32a9655ba3fb8c232287a5da580ac678243bd7f48c1f96bcf6a20de524fedd71",
+      "channels": [
+        {
+          "expected_hz": 69.29565774421802,
+          "measured_hz": 69.29567989591797,
+          "cents": 0.0005534224267785993,
+          "residual_dbc": -92.01016555592295,
+          "strongest_spur_dbc": -53.88619820471889,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-19",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "da9726b29f902280f0dfb6ca08e750fd532a484529e278f0f5e6698b68051675",
+      "channels": [
+        {
+          "expected_hz": 73.4161919793519,
+          "measured_hz": 73.41668690451691,
+          "cents": 0.011670836994236431,
+          "residual_dbc": -59.606580934140894,
+          "strongest_spur_dbc": -53.59678984487533,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-18",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2882504165172577,
+      "allocations": 0,
+      "sha256": "e0b01370e928add5a0ef076df1ee1797e9f4c913680b5d3b7800b44e14cdc921",
+      "channels": [
+        {
+          "expected_hz": 77.78174593052023,
+          "measured_hz": 77.78174177775112,
+          "cents": -9.243062597892375e-05,
+          "residual_dbc": -89.05152198023498,
+          "strongest_spur_dbc": -53.93570071114479,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-17",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.29498469829559326,
+      "allocations": 0,
+      "sha256": "189cba2a81c1de55f14c8144dc7766a0790e48778ff2a856e057822316653ea1",
+      "channels": [
+        {
+          "expected_hz": 82.40688922821748,
+          "measured_hz": 82.40687592950965,
+          "cents": -0.0002793841374199287,
+          "residual_dbc": -92.73868470592006,
+          "strongest_spur_dbc": -53.883928734287394,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-16",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2636939585208893,
+      "allocations": 0,
+      "sha256": "2f5dc481a7f68732499aa004df87a8495fd53eea9cb621b3c8a7774fef1f4de2",
+      "channels": [
+        {
+          "expected_hz": 87.30705785825097,
+          "measured_hz": 87.301846795776,
+          "cents": -0.10333457860054503,
+          "residual_dbc": -53.96091688788468,
+          "strongest_spur_dbc": -52.51038375372124,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-15",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "e6a227bb669929a3ea39f6f60bfc6ed6b7e54b6a69d55f853da49a5410e43a0c",
+      "channels": [
+        {
+          "expected_hz": 92.4986056779086,
+          "measured_hz": 92.50333899350733,
+          "cents": 0.08858801074601157,
+          "residual_dbc": -52.00975611116298,
+          "strongest_spur_dbc": -52.34623105827086,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-14",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "b25d7a5a4ef97280da545fd4d04f2fbd83443b0e20361028e2905f30502da8d1",
+      "channels": [
+        {
+          "expected_hz": 97.99885899543732,
+          "measured_hz": 97.9988594316941,
+          "cents": 7.706851004573138e-06,
+          "residual_dbc": -86.27148621488311,
+          "strongest_spur_dbc": -53.935244618699485,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-13",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "2dbd50de2fa183f1591ba335cd3518b80792fe2c5f0e83444bab81c14aaaeb87",
+      "channels": [
+        {
+          "expected_hz": 103.82617439498628,
+          "measured_hz": 103.82358730376419,
+          "cents": -0.04313860391958279,
+          "residual_dbc": -54.72765568612226,
+          "strongest_spur_dbc": -53.69638218720489,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-12",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2525949776172638,
+      "allocations": 0,
+      "sha256": "5963f559ad6731e967a377d7a650e4ef4d3863934919c76ddf41aab7cf0cb157",
+      "channels": [
+        {
+          "expected_hz": 110.0,
+          "measured_hz": 109.99997933485054,
+          "cents": -0.0003252383067228813,
+          "residual_dbc": -95.89971263408678,
+          "strongest_spur_dbc": -53.93570638228322,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-11",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.26508966088294983,
+      "allocations": 0,
+      "sha256": "ad671e90c71d3821b1a089bd789bc85893fcd7f8fd2287651aac4a120b4dac77",
+      "channels": [
+        {
+          "expected_hz": 116.54094037952248,
+          "measured_hz": 116.54092230701787,
+          "cents": -0.00026846992711466994,
+          "residual_dbc": -93.9853129534542,
+          "strongest_spur_dbc": -53.92941825621086,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-10",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25854775309562683,
+      "allocations": 0,
+      "sha256": "6d149b965536d1d73de7029e475990236cccde7ad15a0c973cf3381d762eaf08",
+      "channels": [
+        {
+          "expected_hz": 123.47082531403103,
+          "measured_hz": 123.47078980004123,
+          "cents": -0.0004979559912242628,
+          "residual_dbc": -84.34305463959132,
+          "strongest_spur_dbc": -53.935975303000845,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-9",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "b3311445135c70d47b57f9cbb82d912dc307b03d9bafe70c27e7f99e991bf462",
+      "channels": [
+        {
+          "expected_hz": 130.8127826502993,
+          "measured_hz": 130.812773427701,
+          "cents": -0.00012205593739212997,
+          "residual_dbc": -92.76682033686959,
+          "strongest_spur_dbc": -53.89003504766605,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-8",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "44d3d504377fa78655a1a21d6865c921877d31891fcb94bd532d44abebf96fe2",
+      "channels": [
+        {
+          "expected_hz": 138.59131548843604,
+          "measured_hz": 138.59146002348382,
+          "cents": 0.0018054801241920119,
+          "residual_dbc": -88.11890831795701,
+          "strongest_spur_dbc": -53.935610242426705,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-7",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2609671652317047,
+      "allocations": 0,
+      "sha256": "33cda783d73d57c6d288f86405ea4ab0b8ff35c451be3a1996decaaf9057c6a7",
+      "channels": [
+        {
+          "expected_hz": 146.8323839587038,
+          "measured_hz": 146.83238604463634,
+          "cents": 2.4594284640631762e-05,
+          "residual_dbc": -96.5507029284977,
+          "strongest_spur_dbc": -53.93545790557048,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-6",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.258183091878891,
+      "allocations": 0,
+      "sha256": "0c68fc9d07807c8d7657ccd39b0673b6c452d202d70a261b7085a2db21a5ce5f",
+      "channels": [
+        {
+          "expected_hz": 155.56349186104046,
+          "measured_hz": 155.5634688350168,
+          "cents": -0.0002562518919854767,
+          "residual_dbc": -93.4230725178309,
+          "strongest_spur_dbc": -53.91762251380557,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-5",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "3d53552f5f76501215a440e5dacdada547d0154b1cfc578ee880da2e646038e5",
+      "channels": [
+        {
+          "expected_hz": 164.81377845643496,
+          "measured_hz": 164.81375495336454,
+          "cents": -0.0002468805645617544,
+          "residual_dbc": -86.53239649478813,
+          "strongest_spur_dbc": -53.924780520679136,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-4",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "60b6fa568a26e507690ef7be903ee222790dce750a761318030751ddfba33fd4",
+      "channels": [
+        {
+          "expected_hz": 174.61411571650194,
+          "measured_hz": 174.6139075533649,
+          "cents": -0.0020638613548393933,
+          "residual_dbc": -95.80123244191343,
+          "strongest_spur_dbc": -53.91973184444414,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-3",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25258204340934753,
+      "allocations": 0,
+      "sha256": "d2ba1c8e2c39b5b8dd0ef187f885e781d8b99289f6f8f1457062663715d188be",
+      "channels": [
+        {
+          "expected_hz": 184.9972113558172,
+          "measured_hz": 185.00003030140869,
+          "cents": 0.026379951205439234,
+          "residual_dbc": -41.77961585269968,
+          "strongest_spur_dbc": -51.68457531102773,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-2",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "bb588fdf3defddcc5e83534784d34d31656e1981d97464782b7f140072fbe2f3",
+      "channels": [
+        {
+          "expected_hz": 195.99771799087463,
+          "measured_hz": 195.98889942880984,
+          "cents": -0.07789549048100948,
+          "residual_dbc": -49.54997504432583,
+          "strongest_spur_dbc": -52.10455496658352,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_-1",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "2ee1a37e1409a2d3ecf12a02cbbce34f2ca0533a28cd15d170b5a1c512fe33ef",
+      "channels": [
+        {
+          "expected_hz": 207.65234878997256,
+          "measured_hz": 207.6523482682342,
+          "cents": -4.3498243229049185e-06,
+          "residual_dbc": -93.4039331646975,
+          "strongest_spur_dbc": -53.921666346435586,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_0",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "04ffd5e401ffa1c22827986b5c860c2bf25f2f4bf3d9821ac69f9b686a524391",
+      "channels": [
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 220.00000010483805,
+          "cents": 8.249963665193067e-07,
+          "residual_dbc": -143.97369753182608,
+          "strongest_spur_dbc": -53.9353979350787,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_1",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000008940696716,
+      "allocations": 0,
+      "sha256": "5573e6ff917d69750cbecb10345c2e44c113526feb39479a70ba5502d474cdd0",
+      "channels": [
+        {
+          "expected_hz": 233.08188075904496,
+          "measured_hz": 233.08186150956845,
+          "cents": -0.00014297701064379715,
+          "residual_dbc": -91.76361369580113,
+          "strongest_spur_dbc": -53.93496954469977,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_2",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000008940696716,
+      "allocations": 0,
+      "sha256": "34d1fd405057ab87c30e156ea600ba8c4847841921dfc3b1be611e32fd0b6451",
+      "channels": [
+        {
+          "expected_hz": 246.94165062806206,
+          "measured_hz": 246.9077652761662,
+          "cents": -0.2375763670850688,
+          "residual_dbc": -37.39425373882778,
+          "strongest_spur_dbc": -47.068060308344215,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_3",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000062584877014,
+      "allocations": 0,
+      "sha256": "5006c2722ad5031c6b695f19c7426dbd4694f0aaa3c441492b2b880991d352fe",
+      "channels": [
+        {
+          "expected_hz": 261.6255653005986,
+          "measured_hz": 261.62574450309233,
+          "cents": 0.0011858220055508564,
+          "residual_dbc": -89.50110882377584,
+          "strongest_spur_dbc": -53.926141060333194,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_4",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500000298023224,
+      "allocations": 0,
+      "sha256": "cb6e22b473779d2ff4e739c21b278b638865f90995b705fce55996b363f8c8e3",
+      "channels": [
+        {
+          "expected_hz": 277.1826309768721,
+          "measured_hz": 277.18261533987004,
+          "cents": -9.766597210646308e-05,
+          "residual_dbc": -72.48448784208635,
+          "strongest_spur_dbc": -53.92904009249928,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_5",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500002086162567,
+      "allocations": 0,
+      "sha256": "929a5c944b786b14e5a2e0ac329863a1866c16ff20097f4f34c22c2624799fe2",
+      "channels": [
+        {
+          "expected_hz": 293.6647679174076,
+          "measured_hz": 293.6648142421965,
+          "cents": 0.00027309726721003186,
+          "residual_dbc": -93.99401961075988,
+          "strongest_spur_dbc": -53.90097875659993,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_6",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2537088394165039,
+      "allocations": 0,
+      "sha256": "8482c36e3a2d30732dda7d3ec3f41492026a41456515e37b0aedded8b0bdfeb5",
+      "channels": [
+        {
+          "expected_hz": 311.1269837220809,
+          "measured_hz": 311.12707155089896,
+          "cents": 0.000488714341185065,
+          "residual_dbc": -84.77480547692753,
+          "strongest_spur_dbc": -53.93321779014428,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_7",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.250844806432724,
+      "allocations": 0,
+      "sha256": "6460e4900757d2056f09ea7ea1800eebebee71435130c9ece415e12718426d31",
+      "channels": [
+        {
+          "expected_hz": 329.6275569128699,
+          "measured_hz": 329.5897614998751,
+          "cents": -0.1985163439102344,
+          "residual_dbc": -37.66863769648042,
+          "strongest_spur_dbc": -46.85008180938055,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_8",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999959766864777,
+      "allocations": 0,
+      "sha256": "81732e5d3865d9ce095f9fb23c9e6ebc3cc18b4069577a67f2eab46ff5936b42",
+      "channels": [
+        {
+          "expected_hz": 349.2282314330039,
+          "measured_hz": 349.2281860374864,
+          "cents": -0.00022503985518724192,
+          "residual_dbc": -83.81605075651896,
+          "strongest_spur_dbc": -53.93524373573088,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_9",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000062584877014,
+      "allocations": 0,
+      "sha256": "04a94a45d46d0678d728ed9446cdaaf48d70991688c43b36d371cd7e0b8af57c",
+      "channels": [
+        {
+          "expected_hz": 369.9944227116344,
+          "measured_hz": 369.9840947501707,
+          "cents": -0.048326047642391956,
+          "residual_dbc": -42.87323304995937,
+          "strongest_spur_dbc": -49.38438922275011,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_10",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2856028079986572,
+      "allocations": 0,
+      "sha256": "2cae317a6d3c6ff949d8984aaccd85b0018fdcdf6ac1976c0b8a829f5ec0e66d",
+      "channels": [
+        {
+          "expected_hz": 391.99543598174927,
+          "measured_hz": 391.99542219081223,
+          "cents": -6.090718927516536e-05,
+          "residual_dbc": -91.90781037775358,
+          "strongest_spur_dbc": -53.91835961749463,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_11",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.34643736481666565,
+      "allocations": 0,
+      "sha256": "2e31fbf7c7c530f0c574edbdd08c5657a4833c76b42dfb899f7c6ccacfd19f82",
+      "channels": [
+        {
+          "expected_hz": 415.3046975799451,
+          "measured_hz": 415.3047045638168,
+          "cents": 2.9112881157062434e-05,
+          "residual_dbc": -88.87065252806097,
+          "strongest_spur_dbc": -53.933856646370366,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_12",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499992698431015,
+      "allocations": 0,
+      "sha256": "634bab2f85cda9b4009e603a26aa0f4afeea2b05200a38b620c2fad6dc790ec1",
+      "channels": [
+        {
+          "expected_hz": 440.0,
+          "measured_hz": 440.002513552546,
+          "cents": 0.00988985300571991,
+          "residual_dbc": -44.5983651119882,
+          "strongest_spur_dbc": -52.57564139263799,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_13",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500004470348358,
+      "allocations": 0,
+      "sha256": "4fbb1686dee642caef48f4520379776d0fe19a369c31b992c669c1473a9a199b",
+      "channels": [
+        {
+          "expected_hz": 466.1637615180899,
+          "measured_hz": 466.1523702759704,
+          "cents": -0.042305191440940415,
+          "residual_dbc": -48.12694546113604,
+          "strongest_spur_dbc": -51.179324396851285,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_14",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.4564225971698761,
+      "allocations": 0,
+      "sha256": "b86fe7eb8b95358adbbac5ed862c321e25294c1d2f14a461b3414bfdf1b98ccf",
+      "channels": [
+        {
+          "expected_hz": 493.8833012561241,
+          "measured_hz": 493.88913162783206,
+          "cents": 0.02043737541883161,
+          "residual_dbc": -46.76911144641123,
+          "strongest_spur_dbc": -52.760816142229714,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_15",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.34413644671440125,
+      "allocations": 0,
+      "sha256": "9cfd8d6636e6a9670e83b3df012214913bae808e5b200b7d30bc7d7f8a0cf003",
+      "channels": [
+        {
+          "expected_hz": 523.2511306011972,
+          "measured_hz": 523.2510948138674,
+          "cents": -0.00011840632989538692,
+          "residual_dbc": -85.20649017118222,
+          "strongest_spur_dbc": -53.93063301199177,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_16",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500015199184418,
+      "allocations": 0,
+      "sha256": "f26065ba615e5353295d385b57711859ba0b009fc9f58bcf179bcb3a21628054",
+      "channels": [
+        {
+          "expected_hz": 554.3652619537442,
+          "measured_hz": 554.3652520172552,
+          "cents": -3.1030783058402645e-05,
+          "residual_dbc": -92.801043360564,
+          "strongest_spur_dbc": -53.9083077395367,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_17",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.42118310928344727,
+      "allocations": 0,
+      "sha256": "3d72da0ba7301e9589fc982d28c0d60576df347c2dcf604d2749a05e8d832be2",
+      "channels": [
+        {
+          "expected_hz": 587.3295358348151,
+          "measured_hz": 587.3297599211847,
+          "cents": 0.0006605250633733006,
+          "residual_dbc": -100.3327904161006,
+          "strongest_spur_dbc": -53.93416867216213,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_18",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2689610421657562,
+      "allocations": 0,
+      "sha256": "3ea59ebaaf484854321b22984edb00feb1ae76fcd5f4ceae8fa189e8f855c892",
+      "channels": [
+        {
+          "expected_hz": 622.2539674441618,
+          "measured_hz": 622.253953950301,
+          "cents": -3.7542599603752975e-05,
+          "residual_dbc": -88.6821499193847,
+          "strongest_spur_dbc": -53.936123035993944,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_19",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000014901161194,
+      "allocations": 0,
+      "sha256": "0dd4d667af94130072744a4383ba46d321d224fb17342c01e113fb82cd0c9630",
+      "channels": [
+        {
+          "expected_hz": 659.2551138257398,
+          "measured_hz": 659.2551172895529,
+          "cents": 9.096131455742226e-06,
+          "residual_dbc": -90.77576369540218,
+          "strongest_spur_dbc": -53.93381157973667,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_20",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.389404296875,
+      "allocations": 0,
+      "sha256": "9497c5c02fdfad2af771ba5e4ecc79fb6bf4c15a46f75162c038762783c8fea4",
+      "channels": [
+        {
+          "expected_hz": 698.4564628660078,
+          "measured_hz": 698.4564250237825,
+          "cents": -9.37979018533763e-05,
+          "residual_dbc": -85.36403296230942,
+          "strongest_spur_dbc": -53.92871063659306,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_21",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999935925006866,
+      "allocations": 0,
+      "sha256": "9c4374d5816ff77ce0d1fd4962e0022410cedce5e637cfe1a809bd9349ea80e9",
+      "channels": [
+        {
+          "expected_hz": 739.9888454232688,
+          "measured_hz": 740.0108291666241,
+          "cents": 0.05143109918056636,
+          "residual_dbc": -41.06076330920742,
+          "strongest_spur_dbc": -49.56700489850861,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_22",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3890828788280487,
+      "allocations": 0,
+      "sha256": "17d0ea75b307b1044cc5ac651f9a0b65081541102ad6bcdcfb92394b2dee3ee8",
+      "channels": [
+        {
+          "expected_hz": 783.9908719634985,
+          "measured_hz": 784.0128208793931,
+          "cents": 0.04846762888702876,
+          "residual_dbc": -41.14290330684021,
+          "strongest_spur_dbc": -48.935029848315914,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_23",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499990463256836,
+      "allocations": 0,
+      "sha256": "6314de5ec7a7d3ecce71f406e0dcc061536fad7742f610c0c887f91bf833d6ae",
+      "channels": [
+        {
+          "expected_hz": 830.6093951598903,
+          "measured_hz": 830.6093668580654,
+          "cents": -5.898932031304301e-05,
+          "residual_dbc": -92.12872907881804,
+          "strongest_spur_dbc": -53.91465991160402,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_220_24",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.37120646238327026,
+      "allocations": 0,
+      "sha256": "c5b620478907da8f461141bbc5ec01bea455febb9e82a78188a173e981f9bf99",
+      "channels": [
+        {
+          "expected_hz": 880.0,
+          "measured_hz": 880.0000033774851,
+          "cents": 6.644564924376112e-06,
+          "residual_dbc": -98.40244466878508,
+          "strongest_spur_dbc": -53.92950352160792,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-24",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.31164777278900146,
+      "allocations": 0,
+      "sha256": "4b21ec254d42d2d3bd85d3320c2a93c18ed2f873afca33ac83b8404826236d42",
+      "channels": [
+        {
+          "expected_hz": 110.0,
+          "measured_hz": 109.99995393551862,
+          "cents": -0.0007249855938735184,
+          "residual_dbc": -83.78671505114055,
+          "strongest_spur_dbc": -53.89785342688995,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-23",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3874361217021942,
+      "allocations": 0,
+      "sha256": "126e2555c9a86ce7ac52a75fbdcb9ad1d4e78a25f7bad7a59f69f0b0e0f32b98",
+      "channels": [
+        {
+          "expected_hz": 116.54094037952248,
+          "measured_hz": 116.54097687032451,
+          "cents": 0.0005420765343771435,
+          "residual_dbc": -86.69019018471093,
+          "strongest_spur_dbc": -53.92662684974114,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-22",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3202340304851532,
+      "allocations": 0,
+      "sha256": "c8811dfddc0d71bd051cf3e95340b5a3d2e108be9508e67902098e7a6d9e5bdf",
+      "channels": [
+        {
+          "expected_hz": 123.47082531403103,
+          "measured_hz": 123.47089680691113,
+          "cents": 0.0010024301054941762,
+          "residual_dbc": -80.61227831145992,
+          "strongest_spur_dbc": -53.9289740208182,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-21",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "e017c54983d517b7a8cbf570dfb941736a159c8e100f8273dee839b3055193cf",
+      "channels": [
+        {
+          "expected_hz": 130.8127826502993,
+          "measured_hz": 130.8128433853505,
+          "cents": 0.0008037942628499553,
+          "residual_dbc": -87.68528154062422,
+          "strongest_spur_dbc": -53.857766651030026,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-20",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "edbf035019da9908f680309a93360bd6f42b6eab4db263c244195f0c2e40b2c0",
+      "channels": [
+        {
+          "expected_hz": 138.59131548843604,
+          "measured_hz": 138.59114176342177,
+          "cents": -0.002170113237662373,
+          "residual_dbc": -79.17940218689948,
+          "strongest_spur_dbc": -53.921721506611824,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-19",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.36036521196365356,
+      "allocations": 0,
+      "sha256": "cf4dc62ccb241c4159a6dc56a5ed328aa11d4e1d5dcbeda5556ff697e7357565",
+      "channels": [
+        {
+          "expected_hz": 146.8323839587038,
+          "measured_hz": 146.83336462577623,
+          "cents": 0.011562562095097342,
+          "residual_dbc": -53.64208788109676,
+          "strongest_spur_dbc": -53.28995758914153,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-18",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2917550206184387,
+      "allocations": 0,
+      "sha256": "38342162204166abe4f1bae2e4603877086c1288c1aae9c3e3bf2b28301698ea",
+      "channels": [
+        {
+          "expected_hz": 155.56349186104046,
+          "measured_hz": 155.56350711673826,
+          "cents": 0.00016977750944584288,
+          "residual_dbc": -90.24723929898377,
+          "strongest_spur_dbc": -53.90490707338061,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-17",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "5586f236fd005a548ac9a30d2e7489c6a0711030c8c923df52ced4122a6e85ec",
+      "channels": [
+        {
+          "expected_hz": 164.81377845643496,
+          "measured_hz": 164.8137795889779,
+          "cents": 1.1896437726242639e-05,
+          "residual_dbc": -80.22554237690963,
+          "strongest_spur_dbc": -53.93477820829939,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-16",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25190311670303345,
+      "allocations": 0,
+      "sha256": "98bc18cc62670f40e1cefea5629ac2192b5ee12781e5b4d89f16b866d8a6c785",
+      "channels": [
+        {
+          "expected_hz": 174.61411571650194,
+          "measured_hz": 174.6009628766444,
+          "cents": -0.1304104296173036,
+          "residual_dbc": -45.28882549002357,
+          "strongest_spur_dbc": -50.52594114257616,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-15",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.30349934101104736,
+      "allocations": 0,
+      "sha256": "5d08f07ae719dc1b631afb9c5b522494dbee8aa102eaed4d521c4e174d1a8116",
+      "channels": [
+        {
+          "expected_hz": 184.9972113558172,
+          "measured_hz": 185.01522279517886,
+          "cents": 0.16854577977516458,
+          "residual_dbc": -39.99518600684142,
+          "strongest_spur_dbc": -51.91970416799904,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-14",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999995529651642,
+      "allocations": 0,
+      "sha256": "eaf6b90996dfcf76448309f1b72cec0e82e139618a0a8dbf114457efa885898e",
+      "channels": [
+        {
+          "expected_hz": 195.99771799087463,
+          "measured_hz": 195.9977349458328,
+          "cents": 0.0001497619457416496,
+          "residual_dbc": -87.23179131196474,
+          "strongest_spur_dbc": -53.93291545919774,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-13",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2546887695789337,
+      "allocations": 0,
+      "sha256": "0e41b1c28ead36790057d16887f749db06b9d7f3233da3f07975f9bcc2c388f3",
+      "channels": [
+        {
+          "expected_hz": 207.65234878997256,
+          "measured_hz": 207.6471931104783,
+          "cents": -0.04298433774404521,
+          "residual_dbc": -48.75407547326872,
+          "strongest_spur_dbc": -53.28734070777795,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-12",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25819656252861023,
+      "allocations": 0,
+      "sha256": "285224e06299dd80b17072b1787b1f6e0dfc8d593f962858ba94a42df4b758b1",
+      "channels": [
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 220.00003030294238,
+          "cents": 0.00023846128179504298,
+          "residual_dbc": -87.74298771982853,
+          "strongest_spur_dbc": -53.90607495056762,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-11",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "50258b292f755c66e1aca164f85012bc629154fcfa492f75eca15e28f3ebd2c3",
+      "channels": [
+        {
+          "expected_hz": 233.08188075904496,
+          "measured_hz": 233.08187271435122,
+          "cents": -5.975259814547311e-05,
+          "residual_dbc": -87.5603869352855,
+          "strongest_spur_dbc": -53.91139794127718,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-10",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.26815682649612427,
+      "allocations": 0,
+      "sha256": "95651bde03cc5aaf9bf0faa048adc1add94e7e32513003b647b4e7c7d6981fcf",
+      "channels": [
+        {
+          "expected_hz": 246.94165062806206,
+          "measured_hz": 246.94012154439105,
+          "cents": -0.010719981438015369,
+          "residual_dbc": -55.17699045134253,
+          "strongest_spur_dbc": -53.409518341544164,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-9",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "c0a0ec6e3723ddeb5cbe1c11ccdabb24acf9b5c841c35bb204f9f5baa12645b4",
+      "channels": [
+        {
+          "expected_hz": 261.6255653005986,
+          "measured_hz": 261.62526736073204,
+          "cents": -0.001971534909864762,
+          "residual_dbc": -82.3455420498139,
+          "strongest_spur_dbc": -53.92674175885976,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-8",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2666599452495575,
+      "allocations": 0,
+      "sha256": "a82b22cfc1840cc0c792d008a8b7420826a4ae02769ea2b2ebff3bb15d806431",
+      "channels": [
+        {
+          "expected_hz": 277.1826309768721,
+          "measured_hz": 277.18263097077624,
+          "cents": -3.8073428752089795e-08,
+          "residual_dbc": -81.54082885343756,
+          "strongest_spur_dbc": -53.93172523670014,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-7",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "9e53fc3f8e1a9b6be136f893fc26eb5e34dad889b80471f4c49155a19d226a62",
+      "channels": [
+        {
+          "expected_hz": 293.6647679174076,
+          "measured_hz": 293.6647798306664,
+          "cents": 7.023191471007999e-05,
+          "residual_dbc": -95.61588214466275,
+          "strongest_spur_dbc": -53.903683262096806,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-6",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25758102536201477,
+      "allocations": 0,
+      "sha256": "4cf9520cba18dd3ba58fde4c8828a418696a48e7dfdcdf08a7605ba6d460f8d5",
+      "channels": [
+        {
+          "expected_hz": 311.1269837220809,
+          "measured_hz": 311.1271046222827,
+          "cents": 0.0006727365871349309,
+          "residual_dbc": -83.3566752600361,
+          "strongest_spur_dbc": -53.92413555350821,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-5",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "34a7e2003012f9648e1f7acbb3503cce667b1503be7c85728d582c4bae3886e8",
+      "channels": [
+        {
+          "expected_hz": 329.6275569128699,
+          "measured_hz": 329.6275615288684,
+          "cents": 2.4243645524967662e-05,
+          "residual_dbc": -94.26478187304144,
+          "strongest_spur_dbc": -53.91550886092223,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-4",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "c8509c786cdc2ef6690a0773dcf07b6df536cfd29984109f324044df06e47468",
+      "channels": [
+        {
+          "expected_hz": 349.2282314330039,
+          "measured_hz": 349.22807070243414,
+          "cents": -0.0007967921091755194,
+          "residual_dbc": -79.88356010763623,
+          "strongest_spur_dbc": -53.92850711949545,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-3",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "33f56f51eced1722042e9257e9d15065d63a80651485a3025cae4b5bc3a2410a",
+      "channels": [
+        {
+          "expected_hz": 369.9944227116344,
+          "measured_hz": 369.99910179746064,
+          "cents": 0.021893685370853788,
+          "residual_dbc": -40.31982364010776,
+          "strongest_spur_dbc": -47.072971014794305,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-2",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999850988388,
+      "allocations": 0,
+      "sha256": "5eeec5c2e6294cb24dfb1d16a0bdef8a47280db216e52298bbcc5a89139fa073",
+      "channels": [
+        {
+          "expected_hz": 391.99543598174927,
+          "measured_hz": 391.9777720333935,
+          "cents": -0.07801396406678722,
+          "residual_dbc": -43.51619300694647,
+          "strongest_spur_dbc": -50.420794404932714,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_-1",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999995529651642,
+      "allocations": 0,
+      "sha256": "26750241601a5157798463ae323277f768d3c408e5c5692bca523944e5909528",
+      "channels": [
+        {
+          "expected_hz": 415.3046975799451,
+          "measured_hz": 415.3156886974165,
+          "cents": 0.04581683069483534,
+          "residual_dbc": -45.3309725716705,
+          "strongest_spur_dbc": -52.44446326708775,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_0",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "bf604b0c5cec4473c3164b7cfab14380b2e3f96dbd9e775f64b3f7627f8402ad",
+      "channels": [
+        {
+          "expected_hz": 440.0,
+          "measured_hz": 439.9999999374838,
+          "cents": -2.459777949911662e-07,
+          "residual_dbc": -147.62363201773195,
+          "strongest_spur_dbc": -53.935351891452456,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_1",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500002682209015,
+      "allocations": 0,
+      "sha256": "724d6965e78743d963725226e5989d8029a3e345878e51ad8beef2573524e0a1",
+      "channels": [
+        {
+          "expected_hz": 466.1637615180899,
+          "measured_hz": 466.1637364527395,
+          "cents": -9.308743595439097e-05,
+          "residual_dbc": -86.636894776753,
+          "strongest_spur_dbc": -53.93639300047788,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_2",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500002980232239,
+      "allocations": 0,
+      "sha256": "e900f771840fc7301834eb1a11b1c4096c24b96f66df35d70dfe2b3733d0f2ee",
+      "channels": [
+        {
+          "expected_hz": 493.8833012561241,
+          "measured_hz": 493.8832612307161,
+          "cents": -0.00014030308757796898,
+          "residual_dbc": -89.64975143278998,
+          "strongest_spur_dbc": -53.869774591137144,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_3",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000008940696716,
+      "allocations": 0,
+      "sha256": "f06f1c1b40896d62692250f59f8caf5ab90a4f935a0acdf2e242f8f26eb0d69c",
+      "channels": [
+        {
+          "expected_hz": 523.2511306011972,
+          "measured_hz": 523.2510678483796,
+          "cents": -0.00020762462747183383,
+          "residual_dbc": -80.55152538107377,
+          "strongest_spur_dbc": -53.92837304940763,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_4",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25001096725463867,
+      "allocations": 0,
+      "sha256": "91582854ad765befb80ae71bee08a906dac62e207cb09ca0cf66fb31a3f1ef20",
+      "channels": [
+        {
+          "expected_hz": 554.3652619537442,
+          "measured_hz": 554.3652719957942,
+          "cents": 3.136044026243899e-05,
+          "residual_dbc": -91.10228818196498,
+          "strongest_spur_dbc": -53.90758138652857,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_5",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500007152557373,
+      "allocations": 0,
+      "sha256": "3788fc823a3822a1dc0fbd4413b89664dc1256e3cefce7ad8286e8463640cd15",
+      "channels": [
+        {
+          "expected_hz": 587.3295358348151,
+          "measured_hz": 587.3290801153769,
+          "cents": -0.0013432958267661109,
+          "residual_dbc": -90.08762967370485,
+          "strongest_spur_dbc": -53.934817357564704,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_6",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999932944774628,
+      "allocations": 0,
+      "sha256": "e1554b476203802d874e8efda2628509ab4a3a4a33a77ba6f408db3945ba91bc",
+      "channels": [
+        {
+          "expected_hz": 622.2539674441618,
+          "measured_hz": 622.2539403181943,
+          "cents": -7.546982764231112e-05,
+          "residual_dbc": -85.91577513521626,
+          "strongest_spur_dbc": -53.937411267843274,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_7",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500014901161194,
+      "allocations": 0,
+      "sha256": "3f887c7e7c6eb624021f61ff288f732aac683ba00795889cdff5a696c6a4adbb",
+      "channels": [
+        {
+          "expected_hz": 659.2551138257398,
+          "measured_hz": 659.2551014415799,
+          "cents": -3.252137011293716e-05,
+          "residual_dbc": -83.97228318156394,
+          "strongest_spur_dbc": -53.93278813931868,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_8",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999885261058807,
+      "allocations": 0,
+      "sha256": "64aef17a36908f98a0bc637379ad0bbb58bf8d5f01bb4550cbdc5efc61a6c065",
+      "channels": [
+        {
+          "expected_hz": 698.4564628660078,
+          "measured_hz": 698.4565134570315,
+          "cents": 0.00012539779407540454,
+          "residual_dbc": -79.43471922545305,
+          "strongest_spur_dbc": -53.9347031377895,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_9",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500019669532776,
+      "allocations": 0,
+      "sha256": "64303e72c40eee248b7297d509c44631257784782943e49b7a8373a1213032d3",
+      "channels": [
+        {
+          "expected_hz": 739.9888454232688,
+          "measured_hz": 739.9882653446906,
+          "cents": -0.0013571179965761676,
+          "residual_dbc": -42.93375623410828,
+          "strongest_spur_dbc": -51.19921200442974,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_10",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000348687171936,
+      "allocations": 0,
+      "sha256": "0a780789441e1d5080b85ad58b3a7a2a7c07adfbee985a1cfc6be07a97404817",
+      "channels": [
+        {
+          "expected_hz": 783.9908719634985,
+          "measured_hz": 783.9908502406149,
+          "cents": -4.796917612999141e-05,
+          "residual_dbc": -86.77792509372028,
+          "strongest_spur_dbc": -53.91914649573947,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_11",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500031888484955,
+      "allocations": 0,
+      "sha256": "e3e9a0b48abc46856598f90c13cc3c96e421aaa5cd626aea51fa94242f4501ee",
+      "channels": [
+        {
+          "expected_hz": 830.6093951598903,
+          "measured_hz": 830.6093842624248,
+          "cents": -2.2713520396780878e-05,
+          "residual_dbc": -88.71981376404653,
+          "strongest_spur_dbc": -53.868473544701835,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_12",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.27567964792251587,
+      "allocations": 0,
+      "sha256": "e92174ec40d789387d2191409ef71f34ae1f32160a0a09677f09292ca9d73606",
+      "channels": [
+        {
+          "expected_hz": 880.0,
+          "measured_hz": 879.9999187748298,
+          "cents": -0.00015979521230121508,
+          "residual_dbc": -86.45438953021679,
+          "strongest_spur_dbc": -53.86784079179189,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_13",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000154972076416,
+      "allocations": 0,
+      "sha256": "bffa5edf691e55de77a03251dacde95b039073441ef79d595bea4fd80836fc80",
+      "channels": [
+        {
+          "expected_hz": 932.3275230361799,
+          "measured_hz": 932.3011682168604,
+          "cents": -0.04893881637657575,
+          "residual_dbc": -40.775381984921424,
+          "strongest_spur_dbc": -48.43990567512862,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_14",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3337017893791199,
+      "allocations": 0,
+      "sha256": "7a03ce3cbcea3a21e258cf99534d4002fad82d36636a3ded49924ba1177e6f28",
+      "channels": [
+        {
+          "expected_hz": 987.7666025122483,
+          "measured_hz": 987.7713165191121,
+          "cents": 0.00826210331028778,
+          "residual_dbc": -49.24959321505237,
+          "strongest_spur_dbc": -53.09824482391888,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_15",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000113248825073,
+      "allocations": 0,
+      "sha256": "e2ea4ad4af525ade121deaa665e499664f22884ba2edfcde3273264892f9abbd",
+      "channels": [
+        {
+          "expected_hz": 1046.5022612023945,
+          "measured_hz": 1046.5022709203308,
+          "cents": 1.60764318412653e-05,
+          "residual_dbc": -86.11880599768418,
+          "strongest_spur_dbc": -53.935711467292776,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_16",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.40451952815055847,
+      "allocations": 0,
+      "sha256": "2bc6c58f31bf48a89421bb1869248440cd9521a6c283b0e80e5c7bf79615131a",
+      "channels": [
+        {
+          "expected_hz": 1108.7305239074883,
+          "measured_hz": 1108.730505160775,
+          "cents": -2.9272170302370066e-05,
+          "residual_dbc": -86.59575207758854,
+          "strongest_spur_dbc": -53.915000909452964,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_17",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500036358833313,
+      "allocations": 0,
+      "sha256": "c9096f69650a15123652556824d4d2d680a7656f22175a3e7b33750f8518a75d",
+      "channels": [
+        {
+          "expected_hz": 1174.6590716696303,
+          "measured_hz": 1174.6586338124978,
+          "cents": -0.0006453219797028258,
+          "residual_dbc": -91.68612573469977,
+          "strongest_spur_dbc": -53.93551164420568,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_18",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.30867907404899597,
+      "allocations": 0,
+      "sha256": "d00b53aff3f6bc501d13031e4169f067ff316037656b4c78ba01fc6d0023e0fe",
+      "channels": [
+        {
+          "expected_hz": 1244.5079348883237,
+          "measured_hz": 1244.5079254866432,
+          "cents": -1.3078670568523119e-05,
+          "residual_dbc": -88.50273097726829,
+          "strongest_spur_dbc": -53.84545882513307,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_19",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.35449448227882385,
+      "allocations": 0,
+      "sha256": "7587e6bf30785d0003af163fc96670ca8a0cf5db8070854d186a71efabed1b6a",
+      "channels": [
+        {
+          "expected_hz": 1318.5102276514797,
+          "measured_hz": 1318.5102158852137,
+          "cents": -1.5449376046552164e-05,
+          "residual_dbc": -91.57673098291964,
+          "strongest_spur_dbc": -53.90017147113081,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_20",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500148415565491,
+      "allocations": 0,
+      "sha256": "4ea86a06e609ff364028fc5d2a03932640587aecf966805cf1e2b46daf8b9e7a",
+      "channels": [
+        {
+          "expected_hz": 1396.9129257320155,
+          "measured_hz": 1396.912923966424,
+          "cents": -2.188148013662922e-06,
+          "residual_dbc": -87.3004601024671,
+          "strongest_spur_dbc": -53.924223817065865,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_21",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499970644712448,
+      "allocations": 0,
+      "sha256": "9e204d19a8cebba1e579fa0f7f1b0a82fa1855458f1fcc1216740566cead7b96",
+      "channels": [
+        {
+          "expected_hz": 1479.9776908465376,
+          "measured_hz": 1479.9944516531693,
+          "cents": 0.01960618393288511,
+          "residual_dbc": -52.51412638752478,
+          "strongest_spur_dbc": -50.46963948628944,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_22",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3362175524234772,
+      "allocations": 0,
+      "sha256": "8e59fe83b568a7808f678990fb2656d3727a0d88236a8494712d597d4314ac51",
+      "channels": [
+        {
+          "expected_hz": 1567.981743926997,
+          "measured_hz": 1567.981763629367,
+          "cents": 2.175370555385623e-05,
+          "residual_dbc": -88.68345124936272,
+          "strongest_spur_dbc": -53.846235308831176,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_23",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3492790758609772,
+      "allocations": 0,
+      "sha256": "2d0ce6334649567fe9b197ec5b70dd2fd367f6bfc922121d67829e48f495f20c",
+      "channels": [
+        {
+          "expected_hz": 1661.2187903197805,
+          "measured_hz": 1661.2189324092828,
+          "cents": 0.00014807813111975747,
+          "residual_dbc": -83.13820947491013,
+          "strongest_spur_dbc": -53.914729204633005,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_440_24",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.31530487537384033,
+      "allocations": 0,
+      "sha256": "8603fc8d6d4f5ee365caa86c01c3e65c1a38c85853feb41be8dc50012b4370e9",
+      "channels": [
+        {
+          "expected_hz": 1760.0,
+          "measured_hz": 1760.0001467060197,
+          "cents": 0.00014430820791606772,
+          "residual_dbc": -85.26504806572837,
+          "strongest_spur_dbc": -53.92400343454413,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-24",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.41597241163253784,
+      "allocations": 0,
+      "sha256": "156d9c122c027a62092f8dc5b8028a5e5da9add15a2d3b29e0d59cfa59aa7952",
+      "channels": [
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 219.99992048020383,
+          "cents": -0.00062576092533224,
+          "residual_dbc": -78.68709867558195,
+          "strongest_spur_dbc": -53.81251234946692,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-23",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999995529651642,
+      "allocations": 0,
+      "sha256": "1457961fb823265fa608c7c0fa2f1aad49acf629a5340bf3abb3606a09cda1c7",
+      "channels": [
+        {
+          "expected_hz": 233.08188075904496,
+          "measured_hz": 233.08189214349005,
+          "cents": 8.455886148798506e-05,
+          "residual_dbc": -77.6932921065411,
+          "strongest_spur_dbc": -53.81437141848544,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-22",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.35880059003829956,
+      "allocations": 0,
+      "sha256": "5ea36611af7e434d6620934496b0f00e8edb7e73a52c0d24cd1ec520e09bb5a3",
+      "channels": [
+        {
+          "expected_hz": 246.94165062806206,
+          "measured_hz": 246.94162646341263,
+          "cents": -0.0001694111374207016,
+          "residual_dbc": -75.06371050836495,
+          "strongest_spur_dbc": -53.93110319421914,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-21",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25281527638435364,
+      "allocations": 0,
+      "sha256": "842bea07854fcfc00aad7382c7c23bde826447640c580d021f25b03d2411f8fe",
+      "channels": [
+        {
+          "expected_hz": 261.6255653005986,
+          "measured_hz": 261.6251846042622,
+          "cents": -0.0025191534273362147,
+          "residual_dbc": -67.56790957878357,
+          "strongest_spur_dbc": -53.929799473385614,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-20",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3142656683921814,
+      "allocations": 0,
+      "sha256": "0335713f09c3f421899f9b90098873db2f94e0ce48acf2adc2d241afb1ad1798",
+      "channels": [
+        {
+          "expected_hz": 277.1826309768721,
+          "measured_hz": 277.18260456729735,
+          "cents": -0.00016494957491356926,
+          "residual_dbc": -72.57057351426812,
+          "strongest_spur_dbc": -53.897437822946166,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-19",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999989569187164,
+      "allocations": 0,
+      "sha256": "e9646f9f6dec233dce7d226ecae3ec7a7b06aa3f6dd1304428232bff8654e3d8",
+      "channels": [
+        {
+          "expected_hz": 293.6647679174076,
+          "measured_hz": 293.66454149204327,
+          "cents": -0.0013348399065387232,
+          "residual_dbc": -79.65115139715535,
+          "strongest_spur_dbc": -53.78448602077619,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-18",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3351757824420929,
+      "allocations": 0,
+      "sha256": "cc8955cd85b285119134b9add8cfb070265aa19cad1d6978c66a9bf62ba3ce29",
+      "channels": [
+        {
+          "expected_hz": 311.1269837220809,
+          "measured_hz": 311.1271183592806,
+          "cents": 0.0007491746654540577,
+          "residual_dbc": -72.68951888037287,
+          "strongest_spur_dbc": -53.900277195502824,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-17",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999991059303284,
+      "allocations": 0,
+      "sha256": "801201dd18cf65a470fe711d663d3b73f0346baa5a6e1594dc2861e839003eca",
+      "channels": [
+        {
+          "expected_hz": 329.6275569128699,
+          "measured_hz": 329.6276647189598,
+          "cents": 0.0005662073422847312,
+          "residual_dbc": -79.5826815901965,
+          "strongest_spur_dbc": -53.80131132913172,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-16",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.32419756054878235,
+      "allocations": 0,
+      "sha256": "8f81421f1a6c1e5e60747e1302389b970480eff5459bc92033fc1cbab390baae",
+      "channels": [
+        {
+          "expected_hz": 349.2282314330039,
+          "measured_hz": 349.2209703101067,
+          "cents": -0.03599604141045142,
+          "residual_dbc": -51.23136836944116,
+          "strongest_spur_dbc": -52.11622562627136,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-15",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999994039535522,
+      "allocations": 0,
+      "sha256": "d2ce98ebda97bbd4d23ff24d8b475bc422cf4f9946d2d515dc405f1a0d844922",
+      "channels": [
+        {
+          "expected_hz": 369.9944227116344,
+          "measured_hz": 369.9953441512466,
+          "cents": 0.004311485651119505,
+          "residual_dbc": -54.781875458021894,
+          "strongest_spur_dbc": -53.271406780360735,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-14",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999994039535522,
+      "allocations": 0,
+      "sha256": "e49b0ba1cb05caa1a07fa31a95c8d73857cdbd9ebf12f67f26e838412f30ee4c",
+      "channels": [
+        {
+          "expected_hz": 391.99543598174927,
+          "measured_hz": 391.9954218514104,
+          "cents": -6.240614537153478e-05,
+          "residual_dbc": -77.98234225309123,
+          "strongest_spur_dbc": -53.777394952727875,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-13",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2554190754890442,
+      "allocations": 0,
+      "sha256": "03396825af4912b9d1384173f5da4e08e3056ef99ab87cfeed8551d7ca07e527",
+      "channels": [
+        {
+          "expected_hz": 415.3046975799451,
+          "measured_hz": 415.3047629531753,
+          "cents": 0.0002725140209760342,
+          "residual_dbc": -74.13881550554387,
+          "strongest_spur_dbc": -53.92589539130269,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-12",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2780008018016815,
+      "allocations": 0,
+      "sha256": "c928c33438ebe8562fad102e2c659588588c2cd150ed5d4fa57e6091e7ce77c6",
+      "channels": [
+        {
+          "expected_hz": 440.0,
+          "measured_hz": 439.9995631042785,
+          "cents": -0.0017190207374229497,
+          "residual_dbc": -76.2131578858248,
+          "strongest_spur_dbc": -53.864825564777696,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-11",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2551491856575012,
+      "allocations": 0,
+      "sha256": "d4e44b355bf8d79501548316f66f1590c24d55d4b8f345596b54422a23fbc22b",
+      "channels": [
+        {
+          "expected_hz": 466.1637615180899,
+          "measured_hz": 466.16373949012296,
+          "cents": -8.180723276546617e-05,
+          "residual_dbc": -77.72691715072051,
+          "strongest_spur_dbc": -53.89068506565785,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-10",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999992549419403,
+      "allocations": 0,
+      "sha256": "63894da7d15cbb4c29ad0ea15a5245c1cb98362a1d35507374e47119f7a75f14",
+      "channels": [
+        {
+          "expected_hz": 493.8833012561241,
+          "measured_hz": 493.8851449424657,
+          "cents": 0.0064627546720437586,
+          "residual_dbc": -55.19265309010307,
+          "strongest_spur_dbc": -53.69915240449843,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-9",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999995529651642,
+      "allocations": 0,
+      "sha256": "cd9b639f2d08ff0ff2136c5af7313bad3584044532c54c9a74ad311bf6332d0a",
+      "channels": [
+        {
+          "expected_hz": 523.2511306011972,
+          "measured_hz": 523.2511443700457,
+          "cents": 4.555575229173878e-05,
+          "residual_dbc": -71.87109862195146,
+          "strongest_spur_dbc": -53.92776199180325,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-8",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999994039535522,
+      "allocations": 0,
+      "sha256": "d981736043f28c68b4cc7d421a31a8e417be6aaa4393dbe0274bef1abaad9c40",
+      "channels": [
+        {
+          "expected_hz": 554.3652619537442,
+          "measured_hz": 554.3651173499394,
+          "cents": -0.00045158504730350205,
+          "residual_dbc": -79.18542145121678,
+          "strongest_spur_dbc": -53.86808801010412,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-7",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999994039535522,
+      "allocations": 0,
+      "sha256": "0bbc573f6c04c3fc53dab023b486de824904a54e443e3a4ce3dde350fad5868d",
+      "channels": [
+        {
+          "expected_hz": 587.3295358348151,
+          "measured_hz": 587.3444142435173,
+          "cents": 0.04385558689001487,
+          "residual_dbc": -45.47804809649435,
+          "strongest_spur_dbc": -51.099451331226376,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-6",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25075069069862366,
+      "allocations": 0,
+      "sha256": "bd299cc479a482a19f9b08005bc72705da5593a0fd4e199f70d82cffc01f58b3",
+      "channels": [
+        {
+          "expected_hz": 622.2539674441618,
+          "measured_hz": 622.2538133174049,
+          "cents": -0.00042881128364868275,
+          "residual_dbc": -75.24121665740604,
+          "strongest_spur_dbc": -53.93511812994477,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-5",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2543067932128906,
+      "allocations": 0,
+      "sha256": "95f989865b6ce9891a5b044abbc52e0cca9ace7948637675872fc306eb0e3071",
+      "channels": [
+        {
+          "expected_hz": 659.2551138257398,
+          "measured_hz": 659.2550761823491,
+          "cents": -9.885326685227935e-05,
+          "residual_dbc": -70.52262625784293,
+          "strongest_spur_dbc": -53.90818160249931,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-4",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999992549419403,
+      "allocations": 0,
+      "sha256": "d262a70234996874f567fd8a762d8f15dd875f411c6099acaf40f039e5caaead",
+      "channels": [
+        {
+          "expected_hz": 698.4564628660078,
+          "measured_hz": 698.460881021474,
+          "cents": 0.01095105764236087,
+          "residual_dbc": -44.13291599268986,
+          "strongest_spur_dbc": -53.12712660056882,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-3",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999991059303284,
+      "allocations": 0,
+      "sha256": "befb8744032585bfacbc8aab208852a40fa94bbca4dd3946749b172fda2c04ac",
+      "channels": [
+        {
+          "expected_hz": 739.9888454232688,
+          "measured_hz": 739.9994358217945,
+          "cents": 0.024776491480862483,
+          "residual_dbc": -39.035640062431554,
+          "strongest_spur_dbc": -51.21846841854803,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-2",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500452995300293,
+      "allocations": 0,
+      "sha256": "3dd07d1e02ea9b4ef4f1c39a7193b7c86925979acbc6597abd3275e5421eda49",
+      "channels": [
+        {
+          "expected_hz": 783.9908719634985,
+          "measured_hz": 783.9909148823527,
+          "cents": 9.477480219655805e-05,
+          "residual_dbc": -76.14394754758212,
+          "strongest_spur_dbc": -53.902461053048725,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_-1",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999992549419403,
+      "allocations": 0,
+      "sha256": "5b6d80d69b0fcb75c221eff82b4c3cbed24e0d71ee52b229fce3b9a9da59839f",
+      "channels": [
+        {
+          "expected_hz": 830.6093951598903,
+          "measured_hz": 830.5956153189853,
+          "cents": -0.028721475814689378,
+          "residual_dbc": -40.282792422833055,
+          "strongest_spur_dbc": -51.857681406091345,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_0",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "5bde54d8b7c642d6abedcf168363ff4393a7a5e84ccf4d37cda2366c1fd9b7b0",
+      "channels": [
+        {
+          "expected_hz": 880.0,
+          "measured_hz": 879.99999984643,
+          "cents": -3.021200868779624e-07,
+          "residual_dbc": -140.91738487428609,
+          "strongest_spur_dbc": -53.9351177480557,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_1",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000032782554626,
+      "allocations": 0,
+      "sha256": "e3a48c8b7c23f6edf0411aef4dc5a7c4a03dd028786c9381d85244ac78947742",
+      "channels": [
+        {
+          "expected_hz": 932.3275230361799,
+          "measured_hz": 932.3420580850997,
+          "cents": 0.02698984511803055,
+          "residual_dbc": -45.35937249103939,
+          "strongest_spur_dbc": -51.12462426966875,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_2",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25000056624412537,
+      "allocations": 0,
+      "sha256": "64648806937a0b42a319f9057d2fc95ba389a7e9f998f53ff4529aae628add1c",
+      "channels": [
+        {
+          "expected_hz": 987.7666025122483,
+          "measured_hz": 987.7651805342255,
+          "cents": -0.0024922674403913634,
+          "residual_dbc": -85.98077063846382,
+          "strongest_spur_dbc": -53.912935483016525,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_3",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500002682209015,
+      "allocations": 0,
+      "sha256": "21d9fcd9f013b1886d896948f208066e6e5a881f11d90c3225bed81c5402a98d",
+      "channels": [
+        {
+          "expected_hz": 1046.5022612023945,
+          "measured_hz": 1046.5022547051622,
+          "cents": -1.0748404765764035e-05,
+          "residual_dbc": -76.39100324640295,
+          "strongest_spur_dbc": -53.89877651034202,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_4",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500002980232239,
+      "allocations": 0,
+      "sha256": "751ff907a05736b6fe073fb6258c554d83d79065856f6c764a19d7e32374ae11",
+      "channels": [
+        {
+          "expected_hz": 1108.7305239074883,
+          "measured_hz": 1108.7304900258932,
+          "cents": -5.2904624308069e-05,
+          "residual_dbc": -77.84817674316153,
+          "strongest_spur_dbc": -53.911311010770376,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_5",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500532269477844,
+      "allocations": 0,
+      "sha256": "f5333a3defde850d3f614ed03f45f65fcb31a9b780a167fb3da57df8777e7caf",
+      "channels": [
+        {
+          "expected_hz": 1174.6590716696303,
+          "measured_hz": 1174.6586774708778,
+          "cents": -0.0005809774371648875,
+          "residual_dbc": -74.24018102144713,
+          "strongest_spur_dbc": -53.93539433995363,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_6",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.253173291683197,
+      "allocations": 0,
+      "sha256": "d77924fa3dbb94b74414370f8723e69fbb61f2eaba07fa30b8cff083201da712",
+      "channels": [
+        {
+          "expected_hz": 1244.5079348883237,
+          "measured_hz": 1244.5079502512547,
+          "cents": 2.1371361741489037e-05,
+          "residual_dbc": -78.96302093627034,
+          "strongest_spur_dbc": -53.858252764243616,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_7",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500021755695343,
+      "allocations": 0,
+      "sha256": "1cfbf5c6cfd1a0afa22d7fe7fe4a388ce6ee763cca2a53eaebe9bc75f2bd1c8e",
+      "channels": [
+        {
+          "expected_hz": 1318.5102276514797,
+          "measured_hz": 1318.5102392733436,
+          "cents": 1.5259772591622165e-05,
+          "residual_dbc": -77.91455235993963,
+          "strongest_spur_dbc": -53.72765371297565,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_8",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25014692544937134,
+      "allocations": 0,
+      "sha256": "97deb9219fd35fa0381d126b67ae50bf0106d7c7865c412141c5afdf734b08c2",
+      "channels": [
+        {
+          "expected_hz": 1396.9129257320155,
+          "measured_hz": 1396.912821289959,
+          "cents": -0.00012943802569923037,
+          "residual_dbc": -74.72714251161767,
+          "strongest_spur_dbc": -53.92170203538987,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_9",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2501503527164459,
+      "allocations": 0,
+      "sha256": "f3598ec748a54e0e2cd9d380e14c7f5943e2798dce93263d354e1d98b66f4372",
+      "channels": [
+        {
+          "expected_hz": 1479.9776908465376,
+          "measured_hz": 1479.9937540096917,
+          "cents": 0.018790110314666892,
+          "residual_dbc": -43.69059722986972,
+          "strongest_spur_dbc": -52.712131961732055,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_10",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500004470348358,
+      "allocations": 0,
+      "sha256": "6fd53f465f8f0c71b82650126f8ffa70bee1289e07bc4f38561c4013ac1262e6",
+      "channels": [
+        {
+          "expected_hz": 1567.981743926997,
+          "measured_hz": 1567.9818579804682,
+          "cents": 0.00012592828108151928,
+          "residual_dbc": -79.4871298507291,
+          "strongest_spur_dbc": -53.716994951783484,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_11",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500048875808716,
+      "allocations": 0,
+      "sha256": "48affc2f0863d5f9b80e00130ba23c979c9e78713a16fe2396f246ec92c9e8ae",
+      "channels": [
+        {
+          "expected_hz": 1661.2187903197805,
+          "measured_hz": 1661.2184097140841,
+          "cents": -0.0003966471004654725,
+          "residual_dbc": -70.12892855510866,
+          "strongest_spur_dbc": -53.9135300676073,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_12",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2504851520061493,
+      "allocations": 0,
+      "sha256": "b1b8e05882bdc7d312ca27f01f9580d935be5d82757bb15501a409a3a397bf4d",
+      "channels": [
+        {
+          "expected_hz": 1760.0,
+          "measured_hz": 1760.0001471624125,
+          "cents": 0.00014475714132245243,
+          "residual_dbc": -74.79078279656248,
+          "strongest_spur_dbc": -53.8364248941507,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_13",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.260738730430603,
+      "allocations": 0,
+      "sha256": "b8ce36d14784f3a376a866e59e9c74b2a0febf8298b54a5edec565188bbc40b2",
+      "channels": [
+        {
+          "expected_hz": 1864.6550460723597,
+          "measured_hz": 1864.6831989829436,
+          "cents": 0.026138298100855672,
+          "residual_dbc": -39.37106583913927,
+          "strongest_spur_dbc": -48.68397298184327,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_14",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2755284011363983,
+      "allocations": 0,
+      "sha256": "81877d12b921a933a8fbef6000b454f4022c2b3aac93f56e080f19e842c6528a",
+      "channels": [
+        {
+          "expected_hz": 1975.5332050244965,
+          "measured_hz": 1975.5318687742708,
+          "cents": -0.0011710067262739883,
+          "residual_dbc": -81.9381162879425,
+          "strongest_spur_dbc": -53.93272898631679,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_15",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.29014018177986145,
+      "allocations": 0,
+      "sha256": "d01c951173b0ff8d329069bafb4edf034bc80342440151714d8f7a80e35a5f44",
+      "channels": [
+        {
+          "expected_hz": 2093.004522404789,
+          "measured_hz": 2093.0045098927526,
+          "cents": -1.034936289334655e-05,
+          "residual_dbc": -80.35226006144208,
+          "strongest_spur_dbc": -53.750148505801576,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_16",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3208395540714264,
+      "allocations": 0,
+      "sha256": "e7ac98525351617cc0731736d6d353e50149d9468e764ecfb991b57e02589e81",
+      "channels": [
+        {
+          "expected_hz": 2217.4610478149766,
+          "measured_hz": 2217.4927072026358,
+          "cents": 0.024717195676452256,
+          "residual_dbc": -42.630426714249936,
+          "strongest_spur_dbc": -49.51657886919047,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_17",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.36381760239601135,
+      "allocations": 0,
+      "sha256": "36c5c4db756e8dd39944cb4d5860e430cd366f44bb7ada2d2cc543286f269d6c",
+      "channels": [
+        {
+          "expected_hz": 2349.3181433392606,
+          "measured_hz": 2349.317100724592,
+          "cents": -0.0007683124654325673,
+          "residual_dbc": -72.85961384629705,
+          "strongest_spur_dbc": -53.911902093588225,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_18",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.35795408487319946,
+      "allocations": 0,
+      "sha256": "8f66789eb2b719e6ef38c749d9bfdc3609325ce0ac4452a037677dd2e8f7a29f",
+      "channels": [
+        {
+          "expected_hz": 2489.0158697766474,
+          "measured_hz": 2489.015778246257,
+          "cents": -6.366392957392084e-05,
+          "residual_dbc": -71.57524550811691,
+          "strongest_spur_dbc": -53.91944117114803,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_19",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25575125217437744,
+      "allocations": 0,
+      "sha256": "211b8bf6c573aae692f25e2af2ff26030a2f7691ed3a1e6f500915a1784b0ca0",
+      "channels": [
+        {
+          "expected_hz": 2637.0204553029594,
+          "measured_hz": 2637.019276031714,
+          "cents": -0.0007742052152547514,
+          "residual_dbc": -77.67040973872214,
+          "strongest_spur_dbc": -53.93041026094976,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_20",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25002139806747437,
+      "allocations": 0,
+      "sha256": "3c85f0839b9099c8ddb40dbf326a2b54f0a08d9cb4542f0f3aa42cb0b43c8ccc",
+      "channels": [
+        {
+          "expected_hz": 2793.825851464031,
+          "measured_hz": 2793.82600376131,
+          "cents": 9.437317902743518e-05,
+          "residual_dbc": -78.83749149177561,
+          "strongest_spur_dbc": -53.75321944470797,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_21",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3319275379180908,
+      "allocations": 0,
+      "sha256": "191bebb0a3e65b91d41fbe02dacba28ef6b9aad43ca1d10ec9bfbadab2b6c175",
+      "channels": [
+        {
+          "expected_hz": 2959.955381693075,
+          "measured_hz": 2959.988818813222,
+          "cents": 0.019556765719883414,
+          "residual_dbc": -46.65485512605591,
+          "strongest_spur_dbc": -47.86814933050333,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_22",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500002384185791,
+      "allocations": 0,
+      "sha256": "5730f4032ae30baa3c44ba5a1531da0adf4262127510940c87c68cd3fa00e99c",
+      "channels": [
+        {
+          "expected_hz": 3135.963487853994,
+          "measured_hz": 3135.963580761895,
+          "cents": 5.1290558805277196e-05,
+          "residual_dbc": -70.2205249217084,
+          "strongest_spur_dbc": -53.92500700546465,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_23",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.3021734356880188,
+      "allocations": 0,
+      "sha256": "38dc8c59d6d0c993bad6664394a860d4cf1d6453f3b6a4b1aea8cafe47da1d36",
+      "channels": [
+        {
+          "expected_hz": 3322.437580639561,
+          "measured_hz": 3322.4376330755595,
+          "cents": 2.732300699040354e-05,
+          "residual_dbc": -73.3529886419822,
+          "strongest_spur_dbc": -53.920022018802825,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "pitch_880_24",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500014305114746,
+      "allocations": 0,
+      "sha256": "fbcd5ddbf86a67a3d51e1eb73459ffe8ebf21c6e2158173879e768cc7622dc15",
+      "channels": [
+        {
+          "expected_hz": 3520.0,
+          "measured_hz": 3519.9997764756017,
+          "cents": -0.00010993552875023763,
+          "residual_dbc": -78.1688524117272,
+          "strongest_spur_dbc": -53.77229877074119,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_44100_-24_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.40464869141578674,
+      "allocations": 0,
+      "sha256": "9ad6737ab125825d066b127a4e5dbd58fbe2f58297e9a47ab8c0778fade5dd4c",
+      "channels": [
+        {
+          "expected_hz": 110.0,
+          "measured_hz": 109.98803123227147,
+          "cents": -0.18838059617509348,
+          "residual_dbc": -45.42837926922136,
+          "strongest_spur_dbc": -51.16020578004387,
+          "pass": true
+        },
+        {
+          "expected_hz": 165.0,
+          "measured_hz": 164.98204572284328,
+          "cents": -0.18839240724559714,
+          "residual_dbc": -41.9064640586228,
+          "strongest_spur_dbc": -50.03323831854001,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_44100_-24_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499999701976776,
+      "allocations": 0,
+      "sha256": "04444d92fa1a00a0564fc8504b6cc3510f2fd94e13d2a579f457e80177d96b74",
+      "channels": [
+        {
+          "expected_hz": 110.0,
+          "measured_hz": 109.99771579873386,
+          "cents": -0.03595025514370515,
+          "residual_dbc": -63.56708251967441,
+          "strongest_spur_dbc": -53.23724048127729,
+          "pass": true
+        },
+        {
+          "expected_hz": 110.0,
+          "measured_hz": 109.99771579873386,
+          "cents": -0.03595025514370515,
+          "residual_dbc": -63.56708251967441,
+          "strongest_spur_dbc": -53.23724048127729,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "stereo_44100_-12_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999994039535522,
+      "allocations": 0,
+      "sha256": "754489b2a0ccecb75e2b3a7d0d5177cbc5d88d02ad2d45066bd2e3260024f5bb",
+      "channels": [
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 220.00644068352412,
+          "cents": 0.05068257909922389,
+          "residual_dbc": -40.78924275047186,
+          "strongest_spur_dbc": -51.947235264550365,
+          "pass": true
+        },
+        {
+          "expected_hz": 330.0,
+          "measured_hz": 330.0096635767496,
+          "cents": 0.050695964101821506,
+          "residual_dbc": -37.2675533997154,
+          "strongest_spur_dbc": -50.9622248646341,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_44100_-12_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.24999995529651642,
+      "allocations": 0,
+      "sha256": "487a4fd614df487473760d90781fbdb64e12a786c398532f1df3009a93cd10ba",
+      "channels": [
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 220.00232629010583,
+          "cents": 0.01830605157562115,
+          "residual_dbc": -63.3258528906023,
+          "strongest_spur_dbc": -53.53710002797734,
+          "pass": true
+        },
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 220.00232629010583,
+          "cents": 0.01830605157562115,
+          "residual_dbc": -63.3258528906023,
+          "strongest_spur_dbc": -53.53710002797734,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "stereo_44100_7_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25039058923721313,
+      "allocations": 0,
+      "sha256": "66611176be5651a652e5d68db9f87e89799f877b5fd0bad44da1144bc1f1dfec",
+      "channels": [
+        {
+          "expected_hz": 659.2551138257398,
+          "measured_hz": 659.2058830720225,
+          "cents": -0.12928703592563834,
+          "residual_dbc": -35.35145269041274,
+          "strongest_spur_dbc": -45.453494594049744,
+          "pass": true
+        },
+        {
+          "expected_hz": 988.8826707386098,
+          "measured_hz": 988.8088244923267,
+          "cents": -0.12928723850892895,
+          "residual_dbc": -31.827984152160038,
+          "strongest_spur_dbc": -43.056268854689804,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_44100_7_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500016689300537,
+      "allocations": 0,
+      "sha256": "38d0ea8e8649483eec60394a78b862d49aca699cc806f7fd4ea535da32325b91",
+      "channels": [
+        {
+          "expected_hz": 659.2551138257398,
+          "measured_hz": 659.2550900710387,
+          "cents": -6.238093164909427e-05,
+          "residual_dbc": -84.19739516144077,
+          "strongest_spur_dbc": -53.928086100589844,
+          "pass": true
+        },
+        {
+          "expected_hz": 659.2551138257398,
+          "measured_hz": 659.2550900710387,
+          "cents": -6.238093164909427e-05,
+          "residual_dbc": -84.19739516144077,
+          "strongest_spur_dbc": -53.928086100589844,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "stereo_44100_12_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500447630882263,
+      "allocations": 0,
+      "sha256": "a5bf16660c4533fb4a56e921b8bbc10339ffa0fff8f8f844c9c9240f29ac1a65",
+      "channels": [
+        {
+          "expected_hz": 880.0,
+          "measured_hz": 880.0268751342142,
+          "cents": 0.052870951103951486,
+          "residual_dbc": -34.920707246978814,
+          "strongest_spur_dbc": -46.41705713104554,
+          "pass": true
+        },
+        {
+          "expected_hz": 1320.0,
+          "measured_hz": 1320.0403165040525,
+          "cents": 0.05287593838954958,
+          "residual_dbc": -31.397836446615752,
+          "strongest_spur_dbc": -44.18509641985111,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_44100_12_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25001734495162964,
+      "allocations": 0,
+      "sha256": "7747a89c11481ebd36c9f8d47febcbb62f55b206e5f394d9a23c59cb29057781",
+      "channels": [
+        {
+          "expected_hz": 880.0,
+          "measured_hz": 880.0007031480983,
+          "cents": 0.0013833107307740236,
+          "residual_dbc": -49.400099112550905,
+          "strongest_spur_dbc": -52.88971709306733,
+          "pass": true
+        },
+        {
+          "expected_hz": 880.0,
+          "measured_hz": 880.0007031480983,
+          "cents": 0.0013833107307740236,
+          "residual_dbc": -49.400099112550905,
+          "strongest_spur_dbc": -52.88971709306733,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "stereo_44100_24_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25546345114707947,
+      "allocations": 0,
+      "sha256": "f4ffc5ae8c01212fe412ccfbe7a76abba5ed43441d7fc976f4a3a750bda62c3e",
+      "channels": [
+        {
+          "expected_hz": 1760.0,
+          "measured_hz": 1760.016310431605,
+          "cents": 0.016043774834769944,
+          "residual_dbc": -37.035010887219265,
+          "strongest_spur_dbc": -49.49563581694732,
+          "pass": true
+        },
+        {
+          "expected_hz": 2640.0,
+          "measured_hz": 2640.0244627913266,
+          "cents": 0.016041901918590607,
+          "residual_dbc": -33.511670710890634,
+          "strongest_spur_dbc": -47.847325409861874,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_44100_24_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25011977553367615,
+      "allocations": 0,
+      "sha256": "5073e3954c3c982af61af0946f22991d0db09e69fbfe8c36ff20ed4e4057fe52",
+      "channels": [
+        {
+          "expected_hz": 1760.0,
+          "measured_hz": 1759.9978556750273,
+          "cents": -0.0021092787878992706,
+          "residual_dbc": -62.51915400191994,
+          "strongest_spur_dbc": -53.51814874256476,
+          "pass": true
+        },
+        {
+          "expected_hz": 1760.0,
+          "measured_hz": 1759.9978556750273,
+          "cents": -0.0021092787878992706,
+          "residual_dbc": -62.51915400191994,
+          "strongest_spur_dbc": -53.51814874256476,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "stereo_96000_-24_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.350894957780838,
+      "allocations": 0,
+      "sha256": "683a454f84884d88829dc5698a868c2f0db9c9f5d25f2cac429d6ae1d1419207",
+      "channels": [
+        {
+          "expected_hz": 110.0,
+          "measured_hz": 109.99795932054073,
+          "cents": -0.03211751394545131,
+          "residual_dbc": -64.0000221791744,
+          "strongest_spur_dbc": -53.31336060613566,
+          "pass": true
+        },
+        {
+          "expected_hz": 165.0,
+          "measured_hz": 164.9969395946264,
+          "cents": -0.03211107347448718,
+          "residual_dbc": -60.47774125498208,
+          "strongest_spur_dbc": -53.01539898782498,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_96000_-24_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.35853487253189087,
+      "allocations": 0,
+      "sha256": "9b11bc536ceab97b636b6b9bd8df738d879bebaa6266c66c5612ec86585db798",
+      "channels": [
+        {
+          "expected_hz": 110.0,
+          "measured_hz": 109.99998818920845,
+          "cents": -0.0001858840506042128,
+          "residual_dbc": -95.81611413322224,
+          "strongest_spur_dbc": -53.92644229298273,
+          "pass": true
+        },
+        {
+          "expected_hz": 110.0,
+          "measured_hz": 109.99998818920845,
+          "cents": -0.0001858840506042128,
+          "residual_dbc": -95.81611413322224,
+          "strongest_spur_dbc": -53.92644229298273,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "stereo_96000_-12_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25804340839385986,
+      "allocations": 0,
+      "sha256": "afef0834b52ae69c33d851f43f3d76411b391be93bb06c226f3a8e070cfc9d7d",
+      "channels": [
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 220.0020733645216,
+          "cents": 0.016315737916798523,
+          "residual_dbc": -63.90702736226446,
+          "strongest_spur_dbc": -53.537801387584,
+          "pass": true
+        },
+        {
+          "expected_hz": 330.0,
+          "measured_hz": 330.0031102352625,
+          "cents": 0.016316726704909933,
+          "residual_dbc": -60.38510275727772,
+          "strongest_spur_dbc": -53.3343034309559,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_96000_-12_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25,
+      "allocations": 0,
+      "sha256": "52921af1257165f3f92179f08536cd469808b061d89e80ac69c5cadd20d73af8",
+      "channels": [
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 220.00000746662153,
+          "cents": 5.875667823852679e-05,
+          "residual_dbc": -99.77265339807154,
+          "strongest_spur_dbc": -53.928401575132824,
+          "pass": true
+        },
+        {
+          "expected_hz": 220.0,
+          "measured_hz": 220.00000746662153,
+          "cents": 5.875667823852679e-05,
+          "residual_dbc": -99.77265339807154,
+          "strongest_spur_dbc": -53.928401575132824,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "stereo_96000_7_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.25353866815567017,
+      "allocations": 0,
+      "sha256": "e9c6ecb729f626deadb401bb6d73d9a4f62d12645b12672e17a41d6a33526ebc",
+      "channels": [
+        {
+          "expected_hz": 659.2551138257398,
+          "measured_hz": 659.2004352958055,
+          "cents": -0.1435942726966664,
+          "residual_dbc": -34.442974924954754,
+          "strongest_spur_dbc": -44.86136525050501,
+          "pass": true
+        },
+        {
+          "expected_hz": 988.8826707386098,
+          "measured_hz": 988.8006503659032,
+          "cents": -0.14359878602712856,
+          "residual_dbc": -30.919123925158747,
+          "strongest_spur_dbc": -42.378658794214815,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_96000_7_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500004768371582,
+      "allocations": 0,
+      "sha256": "1635e5345d2657f692fb72256aefb09c154412f086d98a9af0adc2cfe1429720",
+      "channels": [
+        {
+          "expected_hz": 659.2551138257398,
+          "measured_hz": 659.2551100409426,
+          "cents": -9.93905066176205e-06,
+          "residual_dbc": -96.8022114654087,
+          "strongest_spur_dbc": -53.936514475928874,
+          "pass": true
+        },
+        {
+          "expected_hz": 659.2551138257398,
+          "measured_hz": 659.2551100409426,
+          "cents": -9.93905066176205e-06,
+          "residual_dbc": -96.8022114654087,
+          "strongest_spur_dbc": -53.936514475928874,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "stereo_96000_12_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.28618064522743225,
+      "allocations": 0,
+      "sha256": "f3d54b0e2fbd0b924ed2bd4c73cc4e3d6052ba62b570a92e15d8339c5c98e26d",
+      "channels": [
+        {
+          "expected_hz": 880.0,
+          "measured_hz": 879.9978699974798,
+          "cents": -0.004190383352585875,
+          "residual_dbc": -63.81989811271771,
+          "strongest_spur_dbc": -53.897160360972755,
+          "pass": true
+        },
+        {
+          "expected_hz": 1320.0,
+          "measured_hz": 1319.9968051694082,
+          "cents": -0.004190156208274704,
+          "residual_dbc": -60.29833338416076,
+          "strongest_spur_dbc": -53.85798856904345,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_96000_12_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2499992698431015,
+      "allocations": 0,
+      "sha256": "11b81cc0a0335f7351e0523cb1df00177e2d80f1870b86acbdb0550b1de25d0d",
+      "channels": [
+        {
+          "expected_hz": 880.0,
+          "measured_hz": 879.9999795513844,
+          "cents": -4.022879541470368e-05,
+          "residual_dbc": -98.48462551839383,
+          "strongest_spur_dbc": -53.91824134243849,
+          "pass": true
+        },
+        {
+          "expected_hz": 880.0,
+          "measured_hz": 879.9999795513844,
+          "cents": -4.022879541470368e-05,
+          "residual_dbc": -98.48462551839383,
+          "strongest_spur_dbc": -53.91824134243849,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "stereo_96000_24_different",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.33874714374542236,
+      "allocations": 0,
+      "sha256": "a4e4b38a39e8642bb509737d089ffa3df4e6614c6df9102bdde69556ddb52bdb",
+      "channels": [
+        {
+          "expected_hz": 1760.0,
+          "measured_hz": 1759.9979002568036,
+          "cents": -0.0020654256161348164,
+          "residual_dbc": -63.69009768959977,
+          "strongest_spur_dbc": -53.526001194466836,
+          "pass": true
+        },
+        {
+          "expected_hz": 2640.0,
+          "measured_hz": 2639.9968506532405,
+          "cents": -0.002065249846411534,
+          "residual_dbc": -60.16824846438118,
+          "strongest_spur_dbc": -53.31696652489867,
+          "pass": true
+        }
+      ],
+      "pass": true
+    },
+    {
+      "case": "stereo_96000_24_same",
+      "type": "pitch",
+      "finite": true,
+      "peak": 0.2500078082084656,
+      "allocations": 0,
+      "sha256": "28a23bf7a89d1e59fe916009cb4b2a47f314b816dd84b9bd441d4429e132950f",
+      "channels": [
+        {
+          "expected_hz": 1760.0,
+          "measured_hz": 1760.000036505836,
+          "cents": 3.590917382831039e-05,
+          "residual_dbc": -97.29795536065134,
+          "strongest_spur_dbc": -53.93473525044349,
+          "pass": true
+        },
+        {
+          "expected_hz": 1760.0,
+          "measured_hz": 1760.000036505836,
+          "cents": 3.590917382831039e-05,
+          "residual_dbc": -97.29795536065134,
+          "strongest_spur_dbc": -53.93473525044349,
+          "pass": true
+        }
+      ],
+      "pass": true,
+      "identical_stereo": true
+    },
+    {
+      "case": "timing_44100_1",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "9f1d66af197f6b5f06f2768c2be2a87452fb13565226c674f57241acebe6f5a3",
+      "pass": true,
+      "first_nonzero": 44,
+      "requested_sample": 44
+    },
+    {
+      "case": "timing_44100_125",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "4bbccf4733ca7dc63ee92ed9fd9015a629d2d99fe30d85e73511c53df9b60457",
+      "pass": true,
+      "first_nonzero": 5513,
+      "requested_sample": 5513
+    },
+    {
+      "case": "timing_44100_500",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "55c2916649de95b8f42cc03e20e12ec24c955679da9f8b480913b0eea0876c22",
+      "pass": true,
+      "first_nonzero": 22050,
+      "requested_sample": 22050
+    },
+    {
+      "case": "timing_44100_4000",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "048e3ac10c8dbca467fe14f1f3a5829ef1e07b967d2c8a9bc557c4f0b5ea65a0",
+      "pass": true,
+      "first_nonzero": 176400,
+      "requested_sample": 176400
+    },
+    {
+      "case": "reverse_44100_50",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.24413377046585083,
+      "allocations": 0,
+      "sha256": "d30cb15174223cdd025ab4c0e00a61e1a9c08c05194ed5bd8632ee2282cef5cd",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 7718,
+      "capture_samples": 2204
+    },
+    {
+      "case": "reverse_44100_125",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.24413776397705078,
+      "allocations": 0,
+      "sha256": "40def4915e6ef05d2db1497fea3d310c98686a54bea2535a307b148c1ff6ade5",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 11026,
+      "capture_samples": 5512
+    },
+    {
+      "case": "reverse_44100_500",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.24414029717445374,
+      "allocations": 0,
+      "sha256": "d46394e47a53a753d1e9cc50e68449a372b6c684866fcf97e676d2df1ee63d96",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 27564,
+      "capture_samples": 22050
+    },
+    {
+      "case": "reverse_44100_2000",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.2441406100988388,
+      "allocations": 0,
+      "sha256": "d2656216e6160a55ca52d7e736ba546e14e94fed56e790ee28c19df000b91e47",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 93714,
+      "capture_samples": 88200
+    },
+    {
+      "case": "timing_48000_1",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "ee424d1e481f99a1a4e70a6582d83e63b738c296cb67101ed6cb21f90b5e6d65",
+      "pass": true,
+      "first_nonzero": 48,
+      "requested_sample": 48
+    },
+    {
+      "case": "timing_48000_125",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "e5588a9d79ce081ff3bc053e16e423c5216b45e0fe81e2cba10e37855d42ee75",
+      "pass": true,
+      "first_nonzero": 6000,
+      "requested_sample": 6000
+    },
+    {
+      "case": "timing_48000_500",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "aa549253c1ff0511645edfadd26a10a74fb5687d0354e3f6eb646172ef0af80c",
+      "pass": true,
+      "first_nonzero": 24000,
+      "requested_sample": 24000
+    },
+    {
+      "case": "timing_48000_4000",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "78e39b1e4a0475543dadc3f13ea50f1835e46de2983b48e53e51ffefbdd6f343",
+      "pass": true,
+      "first_nonzero": 192000,
+      "requested_sample": 192000
+    },
+    {
+      "case": "reverse_48000_50",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.24411384761333466,
+      "allocations": 0,
+      "sha256": "335fa1e2fe63cdac944674e9c9501cb5ec1fd59fbb71b7aee66d874c00b4eb5a",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 8401,
+      "capture_samples": 2400
+    },
+    {
+      "case": "reverse_48000_125",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.24414055049419403,
+      "allocations": 0,
+      "sha256": "6ee8dbf90ceafeb1a888437c4e14506db0d6dd282fb2b3fc5bd29f6d9e9e32d3",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 12001,
+      "capture_samples": 6000
+    },
+    {
+      "case": "reverse_48000_500",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.244140625,
+      "allocations": 0,
+      "sha256": "8b1b801b051a3523b195f9106573069cb869286d04f04badf0cf99a600f97d51",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 30001,
+      "capture_samples": 24000
+    },
+    {
+      "case": "reverse_48000_2000",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.2441405951976776,
+      "allocations": 0,
+      "sha256": "12f83fdbbae44927ed1cf09b6f3655c862c9c5a4572dd5a348b529e1a59c54e2",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 102001,
+      "capture_samples": 96000
+    },
+    {
+      "case": "timing_96000_1",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "828f15773b1e9d6c9e6b0e7bb5539bdb86d150e182e7f2c2de888d7f63ad0567",
+      "pass": true,
+      "first_nonzero": 96,
+      "requested_sample": 96
+    },
+    {
+      "case": "timing_96000_125",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "9bd6d97a82f8db69c2561f5f4b6fc7fad195536a485708891c696f37251bec0b",
+      "pass": true,
+      "first_nonzero": 12000,
+      "requested_sample": 12000
+    },
+    {
+      "case": "timing_96000_500",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "02037e54103ab2fce09c13729bceb592daa36ff92ae2afc1686e1d7f929d1816",
+      "pass": true,
+      "first_nonzero": 48000,
+      "requested_sample": 48000
+    },
+    {
+      "case": "timing_96000_4000",
+      "type": "timing",
+      "finite": true,
+      "peak": 0.5,
+      "allocations": 0,
+      "sha256": "4c690b1649d8991f4d2054fff25471f6ca13e4d8db87da38bf67f59c491ef857",
+      "pass": true,
+      "first_nonzero": 384000,
+      "requested_sample": 384000
+    },
+    {
+      "case": "reverse_96000_50",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.2441202998161316,
+      "allocations": 0,
+      "sha256": "f7870c3fefc8f39e8c75aaa123e1bdc712c173e72146942243741113bd3c95a7",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 16801,
+      "capture_samples": 4800
+    },
+    {
+      "case": "reverse_96000_125",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.244140625,
+      "allocations": 0,
+      "sha256": "2d11754085e55d5041af9116a3d39c1eb2939cf6a18d91c1ff8688a8a1fb867a",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 24001,
+      "capture_samples": 12000
+    },
+    {
+      "case": "reverse_96000_500",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.244140625,
+      "allocations": 0,
+      "sha256": "b92d3b2b8db5ad3d8ba82df1bf5b4e912a83fd510c98a64b722a6667cb48ae5f",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 60001,
+      "capture_samples": 48000
+    },
+    {
+      "case": "reverse_96000_2000",
+      "type": "reverse",
+      "finite": true,
+      "peak": 0.244140625,
+      "allocations": 0,
+      "sha256": "09a1a6e2de29e96f95813ab8dd729863da56fe886c8db209808b0609e5710c92",
+      "max_absolute_error": 0.0,
+      "pass": true,
+      "first_nonzero": 204001,
+      "capture_samples": 192000
+    },
+    {
+      "case": "blocks_pitch_1_1",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "f99b1f03ff5acdd533bf8487266ec4806dcf81a4b25841540ee5f33236943e46",
+      "pass": true
+    },
+    {
+      "case": "blocks_pitch_1_64",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "f99b1f03ff5acdd533bf8487266ec4806dcf81a4b25841540ee5f33236943e46",
+      "pass": true
+    },
+    {
+      "case": "blocks_pitch_1_127",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "f99b1f03ff5acdd533bf8487266ec4806dcf81a4b25841540ee5f33236943e46",
+      "pass": true
+    },
+    {
+      "case": "blocks_pitch_1_512",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "f99b1f03ff5acdd533bf8487266ec4806dcf81a4b25841540ee5f33236943e46",
+      "pass": true
+    },
+    {
+      "case": "blocks_pitch_1_4096",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "f99b1f03ff5acdd533bf8487266ec4806dcf81a4b25841540ee5f33236943e46",
+      "pass": true
+    },
+    {
+      "case": "blocks_pitch_2_1",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "a500070c88a8f4c98d8d85731ebfa752b42325b1ecfe351760368804ce652cbd",
+      "pass": true
+    },
+    {
+      "case": "blocks_pitch_2_64",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "a500070c88a8f4c98d8d85731ebfa752b42325b1ecfe351760368804ce652cbd",
+      "pass": true
+    },
+    {
+      "case": "blocks_pitch_2_127",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "a500070c88a8f4c98d8d85731ebfa752b42325b1ecfe351760368804ce652cbd",
+      "pass": true
+    },
+    {
+      "case": "blocks_pitch_2_512",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "a500070c88a8f4c98d8d85731ebfa752b42325b1ecfe351760368804ce652cbd",
+      "pass": true
+    },
+    {
+      "case": "blocks_pitch_2_4096",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.18175293505191803,
+      "allocations": 0,
+      "sha256": "a500070c88a8f4c98d8d85731ebfa752b42325b1ecfe351760368804ce652cbd",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_1_1",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "2effe6ed6f7ef05c69d5fdcad5b9e9f2deff925f0b67180eabf5f8a194be90c1",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_1_64",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "2effe6ed6f7ef05c69d5fdcad5b9e9f2deff925f0b67180eabf5f8a194be90c1",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_1_127",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "2effe6ed6f7ef05c69d5fdcad5b9e9f2deff925f0b67180eabf5f8a194be90c1",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_1_512",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "2effe6ed6f7ef05c69d5fdcad5b9e9f2deff925f0b67180eabf5f8a194be90c1",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_1_4096",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "2effe6ed6f7ef05c69d5fdcad5b9e9f2deff925f0b67180eabf5f8a194be90c1",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_2_1",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "d1b718ef1f84a28f470828bc4c5a57620baa38a4dd283c830c56f18b90d00934",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_2_64",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "d1b718ef1f84a28f470828bc4c5a57620baa38a4dd283c830c56f18b90d00934",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_2_127",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "d1b718ef1f84a28f470828bc4c5a57620baa38a4dd283c830c56f18b90d00934",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_2_512",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "d1b718ef1f84a28f470828bc4c5a57620baa38a4dd283c830c56f18b90d00934",
+      "pass": true
+    },
+    {
+      "case": "blocks_reverse_2_4096",
+      "type": "determinism",
+      "finite": true,
+      "peak": 0.12789757549762726,
+      "allocations": 0,
+      "sha256": "d1b718ef1f84a28f470828bc4c5a57620baa38a4dd283c830c56f18b90d00934",
+      "pass": true
+    },
+    {
+      "case": "transient_-24",
+      "type": "transient",
+      "finite": true,
+      "peak": 0.44999897480010986,
+      "allocations": 0,
+      "sha256": "66b798bf448b23fa977e74f501d3cfd3f3613fca775dc8ec3d805b1e572ecf5b",
+      "first_nonzero": 5808,
+      "last_above_minus140_dbfs": 6191,
+      "energy_relative_input_db": 5.509702213878347
+    },
+    {
+      "case": "transient_-12",
+      "type": "transient",
+      "finite": true,
+      "peak": 0.44999897480010986,
+      "allocations": 0,
+      "sha256": "ab788744cc7bd9be2fd5e364c405dc47c7c016a91c22105af2034c00d13c23ce",
+      "first_nonzero": 5904,
+      "last_above_minus140_dbfs": 6095,
+      "energy_relative_input_db": 2.4994050372126875
+    },
+    {
+      "case": "transient_7",
+      "type": "transient",
+      "finite": true,
+      "peak": 0.3003385663032532,
+      "allocations": 0,
+      "sha256": "85e041e3704519b5ecc715266460aeee1069ed77a874971afe1897b1885ebd8f",
+      "first_nonzero": 5968,
+      "last_above_minus140_dbfs": 6032,
+      "energy_relative_input_db": -4.049693667369429
+    },
+    {
+      "case": "transient_12",
+      "type": "transient",
+      "finite": true,
+      "peak": 0.22499911487102509,
+      "allocations": 0,
+      "sha256": "f4d09d7a2ffd8ad4f3891738b0e1292f0d9f02703dee9f70d318d408d795deaa",
+      "first_nonzero": 5976,
+      "last_above_minus140_dbfs": 6023,
+      "energy_relative_input_db": -6.585447410947798
+    },
+    {
+      "case": "transient_24",
+      "type": "transient",
+      "finite": true,
+      "peak": 0.11250068992376328,
+      "allocations": 0,
+      "sha256": "0658d8097d9f096511cc55b7a0fb6a38501a3eed8f0603b971efeb223798a287",
+      "first_nonzero": 5988,
+      "last_above_minus140_dbfs": 6011,
+      "energy_relative_input_db": -12.70931081570555
+    },
+    {
+      "case": "out_of_band_10k_plus24",
+      "type": "alias",
+      "finite": true,
+      "peak": 0.027617594227194786,
+      "allocations": 0,
+      "sha256": "02a5da2311359640f1c03c7ffb362da21cf9c2a1b6244bb8378d0b10ac9ff552",
+      "out_of_band_output_dbr": -83.21541830643199
+    }
+  ]
+}

@@ -5,7 +5,7 @@
 
 #include <juce_audio_processors/juce_audio_processors.h>
 
-#include "DSP/LayerSnapshot.h"
+#include "DSP/EchoSettings.h"
 
 namespace hpeq::standalone
 {
