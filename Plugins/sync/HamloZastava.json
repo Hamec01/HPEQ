@@ -1,0 +1,13 @@
+{
+  "plugin": "HamloZastava",
+  "version": "0.2.0",
+  "status": "Committed source snapshot; see plugin reports for release/listening limits",
+  "source_commit": "ccc1de21b095acc6b424d00c78122acd8d4fa748",
+  "source_tree": "bcf48c0145c13c5e1bea0a1fd4acb6ba4069485e",
+  "source_branch": "master",
+  "hpeq_branch": "plugins/hamlozastava",
+  "prefix": "Plugins/HamloZastava",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "sync_date": "2026-11-03",
+  "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
+}
