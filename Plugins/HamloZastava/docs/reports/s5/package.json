@@ -1,0 +1,11 @@
+{
+  "zip_dll_exact": true,
+  "dll_sha256": "645ac589fa7903033057e8973dd7ae55e115f4e865711d9640cae800f9a25a5c",
+  "zip_sha256": "a39f5305fc4b842c23afba29a6bbee3ec7043d9be0d226ec94cdf825c1c96761",
+  "installed_plugin_changed": false,
+  "version": "0.2.0",
+  "bundle_files": 2,
+  "zip": "E:\\HamloZastava\\dist\\HamloZastava-0.2.0-win64-vst3.zip",
+  "installer": false,
+  "release": "E:\\HamloZastava\\dist\\HamloZastava-0.2.0-VST3"
+}

@@ -7,6 +7,7 @@
 
 #include "Standalone/ModulePluginProcessor.h"
 #include "UI/PresetScreen.h"
+#include "UI/ModernZastavaPanel.h"
 
 namespace hpeq::standalone
 {
@@ -21,6 +22,9 @@ public:
     void parentHierarchyChanged() override;
     ui::PresetScreen& getPresetScreen() noexcept { return *presets; }
     juce::Component* getPanel() noexcept { return panel.get(); }
+    ui::ModernZastavaPanel* getModernPanel() noexcept { return modernPanel.get(); }
+    void showView(int);
+    void refreshEditor();
 
 private:
     template <typename Panel>
@@ -33,6 +37,10 @@ private:
 
     ModulePluginProcessor& processor;
     std::unique_ptr<juce::Component> panel;
+    std::unique_ptr<ui::ModernZastavaPanel> modernPanel;
+    std::array<juce::TextButton,3> navigation;
+    std::unique_ptr<juce::TooltipWindow> tooltip;
+    int lastEngine=1,lastSeenEngine=-1;
     std::unique_ptr<ui::PresetScreen> presets;
     std::function<void()> refreshPanel;
     juce::RangedAudioParameter* activeGesture = nullptr;
