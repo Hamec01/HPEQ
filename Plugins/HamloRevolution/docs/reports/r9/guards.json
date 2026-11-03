@@ -1,0 +1,18 @@
+[
+  {
+    "guard": "source",
+    "rejected": true
+  },
+  {
+    "guard": "reports",
+    "rejected": true
+  },
+  {
+    "guard": "methods",
+    "rejected": true
+  },
+  {
+    "guard": "artifacts",
+    "rejected": true
+  }
+]

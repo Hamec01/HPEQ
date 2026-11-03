@@ -1,0 +1,43 @@
+Random seed: 0x598d88
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Sample fixture is written successfully...
+Completed tests in Sample workspace R9 / Sample fixture is written successfully
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Matching-rate load is exact; input mode does not touch host audio...
+Completed tests in Sample workspace R9 / Matching-rate load is exact; input mode does not touch host audio
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Invalid, nonfinite and too-long files preserve the previous source...
+Completed tests in Sample workspace R9 / Invalid, nonfinite and too-long files preserve the previous source
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Mono resampling preserves pitch, duration, channel identity and finite output...
+Completed tests in Sample workspace R9 / Mono resampling preserves pitch, duration, channel identity and finite output
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Downsampling removes out-of-band input, rather than folding into16kHz...
+Downsampling residual=-112.887 dBFS
+Completed tests in Sample workspace R9 / Downsampling removes out-of-band input, rather than folding into16kHz
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Rate changes use cached source on the worker and stop playback...
+Completed tests in Sample workspace R9 / Rate changes use cached source on the worker and stop playback
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Sample playback through actual sequencer is exact across callback schedules...
+Completed tests in Sample workspace R9 / Sample playback through actual sequencer is exact across callback schedules
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / 32-bit float export is the actual offline sequencer output, with selected tail...
+Completed tests in Sample workspace R9 / 32-bit float export is the actual offline sequencer output, with selected tail
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Float WAV metadata and headroom are preserved at Mix0...
+Completed tests in Sample workspace R9 / Float WAV metadata and headroom are preserved at Mix0
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Export failure preserves files; source cannot be overwritten; state load stops audition...
+Completed tests in Sample workspace R9 / Export failure preserves files; source cannot be overwritten; state load stops audition
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Bounded audio handoff remains finite under repeated loads and cancellation...
+Completed tests in Sample workspace R9 / Bounded audio handoff remains finite under repeated loads and cancellation
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / BOLD is explicit, preserves genre, writes strong full-band settings...
+Completed tests in Sample workspace R9 / BOLD is explicit, preserves genre, writes strong full-band settings
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Main-page file drop and toolbar controls are reachable without moving preset screen...
+Completed tests in Sample workspace R9 / Main-page file drop and toolbar controls are reachable without moving preset screen
+
+HamloRevolution_Tests: 179 expectations passed, 0 failed

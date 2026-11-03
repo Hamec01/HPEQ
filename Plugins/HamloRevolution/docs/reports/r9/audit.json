@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "native": 1286,
+  "sample_workspace": 190,
+  "paired_renders": 8,
+  "pluginval_levels": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "steinberg": 537,
+  "import_alias_dbfs": -112.887,
+  "bold_drums_delta_db": 4.244812189877763,
+  "rejection_guards": 4
+}

@@ -24,7 +24,7 @@ constexpr double kBypassRampSeconds = 0.02;
 const juce::Identifier kRevolutionTag { "REVOLUTION" };
 }
 
-ModulePluginProcessor::ModulePluginProcessor(ModuleKind moduleKind)
+ModulePluginProcessor::ModulePluginProcessor(ModuleKind moduleKind,bool offline)
     : juce::AudioProcessor(BusesProperties()
                                .withInput("Input", juce::AudioChannelSet::stereo(), true)
                                .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
@@ -46,13 +46,17 @@ ModulePluginProcessor::ModulePluginProcessor(ModuleKind moduleKind)
     if (kind == ModuleKind::Revolution) // as presetBaseModule: a Musical pattern from seed 1
     {
         resetScenes({ revolution::generate({}, 1, revolution::Musical), {}, 1 });
-        follower = std::make_unique<Follower>(*this);
+        if(!offline){follower=std::make_unique<Follower>(*this);samplePlayer=std::make_unique<RevolutionSample>();}
+        for(const auto& spec:getSpec().parameters)parameters.addParameterListener(spec.id,this);
+        parameters.addParameterListener("bypass",this);
     }
 }
 
 ModulePluginProcessor::~ModulePluginProcessor()
 {
+    samplePlayer.reset();
     follower.reset();
+    if(kind==ModuleKind::Revolution){for(const auto& spec:getSpec().parameters)parameters.removeParameterListener(spec.id,this);parameters.removeParameterListener("bypass",this);}
 }
 
 revolution::simple::Settings ModulePluginProcessor::simpleSettings() const
@@ -133,6 +137,26 @@ void ModulePluginProcessor::generateSimple(bool newSeed)
     setRevolutionState(state);
     const juce::ScopedLock lock(revolutionLock);
     simpleResult = result;
+}
+
+std::uint64_t ModulePluginProcessor::sampleRevision() const noexcept
+{
+    return editRevision.load(std::memory_order_relaxed)^revolution::mix64(static_cast<std::uint64_t>(getHostBpm()*1000000))
+        ^revolution::mix64(static_cast<std::uint64_t>(currentSampleRate.load()))
+        ^revolution::mix64(0x52494e00ull+static_cast<std::uint64_t>(getTotalNumInputChannels()));
+}
+bool ModulePluginProcessor::renderSample(const juce::File& file,int tailSeconds)
+{
+    if(!samplePlayer)return false;
+    juce::MemoryBlock state;getStateInformation(state);
+    return samplePlayer->render(file,state,sampleRevision(),getHostBpm(),tailSeconds,getTotalNumInputChannels());
+}
+void ModulePluginProcessor::makeBold()
+{
+    setParameterValue("simpleLock",0);setParameterValue("simpleTarget",3);
+    setParameterValue("simpleIntent",.95);setParameterValue("simpleAmount",1);
+    setParameterValue("simpleVariation",.65);setParameterValue("simpleFill",1);setParameterValue("mix",1);
+    generateSimple(false);
 }
 
 void ModulePluginProcessor::generateLane(int lane)
@@ -266,6 +290,7 @@ void ModulePluginProcessor::resetScenes(const RevolutionState& first)
 
 void ModulePluginProcessor::publishScene(int index) noexcept
 {
+    editRevision.fetch_add(1,std::memory_order_relaxed);
     const auto& state = scenes[sceneUsed[static_cast<size_t>(index)] ? static_cast<size_t>(index) : 0];
     auto& out = sceneSlots[static_cast<size_t>(index)];
     for (int e = 0; e < revolution::kEngines; ++e)
@@ -292,6 +317,7 @@ void ModulePluginProcessor::publishScene(int index) noexcept
 
 void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSize)
 {
+    if(samplePlayer)samplePlayer->prepare(sampleRate);
     maximumBlockSize = juce::jmax(1, expectedBlockSize);
     currentSampleRate.store(sampleRate, std::memory_order_relaxed);
     engine.prepare(sampleRate, maximumBlockSize);
@@ -402,7 +428,12 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     engine.publish(snapshot);
     engine.update();
     const int extraWetDelay = juce::jmax(0, fixedLatency - engine.getLatencySamples());
-    const auto transport = currentTransport();
+    auto transport = currentTransport();
+    if(samplePlayer)
+    {
+        const auto local=samplePlayer->fill(buffer,channels);
+        if(local.active){transport.playing=true;transport.hasPosition=true;transport.ppqAtBlockStart=local.frame*transport.bpm/(60.0*currentSampleRate.load());}
+    }
     if (kind == ModuleKind::Revolution && captureRing.getNumSamples() > 0)
     {
         // RISE / FILL: the input as it came in, and where this block sits in the bar
@@ -567,17 +598,20 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
     folder.createDirectory();
     const auto name = juce::String(transitionKind == dsp::transition::Rise ? "Rise" : "Fill") + "_" + juce::String(juce::roundToInt(s.bpm)) + "bpm_"
                       + juce::String(s.bars) + "bars_" + juce::String::toHexString(static_cast<juce::int64>(s.seed & 0xffffffu)) + ".wav";
-    t.file = folder.getChildFile(name);
-    t.file.deleteFile();
+    // A WAV already dragged into a host must never change on a later knob move.
+    t.file=folder.getNonexistentChildFile(name.upToLastOccurrenceOf(".",false,false),".wav",false);
+    bool written=false;
     {
+        juce::TemporaryFile temporary(t.file);
         juce::WavAudioFormat wav;
-        auto stream = t.file.createOutputStream();
-        if (stream != nullptr)
+        auto stream=temporary.getFile().createOutputStream();
+        if(stream)
         {
-            const auto options = juce::AudioFormatWriterOptions {}.withSampleRate(s.sampleRate).withNumChannels(2).withBitsPerSample(24);
+            const auto options=juce::AudioFormatWriterOptions{}.withSampleRate(s.sampleRate).withNumChannels(2).withBitsPerSample(24);
             std::unique_ptr<juce::OutputStream> owned(stream.release());
-            if (auto writer = wav.createWriterFor(owned, options))
-                writer->writeFromAudioSampleBuffer(clip, 0, clip.getNumSamples());
+            auto writer=wav.createWriterFor(owned,options);
+            if(writer&&writer->writeFromAudioSampleBuffer(clip,0,clip.getNumSamples()))
+            {writer.reset();written=temporary.overwriteTargetFileWithTemporary();}
         }
     }
     // the clip for the preview: the buffer the audio thread is not playing
@@ -587,7 +621,7 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
         juce::Thread::yield();
     clips[static_cast<size_t>(next)].makeCopyOf(clip);
     clipActive.store(next);
-    t.valid = true;
+    t.valid = written&&clip.getNumSamples()>0;
     const juce::ScopedLock lock(revolutionLock);
     transitionState = t;
     return t;
@@ -720,6 +754,7 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
 
 void ModulePluginProcessor::setStateInformation(const void* data, int size)
 {
+    if(samplePlayer)samplePlayer->play(false);
     if (auto xml = getXmlFromBinary(data, size))
         if (xml->hasTagName(parameters.state.getType().toString()))
         {
