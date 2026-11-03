@@ -14,13 +14,14 @@
 #include "DSP/Ramp.h"
 #include "Link/HamloLinkClient.h"
 #include "Standalone/ModuleVariant.h"
+#include "Standalone/RevolutionSample.h"
 
 namespace hpeq::standalone
 {
-class ModulePluginProcessor final : public juce::AudioProcessor
+class ModulePluginProcessor final : public juce::AudioProcessor, private juce::AudioProcessorValueTreeState::Listener
 {
 public:
-    explicit ModulePluginProcessor(ModuleKind);
+    explicit ModulePluginProcessor(ModuleKind, bool offline=false);
     ~ModulePluginProcessor() override;
 
     void prepareToPlay(double sampleRate, int maximumExpectedSamplesPerBlock) override;
@@ -130,7 +131,14 @@ public:
     // R6: the genre preset a program number loads (programs after Default and HPEQ's), else nullptr
     const revolution::GenrePreset* genrePresetFor(int program) const;
 
+RevolutionSample* sampleWorkspace() noexcept {return samplePlayer.get();}
+    std::uint64_t sampleRevision() const noexcept;
+    bool renderSample(const juce::File&,int tailSeconds);
+    void makeBold();
 private:
+    void parameterChanged(const juce::String&,float) override { editRevision.fetch_add(1,std::memory_order_relaxed); }
+    std::atomic<std::uint64_t> editRevision {0};
+    std::unique_ptr<RevolutionSample> samplePlayer;
     dsp::Transport currentTransport() noexcept;
 
     ModuleKind kind;

@@ -1,0 +1,58 @@
+[
+  {
+    "material": "drums",
+    "recipe": 0,
+    "delta_db": -5.292544161641778,
+    "pcm_sha256": "0df6a22887bd74dace0244f8867bc820140ee198844cee6abfe25a2d08ddd66f",
+    "latency": 0
+  },
+  {
+    "material": "drums",
+    "recipe": 1,
+    "delta_db": 1.923389521310539,
+    "pcm_sha256": "306e2252dd83969f9c3c556170d696fd57bf40c33610c199436665c28a760aeb",
+    "latency": 0
+  },
+  {
+    "material": "drums",
+    "recipe": 2,
+    "delta_db": -3.795138423637099,
+    "pcm_sha256": "7c8003a1fa86bc5766089b2e84659e65956eff9de12568e4ad1196edcd70c561",
+    "latency": 0
+  },
+  {
+    "material": "drums",
+    "recipe": 3,
+    "delta_db": 4.244812189877763,
+    "pcm_sha256": "957b7574a13300dc2052c3c1ffaaa6625f5a7beaceff61a07631ad551db0ebd5",
+    "latency": 0
+  },
+  {
+    "material": "80Hz bass",
+    "recipe": 0,
+    "delta_db": -3.293346491224105,
+    "pcm_sha256": "517ede17ec82148e5023b6a93b8464b436f8db40f483d52e7d40b33263101fb5",
+    "latency": 0
+  },
+  {
+    "material": "80Hz bass",
+    "recipe": 1,
+    "delta_db": 5.716177925660869,
+    "pcm_sha256": "ed4f8f51f9781c659cd22274376b7e8273038563a739b67cb174289e1111653b",
+    "latency": 0
+  },
+  {
+    "material": "80Hz bass",
+    "recipe": 2,
+    "delta_db": -7.834006401811382,
+    "pcm_sha256": "030a55125ab549b66c2d9f19fd2f9dc98506b8e2f6f27f9ade5b688fa9a161f2",
+    "latency": 0
+  },
+  {
+    "material": "80Hz bass",
+    "recipe": 3,
+    "delta_db": -0.022101376243049,
+    "pcm_sha256": "94775bbac0d47dae8e232adcdc1f363a3693603cd2e4ecbbbe59192028b5b35d",
+    "latency": 0
+  }
+]

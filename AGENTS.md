@@ -6,6 +6,36 @@
 
 ---
 
+## Current checkpoint: Revolution R9 / 0.2.1 complete (2026-11-03)
+
+Apply efficient-staged-work; no subagents. Current work is E:/HamloRevolution,
+not old Mag/Revolution design-only TODOs below. No HPEQ/HPDG edits, installed-copy
+replacement, installer, push/subtree or claimed model switch.
+
+Owner requested a weak-effect audit plus direct sample load, WAV export and
+incoming/outgoing drag. Completed: shared sample toolbar on SIMPLE/ADVANCED,
+local-clock audition/loop, worker decode/resample/offline bounce,32f mono/stereo
+WAV with0/2/4/8s tail, current-result drag; toolbar adapts to RISE/FILL's separate
+24-bit workflow. Source workspace is temporary and not in project audio state.
+Old presets/parameters/engine/generator unchanged; explicit BOLD selects a
+strong FULL/Chaos/everybar100%recipe. TOPS bass modulation measured0.179dB vs
+FULL6.811dB on80Hz probe; subtraction alone was misleading due to filter phase.
+
+1286native/190new workspace checks pass;8paired renders exact; import alias
+probe-112.887dBFS; zero measured audio C++allocations and block1/64/127/512/4096
+PCM exact. pluginval5..10/Steinberg537 pass on release DLL. Mono export, float
+headroom, stale results, rate changes, cancellation, source/file protection,
+transition file immutability and resize/drop routes tested. Snapshot inspection
+includes main/advanced/transition/minimum. No manual FL/Explorer drag claim.
+
+Report docs/reports/r9/REPORT.md; receipt acceptance.json; replay Tools/verify_r9.py.
+Authoritative native_release,after_release,before_v2,validators_release,
+screens/*_release; *_final* are intermediate. Sources/binaries before:
+out/r9/baseline; final:out/r9/accepted. ZIP/SHA256 in dist. Installed VST untouched.
+No active jobs after final verification. Local stage commit follows the handoff.
+Next: owner listening/OS drag feedback, then only requested work. See
+ docs/NEXT_STAGE.md for exact APIs/commands/caveats. Model/effort not changed.
+
 ## 1. Продукт и владелец
 
 - Владелец — продюсер (Boom Bap / Trap / Techno / DnB), автор HPDG (генератор барабанов, `C:\DRUMENGINE`) и HPEQ

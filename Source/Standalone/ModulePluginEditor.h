@@ -9,10 +9,11 @@
 #include "UI/HamloRevolutionSimplePage.h"
 #include "UI/HamloRevolutionTransitionPage.h"
 #include "UI/PresetScreen.h"
+#include "UI/RevolutionSampleBar.h"
 
 namespace hpeq::standalone
 {
-class ModulePluginEditor final : public juce::AudioProcessorEditor, private juce::Timer
+class ModulePluginEditor final : public juce::AudioProcessorEditor, private juce::Timer, public juce::FileDragAndDropTarget
 {
 public:
     explicit ModulePluginEditor(ModulePluginProcessor&);
@@ -26,7 +27,11 @@ public:
     ui::HamloRevolutionSimplePage* getSimplePage() noexcept { return simplePage.get(); } // R4: HamloRevolution only
     ui::HamloRevolutionTransitionPage* getTransitionPage() noexcept { return transitionPage.get(); } // RISE / FILL
 
+bool isInterestedInFileDrag(const juce::StringArray& files) override {return sampleBar&&sampleBar->isInterestedInFileDrag(files);}
+    void filesDropped(const juce::StringArray& files,int,int) override {if(sampleBar)sampleBar->filesDropped(files,0,0);}
+    ui::RevolutionSampleBar* getSampleBar() noexcept {return sampleBar.get();}
 private:
+    std::unique_ptr<ui::RevolutionSampleBar> sampleBar;
     template <typename Panel>
     void installPanel(std::unique_ptr<Panel>);
     void beginGesture(const juce::String& id);
