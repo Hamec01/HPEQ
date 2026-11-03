@@ -1,0 +1,13 @@
+{
+  "plugin": "HamloEcho",
+  "version": "0.2.2",
+  "status": "Committed source snapshot; see plugin reports for release/listening limits",
+  "source_commit": "00dedb88cc3d4420fd6ba641ad7d710400e22c24",
+  "source_tree": "29a00b5c04ca5503e3dce1ea377b09f7bc805930",
+  "source_branch": "master",
+  "hpeq_branch": "plugins/hamloecho",
+  "prefix": "Plugins/HamloEcho",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "sync_date": "2026-11-03",
+  "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
+}
