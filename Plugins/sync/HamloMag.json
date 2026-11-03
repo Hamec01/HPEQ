@@ -1,0 +1,13 @@
+{
+  "plugin": "HamloMag",
+  "version": "0.2.1",
+  "status": "Committed source snapshot; see plugin reports for release/listening limits",
+  "source_commit": "c5dcd10dcfdd8d9248e4b06b73114b9eb3b2b5d3",
+  "source_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+  "source_branch": "master",
+  "hpeq_branch": "plugins/hamlomag",
+  "prefix": "Plugins/HamloMag",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "sync_date": "2026-11-03",
+  "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
+}
