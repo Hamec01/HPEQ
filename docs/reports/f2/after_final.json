@@ -1,0 +1,1627 @@
+{
+  "implemented": true,
+  "source_id": "cac56515a0a6bf44b2fc5340c5397d35936fdb75057a66c24ae8b2a9c524fbda",
+  "method_id": "e2198bccc5dc75a1be85fa2544cae08f4424744bb8e243149689884dae4ef6e1",
+  "checks": [
+    {
+      "goal": "K12",
+      "name": "neutral_8000_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_8000_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_8000_1",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_8000_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_8000_2_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_8000_2",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_44100_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_44100_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_44100_1",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_44100_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_44100_2_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_44100_2",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_48000_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_48000_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_48000_1",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_48000_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_48000_2_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_48000_2",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_96000_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_96000_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_96000_1",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_96000_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_96000_2_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_96000_2",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_192000_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_192000_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_192000_1",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_192000_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "neutral_192000_2_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "neutral_192000_2",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_-60_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_-60_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_-12_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_-12_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_6_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_6_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_24_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_24_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "routing_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "routing_0_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "routing_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "routing_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "routing_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "routing_2_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "routing_3_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "routing_3_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "swap_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "swap_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "delay_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "delay_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "fractional_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "fractional_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "channel_gain_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "channel_gain_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "disabled_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "disabled_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "bypass_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "bypass_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "mix_zero_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "mix_zero_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_ramp_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "gain_ramp_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_0_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_3_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_3_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_4_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_4_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_5_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_5_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_6_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_6_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_rate_8000_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_rate_8000_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_rate_44100_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_rate_44100_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_rate_96000_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_rate_96000_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_rate_192000_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_rate_192000_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_mono_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "meter_mono_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_0_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_0_0_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_0_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_0_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_3_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_3_0_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_3_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_3_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_4_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_4_0_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_4_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_4_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_guard_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "match_guard_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "learn_silence_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "learn_silence_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "learn_short_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "learn_short_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "ride_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "ride_0_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "pause_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "pause_0_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "ride_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "ride_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "pause_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "pause_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_custom_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_custom_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_sine_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_sine_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_triangle_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_triangle_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_free_stop_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_free_stop_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_transport_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "motion_transport_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_1_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_64_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_64_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_127_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_127_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_512_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_512_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_4096_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "events_4096_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "invalid_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "invalid_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "stress_finite",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "stress_alloc",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "disabled",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "bypass",
+      "passed": true
+    },
+    {
+      "goal": "K01",
+      "name": "mix_zero",
+      "passed": true
+    },
+    {
+      "goal": "K02",
+      "name": "gain_-60",
+      "passed": true,
+      "error_db": 4.3972718799523136e-08
+    },
+    {
+      "goal": "K02",
+      "name": "gain_-12",
+      "passed": true,
+      "error_db": 2.389910491729097e-11
+    },
+    {
+      "goal": "K02",
+      "name": "gain_6",
+      "passed": true,
+      "error_db": 7.449088457178732e-09
+    },
+    {
+      "goal": "K02",
+      "name": "gain_24",
+      "passed": true,
+      "error_db": 2.220712502776223e-08
+    },
+    {
+      "goal": "K02",
+      "name": "routing_0",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K02",
+      "name": "routing_1",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K02",
+      "name": "routing_2",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K02",
+      "name": "routing_3",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K02",
+      "name": "swap",
+      "passed": true
+    },
+    {
+      "goal": "K02",
+      "name": "integer_alignment",
+      "passed": true
+    },
+    {
+      "goal": "K02",
+      "name": "fractional_alignment",
+      "passed": true
+    },
+    {
+      "goal": "K02",
+      "name": "channel_trim",
+      "passed": true,
+      "error_db": 2.797680309640782e-09
+    },
+    {
+      "goal": "K03",
+      "name": "first_sample",
+      "passed": true,
+      "step": 0.0010416983859613538
+    },
+    {
+      "goal": "K03",
+      "name": "endpoint",
+      "passed": true
+    },
+    {
+      "goal": "K04",
+      "name": "meter_0_rmsM",
+      "passed": true,
+      "error": 3.410605131648481e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_0_rmsS",
+      "passed": true,
+      "error": 1.900701818158268e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_0_rmsI",
+      "passed": true,
+      "error": 2.675193400136777e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_0_lufsM",
+      "passed": true,
+      "error": 1.8118839761882555e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_0_lufsS",
+      "passed": true,
+      "error": 1.2434497875801753e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_0_lufsI",
+      "passed": true,
+      "error": 4.476419235288631e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_0_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_0_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K04",
+      "name": "meter_3_rmsM",
+      "passed": true,
+      "error": 3.299263084954873e-10
+    },
+    {
+      "goal": "K04",
+      "name": "meter_3_rmsS",
+      "passed": true,
+      "error": 6.55163034934958e-10
+    },
+    {
+      "goal": "K04",
+      "name": "meter_3_rmsI",
+      "passed": true,
+      "error": 5.8975047068088315e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_3_lufsM",
+      "passed": true,
+      "error": 3.223050271117245e-09
+    },
+    {
+      "goal": "K04",
+      "name": "meter_3_lufsS",
+      "passed": true,
+      "error": 9.688960744824726e-10
+    },
+    {
+      "goal": "K04",
+      "name": "meter_3_lufsI",
+      "passed": true,
+      "error": 2.2737367544323206e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_3_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_3_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K04",
+      "name": "meter_4_rmsM",
+      "passed": true,
+      "error": 3.410605131648481e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_4_rmsS",
+      "passed": true,
+      "error": 5.684341886080801e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_4_rmsI",
+      "passed": true,
+      "error": 3.4781066915456904e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_4_lufsM",
+      "passed": true,
+      "error": 2.5934809855243657e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_4_lufsS",
+      "passed": true,
+      "error": 5.400124791776761e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_4_lufsI",
+      "passed": true,
+      "error": 1.7763568394002505e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_4_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_4_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K04",
+      "name": "meter_5_rmsM",
+      "passed": true,
+      "error": 1.673328142715036e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_5_rmsS",
+      "passed": true,
+      "error": 9.311662552136113e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_5_rmsI",
+      "passed": true,
+      "error": 2.4868995751603507e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_5_lufsM",
+      "passed": true,
+      "error": 6.536993168992922e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_5_lufsS",
+      "passed": true,
+      "error": 7.609912699990673e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_5_lufsI",
+      "passed": true,
+      "error": 6.608047442568932e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_5_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_5_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K04",
+      "name": "meter_6_rmsM",
+      "passed": true,
+      "error": 1.2079226507921703e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_6_rmsS",
+      "passed": true,
+      "error": 5.009326287108706e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_6_rmsI",
+      "passed": true,
+      "error": 1.1191048088221578e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_6_lufsM",
+      "passed": true,
+      "error": 7.922551503725117e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_6_lufsS",
+      "passed": true,
+      "error": 2.7711166694643907e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_6_lufsI",
+      "passed": true,
+      "error": 6.039613253960852e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_6_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_6_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_8000_rmsM",
+      "passed": true,
+      "error": 1.1368683772161603e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_8000_rmsS",
+      "passed": true,
+      "error": 9.166001291305292e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_8000_rmsI",
+      "passed": true,
+      "error": 3.907985046680551e-14
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_8000_lufsM",
+      "passed": true,
+      "error": 4.654054919228656e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_8000_lufsS",
+      "passed": true,
+      "error": 1.7408297026122455e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_8000_lufsI",
+      "passed": true,
+      "error": 1.8829382497642655e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_8000_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_rate_8000_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_44100_rmsM",
+      "passed": true,
+      "error": 1.0658141036401503e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_44100_rmsS",
+      "passed": true,
+      "error": 3.765876499528531e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_44100_rmsI",
+      "passed": true,
+      "error": 2.6290081223123707e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_44100_lufsM",
+      "passed": true,
+      "error": 5.684341886080802e-14
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_44100_lufsS",
+      "passed": true,
+      "error": 1.1368683772161603e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_44100_lufsI",
+      "passed": true,
+      "error": 3.552713678800501e-14
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_44100_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_rate_44100_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_96000_rmsM",
+      "passed": true,
+      "error": 1.2434497875801753e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_96000_rmsS",
+      "passed": true,
+      "error": 4.831690603168681e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_96000_rmsI",
+      "passed": true,
+      "error": 1.2327916465437738e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_96000_lufsM",
+      "passed": true,
+      "error": 1.6697754290362354e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_96000_lufsS",
+      "passed": true,
+      "error": 2.8066438062523957e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_96000_lufsI",
+      "passed": true,
+      "error": 4.973799150320701e-14
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_96000_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_rate_96000_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_192000_rmsM",
+      "passed": true,
+      "error": 8.526512829121202e-14
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_192000_rmsS",
+      "passed": true,
+      "error": 1.1297629498585593e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_192000_rmsI",
+      "passed": true,
+      "error": 1.2967404927621828e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_192000_lufsM",
+      "passed": true,
+      "error": 1.4068746168049984e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_192000_lufsS",
+      "passed": true,
+      "error": 2.6645352591003757e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_192000_lufsI",
+      "passed": true,
+      "error": 1.4637180356658064e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_rate_192000_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_rate_192000_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K04",
+      "name": "meter_mono_rmsM",
+      "passed": true,
+      "error": 3.410605131648481e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_mono_rmsS",
+      "passed": true,
+      "error": 1.900701818158268e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_mono_rmsI",
+      "passed": true,
+      "error": 3.4781066915456904e-12
+    },
+    {
+      "goal": "K04",
+      "name": "meter_mono_lufsM",
+      "passed": true,
+      "error": 7.567280135845067e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_mono_lufsS",
+      "passed": true,
+      "error": 2.6290081223123707e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_mono_lufsI",
+      "passed": true,
+      "error": 4.085620730620576e-13
+    },
+    {
+      "goal": "K04",
+      "name": "meter_mono_samplePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "meter_mono_truePeak",
+      "passed": true,
+      "error": 0.0
+    },
+    {
+      "goal": "K05",
+      "name": "intersample_detected",
+      "passed": true,
+      "excess_db": 3.092948319640591
+    },
+    {
+      "goal": "K04",
+      "name": "mono_calibration",
+      "passed": true,
+      "lufs": -23.003603643254873
+    },
+    {
+      "goal": "K04",
+      "name": "stereo_sum",
+      "passed": true,
+      "difference": 3.01030279875161
+    },
+    {
+      "goal": "K06",
+      "name": "match_0_0_valid",
+      "passed": true
+    },
+    {
+      "goal": "K06",
+      "name": "match_0_0_target",
+      "passed": true,
+      "error": 3.4781066915456904e-12
+    },
+    {
+      "goal": "K06",
+      "name": "match_0_0_held_gain",
+      "passed": true,
+      "error": 2.3168851726040884e-08
+    },
+    {
+      "goal": "K06",
+      "name": "match_0_1_valid",
+      "passed": true
+    },
+    {
+      "goal": "K06",
+      "name": "match_0_1_target",
+      "passed": true,
+      "error": 4.121147867408581e-13
+    },
+    {
+      "goal": "K06",
+      "name": "match_0_1_held_gain",
+      "passed": true,
+      "error": 6.491273074615833e-09
+    },
+    {
+      "goal": "K06",
+      "name": "match_3_0_valid",
+      "passed": true
+    },
+    {
+      "goal": "K06",
+      "name": "match_3_0_target",
+      "passed": true,
+      "error": 2.7675639557855902e-12
+    },
+    {
+      "goal": "K06",
+      "name": "match_3_0_held_gain",
+      "passed": true,
+      "error": 4.863499114549086e-08
+    },
+    {
+      "goal": "K06",
+      "name": "match_3_1_valid",
+      "passed": true
+    },
+    {
+      "goal": "K06",
+      "name": "match_3_1_target",
+      "passed": true,
+      "error": 2.2737367544323206e-13
+    },
+    {
+      "goal": "K06",
+      "name": "match_3_1_held_gain",
+      "passed": true,
+      "error": 6.19715021521472e-08
+    },
+    {
+      "goal": "K06",
+      "name": "match_4_0_valid",
+      "passed": true
+    },
+    {
+      "goal": "K06",
+      "name": "match_4_0_target",
+      "passed": true,
+      "error": 5.684341886080801e-13
+    },
+    {
+      "goal": "K06",
+      "name": "match_4_0_held_gain",
+      "passed": true,
+      "error": 8.771095849624544e-09
+    },
+    {
+      "goal": "K06",
+      "name": "match_4_1_valid",
+      "passed": true
+    },
+    {
+      "goal": "K06",
+      "name": "match_4_1_target",
+      "passed": true,
+      "error": 2.0961010704922955e-13
+    },
+    {
+      "goal": "K06",
+      "name": "match_4_1_held_gain",
+      "passed": true,
+      "error": 5.749484888184497e-09
+    },
+    {
+      "goal": "K06",
+      "name": "match_guard_valid",
+      "passed": true
+    },
+    {
+      "goal": "K07",
+      "name": "peak_guard",
+      "passed": true,
+      "predicted": -1.0
+    },
+    {
+      "goal": "K06",
+      "name": "match_guard_held_gain",
+      "passed": true,
+      "error": 4.762910776889839e-08
+    },
+    {
+      "goal": "K06",
+      "name": "learn_silence",
+      "passed": true
+    },
+    {
+      "goal": "K06",
+      "name": "learn_short",
+      "passed": true
+    },
+    {
+      "goal": "K08",
+      "name": "ride_0_variation",
+      "passed": true,
+      "reduction": 0.9999999864819542
+    },
+    {
+      "goal": "K08",
+      "name": "ride_0_target",
+      "passed": true,
+      "worst": 0.0015927893951754868
+    },
+    {
+      "goal": "K08",
+      "name": "ride_0_range",
+      "passed": true
+    },
+    {
+      "goal": "K09",
+      "name": "pause_0",
+      "passed": true,
+      "remaining_db": 0.030396582131103855
+    },
+    {
+      "goal": "K08",
+      "name": "ride_1_variation",
+      "passed": true,
+      "reduction": 0.9999999121799288
+    },
+    {
+      "goal": "K08",
+      "name": "ride_1_target",
+      "passed": true,
+      "worst": 0.007886698565400252
+    },
+    {
+      "goal": "K08",
+      "name": "ride_1_range",
+      "passed": true
+    },
+    {
+      "goal": "K09",
+      "name": "pause_1",
+      "passed": true,
+      "remaining_db": 9.368941150000865e-05
+    },
+    {
+      "goal": "K08",
+      "name": "profiles_distinct",
+      "passed": true,
+      "difference": 0.3154480089312308
+    },
+    {
+      "goal": "K10",
+      "name": "motion_custom_bounds",
+      "passed": true
+    },
+    {
+      "goal": "K10",
+      "name": "motion_custom_depth",
+      "passed": true,
+      "min_db": -24.0,
+      "max_db": -0.00014030307647772133
+    },
+    {
+      "goal": "K10",
+      "name": "motion_custom_period",
+      "passed": true
+    },
+    {
+      "goal": "K10",
+      "name": "motion_sine_bounds",
+      "passed": true
+    },
+    {
+      "goal": "K10",
+      "name": "motion_sine_depth",
+      "passed": true,
+      "min_db": -23.999998092651367,
+      "max_db": -2.070877599180676e-06
+    },
+    {
+      "goal": "K10",
+      "name": "motion_sine_period",
+      "passed": true
+    },
+    {
+      "goal": "K10",
+      "name": "motion_triangle_bounds",
+      "passed": true
+    },
+    {
+      "goal": "K10",
+      "name": "motion_triangle_depth",
+      "passed": true,
+      "min_db": -23.997228622436523,
+      "max_db": -0.002772829495370388
+    },
+    {
+      "goal": "K10",
+      "name": "motion_triangle_period",
+      "passed": true
+    },
+    {
+      "goal": "K10",
+      "name": "transport_phase",
+      "passed": true,
+      "error_cycles": 1.382884917688898e-10
+    },
+    {
+      "goal": "K10",
+      "name": "stopped_unity",
+      "passed": true
+    },
+    {
+      "goal": "K11",
+      "name": "events_64",
+      "passed": true
+    },
+    {
+      "goal": "K11",
+      "name": "events_127",
+      "passed": true
+    },
+    {
+      "goal": "K11",
+      "name": "events_512",
+      "passed": true
+    },
+    {
+      "goal": "K11",
+      "name": "events_4096",
+      "passed": true
+    },
+    {
+      "goal": "K12",
+      "name": "invalid_input_counter",
+      "passed": true
+    },
+    {
+      "goal": "K13",
+      "name": "mean_CPU",
+      "passed": true,
+      "worst": 0.0351922
+    }
+  ],
+  "passed": 281,
+  "failed": 0,
+  "unavailable": 0,
+  "raw_identity_sha256": "18aff7fcf659aad23539398e02bb0d6f0c41704857bc494672808bb9fb05887b",
+  "tp_vs_sinc": [
+    {
+      "name": "meter_0",
+      "sinc16_dbtp": -19.994158724944636,
+      "annex_dbtp": -19.993303920245964
+    },
+    {
+      "name": "meter_3",
+      "sinc16_dbtp": -19.994158724944636,
+      "annex_dbtp": -19.993303920245964
+    },
+    {
+      "name": "meter_4",
+      "sinc16_dbtp": -19.994158724944636,
+      "annex_dbtp": -19.993303920245964
+    },
+    {
+      "name": "meter_5",
+      "sinc16_dbtp": -19.884434720367704,
+      "annex_dbtp": -19.917351236527587
+    },
+    {
+      "name": "meter_6",
+      "sinc16_dbtp": -19.994158724944636,
+      "annex_dbtp": -19.986245520642374
+    },
+    {
+      "name": "meter_mono",
+      "sinc16_dbtp": -19.994158724944636,
+      "annex_dbtp": -19.993303920245964
+    }
+  ],
+  "performance": {
+    "neutral_8000_1": 0.000962,
+    "neutral_8000_2": 0.001328,
+    "neutral_44100_1": 0.009113,
+    "neutral_44100_2": 0.013598,
+    "neutral_48000_1": 0.009929,
+    "neutral_48000_2": 0.012971,
+    "neutral_96000_1": 0.013041,
+    "neutral_96000_2": 0.018908,
+    "neutral_192000_1": 0.029273,
+    "neutral_192000_2": 0.034902,
+    "gain_-60": 0.0095447,
+    "gain_-12": 0.010468775,
+    "gain_6": 0.009229875,
+    "gain_24": 0.009227775,
+    "routing_0": 0.00902825,
+    "routing_1": 0.008822175,
+    "routing_2": 0.00924585,
+    "routing_3": 0.009945075,
+    "swap": 0.00878105,
+    "delay": 0.0095486,
+    "fractional": 0.009240525,
+    "channel_gain": 0.009180675,
+    "disabled": 0.0091574,
+    "bypass": 0.009320725,
+    "mix_zero": 0.0087763,
+    "gain_ramp": 0.009263,
+    "meter_0": 0.010610383333333,
+    "meter_3": 0.008833533333333,
+    "meter_4": 0.009108966666667,
+    "meter_5": 0.009424,
+    "meter_6": 0.009448983333333,
+    "meter_rate_8000": 0.001649275,
+    "meter_rate_44100": 0.00806695,
+    "meter_rate_96000": 0.018080825,
+    "meter_rate_192000": 0.0351922,
+    "meter_mono": 0.0067307,
+    "match_0_0": 0.0102465875,
+    "match_0_1": 0.0103661875,
+    "match_3_0": 0.0105847875,
+    "match_3_1": 0.01116915,
+    "match_4_0": 0.010803425,
+    "match_4_1": 0.0115890375,
+    "match_guard": 0.0101835875,
+    "learn_silence": 0.0105004375,
+    "learn_short": 0.0095576,
+    "ride_0": 0.01181389375,
+    "pause_0": 0.01246034,
+    "ride_1": 0.012808025,
+    "pause_1": 0.01230162,
+    "motion_custom": 0.0135836,
+    "motion_sine": 0.0136248,
+    "motion_triangle": 0.012091633333333,
+    "motion_free_stop": 0.0120208,
+    "motion_transport": 0.011984375,
+    "invalid": 0.00879805
+  }
+}

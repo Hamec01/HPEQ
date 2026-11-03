@@ -11,11 +11,17 @@ Paired original/current lab:226primary cases plus452actual restored observations
 49/49. pluginval5..10and Steinberg537/537pass. Shared UI source and final repeat
 screenshots match. [F1report](docs/reports/f1/REPORT.md).
 
-**Approved V2, still to implement:** separate Trim, Match, Ride and Motion modes;
-Ride Natural/Fast with adjustable correction range. Modern metering/learning,
-precise channels, editable volume curves, host/state/UI and200newrecipes follow.
-No finished V2or FL Studio listening approval is claimed.
-[Audit/scope](docs/FADER_V2_AUDIT.md), [handoff](docs/NEXT_STAGE.md).
+The **F2 offline kernel is complete**: precise Trim/channel controls, independent
+RMS/LUFS/Annex2 TP meters, Learn/Propose/Apply Match, bounded Ride Natural/Fast
+and editable/tempo/free Motion. Final281laboratory and59unit checks pass, with
+sample-positioned block invariance and zero measured audio allocations. Five
+recorded regressions and four provenance guards are detected. [F2 report](docs/reports/f2/REPORT.md).
+
+**These new modes are not connected to the VST yet.** Shipping0.1.0 and its
+original interface remain. F3host parameters/state/clock/actions, F4modern UI
+and F5the200newrecipes/release are next. Owner FL listening remains pending.
+[Design and numerical contracts](docs/HAMLOFADER_V2.md),
+[approved scope](docs/FADER_V2_AUDIT.md), [handoff](docs/NEXT_STAGE.md).
 
 ```powershell
 cmake -S . -B build -G "Visual Studio 18 2026" -A x64 -DHAMLO_FADER_JUCE_DIR=E:/HPEQ/build/_deps/juce-src

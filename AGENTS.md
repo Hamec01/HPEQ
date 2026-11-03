@@ -6,30 +6,38 @@
 
 ---
 
-## Current checkpoint: F1 Legacy isolation complete (2026-11-03)
+## Current checkpoint: F2 offline kernel complete (2026-11-03)
 
 Owner approved full Trim/Match/Ride/Motion, separate modes, Ride Natural/Fast
-with adjustable correction range. Do not ask these decisions again. Next F2
-numerical design/kernel, then host, UI and 200 presets (208 total programs).
-Work only in E:/HamloFader; efficient-staged-work, no subagents, HPEQ changes,
-installed copy replacement, installer, push/subtree or model switch. Historical
-Mag/Revolution lists below are stale. Scope: docs/FADER_V2_AUDIT.md.
-F1 uses 9 owned production units instead of 32. Original 8 parameters/programs,
-state/class IDs, 0sample PDC, gain arithmetic/ramps/delta and RMS MATCH retained.
-All 226 primary + 452 actual fresh/prepared-restored observations exact;
-678 raw PCM outputs, zero measured callback allocations, 49 native checks.
-pluginval 5..10/Steinberg 537 pass. Static lib has exactly 9 owned objects;
-recursive include closure has no LayerEngine/project model/other processors.
-sizeof processor 844152->1816 (not heap usage). UI source unchanged; repeat
-pixels exact. Initial 688needle-pixel difference was wall-clock tremor, retained.
-Four corrupted method/contract/raw/state guards rejected. Report and hashes:
-docs/reports/f1/REPORT.md,acceptance.json; continuation:docs/NEXT_STAGE.md.
-Original archive:out/audit/original; immutable original driver:out/f1/reference_lab.exe;
-reference raw/state:out/f1/reference. Preserve frozen F1method; same schedule
-Legacy exactness is not a blanket claim of event block invariance.
-DLL c8489ef44ed8ebbaa7fdf44c284f7e5514876cce01a917dbab5e770f0ed02841.
-Internal 0.1.0: no new modes implemented or finished V2/owner FL approval claimed.
-No active jobs. F1 commit follows this handoff; verify git log/status.
+with adjustable range. Do not ask these scope questions again. Next F3 host,
+F4 UI, F5 200newrecipes/208programs. Work only inE:/HamloFader; apply
+efficient-staged-work, no subagents/HPEQ/installed copy/installer/push/subtree
+or model switch. Historical pending Mag/Revolution lists below are stale.
+
+F1 (68f98ed):9owned production units,8parameters/programs,0sample latency,
+226primary+452actual restores/678exact PCM,49native,pluginval5..10/Steinberg537.
+Legacy arithmetic/state/meters/UI preserved. Archiveout/audit/original and
+out/f1/reference; frozen old driverout/f1/reference_lab.exe. DLL unchanged:
+c8489ef44ed8ebbaa7fdf44c284f7e5514876cce01a917dbab5e770f0ed02841.
+F2 is offline only: FaderKernel/FaderMeter not in shipping Shared target.
+Trim/channel/alignment, RMS/LUFS/Annex2TP, deliberate Match, bounded Ride and
+sample-clock Motion implemented. Final281lab/59unit pass;30control+13n-a;
+zero measured callbacks/actions allocations; block1/64/127/512/4096exact;
+five-minute192kstress; two-hour meter cap verified. Source09214975...;
+methodb0024df5... (full hashes inacceptance/handoff).58pass interim exposed
+Learn-cancellation stale data; fixed and new59check passes. Earlier cycle
+repeat and stereo mode-transition faults fixed.5regressions detected,
+4stale/corrupt cache guards rejected; valid resume exact. All earlier evidence
+retained. F1 shipping/include files, old methods and DLL remain unchanged.
+
+Design:docs/HAMLOFADER_V2.md;reportdocs/reports/f2/REPORT.md;final pair
+before_v4.json/after_v4.json;unit_v4.txt;acceptance.json. Rawout/f2/before_v4,
+out/f2/after_v4;frozen sources/toolsout/f2/accepted_v4. Intermediate paths
+before_final/after_final/accepted refer to v3, not the accepted v4. Do not overwrite.
+Single-thread kernel API needs F3 atomic/UI/action bridge. Stop gives proposal;
+Apply means explicit settings.matchedDb update. Off/bypass cancels unfinished
+Learn and clears its data. New modes are not available in the VST yet.
+Continuation:docs/NEXT_STAGE.md. No active jobs. F2commit follows handoff.
 
 ## 1. Продукт и владелец
 
