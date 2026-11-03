@@ -1,0 +1,277 @@
+{
+  "source_id": "c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084",
+  "renderer_sha256": "0efdb62aa28cdb096c9761e0b927e0eb9ddc3d95b66d5a13c616b99267afac61",
+  "driver_sha256": "5f2878e43dd611b955179ddc534ed65e91d991f9e82e1701bbf978358e87f8ef",
+  "script_sha256": "db3f4ac456b09dc63794c637862c74e48e0ce64362f575cff7faf347a0ccecdc",
+  "rate": 48000,
+  "rows": [
+    {
+      "name": "Clean_Soft",
+      "recipe": "Clean",
+      "profile": "Soft",
+      "input": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead1.wav",
+        "sha256": "d8f4d6f7936574b373651bd8a90ce8e9bfde0f699ab64ef8adfda3177af9feb9",
+        "original_rate": 48000,
+        "scale": 0.5264534024549696,
+        "prepared_sha256": "73ed070a6a7711200acbfd5bd3fbff0b1fdda0b1a2ae18c83e03df9495c945c7"
+      },
+      "key": null,
+      "manifest": {
+        "source_id": "c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084",
+        "render_id": "5f2878e43dd611b955179ddc534ed65e91d991f9e82e1701bbf978358e87f8ef",
+        "recipe": "Clean",
+        "profile": "Soft",
+        "frames": 588000,
+        "latency": 240,
+        "allocations": 0,
+        "finite": true,
+        "hits": 0
+      },
+      "raw_sha256": "4912a0cc2814f934fddcf2c03d114b3d1d67a8488e41f41e5200883b43797e01",
+      "wav": "E:\\HamloZastava\\out\\s2\\auditions_01\\Clean_Soft.wav",
+      "wav_sha256": "c97f790a6f1e30140809b86c3bd80181929c7b0318889cb477398f3339ef439e",
+      "true_peak_dbtp": -6.0000015236618465,
+      "low_level_gain_db": -1.491237262624234,
+      "high_level_gain_db": -0.0002341047517411922,
+      "largest_adjacent_step": 0.2113034427165985,
+      "dry_largest_adjacent_step": 0.2113034427165985
+    },
+    {
+      "name": "Clean_Hard",
+      "recipe": "Clean",
+      "profile": "Hard",
+      "input": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead1.wav",
+        "sha256": "d8f4d6f7936574b373651bd8a90ce8e9bfde0f699ab64ef8adfda3177af9feb9",
+        "original_rate": 48000,
+        "scale": 0.5264534024549696,
+        "prepared_sha256": "73ed070a6a7711200acbfd5bd3fbff0b1fdda0b1a2ae18c83e03df9495c945c7"
+      },
+      "key": null,
+      "manifest": {
+        "source_id": "c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084",
+        "render_id": "5f2878e43dd611b955179ddc534ed65e91d991f9e82e1701bbf978358e87f8ef",
+        "recipe": "Clean",
+        "profile": "Hard",
+        "frames": 588000,
+        "latency": 240,
+        "allocations": 0,
+        "finite": true,
+        "hits": 0
+      },
+      "raw_sha256": "d81d6b397d9bd0d110d36ab7e87c2737d8e811e6f2c061c159c405510dce078e",
+      "wav": "E:\\HamloZastava\\out\\s2\\auditions_01\\Clean_Hard.wav",
+      "wav_sha256": "bbfcb962b86780cd34638ccf338b194920bdbc539054320d658910443ffbe710",
+      "true_peak_dbtp": -6.0000015236618465,
+      "low_level_gain_db": -2.0740032626349936,
+      "high_level_gain_db": -0.0002489742278914402,
+      "largest_adjacent_step": 0.2113034427165985,
+      "dry_largest_adjacent_step": 0.2113034427165985
+    },
+    {
+      "name": "Drum_Soft",
+      "recipe": "Drum",
+      "profile": "Soft",
+      "input": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\drumbus1.wav",
+        "sha256": "faa8f04bdfa337cab344b8d7635a8c520ec1174261cefd8aa27c37a6cc3ada27",
+        "original_rate": 48000,
+        "scale": 1.2353811285326735,
+        "prepared_sha256": "a64416c64e438d5ac3050fc0772fe5147191b1c4aad0e3c7d93dc611ecd54ba7"
+      },
+      "key": null,
+      "manifest": {
+        "source_id": "c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084",
+        "render_id": "5f2878e43dd611b955179ddc534ed65e91d991f9e82e1701bbf978358e87f8ef",
+        "recipe": "Drum",
+        "profile": "Soft",
+        "frames": 588000,
+        "latency": 240,
+        "allocations": 0,
+        "finite": true,
+        "hits": 289
+      },
+      "raw_sha256": "65f85bf2e6e8c90410a28c3d8f813eee2cd3f78c7b308b5409831bc0f5bdf1cf",
+      "wav": "E:\\HamloZastava\\out\\s2\\auditions_01\\Drum_Soft.wav",
+      "wav_sha256": "3a6c34965a8a8a236cd0be7595569eb0196a04033a222e961995ce047e7969bf",
+      "true_peak_dbtp": -5.999999457689846,
+      "low_level_gain_db": -35.93666297987756,
+      "high_level_gain_db": -8.398106250633729e-05,
+      "largest_adjacent_step": 0.44354164600372314,
+      "dry_largest_adjacent_step": 0.44354164600372314
+    },
+    {
+      "name": "Drum_Hard",
+      "recipe": "Drum",
+      "profile": "Hard",
+      "input": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\drumbus1.wav",
+        "sha256": "faa8f04bdfa337cab344b8d7635a8c520ec1174261cefd8aa27c37a6cc3ada27",
+        "original_rate": 48000,
+        "scale": 1.2353811285326735,
+        "prepared_sha256": "a64416c64e438d5ac3050fc0772fe5147191b1c4aad0e3c7d93dc611ecd54ba7"
+      },
+      "key": null,
+      "manifest": {
+        "source_id": "c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084",
+        "render_id": "5f2878e43dd611b955179ddc534ed65e91d991f9e82e1701bbf978358e87f8ef",
+        "recipe": "Drum",
+        "profile": "Hard",
+        "frames": 588000,
+        "latency": 240,
+        "allocations": 0,
+        "finite": true,
+        "hits": 289
+      },
+      "raw_sha256": "cd5e75af19825be4ea8e619f12ff86ea6a577a650bf5987f3ba8b9910c62e896",
+      "wav": "E:\\HamloZastava\\out\\s2\\auditions_01\\Drum_Hard.wav",
+      "wav_sha256": "646506fc09e11fb7d20b4da7c0081ea4e53c5691ba9174de1f0e7ed23011c1b4",
+      "true_peak_dbtp": -5.999999457689846,
+      "low_level_gain_db": -34.54930179581625,
+      "high_level_gain_db": -0.00171874135791139,
+      "largest_adjacent_step": 0.44354164600372314,
+      "dry_largest_adjacent_step": 0.44354164600372314
+    },
+    {
+      "name": "Duck_Soft",
+      "recipe": "Duck",
+      "profile": "Soft",
+      "input": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\keys.wav",
+        "sha256": "251f5c79b7248078a9d4be68621728acee75f923e02a8a8adfe0e9f601942c4f",
+        "original_rate": 48000,
+        "scale": 0.9384440721243659,
+        "prepared_sha256": "5ddb37c45a931ae8d66b04331d20891ed8d85ddd4e7af41d6c60e7d0f1c774c2"
+      },
+      "key": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\kick.wav",
+        "sha256": "887293e288549a5b64fd42afe5a33aea4edd5160f1bd1b269d1661a8563af375",
+        "scale": 0.518455625837766,
+        "original_rate": 48000,
+        "placement": "Every quarter note at 120 BPM; first 400 ms of the owner kick"
+      },
+      "manifest": {
+        "source_id": "c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084",
+        "render_id": "5f2878e43dd611b955179ddc534ed65e91d991f9e82e1701bbf978358e87f8ef",
+        "recipe": "Duck",
+        "profile": "Soft",
+        "frames": 588000,
+        "latency": 240,
+        "allocations": 0,
+        "finite": true,
+        "hits": 0
+      },
+      "raw_sha256": "9bb26f09e0bef99a2415a3bf82d385cc2d044a7e64b8a09c434e904334764e61",
+      "wav": "E:\\HamloZastava\\out\\s2\\auditions_01\\Duck_Soft.wav",
+      "wav_sha256": "a09360bc4c50a3d5a4152225952873f6589d78509ebcccc1948b30f6f4db344a",
+      "true_peak_dbtp": -7.074556178090759,
+      "low_level_gain_db": -1.2126899903720316,
+      "high_level_gain_db": -1.2215079070233497,
+      "largest_adjacent_step": 0.12120965868234634,
+      "dry_largest_adjacent_step": 0.12120973318815231
+    },
+    {
+      "name": "Duck_Hard",
+      "recipe": "Duck",
+      "profile": "Hard",
+      "input": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\keys.wav",
+        "sha256": "251f5c79b7248078a9d4be68621728acee75f923e02a8a8adfe0e9f601942c4f",
+        "original_rate": 48000,
+        "scale": 0.9384440721243659,
+        "prepared_sha256": "5ddb37c45a931ae8d66b04331d20891ed8d85ddd4e7af41d6c60e7d0f1c774c2"
+      },
+      "key": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\kick.wav",
+        "sha256": "887293e288549a5b64fd42afe5a33aea4edd5160f1bd1b269d1661a8563af375",
+        "scale": 0.518455625837766,
+        "original_rate": 48000,
+        "placement": "Every quarter note at 120 BPM; first 400 ms of the owner kick"
+      },
+      "manifest": {
+        "source_id": "c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084",
+        "render_id": "5f2878e43dd611b955179ddc534ed65e91d991f9e82e1701bbf978358e87f8ef",
+        "recipe": "Duck",
+        "profile": "Hard",
+        "frames": 588000,
+        "latency": 240,
+        "allocations": 0,
+        "finite": true,
+        "hits": 0
+      },
+      "raw_sha256": "bd0f18d7156807ecc5742e38f6263c8e5debccb47746132820fa1105f7a27fd1",
+      "wav": "E:\\HamloZastava\\out\\s2\\auditions_01\\Duck_Hard.wav",
+      "wav_sha256": "deac08a07a4b2a790bf4c2630f016209d1275948fa1be8787af8d5c0652a36e0",
+      "true_peak_dbtp": -7.162616245274859,
+      "low_level_gain_db": -1.1345248732267852,
+      "high_level_gain_db": -1.18476172604629,
+      "largest_adjacent_step": 0.12120535224676132,
+      "dry_largest_adjacent_step": 0.12120973318815231
+    },
+    {
+      "name": "Rhythm_Soft",
+      "recipe": "Rhythm",
+      "profile": "Soft",
+      "input": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\synth.wav",
+        "sha256": "5d5a9c193f335bb5030f13a136fe95333fcb8f0a117306c39223b4d0decc7eeb",
+        "original_rate": 48000,
+        "scale": 1.7347442148949899,
+        "prepared_sha256": "dbcd40c18f4b20c96692996cd4e926c41d9208a6d8df978237715ea05356c370"
+      },
+      "key": null,
+      "manifest": {
+        "source_id": "c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084",
+        "render_id": "5f2878e43dd611b955179ddc534ed65e91d991f9e82e1701bbf978358e87f8ef",
+        "recipe": "Rhythm",
+        "profile": "Soft",
+        "frames": 588000,
+        "latency": 240,
+        "allocations": 0,
+        "finite": true,
+        "hits": 0
+      },
+      "raw_sha256": "a1bfb1e81f1987d5cc6b709362963b365abd86ff0ab10bb13f0ceded5bc5d7e1",
+      "wav": "E:\\HamloZastava\\out\\s2\\auditions_01\\Rhythm_Soft.wav",
+      "wav_sha256": "79e34306f708ad1686dc2d0742fc69bc729871b256e00d419fa5a94e5ed61776",
+      "true_peak_dbtp": -7.801444333294787,
+      "low_level_gain_db": -4.148384163872457,
+      "high_level_gain_db": -5.403494277552111,
+      "largest_adjacent_step": 0.047479551285505295,
+      "dry_largest_adjacent_step": 0.06170129030942917
+    },
+    {
+      "name": "Rhythm_Hard",
+      "recipe": "Rhythm",
+      "profile": "Hard",
+      "input": {
+        "path": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\synth.wav",
+        "sha256": "5d5a9c193f335bb5030f13a136fe95333fcb8f0a117306c39223b4d0decc7eeb",
+        "original_rate": 48000,
+        "scale": 1.7347442148949899,
+        "prepared_sha256": "dbcd40c18f4b20c96692996cd4e926c41d9208a6d8df978237715ea05356c370"
+      },
+      "key": null,
+      "manifest": {
+        "source_id": "c08e4c9de2b82a7db9eeffaff95dd74d2b8584a596a1e03d442294086081a084",
+        "render_id": "5f2878e43dd611b955179ddc534ed65e91d991f9e82e1701bbf978358e87f8ef",
+        "recipe": "Rhythm",
+        "profile": "Hard",
+        "frames": 588000,
+        "latency": 240,
+        "allocations": 0,
+        "finite": true,
+        "hits": 0
+      },
+      "raw_sha256": "d24085c07a1da90826ec4a6841429b75c794f7277d99af8711fb4bd13af8b7a8",
+      "wav": "E:\\HamloZastava\\out\\s2\\auditions_01\\Rhythm_Hard.wav",
+      "wav_sha256": "09809ea316f6a38877c6630b8428f7e5100d3368d1036d528c47703d9bc58868",
+      "true_peak_dbtp": -7.801444333294787,
+      "low_level_gain_db": -4.188500292232137,
+      "high_level_gain_db": -5.4361319667802075,
+      "largest_adjacent_step": 0.047479551285505295,
+      "dry_largest_adjacent_step": 0.06170129030942917
+    }
+  ]
+}

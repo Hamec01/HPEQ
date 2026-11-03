@@ -1,0 +1,43 @@
+Random seed: 0x1be0e34
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Parameters: every spec of HPEQ's HamloZastava at its default, then bypass...
+Completed tests in Plug-in / Parameters: every spec of HPEQ's HamloZastava at its default, then bypass
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Latency: fixed, the same at 44.1 and 48 kHz settings and for every program...
+  240 samples at 48 kHz
+Completed tests in Plug-in / Latency: fixed, the same at 44.1 and 48 kHz settings and for every program
+-----------------------------------------------------------------
+Starting tests in: Plug-in / ON off: the input delayed by the latency, bit-exact...
+Completed tests in Plug-in / ON off: the input delayed by the latency, bit-exact
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Every program: finite and bounded on drums...
+Completed tests in Plug-in / Every program: finite and bounded on drums
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (the last program)...
+Completed tests in Plug-in / Host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (the last program)
+-----------------------------------------------------------------
+Starting tests in: Plug-in / State: save / load round trip...
+Completed tests in Plug-in / State: save / load round trip
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Page: the spec's size; the preset screen top left with every program; a program from it loads...
+Completed tests in Plug-in / Page: the spec's size; the preset screen top left with every program; a program from it loads
+-----------------------------------------------------------------
+Starting tests in: Zastava isolation / Every original static program is bit-identical across blocks after prepare256...
+Completed tests in Zastava isolation / Every original static program is bit-identical across blocks after prepare256
+-----------------------------------------------------------------
+Starting tests in: Zastava isolation / First processing and branch/filter/bypass/lookahead automation allocate zero prepared memory...
+Completed tests in Zastava isolation / First processing and branch/filter/bypass/lookahead automation allocate zero prepared memory
+-----------------------------------------------------------------
+Starting tests in: S3 integration / Host direct bypass preserves fixed PDC and allocates nothing...
+Completed tests in S3 integration / Host direct bypass preserves fixed PDC and allocates nothing
+-----------------------------------------------------------------
+Starting tests in: S3 integration / Every appended parameter retains its quantized state...
+Completed tests in S3 integration / Every appended parameter retains its quantized state
+-----------------------------------------------------------------
+Starting tests in: S3 integration / Full modern serialized bytes remain stable...
+Completed tests in S3 integration / Full modern serialized bytes remain stable
+-----------------------------------------------------------------
+Starting tests in: S3 integration / New nonfinite, out-of-range and wrong-root states are contained...
+Completed tests in S3 integration / New nonfinite, out-of-range and wrong-root states are contained
+
+HamloZastava_Tests: 207 expectations passed, 0 failed

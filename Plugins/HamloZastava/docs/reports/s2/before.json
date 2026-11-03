@@ -1,0 +1,904 @@
+{
+  "identity": {
+    "source_id": "31656a91d1549f9a2c87de01e8fbe75c7db4d38a982a49c43800f0d4d8e235da",
+    "method_id": "d255b42024940e59b6491edb01a90e633a6e277b28911004b3274548b993b888",
+    "files": {
+      "Source/DSP/V2Gate.cpp": "2c357f6b0e57e15100516c7fcff3cb862e3d39cfe3d8c1e20fb2b58d3a79270d",
+      "Source/DSP/V2Gate.h": "97b682f5a791967eb1b4bb06a2d17022fc112d5bf1026cc190657132d230208d"
+    },
+    "methods": {
+      "Tests/V2LabMain.cpp": "094f08d599989182db3cca868b7bc9464a62940efe14cdc1c6c0ad5443cee29f",
+      "Tools/analyze_zastava_s2.py": "59d610dbc6488f6576b69f4d075655533ff9341a31d9d079fe97c395a876cce0",
+      "docs/S2_METHODS.md": "e1b9dfeee5b255e48098ed6de8758b62d68b0a53bc67a31b0587e4069f24faf5"
+    }
+  },
+  "source_id": "31656a91d1549f9a2c87de01e8fbe75c7db4d38a982a49c43800f0d4d8e235da",
+  "implemented": false,
+  "checks": [
+    {
+      "goal": "G09",
+      "name": "neutral_8000_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_8000_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_8000_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_8000_0_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_8000_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_8000_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_8000_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_8000_1_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_8000_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_8000_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_8000_2_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_8000_2_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_8000_3_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_8000_3_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_8000_3_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_8000_3_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_44100_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_44100_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_44100_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_44100_0_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_44100_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_44100_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_44100_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_44100_1_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_44100_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_44100_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_44100_2_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_44100_2_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_44100_3_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_44100_3_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_44100_3_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_44100_3_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_48000_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_48000_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_48000_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_48000_0_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_48000_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_48000_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_48000_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_48000_1_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_48000_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_48000_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_48000_2_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_48000_2_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_48000_3_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_48000_3_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_48000_3_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_48000_3_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_96000_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_96000_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_96000_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_96000_0_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_96000_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_96000_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_96000_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_96000_1_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_96000_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_96000_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_96000_2_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_96000_2_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_96000_3_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_96000_3_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_96000_3_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_96000_3_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_192000_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_192000_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_192000_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_192000_0_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_192000_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_192000_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_192000_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_192000_1_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_192000_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_192000_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_192000_2_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_192000_2_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "neutral_192000_3_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "neutral_192000_3_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_192000_3_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "neutral_192000_3_dry",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "static_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "static_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "static_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "static_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "static_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "static_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "static_2_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "static_2_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "static_2_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "timing_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "timing_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "timing_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "timing_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "timing_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "timing_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "look_0_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "look_0_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "look_0_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "look_0_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "look_0_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "look_0_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "look_1_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "look_1_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "look_1_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "look_1_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "look_1_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "look_1_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "drum_0_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "drum_0_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "drum_0_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "drum_0_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "drum_0_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "drum_0_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "drum_1_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "drum_1_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "drum_1_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "drum_1_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "drum_1_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "drum_1_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "duck_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "duck_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "duck_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "duck_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "duck_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "duck_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "filter_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "filter_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "filter_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "filter_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "filter_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "filter_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "link_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "link_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "link_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "link_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "link_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "link_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "rhythm_16_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "rhythm_16_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "rhythm_16_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "rhythm_16_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "rhythm_16_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "rhythm_16_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "rhythm_32_0_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "rhythm_32_0_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "rhythm_32_0_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "rhythm_32_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "rhythm_32_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "rhythm_32_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "events_1_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "events_1_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "events_1_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "events_64_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "events_64_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "events_64_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "events_127_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "events_127_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "events_127_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "events_512_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "events_512_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "events_512_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "events_4096_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "events_4096_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "events_4096_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G09",
+      "name": "stress_allocation",
+      "passed": true
+    },
+    {
+      "goal": "G10",
+      "name": "stress_finite",
+      "passed": true
+    },
+    {
+      "goal": "G01",
+      "name": "stress_PDC",
+      "passed": true
+    },
+    {
+      "goal": "G02",
+      "name": "unavailable",
+      "passed": null
+    },
+    {
+      "goal": "G03",
+      "name": "unavailable",
+      "passed": null
+    },
+    {
+      "goal": "G04",
+      "name": "unavailable",
+      "passed": null
+    },
+    {
+      "goal": "G05",
+      "name": "unavailable",
+      "passed": null
+    },
+    {
+      "goal": "G06",
+      "name": "unavailable",
+      "passed": null
+    },
+    {
+      "goal": "G07",
+      "name": "unavailable",
+      "passed": null
+    },
+    {
+      "goal": "G08",
+      "name": "unavailable",
+      "passed": null
+    },
+    {
+      "goal": "G09_events",
+      "name": "unavailable",
+      "passed": null
+    },
+    {
+      "goal": "G11",
+      "name": "unavailable",
+      "passed": null
+    }
+  ],
+  "cases": 49,
+  "passed": 167,
+  "failed": 0,
+  "unavailable": 9,
+  "identity_sha256": "548ed88846a444ed2a72e39e616a041b76c4f611a024dd8757b6c7e669865f87"
+}

@@ -6,6 +6,81 @@
 
 ---
 
+## Current project checkpoint - HamloZastava S5 / 0.2.0 (2026-11-03)
+
+Owner approved all four V2roles(cleanup,drum tails,external-key ducking,rhythm)
+and separate soft/hard profiles. Decisions settled, do not ask again.
+Scope:docs/ZASTAVA_V2_SCOPE.md; continuation:docs/NEXT_STAGE.md. Section9below
+is historical/stale:do not resume Mag/Revolution tasks. No other product/HPEQ,
+subagents, push/subtree or model switch. VST-first; installer not immediate.
+Follow efficient-staged-work. Parent audit69901fb; sourcef7330fd.
+
+S1 isolation complete:ten own production units,25file include closure, no
+LayerEngine/FxNodeProcessor/project graph/unrelated effects/panels. Original
+M6/extended gate branches and resets preserved,15spec parameters+bypass, seven
+host programs and fixed5msPDC. Version remains0.1.0, not the V2 release.
+229primary PCM/input-state cases plus458fresh/edited actual M0 restoration
+observations match exactly;127native, zero prepared audio allocations,
+pluginval5..10/Steinberg537pass; panel inspected. Processor sizeof844152->2176,
+not a heap-footprint measurement. DLL SHA256:ef62bb5f012c8faacf50de92a9fe916828888dd92e6da18d95b3bc3b4522e738.
+
+Final evidence:docs/reports/s1/REPORT.md,acceptance.json,before_v3/after_v3;
+reference:out/s1/reference_v3; original sources/bundle/exes:out/s1/original.
+Keep all v1/v2failed reports. Original normalized parameter readback changes
+in191roundtrips, while serialized state bytes remain unchanged; Legacy preserves
+that behavior. Final lab compares actual original restored bytes/PCM/readings.
+V2harness append-to-nonempty-buffer bug fixed, disclosed; final v3paired method.
+
+S2 offline kernel complete:Clean/Drum/Duck/Rhythm, separate Soft/Hard profiles,
+detector/filter/lookahead, fixed5msPDC, expansion/drum-tail/rhythm and recovery.
+Final paired66cases:218control passes/9n-a,275kernel passes/0fail; block1..4096
+PCM exact, zero measured audio allocations, five-minute192kstress. Eight owner
+A/B renders prepared, not ear-approved. Worst48k256mean1.20825% of block time.
+Reports:docs/reports/s2/REPORT.md,acceptance.json,before_v3/after_v3.json.
+Initial49case method missed a real queue-capacity fault; expanded66case method
+detects all4 archived regressions. Final comment-only revision recaptured both
+sides,132PCM files unchanged; no targets loosened. Retain all prior evidence.
+S3 connects the unchanged kernel to VST:61new IDs after original16 (77total),
+optional mono/stereo External Key, clock, fixedPDC and host bypass. Modern startup
+is Clean/processing off. Seven original programs retain Legacy. Full state/schema1
+and prepared/fresh restoration pass. Legacy old encoding is retained when modern
+controls are neutral; old-state load clears all new controls. Grid canonicalization
+fixes17initial new-state byte failures without changing Legacy or tolerances.
+Prepared key copy fixes4main/key alias regressions; their failing binary is saved.
+Final283host/219native,229primary+458restored exact M0, pluginval5..10/Steinberg537.
+Reports:docs/reports/s3/REPORT.md,acceptance.json,before_v3,after_host_v4,
+after_legacy_v4,native_v3,validators_v3. Earlier failed/intermediate evidence stays.
+DLL SHA:fe8d11b5e7b2ae908b988c6a3a130b5a26b3934c9907ffebdbbb8e427cdd03f3.
+Internal version0.1.0;12production units,3304object bytes (not heap footprint).
+S4complete:modern QUICK/ADVANCED,4roles,Soft/Hard,32step pattern,English help,
+neutral INIT,role-appropriate disabled controls,view/tab state and modified marker.
+Separate Legacy page; shared PresetScreen/BlackSteel/Legacy panel source unchanged.
+Append v2_listen at77 (78parameters). Kernel source extended for signed filtered
+key audition with5msPDC/20msfade; Listen off matches all66old PCM fixtures exactly.
+Use S4kernel9877b219... rather than assuming S2sourcec08e4c9d... is current.
+Final465native/283host/275kernel,229primary+458restored M0matches,15inspected
+screenshots,pluginval5..10/Steinberg537pass. Reports:docs/reports/s4/REPORT.md,
+acceptance.json,host_complete,legacy_complete,native_roles,screenshots_final,
+images_final,validators_final. Keep all initial/intermediate evidence.
+FinalDLL4634d22972057cf64460b46e63609aceca1cd702fd8ddc9cffe6b7438b134404.
+Internal0.1.0;13production units; no installed plug-in or installer change.
+S5complete:0.2.0,200genre recipes/207host programs. Four genres50each with
+16Clean/14Drum/8Duck/12Rhythm each. Stable IDs, project selection, filters and
+canonical modified marker. All78parameter definitions/order/ranges retained;
+Legacy compact state and original seven programs exact. Kernel unchanged.
+Final2507native/283host/275kernel,66exact PCM,229M0+458restores,200/200actual
+compiled recipes with fresh/edited state/PCM identity and natural-peak checks.
+Seven cache negative guards and valid resume verified. Six inspected images,
+16A/B pairs atout/s5/auditions; pluginval5..10/Steinberg537pass.
+Initial195/200failure:five short Drum Bodies cut protected attack; corrected
+Body manually, retained initial recipes/trials, reran calibration and actual
+catalog checks under final stamps. No DSP/metric/target relaxation.
+Reports:docs/reports/s5/REPORT.md,acceptance.json,library_check.json,package.json.
+DLL645ac589fa7903033057e8973dd7ae55e115f4e865711d9640cae800f9a25a5c.
+VST3/ZIP/SHA256 atdist/,exact validated DLL. No installer/installed copy change.
+Owner FL listening/workflow acceptance remains pending; do not claim it done.
+No active jobs. S5commit follows handoff; verify git log/status on continuation.
+
 ## 1. Продукт и владелец
 
 - Владелец — продюсер (Boom Bap / Trap / Techno / DnB), автор HPDG (генератор барабанов, `C:\DRUMENGINE`) и HPEQ

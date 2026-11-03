@@ -1,0 +1,79 @@
+{
+  "source_id": "55618b72cadcad7fc4c881ec53e747c503120aca1e32b2766f66937e8b3b969a",
+  "exe_sha256": "6ac6e9e7dbd20be9cc8c9aaf75a8faad1534d0c81b694fc67e6fb6bdb749c6b7",
+  "driver_sha256": "79554b88a578caaecaee8b1cfc6999494ec2c79d2907f555dafd7bfa542bdad8",
+  "images": [
+    {
+      "name": "bb_clean",
+      "args": [
+        "E:\\HamloZastava\\docs\\reports\\s5\\images\\bb_clean.png",
+        "7",
+        "preset",
+        "0",
+        "0",
+        "1"
+      ],
+      "sha256": "a393a9b0590ce16b331cb8240175210442ddacf384d2dfcd09ad65eb07c6362a"
+    },
+    {
+      "name": "tr_drum",
+      "args": [
+        "E:\\HamloZastava\\docs\\reports\\s5\\images\\tr_drum.png",
+        "73",
+        "preset",
+        "0",
+        "0",
+        "1"
+      ],
+      "sha256": "bbefd18a26283ca20a93e634b06e54010f99ad453cc034610546f06b49432ed0"
+    },
+    {
+      "name": "tc_duck",
+      "args": [
+        "E:\\HamloZastava\\docs\\reports\\s5\\images\\tc_duck.png",
+        "137",
+        "preset",
+        "1",
+        "1",
+        "1"
+      ],
+      "sha256": "17a10365717ca79ea232899021d239e6dfe7765a7b2182c214e9d7f682fa8733"
+    },
+    {
+      "name": "db_rhythm",
+      "args": [
+        "E:\\HamloZastava\\docs\\reports\\s5\\images\\db_rhythm.png",
+        "195",
+        "preset",
+        "1",
+        "2",
+        "1"
+      ],
+      "sha256": "03a00cc8e96d833ee01c744091bbb2b620731c2afe4f17997e0e01f3b2d78980"
+    },
+    {
+      "name": "small_rhythm",
+      "args": [
+        "E:\\HamloZastava\\docs\\reports\\s5\\images\\small_rhythm.png",
+        "206",
+        "preset",
+        "0",
+        "2",
+        "0.5"
+      ],
+      "sha256": "d6be98aca53fe4707c38b50016b90a9af8a00a462ed3acbe2d5157472fd1f805"
+    },
+    {
+      "name": "legacy",
+      "args": [
+        "E:\\HamloZastava\\docs\\reports\\s5\\images\\legacy.png",
+        "1",
+        "preset",
+        "2",
+        "0",
+        "1"
+      ],
+      "sha256": "bce0f80181f9c9d7f916702b212d2e10093852cedabc60c2e93ba7201087ff1f"
+    }
+  ]
+}

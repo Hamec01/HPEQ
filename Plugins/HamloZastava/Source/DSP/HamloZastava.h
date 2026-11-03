@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "DSP/DspConfig.h"
-#include "DSP/LayerSnapshot.h"
+#include "DSP/ZastavaSettings.h"
 
 namespace hpeq::dsp
 {
