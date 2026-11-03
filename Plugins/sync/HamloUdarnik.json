@@ -1,0 +1,13 @@
+{
+  "plugin": "HamloUdarnik",
+  "version": "0.2.0",
+  "status": "Committed source snapshot; see plugin reports for release/listening limits",
+  "source_commit": "11d37dbff5fe7ccbe87f4becf17daa5b13b02f8f",
+  "source_tree": "2dcf0ecd83c25e0144e0d65e814bb95649dd3dfd",
+  "source_branch": "main",
+  "hpeq_branch": "plugins/hamloudarnik",
+  "prefix": "Plugins/HamloUdarnik",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "sync_date": "2026-11-03",
+  "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
+}
