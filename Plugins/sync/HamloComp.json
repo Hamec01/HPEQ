@@ -1,0 +1,13 @@
+{
+  "plugin": "HamloComp",
+  "version": "0.2.0",
+  "status": "Committed source snapshot; see plugin reports for release/listening limits",
+  "source_commit": "c7d344bffc598eb9dd012db94772462648081a99",
+  "source_tree": "21506ec89e982e90c186be1e3aea697ec8f69478",
+  "source_branch": "main",
+  "hpeq_branch": "plugins/hamlocomp",
+  "prefix": "Plugins/HamloComp",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "sync_date": "2026-11-03",
+  "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
+}
