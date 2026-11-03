@@ -58,4 +58,30 @@ Modern project states restore settings, selected program, view and tab.
 Original Legacy states retain their historical restoration behavior. MODIFIED
 and the preset name's asterisk indicate changes from its recipe, including
 retained modern settings. Fresh modern INIT is neutral and differs from the
-original Legacy Default recipe. The 200 genre presets are the next stage.
+original Legacy Default recipe. The 200 genre presets are available alongside the original seven host programs.
+
+
+## Genre library
+
+GENRE filters Boom Bap, Trap, Techno or DnB; GROUP filters Clean, Drum, Duck or
+Rhythm. Arrows and the preset-name menu navigate within the filter. Selecting a
+recipe loads its processing settings and turns LISTEN KEY off. Global host
+bypass remains independent. QUICK opens the chosen role; Rhythm retains its
+pattern tab. The preset display stays at the top left on every page.
+
+Reference tempos are 88/144/132/174 BPM respectively. Synced Rhythm recipes use
+the actual host tempo; free recipes retain milliseconds. Duck recipes expect a
+kick routed to the optional External Key input. Adjust Threshold to the main or
+key level, use LISTEN KEY to inspect filtering, then turn audition off.
+
+Gentle/Medium/Strong describe measured role-specific depth, not a universal
+loudness target. Clean measures pause rejection with wanted/quiet detail checks;
+Drum measures post-envelope rejection and attack preservation; Duck measures
+key-active attenuation and recovery; Rhythm measures full/floor step contrast.
+See GENRE_PRESETS.md for the declared acceptance bands and purposes.
+
+Project states store permanent recipe IDs. A recognized ID takes precedence
+over a stale numeric index; an unknown ID retains the supplied settings with a
+valid numeric fallback. Loading an older state clears new fields as before.
+Changing a processing control adds the modified marker; restoring its recipe
+value clears it. Opening ADVANCED or another tab does not change the recipe.

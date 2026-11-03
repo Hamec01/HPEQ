@@ -3,6 +3,7 @@
 #include "UI/HamloZastavaPanel.h"
 #include "UI/ModuleHelp.h"
 #include "UI/PresetScreen.h"
+#include "Core/ModulePresets.h"
 
 namespace hpeq::standalone
 {
@@ -60,7 +61,10 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     {
         std::vector<ui::PresetScreen::Entry> entries;
         for (int i = 1; i < processor.getNumPrograms(); ++i)
-            entries.push_back({ i, {}, {}, processor.getProgramName(i), {} });
+        {
+            const auto& recipe=presets::factoryModulePresets(processor.getSpec().type)[static_cast<size_t>(i-1)];
+            entries.push_back({i,recipe.genre,recipe.group,processor.getProgramName(i),recipe.note});
+        }
         presets->setEntries(std::move(entries));
     }
     presets->onSelect = [this](int program)

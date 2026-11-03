@@ -31,6 +31,7 @@ ModulePluginProcessor::ModulePluginProcessor(ModuleKind moduleKind)
     bypassParameter = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter("bypass"));
     jassert(bypassParameter != nullptr);
     for(size_t i=0;i<modern::Count;++i)modernValues[i]=parameters.getRawParameterValue(modern::specs()[i].id);
+    (void)presets::factoryModulePresets(getSpec().type); // Warm catalog before audio/program automation.
 }
 
 void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSize)
@@ -196,11 +197,13 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
         for(int i=tree.getNumChildren();--i>=0;)if(tree.getChild(i).getProperty("id").toString().startsWith("v2_"))tree.removeChild(i,nullptr);
         tree.removeProperty("v2_schema",nullptr);tree.removeProperty("v2_program",nullptr);
         tree.removeProperty("v2_view",nullptr);tree.removeProperty("v2_tab",nullptr);
+        tree.removeProperty("v2_preset_id",nullptr);
     }
     else
     {
         tree.setProperty("v2_schema",1,nullptr);tree.setProperty("v2_program",getCurrentProgram(),nullptr);
         tree.setProperty("v2_view",editorView(),nullptr);tree.setProperty("v2_tab",editorTab(),nullptr);
+        tree.setProperty("v2_preset_id",programIdentifier(getCurrentProgram()),nullptr);
         for(const auto& spec:modern::specs())
             tree.getChildWithProperty("id",spec.id).setProperty("value",parameterValue(spec.id),nullptr);
     }
@@ -240,7 +243,13 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                 if(!child.isValid()){child=juce::ValueTree("PARAM");child.setProperty("id",spec.id,nullptr);tree.addChild(child,-1,nullptr);}
                 child.setProperty("value",value,nullptr);
             }
-            if(full)currentProgram.store(juce::jlimit(0,getNumPrograms()-1,static_cast<int>(tree.getProperty("v2_program",0))),std::memory_order_relaxed);
+            if(full)
+            {
+                int program=juce::jlimit(0,getNumPrograms()-1,static_cast<int>(tree.getProperty("v2_program",0)));
+                const auto id=tree.getProperty("v2_preset_id").toString();
+                if(id.isNotEmpty())for(int i=0;i<getNumPrograms();++i)if(programIdentifier(i)==id){program=i;break;}
+                currentProgram.store(program,std::memory_order_relaxed);
+            }
             setEditorView(full?static_cast<int>(tree.getProperty("v2_view",0)):2);
             setEditorTab(full?static_cast<int>(tree.getProperty("v2_tab",0)):0);
             parameters.replaceState(tree);resetModern.store(true,std::memory_order_release);
@@ -289,8 +298,21 @@ void ModulePluginProcessor::setCurrentProgram(int index)
             value = presets::presetValue(list[static_cast<size_t>(currentProgram - 1)], spec.id, value);
         setParameterValue(spec.id, value);
     }
-    for(size_t i=0;i<modern::Count;++i)setParameterValue(modern::specs()[i].id,i==modern::Engine?0:modern::specs()[i].defaultValue);
-    setEditorView(2);setEditorTab(0);
+    for(size_t i=0;i<modern::Count;++i)
+    {
+        const auto& s=modern::specs()[i];double value=i==modern::Engine?0:s.defaultValue;
+        if(currentProgram>0)value=presets::presetValue(list[static_cast<size_t>(getCurrentProgram()-1)],s.id,value);
+        if(i==modern::Listen)value=0;setParameterValue(s.id,value);
+    }
+    setEditorView(modern::engine(modernValues)>0?0:2);setEditorTab(modern::engine(modernValues)==4?2:0);
+}
+
+juce::String ModulePluginProcessor::programIdentifier(int program) const
+{
+    static const char* legacy[]{"legacy.default","legacy.kick","legacy.snare","legacy.tom","legacy.vocal","legacy.guitar","legacy.bleed"};
+    if(program>=0&&program<7)return legacy[program];
+    const auto& list=presets::factoryModulePresets(getSpec().type);
+    return program>0&&program<=static_cast<int>(list.size())?juce::String(list[static_cast<size_t>(program-1)].id):juce::String{};
 }
 
 bool ModulePluginProcessor::isProgramModified() const
@@ -303,7 +325,8 @@ bool ModulePluginProcessor::isProgramModified() const
     for(size_t i=0;i<modern::Count;++i)
     {
         const auto& s=modern::specs()[i];const auto* p=parameter(s.id);
-        if(p->getValue()!=p->convertTo0to1(static_cast<float>(expected(s,i==modern::Engine?0:s.defaultValue))))return true;
+        const double value=p->getNormalisableRange().snapToLegalValue(static_cast<float>(expected(s,i==modern::Engine?0:s.defaultValue)));
+        if(std::abs(parameterValue(s.id)-value)>std::max(1.e-6,static_cast<double>(s.interval)*.25))return true;
     }
     return false;
 }

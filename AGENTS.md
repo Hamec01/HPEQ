@@ -6,7 +6,7 @@
 
 ---
 
-## Current project checkpoint - HamloZastava S4 (2026-11-03)
+## Current project checkpoint - HamloZastava S5 / 0.2.0 (2026-11-03)
 
 Owner approved all four V2roles(cleanup,drum tails,external-key ducking,rhythm)
 and separate soft/hard profiles. Decisions settled, do not ask again.
@@ -64,9 +64,22 @@ acceptance.json,host_complete,legacy_complete,native_roles,screenshots_final,
 images_final,validators_final. Keep all initial/intermediate evidence.
 FinalDLL4634d22972057cf64460b46e63609aceca1cd702fd8ddc9cffe6b7438b134404.
 Internal0.1.0;13production units; no installed plug-in or installer change.
-Next:S5—200genre recipes/207host programs, guarded calibration and final release/
-FL checks. Do not ask scope again. Source/method changes invalidate caches.
-No active jobs. S4commit follows handoff; verify git log/status on continuation.
+S5complete:0.2.0,200genre recipes/207host programs. Four genres50each with
+16Clean/14Drum/8Duck/12Rhythm each. Stable IDs, project selection, filters and
+canonical modified marker. All78parameter definitions/order/ranges retained;
+Legacy compact state and original seven programs exact. Kernel unchanged.
+Final2507native/283host/275kernel,66exact PCM,229M0+458restores,200/200actual
+compiled recipes with fresh/edited state/PCM identity and natural-peak checks.
+Seven cache negative guards and valid resume verified. Six inspected images,
+16A/B pairs atout/s5/auditions; pluginval5..10/Steinberg537pass.
+Initial195/200failure:five short Drum Bodies cut protected attack; corrected
+Body manually, retained initial recipes/trials, reran calibration and actual
+catalog checks under final stamps. No DSP/metric/target relaxation.
+Reports:docs/reports/s5/REPORT.md,acceptance.json,library_check.json,package.json.
+DLL645ac589fa7903033057e8973dd7ae55e115f4e865711d9640cae800f9a25a5c.
+VST3/ZIP/SHA256 atdist/,exact validated DLL. No installer/installed copy change.
+Owner FL listening/workflow acceptance remains pending; do not claim it done.
+No active jobs. S5commit follows handoff; verify git log/status on continuation.
 
 ## 1. Продукт и владелец
 

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloZastava VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloZastava VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -45,6 +45,7 @@ set_target_properties(HamloZastava_Assets PROPERTIES POSITION_INDEPENDENT_CODE O
 # --- Shared code: HPEQ's module-plug-in stack (Source/ is HPEQ's, verbatim; docs/SYNC_WITH_HPEQ.md) -----------
 add_library(HamloZastava_Shared STATIC
     Source/Core/ModulePresets.cpp
+    Source/Core/GenrePresets.cpp
     Source/DSP/HamloZastava.cpp
     Source/DSP/LegacyGateProcessor.cpp
     Source/DSP/LegacyZastavaCore.cpp
@@ -113,7 +114,7 @@ target_link_libraries(HamloZastava
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloZastava_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/IsolationTests.cpp Tests/S3IntegrationTests.cpp Tests/S4Tests.cpp Tests/AllocationAudit.cpp)
+        add_executable(HamloZastava_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/IsolationTests.cpp Tests/S3IntegrationTests.cpp Tests/S4Tests.cpp Tests/S5Tests.cpp Tests/AllocationAudit.cpp)
     else()
         add_executable(HamloZastava_Snapshot Tests/SnapshotMain.cpp)
     endif()
@@ -129,6 +130,7 @@ foreach(tool Tests Snapshot)
             juce::juce_recommended_config_flags
             juce::juce_recommended_warning_flags)
 endforeach()
+
 add_test(NAME HamloZastava_Tests COMMAND HamloZastava_Tests)
 
 # Immutable S1 capture/verification laboratory.
@@ -224,5 +226,42 @@ foreach(pair Host Legacy)
         target_include_directories(${target} BEFORE PRIVATE "${source_root}/Source" "${identity_dir}" Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
         target_compile_definitions(${target} PRIVATE HPEQ_MODULE_KIND=6 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
         target_link_libraries(${target} PRIVATE ${shared} HamloZastava_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
+    endforeach()
+endforeach()
+
+# S5 reuses the identical original-prefix fixtures; new catalog tested separately.
+add_custom_target(HamloZastava_PresetIdentity
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/ZastavaPresetIdentity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WritePresetIdentity.cmake")
+add_executable(HamloZastava_PresetLab EXCLUDE_FROM_ALL Tests/PresetLabMain.cpp Tests/AllocationAudit.cpp)
+add_dependencies(HamloZastava_PresetLab HamloZastava_PresetIdentity)
+target_compile_definitions(HamloZastava_PresetLab PRIVATE HPEQ_MODULE_KIND=6 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloZastava_PresetLab PRIVATE HamloZastava_Shared HamloZastava_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
+foreach(pair Host Legacy)
+    foreach(flavour Current Reference)
+        if(flavour STREQUAL "Reference")
+            if(NOT HAMLO_ZASTAVA_BUILD_M0_REFERENCE)
+                continue()
+            endif()
+            set(s5_shared HamloZastava_M0Shared)
+            set(s5_root "${ZASTAVA_M0_ROOT}")
+        else()
+            set(s5_shared HamloZastava_Shared)
+            set(s5_root "${CMAKE_CURRENT_SOURCE_DIR}")
+        endif()
+        set(s5_target HamloZastava_S5${pair}${flavour})
+        if(NOT TARGET HamloZastava_S5${flavour}Identity)
+            add_custom_target(HamloZastava_S5${flavour}Identity
+                COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/s5_${flavour}"
+                COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${s5_root}" "-DMETHOD_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/s5_${flavour}/ZastavaS5Identity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteS5CompatIdentity.cmake")
+        endif()
+        add_executable(${s5_target} EXCLUDE_FROM_ALL Tests/S5${pair}LabMain.cpp Tests/AllocationAudit.cpp)
+        if(pair STREQUAL "Host")
+            target_sources(${s5_target} PRIVATE Source/DSP/V2Gate.cpp)
+            add_dependencies(${s5_target} HamloZastava_S2Identity)
+        endif()
+        add_dependencies(${s5_target} HamloZastava_S5${flavour}Identity)
+        target_include_directories(${s5_target} BEFORE PRIVATE "${s5_root}/Source" "${CMAKE_CURRENT_BINARY_DIR}/s5_${flavour}" Source Tests "${CMAKE_CURRENT_BINARY_DIR}")
+        target_compile_definitions(${s5_target} PRIVATE HPEQ_MODULE_KIND=6 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+        target_link_libraries(${s5_target} PRIVATE ${s5_shared} HamloZastava_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
     endforeach()
 endforeach()

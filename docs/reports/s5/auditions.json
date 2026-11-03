@@ -1,0 +1,300 @@
+{
+  "identity": {
+    "dsp_id": "d8952cdc5be130097aa88cbe23eeaca1bb5a319f94348d8ded5b73c66558681a",
+    "method_id": "f27b362767798b7b650b5fa1c039f889d696349ed2969e9f3876be5e64612e81",
+    "catalog_id": "de7501f4fea78d1acfe087b6bf568131441e3486320ca10eb1998ef0707657ca",
+    "production_id": "55618b72cadcad7fc4c881ec53e747c503120aca1e32b2766f66937e8b3b969a"
+  },
+  "rate": 48000,
+  "rows": [
+    {
+      "id": "za.bb.clean.01",
+      "program": 7,
+      "name": "BB Close Voice",
+      "bpm": 88,
+      "peak_dbtp": -6.868535375343465,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.bb.clean.01_dry.wav",
+          "sha256": "b8b0489ae39ecd147f7523b6d36c865c83205589840cda369977e3c39573da9e"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.bb.clean.01_processed.wav",
+          "sha256": "1def92bd6afe9d319b991e4a20603c43d4f1a8ebc630ce85ed39ce5bd9cdc6bd"
+        }
+      ]
+    },
+    {
+      "id": "za.bb.drum.01",
+      "program": 23,
+      "name": "BB Kick Frame",
+      "bpm": 88,
+      "peak_dbtp": -6.0337174895787795,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.bb.drum.01_dry.wav",
+          "sha256": "895015f84d31f5cb70ec61c0ff1d5b9d58b1ada52023ba831d63e1d51df13666"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.bb.drum.01_processed.wav",
+          "sha256": "f1ecb2136e15c4ed26ca4614e93f3a9723f3ec5c1ec49d2df578625e2ba9f1b4"
+        }
+      ]
+    },
+    {
+      "id": "za.bb.duck.01",
+      "program": 37,
+      "name": "BB Bass Step",
+      "bpm": 88,
+      "peak_dbtp": -6.7505648230502455,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.bb.duck.01_dry.wav",
+          "sha256": "23ab3cf19b519e13e0a640df8ae1ce25e9f9f5825f2ece5dd42bacbd13880abb"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.bb.duck.01_processed.wav",
+          "sha256": "5a680a32379655ab56493102d10207d0acbd61a93a41ffbd6f8f26cf441bf929"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.bb.duck.01_external_key.wav",
+          "sha256": "2723fb58b006e9c91aa9a994dd70a2e6d2907372c14dfb5cdfba8c100710fc7f"
+        }
+      ]
+    },
+    {
+      "id": "za.bb.rhythm.01",
+      "program": 45,
+      "name": "BB Quarter Posts",
+      "bpm": 88,
+      "peak_dbtp": -14.663686454802711,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.bb.rhythm.01_dry.wav",
+          "sha256": "eb7829b207bd6f4091296fdbfb353229481e730a8b7d052d32d647958f2440b3"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.bb.rhythm.01_processed.wav",
+          "sha256": "6f6a18713414e742735296513b3632689a0eafd76c64f6024e60693d0ed052c1"
+        }
+      ]
+    },
+    {
+      "id": "za.tr.clean.01",
+      "program": 57,
+      "name": "TR Close Voice",
+      "bpm": 144,
+      "peak_dbtp": -6.868535375343465,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tr.clean.01_dry.wav",
+          "sha256": "b8b0489ae39ecd147f7523b6d36c865c83205589840cda369977e3c39573da9e"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tr.clean.01_processed.wav",
+          "sha256": "2e4cf1da3455005e70e57dd5e1766eee633fcbb04bfd36e05c9025a4fad44946"
+        }
+      ]
+    },
+    {
+      "id": "za.tr.drum.01",
+      "program": 73,
+      "name": "TR Kick Frame",
+      "bpm": 144,
+      "peak_dbtp": -6.0337174895787795,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tr.drum.01_dry.wav",
+          "sha256": "895015f84d31f5cb70ec61c0ff1d5b9d58b1ada52023ba831d63e1d51df13666"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tr.drum.01_processed.wav",
+          "sha256": "502e836efcb8cb7eb150947da5759e42d02ab78cc642141deee0dcf629e73c7f"
+        }
+      ]
+    },
+    {
+      "id": "za.tr.duck.01",
+      "program": 87,
+      "name": "TR Bass Step",
+      "bpm": 144,
+      "peak_dbtp": -6.014193495246991,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tr.duck.01_dry.wav",
+          "sha256": "23ab3cf19b519e13e0a640df8ae1ce25e9f9f5825f2ece5dd42bacbd13880abb"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tr.duck.01_processed.wav",
+          "sha256": "b78c741fff11c5017af0fafe7aa0d426c1001f338e16774dad22bb5676663d45"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tr.duck.01_external_key.wav",
+          "sha256": "0ba01d30a2808a0fe192689a72b579f39ec457a93e4dea0cc3048b495270364c"
+        }
+      ]
+    },
+    {
+      "id": "za.tr.rhythm.01",
+      "program": 95,
+      "name": "TR Quarter Posts",
+      "bpm": 144,
+      "peak_dbtp": -14.663686454802711,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tr.rhythm.01_dry.wav",
+          "sha256": "eb7829b207bd6f4091296fdbfb353229481e730a8b7d052d32d647958f2440b3"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tr.rhythm.01_processed.wav",
+          "sha256": "501d9d173601587e32205cd20aa68e918fdc31a16d9012af09d1d1996436c2b0"
+        }
+      ]
+    },
+    {
+      "id": "za.tc.clean.01",
+      "program": 107,
+      "name": "TC Close Voice",
+      "bpm": 132,
+      "peak_dbtp": -6.868535375343465,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tc.clean.01_dry.wav",
+          "sha256": "b8b0489ae39ecd147f7523b6d36c865c83205589840cda369977e3c39573da9e"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tc.clean.01_processed.wav",
+          "sha256": "1555b41fecb141880bd1321586968495e0d179eb39cfa181d84f20f412f720e6"
+        }
+      ]
+    },
+    {
+      "id": "za.tc.drum.01",
+      "program": 123,
+      "name": "TC Kick Frame",
+      "bpm": 132,
+      "peak_dbtp": -6.0337174895787795,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tc.drum.01_dry.wav",
+          "sha256": "895015f84d31f5cb70ec61c0ff1d5b9d58b1ada52023ba831d63e1d51df13666"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tc.drum.01_processed.wav",
+          "sha256": "5feb1f87f13491d907ed0fd25dc8b9c48d1aadb2926f7bdab359a6f40d6e4d61"
+        }
+      ]
+    },
+    {
+      "id": "za.tc.duck.01",
+      "program": 137,
+      "name": "TC Bass Step",
+      "bpm": 132,
+      "peak_dbtp": -6.042988253978095,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tc.duck.01_dry.wav",
+          "sha256": "23ab3cf19b519e13e0a640df8ae1ce25e9f9f5825f2ece5dd42bacbd13880abb"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tc.duck.01_processed.wav",
+          "sha256": "77201d24e9ee3e895fe69bc8ec83f574a8b1b4297816570b550f24d6ffad19a9"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tc.duck.01_external_key.wav",
+          "sha256": "9191f5d83f5a7f555e71a9b8f5d2ec8cb6d907e1889291464f9c2dbd4a76f892"
+        }
+      ]
+    },
+    {
+      "id": "za.tc.rhythm.01",
+      "program": 145,
+      "name": "TC Quarter Posts",
+      "bpm": 132,
+      "peak_dbtp": -14.768115824608948,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tc.rhythm.01_dry.wav",
+          "sha256": "eb7829b207bd6f4091296fdbfb353229481e730a8b7d052d32d647958f2440b3"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.tc.rhythm.01_processed.wav",
+          "sha256": "abb475ddee9d99f8a943a88c419810b65bf66f36f5a579322e3e1cb3678463c2"
+        }
+      ]
+    },
+    {
+      "id": "za.db.clean.01",
+      "program": 157,
+      "name": "DB Close Voice",
+      "bpm": 174,
+      "peak_dbtp": -6.868535375343465,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.db.clean.01_dry.wav",
+          "sha256": "b8b0489ae39ecd147f7523b6d36c865c83205589840cda369977e3c39573da9e"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.db.clean.01_processed.wav",
+          "sha256": "00ac111867948ed99c2205133c21e7231a822033693b671e57b24690444033ce"
+        }
+      ]
+    },
+    {
+      "id": "za.db.drum.01",
+      "program": 173,
+      "name": "DB Kick Frame",
+      "bpm": 174,
+      "peak_dbtp": -6.0739916511189405,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.db.drum.01_dry.wav",
+          "sha256": "895015f84d31f5cb70ec61c0ff1d5b9d58b1ada52023ba831d63e1d51df13666"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.db.drum.01_processed.wav",
+          "sha256": "1ea569aca236543e39618da00aba441cc95c9cdcdc5f4d32aca4d8ce2663884a"
+        }
+      ]
+    },
+    {
+      "id": "za.db.duck.01",
+      "program": 187,
+      "name": "DB Bass Step",
+      "bpm": 174,
+      "peak_dbtp": -6.7505648230502455,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.db.duck.01_dry.wav",
+          "sha256": "23ab3cf19b519e13e0a640df8ae1ce25e9f9f5825f2ece5dd42bacbd13880abb"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.db.duck.01_processed.wav",
+          "sha256": "f5f7d8c8fda63c12bdad0df71cd9d6a41c338b3653934c64b0f5251dce993c7a"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.db.duck.01_external_key.wav",
+          "sha256": "6db50e0499b93749d6a42bd435d2d7dde62ccab36f897415e7f50816d887c861"
+        }
+      ]
+    },
+    {
+      "id": "za.db.rhythm.01",
+      "program": 195,
+      "name": "DB Quarter Posts",
+      "bpm": 174,
+      "peak_dbtp": -14.841515578116763,
+      "files": [
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.db.rhythm.01_dry.wav",
+          "sha256": "eb7829b207bd6f4091296fdbfb353229481e730a8b7d052d32d647958f2440b3"
+        },
+        {
+          "path": "E:\\HamloZastava\\out\\s5\\auditions\\za.db.rhythm.01_processed.wav",
+          "sha256": "7eec5524cdbc1ec53da6ded21195c63d2e5df5e7d10c6697fc3fdeaf9fee48ba"
+        }
+      ]
+    }
+  ],
+  "owner_listening": "pending"
+}

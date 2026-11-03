@@ -1,0 +1,40 @@
+{
+  "guards": [
+    {
+      "name": "dsp_id",
+      "rejected": true,
+      "reason": "Changed dsp_id"
+    },
+    {
+      "name": "method_id",
+      "rejected": true,
+      "reason": "Changed method_id"
+    },
+    {
+      "name": "catalog_id",
+      "rejected": true,
+      "reason": "Changed catalog_id"
+    },
+    {
+      "name": "input",
+      "rejected": true,
+      "reason": "Changed recipe/input/request"
+    },
+    {
+      "name": "recipe",
+      "rejected": true,
+      "reason": "Changed recipe/input/request"
+    },
+    {
+      "name": "request",
+      "rejected": true,
+      "reason": "Changed recipe/input/request"
+    },
+    {
+      "name": "raw_output",
+      "rejected": true,
+      "reason": "Corrupt cached output"
+    }
+  ],
+  "resume_without_rewrite": true
+}

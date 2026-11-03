@@ -15,7 +15,12 @@ int main(int argc, char* argv[])
         return 2;
     hpeq::standalone::ModulePluginProcessor p(static_cast<hpeq::standalone::ModuleKind>(HPEQ_MODULE_KIND));
     p.setCurrentProgram(argc > 2 ? juce::String(argv[2]).getIntValue() : 1);
-    if(argc>3)
+    if(argc>3 && juce::String(argv[3])=="preset")
+    {
+        p.setEditorView(argc>4?juce::String(argv[4]).getIntValue():0);
+        p.setEditorTab(argc>5?juce::String(argv[5]).getIntValue():0);
+    }
+    else if(argc>3)
     {
         p.setParameterValue("v2_engine",argc>4?juce::String(argv[4]).getIntValue():1);
         p.setEditorView(juce::String(argv[3]).getIntValue());

@@ -6,3 +6,8 @@ docs/reports/s3/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,c
 docs/reports/s3/validators*/** -whitespace
 docs/reports/s4/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/reports/s4/validators*/** -whitespace
+# Preserve source catalog bytes and raw S5 evidence across Windows checkouts.
+Source/Presets/** text eol=lf
+docs/reports/s5/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Vendor output contains intentional alignment/trailing spaces; retain verbatim.
+docs/reports/s5/validators_final/** -whitespace

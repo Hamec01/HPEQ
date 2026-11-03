@@ -151,6 +151,7 @@ public:
             expectEquals(editor->getWidth(), p.getSpec().editorWidth);
             expectEquals(editor->getHeight(), p.getSpec().editorHeight);
             auto& screen = editor->getPresetScreen();
+            screen.setFilter("All","All"); // Catalog now has genre/role filters; count all programs.
             expect(screen.getBounds() == juce::Rectangle<float>(56.0f, 20.0f, 336.0f, 116.0f).toNearestInt(), screen.getBounds().toString());
             expectEquals(static_cast<int>(screen.filtered().size()), p.getNumPrograms() - 1);
             if (p.getNumPrograms() > 1)

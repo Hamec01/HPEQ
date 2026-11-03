@@ -12,7 +12,12 @@ const std::vector<ModulePreset> kGate {
     { "Gentle Bleed Cut", 1.0f, { { "style", 1 }, { "thresholdDb", -40 }, { "rangeDb", 8 }, { "ratio", 2 }, { "attackMs", 1 }, { "holdMs", 40 }, { "releaseMs", 180 } } },
 };
 }
-const std::vector<ModulePreset>& factoryModulePresets(FxType type) {static const std::vector<ModulePreset> empty;return type==FxType::GateExpander?kGate:empty;}
+const std::vector<ModulePreset>& factoryModulePresets(FxType type)
+{
+    static const std::vector<ModulePreset> all=[]
+    {auto result=kGate;auto modern=genreModulePresets();result.insert(result.end(),std::make_move_iterator(modern.begin()),std::make_move_iterator(modern.end()));return result;}();
+    static const std::vector<ModulePreset> empty;return type==FxType::GateExpander?all:empty;
+}
 double presetValue(const ModulePreset& preset, const juce::String& key, double fallback)
 {
     if (key == "mix")

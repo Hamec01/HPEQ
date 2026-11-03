@@ -62,6 +62,7 @@ public:
     void setEditorView(int value) noexcept { view.store(juce::jlimit(0,2,value),std::memory_order_relaxed); }
     void setEditorTab(int value) noexcept { tab.store(juce::jlimit(0,2,value),std::memory_order_relaxed); }
     bool isProgramModified() const;
+    juce::String programIdentifier(int) const;
 
 private:
     dsp::FxSlotParams currentSlot(bool active) const noexcept;

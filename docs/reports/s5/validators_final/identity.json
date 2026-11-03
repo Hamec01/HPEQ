@@ -1,0 +1,12 @@
+{
+  "results": [
+    "pluginval 5 exit=0",
+    "pluginval 6 exit=0",
+    "pluginval 7 exit=0",
+    "pluginval 8 exit=0",
+    "pluginval 9 exit=0",
+    "pluginval 10 exit=0",
+    "Steinberg exit=0"
+  ],
+  "dll_sha256": "645ac589fa7903033057e8973dd7ae55e115f4e865711d9640cae800f9a25a5c"
+}

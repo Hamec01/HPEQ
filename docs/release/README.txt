@@ -1,26 +1,27 @@
-HamloZastava 0.1.0 - gate/expander, VST3, Windows x64 (HamloProd)
+HamloZastava 0.2.0 - Windows x64 VST3 - HamloProd
 
-Controls
-  THRESHOLD    Below this level the gate closes. Turned fully left (OFF, -90 dB) it never closes (a new gate starts here).
-  RANGE        How far it turns the signal down when closed.
-  ATTACK       How fast it opens.
-  HOLD         Stays open this long after the level drops.
-  RELEASE      How fast it closes.
-  MODE         ZASTAVA gate; PATRUL soft expander; TREVOGA ducker (loud key turns the signal down).
-  RATIO        How steeply the level under the threshold is turned down.
-  HYSTERESIS   Closes a few dB under where it opens: no chatter on decaying sounds.
-  KEY HP       The detector ignores everything below this (e.g. so bass does not open the hats' gate).
-  KEY LP       The detector ignores everything above this.
-  MIX          Blend with the dry signal.
-  OUTPUT       Level after the gate.
-  LOOK-AHEAD   Opens just before the hit so the attack is not cut. Adds latency.
-  KEY LISTEN   Hear what the detector hears (to set KEY HP / LP).
-  FLIP         Hear only what the gate removes.
-  ON           the lamp switch; off = the dry signal
+Four modern roles: Clean gate/expander, Drum Attack/Body/Tail, External Key Duck,
+and editable 16-32-step Rhythm. Separate Soft/Hard profiles, QUICK/ADVANCED,
+HP/LP key filtering, LISTEN KEY, lookahead, Mix and Output. Legacy is retained.
 
-Presets: the screen top left - the arrows step through the presets (or the mouse wheel; click the name for a menu).
-The same presets are in the DAW's program list.
+200 new recipes: Boom Bap, Trap, Techno and DnB, 50 each. Original Default and
+six recipes remain in host programs0-6; total207programs. Select genre/group on
+the top-left preset screen. Duck expects a kick routed to External Key. Threshold
+must fit the recording. Reference tempos:88/144/132/174BPM; synced Rhythm follows
+the actual host tempo. New startup and INIT have modern processing off. Factory
+Default recalls the original Legacy recipe.
 
-Mono and stereo. The latency is fixed and reported to the DAW.
+Fixed latency5ms (240samples at48kHz), even with Processing off. Host bypass and
+missing External Key return delayed dry. Modern project states restore permanent
+preset ID, controls, page and tab. Original Legacy states retain their behavior.
 
-Uninstall: Settings -> Apps -> HamloZastava, or Start menu -> HamloProd -> Uninstall HamloZastava.
+Manual installation: close the DAW, copy the ENTIRE HamloZastava.vst3 directory
+to a scanned VST3 location, then rescan in the64-bitDAW. This ZIP contains no
+installer. No installed plug-in was replaced during release preparation. A host
+with the old class ID will use this version for old projects; keep your prior
+binary backup when making the manual replacement.
+
+Documentation: ZASTAVA_CONTROLS.md, GENRE_PRESETS.md, REPORT.md and third-party
+notices/license. Owner FL Studio listening remains pending; the report separates
+numerical/validator results from listening. SHA256SUMS-0.2.0.txt accompanies the
+release ZIP outside this directory.
