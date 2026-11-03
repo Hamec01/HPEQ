@@ -1,0 +1,922 @@
+{
+  "source_id": "e275c7c7793f4c2d80857d0f6a944ca40ffd5abe2f5aa1fa42f94d4cb74d9458",
+  "method_id": "d6715a435dd7637ce2049826e6f346df8e989fa11d058f20fd4897dcd30629b5",
+  "passed": 223,
+  "failed": 0,
+  "results": [
+    {
+      "name": "8 original +68 appended parameters",
+      "passed": true
+    },
+    {
+      "name": "new instance modern Trim",
+      "passed": true
+    },
+    {
+      "name": "neutral modern exact, oversized callback, no allocation",
+      "passed": true
+    },
+    {
+      "name": "modern PDC0/alignment tail20ms",
+      "passed": true
+    },
+    {
+      "name": "original Default selects Legacy/tail0",
+      "passed": true
+    },
+    {
+      "name": "surround rejected",
+      "passed": true
+    },
+    {
+      "name": "modern state parameter/program/page roundtrip",
+      "passed": true
+    },
+    {
+      "name": "fresh restore actual audio exact",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "prepared modern restore resets history and stale actions",
+      "passed": true
+    },
+    {
+      "name": "future state rejected",
+      "passed": true
+    },
+    {
+      "name": "nonfinite modern state rejected",
+      "passed": true
+    },
+    {
+      "name": "nonnumeric modern state rejected",
+      "passed": true
+    },
+    {
+      "name": "out-of-range modern state rejected",
+      "passed": true
+    },
+    {
+      "name": "duplicate modern state rejected",
+      "passed": true
+    },
+    {
+      "name": "incomplete modern state rejected",
+      "passed": true
+    },
+    {
+      "name": "invalid binary rejected",
+      "passed": true
+    },
+    {
+      "name": "old load resets all68 new controls and page, retains historical program",
+      "passed": true
+    },
+    {
+      "name": "Apply refuses absent proposal",
+      "passed": true
+    },
+    {
+      "name": "Learn enqueue allocation-free",
+      "passed": true
+    },
+    {
+      "name": "learning callback allocation-free",
+      "passed": true
+    },
+    {
+      "name": "learning callback allocation-free",
+      "passed": true
+    },
+    {
+      "name": "learning callback allocation-free",
+      "passed": true
+    },
+    {
+      "name": "learning callback allocation-free",
+      "passed": true
+    },
+    {
+      "name": "learning callback allocation-free",
+      "passed": true
+    },
+    {
+      "name": "learning callback allocation-free",
+      "passed": true
+    },
+    {
+      "name": "learning callback allocation-free",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "Learn does not apply gain",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "Stop publishes valid proposal only",
+      "passed": true
+    },
+    {
+      "name": "explicit Apply persistent host parameter",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "Reset clears history but retains applied gain",
+      "passed": true
+    },
+    {
+      "name": "parameter bypass allocation-free",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "parameter bypass cancels unfinished learning",
+      "passed": true
+    },
+    {
+      "name": "host bypass starts its20ms fade",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host bypass settles exact dry, cancels Learn, leaves parameter unchanged",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "disabled cannot Learn",
+      "passed": true
+    },
+    {
+      "name": "command64 capacity and explicit overflow refusal",
+      "passed": true
+    },
+    {
+      "name": "obsolete epoch commands drained, queue reusable",
+      "passed": true
+    },
+    {
+      "name": "decreasing command frame refused",
+      "passed": true
+    },
+    {
+      "name": "concurrent atomic snapshot coherence",
+      "passed": true
+    },
+    {
+      "name": "three nonblocking producers/one consumer, accepted commands conserved",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host vs accepted kernel scenario0",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario0 block1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario0 block64",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario0 block127",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario0 block4096",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host vs accepted kernel scenario1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario1 block1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario1 block64",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario1 block127",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario1 block4096",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host vs accepted kernel scenario2",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario2 block1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario2 block64",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario2 block127",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario2 block4096",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host vs accepted kernel scenario3",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario3 block1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario3 block64",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario3 block127",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario3 block4096",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host vs accepted kernel scenario4",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario4 block1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario4 block64",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario4 block127",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario4 block4096",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host vs accepted kernel scenario5",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario5 block1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario5 block64",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario5 block127",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario5 block4096",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host vs accepted kernel scenario6",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario6 block1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario6 block64",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario6 block127",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario6 block4096",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host vs accepted kernel scenario7",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario7 block1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario7 block64",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario7 block127",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario7 block4096",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "host vs accepted kernel scenario8",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario8 block1",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario8 block64",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario8 block127",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "exact event/block oracle scenario8 block4096",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "channel/rate oracle 1/8000",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "channel/rate oracle 1/44100",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "channel/rate oracle 1/96000",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "channel/rate oracle 1/192000",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "channel/rate oracle 2/8000",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "channel/rate oracle 2/44100",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "channel/rate oracle 2/96000",
+      "passed": true
+    },
+    {
+      "name": "scheduled command enqueue",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "channel/rate oracle 2/192000",
+      "passed": true
+    },
+    {
+      "name": "precise Learn/Stop queued inside oversized callbacks",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "Learn sample interval exactly[123,26001)",
+      "passed": true
+    },
+    {
+      "name": "queued Learn makes old proposal inapplicable before consumption",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "reprepare invalidates old command timeline",
+      "passed": true
+    },
+    {
+      "name": "old state over modified prepared modern instance matches original M0 history PCM",
+      "passed": true
+    },
+    {
+      "name": "stable Legacy path exact before selection change",
+      "passed": true
+    },
+    {
+      "name": "selection crossfade settles exactly at20ms, allocation-free",
+      "passed": true
+    },
+    {
+      "name": "atomic snapshot available",
+      "passed": true
+    },
+    {
+      "name": "leaving modern cancels unfinished Learn",
+      "passed": true
+    },
+    {
+      "name": "live processor/control snapshot-command stress, zero audio allocations",
+      "passed": true
+    },
+    {
+      "name": "whole processor mean CPU <=25% block, mode-1",
+      "passed": true
+    },
+    {
+      "name": "whole processor mean CPU <=25% block, mode0",
+      "passed": true
+    },
+    {
+      "name": "whole processor mean CPU <=25% block, mode1",
+      "passed": true
+    },
+    {
+      "name": "whole processor mean CPU <=25% block, mode2",
+      "passed": true
+    },
+    {
+      "name": "whole processor mean CPU <=25% block, mode3",
+      "passed": true
+    }
+  ],
+  "timings": [
+    {
+      "mode": -1,
+      "mean_block_percent": 1.062165527343748
+    },
+    {
+      "mode": 0,
+      "mean_block_percent": 1.080930175781251
+    },
+    {
+      "mode": 1,
+      "mean_block_percent": 1.036160888671875
+    },
+    {
+      "mode": 2,
+      "mean_block_percent": 1.320637207031249
+    },
+    {
+      "mode": 3,
+      "mean_block_percent": 1.221672363281251
+    }
+  ]
+}

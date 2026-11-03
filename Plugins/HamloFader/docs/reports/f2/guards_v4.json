@@ -1,0 +1,26 @@
+[
+  {
+    "name": "method",
+    "rejected": true,
+    "reason": "Stale method",
+    "log_sha256": "c47f71a600dff2df08416accba30705a85f4e88623c616d8128712a1802c253a"
+  },
+  {
+    "name": "source",
+    "rejected": true,
+    "reason": "Stale kernel",
+    "log_sha256": "e814f793a8b0f0ad7d2b71bcf7d2c0e8139187585e76087630c29b075209b147"
+  },
+  {
+    "name": "raw",
+    "rejected": true,
+    "reason": "Corrupt cached output",
+    "log_sha256": "284db10ecbdc5bbd95f0f1c9eee9248df4d164d4d610d653c7c86041235da49f"
+  },
+  {
+    "name": "manifest",
+    "rejected": true,
+    "reason": "Corrupt cached output",
+    "log_sha256": "284db10ecbdc5bbd95f0f1c9eee9248df4d164d4d610d653c7c86041235da49f"
+  }
+]

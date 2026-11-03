@@ -6,6 +6,40 @@
 
 ---
 
+## Current checkpoint: F3 host integration accepted (2026-11-03)
+
+Owner approved full Trim/Match/Ride/Motion, Ride Natural/Fast with adjustable
+range. Do not ask scope again. Work only in E:/HamloFader; efficient-staged-work,
+no subagents/HPEQ/installed-copy replacement/installer/push/subtree/model switch.
+Old pending Mag/Revolution lists below are historical, not current tasks.
+
+F3 adds 68 parameters after the original8 (76 native, wrapper77). Modern neutral
+Trim on construction; all eight old programs, including Default, select Legacy.
+Original prefix, recipes, state root and VST3 class IDs retained;0sample PDC.
+Modern schema3 saves settings/applied Match/program/page. Old load resets all
+new controls/page, retains historical currentProgram/prepared Legacy history.
+Kernel API stays audio-thread only: prepared buffers, bounded64-command queue,
+epoch cancellation and atomic readings. Apply is explicit host parameter update;
+Reset retains configured matchedDb. Check returned command/read status in F4.
+
+Final224host/678exactLegacy/281lab/59kernel-unit/49native pass. pluginval5..10
+and Steinberg537 pass on one final DLL. Found and fixed a previously missed
+Motion first-block-after-Reset dependency; final test rejects old kernel with
+53 failures. Prior F2 acceptance is preserved; same F2 method rerun passes.
+F3 kernel source db89bee1..., whole Source535ed713...; full hashes in report.
+Source/UI shared files and frozen old lab methods remain unchanged. F3 report:
+docs/reports/f3/REPORT.md; receipt acceptance.json; replay Tools/verify_f3.py.
+Frozen sources/tools/bundle out/f3/accepted_v2; control out/f3/baseline and
+legacy_reference. Earlier failed/intermediate files are retained; authoritative
+host_final_v2, legacy_final, kernel_after_v1, regression_final_v2, validators_final.
+
+VST now contains the modern engine, but still internal0.1.0 with old interface
+and8programs. F4 modern QUICK/ADVANCED UI next; F5 200recipes/208programs,
+calibration/listening/release. Do not call0.2.0 complete. Old F1/F2 whole-shipping
+guards intentionally no longer match; F3 audit supersedes them without deleting
+evidence. Exact continuation/API/caveats:docs/NEXT_STAGE.md. No active jobs after
+final acceptance. Commit follows this handoff.
+
 ## 1. Продукт и владелец
 
 - Владелец — продюсер (Boom Bap / Trap / Techno / DnB), автор HPDG (генератор барабанов, `C:\DRUMENGINE`) и HPEQ

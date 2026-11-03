@@ -1,0 +1,13 @@
+{
+  "plugin": "HamloFader",
+  "version": "0.1.0",
+  "status": "F3 host integration; modern UI and preset library pending",
+  "source_commit": "3223d0d5761df2f4f2c3dc309fb15ded1fe45c2b",
+  "source_tree": "6237e5ec83a4a12a656a22c5773dffa5fdc5c38e",
+  "source_branch": "master",
+  "hpeq_branch": "plugins/hamlofader",
+  "prefix": "Plugins/HamloFader",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "sync_date": "2026-11-03",
+  "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
+}

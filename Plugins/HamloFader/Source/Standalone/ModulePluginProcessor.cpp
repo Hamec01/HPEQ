@@ -1,9 +1,8 @@
 #include "Standalone/ModulePluginProcessor.h"
 #include "Core/ModulePresets.h"
 
-#include "DSP/ProcessorsM6.h"
-#include "DSP/ReverbProcessor.h"
 #include "Standalone/ModulePluginEditor.h"
+#include <charconv>
 
 namespace hpeq::standalone
 {
@@ -19,6 +18,7 @@ ModulePluginProcessor::ModulePluginProcessor(ModuleKind moduleKind)
       kind(moduleKind),
       parameters(*this, nullptr, juce::Identifier(moduleSpec(kind).productName), createParameterLayout(kind))
 {
+    controls.bind(parameters);
     rawValues.reserve(getSpec().parameters.size());
     for (const auto& spec : getSpec().parameters)
     {
@@ -35,6 +35,12 @@ void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSi
     maximumBlockSize = juce::jmax(1, expectedBlockSize);
     currentSampleRate.store(sampleRate, std::memory_order_relaxed);
     engine.prepare(sampleRate, maximumBlockSize);
+    kernel.prepare(sampleRate,getTotalNumInputChannels());
+    kernel.set(modernSettings());
+    processedFrames=0;publishedFrames.store(0,std::memory_order_release);
+    audioEpoch=epoch.fetch_add(1,std::memory_order_acq_rel)+1;
+    selection.reset(controls.value(Engine)>.5f?1.0:0.0);
+    modern.setSize(dsp::kMaxChannels,maximumBlockSize,false,false,true);
 
     fixedLatency = maximumLatencySamples(kind, sampleRate);
     wetAlign.prepare(fixedLatency);
@@ -44,7 +50,7 @@ void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSi
     wetAmount.reset(isModuleOn() ? 1.0 : 0.0);
     setLatencySamples(fixedLatency);
 
-    dsp::LayerSnapshot snapshot;
+    dsp::FaderSnapshot snapshot;
     snapshot.mix.active = true;
     snapshot.mix.channel = ChannelMode::Stereo;
     snapshot.mix.numSlots = 1;
@@ -67,8 +73,10 @@ dsp::FxSlotParams ModulePluginProcessor::currentSlot(bool active) const noexcept
 
 dsp::Transport ModulePluginProcessor::currentTransport() noexcept
 {
+    callbackClock=hamlo::fader::Clock{};
     dsp::Transport transport;
     transport.bpm = hostBpm.load(std::memory_order_relaxed);
+    callbackClock.bpm=transport.bpm;
     if (auto* hostPlayHead = getPlayHead())
         if (const auto position = hostPlayHead->getPosition())
         {
@@ -77,9 +85,14 @@ dsp::Transport ModulePluginProcessor::currentTransport() noexcept
                 transport.bpm = *bpm;
                 hostBpm.store(*bpm, std::memory_order_relaxed);
             }
+            callbackClock.bpm=transport.bpm;
             transport.playing = position->getIsPlaying();
+            callbackClock.playing=transport.playing;
+            if(const auto samples=position->getTimeInSamples();samples.hasValue())
+            {callbackClock.hasSamples=true;callbackClock.samplePosition=*samples;}
             if (const auto ppq = position->getPpqPosition(); ppq.hasValue())
             {
+                callbackClock.hasPpq=true;callbackClock.ppq=*ppq;
                 transport.hasPosition = true;
                 transport.ppqAtBlockStart = *ppq;
             }
@@ -88,6 +101,14 @@ dsp::Transport ModulePluginProcessor::currentTransport() noexcept
 }
 
 void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&)
+{
+    processAudio(buffer,false);
+}
+void ModulePluginProcessor::processBlockBypassed(juce::AudioBuffer<float>& buffer, juce::MidiBuffer&)
+{
+    processAudio(buffer,true);
+}
+void ModulePluginProcessor::processAudio(juce::AudioBuffer<float>& buffer,bool forceBypass)
 {
     juce::ScopedNoDenormals noDenormals;
     const int inputs = getTotalNumInputChannels();
@@ -99,10 +120,19 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
         return;
 
     const int channels = juce::jmin(inputs, outputs, buffer.getNumChannels(), dsp::kMaxChannels);
-    const bool on = isModuleOn();
+    const bool on = !forceBypass&&isModuleOn();
+    const bool modernOn=controls.value(Engine)>.5f;
+    kernel.set(modernSettings(forceBypass));
+    const auto nowEpoch=epoch.load(std::memory_order_acquire);
+    if(audioEpoch!=nowEpoch)
+    {
+        kernel.reset();audioEpoch=nowEpoch;
+        selection.reset(modernOn?1.0:0.0);
+    }
+    selection.setTarget(modernOn?1.0:0.0,bypassRampSteps);
     wetAmount.setTarget(on ? 1.0 : 0.0, bypassRampSteps);
 
-    dsp::LayerSnapshot snapshot;
+    dsp::FaderSnapshot snapshot;
     snapshot.mix.active = true;
     snapshot.mix.channel = ChannelMode::Stereo;
     snapshot.mix.numSlots = 1;
@@ -122,6 +152,7 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
             wet[channel] = buffer.getWritePointer(channel, start);
             dryPointers[channel] = dry.getWritePointer(channel);
             juce::FloatVectorOperations::copy(dryPointers[channel], wet[channel], count);
+            juce::FloatVectorOperations::copy(modern.getWritePointer(channel),wet[channel],count);
         }
 
         auto chunkTransport = transport;
@@ -129,6 +160,30 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
             chunkTransport.ppqAtBlockStart += static_cast<double>(start) * chunkTransport.bpm
                                                / (60.0 * currentSampleRate.load(std::memory_order_relaxed));
         engine.process(wet, channels, count, chunkTransport);
+        // Consume command events exactly, including commands crossing prepared chunks.
+        for(int offset=0;offset<count;)
+        {
+            FaderCommand command;
+            while(commands.peek(command))
+            {
+                if(command.epoch!=audioEpoch){commands.pop();continue;}
+                if(command.frame>processedFrames+static_cast<std::uint64_t>(offset))break;
+                commands.pop();
+                if(command.action==FaderAction::Reset)kernel.reset();
+                else if(command.action==FaderAction::StartLearn)kernel.startLearn();
+                else kernel.stopLearn();
+            }
+            int length=count-offset;
+            if(commands.peek(command)&&command.epoch==audioEpoch&&command.frame>processedFrames+static_cast<std::uint64_t>(offset))
+                length=static_cast<int>(std::min<std::uint64_t>(static_cast<std::uint64_t>(length),command.frame-processedFrames-static_cast<std::uint64_t>(offset)));
+            auto clock=callbackClock;
+            const auto advance=start+offset;
+            if(clock.hasPpq)clock.ppq+=advance*clock.bpm/(60.0*currentSampleRate.load(std::memory_order_relaxed));
+            if(clock.hasSamples)clock.samplePosition+=advance;
+            float* audio[dsp::kMaxChannels]{};
+            for(int ch=0;ch<channels;++ch)audio[ch]=modern.getWritePointer(ch,offset);
+            kernel.process(audio,channels,length,clock);offset+=length;
+        }
         // Always clock the aligner, including at zero delay, so a later automated latency change
         // can draw from continuous history instead of newly-cleared memory.
         wetAlign.process(wet, wet, channels, count, extraWetDelay);
@@ -137,22 +192,24 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
         for (int i = 0; i < count; ++i)
         {
             const float amount = static_cast<float>(wetAmount.next());
+            const float choose=static_cast<float>(selection.next());
             for (int channel = 0; channel < channels; ++channel)
+            {
                 wet[channel][i] = dryPointers[channel][i] + amount * (wet[channel][i] - dryPointers[channel][i]);
+                const float current=modern.getSample(channel,i);
+                if(choose==1.0f)wet[channel][i]=current;
+                else if(choose!=0.0f)wet[channel][i]+=choose*(current-wet[channel][i]);
+            }
         }
+        processedFrames+=static_cast<std::uint64_t>(count);
     }
+    publishedFrames.store(processedFrames,std::memory_order_release);
+    publishStatus(forceBypass||!on);
 }
 
 double ModulePluginProcessor::getTailLengthSeconds() const
 {
-    const auto slot = currentSlot(true);
-    const double bpm = hostBpm.load(std::memory_order_relaxed);
-    double tail = 0.0;
-    if (kind == ModuleKind::Verb)
-        tail = dsp::ReverbProcessor::tailSeconds(slot, bpm);
-    else if (kind == ModuleKind::Echo)
-        tail = dsp::DelayProcessor::tailSeconds(slot, bpm);
-    return tail + static_cast<double>(fixedLatency) / currentSampleRate.load(std::memory_order_relaxed);
+    return controls.value(Engine)>.5f?.02:0.0;
 }
 
 juce::AudioProcessorEditor* ModulePluginProcessor::createEditor()
@@ -162,15 +219,95 @@ juce::AudioProcessorEditor* ModulePluginProcessor::createEditor()
 
 void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
 {
-    if (auto xml = parameters.copyState().createXml())
-        copyXmlToBinary(*xml, destination);
+    auto state=parameters.copyState();
+    state.setProperty("faderVersion",3,nullptr);
+    state.setProperty("faderProgram",getCurrentProgram(),nullptr);
+    state.setProperty("faderPage",editorPage(),nullptr);
+    if(auto xml=state.createXml())copyXmlToBinary(*xml,destination);
+}
+void ModulePluginProcessor::setStateInformation(const void* data,int size)
+{
+    if(size<=0)return;
+    auto xml=getXmlFromBinary(data,size);
+    if(!xml||!xml->hasTagName(parameters.state.getType().toString()))return;
+    const bool old=!xml->hasAttribute("faderVersion");
+    if(!old&&xml->getStringAttribute("faderVersion")!="3")return;
+    auto incoming=juce::ValueTree::fromXml(*xml);
+    if(!incoming.isValid())return;
+    // Require a complete, finite, duplicate-free parameter set before mutation.
+    // Historic partial old states retain the old parameters they did not contain.
+    std::vector<juce::String> seen;
+    for(auto child:incoming)
+    {
+        if(!child.hasType("PARAM"))return;
+        const auto id=child.getProperty("id").toString();
+        if(parameter(id)==nullptr||(!old&& !child.hasProperty("value")))return;
+        if(std::find(seen.begin(),seen.end(),id)!=seen.end())return;
+        const auto text=child.getProperty("value").toString().trim();
+        const auto* begin=text.toRawUTF8();const auto* end=begin+text.getNumBytesAsUTF8();
+        double value=0;const auto parsed=std::from_chars(begin,end,value);
+        if(parsed.ec!=std::errc{}||parsed.ptr!=end||!std::isfinite(value))return;
+        const auto& range=parameter(id)->getNormalisableRange();
+        if(!old&&(value<range.start||value>range.end))return;
+        seen.push_back(id);
+    }
+    if(!old&&seen.size()!=getParameters().size())return;
+    if(old)
+    {
+        for(const auto& c:faderControls())
+        {
+            // Old projects cannot carry appended fields, even in a malformed extension.
+            for(int i=incoming.getNumChildren();--i>=0;)
+                if(incoming.getChild(i).getProperty("id").toString()==c.id)incoming.removeChild(i,nullptr);
+            juce::ValueTree child("PARAM");child.setProperty("id",c.id,nullptr);
+            child.setProperty("value",c.id=="engine"?0.0:static_cast<double>(c.initial),nullptr);incoming.addChild(child,-1,nullptr);
+        }
+        page.store(0,std::memory_order_relaxed);
+    }
+    else
+    {
+        currentProgram.store(juce::jlimit(0,getNumPrograms()-1,xml->getIntAttribute("faderProgram",0)),std::memory_order_relaxed);
+        setEditorPage(xml->getIntAttribute("faderPage",0));
+    }
+    parameters.replaceState(incoming);
+    epoch.fetch_add(1,std::memory_order_release);
 }
 
-void ModulePluginProcessor::setStateInformation(const void* data, int size)
+hamlo::fader::Settings ModulePluginProcessor::modernSettings(bool forced) const noexcept
 {
-    if (auto xml = getXmlFromBinary(data, size))
-        if (xml->hasTagName(parameters.state.getType().toString()))
-            parameters.replaceState(juce::ValueTree::fromXml(*xml));
+    auto s=controls.read(rawValues[0]->load(std::memory_order_relaxed),rawValues[3]->load(std::memory_order_relaxed),
+        rawValues[2]->load(std::memory_order_relaxed),static_cast<int>(rawValues[4]->load(std::memory_order_relaxed)),
+        rawValues[5]->load(std::memory_order_relaxed)>.5f,forced||!isModuleOn());
+    s.enabled=s.enabled&&controls.value(Engine)>.5f;
+    return s;
+}
+void ModulePluginProcessor::publishStatus(bool bypassed) noexcept
+{
+    FaderStatus s;s.reading=kernel.reading();s.proposal=kernel.proposal();
+    s.commandSequence=commands.consumed();s.bypassed=bypassed;
+    s.epoch=audioEpoch;s.frame=processedFrames;s.legacy=controls.value(Engine)<.5f;
+    s.legacyInput=engine.getMixNode().getFaderInputDb(0);
+    s.legacyOutput=engine.getMixNode().getFaderOutputDb(0);
+    s.legacyLong=engine.getMixNode().getFaderInputLongDb(0);
+    status.publish(s);
+}
+bool ModulePluginProcessor::requestAction(FaderAction action,std::uint64_t frame) noexcept
+{
+    if(frame==std::numeric_limits<std::uint64_t>::max())frame=publishedFrames.load(std::memory_order_acquire);
+    return commands.push({action,frame,epoch.load(std::memory_order_acquire)});
+}
+bool ModulePluginProcessor::applyMatch()
+{
+    FaderStatus s;
+    if(!readStatus(s)||s.epoch!=epoch.load(std::memory_order_acquire)||!s.proposal.valid||s.reading.learning||s.legacy||s.bypassed||s.commandSequence!=commands.produced()
+        ||controls.value(Engine)<.5f||static_cast<int>(controls.value(Mode))!=1||controls.value(Enabled)<.5f
+        ||rawValues[5]->load(std::memory_order_relaxed)>.5f||!isModuleOn())return false;
+    auto* p=parameter("matchedDb");p->beginChangeGesture();setParameterValue("matchedDb",s.proposal.gainDb);p->endChangeGesture();return true;
+}
+void ModulePluginProcessor::resetNewParameters(bool legacy)
+{
+    for(const auto& c:faderControls())setParameterValue(c.id,c.id=="engine"&&legacy?0.0:c.initial);
+    page.store(0,std::memory_order_relaxed);
 }
 
 juce::RangedAudioParameter* ModulePluginProcessor::parameter(const juce::String& id) const noexcept
@@ -207,14 +344,16 @@ const juce::String ModulePluginProcessor::getProgramName(int index)
 void ModulePluginProcessor::setCurrentProgram(int index)
 {
     const auto& list = presets::factoryModulePresets(getSpec().type);
-    currentProgram = juce::jlimit(0, static_cast<int>(list.size()), index);
+    currentProgram.store(juce::jlimit(0,static_cast<int>(list.size()),index),std::memory_order_relaxed);
+    resetNewParameters(true);
     for (const auto& spec : getSpec().parameters)
     {
         double value = spec.defaultValue;
-        if (currentProgram > 0)
-            value = presets::presetValue(list[static_cast<size_t>(currentProgram - 1)], spec.id, value);
+        if (getCurrentProgram() > 0)
+            value = presets::presetValue(list[static_cast<size_t>(getCurrentProgram() - 1)], spec.id, value);
         setParameterValue(spec.id, value);
     }
+    epoch.fetch_add(1,std::memory_order_release);
 }
 
 } // namespace hpeq::standalone

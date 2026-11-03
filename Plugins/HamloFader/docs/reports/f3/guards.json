@@ -1,0 +1,22 @@
+[
+  {
+    "guard": "source_id",
+    "rejected": true
+  },
+  {
+    "guard": "host_method_id",
+    "rejected": true
+  },
+  {
+    "guard": "legacy_method_id",
+    "rejected": true
+  },
+  {
+    "guard": "raw",
+    "rejected": true
+  },
+  {
+    "guard": "binaries",
+    "rejected": true
+  }
+]
