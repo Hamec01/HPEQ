@@ -1,0 +1,13 @@
+{
+  "plugin": "HamloVerb",
+  "version": "0.2.0",
+  "status": "Committed source snapshot; see plugin reports for release/listening limits",
+  "source_commit": "fde1a57be007904bd14c0618447679cb3b11de5d",
+  "source_tree": "22394579fcd59b2f4a73326099d210e4fc7cae9e",
+  "source_branch": "master",
+  "hpeq_branch": "plugins/hamloverb",
+  "prefix": "Plugins/HamloVerb",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "sync_date": "2026-11-03",
+  "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
+}
