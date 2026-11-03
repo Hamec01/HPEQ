@@ -47,8 +47,17 @@ int main(int argc, char* argv[])
         p.setPage(hpeq::standalone::ModulePluginProcessor::Page::Transition);
     }
 #endif
+    if(argc>4&&juce::String(argv[4]).contains("sample"))
+    {
+        p.prepareToPlay(48000,256);
+        auto& workspace=*p.sampleWorkspace();
+        workspace.load(juce::File::getCurrentWorkingDirectory().getChildFile("build/r9_visual_source.wav"));
+        const auto start=juce::Time::getMillisecondCounter();
+        while(workspace.status(p.sampleRevision()).busy&&juce::Time::getMillisecondCounter()-start<15000)juce::Thread::sleep(2);
+    }
     std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
     e->setSize(p.getSpec().editorWidth, p.getSpec().editorHeight);
+    if(argc>4&&juce::String(argv[4]).contains("minimum"))e->setSize(p.getSpec().editorWidth/2,p.getSpec().editorHeight/2);
     const float scale = argc > 3 ? static_cast<float>(juce::String(argv[3]).getDoubleValue()) : 1.0f;
     const auto image = e->createComponentSnapshot(e->getLocalBounds(), true, scale);
     juce::File out = juce::File::getCurrentWorkingDirectory().getChildFile(argv[1]);

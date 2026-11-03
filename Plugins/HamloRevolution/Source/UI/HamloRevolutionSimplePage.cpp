@@ -20,6 +20,7 @@ constexpr float kPi = juce::MathConstants<float>::pi;
 const juce::Rectangle<float> kConnect { 800.0f, 28.0f, 270.0f, 48.0f };
 const juce::Point<float> kLinkLamp { 1110.0f, 52.0f };
 const juce::Rectangle<float> kLinkLcd { 800.0f, 88.0f, 340.0f, 44.0f };
+const juce::Rectangle<float> kBold { 960.0f, 250.0f, 180.0f, 38.0f };
 const juce::Rectangle<float> kAdvanced { 960.0f, 196.0f, 180.0f, 44.0f };
 juce::Rectangle<float> genreRect(int g) { return { 60.0f + 166.0f * static_cast<float>(g), 196.0f, 150.0f, 44.0f }; }
 juce::Rectangle<float> fillRect(int f) { return { 60.0f + 96.0f * static_cast<float>(f), 556.0f, 86.0f, 40.0f }; }
@@ -124,6 +125,7 @@ void HamloRevolutionSimplePage::paint(juce::Graphics& g)
     if (staticLayer.isValid())
         g.drawImageAt(staticLayer, 0, 0);
     g.addTransform(juce::AffineTransform::scale(scale).translated(offset));
+    crtButton(g,kBold,"BOLD",false);
 
     // CONNECT TO HPDG, its lamp and status
     const bool linked = values.link == Link::Linked;
@@ -246,7 +248,7 @@ juce::String HamloRevolutionSimplePage::helpKeyAt(juce::Point<float> local) cons
 
 juce::String HamloRevolutionSimplePage::getTooltip()
 {
-    return revolutionHelp(helpKeyAt(getMouseXYRelative().toFloat()));
+    if(kBold.contains(toDesign(getMouseXYRelative().toFloat())))return "Generate a strong full-band Chaos recipe: Amount/Mix 100%, fills every bar; genre preserved. Existing projects change only when you press it."; return revolutionHelp(helpKeyAt(getMouseXYRelative().toFloat()));
 }
 
 void HamloRevolutionSimplePage::pressGenerate()
@@ -316,6 +318,7 @@ void HamloRevolutionSimplePage::setKnob(Knob k, double v)
 void HamloRevolutionSimplePage::mouseDown(const juce::MouseEvent& e)
 {
     const auto d = toDesign(e.position);
+    if(kBold.contains(d)){if(onBold)onBold();return;}
     if (kConnect.contains(d) || d.getDistanceFrom(kLinkLamp) <= 16.0f)
     {
         if (e.mods.isPopupMenu())

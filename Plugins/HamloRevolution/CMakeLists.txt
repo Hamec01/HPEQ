@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloRevolution VERSION 0.2.0 LANGUAGES C CXX)
+project(HamloRevolution VERSION 0.2.1 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -82,6 +82,8 @@ add_library(HamloRevolution_Shared STATIC
     Source/UI/HamloZastavaPanel.cpp
     Source/UI/HamloShirotaPanel.cpp
     Source/Standalone/ModuleVariant.cpp
+    Source/Standalone/RevolutionSample.cpp
+    Source/UI/RevolutionSampleBar.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
     Source/UI/PresetScreen.cpp)
@@ -140,7 +142,7 @@ target_link_libraries(HamloRevolution
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp Tests/TransitionTests.cpp
+        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp Tests/TransitionTests.cpp Tests/SampleWorkspaceTests.cpp Tests/AllocationAudit.cpp
             Source/DSP/LayerSnapshot.cpp Source/Core/FxProjectState.cpp) # HPEQ's slot mapping: the reference of V1
     else()
         add_executable(HamloRevolution_Snapshot Tests/SnapshotMain.cpp)
@@ -158,3 +160,7 @@ foreach(tool Tests Snapshot)
             juce::juce_recommended_warning_flags)
 endforeach()
 add_test(NAME HamloRevolution_Tests COMMAND HamloRevolution_Tests)
+
+add_executable(HamloRevolution_ImpactLab EXCLUDE_FROM_ALL Tests/ImpactLab.cpp)
+target_compile_definitions(HamloRevolution_ImpactLab PRIVATE HPEQ_MODULE_KIND=9 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloRevolution_ImpactLab PRIVATE HamloRevolution_Shared HamloRevolution_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)

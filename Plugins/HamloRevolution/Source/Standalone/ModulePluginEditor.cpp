@@ -236,6 +236,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     addAndMakeVisible(*presets);
     presets->setCurrent(processor.getCurrentProgram(), false);
 
+    if(processor.sampleWorkspace()){sampleBar=std::make_unique<ui::RevolutionSampleBar>(processor);sampleBar->onTransitionRendered=[this]{if(transitionPage)transitionPage->setClip(processor.transitionClip());if(refreshTransition)refreshTransition();};addAndMakeVisible(*sampleBar);}
     applyPage();
     const auto& spec = processor.getSpec();
     setResizable(true, true);
@@ -254,6 +255,7 @@ ModulePluginEditor::~ModulePluginEditor()
     // class, so relying on Timer::~Timer() would stop it only after refreshPanel and panel had
     // already been destroyed. Stop it before touching any callback-owned state.
     stopTimer();
+    sampleBar.reset();
     refreshPanel = {};
     refreshSimple = {};
     refreshTransition = {};
@@ -293,6 +295,7 @@ void ModulePluginEditor::setImmediate(const juce::String& id, double value)
 void ModulePluginEditor::timerCallback()
 {
     selectSoftwareRenderer();
+    if(sampleBar)sampleBar->refresh();
     applyPage();
     if (simplePage != nullptr && simplePage->isVisible())
     {
@@ -367,6 +370,7 @@ void ModulePluginEditor::installSimplePage()
             processor.simpleEdited();
     };
     sp->onGenerate = [this] { processor.generateSimple(true); };
+    sp->onBold=[this]{processor.makeBold();if(refreshSimple)refreshSimple();};
     sp->onTransition = [this](int kind) { openTransition(kind); };
     sp->onAdvanced = [this]
     {
@@ -554,15 +558,23 @@ void ModulePluginEditor::selectSoftwareRenderer()
 
 void ModulePluginEditor::resized()
 {
+    auto content=getLocalBounds();
+    if(sampleBar)
+    {
+        const float scale=juce::jmin(getWidth()/1180.f,getHeight()/1240.f);
+        const int width=juce::roundToInt(1180*scale),height=juce::roundToInt(1080*scale),tray=juce::roundToInt(160*scale);
+        const int x=(getWidth()-width)/2,y=(getHeight()-height-tray)/2;
+        content={x,y,width,height};sampleBar->setBounds(x,y+height,width,tray);
+    }
     if (panel != nullptr)
-        panel->setBounds(getLocalBounds());
+        panel->setBounds(content);
     if (simplePage != nullptr)
-        simplePage->setBounds(getLocalBounds());
+        simplePage->setBounds(content);
     if (transitionPage != nullptr)
-        transitionPage->setBounds(getLocalBounds());
+        transitionPage->setBounds(content);
     if (presets != nullptr && panel != nullptr)
         if (auto* target = dynamic_cast<ui::HelpTarget*>(panel.get()))
-            presets->placeOnStage(target->contentBounds());
+            presets->placeOnStage(target->contentBounds().translated(static_cast<float>(panel->getX()),static_cast<float>(panel->getY())));
 }
 
 } // namespace hpeq::standalone
