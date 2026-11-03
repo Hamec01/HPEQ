@@ -58,10 +58,10 @@ struct Gate::State
     double fs=48000;int delay=240,position=0,look=0,steps=960,filterLeft=0;std::int64_t counter=0,freeSamples=0;
     bool prepared=false,started=false,clockStarted=false,minimum=false;
     Settings p;std::array<Channel,2> channel;std::array<Queue,2> queue;
-    std::array<std::vector<float>,2> audio;std::array<std::vector<double>,2> window,raw;
+    std::array<std::vector<float>,2> audio,audition;std::array<std::vector<double>,2> window,raw;
     Filter oldFilter,newFilter;double installedHp=0,installedLp=0;
     double attack=0,release=0,detector=0,fastCoef=0,slowCoef=0,floor=.01;
-    Ramp mix,output;long double beat=0;
+    Ramp mix,output,listen;long double beat=0;
     std::atomic<double> meterGain{1},meterKey{-120};std::atomic<bool> meterOpen{true},meterMissing{false};std::atomic<std::uint64_t> meterHits{0};
     void coefficients() noexcept
     {
@@ -80,6 +80,7 @@ void Gate::prepare(double rate,int)
 {
     auto& s=*state;s.fs=valid(rate,8000,192000,48000);s.delay=static_cast<int>(std::lround(.005*s.fs));s.steps=std::max(1,static_cast<int>(std::ceil(.02*s.fs)));
     for(auto& a:s.audio)a.assign(static_cast<size_t>(s.delay+1),0);
+    for(auto& a:s.audition)a.assign(static_cast<size_t>(s.delay+1),0.f);
     for(auto* bank:{&s.window,&s.raw})for(auto& a:*bank)a.assign(static_cast<size_t>(s.delay+1),1);
     // One empty ring slot and one pending insertion before expiry are required.
     for(auto& q:s.queue)q.prepare(s.delay+3);s.prepared=true;reset();set(s.p);
@@ -88,10 +89,12 @@ void Gate::reset() noexcept
 {
     auto& s=*state;s.position=0;s.counter=s.freeSamples=0;s.started=s.clockStarted=false;s.beat=0;s.channel={};s.filterLeft=0;
     for(auto& a:s.audio)std::fill(a.begin(),a.end(),0);
+    for(auto& a:s.audition)std::fill(a.begin(),a.end(),0.f);
     for(auto* bank:{&s.window,&s.raw})for(auto& a:*bank)std::fill(a.begin(),a.end(),1);
     for(auto& q:s.queue)q.head=q.tail=0;
     s.oldFilter.setup(s.p.keyHpHz,s.p.keyLpHz,s.fs);s.newFilter=s.oldFilter;s.installedHp=s.p.keyHpHz;s.installedLp=s.p.keyLpHz;
     s.mix.snap(1);s.output.snap(1);s.meterGain=1;s.meterKey=-120;s.meterOpen=true;s.meterMissing=false;s.meterHits=0;
+    s.listen.snap(0);
 }
 void Gate::set(const Settings& requested) noexcept
 {
@@ -115,21 +118,24 @@ void Gate::process(float* const* audio,int channels,int frames,const float* cons
     const bool passthrough=!p.enabled||p.bypass||missing||stopped;
     const double mixTarget=passthrough?0:p.mix,gainTarget=passthrough?1:amplitude(p.outputDb);
     if(!s.started){s.mix.snap(mixTarget);s.output.snap(gainTarget);}else{s.mix.set(mixTarget,s.steps);s.output.set(gainTarget,s.steps);}
+    const double listenTarget=p.listen&&!p.bypass&&!missing?1:0;
+    if(!s.started)s.listen.snap(listenTarget);else s.listen.set(listenTarget,s.steps);
     if(clock.hasPpq&&std::isfinite(clock.ppq)&&(!s.clockStarted||std::abs(static_cast<double>(s.beat)-clock.ppq)>1e-7)){s.beat=clock.ppq;s.clockStarted=true;}
     const double bpm=valid(clock.bpm,1,999,120),delta=bpm/(60*s.fs);double keyMaximum=-240,gainLast=1;bool anyOpen=false;
     for(int i=0;i<frames;++i)
     {
         if(s.filterLeft==0&&(p.keyHpHz!=s.installedHp||p.keyLpHz!=s.installedLp)){s.newFilter.setup(p.keyHpHz,p.keyLpHz,s.fs);s.installedHp=p.keyHpHz;s.installedLp=p.keyLpHz;s.filterLeft=s.steps;}
-        double input[2]{},levels[2]{};
+        double input[2]{},levels[2]{},filteredKey[2]{};
         const double filterMix=s.filterLeft>0?1-static_cast<double>(s.filterLeft)/s.steps:0;
         for(int c=0;c<channels;++c)
         {
             input[c]=std::isfinite(audio[c][i])?audio[c][i]:0;
             const double selected=p.external?(missing?0:key[std::min(c,keyChannels-1)][i]):input[c];const double x=std::isfinite(selected)?selected:0;
-            const double old=s.oldFilter.process(c,x);double filtered=old;if(s.filterLeft>0)filtered+=filterMix*(s.newFilter.process(c,x)-old);levels[c]=std::abs(filtered);
+            const double old=s.oldFilter.process(c,x);double filtered=old;if(s.filterLeft>0)filtered+=filterMix*(s.newFilter.process(c,x)-old);levels[c]=std::abs(filtered);filteredKey[c]=filtered;
         }
         const double linked=std::max(levels[0],levels[channels-1]);const int audioRead=(s.position+1)%(s.delay+1);
         const double mix=s.mix.next(),output=s.output.next();
+        const double listen=s.listen.next();
         for(int c=0;c<channels;++c)
         {
             auto& d=s.channel[static_cast<size_t>(c)];const double level=levels[c]*(1-p.stereoLink)+linked*p.stereoLink;
@@ -177,6 +183,9 @@ void Gate::process(float* const* audio,int channels,int frames,const float* cons
             s.window[static_cast<size_t>(c)][static_cast<size_t>(s.position)]=window;const int gainRead=(s.position-(s.delay-s.look)+s.delay+1)%(s.delay+1);const double applied=s.window[static_cast<size_t>(c)][static_cast<size_t>(gainRead)];gainLast=applied;
             auto& line=s.audio[static_cast<size_t>(c)];line[static_cast<size_t>(s.position)]=static_cast<float>(input[c]);const float dry=line[static_cast<size_t>(audioRead)];
             audio[c][i]=mix==0&&output==1?dry:static_cast<float>((dry+mix*(dry*applied-dry))*output);
+            auto& monitor=s.audition[static_cast<size_t>(c)];monitor[static_cast<size_t>(s.position)]=static_cast<float>(filteredKey[c]);
+            if(listen==1)audio[c][i]=monitor[static_cast<size_t>(audioRead)];
+            else if(listen!=0)audio[c][i]=static_cast<float>(audio[c][i]+listen*(monitor[static_cast<size_t>(audioRead)]-audio[c][i]));
         }
         if(s.filterLeft>0&&--s.filterLeft==0)s.oldFilter=s.newFilter;
         s.position=audioRead;++s.counter;++s.freeSamples;if(clock.playing)s.beat+=delta;s.started=true;

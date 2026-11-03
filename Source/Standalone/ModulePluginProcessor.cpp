@@ -91,6 +91,7 @@ dsp::Transport ModulePluginProcessor::currentTransport() noexcept
                 transport.ppqAtBlockStart = *ppq;
             }
         }
+    hostPlaying.store(transport.playing,std::memory_order_relaxed);
     return transport;
 }
 
@@ -194,10 +195,12 @@ void ModulePluginProcessor::getStateInformation(juce::MemoryBlock& destination)
     {
         for(int i=tree.getNumChildren();--i>=0;)if(tree.getChild(i).getProperty("id").toString().startsWith("v2_"))tree.removeChild(i,nullptr);
         tree.removeProperty("v2_schema",nullptr);tree.removeProperty("v2_program",nullptr);
+        tree.removeProperty("v2_view",nullptr);tree.removeProperty("v2_tab",nullptr);
     }
     else
     {
         tree.setProperty("v2_schema",1,nullptr);tree.setProperty("v2_program",getCurrentProgram(),nullptr);
+        tree.setProperty("v2_view",editorView(),nullptr);tree.setProperty("v2_tab",editorTab(),nullptr);
         for(const auto& spec:modern::specs())
             tree.getChildWithProperty("id",spec.id).setProperty("value",parameterValue(spec.id),nullptr);
     }
@@ -238,6 +241,8 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                 child.setProperty("value",value,nullptr);
             }
             if(full)currentProgram.store(juce::jlimit(0,getNumPrograms()-1,static_cast<int>(tree.getProperty("v2_program",0))),std::memory_order_relaxed);
+            setEditorView(full?static_cast<int>(tree.getProperty("v2_view",0)):2);
+            setEditorTab(full?static_cast<int>(tree.getProperty("v2_tab",0)):0);
             parameters.replaceState(tree);resetModern.store(true,std::memory_order_release);
         }
 }
@@ -285,6 +290,22 @@ void ModulePluginProcessor::setCurrentProgram(int index)
         setParameterValue(spec.id, value);
     }
     for(size_t i=0;i<modern::Count;++i)setParameterValue(modern::specs()[i].id,i==modern::Engine?0:modern::specs()[i].defaultValue);
+    setEditorView(2);setEditorTab(0);
+}
+
+bool ModulePluginProcessor::isProgramModified() const
+{
+    const auto& list=presets::factoryModulePresets(getSpec().type);const int program=currentProgram.load(std::memory_order_relaxed);
+    const auto expected=[&](const ParameterSpec& s,double fallback)
+    {return program>0&&program<=static_cast<int>(list.size())?presets::presetValue(list[static_cast<size_t>(program-1)],s.id,fallback):fallback;};
+    for(const auto& s:getSpec().parameters)
+        if(std::abs(parameterValue(s.id)-expected(s,s.defaultValue))>std::max(1.e-4,static_cast<double>(s.maximum-s.minimum)*1.e-6))return true;
+    for(size_t i=0;i<modern::Count;++i)
+    {
+        const auto& s=modern::specs()[i];const auto* p=parameter(s.id);
+        if(p->getValue()!=p->convertTo0to1(static_cast<float>(expected(s,i==modern::Engine?0:s.defaultValue))))return true;
+    }
+    return false;
 }
 
 } // namespace hpeq::standalone

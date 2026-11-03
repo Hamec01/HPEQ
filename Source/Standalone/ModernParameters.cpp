@@ -42,6 +42,7 @@ std::vector<ParameterSpec> make()
         number("v2_beats","Step Beats",1.f/64,16,.25f,1.f/64,.5f),
         number("v2_ms","Step Time",1,10000,125,.01f,.35f,"ms")};
     for(int n=0;n<32;++n){auto step=number("","",0,1,1,.001f);step.id="v2_step"+juce::String(n+1);step.name="Step "+juce::String(n+1);p.push_back(step);}
+    p.push_back(choice("v2_listen","Listen Key",0,{"Off","On"}));
     jassert(p.size()==Count);return p;
 }
 }
@@ -71,6 +72,6 @@ hamlo::zastava::Settings settings(const Raw& raw,bool bypass,int modeOverride) n
     s.attackMs=v(Attack);s.holdMs=v(Hold);s.releaseMs=v(Release);if(s.mode==hamlo::zastava::Mode::Duck)std::swap(s.attackMs,s.releaseMs);
     s.detectorMs=v(Detector);s.lookaheadMs=v(Lookahead);s.keyHpHz=v(Hp);s.keyLpHz=v(Lp);s.stereoLink=v(Link);s.mix=v(Mix);s.outputDb=v(Output);
     s.bodyMs=v(Body);s.tailMs=v(Tail);s.onsetDb=v(Onset);s.retriggerMs=v(Retrigger);s.steps=static_cast<int>(v(Steps));s.stepBeats=v(Beats);s.stepMs=v(Ms);
-    for(size_t n=0;n<32;++n)s.levels[n]=v(Step0+n);return s;
+    for(size_t n=0;n<32;++n)s.levels[n]=v(Step0+n);s.listen=v(Listen)>.5;return s;
 }
 }

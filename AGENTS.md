@@ -6,7 +6,7 @@
 
 ---
 
-## Current project checkpoint - HamloZastava S3 (2026-11-02)
+## Current project checkpoint - HamloZastava S4 (2026-11-03)
 
 Owner approved all four V2roles(cleanup,drum tails,external-key ducking,rhythm)
 and separate soft/hard profiles. Decisions settled, do not ask again.
@@ -52,10 +52,21 @@ Reports:docs/reports/s3/REPORT.md,acceptance.json,before_v3,after_host_v4,
 after_legacy_v4,native_v3,validators_v3. Earlier failed/intermediate evidence stays.
 DLL SHA:fe8d11b5e7b2ae908b988c6a3a130b5a26b3934c9907ffebdbbb8e427cdd03f3.
 Internal version0.1.0;12production units,3304object bytes (not heap footprint).
-Editor still controls Legacy only. Next:S4modern QUICK/ADVANCED/help/key audition;
-then200genre recipes/207host programs and final VST/FL release. No scope question
-pending. Preserve shared PresetScreen. Source/method changes invalidate caches.
-No active jobs. S3commit follows handoff; verify git log/status on continuation.
+S4complete:modern QUICK/ADVANCED,4roles,Soft/Hard,32step pattern,English help,
+neutral INIT,role-appropriate disabled controls,view/tab state and modified marker.
+Separate Legacy page; shared PresetScreen/BlackSteel/Legacy panel source unchanged.
+Append v2_listen at77 (78parameters). Kernel source extended for signed filtered
+key audition with5msPDC/20msfade; Listen off matches all66old PCM fixtures exactly.
+Use S4kernel9877b219... rather than assuming S2sourcec08e4c9d... is current.
+Final465native/283host/275kernel,229primary+458restored M0matches,15inspected
+screenshots,pluginval5..10/Steinberg537pass. Reports:docs/reports/s4/REPORT.md,
+acceptance.json,host_complete,legacy_complete,native_roles,screenshots_final,
+images_final,validators_final. Keep all initial/intermediate evidence.
+FinalDLL4634d22972057cf64460b46e63609aceca1cd702fd8ddc9cffe6b7438b134404.
+Internal0.1.0;13production units; no installed plug-in or installer change.
+Next:S5—200genre recipes/207host programs, guarded calibration and final release/
+FL checks. Do not ask scope again. Source/method changes invalidate caches.
+No active jobs. S4commit follows handoff; verify git log/status on continuation.
 
 ## 1. Продукт и владелец
 

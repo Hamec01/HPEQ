@@ -20,6 +20,7 @@ struct Settings
     int steps=16;
     double stepBeats=.25,stepMs=125;
     std::array<double,32> levels=[](){std::array<double,32> a{};a.fill(1);return a;}();
+    bool listen=false;
 };
 struct Clock
 {

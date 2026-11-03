@@ -11,7 +11,7 @@ enum Index : size_t
     Engine, Enabled, Profile, External, Expand, Rms, Sync, Threshold, Range,
     Ratio, Knee, Hysteresis, Attack, Hold, Release, Detector, Lookahead, Hp, Lp,
     Link, Mix, Output, Body, Tail, Onset, Retrigger, Steps, Beats, Ms, Step0,
-    Count=Step0+32
+    Listen=Step0+32, Count
 };
 using Raw=std::array<std::atomic<float>*,Count>;
 const std::vector<ParameterSpec>& specs();

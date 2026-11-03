@@ -54,8 +54,14 @@ public:
     void setParameterValue(const juce::String& id, double actualValue);
     bool isModuleOn() const noexcept { return bypassParameter != nullptr && !bypassParameter->get(); }
     double getHostBpm() const noexcept { return hostBpm.load(std::memory_order_relaxed); }
+    bool isHostPlaying() const noexcept { return hostPlaying.load(std::memory_order_relaxed); }
     const dsp::LegacyZastavaCore& moduleNode() const noexcept { return engine; }
     hamlo::zastava::Reading modernReading() const noexcept { return modernEngine.reading(); }
+    int editorView() const noexcept { return view.load(std::memory_order_relaxed); }
+    int editorTab() const noexcept { return tab.load(std::memory_order_relaxed); }
+    void setEditorView(int value) noexcept { view.store(juce::jlimit(0,2,value),std::memory_order_relaxed); }
+    void setEditorTab(int value) noexcept { tab.store(juce::jlimit(0,2,value),std::memory_order_relaxed); }
+    bool isProgramModified() const;
 
 private:
     dsp::FxSlotParams currentSlot(bool active) const noexcept;
@@ -76,6 +82,7 @@ private:
     dsp::LinearRamp modernAmount;
     std::atomic<bool> resetModern { false };
     int lastModernMode=0;
+    std::atomic<int> view { 0 }, tab { 0 };
     juce::AudioBuffer<float> dry;
     dsp::AlignmentDelay wetAlign, dryAlign;
     dsp::LinearRamp wetAmount;
@@ -85,6 +92,7 @@ private:
     int bypassRampSteps = 1;
     std::atomic<double> currentSampleRate { 48000.0 };
     std::atomic<double> hostBpm { 120.0 };
+    std::atomic<bool> hostPlaying { false };
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(ModulePluginProcessor)
 };

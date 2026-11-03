@@ -51,6 +51,7 @@ add_library(HamloZastava_Shared STATIC
     Source/DSP/V2Gate.cpp
     Source/UI/BlackSteel.cpp
     Source/UI/HamloZastavaPanel.cpp
+    Source/UI/ModernZastavaPanel.cpp
     Source/UI/PresetScreen.cpp
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ModernParameters.cpp
@@ -112,7 +113,7 @@ target_link_libraries(HamloZastava
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloZastava_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/IsolationTests.cpp Tests/S3IntegrationTests.cpp Tests/AllocationAudit.cpp)
+        add_executable(HamloZastava_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/IsolationTests.cpp Tests/S3IntegrationTests.cpp Tests/S4Tests.cpp Tests/AllocationAudit.cpp)
     else()
         add_executable(HamloZastava_Snapshot Tests/SnapshotMain.cpp)
     endif()

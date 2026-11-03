@@ -53,6 +53,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
             };
             installPanel(std::move(p));
         }
+    modernPanel=std::make_unique<ModernZastavaPanel>(processor);addAndMakeVisible(*modernPanel);
 
     // Hamlo line (2026-10-29): the preset screen top left, as on HamloComp / HamloUdarnik / HamloRedWall / HamloMag
     presets = std::make_unique<ui::PresetScreen>();
@@ -70,7 +71,15 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
             refreshPanel();
     };
     addAndMakeVisible(*presets);
-    presets->setCurrent(processor.getCurrentProgram(), false);
+    presets->setCurrent(processor.getCurrentProgram(), processor.isProgramModified());
+    const char* titles[]{"QUICK","ADVANCED","LEGACY"};
+    for(int n=0;n<3;++n)
+    {
+        auto& b=navigation[static_cast<size_t>(n)];b.setButtonText(titles[n]);b.setComponentID("view_"+juce::String(titles[n]).toLowerCase());
+        b.setColour(juce::TextButton::buttonColourId,juce::Colour(0xff202923));b.setColour(juce::TextButton::buttonOnColourId,juce::Colour(0xff245b37));b.setColour(juce::TextButton::textColourOffId,steel::stencil);b.setColour(juce::TextButton::textColourOnId,steel::phosphor);
+        b.onClick=[this,n]{showView(n);};b.setTooltip(n==2?"Select the original Legacy engine and page. Modern settings are retained.":"Open modern controls. If Legacy is selected, return to the last modern role.");addAndMakeVisible(b);
+    }
+    tooltip=std::make_unique<juce::TooltipWindow>(this,600);
 
     const auto& spec = processor.getSpec();
     setResizable(true, true);
@@ -78,6 +87,7 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     setSize(spec.editorWidth, spec.editorHeight);
     if (refreshPanel)
         refreshPanel();
+    refreshEditor();
     startTimerHz(30);
 }
 
@@ -89,6 +99,7 @@ ModulePluginEditor::~ModulePluginEditor()
     stopTimer();
     refreshPanel = {};
     endGesture();
+    tooltip.reset();modernPanel.reset();
     panel.reset();
 }
 
@@ -118,12 +129,31 @@ void ModulePluginEditor::setImmediate(const juce::String& id, double value)
 }
 
 void ModulePluginEditor::timerCallback()
+{refreshEditor();}
+
+void ModulePluginEditor::showView(int view)
+{
+    if(view==2){setImmediate("v2_listen",0);setImmediate("v2_engine",0);}
+    else if(processor.parameterValue("v2_engine")==0)setImmediate("v2_engine",lastEngine);
+    processor.setEditorView(view);refreshEditor();
+}
+
+void ModulePluginEditor::refreshEditor()
 {
     selectSoftwareRenderer();
     if (refreshPanel)
         refreshPanel();
-    if (presets != nullptr)
-        presets->setCurrent(processor.getCurrentProgram(), false);
+    const int engine=juce::roundToInt(processor.parameterValue("v2_engine"));
+    if(engine!=lastSeenEngine)
+    {
+        if(engine==0)processor.setEditorView(2);
+        else {lastEngine=engine;if(processor.editorView()==2)processor.setEditorView(0);}
+        lastSeenEngine=engine;
+    }
+    const bool legacy=processor.editorView()==2;
+    panel->setVisible(legacy);modernPanel->setVisible(!legacy);modernPanel->refresh();
+    for(int n=0;n<3;++n)navigation[static_cast<size_t>(n)].setToggleState(processor.editorView()==n,juce::dontSendNotification);
+    if (presets != nullptr)presets->setCurrent(processor.getCurrentProgram(), processor.isProgramModified());
 }
 
 void ModulePluginEditor::visibilityChanged()
@@ -152,9 +182,12 @@ void ModulePluginEditor::resized()
 {
     if (panel != nullptr)
         panel->setBounds(getLocalBounds());
+    if(modernPanel!=nullptr)modernPanel->setBounds(getLocalBounds());
     if (presets != nullptr && panel != nullptr)
         if (auto* target = dynamic_cast<ui::HelpTarget*>(panel.get()))
             presets->placeOnStage(target->contentBounds());
+    const float s=juce::jmin(getWidth()/1180.f,getHeight()/780.f),x=(getWidth()-1180*s)*.5f,y=(getHeight()-780*s)*.5f;
+    for(int n=0;n<3;++n)navigation[static_cast<size_t>(n)].setBounds(juce::Rectangle<float>(812.f+n*108.f,20,96,30).transformedBy(juce::AffineTransform::scale(s).translated(x,y)).toNearestInt());
 }
 
 } // namespace hpeq::standalone
