@@ -1,0 +1,13 @@
+{
+  "plugin": "HamloRedWall",
+  "version": "0.3.0",
+  "status": "Committed source snapshot; see plugin reports for release/listening limits",
+  "source_commit": "d3c9f9a47e94dfe258ebaa71db3de576c815ca94",
+  "source_tree": "4baefbd3e9083eb63ce0475d2d803633d0bd0590",
+  "source_branch": "main",
+  "hpeq_branch": "plugins/hamloredwall",
+  "prefix": "Plugins/HamloRedWall",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "sync_date": "2026-11-03",
+  "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
+}
