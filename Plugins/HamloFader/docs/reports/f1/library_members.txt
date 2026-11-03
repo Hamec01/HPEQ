@@ -1,0 +1,9 @@
+HamloFader_Shared.dir\Release\ModulePresets.obj
+HamloFader_Shared.dir\Release\FaderGain.obj
+HamloFader_Shared.dir\Release\LegacyFaderCore.obj
+HamloFader_Shared.dir\Release\BlackSteel.obj
+HamloFader_Shared.dir\Release\HamloFaderPanel.obj
+HamloFader_Shared.dir\Release\PresetScreen.obj
+HamloFader_Shared.dir\Release\ModuleVariant.obj
+HamloFader_Shared.dir\Release\ModulePluginProcessor.obj
+HamloFader_Shared.dir\Release\ModulePluginEditor.obj

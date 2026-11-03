@@ -1,0 +1,68 @@
+{
+  "stage": "F2 offline four-mode kernel and metering",
+  "source_id": "09214975ed4bf07732709b4ba3e961a5c04446a70959bb2cf8daa1efcab10a7e",
+  "method_id": "b0024df55e43b3a5e3810342f91610a32cd09d4bb1fe1044431f39b4e6cc2f34",
+  "baseline": {
+    "passed": 30,
+    "failed": 0,
+    "unavailable": 13
+  },
+  "current": {
+    "passed": 281,
+    "failed": 0,
+    "unavailable": 0,
+    "cases": 61
+  },
+  "unit_passes": 59,
+  "negative_guards": 4,
+  "regression_detections": [
+    "motion_custom_repeat",
+    "motion_sine_repeat",
+    "motion_triangle_repeat",
+    "stereo_mode_transition",
+    "learn_cancel"
+  ],
+  "legacy_shipping_files_unchanged": true,
+  "legacy_PCM_retained": 678,
+  "shipping_dll_sha256": "c8489ef44ed8ebbaa7fdf44c284f7e5514876cce01a917dbab5e770f0ed02841",
+  "shipping_version": "0.1.0 F1; new kernel not hosted",
+  "worst_mean_fraction": 0.05386,
+  "hardware": "Intel Core i5-10300H, 4 cores/8 threads",
+  "executables": {
+    "build/Release/HamloFader_F2Current.exe": "26a1f2f1ca3d7621721c22e45cfaaea6dc43e7d085f50069dd3b5dbe45d6ef5c",
+    "build/Release/HamloFader_F2Reference.exe": "5f19dde2feb87663368a114523ec81539eea36017bf3a8769c387290f94b7d9d",
+    "build/Release/HamloFader_F2Tests.exe": "80510099e763c9e92134f0dadab0a5dc0b5f139dd140a88af8c60ed928c2c02c"
+  },
+  "additional_methods": {
+    "Tests/F2UnitMain.cpp": "0ae21ae27e0ac06b98fd695feb133d0df60fc9d2154ff240a9adfb690bbc46e5",
+    "Tools/verify_f2.py": "0f1a173039aba20188e2ad02618b11c2cd803a1cca6ff410fc7a1d894fefb5d9",
+    "Tools/check_f2_guards.py": "e87d03324fc355b4b76ad8d4d40e92f4abaa45c29f9d26e3f496bcf185681e96",
+    "cmake/WriteF2Identity.cmake": "0e6936674ff96d8ed10f1b641d6829ba8c274a360c8f682c4256ed0f0f74da82"
+  },
+  "artifacts": {
+    "after_final.json": "93eb9e8f8c38c85215f704eb93f27ff9bafc570455ae16c46ca3d32bf19807d3",
+    "after_initial.json": "7083e47f36e3e3dcc63dcb9e662c7d4fb0a6b1fed0da35e78ce4884a99815fae",
+    "after_v2.json": "15b2b2423d782251e5bf7681fe9845a30d6f89ff6d72fa1759374d8588e87d21",
+    "after_v4.json": "8471b63e9d172314514eaab600595c010c598d110cff43c6e806ef32c9b591d8",
+    "baseline.json": "3f932b960a070a3662c9b8854e74f1babb54a72436f2888ecdec6ec57c6d5177",
+    "before.json": "2ba521394b86a30a5aa6ec1572894ae7a788854fc3e5d5051b43828a9328f8b6",
+    "before_final.json": "abaa64ac4d45fc287350efb65c1b379921072feca38d40a8395b7f9f43b51326",
+    "before_v2.json": "7acd5d01653b5f7a2cc04d6098925334308117c50a25ac91a392239bd4baccca",
+    "before_v4.json": "458e027d82522ef1b9fc069e431fd80df9152669ff82804c3b5a97dcfd845003",
+    "frozen_tools.json": "ade520af4ee969192e720e397e6bc4e9d237e9f129f23be5be188bff0c9537f0",
+    "frozen_tools_v3.json": "ade520af4ee969192e720e397e6bc4e9d237e9f129f23be5be188bff0c9537f0",
+    "frozen_tools_v4.json": "a4e975b13eebeb8ad947fc4fac0e34ab82fe97b7b85468fd17d12815246d9419",
+    "guards.json": "a3982d41db974307479af77c6d64935b8fa4af3cfca85fb7c51822d1b1ec7b55",
+    "guards_v4.json": "a3982d41db974307479af77c6d64935b8fa4af3cfca85fb7c51822d1b1ec7b55",
+    "unit_cancel_probe.txt": "722ef8b78591e64e8bfb294e8f69c19ab03fc18d71f15527e016fb0353dd6c62",
+    "unit_contract_final.txt": "8f17402297d84c0c2f743b47b680f6300ac96f702e17343220d4cede986dc430",
+    "unit_expanded_final.txt": "d747c83980092dd169baf3c9da90d4ae46afff0972c2641bc25fda2eb31575fc",
+    "unit_final.txt": "7eedf860a9ca6a35033113c0525860640447e764bcd8c7d2c863c9ba0e4186c9",
+    "unit_initial.txt": "7bcecac41126080b5e573af364c7c6045b7380a1eeef843d58ebfe0a8ef9bc66",
+    "unit_transition_probe.txt": "1f9f8801349f1993976a69492c635aeacee9bcffd6be8cd65edc17082b74f92f",
+    "unit_v4.txt": "923fcf6db07f1839e2297cae06962ba46ffac91974382950fcf3b8de65ca2b89"
+  },
+  "new_host_UI_presets": "not implemented; F3/F4/F5 next",
+  "owner_FL_listening": "pending",
+  "installer": false
+}

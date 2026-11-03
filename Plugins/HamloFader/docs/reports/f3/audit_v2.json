@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "host": 224,
+  "legacy_renders": 678,
+  "kernel_lab": 281,
+  "kernel_unit": 59,
+  "native": 49,
+  "vendor_levels": [
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "steinberg": 537,
+  "negative_probe_failures": 53,
+  "rejection_guards": 5
+}

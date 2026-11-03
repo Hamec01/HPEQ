@@ -1,0 +1,13 @@
+{
+  "analyze_f2.py": "6abc07f8d336857712a52c6f5cba8a6688a62e6ff8d1312a601b9053a3e1805e",
+  "F2LabMain.cpp": "90d717c106ed6ef80b95d305afea9d3cf89361ae1ef94580382df73f083ac2d8",
+  "F2UnitMain.cpp": "0ae21ae27e0ac06b98fd695feb133d0df60fc9d2154ff240a9adfb690bbc46e5",
+  "FaderKernel.cpp": "ff3792acd72ea8de7683cf6e42a258937ae9969d7feb07d74bb2e39f61143245",
+  "FaderKernel.h": "de1ab655ae430de83295462fa8505b0d189492f76ae07f59e1592341d730e5cf",
+  "FaderMeter.cpp": "af426ebf972ed67c44dec274e021496045cda614b41c196041eb2c7c786b1ccb",
+  "FaderMeter.h": "aab79395431447428a1eaa8bba5c38bf22f75f89f14c0b7c55953b974e6ce21d",
+  "HamloFader_F2Current.exe": "26a1f2f1ca3d7621721c22e45cfaaea6dc43e7d085f50069dd3b5dbe45d6ef5c",
+  "HamloFader_F2Reference.exe": "5f19dde2feb87663368a114523ec81539eea36017bf3a8769c387290f94b7d9d",
+  "HamloFader_F2Tests.exe": "80510099e763c9e92134f0dadab0a5dc0b5f139dd140a88af8c60ed928c2c02c",
+  "HAMLOFADER_V2.md": "ba999b26838614dfb167444e748afdffbca23e94e41449f53a29e3b26521efb9"
+}
