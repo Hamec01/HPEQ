@@ -1,0 +1,23 @@
+{
+  "parent_commit": "a7d26e83305a1d8e5339e1cf0d311261f3a84a96",
+  "source_unchanged": true,
+  "production_units": 32,
+  "parameters": 8,
+  "programs": 8,
+  "native_passed": 49,
+  "native_failed": 0,
+  "host_latency_48k": 0,
+  "original_and_rebuilt_binaries_equal": true,
+  "dll_sha256": "43cf82d8e3287d83f0c5a94a9fa7e35d81ba4f359a32e8124d6e9d2f7feb2fc5",
+  "tests_sha256": "272785680f845025973d83bb4a1462e403632939097ace082475de81d2ee460b",
+  "snapshot_sha256": "f792169bfab2e6838a5b7ac651c856b729373eb7379ac337e912ddae75feb937",
+  "panel_sha256": "318be497b65b83f69b039a563f77ff2957771f54c2244be1b7aaf3f1b0aa3506",
+  "panel_visually_inspected": true,
+  "full_compatibility": "not yet measured; F1 next",
+  "owner_scope": "Trim/Match/Ride/Motion; Ride Natural/Fast",
+  "artifacts": {
+    "original.json": "b119aec384a6b34e429139f5014719d4ae3e0327844184c3db64078d76878075",
+    "native.txt": "551cd1fa4fd492a3c498efbf437d3b972bc6d353a25e4a19099b092751ff0db8",
+    "panel.png": "318be497b65b83f69b039a563f77ff2957771f54c2244be1b7aaf3f1b0aa3506"
+  }
+}

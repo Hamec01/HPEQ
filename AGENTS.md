@@ -6,6 +6,22 @@
 
 ---
 
+## Current checkpoint: Fader audit / approved V2 (2026-11-03)
+
+Owner approved full Trim/Match/Ride/Motion, separate modes, Ride Natural/Fast
+with adjustable correction range. Do not ask those questions again.
+Scope/audit:docs/FADER_V2_AUDIT.md; F1targets:docs/F1_METHODS.md; continuation:
+docs/NEXT_STAGE.md. Work only inE:/HamloFader; no other products/HPEQ, subagents,
+installed plug-in replacement, installer, push/subtree or model switch.
+Historical Mag/Revolution pending lists below are stale; do not resume them.
+Audit before changes:32production units,8parameters/8programs,0sample latency;
+unchanged rebuild49native pass, actual panel inspected. Archived Source/Tests/
+CMake/VST/tools:out/audit/original; hashes:docs/reports/audit/original.json.
+Rebuilt VST/Tests/Snapshot equal originals byte-for-byte.
+DLL43cf82d8e3287d83f0c5a94a9fa7e35d81ba4f359a32e8124d6e9d2f7feb2fc5.
+Source is still M0. F1must capture paired PCM/states/meters before isolation;
+49tests are not exhaustive compatibility proof. No new audio features yet.
+
 ## 1. Продукт и владелец
 
 - Владелец — продюсер (Boom Bap / Trap / Techno / DnB), автор HPDG (генератор барабанов, `C:\DRUMENGINE`) и HPEQ
