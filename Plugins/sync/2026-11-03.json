@@ -1,0 +1,97 @@
+{
+  "date": "2026-11-03",
+  "aggregate_branch": "feature/hamlo-plugins",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "plugins": [
+    {
+      "name": "HamloComp",
+      "branch": "plugins/hamlocomp",
+      "head": "3e8a2e71891ccb3014470952782f8add5c5354f2",
+      "source_commit": "c7d344bffc598eb9dd012db94772462648081a99",
+      "source_tree": "21506ec89e982e90c186be1e3aea697ec8f69478",
+      "changed_paths": 1,
+      "version": "0.2.0"
+    },
+    {
+      "name": "HamloUdarnik",
+      "branch": "plugins/hamloudarnik",
+      "head": "9c1eeda9027240f04316a456caf186263082522d",
+      "source_commit": "11d37dbff5fe7ccbe87f4becf17daa5b13b02f8f",
+      "source_tree": "2dcf0ecd83c25e0144e0d65e814bb95649dd3dfd",
+      "changed_paths": 1,
+      "version": "0.2.0"
+    },
+    {
+      "name": "HamloRedWall",
+      "branch": "plugins/hamloredwall",
+      "head": "37643c7e1c2a3f99659813eab7443dad3f97c5b5",
+      "source_commit": "d3c9f9a47e94dfe258ebaa71db3de576c815ca94",
+      "source_tree": "4baefbd3e9083eb63ce0475d2d803633d0bd0590",
+      "changed_paths": 1,
+      "version": "0.3.0"
+    },
+    {
+      "name": "HamloMag",
+      "branch": "plugins/hamlomag",
+      "head": "76544bc02c1803b40832d59ecb5ffe3b5e4e3295",
+      "source_commit": "c5dcd10dcfdd8d9248e4b06b73114b9eb3b2b5d3",
+      "source_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+      "changed_paths": 1,
+      "version": "0.2.1"
+    },
+    {
+      "name": "HamloEcho",
+      "branch": "plugins/hamloecho",
+      "head": "7c6d96cb4a81f6c592ca1cb4a1c7dde4ddc4d480",
+      "source_commit": "00dedb88cc3d4420fd6ba641ad7d710400e22c24",
+      "source_tree": "29a00b5c04ca5503e3dce1ea377b09f7bc805930",
+      "changed_paths": 1,
+      "version": "0.2.2"
+    },
+    {
+      "name": "HamloVerb",
+      "branch": "plugins/hamloverb",
+      "head": "a91de87659d670108874d1bbfb09f0a4534fe72f",
+      "source_commit": "fde1a57be007904bd14c0618447679cb3b11de5d",
+      "source_tree": "22394579fcd59b2f4a73326099d210e4fc7cae9e",
+      "changed_paths": 1,
+      "version": "0.2.0"
+    },
+    {
+      "name": "HamloZastava",
+      "branch": "plugins/hamlozastava",
+      "head": "99b028e41ccfafe25564d88a567de9f3e2e08356",
+      "source_commit": "ccc1de21b095acc6b424d00c78122acd8d4fa748",
+      "source_tree": "bcf48c0145c13c5e1bea0a1fd4acb6ba4069485e",
+      "changed_paths": 331,
+      "version": "0.2.0"
+    },
+    {
+      "name": "HamloShirota",
+      "branch": "plugins/hamloshirota",
+      "head": "548f24fd0f67f2428fcc0526ac4f4c5f75bd02f4",
+      "source_commit": "ea316b0ea17763303188d06dce14dd9e8e3ffd37",
+      "source_tree": "f1a6963dc7b863725399a5c82933f1b8f6737d56",
+      "changed_paths": 1,
+      "version": "0.2.0"
+    },
+    {
+      "name": "HamloFader",
+      "branch": "plugins/hamlofader",
+      "head": "34145e602076be3fb82e67238744a0877878b7d9",
+      "source_commit": "3223d0d5761df2f4f2c3dc309fb15ded1fe45c2b",
+      "source_tree": "6237e5ec83a4a12a656a22c5773dffa5fdc5c38e",
+      "changed_paths": 184,
+      "version": "0.1.0"
+    },
+    {
+      "name": "HamloRevolution",
+      "branch": "plugins/hamlorevolution",
+      "head": "e8b07e5e2bb7739698552c3f315a1147a98f0122",
+      "source_commit": "71545ffa60e2805cc5fa2f6c3927b8d2be3a33ac",
+      "source_tree": "908ce37a8ea2e9290abe75f681156358801f7792",
+      "changed_paths": 122,
+      "version": "0.2.1"
+    }
+  ]
+}

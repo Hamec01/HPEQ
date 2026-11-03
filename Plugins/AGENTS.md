@@ -6,6 +6,20 @@
 
 ---
 
+## Current checkpoint: ten plugin source branches / 2026-11-03
+
+Owner explicitly requested commit/push of all plug-ins into HPEQ and allowed
+separate branches per plug-in. All ten standalone repositories were already
+clean/committed. Seven subtrees matched; Zastava, Fader and Revolution updated.
+Aggregate:feature/hamlo-plugins; dedicated:plugins/<lowercase-name>. Provenance
+is inPlugins/sync/. Old design-only/pending lists below are historical; current
+source READMEs/reports are authoritative. Fader remains0.1.0 F3, not a finished
+0.2.0 UI/library release. Source trees match standalone Git trees exactly.
+No main-HPEQ DSP rewiring, installed VST edit, new installer or artifact release.
+Read Plugins/NEXT_STAGE.md for publication checks and next work. Don't push
+future changes without a new owner request. Apply efficient-staged-work; no
+subagents or model/effort switch.
+
 ## 1. Продукт и владелец
 
 - Владелец — продюсер (Boom Bap / Trap / Techno / DnB), автор HPDG (генератор барабанов, `C:\DRUMENGINE`) и HPEQ
