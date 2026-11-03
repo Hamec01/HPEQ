@@ -1,0 +1,13 @@
+{
+  "plugin": "HamloShirota",
+  "version": "0.2.0",
+  "status": "Committed source snapshot; see plugin reports for release/listening limits",
+  "source_commit": "ea316b0ea17763303188d06dce14dd9e8e3ffd37",
+  "source_tree": "f1a6963dc7b863725399a5c82933f1b8f6737d56",
+  "source_branch": "master",
+  "hpeq_branch": "plugins/hamloshirota",
+  "prefix": "Plugins/HamloShirota",
+  "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
+  "sync_date": "2026-11-03",
+  "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
+}
