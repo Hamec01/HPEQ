@@ -1,8 +1,20 @@
-# Keeping HamloFader in step with HPEQ
+# HamloFader lineage and compatibility
 
-M0: every file under `Source/` except `Source/UI/PresetScreen.*` is HPEQ's (b277315), unchanged, apart from
-`Source/Standalone/ModulePluginEditor.*` (the preset screen added) and, because HPEQ has no module VST3 for the Gain slot,
-`ModuleVariant.*` (ModuleKind::Fader, `makeFader()` with LayerSnapshot.cpp's ranges) and the Fader case of the editor;
-`Source/UI/HamloFaderPanel.*` copied as well. The plug-in is HPEQ's HamloFader module VST3: identity
-BBLB / HmFd / com.hamloprod.hamlofader, kind 8, state tag HamloFader. The next step (v2) narrows the code to
-this module (as HamloComp / HamloUdarnik / HamloRedWall / HamloMag did) and records every change here.
+M0copied HPEQ's Gain slot and module host atb277315. HPEQ had no standalone
+Fader VST3: HamloFader's independent identity isBBLB/HmFd/
+com.hamloprod.hamlofader, module kind8, state tagHamloFader. Original seven
+recipes plus Default and seven parameter IDs plus bypass remain unchanged.
+
+F1isolates only this product. FaderGain.cpp/h preserve the original Gain body
+and members from Processors.cpp/h. LegacyFaderCore preserves the single Gain
+slot fade, node delta and whole-layer sum; FaderSettings replaces the project
+model with the required original tags/indices. ModuleVariant retains Fader's
+original parameter layout; processor/editor no longer reference other engines
+or panels. Static library membership and recursive include closure are audited.
+Unused historical copies stay outside production. BlackSteel, PresetScreen,
+Fader panel, Ramp, DelayLine and DspConfig remain byte-equivalent sources.
+
+Actual original/current PCM/state/meters match under226schedules and452actual
+restorations. See reports/f1/REPORT.md and acceptance.json. HPEQ itself was not
+edited, tested as a paired reference or updated via subtree. Integration into
+the common product is a separate future operation.

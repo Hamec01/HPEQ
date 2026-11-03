@@ -45,37 +45,15 @@ set_target_properties(HamloFader_Assets PROPERTIES POSITION_INDEPENDENT_CODE ON)
 # --- Shared code: HPEQ's module-plug-in stack (Source/ is HPEQ's, verbatim; docs/SYNC_WITH_HPEQ.md) -----------
 add_library(HamloFader_Shared STATIC
     Source/Core/ModulePresets.cpp
-    Source/DSP/Biquad.cpp
-    Source/DSP/FxNodeProcessor.cpp
-    Source/DSP/LayerEngine.cpp
-    Source/DSP/PreEqProcessor.cpp
-    Source/DSP/Processors.cpp
-    Source/DSP/ReverbProcessor.cpp
-    Source/DSP/HamloVerb.cpp
-    Source/DSP/HamloEcho.cpp
-    Source/DSP/HamloMag.cpp
-    Source/DSP/ProcessorsM6.cpp
-    Source/DSP/HamloRevolution.cpp
-    Source/DSP/HamloRedWall.cpp
-    Source/DSP/HamloUdarnik.cpp
-    Source/DSP/HamloZastava.cpp
-    Source/DSP/HamloShirota.cpp
-    Source/DSP/CrossoverTree.cpp
-    Source/DSP/EqDesign.cpp
+    Source/DSP/FaderGain.cpp
+    Source/DSP/LegacyFaderCore.cpp
     Source/UI/BlackSteel.cpp
-    Source/UI/HamloCompPanel.cpp
-    Source/UI/HamloVerbPanel.cpp
-    Source/UI/HamloEchoPanel.cpp
     Source/UI/HamloFaderPanel.cpp
-    Source/UI/HamloMagPanel.cpp
-    Source/UI/HamloRedWallPanel.cpp
-    Source/UI/HamloUdarnikPanel.cpp
-    Source/UI/HamloZastavaPanel.cpp
-    Source/UI/HamloShirotaPanel.cpp
+    Source/UI/PresetScreen.cpp
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
-    Source/UI/PresetScreen.cpp)
+)
 target_include_directories(HamloFader_Shared
     PUBLIC Source
     PRIVATE
@@ -148,3 +126,11 @@ foreach(tool Tests Snapshot)
             juce::juce_recommended_warning_flags)
 endforeach()
 add_test(NAME HamloFader_Tests COMMAND HamloFader_Tests)
+
+add_custom_target(HamloFader_F1Identity
+    COMMAND "${CMAKE_COMMAND}" "-DSOURCE_ROOT=${CMAKE_CURRENT_SOURCE_DIR}" "-DIDENTITY_OUTPUT=${CMAKE_CURRENT_BINARY_DIR}/FaderF1Identity.h" -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/WriteF1Identity.cmake")
+add_executable(HamloFader_F1Lab EXCLUDE_FROM_ALL Tests/F1LabMain.cpp Tests/AllocationAudit.cpp)
+add_dependencies(HamloFader_F1Lab HamloFader_F1Identity)
+target_include_directories(HamloFader_F1Lab PRIVATE "${CMAKE_CURRENT_BINARY_DIR}" Tests)
+target_compile_definitions(HamloFader_F1Lab PRIVATE HPEQ_MODULE_KIND=8 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloFader_F1Lab PRIVATE HamloFader_Shared HamloFader_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)

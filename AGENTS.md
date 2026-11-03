@@ -6,21 +6,30 @@
 
 ---
 
-## Current checkpoint: Fader audit / approved V2 (2026-11-03)
+## Current checkpoint: F1 Legacy isolation complete (2026-11-03)
 
 Owner approved full Trim/Match/Ride/Motion, separate modes, Ride Natural/Fast
-with adjustable correction range. Do not ask those questions again.
-Scope/audit:docs/FADER_V2_AUDIT.md; F1targets:docs/F1_METHODS.md; continuation:
-docs/NEXT_STAGE.md. Work only inE:/HamloFader; no other products/HPEQ, subagents,
-installed plug-in replacement, installer, push/subtree or model switch.
-Historical Mag/Revolution pending lists below are stale; do not resume them.
-Audit before changes:32production units,8parameters/8programs,0sample latency;
-unchanged rebuild49native pass, actual panel inspected. Archived Source/Tests/
-CMake/VST/tools:out/audit/original; hashes:docs/reports/audit/original.json.
-Rebuilt VST/Tests/Snapshot equal originals byte-for-byte.
-DLL43cf82d8e3287d83f0c5a94a9fa7e35d81ba4f359a32e8124d6e9d2f7feb2fc5.
-Source is still M0. F1must capture paired PCM/states/meters before isolation;
-49tests are not exhaustive compatibility proof. No new audio features yet.
+with adjustable correction range. Do not ask these decisions again. Next F2
+numerical design/kernel, then host, UI and 200 presets (208 total programs).
+Work only in E:/HamloFader; efficient-staged-work, no subagents, HPEQ changes,
+installed copy replacement, installer, push/subtree or model switch. Historical
+Mag/Revolution lists below are stale. Scope: docs/FADER_V2_AUDIT.md.
+F1 uses 9 owned production units instead of 32. Original 8 parameters/programs,
+state/class IDs, 0sample PDC, gain arithmetic/ramps/delta and RMS MATCH retained.
+All 226 primary + 452 actual fresh/prepared-restored observations exact;
+678 raw PCM outputs, zero measured callback allocations, 49 native checks.
+pluginval 5..10/Steinberg 537 pass. Static lib has exactly 9 owned objects;
+recursive include closure has no LayerEngine/project model/other processors.
+sizeof processor 844152->1816 (not heap usage). UI source unchanged; repeat
+pixels exact. Initial 688needle-pixel difference was wall-clock tremor, retained.
+Four corrupted method/contract/raw/state guards rejected. Report and hashes:
+docs/reports/f1/REPORT.md,acceptance.json; continuation:docs/NEXT_STAGE.md.
+Original archive:out/audit/original; immutable original driver:out/f1/reference_lab.exe;
+reference raw/state:out/f1/reference. Preserve frozen F1method; same schedule
+Legacy exactness is not a blanket claim of event block invariance.
+DLL c8489ef44ed8ebbaa7fdf44c284f7e5514876cce01a917dbab5e770f0ed02841.
+Internal 0.1.0: no new modes implemented or finished V2/owner FL approval claimed.
+No active jobs. F1 commit follows this handoff; verify git log/status.
 
 ## 1. Продукт и владелец
 
