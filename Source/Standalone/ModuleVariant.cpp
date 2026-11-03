@@ -1,5 +1,6 @@
 #include "Standalone/ModuleVariant.h"
 #include <cmath>
+#include "Standalone/FaderHostControls.h"
 namespace hpeq::standalone
 {
 namespace
@@ -69,6 +70,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout(Module
         layout.add(std::make_unique<juce::AudioParameterFloat>(id, p.name, range, p.defaultValue, attributes));
     }
     layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID { "bypass", 1 }, "Bypass", false));
+    appendFaderControls(layout);
     return layout;
 }
 

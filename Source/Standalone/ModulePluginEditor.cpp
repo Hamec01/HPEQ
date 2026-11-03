@@ -48,8 +48,9 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
             auto p = std::make_unique<HamloFaderPanel>();
             p->readMeters = [this]
             {
-                const auto& node = processor.moduleNode();
-                return HamloFaderPanel::Meters { node.getFaderInputDb(0), node.getFaderOutputDb(0), node.getFaderInputLongDb(0) };
+                FaderStatus status;processor.readStatus(status);
+                if(status.legacy)return HamloFaderPanel::Meters {static_cast<float>(status.legacyInput),static_cast<float>(status.legacyOutput),static_cast<float>(status.legacyLong)};
+                return HamloFaderPanel::Meters {static_cast<float>(status.reading.input.rmsM),static_cast<float>(status.reading.output.rmsM),static_cast<float>(status.reading.input.rmsS)};
             };
             installPanel(std::move(p));
     }

@@ -1,37 +1,42 @@
 # HamloFader
 
-Standalone Windows x64 VST3 gain utility, internal0.1.0. F1isolation is complete:
-production has9owned units and no LayerEngine/project model/other effects.
-Original gain, polarity, delay, mute, RMS meters, one-shot MATCH and mix/bypass
-behavior remain. Eight parameters and eight host programs retain their original
-contracts; reported latency is0samples. Delay0–20ms is an audible alignment effect.
+Windows x64 VST3, internal version 0.1.0. F3 host integration is complete:
+Trim, Match, Ride (Natural/Fast) and Motion now run in the AudioProcessor.
+The original Black Steel interface remains; the new QUICK/ADVANCED interface
+is the next stage. Modern controls are currently exposed as host parameters.
+This is a development build, not the completed 0.2.0 release.
 
-Paired original/current lab:226primary cases plus452actual restored observations,
-678exact PCM outputs, zero measured callback allocations. Original native suite:
-49/49. pluginval5..10and Steinberg537/537pass. Shared UI source and final repeat
-screenshots match. [F1report](docs/reports/f1/REPORT.md).
+A new instance starts in neutral modern Trim. All eight original factory
+programs retain their numbers and select Legacy, including Default. Old projects
+select Legacy and clear every new control. XML root, original parameter prefix,
+VST3 class IDs and zero-sample PDC are preserved. Alignment is an audible effect.
 
-The **F2 offline kernel is complete**: precise Trim/channel controls, independent
-RMS/LUFS/Annex2 TP meters, Learn/Propose/Apply Match, bounded Ride Natural/Fast
-and editable/tempo/free Motion. Final281laboratory and59unit checks pass, with
-sample-positioned block invariance and zero measured audio allocations. Five
-recorded regressions and four provenance guards are detected. [F2 report](docs/reports/f2/REPORT.md).
+Match separates Learn, Stop/proposal and deliberate Apply. Applied gain is saved
+in the project; learning/history are transient. Ride has bounded boost/cut and
+activity protection. Motion supports 32 editable points, shapes, free/host time,
+phase and independent right-channel offset. RMS, LUFS and true-peak readings
+use a bounded atomic bridge; UI never accesses the kernel directly.
 
-**These new modes are not connected to the VST yet.** Shipping0.1.0 and its
-original interface remain. F3host parameters/state/clock/actions, F4modern UI
-and F5the200newrecipes/release are next. Owner FL listening remains pending.
-[Design and numerical contracts](docs/HAMLOFADER_V2.md),
-[approved scope](docs/FADER_V2_AUDIT.md), [handoff](docs/NEXT_STAGE.md).
+F3 acceptance: 224 host checks, 678 exact Legacy renders, 281 DSP laboratory
+checks, 59 kernel unit checks and 49 original native expectations pass.
+pluginval levels 5–10 and Steinberg 537/537 pass on the same final DLL.
+A newly exposed Motion first-block defect was fixed; the strengthened test
+rejects the saved old kernel. [F3 report](docs/reports/f3/REPORT.md).
+
+Next: modern UI, 200 meaningful new presets (208 programs in total), music
+calibration, owner listening in FL Studio and release packaging. None of those
+are claimed complete. [Design](docs/HAMLOFADER_V2.md),
+[host contracts](docs/F3_METHODS.md), [handoff](docs/NEXT_STAGE.md).
 
 ```powershell
 cmake -S . -B build -G "Visual Studio 18 2026" -A x64 -DHAMLO_FADER_JUCE_DIR=E:/HPEQ/build/_deps/juce-src
-cmake --build build --config Release --target HamloFader_VST3 HamloFader_Tests HamloFader_F1Lab HamloFader_Snapshot -- /m:2 /v:minimal
+cmake --build build --config Release --target HamloFader_VST3 HamloFader_Tests -- /m:2 /v:minimal
 build/Release/HamloFader_Tests.exe
-E:/HamloShirota/build/s3_venv/Scripts/python.exe -I -X utf8 Tools/verify_f1.py
 ```
 
-VST bundle:build/HamloFader_artefacts/Release/VST3/HamloFader.vst3.
-Frozen reference captures remain inout/f1/reference; new report paths must be
-unused. The archived original source/bundle/tool are local audit evidence, not
-a build dependency. Normal builds do not need HPEQ sources beyond the JUCE path.
-No installed plug-in replacement, installer, push or subtree in this stage.
+Bundle: `build/HamloFader_artefacts/Release/VST3/HamloFader.vst3`.
+Full local audit replay: `Tools/verify_f3.py` (requires retained `out/f3` captures
+and tested binaries). Frozen F1/F2 whole-shipping guards describe those earlier
+stages and intentionally no longer apply to the changed host/kernel. Their raw
+results remain archived. Normal builds do not require audit archives or HPEQ
+source beyond the read-only JUCE path. No installed copy was replaced.

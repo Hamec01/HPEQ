@@ -1,0 +1,225 @@
+PASS 8 original +68 appended parameters
+PASS new instance modern Trim
+PASS neutral modern exact, oversized callback, no allocation
+PASS modern PDC0/alignment tail20ms
+PASS original Default selects Legacy/tail0
+PASS surround rejected
+PASS modern state parameter/program/page roundtrip
+PASS fresh restore actual audio exact
+PASS atomic snapshot available
+PASS prepared modern restore resets history and stale actions
+PASS future state rejected
+PASS nonfinite modern state rejected
+PASS nonnumeric modern state rejected
+PASS out-of-range modern state rejected
+PASS duplicate modern state rejected
+PASS incomplete modern state rejected
+PASS invalid binary rejected
+PASS old load resets all68 new controls and page, retains historical program
+PASS Apply refuses absent proposal
+PASS Learn enqueue allocation-free
+PASS learning callback allocation-free
+PASS learning callback allocation-free
+PASS learning callback allocation-free
+PASS learning callback allocation-free
+PASS learning callback allocation-free
+PASS learning callback allocation-free
+PASS learning callback allocation-free
+PASS atomic snapshot available
+PASS Learn does not apply gain
+PASS atomic snapshot available
+PASS Stop publishes valid proposal only
+PASS explicit Apply persistent host parameter
+PASS atomic snapshot available
+PASS Reset clears history but retains applied gain
+PASS parameter bypass allocation-free
+PASS atomic snapshot available
+PASS parameter bypass cancels unfinished learning
+PASS host bypass starts its20ms fade
+PASS atomic snapshot available
+PASS host bypass settles exact dry, cancels Learn, leaves parameter unchanged
+PASS atomic snapshot available
+PASS disabled cannot Learn
+PASS command64 capacity and explicit overflow refusal
+PASS obsolete epoch commands drained, queue reusable
+PASS decreasing command frame refused
+PASS concurrent atomic snapshot coherence
+PASS three nonblocking producers/one consumer, accepted commands conserved
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL host vs accepted kernel scenario0
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario0 block1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario0 block64
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario0 block127
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario0 block4096
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL host vs accepted kernel scenario1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario1 block1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario1 block64
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario1 block127
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario1 block4096
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL host vs accepted kernel scenario2
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario2 block1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario2 block64
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario2 block127
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario2 block4096
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL host vs accepted kernel scenario3
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario3 block1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario3 block64
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario3 block127
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario3 block4096
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL host vs accepted kernel scenario4
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario4 block1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario4 block64
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario4 block127
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario4 block4096
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL host vs accepted kernel scenario5
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario5 block1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario5 block64
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario5 block127
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario5 block4096
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL host vs accepted kernel scenario6
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario6 block1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario6 block64
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario6 block127
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario6 block4096
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL host vs accepted kernel scenario7
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario7 block1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario7 block64
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario7 block127
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario7 block4096
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL host vs accepted kernel scenario8
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario8 block1
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario8 block64
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario8 block127
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL exact event/block oracle scenario8 block4096
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL channel/rate oracle 1/8000
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL channel/rate oracle 1/44100
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL channel/rate oracle 1/96000
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL channel/rate oracle 1/192000
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL channel/rate oracle 2/8000
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL channel/rate oracle 2/44100
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL channel/rate oracle 2/96000
+PASS scheduled command enqueue
+PASS atomic snapshot available
+FAIL channel/rate oracle 2/192000
+PASS precise Learn/Stop queued inside oversized callbacks
+PASS atomic snapshot available
+PASS Learn sample interval exactly[123,26001)
+PASS queued Learn makes old proposal inapplicable before consumption
+PASS atomic snapshot available
+PASS reprepare invalidates old command timeline
+PASS old state over modified prepared modern instance matches original M0 history PCM
+PASS stable Legacy path exact before selection change
+PASS selection crossfade settles exactly at20ms, allocation-free
+PASS atomic snapshot available
+PASS leaving modern cancels unfinished Learn
+PASS live processor/control snapshot-command stress, zero audio allocations
+PASS whole processor mean CPU <=25% block, mode-1
+PASS whole processor mean CPU <=25% block, mode0
+PASS whole processor mean CPU <=25% block, mode1
+PASS whole processor mean CPU <=25% block, mode2
+PASS whole processor mean CPU <=25% block, mode3
+PASS whole processor mean CPU <=25% block, mode4
+171 passed, 53 failed

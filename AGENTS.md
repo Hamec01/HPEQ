@@ -6,38 +6,39 @@
 
 ---
 
-## Current checkpoint: F2 offline kernel complete (2026-11-03)
+## Current checkpoint: F3 host integration accepted (2026-11-03)
 
-Owner approved full Trim/Match/Ride/Motion, separate modes, Ride Natural/Fast
-with adjustable range. Do not ask these scope questions again. Next F3 host,
-F4 UI, F5 200newrecipes/208programs. Work only inE:/HamloFader; apply
-efficient-staged-work, no subagents/HPEQ/installed copy/installer/push/subtree
-or model switch. Historical pending Mag/Revolution lists below are stale.
+Owner approved full Trim/Match/Ride/Motion, Ride Natural/Fast with adjustable
+range. Do not ask scope again. Work only in E:/HamloFader; efficient-staged-work,
+no subagents/HPEQ/installed-copy replacement/installer/push/subtree/model switch.
+Old pending Mag/Revolution lists below are historical, not current tasks.
 
-F1 (68f98ed):9owned production units,8parameters/programs,0sample latency,
-226primary+452actual restores/678exact PCM,49native,pluginval5..10/Steinberg537.
-Legacy arithmetic/state/meters/UI preserved. Archiveout/audit/original and
-out/f1/reference; frozen old driverout/f1/reference_lab.exe. DLL unchanged:
-c8489ef44ed8ebbaa7fdf44c284f7e5514876cce01a917dbab5e770f0ed02841.
-F2 is offline only: FaderKernel/FaderMeter not in shipping Shared target.
-Trim/channel/alignment, RMS/LUFS/Annex2TP, deliberate Match, bounded Ride and
-sample-clock Motion implemented. Final281lab/59unit pass;30control+13n-a;
-zero measured callbacks/actions allocations; block1/64/127/512/4096exact;
-five-minute192kstress; two-hour meter cap verified. Source09214975...;
-methodb0024df5... (full hashes inacceptance/handoff).58pass interim exposed
-Learn-cancellation stale data; fixed and new59check passes. Earlier cycle
-repeat and stereo mode-transition faults fixed.5regressions detected,
-4stale/corrupt cache guards rejected; valid resume exact. All earlier evidence
-retained. F1 shipping/include files, old methods and DLL remain unchanged.
+F3 adds 68 parameters after the original8 (76 native, wrapper77). Modern neutral
+Trim on construction; all eight old programs, including Default, select Legacy.
+Original prefix, recipes, state root and VST3 class IDs retained;0sample PDC.
+Modern schema3 saves settings/applied Match/program/page. Old load resets all
+new controls/page, retains historical currentProgram/prepared Legacy history.
+Kernel API stays audio-thread only: prepared buffers, bounded64-command queue,
+epoch cancellation and atomic readings. Apply is explicit host parameter update;
+Reset retains configured matchedDb. Check returned command/read status in F4.
 
-Design:docs/HAMLOFADER_V2.md;reportdocs/reports/f2/REPORT.md;final pair
-before_v4.json/after_v4.json;unit_v4.txt;acceptance.json. Rawout/f2/before_v4,
-out/f2/after_v4;frozen sources/toolsout/f2/accepted_v4. Intermediate paths
-before_final/after_final/accepted refer to v3, not the accepted v4. Do not overwrite.
-Single-thread kernel API needs F3 atomic/UI/action bridge. Stop gives proposal;
-Apply means explicit settings.matchedDb update. Off/bypass cancels unfinished
-Learn and clears its data. New modes are not available in the VST yet.
-Continuation:docs/NEXT_STAGE.md. No active jobs. F2commit follows handoff.
+Final224host/678exactLegacy/281lab/59kernel-unit/49native pass. pluginval5..10
+and Steinberg537 pass on one final DLL. Found and fixed a previously missed
+Motion first-block-after-Reset dependency; final test rejects old kernel with
+53 failures. Prior F2 acceptance is preserved; same F2 method rerun passes.
+F3 kernel source db89bee1..., whole Source535ed713...; full hashes in report.
+Source/UI shared files and frozen old lab methods remain unchanged. F3 report:
+docs/reports/f3/REPORT.md; receipt acceptance.json; replay Tools/verify_f3.py.
+Frozen sources/tools/bundle out/f3/accepted_v2; control out/f3/baseline and
+legacy_reference. Earlier failed/intermediate files are retained; authoritative
+host_final_v2, legacy_final, kernel_after_v1, regression_final_v2, validators_final.
+
+VST now contains the modern engine, but still internal0.1.0 with old interface
+and8programs. F4 modern QUICK/ADVANCED UI next; F5 200recipes/208programs,
+calibration/listening/release. Do not call0.2.0 complete. Old F1/F2 whole-shipping
+guards intentionally no longer match; F3 audit supersedes them without deleting
+evidence. Exact continuation/API/caveats:docs/NEXT_STAGE.md. No active jobs after
+final acceptance. Commit follows this handoff.
 
 ## 1. Продукт и владелец
 

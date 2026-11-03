@@ -1,109 +1,94 @@
-# HamloFader: F2 complete, F3 host integration next
+# HamloFader: F3 accepted, F4 modern interface next
 
-2026-11-03. Parent68f98ed; F2completion commit follows this handoff (git log -1).
-No active jobs. Apply efficient-staged-work: no subagents, targeted reads,
-source/method/input guards and durable stage handoffs. No other products/HPEQ,
-installed copy, installer, push/subtree or claimed model/effort switch.
+2026-11-03. Parent7af28d0; completion commit follows (git log -1). No active jobs.
+Work alone in E:/HamloFader, apply efficient-staged-work. No other products/HPEQ,
+installed copy, installer, push/subtree or claimed model switch. Owner scope is
+settled: full Trim/Match/Ride/Motion, Natural/Fast, adjustable range. Do not ask again.
 
-## Settled scope and current deliverable
+## Completed and verified
 
-Owner approved full Trim / Match / Ride / Motion, separate modes; Ride Natural/
-Fast and adjustable boost/cut range. Do not ask again. Black Steel/shared
-PresetScreen stay. Original8IDs/programs0..7 and class/state contracts preserved;
-200newmeaningful recipes will bring208programs in F5. No cross-instance groups,
-new MIDI input, DAW curve writing, limiter/saturation or frequency split assumed.
-Exact kernel contracts:docs/HAMLOFADER_V2.md; initial audit:FADER_V2_AUDIT.md.
+F3 host integration is in production (12owned units),68newIDs append to original8.
+New constructor modern neutral Trim. Loading any original program0..7 selects
+Legacy, including Default. Original IDs/ranges/order/recipes/root/VST3CIDs retained.
+Modern schema3 parameters/applied Match/program/page; old states reset all new
+controls/page and selectLegacy, while retaining old program/preparedLegacyhistory.
+Both branches always receive input; Engine selection20ms; state/preset primes it.
+PDC0, modern tail20ms alignment effect, Legacy tail0. Old shared UI unchanged;
+editor meters now consume atomic status. Product still internal0.1.0,8programs.
 
-F2kernel is implemented/tested offline. Source/DSP/FaderKernel.h/.cpp and
-FaderMeter.h/.cpp are not yet in HamloFader_Shared. Shipping remains F1internal
-0.1.0 with the original interface and8parameters/programs. Do not present it as
-a new-mode VST or completed0.2.0. Host/UI/library/listening are still pending.
+224host checks;678exactLegacyrenders;281DSPchecks;59kernelunit;49native;
+pluginval5..10 and Steinberg537 pass. Wholeprocessor48k/256maxmean1.457655%
+blockduration (not FL CPU certification). Zero measured C++audio allocations.
+A real previously missed Motion Reset/first-call smoothing fault was fixed:
+prime only first sample, not wholefirstcall. Final regression with frozenoldkernel
+fails53checks. Same F2 method rerun281/0; do not claim old F2 proof coveredthiscase.
+All failed/intermediate artifacts remain. Reports:docs/reports/f3/REPORT.md,
+acceptance.json,host_final_v2,legacy_final,kernel_after_v1,kernel_unit_v1,
+native_final,regression_final_v2,validators_final. Replay:Tools/verify_f3.py.
+F1/F2 whole-shipping guards intentionally fail now; don't edit/bypass them.
+Source 535ed71398e2ffcf87e700a5845cb464732481039aefa206878974e02a57e47c.
+Host method 330e8a2688064b5678a6f80282b18d2a1e5310986858ebf4a32fdea1fe4db9b1.
+Kernel source db89bee1334fb56617984276aaba2c3d60f2066cafad4e200f58eac9c033f9b5.
+DLL 8cf87da40406aa53ce9804264f6f15a1aa467d6e0bf2699ad565c5326237b46a.
+Frozen final sources/tools/bundle:out/f3/accepted_v2;controlout/f3/baseline;
+rawout/f3/legacy_reference andkernel_after_v1. Pre-fixout/f3/candidate_v2.
+Original F1/F2 archives remain. No calibration results exist for the new DSP.
 
-F1from68f98ed remains untouched:9owned units vs32;226M0primary+452actual
-restores/678exact PCM,49native,pluginval5..10/Steinberg537;0sample latency.
-Archiveout/audit/original,referenceout/f1/reference,immutable original driver
-out/f1/reference_lab.exe. Source/UI/frozen F1methods and validated DLL unchanged:
-c8489ef44ed8ebbaa7fdf44c284f7e5514876cce01a917dbab5e770f0ed02841.
+## F4 implementation contracts
 
-## F2 acceptance and preserved failures
+Read only needed pieces of Source/Standalone/FaderHostControls.*,
+FaderAudioBridge.h and ModulePluginProcessor.* plus old editor/shared UI APIs.
+Controls array/enum is the appended ABI: don't reorder or changeold8. Reuse
+old gainDb/mix/targetDb/polarity; mute disables modern; old delayMs/solo stay
+Legacy-only. Engine Legacy0/Modern1; Mode Trim0/Match1/Ride2/Motion3.
+68newfields include32levels; points2..32, unused levels still saved.
 
-Final281lab/0failed/0n-a,61cases;59unit/0failed. Matching F1control30pass,
-13new-feature categories n/a. Input/output RMS/ITU oracle, separate TP Annex2
-convolution and16xsinc comparison, frozen Match/peak limits/silent-short learn,
-Ride targets/range/idle, Motion curves/seek/free/stop, routing and exact event
-schedules tested. Zero C++audio/setter/action allocations. Five-minute192k
-stereo stress and two-hour finite Icapacity tested. 48k/256mean1.717423% of
-block duration (limit25%);broader-rate maximum5.386000% on actuali5-10300H.
-This is a standalone kernel wall-time observation, not FL CPU approval.
+Keep Black Steel and PresetScreen bounds56,20,336,116 at1180x700. Do not edit
+shared PresetScreen/BlackSteel/HamloFaderPanel. Add an own modern panel and
+QUICK/ADVANCED/Legacy navigation; page state is0..2. Old panel is only Legacy.
+F4 must expose modes, gain/routing/alignment, RMS/LUFS/readiness/full/TP,
+Match proposal/limits and deliberate Apply, Ride activity/correction/profiles,
+Motion curve/phase/sync/free/right-offset, output/mix/power, help/modified state.
+Never imply peak guard is an output limiter or LUFS meter is fullEBUMode.
+72000integratingwindows cap is visible; unready readings are not validdata.
 
-Initial candidate278pass/3fail: rounded free phase increment broke exact cycle
-repetition. Integer sample cycle fixed it. Stronger stereo mode probe44pass/1fail:
-shared start gain caused a right-channel jump; independently faded channel gains
-fixed it. Later cancellation probe58pass/1fail: cancelled Learn could propose
-stale gain; off/bypass now clears the unfinished measurement. Final pair v4
-recaptured with the same final method. No audio criterion relaxed. Premeasurement
-Output/Mix/bypass contract clarifications are hash-verified against first method.
-All failed/intermediate evidence remains; final audit detects5regressions and
-4stale/corrupt source/method/raw/manifest guards. Valid cache replay is exact.
-Official EBU audio/full EBU Mode/LRA/certification and owner music/listening
-were not claimed; tests use owned synthetic signals and independent SciPy.
+Processor readStatus(FaderStatus&) is bounded/atomic and mayreturnfalse;
+show waiting/not-ready rather than use mutable kernel/moduleNode fromUI.
+FaderStatus hasreading/proposal/epoch/frame/commandSequence/legacy/bypassed
+and Legacy input/output/longmeter values. requestAction(StartLearn/StopLearn/
+Reset, optional absolute processing frame) returnsfalse onfull/busy/order;
+UI should retry or visibly reportfailure. Immediate default means nextaudio
+opportunity; timeline is processedframes, not host transport. Prepare/state/
+preset invalidatesoldqueuedcommands. applyMatch() control-thread-only explicitly
+sets matchedDb withhostgesture, refusesstale/pending/disabled/bypassed/nonMatch.
+Stop onlyproposes. Reset clears histories/meters/proposal while retainingmatchedDb.
+No control-thread access to kernel. Apply should be unavailable while pending.
 
-Authoritative docs/reports/f2/:REPORT.md,acceptance.json,before_v4.json,
-after_v4.json,unit_v4.txt,guards_v4.json,frozen_tools_v4.json. Raw inputs/outputs:
-out/f2/before_v4 andout/f2/after_v4. Frozen tools/sources:out/f2/accepted_v4.
-Important:paths before_final/after_final/accepted are intermediate v3evidence.
-Do not overwrite them. Regressions atout/f2/candidate_v2 (stereo) and
-out/f2/accepted/unit_cancel_probe.exe (cancel);initial repeat failure raw remains.
-Final source09214975ed4bf07732709b4ba3e961a5c04446a70959bb2cf8daa1efcab10a7e.
-Final methodb0024df55e43b3a5e3810342f91610a32cd09d4bb1fe1044431f39b4e6cc2f34.
+Host parameters apply atcallback boundaries, commands at exactsampleframes.
+State/preset loads are lifecycle operations; not atomic sample-accurate automation
+of a wholeproject. Modern restore resets transient DSP; full audiohistory is not
+serialized. Constructor modernTrim vs program0Legacy is intentional.
 
-## F3 next actions
+Before UI edits record F4visual/interaction targets; verify Quick/Advanced/Legacy
+snapshots at supported sizes, clipping/overlap and interactions. OldUI labels
+mustn't controlhiddenmodernparameters. Save page/modified status and selected
+program correctly. Original8recipes stayuntilF5 adds200meaningfulnewones.
+Don't ship default as a curatedpreset replacement or claim200exist.
 
-Record host integration numerical/state contracts and paired baseline before
-changing the VST. Append new IDs after original8, preserve old layouts and
-programs. Modern default Trim is neutral. Old-state load selects Legacy and
-resets every new field. Preserve actual historical old-state/program/audio
-behavior on already-prepared instances, not an assumed reset.
+## Commands
 
-The offline kernel APIs are single-audio-thread only. Add prepared audio scratch,
-atomic reading snapshots and bounded sample-positioned action handoff. Avoid
-message-thread access to kernel internals. Learn Start/Stop returns a proposal;
-Apply is an explicit update of settings.matchedDb and persistent host state.
-Off/bypass cancellation clears unfinished data. Reset retains configured fixed
-Match gain but clears measurements/history/learning. Meter Ihas a visible
-72000window cap; distinguish readiness/full flags. RMSlearn includes pauses,
-LUFSlearn uses gates. Peak guard is proposal-only, not a limiter.
+cmake --build build --config Release --target HamloFader_VST3 HamloFader_Tests HamloFader_F3Host HamloFader_F3Legacy -- /m:2 /v:minimal
+build/Release/HamloFader_Tests.exe
+E:/HamloShirota/build/s3_venv/Scripts/python.exe -I -X utf8 Tools/verify_f3.py
 
-Store modern settings/fixed Match gain/selected preset/page appropriately;
-restore projects exactly on fresh/prepared instances. Project load restores all
-settings; factory preset load must clear stale actions/learning. Keep all original
-IDs/ranges/choices/order and0sample PDC. Clock supplies PPQ/BPM/sample position;
-handle seek/stop/no PPQ. Common enable/bypass fade20ms, routing/polarity10ms.
-Independent channel delay is an effect. Full F2contracts and all ranges in design.
+F3Host/Legacy audit binaries refuseexistingoutput paths and requirelocalarchives.
+Normal VST/native builds don't needarchives. Optional local regression enabled
+inbuildcacheHAMLO_FADER_F3_REGRESSION=ON; defaultOFFinCMake. F2reference option
+also needslocalout/f2/baseline if enabled. No dependency update needed; read-only
+JUCE8.0.12 atE:/HPEQ/build/_deps/juce-src;VS18x64, /m:2. Python/numpy/scipy from
+E:/HamloShirota/build/s3_venv. New source/UI invalidates F3wholeSource acceptance;
+archive it and make F4specific guards instead of changing accepted results.
 
-Frozen F1lab requires exactly8parameters/programs. Clone it with original-prefix
-contract checks for F3; recapture matching original/current with that clone,
-preserving old signals/positions/actual restores. Do not silently edit old F1
-method or claim its source-wide audit still applies after host changes. F2audit
-also asserts F1shipping files unchanged: once F3changes them, archive this F2
-acceptance and make a stage-specific audit rather than bypassing its guard.
-Then F4QUICK/ADVANCED/Legacy, F5actual-plugin calibration/library/release.
-
-## Commands and environment
-
-cmake --build build --config Release --target HamloFader_F2Current HamloFader_F2Tests -- /m:2 /v:minimal
-build/Release/HamloFader_F2Tests.exe
-E:/HamloShirota/build/s3_venv/Scripts/python.exe -I -X utf8 Tools/verify_f2.py
-
-Reference target is optional:-DHAMLO_FADER_BUILD_F2_REFERENCE=ON, requires local
-out/f2/baseline. Normal builds don't need the archive. Reference/current lab
-refuse existing capture paths. Analyzer resumes only matching pinned raw data;
-choose new report labels for changes. Do not restart valid jobs gratuitously.
-JUCE8.0.12read-only pathE:/HPEQ/build/_deps/juce-src; Python/numpy/scipy already
-inE:/HamloShirota/build/s3_venv. No environment upgrades. Astra xhigh recommended
-for state/clock/measurement diagnosis;medium for routine build/check execution.
-No actual switch performed.
-
-Continuation prompt:Continue E:/HamloFader F3 from AGENTS.md and docs/NEXT_STAGE.md.
-Connect accepted F2kernel to the VST with compatible appended parameters,
-state/clock/actions and actual host-output tests. Work alone; no repeated scope questions.
+Recommended reasoning: medium for the decision-complete UI implementation/builds;
+Astra xhigh if DSP/compatibility or ambiguous measurement issues appear. No switch
+performed. Commit only owned stage changes withCodexcoauthor when checks pass.

@@ -136,7 +136,7 @@ void Kernel::process(float* const* audio,int channels,int count,const Clock& clo
         for(int c=0;c<channels;++c)
         {
             const bool motion=s.mode==Mode::Motion&&(!s.sync||clock.playing);const auto phase=(p->phase+(c?fixed(s.rightPhase):0))&mask;const double desired=motion?-s.depthDb*(1-p->level(phase)):0;
-            p->motionDb[c]=first?desired:desired+edge*(p->motionDb[c]-desired);if(std::abs(p->motionDb[c]-desired)<1e-12)p->motionDb[c]=desired;
+            p->motionDb[c]=(first&&i==0)?desired:desired+edge*(p->motionDb[c]-desired);if(std::abs(p->motionDb[c]-desired)<1e-12)p->motionDb[c]=desired;
             double role=s.mode==Mode::Match?held:s.mode==Mode::Ride?amp(p->rideB):s.mode==Mode::Motion?amp(p->motionDb[c]):1;
             role=transition==1?role:p->roleFrom[c]+transition*(role-p->roleFrom[c]);p->lastRole[c]=role;shaped[c]=pre[c]*role*manual;
         }
