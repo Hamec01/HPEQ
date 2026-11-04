@@ -1,0 +1,7 @@
+Random seed: 0x66386a5
+-----------------------------------------------------------------
+Starting tests in: F5 preset library / Factory library absent in F4 baseline...
+F5_LIBRARY=n/a
+Completed tests in F5 preset library / Factory library absent in F4 baseline
+
+HamloFader_Tests: 0 expectations passed, 0 failed

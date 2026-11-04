@@ -62,11 +62,14 @@ public:
     bool requestAction(FaderAction, std::uint64_t frame=std::numeric_limits<std::uint64_t>::max()) noexcept;
     bool readStatus(FaderStatus& out) const noexcept { return status.read(out); }
     bool applyMatch();
+    bool canApplyMatch() const;
+    bool isProgramModified() const;
     int editorPage() const noexcept { return page.load(std::memory_order_relaxed); }
     void setEditorPage(int p) noexcept { page.store(juce::jlimit(0,2,p),std::memory_order_relaxed); }
     std::uint64_t nextActionFrame() const noexcept { return publishedFrames.load(std::memory_order_acquire); }
 
 private:
+    bool matchProposal(FaderStatus&) const;
     void processAudio(juce::AudioBuffer<float>&, bool forceBypass);
     hamlo::fader::Settings modernSettings(bool forceBypass=false) const noexcept;
     void publishStatus(bool bypassed) noexcept;

@@ -1,0 +1,15 @@
+Random seed: 0x6b5feac
+-----------------------------------------------------------------
+Starting tests in: F5 preset library / 208 programs;200 permanent IDs,group counts,unique effective recipes and neutral held Match...
+Completed tests in F5 preset library / 208 programs;200 permanent IDs,group counts,unique effective recipes and neutral held Match
+-----------------------------------------------------------------
+Starting tests in: F5 preset library / Actual owner-material calibration/check:work,peak,finite,state and command workflow...
+fader-bb-40 PASS work=6.01213 peak=-13.446
+!!! Test 190 failed: {"id": "fader-dnb-40", "program": 197, "name": "DNB Liquid Keys Level", "mode": 2, "depth": "Heavy", "goal_db": 9.325000000000001, "parameter": "targetDb", "value": -12.0, "work_db": 5.999999999193696, "peak_dbtp": -4.188029141544033, "finite": true, "state_exact": true, "workflow_valid": true, "passed": false, "pcm_sha256": "4fdc44b2ecf9a09ef649399b39deaf1a5e8378a57423ea1aeb1698c60e5ff902"}
+fader-dnb-40 FAIL work=6 peak=-4.18803
+LIBRARY calibrate 199/200
+
+FAILED!!  1 test failed, out of a total of 200
+
+
+HamloFader_Tests: 16458 expectations passed, 1 failed

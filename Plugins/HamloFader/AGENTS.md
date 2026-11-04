@@ -6,7 +6,29 @@
 
 ---
 
-## Current checkpoint: F3 host integration accepted (2026-11-03)
+## Current checkpoint: F5 / HamloFader0.2.0 complete (2026-11-04)
+
+Full UI +200genre presets/208programs accepted. Original0..7/77hostparameters/
+schema3/VST3identity andDSPkernel unchanged. Read docs/F5_HANDOFF.md and
+docs/reports/f5/REPORT.md.17432native,224host,678exactLegacyrenders,200/200
+calibration+compiledbank+8xpeakchecks. pluginval5..10/Steinberg537pass.
+Private12A/Bs out/f5/demos_final;VSTZIP/SHA256dist/HamloFader-0.2.0.
+CurrentguardTools/verify_f5.py;frozenout/f5/accepted. No installer/installed
+overwrite/manualFLlisteningclaim. Owner explicitlyrequestedpush after release;
+publishverifiedsourceviaexisting HPEQtopic/aggregate andverifyremote. No other
+DSPproducts,HPEQmainrewiring,subagentsormodelswitch. Completioncommitfollows.
+
+## Historical checkpoint: F4 interface accepted (2026-11-04)
+
+Owner approved completing Fader UI,200presets and final tests. F4 adds own modern
+panel and QUICK/ADVANCED/LEGACY; old shared UI/DSP/hostABI unchanged.163native,
+224host,678exactLegacyrenders,pluginval5..10/Steinberg537pass. See current
+docs/NEXT_STAGE.md,docs/reports/f4/REPORT.md,Tools/verify_f4.py. Frozenout/f4/accepted.
+Internal0.1.0/eightprograms;F5library/release remains. Continue approved scope
+without reasking;no subagents,otherproducts,HPEQ,push,installer or installed
+overwrite. No model switch. Completion commit follows F4handoff.
+
+## Historical checkpoint: F3 host integration accepted (2026-11-03)
 
 Owner approved full Trim/Match/Ride/Motion, Ride Natural/Fast with adjustable
 range. Do not ask scope again. Work only in E:/HamloFader; efficient-staged-work,

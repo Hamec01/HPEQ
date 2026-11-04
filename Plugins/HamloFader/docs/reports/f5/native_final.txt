@@ -1,0 +1,53 @@
+Random seed: 0x557df01
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Parameters: every spec of HPEQ's HamloFader at its default, then bypass...
+Completed tests in Plug-in / Parameters: every spec of HPEQ's HamloFader at its default, then bypass
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Latency: fixed, the same at 44.1 and 48 kHz settings and for every program...
+  0 samples at 48 kHz
+Completed tests in Plug-in / Latency: fixed, the same at 44.1 and 48 kHz settings and for every program
+-----------------------------------------------------------------
+Starting tests in: Plug-in / ON off: the input delayed by the latency, bit-exact...
+Completed tests in Plug-in / ON off: the input delayed by the latency, bit-exact
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Every program: finite and bounded on drums...
+Completed tests in Plug-in / Every program: finite and bounded on drums
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (the last program)...
+Completed tests in Plug-in / Host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (the last program)
+-----------------------------------------------------------------
+Starting tests in: Plug-in / State: save / load round trip...
+Completed tests in Plug-in / State: save / load round trip
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Page: the spec's size; the preset screen top left with every program; a program from it loads...
+Completed tests in Plug-in / Page: the spec's size; the preset screen top left with every program; a program from it loads
+-----------------------------------------------------------------
+Starting tests in: F4 interface / Editor open is read-only; all three pages select their actual engine and recall...
+Completed tests in F4 interface / Editor open is read-only; all three pages select their actual engine and recall
+-----------------------------------------------------------------
+Starting tests in: F4 interface / Real slider and combo callbacks edit host parameters; external changes refresh...
+Completed tests in F4 interface / Real slider and combo callbacks edit host parameters; external changes refresh
+-----------------------------------------------------------------
+Starting tests in: F4 interface / Motion graph edits are saved/automatable; point count clamps selection...
+Completed tests in F4 interface / Motion graph edits are saved/automatable; point count clamps selection
+-----------------------------------------------------------------
+Starting tests in: F4 interface / Match never auto-applies; queued requests wait, proposal is deliberate, stale Apply disabled...
+Completed tests in F4 interface / Match never auto-applies; queued requests wait, proposal is deliberate, stale Apply disabled
+-----------------------------------------------------------------
+Starting tests in: F4 interface / Full/busy command queue is reported; resizing preserves preset geometry...
+Completed tests in F4 interface / Full/busy command queue is reported; resizing preserves preset geometry
+-----------------------------------------------------------------
+Starting tests in: F5 preset library / 208 programs;200 permanent IDs,group counts,unique effective recipes and neutral held Match...
+MATERIAL_PASS=not requested (explicit calibration/check run required)
+Completed tests in F5 preset library / 208 programs;200 permanent IDs,group counts,unique effective recipes and neutral held Match
+-----------------------------------------------------------------
+Starting tests in: F5 library workflow / Genre/group filters only filter; selected modern recipe recalls its real mode...
+Completed tests in F5 library workflow / Genre/group filters only filter; selected modern recipe recalls its real mode
+-----------------------------------------------------------------
+Starting tests in: F5 library workflow / Compensated analysis staging is visible and neutral as a fixed gain; Match loads without applied gain...
+Completed tests in F5 library workflow / Compensated analysis staging is visible and neutral as a fixed gain; Match loads without applied gain
+-----------------------------------------------------------------
+Starting tests in: F5 library workflow / Optional matched private auditions reconstruct the exact prepared input...
+Completed tests in F5 library workflow / Optional matched private auditions reconstruct the exact prepared input
+
+HamloFader_Tests: 17492 expectations passed, 0 failed
