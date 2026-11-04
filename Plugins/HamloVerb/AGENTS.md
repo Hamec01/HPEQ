@@ -6,7 +6,20 @@
 
 ---
 
-## Current checkpoint: HamloVerb0.2.1 / Keep Dry (2026-11-04)
+## Current checkpoint: HamloVerb0.2.2 / Wet Level (2026-11-04)
+
+Owner reports the return itself is too quiet; added wetDb(-24..+24dB,default0)
+afterKEEP DRY. Main WET LEVEL controls only modern wet output before mixing;
+SHIMMER remains Advanced/Effects.20ms ramp,0latency,oldstate resets0,Legacy
+unchanged. Core reverb/effects/200 recipes and PresetScreen untouched.
+Read docs/WET_LEVEL_HANDOFF.md and docs/reports/wetlevel/REPORT.md.1634native,
+208oldprogramPCMexact,390M0exact,pluginval5..10/Steinberg537pass. Private owner
+keys2 A/Bs inout/wetlevel_demo_final;VST/ZIP/SHA256 indist/WetLevel0.2.2.
+ReplayTools/verify_wetlevel.py. No installer,installed overwrite,HPEQ/newpush,
+manualFLlistening or model switch. Previous source publication is0.2.1.
+Completion commit follows this handoff;no active jobs. No subagents.
+
+## Historical checkpoint: HamloVerb0.2.1 / Keep Dry (2026-11-04)
 
 Owner clarified standalone HamloVerb after a mistaken Revolution interpretation.
 Keep work here. No subagents. See docs/KEEP_DRY_HANDOFF.md before the historical

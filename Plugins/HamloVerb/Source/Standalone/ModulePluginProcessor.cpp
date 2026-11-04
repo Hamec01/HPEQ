@@ -42,6 +42,8 @@ void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSi
     insertMix.reset(rawValues[6]->load());
     keepDryBlend.reset(rawValues[KeepDry]->load() >= .5f ? 1.0 : 0.0);
     outputGain.reset(std::pow(10.0, rawValues[Output]->load() / 20.0));
+    wetReturnGain.reset(std::pow(10.0, rawValues[WetLevel]->load() / 20.0));
+    wetReturnDb.store(-120.0f, std::memory_order_relaxed);
     lastEngine = juce::roundToInt(rawValues[Engine]->load());
 
     fixedLatency = maximumLatencySamples(kind, sampleRate);
@@ -114,8 +116,10 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     insertMix.setTarget(rawValues[6]->load(), bypassRampSteps);
     keepDryBlend.setTarget(rawValues[KeepDry]->load() >= .5f ? 1.0 : 0.0, bypassRampSteps);
     outputGain.setTarget(std::pow(10.0, rawValues[Output]->load() / 20.0), bypassRampSteps);
+    wetReturnGain.setTarget(std::pow(10.0, rawValues[WetLevel]->load() / 20.0), bypassRampSteps);
     const bool send = rawValues[Routing]->load() >= .5f;
     const auto transport = currentTransport();
+    double returnEnergy = 0.0;
 
     for (int start = 0; start < samples; start += maximumBlockSize)
     {
@@ -143,8 +147,13 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
                 const float m = send ? (insertMix.next(), 1.0f) : static_cast<float>(insertMix.next());
                 const float gain = static_cast<float>(outputGain.next());
                 const float hold = static_cast<float>(keepDryBlend.next());
+                const float returnGain = static_cast<float>(wetReturnGain.next());
                 for (int ch = 0; ch < channels; ++ch)
                 {
+                    // Return-only gain stays outside the tank, Reverse and all
+                    // feedback. Keep unity arithmetic exact for old projects.
+                    if (returnGain != 1.0f) result[ch][i] *= returnGain;
+                    returnEnergy += static_cast<double>(result[ch][i]) * result[ch][i];
                     if (!send && hold > 0 && m > 0)
                     {
                         const float d = dryPointers[ch][i];
@@ -157,7 +166,11 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
                 }
             }
         }
-        else engine.process(wet, channels, count, slot, chunkTransport);
+        else
+        {
+            engine.process(wet, channels, count, slot, chunkTransport);
+            for (int i = 0; i < count; ++i) wetReturnGain.next();
+        }
         for (int i = 0; i < count; ++i)
         {
             const float amount = static_cast<float>(wetAmount.next());
@@ -165,6 +178,7 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
                 wet[channel][i] = dryPointers[channel][i] + amount * (wet[channel][i] - dryPointers[channel][i]);
         }
     }
+    if (isModern) wetReturnDb.store(static_cast<float>(10.0 * std::log10(std::max(1.0e-12, returnEnergy / (channels * static_cast<double>(samples))))), std::memory_order_relaxed);
 }
 
 double ModulePluginProcessor::getTailLengthSeconds() const

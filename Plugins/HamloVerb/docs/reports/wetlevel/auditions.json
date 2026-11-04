@@ -1,0 +1,20 @@
+[
+  {
+    "path": "out/wetlevel_demo_final/Insert_KEEP_DRY_0dB_then_12dB.wav",
+    "sha256": "a39e35b23ee1e7940e78fd1f18277b1522c46ec6225e2bd6bb19b4f432ce0ff9",
+    "true_peak_db": -6.014820957381534,
+    "after_before_energy_db": 1.764050345104891,
+    "common_gain": 0.706268787,
+    "source_sha256": "21a33d4574e2724773a5d500d77c0b9c1261fc5bcb08cdf5d510dc126d0b55b1",
+    "order": "WET LEVEL0dB,0.4s silence,WET LEVEL+12dB; same common gain"
+  },
+  {
+    "path": "out/wetlevel_demo_final/Send_WET_0dB_then_12dB.wav",
+    "sha256": "a2e437a0e39a203f42cafb7cf30acd8d7ca2d1afee3a3031a9a150a9af96db9e",
+    "true_peak_db": -7.118709060786688,
+    "after_before_energy_db": 12.000000017600897,
+    "common_gain": 1.0,
+    "source_sha256": "21a33d4574e2724773a5d500d77c0b9c1261fc5bcb08cdf5d510dc126d0b55b1",
+    "order": "WET LEVEL0dB,0.4s silence,WET LEVEL+12dB; same common gain"
+  }
+]

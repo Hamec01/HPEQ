@@ -1,3 +1,6 @@
 docs/reports/keepdry/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/reports/keepdry/*.txt -whitespace
 docs/reports/keepdry/validators/** -whitespace
+docs/reports/wetlevel/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/reports/wetlevel/*.txt -whitespace
+docs/reports/wetlevel/validators/** -whitespace
