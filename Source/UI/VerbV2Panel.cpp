@@ -17,7 +17,8 @@ enum Page { Always = -1, Main = 0, Equalizers = 1, Texture = 2, Effects = 3 };
 
 juce::String helpFor(const juce::String& id)
 {
-    if (id == "mix") return "Insert dry/wet balance. Send always outputs wet only and remembers this Insert value. Mix Lock protects it when loading presets.";
+    if (id == "mix") return "Insert dry/wet balance. With KEEP DRY, the source stays at unity and MIX adds reverb. Send is wet only. Mix Lock protects MIX when loading presets.";
+    if (id == "keepDry") return "Keep the source at unity and add MIX times the reverb in modern INSERT. OUTPUT still trims the total. Remembered across presets; saved with the project. Turn off for the original dry/wet balance.";
     if (id == "routing") return "INSERT blends dry and wet. SEND outputs only reverb. Changing routing remembers the Insert Mix value.";
     if (id == "engine") return "LEGACY preserves old projects. The six new characters change the structure of the reverb, not just its brightness.";
     if (id == "space") return "Room geometry and reflection family. Classic in Legacy retains its original 250 ms / 20 s limits.";
@@ -270,8 +271,9 @@ struct VerbV2Panel::Impl
         }
         addChoice("routing", "ROUTING", Always, { 856, 47, 144, 30 });
         addToggle("bypass", "BYPASS", Always, { 1014, 47, 110, 30 });
-        stage.addAndMakeVisible(mixLock); mixLock.setBounds(856, 84, 268, 26); mixLock.setTooltip(helpFor("mix"));
+        stage.addAndMakeVisible(mixLock); mixLock.setBounds(856, 84, 128, 26); mixLock.setTooltip(helpFor("mix"));
         mixLock.onClick = [this] { if (owner.onMixLock) owner.onMixLock(!mixLock.getToggleState()); };
+        addToggle("keepDry", "KEEP DRY", Always, { 996, 84, 128, 26 });
 
         const char* mainIds[] { "decaySeconds", "predelayMs", "size", "distance", "width", "mix", "duck", "earlyDb", "lateDb", "outputDb", "attack", "shimmerAmount" };
         const char* mainLabels[] { "DECAY", "PREDELAY", "SIZE", "DISTANCE", "WIDTH", "MIX", "DUCK", "EARLY", "TAIL", "OUTPUT", "BUILD", "SHIMMER" };
@@ -413,6 +415,7 @@ struct VerbV2Panel::Impl
             if (c.label && c.id == "space") c.label->setText("LEGACY SPACE", juce::dontSendNotification);
             if (c.label && c.id == "mix") c.label->setText(legacy ? "LEGACY MIX" : "MIX", juce::dontSendNotification);
             if (c.id == "mix") enabled = !send;
+            if (c.id == "keepDry") enabled = !legacy && !send;
             if (c.id == "color") enabled = legacy;
             if (c.id.startsWith("decayEq") || c.id.startsWith("postEq") || c.id == "earlyDb" || c.id == "lateDb" || c.id == "outputDb"
                 || c.id.startsWith("shimmer") || c.id.startsWith("shape") || c.id.startsWith("gate") || c.id == "timeShape"

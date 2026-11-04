@@ -73,7 +73,7 @@ private:
     juce::AudioBuffer<float> wetBuffer;
     juce::ValueTree defaults;
     std::atomic<bool> mixLocked { false };
-    dsp::LinearRamp insertMix, outputGain;
+    dsp::LinearRamp insertMix, outputGain, keepDryBlend;
     int lastEngine = 0;
     juce::AudioBuffer<float> dry;
     dsp::LinearRamp wetAmount;
