@@ -6,6 +6,20 @@
 
 ---
 
+## Current checkpoint: HamloVerb0.2.1 / Keep Dry (2026-11-04)
+
+Owner clarified standalone HamloVerb after a mistaken Revolution interpretation.
+Keep work here. No subagents. See docs/KEEP_DRY_HANDOFF.md before the historical
+0.2.0 handover. Added optional KEEP DRY beside MIX LOCK:modern Insert keeps unity
+source and adds MIX*wet;Output still trims all. Default off preserves old sounds.
+Preset loads remember this workflow choice;old state missing ID resets off.
+1439 native pass,208 old program PCM renders exact,390 M0 cases exact;validators,
+source/build/delivery hashes in docs/reports/keepdry/acceptance.json. Replay
+Tools/verify_keepdry.py. VST3/ZIP/SHA256:dist/KeepDry0.2.1. No new installer,
+installed replacement,HPEQ/subtree/push,or manual FL listening claim. Reverb DSP,
+its200 calibrated original-law recipes and shared PresetScreen are unchanged.
+Revolution's uncommitted R11 work is parked in that repo and is not this release.
+No active jobs after completion. Commit is git log-1. Model unchanged.
 ## 1. Продукт и владелец
 
 - Владелец — продюсер (Boom Bap / Trap / Techno / DnB), автор HPDG (генератор барабанов, `C:\DRUMENGINE`) и HPEQ

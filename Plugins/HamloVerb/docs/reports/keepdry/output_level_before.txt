@@ -1,0 +1,32 @@
+Random seed: 0x57aabb6
+-----------------------------------------------------------------
+Starting tests in: Output level audit / Modern Insert dry coefficient before predelay equals 1-MIX for all six characters...
+LEVEL character=1 MIX=0.25 dry_gain=0.7500000 dB=-2.498775
+LEVEL character=1 MIX=0.50 dry_gain=0.5000000 dB=-6.020600
+LEVEL character=1 MIX=1.00 dry_gain=0.0000000 dB=-inf
+LEVEL character=2 MIX=0.25 dry_gain=0.7500000 dB=-2.498775
+LEVEL character=2 MIX=0.50 dry_gain=0.5000000 dB=-6.020600
+LEVEL character=2 MIX=1.00 dry_gain=0.0000000 dB=-inf
+LEVEL character=3 MIX=0.25 dry_gain=0.7500000 dB=-2.498775
+LEVEL character=3 MIX=0.50 dry_gain=0.5000000 dB=-6.020600
+LEVEL character=3 MIX=1.00 dry_gain=0.0000000 dB=-inf
+LEVEL character=4 MIX=0.25 dry_gain=0.7500000 dB=-2.498775
+LEVEL character=4 MIX=0.50 dry_gain=0.5000000 dB=-6.020600
+LEVEL character=4 MIX=1.00 dry_gain=0.0000000 dB=-inf
+LEVEL character=5 MIX=0.25 dry_gain=0.7500000 dB=-2.498775
+LEVEL character=5 MIX=0.50 dry_gain=0.5000000 dB=-6.020600
+LEVEL character=5 MIX=1.00 dry_gain=0.0000000 dB=-inf
+LEVEL character=6 MIX=0.25 dry_gain=0.7500000 dB=-2.498775
+LEVEL character=6 MIX=0.50 dry_gain=0.5000000 dB=-6.020600
+LEVEL character=6 MIX=1.00 dry_gain=0.0000000 dB=-inf
+Completed tests in Output level audit / Modern Insert dry coefficient before predelay equals 1-MIX for all six characters
+-----------------------------------------------------------------
+Starting tests in: Output level audit / Legacy adds wet over unity dry; Send is wet only; Output scales the full modern mix...
+OUTPUT MIX=.5 Output=-6: -12.020600 dB vs input
+Completed tests in Output level audit / Legacy adds wet over unity dry; Send is wet only; Output scales the full modern mix
+-----------------------------------------------------------------
+Starting tests in: Output level audit / Current program bank mixing and output ranges...
+BANK programs=208 modern=200 MIX=0.153442..0.944734 OUTPUT=0.0000..0.0000 negative_output=0
+Completed tests in Output level audit / Current program bank mixing and output ranges
+
+HamloVerb_Tests: 23 expectations passed, 0 failed

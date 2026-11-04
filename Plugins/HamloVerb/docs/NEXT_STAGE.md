@@ -1,3 +1,8 @@
+# Current: HamloVerb0.2.1 KEEP DRY
+
+Read docs/KEEP_DRY_HANDOFF.md for the completed patch and current artifacts.
+The0.2.0 historical release handoff follows.
+
 # HamloVerb 0.2.0 release handoff — 2026-10-30
 
 ## Delivered work
