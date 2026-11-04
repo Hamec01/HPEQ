@@ -6,7 +6,17 @@
 
 ---
 
-## Current checkpoint: F3 host integration accepted (2026-11-03)
+## Current checkpoint: F4 interface accepted (2026-11-04)
+
+Owner approved completing Fader UI,200presets and final tests. F4 adds own modern
+panel and QUICK/ADVANCED/LEGACY; old shared UI/DSP/hostABI unchanged.163native,
+224host,678exactLegacyrenders,pluginval5..10/Steinberg537pass. See current
+docs/NEXT_STAGE.md,docs/reports/f4/REPORT.md,Tools/verify_f4.py. Frozenout/f4/accepted.
+Internal0.1.0/eightprograms;F5library/release remains. Continue approved scope
+without reasking;no subagents,otherproducts,HPEQ,push,installer or installed
+overwrite. No model switch. Completion commit follows F4handoff.
+
+## Historical checkpoint: F3 host integration accepted (2026-11-03)
 
 Owner approved full Trim/Match/Ride/Motion, Ride Natural/Fast with adjustable
 range. Do not ask scope again. Work only in E:/HamloFader; efficient-staged-work,

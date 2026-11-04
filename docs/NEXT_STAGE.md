@@ -1,4 +1,20 @@
-# HamloFader: F3 accepted, F4 modern interface next
+# HamloFader: F4 interface accepted, F5 library/release next
+
+2026-11-04. Parent3223d0d; F4 completion commit follows. New ownFaderV2Panel,
+QUICK/ADVANCED/LEGACY,all four modes,atomic meters/readiness/full,explicit safe
+Match actions,Ridecontrols,Motiongraph/pointnumericinput,channeltools/alignment,
+English help. Old shared UI unchanged. NoDSP/hostparameter changes.163native,
+224unchangedhost,678exactLegacyrenders;validators5..10/Steinberg537pass.
+Report:docs/reports/f4/REPORT.md;receipt acceptance.json;Tools/verify_f4.py.
+Frozen finalsource/tools/bundle:out/f4/accepted. Internal0.1.0/eightprograms;
+not a completed0.2.0 release. Continue F5 now within owner's approved completion
+request:200genre recipes/208programs,materialcalibration,finalscreens/validators,
+VSTZIP/SHA/report. No installer/installed overwrite/push/HPEQ. No active jobs
+after F4 completion. No subagents/model switch. Keep old F3handback below as API
+reference,not a demand to redo accepted work. F3/F4 current-source guards become
+historical once F5 changes source;make stage-specific evidence,don't edit them.
+
+# Historical: F3 accepted, F4 modern interface next
 
 2026-11-03. Parent7af28d0; completion commit follows (git log -1). No active jobs.
 Work alone in E:/HamloFader, apply efficient-staged-work. No other products/HPEQ,

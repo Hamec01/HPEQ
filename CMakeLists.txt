@@ -56,6 +56,7 @@ add_library(HamloFader_Shared STATIC
     Source/Standalone/ModuleVariant.cpp
     Source/Standalone/ModulePluginProcessor.cpp
     Source/Standalone/ModulePluginEditor.cpp
+    Source/UI/FaderV2Panel.cpp
 )
 target_include_directories(HamloFader_Shared
     PUBLIC Source
@@ -112,7 +113,7 @@ target_link_libraries(HamloFader
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloFader_Tests Tests/TestMain.cpp Tests/PluginTests.cpp)
+        add_executable(HamloFader_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/F4UITests.cpp)
     else()
         add_executable(HamloFader_Snapshot Tests/SnapshotMain.cpp)
     endif()

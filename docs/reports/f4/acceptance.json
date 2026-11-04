@@ -1,0 +1,1138 @@
+{
+  "stage": "F4",
+  "files": {
+    ".gitattributes": {
+      "sha256": "d91dbf28d906eda606f35dc2e3626ec2d53b4a7f731729e52c3463a0096f2132",
+      "normalized": true
+    },
+    "AGENTS.md": {
+      "sha256": "3b50bbb7b70533186b374c3ae56c946c8894a276429af9dc4c63f5df8ae05614",
+      "normalized": true
+    },
+    "cmake/PatchJuceWindowsRenderer.cmake": {
+      "sha256": "eef31294f4929035bdbff82928c66bbbbc3adfea85a53be8e3a57e9628973fd6",
+      "normalized": true
+    },
+    "cmake/WriteF1Identity.cmake": {
+      "sha256": "8c44008223bdef81b29cf90753fe3469f6e61d9d1c3895f0b8762503ca1fd105",
+      "normalized": true
+    },
+    "cmake/WriteF2Identity.cmake": {
+      "sha256": "0e6936674ff96d8ed10f1b641d6829ba8c274a360c8f682c4256ed0f0f74da82",
+      "normalized": true
+    },
+    "cmake/WriteF3Identity.cmake": {
+      "sha256": "8edbca9287b37b1d79fc58d86cf52a14e5326407ea44a6894f5342d8fb7dea38",
+      "normalized": true
+    },
+    "CMakeLists.txt": {
+      "sha256": "74f6193d94150da2d76ebc3a1981aafcf07b9e7ec5e22634ac6e9ae864d2c8d7",
+      "normalized": true
+    },
+    "docs/F4_UI.md": {
+      "sha256": "15090854094533b953c3e370b04b3fc7fdbd5e254291589888247dc41f5f149d",
+      "normalized": true
+    },
+    "docs/NEXT_STAGE.md": {
+      "sha256": "ba82fdf9d6873b8cfd809c2ab665e811188c88d87e4a0ac79ec0b96465d39cda",
+      "normalized": true
+    },
+    "docs/reports/f4/before.png": {
+      "sha256": "a63faaa73e5ee18646bb5453a440f8167afbf2c2fb2e53934270111ca98c120e",
+      "normalized": false
+    },
+    "docs/reports/f4/host_v1.json": {
+      "sha256": "28cd0971a56c6f450901e2a743e9a1ef1ea0ddd316e7ae5b00e4a3a2aa66b356",
+      "normalized": false
+    },
+    "docs/reports/f4/legacy_v1.json": {
+      "sha256": "9cd8f1d5cd7ac8e24c73d6c51d8af86c49b888dcb854fb397270b8ca6e683a04",
+      "normalized": false
+    },
+    "docs/reports/f4/motion_initial.png": {
+      "sha256": "9be343887614b0c43d13b76ed37356ac88fcf551dc01a6e6aecd6b636dd5eb18",
+      "normalized": false
+    },
+    "docs/reports/f4/native_v1.txt": {
+      "sha256": "e6cafc2ebf16471401c53273d29768bd3c35d37a15325035a6613d8c64b0aeba",
+      "normalized": false
+    },
+    "docs/reports/f4/quick_initial.png": {
+      "sha256": "9485c635dde88450192c73e061bf4bbb195c65b89873117fee1471041b1d3160",
+      "normalized": false
+    },
+    "docs/reports/f4/REPORT.md": {
+      "sha256": "61ab1307481e1bf40d80c612318241eb032fc9db6bde4c1cb6d510a10645c1bc",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/legacy.png": {
+      "sha256": "569eb4d8eadb6f5658060fccd9f089b886288465b97aac6c9dc09ff3f6b7d2bd",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/minimum.png": {
+      "sha256": "bee9cf691a721349441e5ac36e8bac098ea43a72001ef28a2f048961a9312d6e",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/page0_mode0.png": {
+      "sha256": "9811bd57c5ee2f96dbf98df5da1dc626ba7bc0b918578cad646623b245a43d56",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/page0_mode1.png": {
+      "sha256": "d9f9cc446231d97e2a9d64ffc27c7e58e593330f42a4c6723ce8e550de50f211",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/page0_mode2.png": {
+      "sha256": "f878435b46adbe1d20f4de6f4fadecfce9e7509eca65c365eea892cb65fbbb68",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/page0_mode3.png": {
+      "sha256": "903ccfe310bcdd61d704f282c8313fc4fcb800470468b150d0cae552759fc31f",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/page1_mode0.png": {
+      "sha256": "c29b557cd0b4830a2c291c93ea7ff0b08d7f28668abd6ac84ad7b4f18540664f",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/page1_mode1.png": {
+      "sha256": "4e1af51a9ffbb9913a8e9e7bfb0947d717113169262318011ce4e575ac667502",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/page1_mode2.png": {
+      "sha256": "62c21d38278635db3a9c75ff9ef1d05754c71661baf02b5fec851053d069a534",
+      "normalized": false
+    },
+    "docs/reports/f4/screens/page1_mode3.png": {
+      "sha256": "e1d6afb49753238629aa5d4a998a1f3e69f47bd924676bd1a4d422c671f057b5",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/identity.json": {
+      "sha256": "7f8dd9b6861a2cb0ae05d772a00f18553b4886fee95b4e9907ac3df4403b9bb5",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_10/HamloFader.vst3_20261104T170729.364+0200.txt": {
+      "sha256": "3e13cff0d00ddb8468907e5ee6db26395d9542ffb47652fa3c5eeaaa4063fc05",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_10/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_10/stdout.txt": {
+      "sha256": "8556b8aa734a803f7cdfee23123f7bfc2ff5ad59bf7c730c80be1f71f2b70225",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_5/HamloFader.vst3_20261104T170554.654+0200.txt": {
+      "sha256": "6a0edf0cd5f830400242b6cfeedb3290f186348468cd54eecd16ffd8ce759be8",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_5/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_5/stdout.txt": {
+      "sha256": "00c1f8d657c8e0813fca38121b8def8d864b1b21265a9334ff4466f6ae7bd234",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_6/HamloFader.vst3_20261104T170600.531+0200.txt": {
+      "sha256": "573bba66efda4c53d863294ea992776edcdb82310edd31b3222d5e9a0178e486",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_6/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_6/stdout.txt": {
+      "sha256": "c848ad8700777e7e9bcdb19014031bc503dde028aa283d7d5debe6d5e77b0aee",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_7/HamloFader.vst3_20261104T170620.653+0200.txt": {
+      "sha256": "a729dffabda828d0fe91e5cfac3fdbe10e67428cd8d2c9e011f9f6e362f0ba3a",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_7/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_7/stdout.txt": {
+      "sha256": "1eed3a6fd6a0705d54bcf97bca933a03c11f21fc5f97f7f6a224c04fe5af5987",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_8/HamloFader.vst3_20261104T170643.558+0200.txt": {
+      "sha256": "7f96c0f312ad3ed27fddf3406b3054385267f3c51508367efe2f03e817acfc63",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_8/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_8/stdout.txt": {
+      "sha256": "7358701134b212fe91c7a40981c1d9dfaa0a8410d6fce4181594a4c296e31790",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_9/HamloFader.vst3_20261104T170706.580+0200.txt": {
+      "sha256": "a7b9e0713b4f6097c724dc2124fdfde0ce4a380435efb124888de596c9044884",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_9/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/pluginval_9/stdout.txt": {
+      "sha256": "6964a2bd3378dde3588cc7b65e8779a0f1ada3b379f2f102c6d50e079ce90803",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/steinberg.err": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/steinberg.txt": {
+      "sha256": "c0c7e31bbb451b5dcceba3d7380dbb5f67fccc25a0f92c79b587b69a9d9de77f",
+      "normalized": false
+    },
+    "docs/reports/f4/validators_v1/summary.txt": {
+      "sha256": "b086b774f9dd99a2ceeb015ae90ab67b5706fce3466937aeb9568ff9c9bcc4d4",
+      "normalized": false
+    },
+    "out/f4/accepted/cmake/PatchJuceWindowsRenderer.cmake": {
+      "sha256": "eef31294f4929035bdbff82928c66bbbbc3adfea85a53be8e3a57e9628973fd6",
+      "normalized": true
+    },
+    "out/f4/accepted/cmake/WriteF1Identity.cmake": {
+      "sha256": "8c44008223bdef81b29cf90753fe3469f6e61d9d1c3895f0b8762503ca1fd105",
+      "normalized": true
+    },
+    "out/f4/accepted/cmake/WriteF2Identity.cmake": {
+      "sha256": "0e6936674ff96d8ed10f1b641d6829ba8c274a360c8f682c4256ed0f0f74da82",
+      "normalized": true
+    },
+    "out/f4/accepted/cmake/WriteF3Identity.cmake": {
+      "sha256": "8edbca9287b37b1d79fc58d86cf52a14e5326407ea44a6894f5342d8fb7dea38",
+      "normalized": true
+    },
+    "out/f4/accepted/CMakeLists.txt": {
+      "sha256": "74f6193d94150da2d76ebc3a1981aafcf07b9e7ec5e22634ac6e9ae864d2c8d7",
+      "normalized": true
+    },
+    "out/f4/accepted/HamloFader.vst3/Contents/Resources/moduleinfo.json": {
+      "sha256": "284f51e8e87210985ff638f85f96fe7680f2fed5ebd9137e53467c8a1c74fc61",
+      "normalized": false
+    },
+    "out/f4/accepted/HamloFader.vst3/Contents/x86_64-win/HamloFader.vst3": {
+      "sha256": "0a354a7dffc182816425cd611fedeec5fd43f1dfd9011e9fb740fd08deee1611",
+      "normalized": false
+    },
+    "out/f4/accepted/HamloFader_F3Host.exe": {
+      "sha256": "2d151c42f6514e56600720f6d12e8cb4dadbd40ce03c8d4e1d1c1013fe2a7237",
+      "normalized": false
+    },
+    "out/f4/accepted/HamloFader_F3Legacy.exe": {
+      "sha256": "43e1b69caec949b81d9041c2faeb956a4fbe7ed36cb2f49e70099277aff86d18",
+      "normalized": false
+    },
+    "out/f4/accepted/HamloFader_Snapshot.exe": {
+      "sha256": "5d129a5ea554e683df13faac13f1bcfed3847c0fb47ba806746e6d7112692bcf",
+      "normalized": false
+    },
+    "out/f4/accepted/HamloFader_Tests.exe": {
+      "sha256": "d2e49786ca49036fe490f87768cde07f597fe143246195d3807db9c7e45722df",
+      "normalized": false
+    },
+    "out/f4/accepted/Source/Core/FxProjectState.h": {
+      "sha256": "133dd972a3488b114a7a6d728e3e39ed59c2388419ae7001db15daa0838cf771",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Core/ModulePresets.cpp": {
+      "sha256": "324850009fee713e5443c81842d0048c594e89bcb00c8de5de3afd27f4e281b3",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Core/ModulePresets.h": {
+      "sha256": "2066506531b371d4a11a1ff6c25565aeb06d487e310df4d6b50896ac643659ca",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Core/Revolution.h": {
+      "sha256": "9ab589cd945284c86734e6abc8dac7e169fda148cf494ca3a4e671d8b50d1e23",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/Biquad.cpp": {
+      "sha256": "2b9adc45c556e15d38ac84f9989c83e1ecd3f61dd7500243f1b4eba3bf2808bd",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/Biquad.h": {
+      "sha256": "819a517ff340ff875f3d96cf83f74bcb30c2258a81102a0ee6f7e57c9f8e1f4a",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/CrossoverTree.cpp": {
+      "sha256": "da40f9330722ebf76d0225d87ed8dadc52b35d9215ac0ef140d9775868229e07",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/CrossoverTree.h": {
+      "sha256": "acaa64940fba57be61c92834e43d57f175ca6f2a314e157461a1722deff1c657",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/DelayLine.h": {
+      "sha256": "e8397a978a3f2107ec6c23000eee6701326f6b479e28a5b674ad71d43ecec650",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/DspConfig.h": {
+      "sha256": "bcee350c9b988be1ff88027cb61a0ce6e8cfe1be58d9309daa4a8a377db589c0",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/EqDesign.cpp": {
+      "sha256": "56255e4ddcbc293683f4c6009309fcf638784182a1b61835d7f7026f7b8744b6",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/EqDesign.h": {
+      "sha256": "5f5bc63397d648969eccf7991e4ff98cd22cf44663a2a940f1eb34f0bfe73f0f",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/FaderGain.cpp": {
+      "sha256": "b130fba667e7c234a784f017bac86be964f6a340f0e282cce0ae097b999daddc",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/FaderGain.h": {
+      "sha256": "6e4df5aa729f12c3eff560dd697b3043934ff7e52e162284a439005c1fd2c99c",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/FaderKernel.cpp": {
+      "sha256": "af2ac8724e07006f04c9fead33e8bfeecf945f78a3b803ec401880d17c05e7ab",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/FaderKernel.h": {
+      "sha256": "de1ab655ae430de83295462fa8505b0d189492f76ae07f59e1592341d730e5cf",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/FaderMeter.cpp": {
+      "sha256": "af426ebf972ed67c44dec274e021496045cda614b41c196041eb2c7c786b1ccb",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/FaderMeter.h": {
+      "sha256": "aab79395431447428a1eaa8bba5c38bf22f75f89f14c0b7c55953b974e6ce21d",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/FaderSettings.h": {
+      "sha256": "1b56c013d9e2560422c9d4904155eb6d95f318333b02681313832eedea1c6235",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/FxNodeProcessor.cpp": {
+      "sha256": "6ec142a5b125921dfc1cd59d5f5bc5ffa1dcfcadb1946cbc7172f8b73f937226",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/FxNodeProcessor.h": {
+      "sha256": "f772e907501466fd7c84e39423f0cd781f09c7ffe12544fc74d9198ffefdff1b",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloEcho.cpp": {
+      "sha256": "c15f511e226e945bea837cfa8308e86a3cb0cf275b67b767729c77ecc1b85274",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloEcho.h": {
+      "sha256": "08203efbf43d9686d110d06cfada73b76c0bb45f2f783bbce94aec96c239f24e",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloMag.cpp": {
+      "sha256": "51c536d00e7f4cf03088e09284b107d4843c79186505df679136ce9824918c73",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloMag.h": {
+      "sha256": "89c688bc8b3a33dc95b9c528756f213bd2fddca2d42e723a6c7c469b565a9a21",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloRedWall.cpp": {
+      "sha256": "a92828adc02ea611712a5381fbbd4376ebb715eebaf10d6bb236584a7c0eb353",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloRedWall.h": {
+      "sha256": "0b10e76b28282323d80b22ec56385d4de50f269a63f558f7a2180b01ff02cc68",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloRevolution.cpp": {
+      "sha256": "204e2c07e1ce453711dab67aa5305128de07d6091f04794c4513c60af2d8584e",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloRevolution.h": {
+      "sha256": "78e4bb024b6a9f88769d146b3cfdbebba1186517f728ca741f65f7f8134ced6a",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloShirota.cpp": {
+      "sha256": "5a0e2163d4a039439e0ae30a58373fb68889a388ed3bacd4d55cc125a2acc1fa",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloShirota.h": {
+      "sha256": "f14b21202801ea5c1a3357c63df0ae904eda56d1a7a010a940e07a93a3d1574a",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloUdarnik.cpp": {
+      "sha256": "e0cdf4f825859c143c1228130effe09c3783e21e73e63f1f1201432ba7889803",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloUdarnik.h": {
+      "sha256": "2ff42b69320cd39ff2fd2571ca3f5b9d1141c0fd34bb52c64a827651cbc50ae3",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloVerb.cpp": {
+      "sha256": "fbb60da61de447439461c627be402930ef0b958781ac3196ee3ab5a17822456a",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloVerb.h": {
+      "sha256": "fc66fe1e721a744b2ba2f64c46e713cc40cc8b7a5eb31bb712962ca182ab3f5f",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloZastava.cpp": {
+      "sha256": "0cec67127c96eb2a7ff29e54c7c6a4b1b9b56c853486c8fe02c5fc2a8d59db87",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/HamloZastava.h": {
+      "sha256": "76d78d5a0d72ff38e870b159e7cc8e101553bb8d7dd0e5d5909032323f0d89b9",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/LayerEngine.cpp": {
+      "sha256": "bb6a9d21c127f42c80e01c8415c672f9d5ec40a8302ec0b46c6771733f69fb80",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/LayerEngine.h": {
+      "sha256": "49e7bb7c05baf6a52a2bf53e4a637e45baf7162a1a8cdde094c7fdbd4cfbd330",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/LayerSnapshot.h": {
+      "sha256": "7e4248386b78834576540d87c99b48820a5ffa2e42a8102cee3b978daa33241c",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/LegacyFaderCore.cpp": {
+      "sha256": "d0f250d0377711c3185fc6691397e5c6e6351680f356903518640d587ea5d8d5",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/LegacyFaderCore.h": {
+      "sha256": "bea70ba190059029619e5d4076b5aca6a72f6a5ebe9c5181992b3b3de3bc3def",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/Pool.h": {
+      "sha256": "476352285dcd590c3c484d537ca6b7c1a35bb1f315f83a5b32d60d44cb343c4b",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/PreEqProcessor.cpp": {
+      "sha256": "5047bf2433634eafa53059106b1562057902c771fe42c12ff4b7630470ceb6c9",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/PreEqProcessor.h": {
+      "sha256": "91564944f937bb1421831901df416fe558f3c4b241f68df351a130e533328b2c",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/Processors.cpp": {
+      "sha256": "d5075075bf35b40fe08b768a02242198906ee161f2dccea23a124f6938e6d912",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/Processors.h": {
+      "sha256": "7329d9d8b3e43259a5ca111e253e42ce625c431f45cf418a984f6bea268e4396",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/ProcessorsM6.cpp": {
+      "sha256": "fc2af720f154ba9b389ffc5eff4143d69690a4db9036c75e540927dcee4617e6",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/ProcessorsM6.h": {
+      "sha256": "354579ac8458d81659a2b97d9bce72ea4cbf6b2f8a77ff44c017dfabec955d39",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/Ramp.h": {
+      "sha256": "0298fcb933b437140b4a5588e1f2aab4a3afa1b190f32506a0d724a2036de6b9",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/ReverbProcessor.cpp": {
+      "sha256": "a49f12385789ce23ec81631a95046415d960abfe69d71840cdb9761ec0c45e12",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/ReverbProcessor.h": {
+      "sha256": "130afce00de038d759c050ef7cd2dde3ceedbaae19d650d833b79bb9f4d93953",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/DSP/RevolutionFft.h": {
+      "sha256": "ba9345a2af7de3aa6c85a33c157a3461e74a75899f0d5f63671c2d51f9d9b750",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/FaderAudioBridge.h": {
+      "sha256": "e659d5a394e9449df99fbc66ef6cce35aa22f0126d29940f8c88e3f918fb5bf6",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/FaderHostControls.cpp": {
+      "sha256": "2a34af0dde75421dc2232b1b65ab6155bfe5b56e282f100ee637d36f173a8985",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/FaderHostControls.h": {
+      "sha256": "d543c86caec9aa81bf73553974e3fcc718426a43ca615490e0eb5f3526883896",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/ModulePluginEditor.cpp": {
+      "sha256": "32de91466c520bdda6c2a6aab81783f1b746323f704f9d6a99c8cad482fa2c20",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/ModulePluginEditor.h": {
+      "sha256": "6b8b1478ad1c7550f58f6f34967c72c02218b5a5e6bae36765d0229becdbb7f7",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/ModulePluginEntry.cpp": {
+      "sha256": "795ab8d1d4dd779278eb2c0aa12c7da914cc3be1c82668f3bd3cc0be8280efd7",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/ModulePluginProcessor.cpp": {
+      "sha256": "f6ca6954782b812c8d9f0e10301bbb6887a3313e94f1e465dc8e7d3b83850634",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/ModulePluginProcessor.h": {
+      "sha256": "342637d1a1ce0223df7659b0419c2a81fbaed474592d8e3ced9f534f344d15e1",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/ModuleVariant.cpp": {
+      "sha256": "73c2204ac60abc3eb2e84b123d1adfa4363bb63aa396baa723c27f2f59d67c2d",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/Standalone/ModuleVariant.h": {
+      "sha256": "aaa4d937eb6b98f22e9d455870c8848789b78c7ed5419fbfb22b713d35fcab20",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/BlackSteel.cpp": {
+      "sha256": "6c79f1312bf78195ff09173c0f84976969d5d2c8db19ff3ab27e344997bfa5ef",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/BlackSteel.h": {
+      "sha256": "d3011aea55d26e515fc04de49657fba9189b2651ba4b9b5fe068b5ca84db3f88",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/FaderV2Panel.cpp": {
+      "sha256": "688af6c5d5a79e6563c65b3fcd800c1665b55430b7534d5ccd2596c0121b3e28",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/FaderV2Panel.h": {
+      "sha256": "5eaebff63e77af2fd0eaa932f936750071513e6886a3661b9b22582d030a8c29",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloCompPanel.cpp": {
+      "sha256": "9164f91ed7270e955915d92f60f38c2dbda9d99afa2aa3d69b347553e2fe533f",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloCompPanel.h": {
+      "sha256": "e5736b41fabb1c899f52627b53b4721fe2250e4ba528478470ac143f49e41a0b",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloEchoPanel.cpp": {
+      "sha256": "83b4d018e30eda91d1421102ca8ae0e31582877a38c00a1ef8c51ecfa2ea8b0a",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloEchoPanel.h": {
+      "sha256": "89811ca5393b462e3d862530a5583524b7c9148e8cb335c61c381232d21b4f36",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloFaderPanel.cpp": {
+      "sha256": "746087e11d20b30ecfad2282b92cc35e4dddb37d01caca593fbc17f34af73610",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloFaderPanel.h": {
+      "sha256": "6b57395bb3b3a964e3adec9a042762987b8a25a72d385478bcde1c0a3e7e8d6d",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloMagPanel.cpp": {
+      "sha256": "a5ae0dd44b3bb80771f0b5540418f6772b00297ecdc289a3b4402664f40dffb1",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloMagPanel.h": {
+      "sha256": "1c9b370ded908084ce2069f876a753be5ca4ca53c6e224c31bba806f20979f1c",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloRedWallPanel.cpp": {
+      "sha256": "0803ffc79c21dbb2909aacf8ec9dec995c83a4322ce04ce57a33b219aae24760",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloRedWallPanel.h": {
+      "sha256": "698d67a1c4446ce55101178c358005161f95d3560d30ecd7a451f95511b3d0bc",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloShirotaPanel.cpp": {
+      "sha256": "ddcb7c19606bf1605a968c3222f0d641613d9bb90ada325568d084dcc0f26cbf",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloShirotaPanel.h": {
+      "sha256": "2e0c24e4f645febb843c4d5994047c077be822b83024535770b88cae90fe9418",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloUdarnikPanel.cpp": {
+      "sha256": "392decfd9a9e4d0629039bf308c0832fb0d9fc2a28c88f97d0ff2dde1803d87a",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloUdarnikPanel.h": {
+      "sha256": "6b71bdf4d6c722ea9917b45644038fead563c10356181eeeba270d272de7c2aa",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloVerbPanel.cpp": {
+      "sha256": "64f33e0a18cecbefdcbcb66378f47e69083b2551012f75078dbc609fdbadf40e",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloVerbPanel.h": {
+      "sha256": "e407bd7c5f6a7087004e2b7638f354855251abe6c8033627bbf5dcf766df5042",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloZastavaPanel.cpp": {
+      "sha256": "cb8e92b1dacbe9ed177b06cda68de184120db80560231619c4ae5c0115f941d5",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/HamloZastavaPanel.h": {
+      "sha256": "720946822aaf00b1a60822885e99d9856b2019d8dbd809463ff2563e7f07b1c5",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/ModuleHelp.h": {
+      "sha256": "f2630cb46a19f323570f2e6146c994b0af122a93edee09892786c9cb05532f17",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/PresetScreen.cpp": {
+      "sha256": "ce90663c90b18020b23991b338cf5f00f39d8e5e3cfdd4d1053f3297402fedce",
+      "normalized": true
+    },
+    "out/f4/accepted/Source/UI/PresetScreen.h": {
+      "sha256": "7b2a5560311f9a4ff17c64ffb4ac3da6aa85c2b0335b183e5025d4ce8faf049d",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/AllocationAudit.cpp": {
+      "sha256": "165eea0bd9a2ce93c783fd1c935cbdaa168d3862074732348b9f4f8245566840",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/AllocationAudit.h": {
+      "sha256": "d948fcaf914d9bc5559f6302ef581392297e934b0ed03b7a7befec9cb62d6c1c",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/F1LabMain.cpp": {
+      "sha256": "414d7ce78ecdcc42b50423aab781667ab30d66d05437b4875786b668e89c06e2",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/F2LabMain.cpp": {
+      "sha256": "90d717c106ed6ef80b95d305afea9d3cf89361ae1ef94580382df73f083ac2d8",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/F2UnitMain.cpp": {
+      "sha256": "0ae21ae27e0ac06b98fd695feb133d0df60fc9d2154ff240a9adfb690bbc46e5",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/F3HostMain.cpp": {
+      "sha256": "60dde5719002b062d7de754c632890f0e064ad162f686fbe6e8415be87c9b767",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/F3LegacyLab.cpp": {
+      "sha256": "914133a96378b34f16821524bfb09b13c9d5acecb0e0468c13c08dd510f50487",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/F4UITests.cpp": {
+      "sha256": "5f397ab66823fc4bd634a207294f8f875255152b3dad75e1dbdfa82aaff5d4bf",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/PluginTests.cpp": {
+      "sha256": "9f9e1254cba7bf186aa43a0fed4d16e3f4fd0cf58e4db078bec9225322df76c1",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/SnapshotMain.cpp": {
+      "sha256": "50c95028fa02a35e961c42a5787c74b74e5aa49e59abd3416d4ff39911024c57",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/TestMain.cpp": {
+      "sha256": "ce8eee17fa952607469e4d5431939e4da9613d918cb64c2aac922074ce526d10",
+      "normalized": true
+    },
+    "out/f4/accepted/Tests/TestSignals.h": {
+      "sha256": "8093bb51464634e03430d679bb218d6506767a2e57d35a08f1a648d256dd9b20",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/analyze_f2.py": {
+      "sha256": "6abc07f8d336857712a52c6f5cba8a6688a62e6ff8d1312a601b9053a3e1805e",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/check_f1_guards.py": {
+      "sha256": "e0374c5d3a2bae9619e42d2430e9fde666d7220d1872b78570c2e4f7e47d5496",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/check_f2_guards.py": {
+      "sha256": "e87d03324fc355b4b76ad8d4d40e92f4abaa45c29f9d26e3f496bcf185681e96",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/finalize_f4.py": {
+      "sha256": "a8bad08beb1ac0dbc88f724fc6bbcb396aaf1f407f318b78ec0c8e25d8396831",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/isolate_f1.py": {
+      "sha256": "8afcdd5f87c2611a9e05dd8d8e8aa7c646b1d75eba2db40ac0915c1c9aa46e49",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/validate_f1.ps1": {
+      "sha256": "197de8a32998a5309f53b8e92ebb816a54c0aaf4ff409f52a573f32a2c3c99be",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/validate_f3.ps1": {
+      "sha256": "eed468301d24bf86efcdea2b39c86cc4fd98604a7a0679989d735b9fcd03eadd",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/validate_f4.ps1": {
+      "sha256": "605665f5ff7c4740b47ab478d1479c372d70ba4fb7b16620db206c1f507b57ba",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/verify_f1.py": {
+      "sha256": "1baaf5e22aa636ac628a00a5f5af2b5f8c5c33412e022810ff63c1564315e8b8",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/verify_f2.py": {
+      "sha256": "0f1a173039aba20188e2ad02618b11c2cd803a1cca6ff410fc7a1d894fefb5d9",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/verify_f3.py": {
+      "sha256": "a0daad79a2dff12eb57ecbb530d1713cfd9f7c8fd807969b09a88c713f5f3edd",
+      "normalized": true
+    },
+    "out/f4/accepted/Tools/verify_f4.py": {
+      "sha256": "c95bb1709e32d9369a3a5ea389acf8ca2945460c23f4fadac437c002d966be0e",
+      "normalized": true
+    },
+    "Source/Core/FxProjectState.h": {
+      "sha256": "133dd972a3488b114a7a6d728e3e39ed59c2388419ae7001db15daa0838cf771",
+      "normalized": true
+    },
+    "Source/Core/ModulePresets.cpp": {
+      "sha256": "324850009fee713e5443c81842d0048c594e89bcb00c8de5de3afd27f4e281b3",
+      "normalized": true
+    },
+    "Source/Core/ModulePresets.h": {
+      "sha256": "2066506531b371d4a11a1ff6c25565aeb06d487e310df4d6b50896ac643659ca",
+      "normalized": true
+    },
+    "Source/Core/Revolution.h": {
+      "sha256": "9ab589cd945284c86734e6abc8dac7e169fda148cf494ca3a4e671d8b50d1e23",
+      "normalized": true
+    },
+    "Source/DSP/Biquad.cpp": {
+      "sha256": "2b9adc45c556e15d38ac84f9989c83e1ecd3f61dd7500243f1b4eba3bf2808bd",
+      "normalized": true
+    },
+    "Source/DSP/Biquad.h": {
+      "sha256": "819a517ff340ff875f3d96cf83f74bcb30c2258a81102a0ee6f7e57c9f8e1f4a",
+      "normalized": true
+    },
+    "Source/DSP/CrossoverTree.cpp": {
+      "sha256": "da40f9330722ebf76d0225d87ed8dadc52b35d9215ac0ef140d9775868229e07",
+      "normalized": true
+    },
+    "Source/DSP/CrossoverTree.h": {
+      "sha256": "acaa64940fba57be61c92834e43d57f175ca6f2a314e157461a1722deff1c657",
+      "normalized": true
+    },
+    "Source/DSP/DelayLine.h": {
+      "sha256": "e8397a978a3f2107ec6c23000eee6701326f6b479e28a5b674ad71d43ecec650",
+      "normalized": true
+    },
+    "Source/DSP/DspConfig.h": {
+      "sha256": "bcee350c9b988be1ff88027cb61a0ce6e8cfe1be58d9309daa4a8a377db589c0",
+      "normalized": true
+    },
+    "Source/DSP/EqDesign.cpp": {
+      "sha256": "56255e4ddcbc293683f4c6009309fcf638784182a1b61835d7f7026f7b8744b6",
+      "normalized": true
+    },
+    "Source/DSP/EqDesign.h": {
+      "sha256": "5f5bc63397d648969eccf7991e4ff98cd22cf44663a2a940f1eb34f0bfe73f0f",
+      "normalized": true
+    },
+    "Source/DSP/FaderGain.cpp": {
+      "sha256": "b130fba667e7c234a784f017bac86be964f6a340f0e282cce0ae097b999daddc",
+      "normalized": true
+    },
+    "Source/DSP/FaderGain.h": {
+      "sha256": "6e4df5aa729f12c3eff560dd697b3043934ff7e52e162284a439005c1fd2c99c",
+      "normalized": true
+    },
+    "Source/DSP/FaderKernel.cpp": {
+      "sha256": "af2ac8724e07006f04c9fead33e8bfeecf945f78a3b803ec401880d17c05e7ab",
+      "normalized": true
+    },
+    "Source/DSP/FaderKernel.h": {
+      "sha256": "de1ab655ae430de83295462fa8505b0d189492f76ae07f59e1592341d730e5cf",
+      "normalized": true
+    },
+    "Source/DSP/FaderMeter.cpp": {
+      "sha256": "af426ebf972ed67c44dec274e021496045cda614b41c196041eb2c7c786b1ccb",
+      "normalized": true
+    },
+    "Source/DSP/FaderMeter.h": {
+      "sha256": "aab79395431447428a1eaa8bba5c38bf22f75f89f14c0b7c55953b974e6ce21d",
+      "normalized": true
+    },
+    "Source/DSP/FaderSettings.h": {
+      "sha256": "1b56c013d9e2560422c9d4904155eb6d95f318333b02681313832eedea1c6235",
+      "normalized": true
+    },
+    "Source/DSP/FxNodeProcessor.cpp": {
+      "sha256": "6ec142a5b125921dfc1cd59d5f5bc5ffa1dcfcadb1946cbc7172f8b73f937226",
+      "normalized": true
+    },
+    "Source/DSP/FxNodeProcessor.h": {
+      "sha256": "f772e907501466fd7c84e39423f0cd781f09c7ffe12544fc74d9198ffefdff1b",
+      "normalized": true
+    },
+    "Source/DSP/HamloEcho.cpp": {
+      "sha256": "c15f511e226e945bea837cfa8308e86a3cb0cf275b67b767729c77ecc1b85274",
+      "normalized": true
+    },
+    "Source/DSP/HamloEcho.h": {
+      "sha256": "08203efbf43d9686d110d06cfada73b76c0bb45f2f783bbce94aec96c239f24e",
+      "normalized": true
+    },
+    "Source/DSP/HamloMag.cpp": {
+      "sha256": "51c536d00e7f4cf03088e09284b107d4843c79186505df679136ce9824918c73",
+      "normalized": true
+    },
+    "Source/DSP/HamloMag.h": {
+      "sha256": "89c688bc8b3a33dc95b9c528756f213bd2fddca2d42e723a6c7c469b565a9a21",
+      "normalized": true
+    },
+    "Source/DSP/HamloRedWall.cpp": {
+      "sha256": "a92828adc02ea611712a5381fbbd4376ebb715eebaf10d6bb236584a7c0eb353",
+      "normalized": true
+    },
+    "Source/DSP/HamloRedWall.h": {
+      "sha256": "0b10e76b28282323d80b22ec56385d4de50f269a63f558f7a2180b01ff02cc68",
+      "normalized": true
+    },
+    "Source/DSP/HamloRevolution.cpp": {
+      "sha256": "204e2c07e1ce453711dab67aa5305128de07d6091f04794c4513c60af2d8584e",
+      "normalized": true
+    },
+    "Source/DSP/HamloRevolution.h": {
+      "sha256": "78e4bb024b6a9f88769d146b3cfdbebba1186517f728ca741f65f7f8134ced6a",
+      "normalized": true
+    },
+    "Source/DSP/HamloShirota.cpp": {
+      "sha256": "5a0e2163d4a039439e0ae30a58373fb68889a388ed3bacd4d55cc125a2acc1fa",
+      "normalized": true
+    },
+    "Source/DSP/HamloShirota.h": {
+      "sha256": "f14b21202801ea5c1a3357c63df0ae904eda56d1a7a010a940e07a93a3d1574a",
+      "normalized": true
+    },
+    "Source/DSP/HamloUdarnik.cpp": {
+      "sha256": "e0cdf4f825859c143c1228130effe09c3783e21e73e63f1f1201432ba7889803",
+      "normalized": true
+    },
+    "Source/DSP/HamloUdarnik.h": {
+      "sha256": "2ff42b69320cd39ff2fd2571ca3f5b9d1141c0fd34bb52c64a827651cbc50ae3",
+      "normalized": true
+    },
+    "Source/DSP/HamloVerb.cpp": {
+      "sha256": "fbb60da61de447439461c627be402930ef0b958781ac3196ee3ab5a17822456a",
+      "normalized": true
+    },
+    "Source/DSP/HamloVerb.h": {
+      "sha256": "fc66fe1e721a744b2ba2f64c46e713cc40cc8b7a5eb31bb712962ca182ab3f5f",
+      "normalized": true
+    },
+    "Source/DSP/HamloZastava.cpp": {
+      "sha256": "0cec67127c96eb2a7ff29e54c7c6a4b1b9b56c853486c8fe02c5fc2a8d59db87",
+      "normalized": true
+    },
+    "Source/DSP/HamloZastava.h": {
+      "sha256": "76d78d5a0d72ff38e870b159e7cc8e101553bb8d7dd0e5d5909032323f0d89b9",
+      "normalized": true
+    },
+    "Source/DSP/LayerEngine.cpp": {
+      "sha256": "bb6a9d21c127f42c80e01c8415c672f9d5ec40a8302ec0b46c6771733f69fb80",
+      "normalized": true
+    },
+    "Source/DSP/LayerEngine.h": {
+      "sha256": "49e7bb7c05baf6a52a2bf53e4a637e45baf7162a1a8cdde094c7fdbd4cfbd330",
+      "normalized": true
+    },
+    "Source/DSP/LayerSnapshot.h": {
+      "sha256": "7e4248386b78834576540d87c99b48820a5ffa2e42a8102cee3b978daa33241c",
+      "normalized": true
+    },
+    "Source/DSP/LegacyFaderCore.cpp": {
+      "sha256": "d0f250d0377711c3185fc6691397e5c6e6351680f356903518640d587ea5d8d5",
+      "normalized": true
+    },
+    "Source/DSP/LegacyFaderCore.h": {
+      "sha256": "bea70ba190059029619e5d4076b5aca6a72f6a5ebe9c5181992b3b3de3bc3def",
+      "normalized": true
+    },
+    "Source/DSP/Pool.h": {
+      "sha256": "476352285dcd590c3c484d537ca6b7c1a35bb1f315f83a5b32d60d44cb343c4b",
+      "normalized": true
+    },
+    "Source/DSP/PreEqProcessor.cpp": {
+      "sha256": "5047bf2433634eafa53059106b1562057902c771fe42c12ff4b7630470ceb6c9",
+      "normalized": true
+    },
+    "Source/DSP/PreEqProcessor.h": {
+      "sha256": "91564944f937bb1421831901df416fe558f3c4b241f68df351a130e533328b2c",
+      "normalized": true
+    },
+    "Source/DSP/Processors.cpp": {
+      "sha256": "d5075075bf35b40fe08b768a02242198906ee161f2dccea23a124f6938e6d912",
+      "normalized": true
+    },
+    "Source/DSP/Processors.h": {
+      "sha256": "7329d9d8b3e43259a5ca111e253e42ce625c431f45cf418a984f6bea268e4396",
+      "normalized": true
+    },
+    "Source/DSP/ProcessorsM6.cpp": {
+      "sha256": "fc2af720f154ba9b389ffc5eff4143d69690a4db9036c75e540927dcee4617e6",
+      "normalized": true
+    },
+    "Source/DSP/ProcessorsM6.h": {
+      "sha256": "354579ac8458d81659a2b97d9bce72ea4cbf6b2f8a77ff44c017dfabec955d39",
+      "normalized": true
+    },
+    "Source/DSP/Ramp.h": {
+      "sha256": "0298fcb933b437140b4a5588e1f2aab4a3afa1b190f32506a0d724a2036de6b9",
+      "normalized": true
+    },
+    "Source/DSP/ReverbProcessor.cpp": {
+      "sha256": "a49f12385789ce23ec81631a95046415d960abfe69d71840cdb9761ec0c45e12",
+      "normalized": true
+    },
+    "Source/DSP/ReverbProcessor.h": {
+      "sha256": "130afce00de038d759c050ef7cd2dde3ceedbaae19d650d833b79bb9f4d93953",
+      "normalized": true
+    },
+    "Source/DSP/RevolutionFft.h": {
+      "sha256": "ba9345a2af7de3aa6c85a33c157a3461e74a75899f0d5f63671c2d51f9d9b750",
+      "normalized": true
+    },
+    "Source/Standalone/FaderAudioBridge.h": {
+      "sha256": "e659d5a394e9449df99fbc66ef6cce35aa22f0126d29940f8c88e3f918fb5bf6",
+      "normalized": true
+    },
+    "Source/Standalone/FaderHostControls.cpp": {
+      "sha256": "2a34af0dde75421dc2232b1b65ab6155bfe5b56e282f100ee637d36f173a8985",
+      "normalized": true
+    },
+    "Source/Standalone/FaderHostControls.h": {
+      "sha256": "d543c86caec9aa81bf73553974e3fcc718426a43ca615490e0eb5f3526883896",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginEditor.cpp": {
+      "sha256": "32de91466c520bdda6c2a6aab81783f1b746323f704f9d6a99c8cad482fa2c20",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginEditor.h": {
+      "sha256": "6b8b1478ad1c7550f58f6f34967c72c02218b5a5e6bae36765d0229becdbb7f7",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginEntry.cpp": {
+      "sha256": "795ab8d1d4dd779278eb2c0aa12c7da914cc3be1c82668f3bd3cc0be8280efd7",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginProcessor.cpp": {
+      "sha256": "f6ca6954782b812c8d9f0e10301bbb6887a3313e94f1e465dc8e7d3b83850634",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginProcessor.h": {
+      "sha256": "342637d1a1ce0223df7659b0419c2a81fbaed474592d8e3ced9f534f344d15e1",
+      "normalized": true
+    },
+    "Source/Standalone/ModuleVariant.cpp": {
+      "sha256": "73c2204ac60abc3eb2e84b123d1adfa4363bb63aa396baa723c27f2f59d67c2d",
+      "normalized": true
+    },
+    "Source/Standalone/ModuleVariant.h": {
+      "sha256": "aaa4d937eb6b98f22e9d455870c8848789b78c7ed5419fbfb22b713d35fcab20",
+      "normalized": true
+    },
+    "Source/UI/BlackSteel.cpp": {
+      "sha256": "6c79f1312bf78195ff09173c0f84976969d5d2c8db19ff3ab27e344997bfa5ef",
+      "normalized": true
+    },
+    "Source/UI/BlackSteel.h": {
+      "sha256": "d3011aea55d26e515fc04de49657fba9189b2651ba4b9b5fe068b5ca84db3f88",
+      "normalized": true
+    },
+    "Source/UI/FaderV2Panel.cpp": {
+      "sha256": "688af6c5d5a79e6563c65b3fcd800c1665b55430b7534d5ccd2596c0121b3e28",
+      "normalized": true
+    },
+    "Source/UI/FaderV2Panel.h": {
+      "sha256": "5eaebff63e77af2fd0eaa932f936750071513e6886a3661b9b22582d030a8c29",
+      "normalized": true
+    },
+    "Source/UI/HamloCompPanel.cpp": {
+      "sha256": "9164f91ed7270e955915d92f60f38c2dbda9d99afa2aa3d69b347553e2fe533f",
+      "normalized": true
+    },
+    "Source/UI/HamloCompPanel.h": {
+      "sha256": "e5736b41fabb1c899f52627b53b4721fe2250e4ba528478470ac143f49e41a0b",
+      "normalized": true
+    },
+    "Source/UI/HamloEchoPanel.cpp": {
+      "sha256": "83b4d018e30eda91d1421102ca8ae0e31582877a38c00a1ef8c51ecfa2ea8b0a",
+      "normalized": true
+    },
+    "Source/UI/HamloEchoPanel.h": {
+      "sha256": "89811ca5393b462e3d862530a5583524b7c9148e8cb335c61c381232d21b4f36",
+      "normalized": true
+    },
+    "Source/UI/HamloFaderPanel.cpp": {
+      "sha256": "746087e11d20b30ecfad2282b92cc35e4dddb37d01caca593fbc17f34af73610",
+      "normalized": true
+    },
+    "Source/UI/HamloFaderPanel.h": {
+      "sha256": "6b57395bb3b3a964e3adec9a042762987b8a25a72d385478bcde1c0a3e7e8d6d",
+      "normalized": true
+    },
+    "Source/UI/HamloMagPanel.cpp": {
+      "sha256": "a5ae0dd44b3bb80771f0b5540418f6772b00297ecdc289a3b4402664f40dffb1",
+      "normalized": true
+    },
+    "Source/UI/HamloMagPanel.h": {
+      "sha256": "1c9b370ded908084ce2069f876a753be5ca4ca53c6e224c31bba806f20979f1c",
+      "normalized": true
+    },
+    "Source/UI/HamloRedWallPanel.cpp": {
+      "sha256": "0803ffc79c21dbb2909aacf8ec9dec995c83a4322ce04ce57a33b219aae24760",
+      "normalized": true
+    },
+    "Source/UI/HamloRedWallPanel.h": {
+      "sha256": "698d67a1c4446ce55101178c358005161f95d3560d30ecd7a451f95511b3d0bc",
+      "normalized": true
+    },
+    "Source/UI/HamloShirotaPanel.cpp": {
+      "sha256": "ddcb7c19606bf1605a968c3222f0d641613d9bb90ada325568d084dcc0f26cbf",
+      "normalized": true
+    },
+    "Source/UI/HamloShirotaPanel.h": {
+      "sha256": "2e0c24e4f645febb843c4d5994047c077be822b83024535770b88cae90fe9418",
+      "normalized": true
+    },
+    "Source/UI/HamloUdarnikPanel.cpp": {
+      "sha256": "392decfd9a9e4d0629039bf308c0832fb0d9fc2a28c88f97d0ff2dde1803d87a",
+      "normalized": true
+    },
+    "Source/UI/HamloUdarnikPanel.h": {
+      "sha256": "6b71bdf4d6c722ea9917b45644038fead563c10356181eeeba270d272de7c2aa",
+      "normalized": true
+    },
+    "Source/UI/HamloVerbPanel.cpp": {
+      "sha256": "64f33e0a18cecbefdcbcb66378f47e69083b2551012f75078dbc609fdbadf40e",
+      "normalized": true
+    },
+    "Source/UI/HamloVerbPanel.h": {
+      "sha256": "e407bd7c5f6a7087004e2b7638f354855251abe6c8033627bbf5dcf766df5042",
+      "normalized": true
+    },
+    "Source/UI/HamloZastavaPanel.cpp": {
+      "sha256": "cb8e92b1dacbe9ed177b06cda68de184120db80560231619c4ae5c0115f941d5",
+      "normalized": true
+    },
+    "Source/UI/HamloZastavaPanel.h": {
+      "sha256": "720946822aaf00b1a60822885e99d9856b2019d8dbd809463ff2563e7f07b1c5",
+      "normalized": true
+    },
+    "Source/UI/ModuleHelp.h": {
+      "sha256": "f2630cb46a19f323570f2e6146c994b0af122a93edee09892786c9cb05532f17",
+      "normalized": true
+    },
+    "Source/UI/PresetScreen.cpp": {
+      "sha256": "ce90663c90b18020b23991b338cf5f00f39d8e5e3cfdd4d1053f3297402fedce",
+      "normalized": true
+    },
+    "Source/UI/PresetScreen.h": {
+      "sha256": "7b2a5560311f9a4ff17c64ffb4ac3da6aa85c2b0335b183e5025d4ce8faf049d",
+      "normalized": true
+    },
+    "Tests/AllocationAudit.cpp": {
+      "sha256": "165eea0bd9a2ce93c783fd1c935cbdaa168d3862074732348b9f4f8245566840",
+      "normalized": true
+    },
+    "Tests/AllocationAudit.h": {
+      "sha256": "d948fcaf914d9bc5559f6302ef581392297e934b0ed03b7a7befec9cb62d6c1c",
+      "normalized": true
+    },
+    "Tests/F1LabMain.cpp": {
+      "sha256": "414d7ce78ecdcc42b50423aab781667ab30d66d05437b4875786b668e89c06e2",
+      "normalized": true
+    },
+    "Tests/F2LabMain.cpp": {
+      "sha256": "90d717c106ed6ef80b95d305afea9d3cf89361ae1ef94580382df73f083ac2d8",
+      "normalized": true
+    },
+    "Tests/F2UnitMain.cpp": {
+      "sha256": "0ae21ae27e0ac06b98fd695feb133d0df60fc9d2154ff240a9adfb690bbc46e5",
+      "normalized": true
+    },
+    "Tests/F3HostMain.cpp": {
+      "sha256": "60dde5719002b062d7de754c632890f0e064ad162f686fbe6e8415be87c9b767",
+      "normalized": true
+    },
+    "Tests/F3LegacyLab.cpp": {
+      "sha256": "914133a96378b34f16821524bfb09b13c9d5acecb0e0468c13c08dd510f50487",
+      "normalized": true
+    },
+    "Tests/F4UITests.cpp": {
+      "sha256": "5f397ab66823fc4bd634a207294f8f875255152b3dad75e1dbdfa82aaff5d4bf",
+      "normalized": true
+    },
+    "Tests/PluginTests.cpp": {
+      "sha256": "9f9e1254cba7bf186aa43a0fed4d16e3f4fd0cf58e4db078bec9225322df76c1",
+      "normalized": true
+    },
+    "Tests/SnapshotMain.cpp": {
+      "sha256": "50c95028fa02a35e961c42a5787c74b74e5aa49e59abd3416d4ff39911024c57",
+      "normalized": true
+    },
+    "Tests/TestMain.cpp": {
+      "sha256": "ce8eee17fa952607469e4d5431939e4da9613d918cb64c2aac922074ce526d10",
+      "normalized": true
+    },
+    "Tests/TestSignals.h": {
+      "sha256": "8093bb51464634e03430d679bb218d6506767a2e57d35a08f1a648d256dd9b20",
+      "normalized": true
+    },
+    "Tools/analyze_f2.py": {
+      "sha256": "6abc07f8d336857712a52c6f5cba8a6688a62e6ff8d1312a601b9053a3e1805e",
+      "normalized": true
+    },
+    "Tools/check_f1_guards.py": {
+      "sha256": "e0374c5d3a2bae9619e42d2430e9fde666d7220d1872b78570c2e4f7e47d5496",
+      "normalized": true
+    },
+    "Tools/check_f2_guards.py": {
+      "sha256": "e87d03324fc355b4b76ad8d4d40e92f4abaa45c29f9d26e3f496bcf185681e96",
+      "normalized": true
+    },
+    "Tools/finalize_f4.py": {
+      "sha256": "a8bad08beb1ac0dbc88f724fc6bbcb396aaf1f407f318b78ec0c8e25d8396831",
+      "normalized": true
+    },
+    "Tools/isolate_f1.py": {
+      "sha256": "8afcdd5f87c2611a9e05dd8d8e8aa7c646b1d75eba2db40ac0915c1c9aa46e49",
+      "normalized": true
+    },
+    "Tools/validate_f1.ps1": {
+      "sha256": "197de8a32998a5309f53b8e92ebb816a54c0aaf4ff409f52a573f32a2c3c99be",
+      "normalized": true
+    },
+    "Tools/validate_f3.ps1": {
+      "sha256": "eed468301d24bf86efcdea2b39c86cc4fd98604a7a0679989d735b9fcd03eadd",
+      "normalized": true
+    },
+    "Tools/validate_f4.ps1": {
+      "sha256": "605665f5ff7c4740b47ab478d1479c372d70ba4fb7b16620db206c1f507b57ba",
+      "normalized": true
+    },
+    "Tools/verify_f1.py": {
+      "sha256": "1baaf5e22aa636ac628a00a5f5af2b5f8c5c33412e022810ff63c1564315e8b8",
+      "normalized": true
+    },
+    "Tools/verify_f2.py": {
+      "sha256": "0f1a173039aba20188e2ad02618b11c2cd803a1cca6ff410fc7a1d894fefb5d9",
+      "normalized": true
+    },
+    "Tools/verify_f3.py": {
+      "sha256": "a0daad79a2dff12eb57ecbb530d1713cfd9f7c8fd807969b09a88c713f5f3edd",
+      "normalized": true
+    },
+    "Tools/verify_f4.py": {
+      "sha256": "c95bb1709e32d9369a3a5ea389acf8ca2945460c23f4fadac437c002d966be0e",
+      "normalized": true
+    }
+  },
+  "dll": "out/f4/accepted/HamloFader.vst3/Contents/x86_64-win/HamloFader.vst3"
+}
