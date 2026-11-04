@@ -17,6 +17,7 @@ int main(int argc, char* argv[])
     auto owned = std::make_unique<hpeq::standalone::ModulePluginProcessor>(static_cast<hpeq::standalone::ModuleKind>(HPEQ_MODULE_KIND));
     auto& p = *owned;
     p.setCurrentProgram(argc > 2 ? juce::String(argv[2]).getIntValue() : 1);
+    if (argc > 6) p.setParameterValue("keepDry", juce::String(argv[6]).getIntValue());
     std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
     e->setSize(p.getSpec().editorWidth, p.getSpec().editorHeight);
     if (auto* editor = dynamic_cast<hpeq::standalone::ModulePluginEditor*>(e.get()))

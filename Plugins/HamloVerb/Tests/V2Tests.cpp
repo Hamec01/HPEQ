@@ -124,6 +124,7 @@ public:
             {
                 p->setParameterValue("engine",engine);p->setParameterValue("timeShape",engine%4);
                 p->setParameterValue("shimmerAmount",.7);p->setParameterValue("decayEq1On",1);
+                p->setParameterValue("keepDry",1); // Also audit the new additive Insert path.
                 allocations=0;countAllocations=true;p->processBlock(input,midi);countAllocations=false;
                 expectEquals(static_cast<int>(allocations),0,"engine "+juce::String(engine));
             }

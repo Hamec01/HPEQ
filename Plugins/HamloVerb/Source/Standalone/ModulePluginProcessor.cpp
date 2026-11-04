@@ -40,6 +40,7 @@ void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSi
     modern.prepare(sampleRate, maximumBlockSize);
     wetBuffer.setSize(2, maximumBlockSize);
     insertMix.reset(rawValues[6]->load());
+    keepDryBlend.reset(rawValues[KeepDry]->load() >= .5f ? 1.0 : 0.0);
     outputGain.reset(std::pow(10.0, rawValues[Output]->load() / 20.0));
     lastEngine = juce::roundToInt(rawValues[Engine]->load());
 
@@ -111,6 +112,7 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
     if ((lastEngine == 0) != !isModern) { if (isModern) modern.reset(); else { engine.reset(); engine.setTargets(slot); } }
     lastEngine = settings.engine;
     insertMix.setTarget(rawValues[6]->load(), bypassRampSteps);
+    keepDryBlend.setTarget(rawValues[KeepDry]->load() >= .5f ? 1.0 : 0.0, bypassRampSteps);
     outputGain.setTarget(std::pow(10.0, rawValues[Output]->load() / 20.0), bypassRampSteps);
     const bool send = rawValues[Routing]->load() >= .5f;
     const auto transport = currentTransport();
@@ -140,8 +142,19 @@ void ModulePluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce:
             {
                 const float m = send ? (insertMix.next(), 1.0f) : static_cast<float>(insertMix.next());
                 const float gain = static_cast<float>(outputGain.next());
+                const float hold = static_cast<float>(keepDryBlend.next());
                 for (int ch = 0; ch < channels; ++ch)
-                    wet[ch][i] = gain * (m == 1 ? result[ch][i] : m == 0 ? dryPointers[ch][i] : (1-m)*dryPointers[ch][i] + m*result[ch][i]);
+                {
+                    if (!send && hold > 0 && m > 0)
+                    {
+                        const float d = dryPointers[ch][i];
+                        const float mixed = hold == 1 ? (result[ch][i] == 0 ? d : d + m*result[ch][i])
+                            : ((1-m)*d + m*result[ch][i]) + hold*m*d;
+                        wet[ch][i] = gain * mixed;
+                    }
+                    else
+                        wet[ch][i] = gain * (m == 1 ? result[ch][i] : m == 0 ? dryPointers[ch][i] : (1-m)*dryPointers[ch][i] + m*result[ch][i]);
+                }
             }
         }
         else engine.process(wet, channels, count, slot, chunkTransport);
@@ -250,7 +263,7 @@ void ModulePluginProcessor::setCurrentProgram(int index)
     const auto selected = currentProgram.load();
     for (const auto& spec : getSpec().parameters)
     {
-        if (spec.id == "routing" || (spec.id == "mix" && getMixLock())) continue;
+        if (spec.id == "routing" || spec.id == "keepDry" || (spec.id == "mix" && getMixLock())) continue;
         double value = spec.defaultValue;
         if (selected > 0)
             value = presets::presetValue(list[static_cast<size_t>(selected - 1)], spec.id, value);
@@ -264,7 +277,7 @@ bool ModulePluginProcessor::isProgramModified() const
     const int index = currentProgram.load();
     for (const auto& spec : getSpec().parameters)
     {
-        if (spec.id == "routing" || (spec.id == "mix" && getMixLock())) continue;
+        if (spec.id == "routing" || spec.id == "keepDry" || (spec.id == "mix" && getMixLock())) continue;
         const double expected = index > 0 && index <= static_cast<int>(list.size()) ? presets::presetValue(list[static_cast<size_t>(index-1)], spec.id, spec.defaultValue) : spec.defaultValue;
         if (const auto* p = parameter(spec.id))
             if (std::abs(p->getValue()-p->convertTo0to1(static_cast<float>(expected))) > 1e-6f) return true;
