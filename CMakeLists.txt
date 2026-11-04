@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloVerb VERSION 0.2.1 LANGUAGES C CXX)
+project(HamloVerb VERSION 0.2.2 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -110,7 +110,7 @@ target_link_libraries(HamloVerb
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot Reference Lab PresetLab)
     if (tool STREQUAL "Tests")
-        add_executable(HamloVerb_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/V2Tests.cpp Tests/TemporalTests.cpp Tests/OutputLevelAudit.cpp Tests/KeepDryTests.cpp)
+        add_executable(HamloVerb_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/V2Tests.cpp Tests/TemporalTests.cpp Tests/OutputLevelAudit.cpp Tests/KeepDryTests.cpp Tests/WetLevelTests.cpp Tests/WetLevelWorkflowTests.cpp)
     elseif(tool STREQUAL "Reference")
         add_executable(HamloVerb_Reference Tests/ReferenceMain.cpp)
     elseif(tool STREQUAL "PresetLab")

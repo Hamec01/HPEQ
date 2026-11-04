@@ -1,0 +1,1809 @@
+{
+  "version": "0.2.2",
+  "native_expectations": 1634,
+  "files": {
+    ".gitattributes": {
+      "sha256": "f92c731085cc2f67f2522e85c48530522678fefa4f6af4e9054e3a9e5b8d039d",
+      "normalized": true
+    },
+    "AGENTS.md": {
+      "sha256": "c379c674671dc64c3014959744d63bb70d029bc550e0e18bd148e0155544ab63",
+      "normalized": true
+    },
+    "Assets/hardware_pack/buttons_and_lamps/button_soviet_on_off_red.png": {
+      "sha256": "1777ec9c38c019a40caec69d4040becf0267c6471144727dfc4e9abdcd393804",
+      "normalized": false
+    },
+    "Assets/hardware_pack/buttons_and_lamps/lamp_panel_red_off.png": {
+      "sha256": "5dcb9e073a5351d996b91646e650b113603535ba9d37fa0e2520b929b341e0e6",
+      "normalized": false
+    },
+    "Assets/hardware_pack/buttons_and_lamps/lamp_panel_red_on.png": {
+      "sha256": "961d0dd5213ac77039330de2583023d3b75720ee844513ba98c1396e95f6a9ec",
+      "normalized": false
+    },
+    "Assets/hardware_pack/index.html": {
+      "sha256": "3abf3d135cfe2029b2c0fe6ea8c034789d6b7b6ae06a15179a331a232d855ec9",
+      "normalized": true
+    },
+    "Assets/hardware_pack/knobs/knob_aluminum_brass_insert.png": {
+      "sha256": "1d018a2364311191b1131677900db77b2d97575c73ec27befc756e5de3cc060b",
+      "normalized": false
+    },
+    "Assets/hardware_pack/knobs/knob_bakelite_ribbed.png": {
+      "sha256": "ebfd5c38473736f45cb809136ee0b7f9494d842e0c833583b43878457e323e6f",
+      "normalized": false
+    },
+    "Assets/hardware_pack/knobs/knob_chipped_iron_dark.png": {
+      "sha256": "1ab61d5e15878e3463711823157858fac69bc075b500f94729b7abc2c37700be",
+      "normalized": false
+    },
+    "Assets/hardware_pack/knobs/knob_lathe_steel_rust.png": {
+      "sha256": "bc45569e6b475690b8aef1cffe39767efd453f945629c9acfefbd7bfeb531870",
+      "normalized": false
+    },
+    "Assets/hardware_pack/pointers/pointer_black_instrument.png": {
+      "sha256": "6f6141eaeff024409627a30b3689fe393c9c026463df632a937e47b80ffae513",
+      "normalized": false
+    },
+    "Assets/hardware_pack/pointers/pointer_brass_wedge.png": {
+      "sha256": "63f616ccb4b084068a8efe940f7ec5b26d1e663f69eaaaf893afadecf496fb26",
+      "normalized": false
+    },
+    "Assets/hardware_pack/pointers/pointer_red_tip_brass_collar.png": {
+      "sha256": "aed95ce004b07cff2bcde66288208cf5e600aa37961a078fc00c4cb54c47397e",
+      "normalized": false
+    },
+    "Assets/hardware_pack/pointers/pointer_white_enamel.png": {
+      "sha256": "40c08e813af9379b9b4d6cd62e393cd3e3e0731cd0b0ca481fa60f5692682085",
+      "normalized": false
+    },
+    "Assets/hardware_pack/README.md": {
+      "sha256": "6d95c2c65ceffaad053135c3a73adb1c2109e37fc239fedac6733f510cde4466",
+      "normalized": true
+    },
+    "Assets/hardware_pack/scales/scale_arc_ticks.png": {
+      "sha256": "cc124e7a9e863e75d39a4350d6a24c536a1dbb1f24ebe7be0d6dee22b700b04d",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_down.png": {
+      "sha256": "ddc5a7a4833a73d71c4b5c90358ca7a4dcb8ab8ed515dfbe5e4ba3900fd968c3",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_lever_down.png": {
+      "sha256": "e2b067c64e51436bbc442660746ecf4dbf2271b50f36e48e01fe91bccd13e271",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_lever_up.png": {
+      "sha256": "96f3f24994e8967e1695ad26fcf8f9f1bb0cf48be4a6a9718574686cc7239080",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_neutral.png": {
+      "sha256": "a5880db0ef5d0522a4c04995ffbe4a98ff054af6be955a11a66a39c1e332599a",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_plate.png": {
+      "sha256": "6ad10f42962f5638fa60f94fd257ad0f733d906a0b52818bb1c0a1f6f1526845",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_up.png": {
+      "sha256": "5848ed9b0fedd23b8deb18ed2bb40c2ba0a7cfec3ac43d141ace0a8fb9d6ff00",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_00.png": {
+      "sha256": "d70e6d16b3cb4e5cb1c3765dd775ceb57d891da0f18d203461cac2ac408ca181",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_01.png": {
+      "sha256": "16ba2e1182fa7c77c68e13619b1bb78c031d2d83e871de0f50ab2b9147360666",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_02.png": {
+      "sha256": "7b329b134ca31748b1e1006031facaa20e327af4589c413bf4e09cb5113538c4",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_03.png": {
+      "sha256": "86e32f4fdc3018efabffbc848648960cfb8b90615fac5d9b9a72f3d8843f7af5",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_04.png": {
+      "sha256": "8c2192cd45d3c3eff4a19b7a9c51917a0e73763f82e6bef770f4fb17904132e4",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_05.png": {
+      "sha256": "054faa28f6d022c91ae30507ba97c35a21fa9ea6da0ef64e0e551d7677912a6a",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_06.png": {
+      "sha256": "b6fc99c8f35b8432ca08eaa531ce4cd8b0f8b587b93ba94b9f54aea01728b078",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_07.png": {
+      "sha256": "627f55850b093628f4db2e152074b15990b72db0324eede40f8068bff92c3418",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_08.png": {
+      "sha256": "500eda782ca255b14c3f15c1b0bc927323da704b8dd67fa9dc37a4d20aae9a6d",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_09.png": {
+      "sha256": "f8ce85e1e7ea5df341b3505885acd9a5fe8bae9d14057361580596d4dc4eea5e",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_10.png": {
+      "sha256": "21378ed757ae612be3f3ca0f6b3767c7e60bb822dd371394734697fbb0c0b160",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_11.png": {
+      "sha256": "16b4ec534f08f4c5b884515e225ed1e82721c7dd6e25c102e957b8d965963f0e",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_12.png": {
+      "sha256": "bd4d755c80c6c6da8021f3264c0591beb5c9a2fd8efdc22508cbe5e92c031a2c",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_13.png": {
+      "sha256": "ee09c589bcde2a57f02e1999f8c038e2cc152f613a0971b95fcbeb118d5da325",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_14.png": {
+      "sha256": "b3a788f6849c57ad312ada5a84b71c2c5418083dbcfc20317d90551d50b2214f",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_15.png": {
+      "sha256": "19cc4b84d78a48295d4859eb15c69009e3857bd25fd12184ed496c5467d7684f",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_16.png": {
+      "sha256": "3c5b90b68953cfe77b5b38528a2ae81189e137a18c280be688b1085865c6318d",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_17.png": {
+      "sha256": "feec61473fbf01fccc0d7e3c0892af49b9d5d0f3a685a2cd0e4c8d6794ee0040",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_18.png": {
+      "sha256": "02d38607f78c0554ee7c48505a2294eb302ffff27d613db52443b95811cb505a",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_19.png": {
+      "sha256": "769cc665648cc85b7e2d10f4fbb5f8fc3d328be2e04c378bb7436a2d09febb4c",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_20.png": {
+      "sha256": "f2df7d10c1a943eb97a00d9169a98e06b63afd10b10db046b4c209eaa1c1f552",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_21.png": {
+      "sha256": "12871468ea9a7474ea6b79dc0c63c79b224add5ed8faea2bb92337e5a8b9ac53",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_22.png": {
+      "sha256": "adb5478dca80d98aa6bdb1d58d845e3c9762bc1f4203056e7c63ed18bec49469",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_23.png": {
+      "sha256": "e1e722408a5437ccb0a3f81542336a64ec310c4deac7aa66750840667204e388",
+      "normalized": false
+    },
+    "Assets/tubes/lenin_off.png": {
+      "sha256": "b1bd9fe003e2aed86876e66dcddfe17eb8aaf782f6623c719ed972dd9ef63d3d",
+      "normalized": false
+    },
+    "Assets/tubes/lenin_on.png": {
+      "sha256": "6e61753c231f9478cae0202a2eac67d1d30ce98abe0b6d73a6e21fcc8513b5fe",
+      "normalized": false
+    },
+    "Assets/tubes/stalin_off.png": {
+      "sha256": "3c4d5097b9cdeee1d96bd5b4b329c9a0f91a61952853fee741560f7cb35af360",
+      "normalized": false
+    },
+    "Assets/tubes/stalin_on.png": {
+      "sha256": "77011f97987d2a3c8c341fd372e79399f8a5b862e695fa859dc2be40344a05d6",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/buttons_and_lamps/button_soviet_on_off_red.png": {
+      "sha256": "1777ec9c38c019a40caec69d4040becf0267c6471144727dfc4e9abdcd393804",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/buttons_and_lamps/lamp_panel_red_off.png": {
+      "sha256": "5dcb9e073a5351d996b91646e650b113603535ba9d37fa0e2520b929b341e0e6",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/buttons_and_lamps/lamp_panel_red_on.png": {
+      "sha256": "961d0dd5213ac77039330de2583023d3b75720ee844513ba98c1396e95f6a9ec",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/index.html": {
+      "sha256": "3abf3d135cfe2029b2c0fe6ea8c034789d6b7b6ae06a15179a331a232d855ec9",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/knobs/knob_aluminum_brass_insert.png": {
+      "sha256": "1d018a2364311191b1131677900db77b2d97575c73ec27befc756e5de3cc060b",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/knobs/knob_bakelite_ribbed.png": {
+      "sha256": "ebfd5c38473736f45cb809136ee0b7f9494d842e0c833583b43878457e323e6f",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/knobs/knob_chipped_iron_dark.png": {
+      "sha256": "1ab61d5e15878e3463711823157858fac69bc075b500f94729b7abc2c37700be",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/knobs/knob_lathe_steel_rust.png": {
+      "sha256": "bc45569e6b475690b8aef1cffe39767efd453f945629c9acfefbd7bfeb531870",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/pointers/pointer_black_instrument.png": {
+      "sha256": "6f6141eaeff024409627a30b3689fe393c9c026463df632a937e47b80ffae513",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/pointers/pointer_brass_wedge.png": {
+      "sha256": "63f616ccb4b084068a8efe940f7ec5b26d1e663f69eaaaf893afadecf496fb26",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/pointers/pointer_red_tip_brass_collar.png": {
+      "sha256": "aed95ce004b07cff2bcde66288208cf5e600aa37961a078fc00c4cb54c47397e",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/pointers/pointer_white_enamel.png": {
+      "sha256": "40c08e813af9379b9b4d6cd62e393cd3e3e0731cd0b0ca481fa60f5692682085",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/README.md": {
+      "sha256": "6d95c2c65ceffaad053135c3a73adb1c2109e37fc239fedac6733f510cde4466",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/scales/scale_arc_ticks.png": {
+      "sha256": "cc124e7a9e863e75d39a4350d6a24c536a1dbb1f24ebe7be0d6dee22b700b04d",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/switches/toggle_switch_down.png": {
+      "sha256": "ddc5a7a4833a73d71c4b5c90358ca7a4dcb8ab8ed515dfbe5e4ba3900fd968c3",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/switches/toggle_switch_lever_down.png": {
+      "sha256": "e2b067c64e51436bbc442660746ecf4dbf2271b50f36e48e01fe91bccd13e271",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/switches/toggle_switch_lever_up.png": {
+      "sha256": "96f3f24994e8967e1695ad26fcf8f9f1bb0cf48be4a6a9718574686cc7239080",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/switches/toggle_switch_neutral.png": {
+      "sha256": "a5880db0ef5d0522a4c04995ffbe4a98ff054af6be955a11a66a39c1e332599a",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/switches/toggle_switch_plate.png": {
+      "sha256": "6ad10f42962f5638fa60f94fd257ad0f733d906a0b52818bb1c0a1f6f1526845",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/hardware_pack/switches/toggle_switch_up.png": {
+      "sha256": "5848ed9b0fedd23b8deb18ed2bb40c2ba0a7cfec3ac43d141ace0a8fb9d6ff00",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_00.png": {
+      "sha256": "d70e6d16b3cb4e5cb1c3765dd775ceb57d891da0f18d203461cac2ac408ca181",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_01.png": {
+      "sha256": "16ba2e1182fa7c77c68e13619b1bb78c031d2d83e871de0f50ab2b9147360666",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_02.png": {
+      "sha256": "7b329b134ca31748b1e1006031facaa20e327af4589c413bf4e09cb5113538c4",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_03.png": {
+      "sha256": "86e32f4fdc3018efabffbc848648960cfb8b90615fac5d9b9a72f3d8843f7af5",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_04.png": {
+      "sha256": "8c2192cd45d3c3eff4a19b7a9c51917a0e73763f82e6bef770f4fb17904132e4",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_05.png": {
+      "sha256": "054faa28f6d022c91ae30507ba97c35a21fa9ea6da0ef64e0e551d7677912a6a",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_06.png": {
+      "sha256": "b6fc99c8f35b8432ca08eaa531ce4cd8b0f8b587b93ba94b9f54aea01728b078",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_07.png": {
+      "sha256": "627f55850b093628f4db2e152074b15990b72db0324eede40f8068bff92c3418",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_08.png": {
+      "sha256": "500eda782ca255b14c3f15c1b0bc927323da704b8dd67fa9dc37a4d20aae9a6d",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_09.png": {
+      "sha256": "f8ce85e1e7ea5df341b3505885acd9a5fe8bae9d14057361580596d4dc4eea5e",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_10.png": {
+      "sha256": "21378ed757ae612be3f3ca0f6b3767c7e60bb822dd371394734697fbb0c0b160",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_11.png": {
+      "sha256": "16b4ec534f08f4c5b884515e225ed1e82721c7dd6e25c102e957b8d965963f0e",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_12.png": {
+      "sha256": "bd4d755c80c6c6da8021f3264c0591beb5c9a2fd8efdc22508cbe5e92c031a2c",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_13.png": {
+      "sha256": "ee09c589bcde2a57f02e1999f8c038e2cc152f613a0971b95fcbeb118d5da325",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_14.png": {
+      "sha256": "b3a788f6849c57ad312ada5a84b71c2c5418083dbcfc20317d90551d50b2214f",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_15.png": {
+      "sha256": "19cc4b84d78a48295d4859eb15c69009e3857bd25fd12184ed496c5467d7684f",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_16.png": {
+      "sha256": "3c5b90b68953cfe77b5b38528a2ae81189e137a18c280be688b1085865c6318d",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_17.png": {
+      "sha256": "feec61473fbf01fccc0d7e3c0892af49b9d5d0f3a685a2cd0e4c8d6794ee0040",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_18.png": {
+      "sha256": "02d38607f78c0554ee7c48505a2294eb302ffff27d613db52443b95811cb505a",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_19.png": {
+      "sha256": "769cc665648cc85b7e2d10f4fbb5f8fc3d328be2e04c378bb7436a2d09febb4c",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_20.png": {
+      "sha256": "f2df7d10c1a943eb97a00d9169a98e06b63afd10b10db046b4c209eaa1c1f552",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_21.png": {
+      "sha256": "12871468ea9a7474ea6b79dc0c63c79b224add5ed8faea2bb92337e5a8b9ac53",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_22.png": {
+      "sha256": "adb5478dca80d98aa6bdb1d58d845e3c9762bc1f4203056e7c63ed18bec49469",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/scratches/ussr_23.png": {
+      "sha256": "e1e722408a5437ccb0a3f81542336a64ec310c4deac7aa66750840667204e388",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/tubes/lenin_off.png": {
+      "sha256": "b1bd9fe003e2aed86876e66dcddfe17eb8aaf782f6623c719ed972dd9ef63d3d",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/tubes/lenin_on.png": {
+      "sha256": "6e61753c231f9478cae0202a2eac67d1d30ce98abe0b6d73a6e21fcc8513b5fe",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/tubes/stalin_off.png": {
+      "sha256": "3c4d5097b9cdeee1d96bd5b4b329c9a0f91a61952853fee741560f7cb35af360",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Assets/tubes/stalin_on.png": {
+      "sha256": "77011f97987d2a3c8c341fd372e79399f8a5b862e695fa859dc2be40344a05d6",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/cmake/PatchJuceWindowsRenderer.cmake": {
+      "sha256": "eef31294f4929035bdbff82928c66bbbbc3adfea85a53be8e3a57e9628973fd6",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/CMakeLists.txt": {
+      "sha256": "92e8bdbca6d3055575402b89db898703d5d959370cbfe78ae9b858c6fcda1439",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/HamloVerb.vst3/Contents/Resources/moduleinfo.json": {
+      "sha256": "cef034b9e5811776df04da414c05cf4b8bd50c887c4e5bc7aac54f6a35caee87",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/HamloVerb.vst3/Contents/x86_64-win/HamloVerb.vst3": {
+      "sha256": "d16707cfd7f8d87220f489c4bb8603ec883ec6c413ebd84e0df01a7853f85046",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/HamloVerb_Reference.exe": {
+      "sha256": "df769fd44184fe233bc62a2297e497aa949c27301c7ad3827daf530cc237193e",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/HamloVerb_Snapshot.exe": {
+      "sha256": "da790fb73be5c820f3060322c6cc1dd4a4fe260b283a144b1f038452f9b334bd",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/HamloVerb_Tests.exe": {
+      "sha256": "9f67b7c60122300c776d2943815293f16ff7a95b54ea557f05f8d6a5f97241e2",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Source/Core/FxProjectState.h": {
+      "sha256": "133dd972a3488b114a7a6d728e3e39ed59c2388419ae7001db15daa0838cf771",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Core/GenrePresets.inc": {
+      "sha256": "0cbec70e37a5018d09bc4f076f6dfb17ba9a6c939a6a5f4e5a410ff5303a543c",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Core/ModulePresets.cpp": {
+      "sha256": "5323ce641c6fea6d78817d965edb48522a1d0937870f0cfa84237b8cbb3dc48c",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Core/ModulePresets.h": {
+      "sha256": "4be3dc1f6a6a8a02570357f22bce4db63e3f3424e438f0912011bc05585c047a",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Core/Revolution.h": {
+      "sha256": "9ab589cd945284c86734e6abc8dac7e169fda148cf494ca3a4e671d8b50d1e23",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/Biquad.cpp": {
+      "sha256": "2b9adc45c556e15d38ac84f9989c83e1ecd3f61dd7500243f1b4eba3bf2808bd",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/Biquad.h": {
+      "sha256": "819a517ff340ff875f3d96cf83f74bcb30c2258a81102a0ee6f7e57c9f8e1f4a",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/CrossoverTree.cpp": {
+      "sha256": "da40f9330722ebf76d0225d87ed8dadc52b35d9215ac0ef140d9775868229e07",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/CrossoverTree.h": {
+      "sha256": "acaa64940fba57be61c92834e43d57f175ca6f2a314e157461a1722deff1c657",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/DelayLine.h": {
+      "sha256": "e8397a978a3f2107ec6c23000eee6701326f6b479e28a5b674ad71d43ecec650",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/DspConfig.h": {
+      "sha256": "bcee350c9b988be1ff88027cb61a0ce6e8cfe1be58d9309daa4a8a377db589c0",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/EqDesign.cpp": {
+      "sha256": "56255e4ddcbc293683f4c6009309fcf638784182a1b61835d7f7026f7b8744b6",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/EqDesign.h": {
+      "sha256": "5f5bc63397d648969eccf7991e4ff98cd22cf44663a2a940f1eb34f0bfe73f0f",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/FxNodeProcessor.cpp": {
+      "sha256": "6ec142a5b125921dfc1cd59d5f5bc5ffa1dcfcadb1946cbc7172f8b73f937226",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/FxNodeProcessor.h": {
+      "sha256": "f772e907501466fd7c84e39423f0cd781f09c7ffe12544fc74d9198ffefdff1b",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloEcho.cpp": {
+      "sha256": "c15f511e226e945bea837cfa8308e86a3cb0cf275b67b767729c77ecc1b85274",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloEcho.h": {
+      "sha256": "08203efbf43d9686d110d06cfada73b76c0bb45f2f783bbce94aec96c239f24e",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloMag.cpp": {
+      "sha256": "51c536d00e7f4cf03088e09284b107d4843c79186505df679136ce9824918c73",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloMag.h": {
+      "sha256": "89c688bc8b3a33dc95b9c528756f213bd2fddca2d42e723a6c7c469b565a9a21",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloRedWall.cpp": {
+      "sha256": "a92828adc02ea611712a5381fbbd4376ebb715eebaf10d6bb236584a7c0eb353",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloRedWall.h": {
+      "sha256": "0b10e76b28282323d80b22ec56385d4de50f269a63f558f7a2180b01ff02cc68",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloRevolution.cpp": {
+      "sha256": "204e2c07e1ce453711dab67aa5305128de07d6091f04794c4513c60af2d8584e",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloRevolution.h": {
+      "sha256": "78e4bb024b6a9f88769d146b3cfdbebba1186517f728ca741f65f7f8134ced6a",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloShirota.cpp": {
+      "sha256": "5a0e2163d4a039439e0ae30a58373fb68889a388ed3bacd4d55cc125a2acc1fa",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloShirota.h": {
+      "sha256": "f14b21202801ea5c1a3357c63df0ae904eda56d1a7a010a940e07a93a3d1574a",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloUdarnik.cpp": {
+      "sha256": "e0cdf4f825859c143c1228130effe09c3783e21e73e63f1f1201432ba7889803",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloUdarnik.h": {
+      "sha256": "2ff42b69320cd39ff2fd2571ca3f5b9d1141c0fd34bb52c64a827651cbc50ae3",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloVerb.cpp": {
+      "sha256": "fbb60da61de447439461c627be402930ef0b958781ac3196ee3ab5a17822456a",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloVerb.h": {
+      "sha256": "7a6ee19b3532660cadb2904492fba7e753ee0a79469773bd469c1d96d9b2e1b4",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloZastava.cpp": {
+      "sha256": "0cec67127c96eb2a7ff29e54c7c6a4b1b9b56c853486c8fe02c5fc2a8d59db87",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/HamloZastava.h": {
+      "sha256": "76d78d5a0d72ff38e870b159e7cc8e101553bb8d7dd0e5d5909032323f0d89b9",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/LayerEngine.cpp": {
+      "sha256": "bb6a9d21c127f42c80e01c8415c672f9d5ec40a8302ec0b46c6771733f69fb80",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/LayerEngine.h": {
+      "sha256": "49e7bb7c05baf6a52a2bf53e4a637e45baf7162a1a8cdde094c7fdbd4cfbd330",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/LayerSnapshot.h": {
+      "sha256": "7e4248386b78834576540d87c99b48820a5ffa2e42a8102cee3b978daa33241c",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/LegacyVerbPath.h": {
+      "sha256": "58ff72d883e64967d4d330e81567d66eb283933258426e738f75e481df1cd652",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/Pool.h": {
+      "sha256": "476352285dcd590c3c484d537ca6b7c1a35bb1f315f83a5b32d60d44cb343c4b",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/PreEqProcessor.cpp": {
+      "sha256": "5047bf2433634eafa53059106b1562057902c771fe42c12ff4b7630470ceb6c9",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/PreEqProcessor.h": {
+      "sha256": "91564944f937bb1421831901df416fe558f3c4b241f68df351a130e533328b2c",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/Processors.cpp": {
+      "sha256": "d5075075bf35b40fe08b768a02242198906ee161f2dccea23a124f6938e6d912",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/Processors.h": {
+      "sha256": "7329d9d8b3e43259a5ca111e253e42ce625c431f45cf418a984f6bea268e4396",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/ProcessorsM6.cpp": {
+      "sha256": "fc2af720f154ba9b389ffc5eff4143d69690a4db9036c75e540927dcee4617e6",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/ProcessorsM6.h": {
+      "sha256": "354579ac8458d81659a2b97d9bce72ea4cbf6b2f8a77ff44c017dfabec955d39",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/Ramp.h": {
+      "sha256": "0298fcb933b437140b4a5588e1f2aab4a3afa1b190f32506a0d724a2036de6b9",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/ReverbProcessor.cpp": {
+      "sha256": "a49f12385789ce23ec81631a95046415d960abfe69d71840cdb9761ec0c45e12",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/ReverbProcessor.h": {
+      "sha256": "7ad60658e189c0f0645b2102cc69a943ffa887e483cfc51b20f1c656d9393090",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/RevolutionFft.h": {
+      "sha256": "ba9345a2af7de3aa6c85a33c157a3461e74a75899f0d5f63671c2d51f9d9b750",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/VerbSettings.h": {
+      "sha256": "f7cfbb9c9394fdaabe54b4bc2d3bd7fc26add778e2330dabff051f2a9f97b48e",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/VerbTemporalEffects.h": {
+      "sha256": "9c44426357abd14becad2279c7f1173cb18f9711a64483b3e566e4628eec7d1a",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/VerbV2Processor.cpp": {
+      "sha256": "60d6b36916c3dd47f137a0fb9d4ced4d7f6f93d68648e476f9c8db7249197f09",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/VerbV2Processor.h": {
+      "sha256": "1f06c6960bbc2fa73f5d4d082a4c5184f4b489c92b3c65518d44b32815f0df42",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/DSP/VerbV2Settings.h": {
+      "sha256": "78fb35332356e9198ffc7b2d435cb8c1de1da90a2c12755fad045cda39f735aa",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Standalone/ModulePluginEditor.cpp": {
+      "sha256": "99f266bcc8ee8d9b0e715cfa8b66e73c59d343438f09f8727b151012a362cf1c",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Standalone/ModulePluginEditor.h": {
+      "sha256": "f35e125338ad01ace6093d31e655bd741c14ee2f2dedec9e3510b9d097e14104",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Standalone/ModulePluginEntry.cpp": {
+      "sha256": "795ab8d1d4dd779278eb2c0aa12c7da914cc3be1c82668f3bd3cc0be8280efd7",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Standalone/ModulePluginProcessor.cpp": {
+      "sha256": "78da7860544dbc53f39ba633f12a575827f7bd6cf9b14f289a9d048c0ee5ae47",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Standalone/ModulePluginProcessor.h": {
+      "sha256": "0537817c3573c00fbc5e275e0abacc0f3d0f01cfab64015aec6e0d6c919719b9",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Standalone/ModuleVariant.cpp": {
+      "sha256": "7c68a93f68429b09e2864c1c435add49482b3506356cd4d01e19c5ad9e1fe734",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Standalone/ModuleVariant.h": {
+      "sha256": "4fa1f9d5b8478d531ff770922d29eb5a6f773aaf39b374cde04cb52d4dc75b74",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/Standalone/VerbParameters.h": {
+      "sha256": "cf6dbb87f1d84522908dcd9a4753a24b5f6d6138ca7fb393cf0320a19922a618",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/BlackSteel.cpp": {
+      "sha256": "6c79f1312bf78195ff09173c0f84976969d5d2c8db19ff3ab27e344997bfa5ef",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/BlackSteel.h": {
+      "sha256": "d3011aea55d26e515fc04de49657fba9189b2651ba4b9b5fe068b5ca84db3f88",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloCompPanel.cpp": {
+      "sha256": "9164f91ed7270e955915d92f60f38c2dbda9d99afa2aa3d69b347553e2fe533f",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloCompPanel.h": {
+      "sha256": "e5736b41fabb1c899f52627b53b4721fe2250e4ba528478470ac143f49e41a0b",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloEchoPanel.cpp": {
+      "sha256": "83b4d018e30eda91d1421102ca8ae0e31582877a38c00a1ef8c51ecfa2ea8b0a",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloEchoPanel.h": {
+      "sha256": "89811ca5393b462e3d862530a5583524b7c9148e8cb335c61c381232d21b4f36",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloMagPanel.cpp": {
+      "sha256": "a5ae0dd44b3bb80771f0b5540418f6772b00297ecdc289a3b4402664f40dffb1",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloMagPanel.h": {
+      "sha256": "1c9b370ded908084ce2069f876a753be5ca4ca53c6e224c31bba806f20979f1c",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloRedWallPanel.cpp": {
+      "sha256": "0803ffc79c21dbb2909aacf8ec9dec995c83a4322ce04ce57a33b219aae24760",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloRedWallPanel.h": {
+      "sha256": "698d67a1c4446ce55101178c358005161f95d3560d30ecd7a451f95511b3d0bc",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloShirotaPanel.cpp": {
+      "sha256": "ddcb7c19606bf1605a968c3222f0d641613d9bb90ada325568d084dcc0f26cbf",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloShirotaPanel.h": {
+      "sha256": "2e0c24e4f645febb843c4d5994047c077be822b83024535770b88cae90fe9418",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloUdarnikPanel.cpp": {
+      "sha256": "392decfd9a9e4d0629039bf308c0832fb0d9fc2a28c88f97d0ff2dde1803d87a",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloUdarnikPanel.h": {
+      "sha256": "6b71bdf4d6c722ea9917b45644038fead563c10356181eeeba270d272de7c2aa",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloVerbPanel.cpp": {
+      "sha256": "64f33e0a18cecbefdcbcb66378f47e69083b2551012f75078dbc609fdbadf40e",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloVerbPanel.h": {
+      "sha256": "cf7f56eb0146673e11f0e71ffefe3bdf51fa68c26881f4db278854a949ea8aef",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloZastavaPanel.cpp": {
+      "sha256": "cb8e92b1dacbe9ed177b06cda68de184120db80560231619c4ae5c0115f941d5",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/HamloZastavaPanel.h": {
+      "sha256": "720946822aaf00b1a60822885e99d9856b2019d8dbd809463ff2563e7f07b1c5",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/ModuleHelp.h": {
+      "sha256": "f2630cb46a19f323570f2e6146c994b0af122a93edee09892786c9cb05532f17",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/PresetScreen.cpp": {
+      "sha256": "ce90663c90b18020b23991b338cf5f00f39d8e5e3cfdd4d1053f3297402fedce",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/PresetScreen.h": {
+      "sha256": "7b2a5560311f9a4ff17c64ffb4ac3da6aa85c2b0335b183e5025d4ce8faf049d",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/VerbV2Panel.cpp": {
+      "sha256": "8a4de210f2a96afeb6005b420da953bcfa0cefac36d1dd492d01c849a3fc928b",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Source/UI/VerbV2Panel.h": {
+      "sha256": "2aa716eb005ed304ece5b4a37ea14e9cfc5418868d793a0a09e286690ff4d44b",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/KeepDryTests.cpp": {
+      "sha256": "b1bd9a09a5f86a184186e971c3cf5b15ac133c2900ae23bfa78e0d34e4cd2adf",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/LabMain.cpp": {
+      "sha256": "bc969dc2951a876c2af6bb17f582693bcc571359c99083e925782eaa74649e61",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/OutputLevelAudit.cpp": {
+      "sha256": "0b3a8f2711482d561aa1b1986b526b7f4c66807d5de7e53985e8d8e48db5243b",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/PluginTests.cpp": {
+      "sha256": "47ea480d2235ed4a7c97053880184cb6ac7bd67a8a7d9ca90588f46d5077dc94",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/PresetLabMain.cpp": {
+      "sha256": "c412addc17e9a01c9ad8570f3d50a400f02754b248d4abb3caf6a5db4ac2e7d3",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/ReferenceMain.cpp": {
+      "sha256": "50bec8e5f0734bd06d8060041d87fa11bb8eb4f2a7c08b5ef997cab97c3a5fb5",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/SnapshotMain.cpp": {
+      "sha256": "0ee2196d211e1d1b67417a47003f3d02da6fff3d75f3bdff1ab58890b6503ec7",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/TemporalTests.cpp": {
+      "sha256": "3547ca31dde64d6b11543c3547d1053510d926ec4ed7078ed85d3c21acdfb7a4",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/TestMain.cpp": {
+      "sha256": "d4b830251e2c05457c5ae9793cb3f2f63a8335242d4a62c837aee7d1debe9f11",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/TestSignals.h": {
+      "sha256": "8093bb51464634e03430d679bb218d6506767a2e57d35a08f1a648d256dd9b20",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/V2Tests.cpp": {
+      "sha256": "d830fa1f06e82ec7fab128afc4695488dbae3e89657f449cfe829a608700963b",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/VerbLabHelpers.h": {
+      "sha256": "428225872d86162dd48f153132aa28efd11b3d3b4b4553ad1b0d75bc86f7fc8f",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/WetLevelTests.cpp": {
+      "sha256": "86bb6e554c53a432874da03834802426c8bc86ebc02ea47380c16e49ee19d0d2",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tests/WetLevelWorkflowTests.cpp": {
+      "sha256": "170ee3b2272e1441e0090f7db251d04f2d4fc803a6d50176646a1255892213cb",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/analyze_demos.py": {
+      "sha256": "85729af292a0521a69c2050ab86d08aed924ed2f8f555e264da659ae642b87ae",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/analyze_wetlevel.py": {
+      "sha256": "621abb26e01a17e9b0eceb3e619aa418f729218fcaeb6b26fe4f2aeb87b4b5e1",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/create_release_report.py": {
+      "sha256": "b7d9951ba6b40c0b9dd525719c6edf0e4d9b4a2e355e97bf767af4dd3762890a",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/finalize_keepdry.py": {
+      "sha256": "d64321015d065c7009c41bb6fcae7641806a9a6351a482646a6808e2f726ba11",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/finalize_wetlevel.py": {
+      "sha256": "9f16d7146917985e636a93b36148bc18165957bfddeda70cb144ffe67d3242c1",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/genre_presets.py": {
+      "sha256": "80db3897ec4ec583a537c33b850448683acc94b1222bf579e6575686e045a7d4",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/genre_recipes.json": {
+      "sha256": "994fcb7ab3e7ed25f37d0b480b76c635ae4bc4bace211061c91c655337543463",
+      "normalized": false
+    },
+    "build/wetlevel_accepted/Tools/Package-Release.ps1": {
+      "sha256": "2df6c2d69daf56b8056fc2e67f8737f890f73f7591e564bf2d34540b5537c2e0",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/preset_catalog.py": {
+      "sha256": "9bdf5a7894d129d9e9a22015cda80a73a729f2551b6e192d4309fe030d796584",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/run_preset_lab.py": {
+      "sha256": "e87c406edcb1634a37f0d62a29f4819cebf9f4b5b89201806939dea1298130b0",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/spectral_report.py": {
+      "sha256": "527e24c4a8af4f690c2419fedc9cfecf40a9969ae44330d4d97d8904af7bbc0c",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/Validate-KeepDry.ps1": {
+      "sha256": "2fa5f3dfe83894ebf745bc1d02c4f228b579901aae76d821e6907c3d3955ea03",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/Validate-Release.ps1": {
+      "sha256": "dfecfaceea4dbfe8ee8e1f670f03a7295770dc51ea8399b2444910784f53a55c",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/Validate-WetLevel.ps1": {
+      "sha256": "7cc16dc5908bf226ee2a3d4d15aca337a439898e36208019b871f1c0a4862cf4",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/verify_keepdry.py": {
+      "sha256": "5f979fa8f7b0d028f702e3901c3ba51553b55f91ce85c2665fdee456b4493d4d",
+      "normalized": true
+    },
+    "build/wetlevel_accepted/Tools/verify_wetlevel.py": {
+      "sha256": "53d9814b74bc89a3f416f3ecbb7c3e414fe10e0684c27b159834fafc2e5c47c0",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/build.txt": {
+      "sha256": "42a03c08cb1ba266fc395b34980adfed78e545a65d01039314cb2a6f5f956f45",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Core/FxProjectState.h": {
+      "sha256": "133dd972a3488b114a7a6d728e3e39ed59c2388419ae7001db15daa0838cf771",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Core/GenrePresets.inc": {
+      "sha256": "0cbec70e37a5018d09bc4f076f6dfb17ba9a6c939a6a5f4e5a410ff5303a543c",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Core/ModulePresets.cpp": {
+      "sha256": "5323ce641c6fea6d78817d965edb48522a1d0937870f0cfa84237b8cbb3dc48c",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Core/ModulePresets.h": {
+      "sha256": "4be3dc1f6a6a8a02570357f22bce4db63e3f3424e438f0912011bc05585c047a",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Core/Revolution.h": {
+      "sha256": "9ab589cd945284c86734e6abc8dac7e169fda148cf494ca3a4e671d8b50d1e23",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/Biquad.cpp": {
+      "sha256": "2b9adc45c556e15d38ac84f9989c83e1ecd3f61dd7500243f1b4eba3bf2808bd",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/Biquad.h": {
+      "sha256": "819a517ff340ff875f3d96cf83f74bcb30c2258a81102a0ee6f7e57c9f8e1f4a",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/CrossoverTree.cpp": {
+      "sha256": "da40f9330722ebf76d0225d87ed8dadc52b35d9215ac0ef140d9775868229e07",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/CrossoverTree.h": {
+      "sha256": "acaa64940fba57be61c92834e43d57f175ca6f2a314e157461a1722deff1c657",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/DelayLine.h": {
+      "sha256": "e8397a978a3f2107ec6c23000eee6701326f6b479e28a5b674ad71d43ecec650",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/DspConfig.h": {
+      "sha256": "bcee350c9b988be1ff88027cb61a0ce6e8cfe1be58d9309daa4a8a377db589c0",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/EqDesign.cpp": {
+      "sha256": "56255e4ddcbc293683f4c6009309fcf638784182a1b61835d7f7026f7b8744b6",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/EqDesign.h": {
+      "sha256": "5f5bc63397d648969eccf7991e4ff98cd22cf44663a2a940f1eb34f0bfe73f0f",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/FxNodeProcessor.cpp": {
+      "sha256": "6ec142a5b125921dfc1cd59d5f5bc5ffa1dcfcadb1946cbc7172f8b73f937226",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/FxNodeProcessor.h": {
+      "sha256": "f772e907501466fd7c84e39423f0cd781f09c7ffe12544fc74d9198ffefdff1b",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloEcho.cpp": {
+      "sha256": "c15f511e226e945bea837cfa8308e86a3cb0cf275b67b767729c77ecc1b85274",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloEcho.h": {
+      "sha256": "08203efbf43d9686d110d06cfada73b76c0bb45f2f783bbce94aec96c239f24e",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloMag.cpp": {
+      "sha256": "51c536d00e7f4cf03088e09284b107d4843c79186505df679136ce9824918c73",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloMag.h": {
+      "sha256": "89c688bc8b3a33dc95b9c528756f213bd2fddca2d42e723a6c7c469b565a9a21",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloRedWall.cpp": {
+      "sha256": "a92828adc02ea611712a5381fbbd4376ebb715eebaf10d6bb236584a7c0eb353",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloRedWall.h": {
+      "sha256": "0b10e76b28282323d80b22ec56385d4de50f269a63f558f7a2180b01ff02cc68",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloRevolution.cpp": {
+      "sha256": "204e2c07e1ce453711dab67aa5305128de07d6091f04794c4513c60af2d8584e",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloRevolution.h": {
+      "sha256": "78e4bb024b6a9f88769d146b3cfdbebba1186517f728ca741f65f7f8134ced6a",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloShirota.cpp": {
+      "sha256": "5a0e2163d4a039439e0ae30a58373fb68889a388ed3bacd4d55cc125a2acc1fa",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloShirota.h": {
+      "sha256": "f14b21202801ea5c1a3357c63df0ae904eda56d1a7a010a940e07a93a3d1574a",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloUdarnik.cpp": {
+      "sha256": "e0cdf4f825859c143c1228130effe09c3783e21e73e63f1f1201432ba7889803",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloUdarnik.h": {
+      "sha256": "2ff42b69320cd39ff2fd2571ca3f5b9d1141c0fd34bb52c64a827651cbc50ae3",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloVerb.cpp": {
+      "sha256": "fbb60da61de447439461c627be402930ef0b958781ac3196ee3ab5a17822456a",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloVerb.h": {
+      "sha256": "7a6ee19b3532660cadb2904492fba7e753ee0a79469773bd469c1d96d9b2e1b4",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloZastava.cpp": {
+      "sha256": "0cec67127c96eb2a7ff29e54c7c6a4b1b9b56c853486c8fe02c5fc2a8d59db87",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/HamloZastava.h": {
+      "sha256": "76d78d5a0d72ff38e870b159e7cc8e101553bb8d7dd0e5d5909032323f0d89b9",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/LayerEngine.cpp": {
+      "sha256": "bb6a9d21c127f42c80e01c8415c672f9d5ec40a8302ec0b46c6771733f69fb80",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/LayerEngine.h": {
+      "sha256": "49e7bb7c05baf6a52a2bf53e4a637e45baf7162a1a8cdde094c7fdbd4cfbd330",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/LayerSnapshot.h": {
+      "sha256": "7e4248386b78834576540d87c99b48820a5ffa2e42a8102cee3b978daa33241c",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/LegacyVerbPath.h": {
+      "sha256": "58ff72d883e64967d4d330e81567d66eb283933258426e738f75e481df1cd652",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/Pool.h": {
+      "sha256": "476352285dcd590c3c484d537ca6b7c1a35bb1f315f83a5b32d60d44cb343c4b",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/PreEqProcessor.cpp": {
+      "sha256": "5047bf2433634eafa53059106b1562057902c771fe42c12ff4b7630470ceb6c9",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/PreEqProcessor.h": {
+      "sha256": "91564944f937bb1421831901df416fe558f3c4b241f68df351a130e533328b2c",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/Processors.cpp": {
+      "sha256": "d5075075bf35b40fe08b768a02242198906ee161f2dccea23a124f6938e6d912",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/Processors.h": {
+      "sha256": "7329d9d8b3e43259a5ca111e253e42ce625c431f45cf418a984f6bea268e4396",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/ProcessorsM6.cpp": {
+      "sha256": "fc2af720f154ba9b389ffc5eff4143d69690a4db9036c75e540927dcee4617e6",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/ProcessorsM6.h": {
+      "sha256": "354579ac8458d81659a2b97d9bce72ea4cbf6b2f8a77ff44c017dfabec955d39",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/Ramp.h": {
+      "sha256": "0298fcb933b437140b4a5588e1f2aab4a3afa1b190f32506a0d724a2036de6b9",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/ReverbProcessor.cpp": {
+      "sha256": "a49f12385789ce23ec81631a95046415d960abfe69d71840cdb9761ec0c45e12",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/ReverbProcessor.h": {
+      "sha256": "7ad60658e189c0f0645b2102cc69a943ffa887e483cfc51b20f1c656d9393090",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/RevolutionFft.h": {
+      "sha256": "ba9345a2af7de3aa6c85a33c157a3461e74a75899f0d5f63671c2d51f9d9b750",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/VerbSettings.h": {
+      "sha256": "f7cfbb9c9394fdaabe54b4bc2d3bd7fc26add778e2330dabff051f2a9f97b48e",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/VerbTemporalEffects.h": {
+      "sha256": "9c44426357abd14becad2279c7f1173cb18f9711a64483b3e566e4628eec7d1a",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/VerbV2Processor.cpp": {
+      "sha256": "60d6b36916c3dd47f137a0fb9d4ced4d7f6f93d68648e476f9c8db7249197f09",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/VerbV2Processor.h": {
+      "sha256": "1f06c6960bbc2fa73f5d4d082a4c5184f4b489c92b3c65518d44b32815f0df42",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/DSP/VerbV2Settings.h": {
+      "sha256": "78fb35332356e9198ffc7b2d435cb8c1de1da90a2c12755fad045cda39f735aa",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Standalone/ModulePluginEditor.cpp": {
+      "sha256": "99f266bcc8ee8d9b0e715cfa8b66e73c59d343438f09f8727b151012a362cf1c",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Standalone/ModulePluginEditor.h": {
+      "sha256": "f35e125338ad01ace6093d31e655bd741c14ee2f2dedec9e3510b9d097e14104",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Standalone/ModulePluginEntry.cpp": {
+      "sha256": "795ab8d1d4dd779278eb2c0aa12c7da914cc3be1c82668f3bd3cc0be8280efd7",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Standalone/ModulePluginProcessor.cpp": {
+      "sha256": "68f684d9c74800802adc9b535b3763e064372106c2c7060bc735b89ceec00c4e",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Standalone/ModulePluginProcessor.h": {
+      "sha256": "aa180f1b3d0fcb07f8d4f9b0cd632fded3cde01871a462b6170ee61ac3841dbf",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Standalone/ModuleVariant.cpp": {
+      "sha256": "7c68a93f68429b09e2864c1c435add49482b3506356cd4d01e19c5ad9e1fe734",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Standalone/ModuleVariant.h": {
+      "sha256": "4fa1f9d5b8478d531ff770922d29eb5a6f773aaf39b374cde04cb52d4dc75b74",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/Standalone/VerbParameters.h": {
+      "sha256": "01f231d10a160bac50aafca6ba721e342eaf44035acb0b64e3ecc9e82f9bdefd",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/BlackSteel.cpp": {
+      "sha256": "6c79f1312bf78195ff09173c0f84976969d5d2c8db19ff3ab27e344997bfa5ef",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/BlackSteel.h": {
+      "sha256": "d3011aea55d26e515fc04de49657fba9189b2651ba4b9b5fe068b5ca84db3f88",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloCompPanel.cpp": {
+      "sha256": "9164f91ed7270e955915d92f60f38c2dbda9d99afa2aa3d69b347553e2fe533f",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloCompPanel.h": {
+      "sha256": "e5736b41fabb1c899f52627b53b4721fe2250e4ba528478470ac143f49e41a0b",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloEchoPanel.cpp": {
+      "sha256": "83b4d018e30eda91d1421102ca8ae0e31582877a38c00a1ef8c51ecfa2ea8b0a",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloEchoPanel.h": {
+      "sha256": "89811ca5393b462e3d862530a5583524b7c9148e8cb335c61c381232d21b4f36",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloMagPanel.cpp": {
+      "sha256": "a5ae0dd44b3bb80771f0b5540418f6772b00297ecdc289a3b4402664f40dffb1",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloMagPanel.h": {
+      "sha256": "1c9b370ded908084ce2069f876a753be5ca4ca53c6e224c31bba806f20979f1c",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloRedWallPanel.cpp": {
+      "sha256": "0803ffc79c21dbb2909aacf8ec9dec995c83a4322ce04ce57a33b219aae24760",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloRedWallPanel.h": {
+      "sha256": "698d67a1c4446ce55101178c358005161f95d3560d30ecd7a451f95511b3d0bc",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloShirotaPanel.cpp": {
+      "sha256": "ddcb7c19606bf1605a968c3222f0d641613d9bb90ada325568d084dcc0f26cbf",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloShirotaPanel.h": {
+      "sha256": "2e0c24e4f645febb843c4d5994047c077be822b83024535770b88cae90fe9418",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloUdarnikPanel.cpp": {
+      "sha256": "392decfd9a9e4d0629039bf308c0832fb0d9fc2a28c88f97d0ff2dde1803d87a",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloUdarnikPanel.h": {
+      "sha256": "6b71bdf4d6c722ea9917b45644038fead563c10356181eeeba270d272de7c2aa",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloVerbPanel.cpp": {
+      "sha256": "64f33e0a18cecbefdcbcb66378f47e69083b2551012f75078dbc609fdbadf40e",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloVerbPanel.h": {
+      "sha256": "cf7f56eb0146673e11f0e71ffefe3bdf51fa68c26881f4db278854a949ea8aef",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloZastavaPanel.cpp": {
+      "sha256": "cb8e92b1dacbe9ed177b06cda68de184120db80560231619c4ae5c0115f941d5",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/HamloZastavaPanel.h": {
+      "sha256": "720946822aaf00b1a60822885e99d9856b2019d8dbd809463ff2563e7f07b1c5",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/ModuleHelp.h": {
+      "sha256": "f2630cb46a19f323570f2e6146c994b0af122a93edee09892786c9cb05532f17",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/PresetScreen.cpp": {
+      "sha256": "ce90663c90b18020b23991b338cf5f00f39d8e5e3cfdd4d1053f3297402fedce",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/PresetScreen.h": {
+      "sha256": "7b2a5560311f9a4ff17c64ffb4ac3da6aa85c2b0335b183e5025d4ce8faf049d",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/VerbV2Panel.cpp": {
+      "sha256": "902b8fa020350bc69e9fc28b050f9d8c3925b49da9d52f25d7d590764f6fa576",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Source/UI/VerbV2Panel.h": {
+      "sha256": "2aa716eb005ed304ece5b4a37ea14e9cfc5418868d793a0a09e286690ff4d44b",
+      "normalized": true
+    },
+    "build/wetlevel_baseline/Tests-original.exe": {
+      "sha256": "cb0f84de325eb573ff342950d5000a2f3b0ac8b5794349f4645ce590ecc71315",
+      "normalized": false
+    },
+    "build/wetlevel_baseline/Tests-probe.exe": {
+      "sha256": "9da6f85cd8a8fc834b76186c14174cdf7499b8a97d3c4d8d9c885fc9cee2a2d5",
+      "normalized": false
+    },
+    "build/wetlevel_baseline/WetLevelTests.cpp": {
+      "sha256": "86bb6e554c53a432874da03834802426c8bc86ebc02ea47380c16e49ee19d0d2",
+      "normalized": true
+    },
+    "cmake/PatchJuceWindowsRenderer.cmake": {
+      "sha256": "eef31294f4929035bdbff82928c66bbbbc3adfea85a53be8e3a57e9628973fd6",
+      "normalized": true
+    },
+    "CMakeLists.txt": {
+      "sha256": "92e8bdbca6d3055575402b89db898703d5d959370cbfe78ae9b858c6fcda1439",
+      "normalized": true
+    },
+    "dist/WetLevel0.2.2/HamloVerb-0.2.2-win64-vst3.zip": {
+      "sha256": "b2460117a579cffd64d12548af68e1be73e3ecf186b41fddedc94c05148d5cf6",
+      "normalized": false
+    },
+    "dist/WetLevel0.2.2/HamloVerb-0.2.2-win64-vst3.zip.sha256": {
+      "sha256": "3a0d78410f21b0b35874a38a914e137b0088e9f9c8fdc771fbb03da5682b5324",
+      "normalized": false
+    },
+    "dist/WetLevel0.2.2/HamloVerb.vst3/Contents/Resources/moduleinfo.json": {
+      "sha256": "cef034b9e5811776df04da414c05cf4b8bd50c887c4e5bc7aac54f6a35caee87",
+      "normalized": false
+    },
+    "dist/WetLevel0.2.2/HamloVerb.vst3/Contents/x86_64-win/HamloVerb.vst3": {
+      "sha256": "d16707cfd7f8d87220f489c4bb8603ec883ec6c413ebd84e0df01a7853f85046",
+      "normalized": false
+    },
+    "dist/WetLevel0.2.2/HamloVerb.vst3/Contents/x86_64-win/HamloVerb.vst3.sha256": {
+      "sha256": "b2174f351bc22e04e25e4621c4e77caca233d371f4a22cc5c27e6259d7c943b5",
+      "normalized": false
+    },
+    "dist/WetLevel0.2.2/README.txt": {
+      "sha256": "2b64ae28b386f65c0091f406d020c1a0bb677aaa8a35f6c1c597bcb8ad1921d6",
+      "normalized": true
+    },
+    "docs/NEXT_STAGE.md": {
+      "sha256": "ef7817f4e76b087d04ef61112a77bc4d2edd9b5f3b2e9309c2aba98f19b7519b",
+      "normalized": true
+    },
+    "docs/reports/keepdry/native_final.txt": {
+      "sha256": "3d6c4d1931bc5a6150525fbd3fc9fb94a77bc86017dc96a0f847782707045dbe",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/auditions.json": {
+      "sha256": "08f497f9ebb5eccece170656fe6ce70e23a5ecfd77e9011559bfdba78872a51b",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/before.txt": {
+      "sha256": "4082697fc198e09b87c91251f8352be7fc165f13639c9097022fcb5a62eab698",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/m0_reference.md": {
+      "sha256": "46054aa05c80a1a838a2a36eeeef3b6d2b3786bb76ab60632114e53c2a6d0efc",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/native_final.txt": {
+      "sha256": "ab52f1b6371dd6ee2178f0d96d99523f167c4cf6ab15990ea74c254f9463a144",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/probe_after.txt": {
+      "sha256": "7ee4b5f8af347a4116445bda48e6209c0212a0fde06b3ae56e8b5140bfa114fd",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/REPORT.md": {
+      "sha256": "05e3d04e132f54c472bccb9a668d4b86520bad026b0f1443cbd69d51fe5fccea",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/screens/effects.png": {
+      "sha256": "cdfee88b9fe8430354a6efa5585d0f56a01972359f7b825df7b25991390212f9",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/screens/legacy.png": {
+      "sha256": "5de4f723e935301f909177819ff91591d7571bfdf824c35e4205084f3255d1b9",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/screens/main.png": {
+      "sha256": "1de7e67f7b372640296a3f999fd5b2effb3b7e5995ce04b9d299b45fe7b87e7f",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/identity.json": {
+      "sha256": "012342b8b5ca9dfb89bca1ef38e68b4f3ee839b88266eda88e99cb05873d9743",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_10/HamloVerb.vst3_20261104T142937.205+0200.txt": {
+      "sha256": "9793f9f81736fabad0d24149fa02c6d80db37d62cdffa0217cc55f2d0f939784",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_10/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_10/stdout.txt": {
+      "sha256": "f46c95bc05e46d4ab2b1ea261ab0971285113abd2237bad87470564cdce076ff",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_5/HamloVerb.vst3_20261104T142800.471+0200.txt": {
+      "sha256": "bd7f62ac02bf8a15275a62c37a39dfe3b364629404da2b53f2f3c6a2e2ea0d5a",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_5/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_5/stdout.txt": {
+      "sha256": "35cffd37655178055cb3aa67f9b497bfb283f5590fba143d8a54b6d1c798971b",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_6/HamloVerb.vst3_20261104T142806.222+0200.txt": {
+      "sha256": "4abcfe438f7f36f7a9381061571bed0013b8d9209aa88cfce2f1ad1b336decd8",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_6/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_6/stdout.txt": {
+      "sha256": "cb419aa4fc9877fedfaf8765ebb5447529151cb9b5b3d79fd538a2e74a653cbc",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_7/HamloVerb.vst3_20261104T142826.512+0200.txt": {
+      "sha256": "0b2fd4be1e6a64cec5d66c79f3d38e84de1f4b24738efcacf3d32eddb5362996",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_7/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_7/stdout.txt": {
+      "sha256": "48d69e13df9c85c2b4251319c4b35b7519232c1425fe93d83a9fe67b0d22acc6",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_8/HamloVerb.vst3_20261104T142850.082+0200.txt": {
+      "sha256": "e374e53745c1ac8f02fecced33df14f72a02f6f56634a4f57ce6307b188a81f8",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_8/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_8/stdout.txt": {
+      "sha256": "8d52c9f6e154bc4c32f2b532525694cd8eb2019ba3c01f97734d79c316af3659",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_9/HamloVerb.vst3_20261104T142913.681+0200.txt": {
+      "sha256": "fee41b1ebe2c162a5fca941595797c843320a999e22b7279fdaf33728921e6f9",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_9/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/pluginval_9/stdout.txt": {
+      "sha256": "faee0da6ff95658b36d9aac8a00b40d038050f1520b2a2394006a232b1c5018d",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/steinberg.err": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/steinberg.txt": {
+      "sha256": "f31d7bcba5e8c34310e458731b42461942847bcc4c85941863ae71f143f0184d",
+      "normalized": false
+    },
+    "docs/reports/wetlevel/validators/summary.txt": {
+      "sha256": "b086b774f9dd99a2ceeb015ae90ab67b5706fce3466937aeb9568ff9c9bcc4d4",
+      "normalized": false
+    },
+    "docs/WET_LEVEL.md": {
+      "sha256": "7bb57507a2896d7fd15e7e8fa8465d026c3f8c3064706d0f2901d80db9c4ac1f",
+      "normalized": true
+    },
+    "docs/WET_LEVEL_HANDOFF.md": {
+      "sha256": "aef0f12f2ed07daf06b04325c9207047c39abe269f77d85b83519f815233b1c8",
+      "normalized": true
+    },
+    "out/wetlevel_demo_final/Insert_KEEP_DRY_0dB_then_12dB.wav": {
+      "sha256": "a39e35b23ee1e7940e78fd1f18277b1522c46ec6225e2bd6bb19b4f432ce0ff9",
+      "normalized": false
+    },
+    "out/wetlevel_demo_final/Send_WET_0dB_then_12dB.wav": {
+      "sha256": "a2e437a0e39a203f42cafb7cf30acd8d7ca2d1afee3a3031a9a150a9af96db9e",
+      "normalized": false
+    },
+    "README.md": {
+      "sha256": "9979649c5d6ec16d9e8c4b31783238f305d91e43fc014cc7875013793b4fedc8",
+      "normalized": true
+    },
+    "Source/Core/FxProjectState.h": {
+      "sha256": "133dd972a3488b114a7a6d728e3e39ed59c2388419ae7001db15daa0838cf771",
+      "normalized": true
+    },
+    "Source/Core/GenrePresets.inc": {
+      "sha256": "0cbec70e37a5018d09bc4f076f6dfb17ba9a6c939a6a5f4e5a410ff5303a543c",
+      "normalized": true
+    },
+    "Source/Core/ModulePresets.cpp": {
+      "sha256": "5323ce641c6fea6d78817d965edb48522a1d0937870f0cfa84237b8cbb3dc48c",
+      "normalized": true
+    },
+    "Source/Core/ModulePresets.h": {
+      "sha256": "4be3dc1f6a6a8a02570357f22bce4db63e3f3424e438f0912011bc05585c047a",
+      "normalized": true
+    },
+    "Source/Core/Revolution.h": {
+      "sha256": "9ab589cd945284c86734e6abc8dac7e169fda148cf494ca3a4e671d8b50d1e23",
+      "normalized": true
+    },
+    "Source/DSP/Biquad.cpp": {
+      "sha256": "2b9adc45c556e15d38ac84f9989c83e1ecd3f61dd7500243f1b4eba3bf2808bd",
+      "normalized": true
+    },
+    "Source/DSP/Biquad.h": {
+      "sha256": "819a517ff340ff875f3d96cf83f74bcb30c2258a81102a0ee6f7e57c9f8e1f4a",
+      "normalized": true
+    },
+    "Source/DSP/CrossoverTree.cpp": {
+      "sha256": "da40f9330722ebf76d0225d87ed8dadc52b35d9215ac0ef140d9775868229e07",
+      "normalized": true
+    },
+    "Source/DSP/CrossoverTree.h": {
+      "sha256": "acaa64940fba57be61c92834e43d57f175ca6f2a314e157461a1722deff1c657",
+      "normalized": true
+    },
+    "Source/DSP/DelayLine.h": {
+      "sha256": "e8397a978a3f2107ec6c23000eee6701326f6b479e28a5b674ad71d43ecec650",
+      "normalized": true
+    },
+    "Source/DSP/DspConfig.h": {
+      "sha256": "bcee350c9b988be1ff88027cb61a0ce6e8cfe1be58d9309daa4a8a377db589c0",
+      "normalized": true
+    },
+    "Source/DSP/EqDesign.cpp": {
+      "sha256": "56255e4ddcbc293683f4c6009309fcf638784182a1b61835d7f7026f7b8744b6",
+      "normalized": true
+    },
+    "Source/DSP/EqDesign.h": {
+      "sha256": "5f5bc63397d648969eccf7991e4ff98cd22cf44663a2a940f1eb34f0bfe73f0f",
+      "normalized": true
+    },
+    "Source/DSP/FxNodeProcessor.cpp": {
+      "sha256": "6ec142a5b125921dfc1cd59d5f5bc5ffa1dcfcadb1946cbc7172f8b73f937226",
+      "normalized": true
+    },
+    "Source/DSP/FxNodeProcessor.h": {
+      "sha256": "f772e907501466fd7c84e39423f0cd781f09c7ffe12544fc74d9198ffefdff1b",
+      "normalized": true
+    },
+    "Source/DSP/HamloEcho.cpp": {
+      "sha256": "c15f511e226e945bea837cfa8308e86a3cb0cf275b67b767729c77ecc1b85274",
+      "normalized": true
+    },
+    "Source/DSP/HamloEcho.h": {
+      "sha256": "08203efbf43d9686d110d06cfada73b76c0bb45f2f783bbce94aec96c239f24e",
+      "normalized": true
+    },
+    "Source/DSP/HamloMag.cpp": {
+      "sha256": "51c536d00e7f4cf03088e09284b107d4843c79186505df679136ce9824918c73",
+      "normalized": true
+    },
+    "Source/DSP/HamloMag.h": {
+      "sha256": "89c688bc8b3a33dc95b9c528756f213bd2fddca2d42e723a6c7c469b565a9a21",
+      "normalized": true
+    },
+    "Source/DSP/HamloRedWall.cpp": {
+      "sha256": "a92828adc02ea611712a5381fbbd4376ebb715eebaf10d6bb236584a7c0eb353",
+      "normalized": true
+    },
+    "Source/DSP/HamloRedWall.h": {
+      "sha256": "0b10e76b28282323d80b22ec56385d4de50f269a63f558f7a2180b01ff02cc68",
+      "normalized": true
+    },
+    "Source/DSP/HamloRevolution.cpp": {
+      "sha256": "204e2c07e1ce453711dab67aa5305128de07d6091f04794c4513c60af2d8584e",
+      "normalized": true
+    },
+    "Source/DSP/HamloRevolution.h": {
+      "sha256": "78e4bb024b6a9f88769d146b3cfdbebba1186517f728ca741f65f7f8134ced6a",
+      "normalized": true
+    },
+    "Source/DSP/HamloShirota.cpp": {
+      "sha256": "5a0e2163d4a039439e0ae30a58373fb68889a388ed3bacd4d55cc125a2acc1fa",
+      "normalized": true
+    },
+    "Source/DSP/HamloShirota.h": {
+      "sha256": "f14b21202801ea5c1a3357c63df0ae904eda56d1a7a010a940e07a93a3d1574a",
+      "normalized": true
+    },
+    "Source/DSP/HamloUdarnik.cpp": {
+      "sha256": "e0cdf4f825859c143c1228130effe09c3783e21e73e63f1f1201432ba7889803",
+      "normalized": true
+    },
+    "Source/DSP/HamloUdarnik.h": {
+      "sha256": "2ff42b69320cd39ff2fd2571ca3f5b9d1141c0fd34bb52c64a827651cbc50ae3",
+      "normalized": true
+    },
+    "Source/DSP/HamloVerb.cpp": {
+      "sha256": "fbb60da61de447439461c627be402930ef0b958781ac3196ee3ab5a17822456a",
+      "normalized": true
+    },
+    "Source/DSP/HamloVerb.h": {
+      "sha256": "7a6ee19b3532660cadb2904492fba7e753ee0a79469773bd469c1d96d9b2e1b4",
+      "normalized": true
+    },
+    "Source/DSP/HamloZastava.cpp": {
+      "sha256": "0cec67127c96eb2a7ff29e54c7c6a4b1b9b56c853486c8fe02c5fc2a8d59db87",
+      "normalized": true
+    },
+    "Source/DSP/HamloZastava.h": {
+      "sha256": "76d78d5a0d72ff38e870b159e7cc8e101553bb8d7dd0e5d5909032323f0d89b9",
+      "normalized": true
+    },
+    "Source/DSP/LayerEngine.cpp": {
+      "sha256": "bb6a9d21c127f42c80e01c8415c672f9d5ec40a8302ec0b46c6771733f69fb80",
+      "normalized": true
+    },
+    "Source/DSP/LayerEngine.h": {
+      "sha256": "49e7bb7c05baf6a52a2bf53e4a637e45baf7162a1a8cdde094c7fdbd4cfbd330",
+      "normalized": true
+    },
+    "Source/DSP/LayerSnapshot.h": {
+      "sha256": "7e4248386b78834576540d87c99b48820a5ffa2e42a8102cee3b978daa33241c",
+      "normalized": true
+    },
+    "Source/DSP/LegacyVerbPath.h": {
+      "sha256": "58ff72d883e64967d4d330e81567d66eb283933258426e738f75e481df1cd652",
+      "normalized": true
+    },
+    "Source/DSP/Pool.h": {
+      "sha256": "476352285dcd590c3c484d537ca6b7c1a35bb1f315f83a5b32d60d44cb343c4b",
+      "normalized": true
+    },
+    "Source/DSP/PreEqProcessor.cpp": {
+      "sha256": "5047bf2433634eafa53059106b1562057902c771fe42c12ff4b7630470ceb6c9",
+      "normalized": true
+    },
+    "Source/DSP/PreEqProcessor.h": {
+      "sha256": "91564944f937bb1421831901df416fe558f3c4b241f68df351a130e533328b2c",
+      "normalized": true
+    },
+    "Source/DSP/Processors.cpp": {
+      "sha256": "d5075075bf35b40fe08b768a02242198906ee161f2dccea23a124f6938e6d912",
+      "normalized": true
+    },
+    "Source/DSP/Processors.h": {
+      "sha256": "7329d9d8b3e43259a5ca111e253e42ce625c431f45cf418a984f6bea268e4396",
+      "normalized": true
+    },
+    "Source/DSP/ProcessorsM6.cpp": {
+      "sha256": "fc2af720f154ba9b389ffc5eff4143d69690a4db9036c75e540927dcee4617e6",
+      "normalized": true
+    },
+    "Source/DSP/ProcessorsM6.h": {
+      "sha256": "354579ac8458d81659a2b97d9bce72ea4cbf6b2f8a77ff44c017dfabec955d39",
+      "normalized": true
+    },
+    "Source/DSP/Ramp.h": {
+      "sha256": "0298fcb933b437140b4a5588e1f2aab4a3afa1b190f32506a0d724a2036de6b9",
+      "normalized": true
+    },
+    "Source/DSP/ReverbProcessor.cpp": {
+      "sha256": "a49f12385789ce23ec81631a95046415d960abfe69d71840cdb9761ec0c45e12",
+      "normalized": true
+    },
+    "Source/DSP/ReverbProcessor.h": {
+      "sha256": "7ad60658e189c0f0645b2102cc69a943ffa887e483cfc51b20f1c656d9393090",
+      "normalized": true
+    },
+    "Source/DSP/RevolutionFft.h": {
+      "sha256": "ba9345a2af7de3aa6c85a33c157a3461e74a75899f0d5f63671c2d51f9d9b750",
+      "normalized": true
+    },
+    "Source/DSP/VerbSettings.h": {
+      "sha256": "f7cfbb9c9394fdaabe54b4bc2d3bd7fc26add778e2330dabff051f2a9f97b48e",
+      "normalized": true
+    },
+    "Source/DSP/VerbTemporalEffects.h": {
+      "sha256": "9c44426357abd14becad2279c7f1173cb18f9711a64483b3e566e4628eec7d1a",
+      "normalized": true
+    },
+    "Source/DSP/VerbV2Processor.cpp": {
+      "sha256": "60d6b36916c3dd47f137a0fb9d4ced4d7f6f93d68648e476f9c8db7249197f09",
+      "normalized": true
+    },
+    "Source/DSP/VerbV2Processor.h": {
+      "sha256": "1f06c6960bbc2fa73f5d4d082a4c5184f4b489c92b3c65518d44b32815f0df42",
+      "normalized": true
+    },
+    "Source/DSP/VerbV2Settings.h": {
+      "sha256": "78fb35332356e9198ffc7b2d435cb8c1de1da90a2c12755fad045cda39f735aa",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginEditor.cpp": {
+      "sha256": "99f266bcc8ee8d9b0e715cfa8b66e73c59d343438f09f8727b151012a362cf1c",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginEditor.h": {
+      "sha256": "f35e125338ad01ace6093d31e655bd741c14ee2f2dedec9e3510b9d097e14104",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginEntry.cpp": {
+      "sha256": "795ab8d1d4dd779278eb2c0aa12c7da914cc3be1c82668f3bd3cc0be8280efd7",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginProcessor.cpp": {
+      "sha256": "78da7860544dbc53f39ba633f12a575827f7bd6cf9b14f289a9d048c0ee5ae47",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginProcessor.h": {
+      "sha256": "0537817c3573c00fbc5e275e0abacc0f3d0f01cfab64015aec6e0d6c919719b9",
+      "normalized": true
+    },
+    "Source/Standalone/ModuleVariant.cpp": {
+      "sha256": "7c68a93f68429b09e2864c1c435add49482b3506356cd4d01e19c5ad9e1fe734",
+      "normalized": true
+    },
+    "Source/Standalone/ModuleVariant.h": {
+      "sha256": "4fa1f9d5b8478d531ff770922d29eb5a6f773aaf39b374cde04cb52d4dc75b74",
+      "normalized": true
+    },
+    "Source/Standalone/VerbParameters.h": {
+      "sha256": "cf6dbb87f1d84522908dcd9a4753a24b5f6d6138ca7fb393cf0320a19922a618",
+      "normalized": true
+    },
+    "Source/UI/BlackSteel.cpp": {
+      "sha256": "6c79f1312bf78195ff09173c0f84976969d5d2c8db19ff3ab27e344997bfa5ef",
+      "normalized": true
+    },
+    "Source/UI/BlackSteel.h": {
+      "sha256": "d3011aea55d26e515fc04de49657fba9189b2651ba4b9b5fe068b5ca84db3f88",
+      "normalized": true
+    },
+    "Source/UI/HamloCompPanel.cpp": {
+      "sha256": "9164f91ed7270e955915d92f60f38c2dbda9d99afa2aa3d69b347553e2fe533f",
+      "normalized": true
+    },
+    "Source/UI/HamloCompPanel.h": {
+      "sha256": "e5736b41fabb1c899f52627b53b4721fe2250e4ba528478470ac143f49e41a0b",
+      "normalized": true
+    },
+    "Source/UI/HamloEchoPanel.cpp": {
+      "sha256": "83b4d018e30eda91d1421102ca8ae0e31582877a38c00a1ef8c51ecfa2ea8b0a",
+      "normalized": true
+    },
+    "Source/UI/HamloEchoPanel.h": {
+      "sha256": "89811ca5393b462e3d862530a5583524b7c9148e8cb335c61c381232d21b4f36",
+      "normalized": true
+    },
+    "Source/UI/HamloMagPanel.cpp": {
+      "sha256": "a5ae0dd44b3bb80771f0b5540418f6772b00297ecdc289a3b4402664f40dffb1",
+      "normalized": true
+    },
+    "Source/UI/HamloMagPanel.h": {
+      "sha256": "1c9b370ded908084ce2069f876a753be5ca4ca53c6e224c31bba806f20979f1c",
+      "normalized": true
+    },
+    "Source/UI/HamloRedWallPanel.cpp": {
+      "sha256": "0803ffc79c21dbb2909aacf8ec9dec995c83a4322ce04ce57a33b219aae24760",
+      "normalized": true
+    },
+    "Source/UI/HamloRedWallPanel.h": {
+      "sha256": "698d67a1c4446ce55101178c358005161f95d3560d30ecd7a451f95511b3d0bc",
+      "normalized": true
+    },
+    "Source/UI/HamloShirotaPanel.cpp": {
+      "sha256": "ddcb7c19606bf1605a968c3222f0d641613d9bb90ada325568d084dcc0f26cbf",
+      "normalized": true
+    },
+    "Source/UI/HamloShirotaPanel.h": {
+      "sha256": "2e0c24e4f645febb843c4d5994047c077be822b83024535770b88cae90fe9418",
+      "normalized": true
+    },
+    "Source/UI/HamloUdarnikPanel.cpp": {
+      "sha256": "392decfd9a9e4d0629039bf308c0832fb0d9fc2a28c88f97d0ff2dde1803d87a",
+      "normalized": true
+    },
+    "Source/UI/HamloUdarnikPanel.h": {
+      "sha256": "6b71bdf4d6c722ea9917b45644038fead563c10356181eeeba270d272de7c2aa",
+      "normalized": true
+    },
+    "Source/UI/HamloVerbPanel.cpp": {
+      "sha256": "64f33e0a18cecbefdcbcb66378f47e69083b2551012f75078dbc609fdbadf40e",
+      "normalized": true
+    },
+    "Source/UI/HamloVerbPanel.h": {
+      "sha256": "cf7f56eb0146673e11f0e71ffefe3bdf51fa68c26881f4db278854a949ea8aef",
+      "normalized": true
+    },
+    "Source/UI/HamloZastavaPanel.cpp": {
+      "sha256": "cb8e92b1dacbe9ed177b06cda68de184120db80560231619c4ae5c0115f941d5",
+      "normalized": true
+    },
+    "Source/UI/HamloZastavaPanel.h": {
+      "sha256": "720946822aaf00b1a60822885e99d9856b2019d8dbd809463ff2563e7f07b1c5",
+      "normalized": true
+    },
+    "Source/UI/ModuleHelp.h": {
+      "sha256": "f2630cb46a19f323570f2e6146c994b0af122a93edee09892786c9cb05532f17",
+      "normalized": true
+    },
+    "Source/UI/PresetScreen.cpp": {
+      "sha256": "ce90663c90b18020b23991b338cf5f00f39d8e5e3cfdd4d1053f3297402fedce",
+      "normalized": true
+    },
+    "Source/UI/PresetScreen.h": {
+      "sha256": "7b2a5560311f9a4ff17c64ffb4ac3da6aa85c2b0335b183e5025d4ce8faf049d",
+      "normalized": true
+    },
+    "Source/UI/VerbV2Panel.cpp": {
+      "sha256": "8a4de210f2a96afeb6005b420da953bcfa0cefac36d1dd492d01c849a3fc928b",
+      "normalized": true
+    },
+    "Source/UI/VerbV2Panel.h": {
+      "sha256": "2aa716eb005ed304ece5b4a37ea14e9cfc5418868d793a0a09e286690ff4d44b",
+      "normalized": true
+    },
+    "Tests/KeepDryTests.cpp": {
+      "sha256": "b1bd9a09a5f86a184186e971c3cf5b15ac133c2900ae23bfa78e0d34e4cd2adf",
+      "normalized": true
+    },
+    "Tests/LabMain.cpp": {
+      "sha256": "bc969dc2951a876c2af6bb17f582693bcc571359c99083e925782eaa74649e61",
+      "normalized": true
+    },
+    "Tests/OutputLevelAudit.cpp": {
+      "sha256": "0b3a8f2711482d561aa1b1986b526b7f4c66807d5de7e53985e8d8e48db5243b",
+      "normalized": true
+    },
+    "Tests/PluginTests.cpp": {
+      "sha256": "47ea480d2235ed4a7c97053880184cb6ac7bd67a8a7d9ca90588f46d5077dc94",
+      "normalized": true
+    },
+    "Tests/PresetLabMain.cpp": {
+      "sha256": "c412addc17e9a01c9ad8570f3d50a400f02754b248d4abb3caf6a5db4ac2e7d3",
+      "normalized": true
+    },
+    "Tests/ReferenceMain.cpp": {
+      "sha256": "50bec8e5f0734bd06d8060041d87fa11bb8eb4f2a7c08b5ef997cab97c3a5fb5",
+      "normalized": true
+    },
+    "Tests/SnapshotMain.cpp": {
+      "sha256": "0ee2196d211e1d1b67417a47003f3d02da6fff3d75f3bdff1ab58890b6503ec7",
+      "normalized": true
+    },
+    "Tests/TemporalTests.cpp": {
+      "sha256": "3547ca31dde64d6b11543c3547d1053510d926ec4ed7078ed85d3c21acdfb7a4",
+      "normalized": true
+    },
+    "Tests/TestMain.cpp": {
+      "sha256": "d4b830251e2c05457c5ae9793cb3f2f63a8335242d4a62c837aee7d1debe9f11",
+      "normalized": true
+    },
+    "Tests/TestSignals.h": {
+      "sha256": "8093bb51464634e03430d679bb218d6506767a2e57d35a08f1a648d256dd9b20",
+      "normalized": true
+    },
+    "Tests/V2Tests.cpp": {
+      "sha256": "d830fa1f06e82ec7fab128afc4695488dbae3e89657f449cfe829a608700963b",
+      "normalized": true
+    },
+    "Tests/VerbLabHelpers.h": {
+      "sha256": "428225872d86162dd48f153132aa28efd11b3d3b4b4553ad1b0d75bc86f7fc8f",
+      "normalized": true
+    },
+    "Tests/WetLevelTests.cpp": {
+      "sha256": "86bb6e554c53a432874da03834802426c8bc86ebc02ea47380c16e49ee19d0d2",
+      "normalized": true
+    },
+    "Tests/WetLevelWorkflowTests.cpp": {
+      "sha256": "170ee3b2272e1441e0090f7db251d04f2d4fc803a6d50176646a1255892213cb",
+      "normalized": true
+    },
+    "Tools/analyze_wetlevel.py": {
+      "sha256": "621abb26e01a17e9b0eceb3e619aa418f729218fcaeb6b26fe4f2aeb87b4b5e1",
+      "normalized": true
+    },
+    "Tools/finalize_wetlevel.py": {
+      "sha256": "9f16d7146917985e636a93b36148bc18165957bfddeda70cb144ffe67d3242c1",
+      "normalized": true
+    },
+    "Tools/Validate-WetLevel.ps1": {
+      "sha256": "7cc16dc5908bf226ee2a3d4d15aca337a439898e36208019b871f1c0a4862cf4",
+      "normalized": true
+    },
+    "Tools/verify_wetlevel.py": {
+      "sha256": "53d9814b74bc89a3f416f3ecbb7c3e414fe10e0684c27b159834fafc2e5c47c0",
+      "normalized": true
+    }
+  },
+  "build_dll": "build/HamloVerb_artefacts/Release/VST3/HamloVerb.vst3/Contents/x86_64-win/HamloVerb.vst3",
+  "delivery_dll": "dist/WetLevel0.2.2/HamloVerb.vst3/Contents/x86_64-win/HamloVerb.vst3",
+  "archive": "dist/WetLevel0.2.2/HamloVerb-0.2.2-win64-vst3.zip",
+  "package": "dist/WetLevel0.2.2",
+  "manual_FL_listening": "unverified",
+  "installer": "not produced",
+  "push": "not requested for this change"
+}

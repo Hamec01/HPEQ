@@ -1,4 +1,13 @@
-# Current: HamloVerb0.2.1 KEEP DRY
+# Current: HamloVerb0.2.2 WET LEVEL
+
+Read docs/WET_LEVEL_HANDOFF.md. Modern wet-return trim on Main,-24..+24dB,
+default0. Reverb too quiet:try+6/+12dB,thenadjustMIX. KEEP DRY handles the direct
+source independently.1634native,208oldprogramPCMexact,390M0exact,validatorspass.
+VST/ZIP/SHA256:dist/WetLevel0.2.2. No installer or new push;manual FL listening
+for owner. Current receipt:docs/reports/wetlevel/acceptance.json. Historical
+Keep Dry source receipt does not certify the changed current source.
+
+# Historical: HamloVerb0.2.1 KEEP DRY
 
 Read docs/KEEP_DRY_HANDOFF.md for the completed patch and current artifacts.
 The0.2.0 historical release handoff follows.

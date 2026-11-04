@@ -34,6 +34,7 @@ juce::String helpFor(const juce::String& id)
     if (id == "earlyDb") return "Independent early-reflection level; 0 dB is neutral. Available in the six new characters.";
     if (id == "lateDb") return "Independent late-tail level; 0 dB is neutral. Available in the six new characters.";
     if (id == "outputDb") return "Output trim after Insert mixing or Send wet output. Does not alter the tank input or decay.";
+    if (id == "wetDb") return "Reverb return level only, -24 to +24 dB. Raise this when MIX is high but the tail is too quiet. Does not turn up the dry source or change decay/feedback. Try +6 or +12 dB, then adjust MIX. Factory preset loads reset this trim to 0 dB.";
     if (id == "freeze") return "Hold the current field and close new input. In new characters Shimmer injection stops; output controls remain available.";
     if (id == "timeShape") return "GATED follows the input detector. REVERSE SWELL rises into an ending. REVERSE AUDIO reverses wet fragments and accumulates audio before playback.";
     if (id == "shapeTimeMs") return "Gate hold, swell length or reversed-fragment duration. Reverse Audio needs this wet accumulation time; the dry path remains immediate.";
@@ -275,8 +276,8 @@ struct VerbV2Panel::Impl
         mixLock.onClick = [this] { if (owner.onMixLock) owner.onMixLock(!mixLock.getToggleState()); };
         addToggle("keepDry", "KEEP DRY", Always, { 996, 84, 128, 26 });
 
-        const char* mainIds[] { "decaySeconds", "predelayMs", "size", "distance", "width", "mix", "duck", "earlyDb", "lateDb", "outputDb", "attack", "shimmerAmount" };
-        const char* mainLabels[] { "DECAY", "PREDELAY", "SIZE", "DISTANCE", "WIDTH", "MIX", "DUCK", "EARLY", "TAIL", "OUTPUT", "BUILD", "SHIMMER" };
+        const char* mainIds[] { "decaySeconds", "predelayMs", "size", "distance", "width", "mix", "duck", "earlyDb", "lateDb", "outputDb", "attack", "wetDb" };
+        const char* mainLabels[] { "DECAY", "PREDELAY", "SIZE", "DISTANCE", "WIDTH", "MIX", "DUCK", "EARLY", "TAIL", "OUTPUT", "BUILD", "WET LEVEL" };
         for (int i = 0; i < 12; ++i) addKnob(mainIds[i], mainLabels[i], Main, { 56 + (i % 6) * 180, 354 + (i / 6) * 166, 168, 144 });
         addChoice("space", "SPACE", Main, { 56, 724, 220, 32 });
         addChoice("predelaySync", "PREDELAY SYNC", Main, { 296, 724, 220, 32 });
@@ -417,7 +418,7 @@ struct VerbV2Panel::Impl
             if (c.id == "mix") enabled = !send;
             if (c.id == "keepDry") enabled = !legacy && !send;
             if (c.id == "color") enabled = legacy;
-            if (c.id.startsWith("decayEq") || c.id.startsWith("postEq") || c.id == "earlyDb" || c.id == "lateDb" || c.id == "outputDb"
+            if (c.id.startsWith("decayEq") || c.id.startsWith("postEq") || c.id == "earlyDb" || c.id == "lateDb" || c.id == "outputDb" || c.id == "wetDb"
                 || c.id.startsWith("shimmer") || c.id.startsWith("shape") || c.id.startsWith("gate") || c.id == "timeShape"
                 || c.id == "duckAttackMs" || c.id == "duckReleaseMs") enabled = !legacy;
             c.component()->setEnabled(enabled); if (c.label) c.label->setAlpha(enabled ? 1.0f : 0.4f);

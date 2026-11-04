@@ -52,7 +52,7 @@ public:
     void setParameterValue(const juce::String& id, double actualValue);
     bool isModuleOn() const noexcept { return bypassParameter != nullptr && !bypassParameter->get(); }
     double getHostBpm() const noexcept { return hostBpm.load(std::memory_order_relaxed); }
-    float getOutputDb() const noexcept { return rawValues[22]->load() < .5f ? engine.outputLevelDb() : modern.outputLevelDb(); }
+    float getOutputDb() const noexcept { return rawValues[22]->load() < .5f ? engine.outputLevelDb() : wetReturnDb.load(std::memory_order_relaxed); }
     float getDuckDb() const noexcept { return rawValues[22]->load() < .5f ? engine.duckingDb() : modern.duckingDb(); }
 
     bool getMixLock() const noexcept { return mixLocked.load(); }
@@ -73,7 +73,8 @@ private:
     juce::AudioBuffer<float> wetBuffer;
     juce::ValueTree defaults;
     std::atomic<bool> mixLocked { false };
-    dsp::LinearRamp insertMix, outputGain, keepDryBlend;
+    dsp::LinearRamp insertMix, outputGain, keepDryBlend, wetReturnGain;
+    std::atomic<float> wetReturnDb { -120.0f };
     int lastEngine = 0;
     juce::AudioBuffer<float> dry;
     dsp::LinearRamp wetAmount;
