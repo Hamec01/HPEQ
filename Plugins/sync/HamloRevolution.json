@@ -1,13 +1,13 @@
 {
   "plugin": "HamloRevolution",
-  "version": "0.2.1",
-  "status": "Committed source snapshot; see plugin reports for release/listening limits",
-  "source_commit": "71545ffa60e2805cc5fa2f6c3927b8d2be3a33ac",
-  "source_tree": "908ce37a8ea2e9290abe75f681156358801f7792",
-  "source_branch": "master",
+  "version": "0.3.0",
+  "status": "Verified R12 source-aware Rise and Drum Fill snapshot; parked R11 draft excluded",
+  "source_commit": "8470eeb16d6c28bda17dc4acfd9d084a9f44df75",
+  "source_tree": "9e69025456602feffc94d30abf5aea9b73b98f1b",
+  "source_branch": "feature/transition-v2",
   "hpeq_branch": "plugins/hamlorevolution",
   "prefix": "Plugins/HamloRevolution",
   "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
-  "sync_date": "2026-11-03",
+  "sync_date": "2026-11-04",
   "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
 }
