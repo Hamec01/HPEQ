@@ -1,0 +1,34 @@
+CMake is re-running because E:/HamloFader/build/CMakeFiles/generate.stamp is out-of-date.
+  the file 'E:/HamloFader/CMakeLists.txt'
+  is newer than 'E:/HamloFader/build/CMakeFiles/generate.stamp.depend'
+  result='-1'
+-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.26300.
+-- Configuring juceaide
+-- Building juceaide
+-- Exporting juceaide
+-- Testing juceaide
+-- Finished setting up juceaide
+-- Configuring done (2.0s)
+-- Generating done (0.8s)
+-- Build files have been written to: E:/HamloFader/build
+Версия MSBuild 18.5.4+cb4e32d21 для .NET Framework
+
+  Checking File Globs
+  Generating HamloFader_artefacts/JuceLibraryCode/HamloFader_resources.rc
+  HamloFader_rc_lib.vcxproj -> E:\HamloFader\build\HamloFader_rc_lib.dir\Release\HamloFader_rc_lib.lib
+  HamloFader_vst3_helper.vcxproj -> E:\HamloFader\build\Release\HamloFader_vst3_helper.exe
+  HamloFader_Assets.vcxproj -> E:\HamloFader\build\Release\HamloFader_Assets.lib
+  HamloFader_Shared.vcxproj -> E:\HamloFader\build\Release\HamloFader_Shared.lib
+  HamloFader.vcxproj -> E:\HamloFader\build\HamloFader_artefacts\Release\HamloFader_SharedCode.lib
+     ????????? ?????????? E:/HamloFader/build/HamloFader_artefacts/Release/VST3/HamloFader.lib ? ?????? E:/HamloFader/build/HamloFader_artefacts/Release/VST3/HamloFader.exp
+  HamloFader_VST3.vcxproj -> E:\HamloFader\build\HamloFader_artefacts\Release\VST3\HamloFader.vst3\Contents\x86_64-win\HamloFader.vst3
+  removing moduleinfo.json
+  creating E:/HamloFader/build/HamloFader_artefacts/Release/VST3/HamloFader.vst3
+Версия MSBuild 18.5.4+cb4e32d21 для .NET Framework
+
+  Checking File Globs
+  HamloFader_Assets.vcxproj -> E:\HamloFader\build\Release\HamloFader_Assets.lib
+  HamloFader_Shared.vcxproj -> E:\HamloFader\build\Release\HamloFader_Shared.lib
+  F5AuditionTests.cpp
+E:\HamloFader\Tests\F5AuditionTests.cpp(45,212): warning C4996: 'juce::AudioFormat::createWriterFor': Use the function taking an AudioFormatWriterOptions instead. [E:\HamloFader\build\HamloFader_Tests.vcxproj]
+  HamloFader_Tests.vcxproj -> E:\HamloFader\build\Release\HamloFader_Tests.exe

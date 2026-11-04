@@ -1,0 +1,11 @@
+Random seed: 0x43191a0
+-----------------------------------------------------------------
+Starting tests in: F5 preset library / 208 programs;200 permanent IDs,group counts,unique effective recipes and neutral held Match...
+Completed tests in F5 preset library / 208 programs;200 permanent IDs,group counts,unique effective recipes and neutral held Match
+-----------------------------------------------------------------
+Starting tests in: F5 preset library / Actual owner-material calibration/check:work,peak,finite,state and command workflow...
+fader-dnb-40 PASS work=9.32492 peak=-26.172
+LIBRARY calibrate 200/200
+Completed tests in F5 preset library / Actual owner-material calibration/check:work,peak,finite,state and command workflow
+
+HamloFader_Tests: 16459 expectations passed, 0 failed

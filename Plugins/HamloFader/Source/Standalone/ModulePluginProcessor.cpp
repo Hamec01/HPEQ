@@ -296,12 +296,17 @@ bool ModulePluginProcessor::requestAction(FaderAction action,std::uint64_t frame
     if(frame==std::numeric_limits<std::uint64_t>::max())frame=publishedFrames.load(std::memory_order_acquire);
     return commands.push({action,frame,epoch.load(std::memory_order_acquire)});
 }
-bool ModulePluginProcessor::applyMatch()
+bool ModulePluginProcessor::matchProposal(FaderStatus& s) const
 {
-    FaderStatus s;
     if(!readStatus(s)||s.epoch!=epoch.load(std::memory_order_acquire)||!s.proposal.valid||s.reading.learning||s.legacy||s.bypassed||s.commandSequence!=commands.produced()
         ||controls.value(Engine)<.5f||static_cast<int>(controls.value(Mode))!=1||controls.value(Enabled)<.5f
         ||rawValues[5]->load(std::memory_order_relaxed)>.5f||!isModuleOn())return false;
+    return true;
+}
+bool ModulePluginProcessor::canApplyMatch() const { FaderStatus s; return matchProposal(s); }
+bool ModulePluginProcessor::applyMatch()
+{
+    FaderStatus s;if(!matchProposal(s))return false;
     auto* p=parameter("matchedDb");p->beginChangeGesture();setParameterValue("matchedDb",s.proposal.gainDb);p->endChangeGesture();return true;
 }
 void ModulePluginProcessor::resetNewParameters(bool legacy)
@@ -345,7 +350,10 @@ void ModulePluginProcessor::setCurrentProgram(int index)
 {
     const auto& list = presets::factoryModulePresets(getSpec().type);
     currentProgram.store(juce::jlimit(0,static_cast<int>(list.size()),index),std::memory_order_relaxed);
-    resetNewParameters(true);
+    resetNewParameters(getCurrentProgram()<=7);
+    if(getCurrentProgram()>7)
+        for(const auto& control:faderControls())
+            setParameterValue(control.id,presets::presetValue(list[static_cast<size_t>(getCurrentProgram()-1)],control.id,control.initial));
     for (const auto& spec : getSpec().parameters)
     {
         double value = spec.defaultValue;
@@ -354,6 +362,16 @@ void ModulePluginProcessor::setCurrentProgram(int index)
         setParameterValue(spec.id, value);
     }
     epoch.fetch_add(1,std::memory_order_release);
+}
+
+bool ModulePluginProcessor::isProgramModified() const
+{
+    const auto& list=presets::factoryModulePresets(getSpec().type);const int index=currentProgram.load(std::memory_order_relaxed);
+    auto expected=[&](const juce::String& id,double fallback){return index>0&&index<=static_cast<int>(list.size())?presets::presetValue(list[static_cast<size_t>(index-1)],id,fallback):fallback;};
+    auto differs=[&](const juce::String& id,double value){auto* par=parameter(id);return par&&std::abs(par->getValue()-par->convertTo0to1(static_cast<float>(value)))>1e-6f;};
+    for(const auto& spec:getSpec().parameters)if(differs(spec.id,expected(spec.id,spec.defaultValue)))return true;
+    for(const auto& c:faderControls())if(differs(c.id,expected(c.id,c.id=="engine"?(index>7?1.:0.):c.initial)))return true;
+    return false;
 }
 
 } // namespace hpeq::standalone

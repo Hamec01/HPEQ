@@ -1,18 +1,33 @@
-HamloFader 0.1.0 - gain utility, VST3, Windows x64 (HamloProd)
+HamloFader 0.2.0 - Windows x64 VST3
 
-Controls
-  GAIN         The fader: level of this band (or of the whole layer on the MIX chain).
-  DELAY        Delays the band: time alignment, or a Haas widening on one side.
-  TARGET       The level MATCH brings the band to: press MATCH and GAIN is set so the band lands here.
-  MIX          Blend with the dry signal.
-  POLARITY     Flips the polarity of the left and / or right channel (phase problems, mic bleed).
-  MUTE         Silences the band.
-  SOLO         Hear only this band.
-  ON           the lamp switch; off = the dry signal
+Copy the complete HamloFader.vst3 bundle to your VST3 folder and rescan in FL.
+No installer or automatic installed-copy replacement is included.
 
-Presets: the screen top left - the arrows step through the presets (or the mouse wheel; click the name for a menu).
-The same presets are in the DAW's program list.
+QUICK / ADVANCED / LEGACY
+  QUICK: the principal controls for the selected role.
+  ADVANCED: select CHANNEL TOOLS or MODE CONTROLS for detailed settings.
+  LEGACY: the original panel and original project behavior.
+  The preset screen stays at the upper left. Genre/group menus only filter.
 
-Mono and stereo. The latency is fixed and reported to the DAW.
+TRIM: input/manual/output gain, channel trim/routing/polarity and alignment.
+MATCH: choose RMS/LUFS and target, START LEARN, play audio, STOP/PROPOSE,
+       inspect the proposal, then APPLY. No automatic gain change on Stop.
+RIDE: Natural/Fast response, strength, boost/cut limits and activity floor.
+MOTION: custom2..32point graph or Sine/Triangle, depth, Sync/Free timing,
+        phase/right offset. Custom points also have exact numeric input.
 
-Uninstall: Settings -> Apps -> HamloFader, or Start menu -> HamloProd -> Uninstall HamloFader.
+Alignment0..20ms is a deliberate effect, not host latency compensation.
+Host latency0samples. New instances start neutral modern Trim. Original
+Default/programs0..7 select Legacy;200 new recipes follow as programs8..207.
+Old projects preserve their parameter/state identity and sound.
+
+WAIT means a meter is not ready. Integration holds72000windows(about2hours),
+then FULL requires Reset. Reset clears histories, not the held Match gain.
+Peak Guard limits the learned Match proposal; it is not an output limiter.
+Later input/routing/output changes can exceed its ceiling.
+
+200 recipes are calibrated on prepared owner material. Their depth bands and
+peak results do not guarantee identical behavior on other recordings. The
+DnB Heavy Keys recipe uses visible Input+12/Gain-12 detector staging with a
+shifted activity floor, keeping neutral fixed gain. Manual FL listening remains
+for the owner. Private audition audio is not factory content and is not bundled.

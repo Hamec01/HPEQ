@@ -1,0 +1,1609 @@
+{
+  "passed": 200,
+  "total": 200,
+  "worst_peak_dbtp": -3.906150169284026,
+  "exact_calibration_pcm": 200,
+  "max_work_delta_db": 0.0,
+  "recipes": [
+    {
+      "id": "fader-bb-01",
+      "true_peak_8x_dbtp": -6.763676692037394,
+      "work_db": 2.000012299885449,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "558b47f7581b5a96e92c16de9c672386d9d56d078fea65a63ac08b02241d81bf"
+    },
+    {
+      "id": "fader-bb-02",
+      "true_peak_8x_dbtp": -9.754606143705962,
+      "work_db": 4.528485872127419,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "cf51a2d48ba2767577294ac2deb18fd322d3e916c3e52d0af8e7f1a6bab4b236"
+    },
+    {
+      "id": "fader-bb-03",
+      "true_peak_8x_dbtp": -18.042687060983464,
+      "work_db": 9.049995422592442,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "dc46767551690bb147fcdefb31fb5b680be6c9f2a1c5d2f03f4913b186c35094"
+    },
+    {
+      "id": "fader-bb-04",
+      "true_peak_8x_dbtp": -6.525995853797192,
+      "work_db": 2.075080388355971,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "89e2ef20e776a3280d92af33a79ec96a92e5c5fac1285dcb7feb5bf35d68bdd1"
+    },
+    {
+      "id": "fader-bb-05",
+      "true_peak_8x_dbtp": -10.485576820072657,
+      "work_db": 4.602038461184986,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "1882d6820fde96152f78a12d44cc56fe5db3c3ecdb2aba7add57a20bb4a359c6"
+    },
+    {
+      "id": "fader-bb-06",
+      "true_peak_8x_dbtp": -18.117683520668653,
+      "work_db": 9.12500000114244,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a91905be8138785dc4db42a88212ec24ec41010e97dff4857b3134890095a9c1"
+    },
+    {
+      "id": "fader-bb-07",
+      "true_peak_8x_dbtp": -5.515539121773077,
+      "work_db": 4.499996361365402,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "57c9402cf599adcfde72889c3542ebb0e012e4a0667a4394b3be559273623d7e"
+    },
+    {
+      "id": "fader-bb-08",
+      "true_peak_8x_dbtp": -4.295943072291826,
+      "work_db": 6.276735585086324,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "ba878e70bdb984ec3109cb4c3028daa34992d708822621e78920839da793e10d"
+    },
+    {
+      "id": "fader-bb-09",
+      "true_peak_8x_dbtp": -9.57737524069173,
+      "work_db": 2.049560849873057,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "26037e46bcdf95f138528796755772b8c39b6999139f045055e9c8be1148e2b0"
+    },
+    {
+      "id": "fader-bb-10",
+      "true_peak_8x_dbtp": -13.56752167869196,
+      "work_db": 4.575004578962502,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "090fb9ac498830a60ab23b80a312c4dd636503f04040f364bb648852958c543c"
+    },
+    {
+      "id": "fader-bb-11",
+      "true_peak_8x_dbtp": -3.906150169284026,
+      "work_db": 7.237387548146692,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a03a01cfb78d65863bc056ba02272695cca2276e12de7e28a4331630529ee24d"
+    },
+    {
+      "id": "fader-bb-12",
+      "true_peak_8x_dbtp": -10.034726575832778,
+      "work_db": 2.123555000157531,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "127a52c35975a751913eb2f1d0760868328cfa8c8467b564ad36f3bad86240b4"
+    },
+    {
+      "id": "fader-bb-13",
+      "true_peak_8x_dbtp": -8.694372919354468,
+      "work_db": 9.00324537890537,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "75bc33825c6a8197ffdbffbd1c5c21833084a7e0e67e27648c68eb0274344a7a"
+    },
+    {
+      "id": "fader-bb-14",
+      "true_peak_8x_dbtp": -7.7164542657236055,
+      "work_db": 2.617479783450273,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "6b1d198ade39a4a33522207f90cb45c90f79b20ce7d18dccddffc4520695d39d"
+    },
+    {
+      "id": "fader-bb-15",
+      "true_peak_8x_dbtp": -12.689732442351264,
+      "work_db": 4.547176583789598,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "95e7fe0a758ef85db87fb87c1906ce326c7902d924bdca62a97aac1e87ca769f"
+    },
+    {
+      "id": "fader-bb-16",
+      "true_peak_8x_dbtp": -6.388978569885646,
+      "work_db": 7.237030260896682,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "c9f8deb7d77ab03a2cdad1e6d651a8523b10da7540683ffe182d67457beb925a"
+    },
+    {
+      "id": "fader-bb-17",
+      "true_peak_8x_dbtp": -10.661150319248618,
+      "work_db": 2.099998473038315,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "c4fe54d05691174df4c4431c60b178be6f69c1fdc70cd26b99b3523d54058c83"
+    },
+    {
+      "id": "fader-bb-18",
+      "true_peak_8x_dbtp": -9.154775307236113,
+      "work_db": 2.001665850497175,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e762d842fea5644b7efa7009e1331d2f2e16da3b0de4e7108f13fddbaf2692d5"
+    },
+    {
+      "id": "fader-bb-19",
+      "true_peak_8x_dbtp": -10.0987397531093,
+      "work_db": 4.526206956138975,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "fa75e3b93194704e95de50bce82de2c64ef609991f679321c9739021f8227373"
+    },
+    {
+      "id": "fader-bb-20",
+      "true_peak_8x_dbtp": -5.403189734018302,
+      "work_db": 6.481841754834051,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "5ab7fc908e49a4253e9c338b8eb0d4394720d5f4a5db55e4a5aa8c4c0dadd5e0"
+    },
+    {
+      "id": "fader-bb-21",
+      "true_peak_8x_dbtp": -9.106297585622112,
+      "work_db": 2.075750884397257,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "fe4c90be637bdadcbbb17715aa20fc58523fbe33cff1671d97c3544615026644"
+    },
+    {
+      "id": "fader-bb-22",
+      "true_peak_8x_dbtp": -7.680303816023794,
+      "work_db": 4.499830889734048,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "c0f2ea322bc5687f5c284ac7ae855a1ed32caa65665a6280db28ade298ae0dca"
+    },
+    {
+      "id": "fader-bb-23",
+      "true_peak_8x_dbtp": -9.186913595259226,
+      "work_db": 9.028711573649659,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "d38f2e98b31883f2065e2626c24b9cef2eb56ad5bc8f7e1672db60c5d86edce6"
+    },
+    {
+      "id": "fader-bb-24",
+      "true_peak_8x_dbtp": -7.622832925120812,
+      "work_db": 2.049958420284571,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f55b6648974bf4ebbc9281f0dafab9ce227bcd3afd2bcd03277a0b0a30fa4159"
+    },
+    {
+      "id": "fader-bb-25",
+      "true_peak_8x_dbtp": -12.313709185073076,
+      "work_db": 4.574690832007556,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "13d014bb43ff0d6c042ba2babf9f3731c855c32feccbc5a6892e6ae5aa55e4b4"
+    },
+    {
+      "id": "fader-bb-26",
+      "true_peak_8x_dbtp": -17.86909552903205,
+      "work_db": 9.09999847383286,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "ef3e4ec85d806adec9ea3e1004e5b17266ee0d1dcf9ac2dce72989b36c443b84"
+    },
+    {
+      "id": "fader-bb-27",
+      "true_peak_8x_dbtp": -8.035694980200724,
+      "work_db": 2.125117732797343,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "772574fc62bcb1c6759d9ae7c5ee389aa5ea5b1a13f96274376001eebd8c4dae"
+    },
+    {
+      "id": "fader-bb-28",
+      "true_peak_8x_dbtp": -12.397273187235937,
+      "work_db": 4.649105630804935,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "1f5e7309f5d93645db556f24e53683d55cde7909430d20dbe70da63db998ebf3"
+    },
+    {
+      "id": "fader-bb-29",
+      "true_peak_8x_dbtp": -9.837546617032501,
+      "work_db": 8.594250201089904,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "ecbbd2f5cd7921969690400abca1b6419cf341d1321e9377ced6525de7d3ec4e"
+    },
+    {
+      "id": "fader-bb-30",
+      "true_peak_8x_dbtp": -12.292804875267862,
+      "work_db": 2.024054176454538,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "de1ffcb3559358aa6e22113c2edf8cafca14347ba88e8e9b314211519c7e288e"
+    },
+    {
+      "id": "fader-bb-31",
+      "true_peak_8x_dbtp": -13.544224292435631,
+      "work_db": 4.549999236473173,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "583ac3ca1372b66542e7fdc3b040573ff0e83f38729f8cfc2b435a50c497d5ea"
+    },
+    {
+      "id": "fader-bb-32",
+      "true_peak_8x_dbtp": -11.755038480775031,
+      "work_db": 9.077361433116138,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "0695886593d4d2ff7c655782e27e3d94dd66de41a39751bf567f16fbc23be935"
+    },
+    {
+      "id": "fader-bb-33",
+      "true_peak_8x_dbtp": -8.998025644426967,
+      "work_db": 2.526695098185435,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "057f403de2e8ea424eb0b9270b8546a2f0750c58c6f610d4861e2bf9dcfd7436"
+    },
+    {
+      "id": "fader-bb-34",
+      "true_peak_8x_dbtp": -6.652275894614244,
+      "work_db": 1.999919943377992,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "63753e202a416aed225991381870a97bbc0ba68267d3e968d2bba3b77b2ce848"
+    },
+    {
+      "id": "fader-bb-35",
+      "true_peak_8x_dbtp": -8.03625581742547,
+      "work_db": 4.525054097073809,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "59acbfed97c6408b8196f3d07ed9562a71138270f60f36c2de9af4a8cb8bce99"
+    },
+    {
+      "id": "fader-bb-36",
+      "true_peak_8x_dbtp": -18.02857690144284,
+      "work_db": 9.049995422825223,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "65ef41aac9ec98402056dc5897fcde25c27d89aba9521baa690a3e7705eab392"
+    },
+    {
+      "id": "fader-bb-37",
+      "true_peak_8x_dbtp": -6.6821516911427095,
+      "work_db": 2.075166632065744,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "27a23addf13fd0709e856e7e4ebd2a826f5a42ad97b9671e46b215fd244ef6f6"
+    },
+    {
+      "id": "fader-bb-38",
+      "true_peak_8x_dbtp": -11.279066055435969,
+      "work_db": 4.59630663967453,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "24a8c874eba8a7b3e48d129639159b5aaaa3ff14bf45baf795abaed3d9edacfd"
+    },
+    {
+      "id": "fader-bb-39",
+      "true_peak_8x_dbtp": -11.179036719688085,
+      "work_db": 4.50026693623543,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "5b4e6db37b71e48ce931c63f7a65576148e39b605a5468ac48023164b578d367"
+    },
+    {
+      "id": "fader-bb-40",
+      "true_peak_8x_dbtp": -13.454287113583042,
+      "work_db": 6.012125209198208,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a002d404ac04b02e52811729c7112f630e0f5814f44fb9052c7e8891be3ac609"
+    },
+    {
+      "id": "fader-bb-41",
+      "true_peak_8x_dbtp": -9.35842535304649,
+      "work_db": 2.046771508697609,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "fe4413c80eaba803a044e4a482729011e3bcc357f48e753799dba7548b2eb38c"
+    },
+    {
+      "id": "fader-bb-42",
+      "true_peak_8x_dbtp": -13.569222827999344,
+      "work_db": 4.575004577162987,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "59ba5c8175312393d1b8b7184454cf2eeca7358602ed5ebb7a9353ba18dd8c7e"
+    },
+    {
+      "id": "fader-bb-43",
+      "true_peak_8x_dbtp": -14.4707004463886,
+      "work_db": 8.196234868361756,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "c861624974a1e4588e6361b27216243585def33a69c0cd7428e757c45bea30fc"
+    },
+    {
+      "id": "fader-bb-44",
+      "true_peak_8x_dbtp": -10.005413060936954,
+      "work_db": 2.027189006103974,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "92cf11057a8312c531577784d493db7201f909dd5c9dc35fe28591506925f7f3"
+    },
+    {
+      "id": "fader-bb-45",
+      "true_peak_8x_dbtp": -13.537837087187096,
+      "work_db": 4.549999237013119,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e43257638804881d09965ff92a989338fdf22770e3e1a19d6c95476b590ff8a4"
+    },
+    {
+      "id": "fader-bb-46",
+      "true_peak_8x_dbtp": -12.931440950866458,
+      "work_db": 9.076451206881899,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "87595ef5270f8bebd360bd2324780defd75b5c8129beae48573037fd780010ce"
+    },
+    {
+      "id": "fader-bb-47",
+      "true_peak_8x_dbtp": -10.76961122166784,
+      "work_db": 1.999999999744391,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "c3eff453309c5405418895a277ef88b23792d4a777f1f32b447aa1bae7500853"
+    },
+    {
+      "id": "fader-bb-48",
+      "true_peak_8x_dbtp": -7.527374290119235,
+      "work_db": 4.524728356530615,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "ad0d5e6170caf944f214d97f9f7469966132d5da74cde10edd7133415ae4362d"
+    },
+    {
+      "id": "fader-bb-49",
+      "true_peak_8x_dbtp": -17.819611588911226,
+      "work_db": 9.04999542267055,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a3c842faf044e7ce23a88b8b211653d43af6b85765a546c70c663a530190f121"
+    },
+    {
+      "id": "fader-bb-50",
+      "true_peak_8x_dbtp": -8.896251124394984,
+      "work_db": 2.077581181205149,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "cf441eabbcf5956967c7a94cdaf5609f02e38be40c149ed4d3b7b0d45a8351a9"
+    },
+    {
+      "id": "fader-trap-01",
+      "true_peak_8x_dbtp": -7.133857295779626,
+      "work_db": 4.599992536715981,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "fbc2425b84cc003113cb8dab4ef8d57a948268b5db84f663f01db4a21f4951a5"
+    },
+    {
+      "id": "fader-trap-02",
+      "true_peak_8x_dbtp": -9.110635136350174,
+      "work_db": 9.128552184616408,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "974d9c4976b3aeec83e54c1c219dc45a14b6692589e59d348201826fe12d1aa6"
+    },
+    {
+      "id": "fader-trap-03",
+      "true_peak_8x_dbtp": -11.142686504614245,
+      "work_db": 2.149997711796241,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "b57699529e856594a130752fd25b8e2a41ee5358a94b7cacb987a246f31e0ae7"
+    },
+    {
+      "id": "fader-trap-04",
+      "true_peak_8x_dbtp": -7.107373238348739,
+      "work_db": 4.67510330695756,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "78989ad3a1938caa3e5cc20fd36dfd440014ba921cb9bf392a9e79a2b761ac06"
+    },
+    {
+      "id": "fader-trap-05",
+      "true_peak_8x_dbtp": -9.321649813560889,
+      "work_db": 9.202700603545274,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "81a8ade478591c9f4f09d538950eca541125abf285d293a8e90e12720ba6e4e3"
+    },
+    {
+      "id": "fader-trap-06",
+      "true_peak_8x_dbtp": -11.217684307631783,
+      "work_db": 2.224994660357156,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "d946d131f6b7b6a5bb4d4b80fbdd7fb35b28efe46dfd48e7ce73470784782d22"
+    },
+    {
+      "id": "fader-trap-07",
+      "true_peak_8x_dbtp": -5.346906841153091,
+      "work_db": 6.311332526988991,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "d9a2fc9c52384270fdd63b52388a932701a4ef40f7a06f2a500c185429e18039"
+    },
+    {
+      "id": "fader-trap-08",
+      "true_peak_8x_dbtp": -6.196575454773296,
+      "work_db": 2.816071235303142,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "25e148b12a0d1a0275e9b30765b89eff78e3c69d3607d06fd40a099b9469e145"
+    },
+    {
+      "id": "fader-trap-09",
+      "true_peak_8x_dbtp": -9.380617863580994,
+      "work_db": 4.64745607343988,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f919e01b89c34dad8ba2844fd35bfa3d8518a0e51a7f94085419d9b669944f51"
+    },
+    {
+      "id": "fader-trap-10",
+      "true_peak_8x_dbtp": -18.167523005061852,
+      "work_db": 9.175003051045039,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "97e73e0376f9781314639aa14c2e40e8821b6fd0f928c5298798979b7b416e09"
+    },
+    {
+      "id": "fader-trap-11",
+      "true_peak_8x_dbtp": -6.196575454773296,
+      "work_db": 2.812826676460097,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "5a8b447fcfed3058b98e15568191535894f99647ddfc9eb05319e7efbb46b632"
+    },
+    {
+      "id": "fader-trap-12",
+      "true_peak_8x_dbtp": -9.703040688948251,
+      "work_db": 4.724409113305171,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a60c4777c1ef0813e2c195e2ee6a2fcdd1965cc290055dd3120437716dbb3e59"
+    },
+    {
+      "id": "fader-trap-13",
+      "true_peak_8x_dbtp": -8.98156461174165,
+      "work_db": 2.105088114693968,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "8dbf57951581205c33702a1fc7d48b1fe7be0427c78eceebca93e25689f8d4e7"
+    },
+    {
+      "id": "fader-trap-14",
+      "true_peak_8x_dbtp": -7.1924042474307734,
+      "work_db": 4.624992205675817,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "db1bb9537629c026fe9785d450f8a05fdc3eed56fd73a59d79427dd4e65d5d77"
+    },
+    {
+      "id": "fader-trap-15",
+      "true_peak_8x_dbtp": -10.140186842637869,
+      "work_db": 9.151492317000988,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "2142069f8736bb73c3d4569b6b185a662e88a32d6d0f58a2776e2803e75bde76"
+    },
+    {
+      "id": "fader-trap-16",
+      "true_peak_8x_dbtp": -7.606178843961141,
+      "work_db": 2.699834006621463,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "337b87a72bc87f1207af344130262dd9546d6d533b4f1d87b67ddf7ff3ef245b"
+    },
+    {
+      "id": "fader-trap-17",
+      "true_peak_8x_dbtp": -13.261159192729668,
+      "work_db": 4.700004577925259,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "ea69f7d2dc9771280d5fabcc4620d1d86dca01a93266a50d48b42679df499709"
+    },
+    {
+      "id": "fader-trap-18",
+      "true_peak_8x_dbtp": -9.308354352081853,
+      "work_db": 4.594978853100061,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "55b9d731d51a2d055d21b74e003e2514d6ed1fbab435dda43291e8c44662e7ab"
+    },
+    {
+      "id": "fader-trap-19",
+      "true_peak_8x_dbtp": -10.466597639332484,
+      "work_db": 9.120080176923382,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "86b4d49506481726a0560f1bb48d1dcda78a03b513350eebe87c72391efa667b"
+    },
+    {
+      "id": "fader-trap-20",
+      "true_peak_8x_dbtp": -5.744933074412804,
+      "work_db": 2.668310466196465,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "cb311e7abadfd504fe097f373df225b5bdeba91451e5c3daf8631fadddc15c77"
+    },
+    {
+      "id": "fader-trap-21",
+      "true_peak_8x_dbtp": -11.398197135131092,
+      "work_db": 4.676726255676087,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "b5ca76163fe4d616584a0bc2339c3353be54f155152388909f3d4c107b184f25"
+    },
+    {
+      "id": "fader-trap-22",
+      "true_peak_8x_dbtp": -6.177024108607604,
+      "work_db": 9.10027146259522,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "5c8be5ea2e5bb7c43246bd5a1a65d043570c74e103ec3da2bcc55d272d9564cb"
+    },
+    {
+      "id": "fader-trap-23",
+      "true_peak_8x_dbtp": -9.100919426506861,
+      "work_db": 2.130398971728234,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "892c21f3bbc5825c86461b09933d5daf8a3f01f3536cf1e673779236094a53d8"
+    },
+    {
+      "id": "fader-trap-24",
+      "true_peak_8x_dbtp": -7.134728914593521,
+      "work_db": 4.649927604467128,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e4eb580859d76b8268e845b8164aba77c48e9213c99cfa373af3ef3a1f96b4f2"
+    },
+    {
+      "id": "fader-trap-25",
+      "true_peak_8x_dbtp": -13.772552441416021,
+      "work_db": 9.176704204235522,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f1c872d9416722b7b8315e60bf3a536ed0f7a5d88506eae6c3b8681c5a2b8bb1"
+    },
+    {
+      "id": "fader-trap-26",
+      "true_peak_8x_dbtp": -10.96909766186764,
+      "work_db": 2.20000076352338,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "04341faef0bc75cfc87d07f511781297f87156fe9b3c72871e099e8dcf4da054"
+    },
+    {
+      "id": "fader-trap-27",
+      "true_peak_8x_dbtp": -7.962013014072811,
+      "work_db": 4.724796911515352,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "50096463957253a2449dbfa581f3ee0888c496d0c36f51d2809a5632c9c1fd7a"
+    },
+    {
+      "id": "fader-trap-28",
+      "true_peak_8x_dbtp": -11.007324157161962,
+      "work_db": 9.24813946168071,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "1c5c761de71b70dd0b0096f73ec13bb2eaa82c6dedf0e810272745440144ad1e"
+    },
+    {
+      "id": "fader-trap-29",
+      "true_peak_8x_dbtp": -9.914276192488446,
+      "work_db": 2.100165689338855,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "14e52a21e4ad6a45516d5822f2087b0688a7d14b8a6e404df9a78e06f9b69883"
+    },
+    {
+      "id": "fader-trap-30",
+      "true_peak_8x_dbtp": -9.574266286633122,
+      "work_db": 4.623170679606326,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "748b874a087926fb7f2f9f30f59e1750fd270dffb7ef109fe958cda43268f40c"
+    },
+    {
+      "id": "fader-trap-31",
+      "true_peak_8x_dbtp": -20.332959643017094,
+      "work_db": 9.150001526694746,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "1b3035b10fc4e1d5652f19a91a37bc12db4a3a8268a117e828bf786ecad8b91d"
+    },
+    {
+      "id": "fader-trap-32",
+      "true_peak_8x_dbtp": -9.753762093200717,
+      "work_db": 2.170696255832083,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "c0e8b06ff7a12b728d0d21e73c3d48353fb5ba0eeba3b34cf0c9b35b8e52b9ea"
+    },
+    {
+      "id": "fader-trap-33",
+      "true_peak_8x_dbtp": -10.832898508442216,
+      "work_db": 4.699789441387954,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "9ec2dca32aea4185672f827415d2cc740c7540f5220c44327a9d4769ca7775a2"
+    },
+    {
+      "id": "fader-trap-34",
+      "true_peak_8x_dbtp": -10.500271473159371,
+      "work_db": 4.59997745211545,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "bad30bc50ebf7400a205712c44e94224661406f760866a205effe7f2910598e8"
+    },
+    {
+      "id": "fader-trap-35",
+      "true_peak_8x_dbtp": -14.756112057033377,
+      "work_db": 9.125134347193926,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "fb89362f3a10f9bf27888feeb00fcf081379fb0d08297f68ecb28a0445e1ff53"
+    },
+    {
+      "id": "fader-trap-36",
+      "true_peak_8x_dbtp": -11.12387829029623,
+      "work_db": 2.149997711344821,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "93ef99c8caee1862e75b1187c8f63430e2f993cb77a3371c2f095b3b4b130c24"
+    },
+    {
+      "id": "fader-trap-37",
+      "true_peak_8x_dbtp": -9.382784761084483,
+      "work_db": 4.675044919710415,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "4b0dbdfe2cc3909286017a9482156276b5fbe5d5b87ed2b2f2dae6e9f3d8c513"
+    },
+    {
+      "id": "fader-trap-38",
+      "true_peak_8x_dbtp": -13.655107427806888,
+      "work_db": 9.203376179576757,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "19bfed39cbdee0bc1ef7520f0a9844cac0efcdb75b05e5c540df01d84bf5b155"
+    },
+    {
+      "id": "fader-trap-39",
+      "true_peak_8x_dbtp": -13.924244988807095,
+      "work_db": 9.104979220570819,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e6554778fd5a8a0fd1855cf0512196e266cb10eae7dd193a73ea6b6801d17018"
+    },
+    {
+      "id": "fader-trap-40",
+      "true_peak_8x_dbtp": -10.84899015826709,
+      "work_db": 2.390872176440798,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "3a284f09dd5e5c8fee142d4da970c0d78623750181a62a8e397a0d43fbccb378"
+    },
+    {
+      "id": "fader-trap-41",
+      "true_peak_8x_dbtp": -11.977682474847455,
+      "work_db": 4.647456462787859,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "d08fba4ec950da3ebb7f9f7d4b4bcda562c5cd3740e1114e98fc305a95019a27"
+    },
+    {
+      "id": "fader-trap-42",
+      "true_peak_8x_dbtp": -18.169220445842484,
+      "work_db": 9.17500305280774,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "7d50576b493a4415c2ab03ccf9d4ea6e442d04e8247b58cc2d5a4373cb0e2088"
+    },
+    {
+      "id": "fader-trap-43",
+      "true_peak_8x_dbtp": -6.580080365957961,
+      "work_db": 2.317776708245929,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "d7757922c23ba9fd3e4b24d0f1d08c0eab2753500e28f9a5905beeb6dc717673"
+    },
+    {
+      "id": "fader-trap-44",
+      "true_peak_8x_dbtp": -10.409006028572318,
+      "work_db": 4.627619267917727,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a045e17cb6c42c293f346a503442e8bf40c667bb409bacf9c313a511e15ec531"
+    },
+    {
+      "id": "fader-trap-45",
+      "true_peak_8x_dbtp": -18.137839858082522,
+      "work_db": 9.150001525316027,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "db62bcedf240e8cd6e6e87257a57cdc9c0ae9c567f81b498e49a2a7aa898a32e"
+    },
+    {
+      "id": "fader-trap-46",
+      "true_peak_8x_dbtp": -9.990711158544546,
+      "work_db": 2.177250025160725,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "727f348fd69447b3039458cad5be4385cc4e59c6c9f5f491f712f336a650c7d1"
+    },
+    {
+      "id": "fader-trap-47",
+      "true_peak_8x_dbtp": -13.533755590227653,
+      "work_db": 4.599998473729284,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "48191a4f479864cebd34dd1645913f0634dd4c1a7686d91b4f64fb3eaeb4342a"
+    },
+    {
+      "id": "fader-trap-48",
+      "true_peak_8x_dbtp": -7.1620189968671895,
+      "work_db": 9.124679443384528,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "665ce46c4b5693acefd7c671b91e4f695ea4028e0b20c0f7a5138af32749f584"
+    },
+    {
+      "id": "fader-trap-49",
+      "true_peak_8x_dbtp": -11.083752624530902,
+      "work_db": 2.149997710983992,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "fe18ef9c9a16514505951ef2a580fe535873f133865f43cfe8a2c2ae57e62ed8"
+    },
+    {
+      "id": "fader-trap-50",
+      "true_peak_8x_dbtp": -9.577545488404711,
+      "work_db": 4.674745280160367,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e9aa451bcc01c4ea92806e7c0a1d91177f46d80eed8d77494f064b45bc775e69"
+    },
+    {
+      "id": "fader-techno-01",
+      "true_peak_8x_dbtp": -5.843971389766694,
+      "work_db": 9.199866762052833,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "013119b182051725412c57887f67d5c06dc0c4b70bfdb9ff87d0285636aa03f2"
+    },
+    {
+      "id": "fader-techno-02",
+      "true_peak_8x_dbtp": -9.115294666781871,
+      "work_db": 2.229058140954863,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "403a51042eb36fc878f701673e633a8938a5f52e5e034346c2ba0a335411731d"
+    },
+    {
+      "id": "fader-techno-03",
+      "true_peak_8x_dbtp": -13.74269010098879,
+      "work_db": 4.750000000223155,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "027b1acc05ff94b50d89c4926087cd312d22862d465e795fd58b8198c9d27ef6"
+    },
+    {
+      "id": "fader-techno-04",
+      "true_peak_8x_dbtp": -8.236087764462264,
+      "work_db": 9.275043597358477,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "c38c9548d9797564fd64e733e015884b2af0d1762acf042875819bb70320a2f1"
+    },
+    {
+      "id": "fader-techno-05",
+      "true_peak_8x_dbtp": -9.200663307248059,
+      "work_db": 2.30144870544579,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a796b08d85f71690a47f8ee666afc233e778174f890660dc933c5f09683d3972"
+    },
+    {
+      "id": "fader-techno-06",
+      "true_peak_8x_dbtp": -13.817688552904103,
+      "work_db": 4.825000764174819,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a80bddbf5feb87184f088fd0d94182cc114df19dac6f42f772a3be2a299242ec"
+    },
+    {
+      "id": "fader-techno-07",
+      "true_peak_8x_dbtp": -6.196575454773296,
+      "work_db": 2.819524786796683,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f4336f550fd87b0a7f44af4fd5b18bb486c0fe3c86c5337249ae0ffd66ed556f"
+    },
+    {
+      "id": "fader-techno-08",
+      "true_peak_8x_dbtp": -5.460436603495987,
+      "work_db": 4.72504351401094,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "3a0a0c29d850ec05abc110f2af5bf80864ff1cdab96cd2b6aad7a251a2844082"
+    },
+    {
+      "id": "fader-techno-09",
+      "true_peak_8x_dbtp": -9.513354138774533,
+      "work_db": 9.246296702367205,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "4c4f07f9cc86fec8a211e04ae22b9db8a1eb12171adeb66a3f95bb26946f3566"
+    },
+    {
+      "id": "fader-techno-10",
+      "true_peak_8x_dbtp": -11.267513946631745,
+      "work_db": 2.274997711943524,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "8b18985e374b12831deb43f6e500bcb6fa533c58f51e8c277e6f97081a8139d9"
+    },
+    {
+      "id": "fader-techno-11",
+      "true_peak_8x_dbtp": -5.299168988266786,
+      "work_db": 4.80003187849101,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "aff2419da8f91d5bfa6cf49938e1c0307e13bfffb3e5092be79c262255aab7ff"
+    },
+    {
+      "id": "fader-techno-12",
+      "true_peak_8x_dbtp": -10.341800190189133,
+      "work_db": 9.327601921654566,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "25511b3a3553d41ff0dd5c506b73bcf290eb2ce9b4da1af5bc9b38c30673eee1"
+    },
+    {
+      "id": "fader-techno-13",
+      "true_peak_8x_dbtp": -11.783208757669916,
+      "work_db": 4.694940642928938,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "67b5aa9969d4d5a469e92eefae07359334118db51d037f0c76f49c36e8ccc431"
+    },
+    {
+      "id": "fader-techno-14",
+      "true_peak_8x_dbtp": -7.506981252735349,
+      "work_db": 7.298985693216325,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "10dd5fc3b3ec6dafb5f68220493f7cd39af1c5356421c40a18944ba3b1334355"
+    },
+    {
+      "id": "fader-techno-15",
+      "true_peak_8x_dbtp": -8.628784622830615,
+      "work_db": 2.248195925659269,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a9af41f5c4688121417e0684a85fe67c39de9c247cc8fa480a2fade305a24a81"
+    },
+    {
+      "id": "fader-techno-16",
+      "true_peak_8x_dbtp": -6.918589967425655,
+      "work_db": 4.77508506215945,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "03aa96bc34f87b27efdb428044a0ab12b317fed676b15cbc56b0d18d16e745ca"
+    },
+    {
+      "id": "fader-techno-17",
+      "true_peak_8x_dbtp": -17.861157531670624,
+      "work_db": 9.300003050011977,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "60cf8b290cb20bdc5073eb1cd270e2c3f14396606dd48a59d52ffda4a32c282f"
+    },
+    {
+      "id": "fader-techno-18",
+      "true_peak_8x_dbtp": -9.073009546282117,
+      "work_db": 9.202087127492328,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e0bdbe79d219116e911badae5b578908433566b10520b63c347b792cec0ed38e"
+    },
+    {
+      "id": "fader-techno-19",
+      "true_peak_8x_dbtp": -8.723563811168441,
+      "work_db": 2.220200273281466,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a1dc2ab2a2376df0c57bd4a5f0cb2f24d8b88021ed65b190c1e8507897dcc882"
+    },
+    {
+      "id": "fader-techno-20",
+      "true_peak_8x_dbtp": -6.466506553560327,
+      "work_db": 4.750105535757681,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "60f474e54225772207d6cfe5915fbfa1e42da199bcd28047a036be2d092cbdb9"
+    },
+    {
+      "id": "fader-techno-21",
+      "true_peak_8x_dbtp": -8.942353342846378,
+      "work_db": 9.270694332061561,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "4309b0acbb521771da8a12499570a30e14d2099cf0def824485180d9d6f2351e"
+    },
+    {
+      "id": "fader-techno-22",
+      "true_peak_8x_dbtp": -8.726814219133518,
+      "work_db": 2.199888183557072,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "ac9f47365479e0efd9927e56a46ff10c72b87be27c48cf2c0ef23d6e2a6b80d9"
+    },
+    {
+      "id": "fader-techno-23",
+      "true_peak_8x_dbtp": -11.415851634195151,
+      "work_db": 4.723664379416039,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "6ad469d3722482442c58228d6fe6415eef5a334e7f01049d178e21d76fc39176"
+    },
+    {
+      "id": "fader-techno-24",
+      "true_peak_8x_dbtp": -8.034209810191008,
+      "work_db": 9.24971510670783,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "76c5289a8d52e44571f0899ee12f149716e502d717baa050034da99556b964a8"
+    },
+    {
+      "id": "fader-techno-25",
+      "true_peak_8x_dbtp": -11.645282543617812,
+      "work_db": 2.271811764938763,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "072c34a4a3be54ebe60249002fbee57bc93b84805de6971991df24446f1eac20"
+    },
+    {
+      "id": "fader-techno-26",
+      "true_peak_8x_dbtp": -13.569094068855152,
+      "work_db": 4.799999237914903,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "2a0508a75b00e8208270d13520c614c923367727cbfc2344fccfb33554b2e659"
+    },
+    {
+      "id": "fader-techno-27",
+      "true_peak_8x_dbtp": -8.942550408005697,
+      "work_db": 9.325192233133855,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "412265623e5d96f4dbdd61a46b3aa378b1b17e80caece03d8211b29d481a596b"
+    },
+    {
+      "id": "fader-techno-28",
+      "true_peak_8x_dbtp": -9.665796453830396,
+      "work_db": 2.347608839789603,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f1e9f7ebe71d8174d6f9a8fefb84002cd9e804ec3f9944b5c27d718d878d6fe0"
+    },
+    {
+      "id": "fader-techno-29",
+      "true_peak_8x_dbtp": -9.16470403714336,
+      "work_db": 4.700035968523247,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "beccc1385bde6be73c29de57664be3b460d3d83c235a3a4de13abc82bb452bcf"
+    },
+    {
+      "id": "fader-techno-30",
+      "true_peak_8x_dbtp": -12.556870560866628,
+      "work_db": 9.220780424123168,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "504a01e17fcc2b0685de99ef11a5b9d540546a56a9d678c8437d11536e98ef00"
+    },
+    {
+      "id": "fader-techno-31",
+      "true_peak_8x_dbtp": -11.244220609778528,
+      "work_db": 2.250000000341292,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "103e54fed69a960633072175d8d97d9b1750fac9101ad9995ca2b9c76a6434e5"
+    },
+    {
+      "id": "fader-techno-32",
+      "true_peak_8x_dbtp": -12.127962609822768,
+      "work_db": 4.775988535819388,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "d963426b05022236e7e52c73f473f990b24835be7244ff8b63ec71474b6901a9"
+    },
+    {
+      "id": "fader-techno-33",
+      "true_peak_8x_dbtp": -9.838704646253804,
+      "work_db": 8.565316018100207,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e1b5391cedda4bb6aefe788fa5f98394be4367695910fc88a5125ac23442e5b7"
+    },
+    {
+      "id": "fader-techno-34",
+      "true_peak_8x_dbtp": -14.213041178674576,
+      "work_db": 9.200204984286948,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "b4122646595c3970c137279a6b3bcf940d319a517d291ce143d3e9de3eb36eb7"
+    },
+    {
+      "id": "fader-techno-35",
+      "true_peak_8x_dbtp": -11.186143836773665,
+      "work_db": 2.224921919972222,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "c00e98bbb47d82cd6b114480491f61fa1cf8805ee1321d109f619754c62ce6b7"
+    },
+    {
+      "id": "fader-techno-36",
+      "true_peak_8x_dbtp": -13.739076585745822,
+      "work_db": 4.750000000273862,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "4ba657c8d18f809f12746e163de7a01f9102fc6081e89420037fd70c816d3b72"
+    },
+    {
+      "id": "fader-techno-37",
+      "true_peak_8x_dbtp": -12.87796860102394,
+      "work_db": 9.275181095062102,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "0f9b9737537fded29e51b07eaaa4bbc84db567ec38ef6fc8d61452971e3f1b2b"
+    },
+    {
+      "id": "fader-techno-38",
+      "true_peak_8x_dbtp": -10.215969367416752,
+      "work_db": 2.296481384610296,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "161ce7d577eb103f557d189c47070f0e0891d6b0aa0e2f2142a4592f5b02dd90"
+    },
+    {
+      "id": "fader-techno-39",
+      "true_peak_8x_dbtp": -9.30515299615893,
+      "work_db": 2.204324942557855,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "45c32a68dfbaf0a07f72b560001ad8f90329bcf8ce3e7101e7df340731bf615e"
+    },
+    {
+      "id": "fader-techno-40",
+      "true_peak_8x_dbtp": -13.455799027975681,
+      "work_db": 4.724860317703413,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e7f16b727a2d5f0d6d896368b4634f08bd538c0fc81dc82881ed6683a136fa80"
+    },
+    {
+      "id": "fader-techno-41",
+      "true_peak_8x_dbtp": -18.124571553667288,
+      "work_db": 9.249937207494703,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "d87ff15a54635cc3fb9110973c6a249a1f0b0ba7d32b3e4e24e10c7a8b8e2514"
+    },
+    {
+      "id": "fader-techno-42",
+      "true_peak_8x_dbtp": -11.269227314569157,
+      "work_db": 2.275005340744563,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f9fc2d59ff547533ad68c570967636959c55e5f2da48a0816f49bf6c33ca5b6b"
+    },
+    {
+      "id": "fader-techno-43",
+      "true_peak_8x_dbtp": -11.317024726894262,
+      "work_db": 4.700243703323085,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "275f284faf6d543afe6a80cf26ed18982987c0b3621913b03be5c5da99badce4"
+    },
+    {
+      "id": "fader-techno-44",
+      "true_peak_8x_dbtp": -10.529727726232156,
+      "work_db": 9.221766107274926,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "1541949c2fea99674a71d6a9878c45b834f0eb2e0db180b93b65acfb06b48569"
+    },
+    {
+      "id": "fader-techno-45",
+      "true_peak_8x_dbtp": -11.237836117218299,
+      "work_db": 2.250000000540043,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "ed8aa981294357229906109548dcad6285358382610c89b44a2627f8b639f010"
+    },
+    {
+      "id": "fader-techno-46",
+      "true_peak_8x_dbtp": -10.197175698467332,
+      "work_db": 4.774377379531679,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "00a99e31d366580533a3fb7c00427004996c95825a20c877db0cfbcdf34006dd"
+    },
+    {
+      "id": "fader-techno-47",
+      "true_peak_8x_dbtp": -18.173926743795278,
+      "work_db": 9.199996947294988,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "17a2f6a699cdf5a566438592e461271d1157ac1b008d93c4d24beae28b7b1cf0"
+    },
+    {
+      "id": "fader-techno-48",
+      "true_peak_8x_dbtp": -6.448169299991305,
+      "work_db": 2.224795357397453,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f505f9165071ba94fa7cac5065fbbb7d3be054ac3ddce0f9a43a3602bcc5c00c"
+    },
+    {
+      "id": "fader-techno-49",
+      "true_peak_8x_dbtp": -13.723927047533468,
+      "work_db": 4.749999999658917,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "94b40e69be1d9801a72d892ee439d1926b5ecc8b323215b844390b9a5660a6db"
+    },
+    {
+      "id": "fader-techno-50",
+      "true_peak_8x_dbtp": -9.065482169662445,
+      "work_db": 9.280139246895098,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "7eed7ea501df3868403fdf8f74cf6c35b9e65bab049753761013103d75080cce"
+    },
+    {
+      "id": "fader-dnb-01",
+      "true_peak_8x_dbtp": -6.764997336974829,
+      "work_db": 2.300036568613669,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "77a0efab80d9e3838fd01b444fc569212a79e248c455cf8a2b4bcf137afd2074"
+    },
+    {
+      "id": "fader-dnb-02",
+      "true_peak_8x_dbtp": -9.327025914351633,
+      "work_db": 4.827527086510766,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e0ae1c4544f32bce23ef1d2005547539c68bf6de11416238a6e7b70b63f36711"
+    },
+    {
+      "id": "fader-dnb-03",
+      "true_peak_8x_dbtp": -18.342689616299353,
+      "work_db": 9.349998475141922,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "736b091ae68ff152b42335c762872ed96d64671ad66e83283568fbb16fb47683"
+    },
+    {
+      "id": "fader-dnb-04",
+      "true_peak_8x_dbtp": -6.835057379607035,
+      "work_db": 2.37509138986288,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "da27e0f88c79e3bc29f098bdc2425f9df92da2bd56eacfc7e8133f371feb4e1c"
+    },
+    {
+      "id": "fader-dnb-05",
+      "true_peak_8x_dbtp": -10.362991131374699,
+      "work_db": 4.896917677838577,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "40b20977ae4eca35d860b0d674e5ef5585401ad58715142d771376dc6ed0c3ab"
+    },
+    {
+      "id": "fader-dnb-06",
+      "true_peak_8x_dbtp": -18.417690860232312,
+      "work_db": 9.424999237832369,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f9e293784b8b14d83db54c9e660e8385b7b6bbc47538a20a44856642d2d8be97"
+    },
+    {
+      "id": "fader-dnb-07",
+      "true_peak_8x_dbtp": -6.018818766434906,
+      "work_db": 4.79993022451193,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "bb5eb07bc95d94db171cfa6d5002c90eab2347d09d2b922ce6684549b945534b"
+    },
+    {
+      "id": "fader-dnb-08",
+      "true_peak_8x_dbtp": -5.313820936356207,
+      "work_db": 7.248217473357631,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f51bc82950ba48b2c16329bc0baf993a53e85e01b936436fcb264bfa949c8a44"
+    },
+    {
+      "id": "fader-dnb-09",
+      "true_peak_8x_dbtp": -9.696793866419283,
+      "work_db": 2.348269501356207,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "443cbcc87e81371ee1dd1414f2dbefd094bee91a0021f1575d09697f2abcaede"
+    },
+    {
+      "id": "fader-dnb-10",
+      "true_peak_8x_dbtp": -13.86751835903295,
+      "work_db": 4.874999999667541,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "cc4c56dc83fef7c6a9603539d539a03ed306ed1ab88e02f2a49b5517f581138a"
+    },
+    {
+      "id": "fader-dnb-11",
+      "true_peak_8x_dbtp": -4.334440788530825,
+      "work_db": 6.292840559011536,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "bfc63c88c1996ccf2e7be4ce4ee967c1f83163ebd5959ea8d13432a1ebcd5804"
+    },
+    {
+      "id": "fader-dnb-12",
+      "true_peak_8x_dbtp": -10.210495802278214,
+      "work_db": 2.424264543678812,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a681ce585a6b138c60cae4084c2c9fb651a1fddbe590f7ef1d88682df3aeca39"
+    },
+    {
+      "id": "fader-dnb-13",
+      "true_peak_8x_dbtp": -10.307593996729294,
+      "work_db": 9.294815343479316,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "342a49069afe9eb153fdf6eb0747f205a6c9f43b52e36fcec3a49df2900d24df"
+    },
+    {
+      "id": "fader-dnb-14",
+      "true_peak_8x_dbtp": -7.955675773069472,
+      "work_db": 2.729052283039107,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "d66687407d5dbccb7df1baa1ece88f97fa47c84e9155f564f1c05776aaa473c2"
+    },
+    {
+      "id": "fader-dnb-15",
+      "true_peak_8x_dbtp": -10.138781835388116,
+      "work_db": 4.847412149320862,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "3ad0269000beee219f1aa2828780eeae2e71495e87008004581b5f7ce67ae0c2"
+    },
+    {
+      "id": "fader-dnb-16",
+      "true_peak_8x_dbtp": -7.1459309671295195,
+      "work_db": 6.381864405262993,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f15b0c8381e56ff949d010069fa55adcd112940dc277f0b278ad40021c1a4abe"
+    },
+    {
+      "id": "fader-dnb-17",
+      "true_peak_8x_dbtp": -10.961151680887946,
+      "work_db": 2.399997711925838,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "40787971d31fbdc32d5170a17c895c91f98b7d278c0185897cdfc4a9ddf94e3f"
+    },
+    {
+      "id": "fader-dnb-18",
+      "true_peak_8x_dbtp": -9.338065617743752,
+      "work_db": 2.299662081263479,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "825d80a9ea5ba10212e1396549b509790d1a9d854e1b006bf72b14e429518911"
+    },
+    {
+      "id": "fader-dnb-19",
+      "true_peak_8x_dbtp": -11.01446057238904,
+      "work_db": 4.829488498195323,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f891c4100c56b2e9003ac94c656ad4bb399fd3eb9a0d634382ed5c57b98b6cf4"
+    },
+    {
+      "id": "fader-dnb-20",
+      "true_peak_8x_dbtp": -6.0390674670981745,
+      "work_db": 7.507098717694449,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "89f17d9906e9b29525c22c20aafd26f88ff9ca142b97988acfec1f96c4c26994"
+    },
+    {
+      "id": "fader-dnb-21",
+      "true_peak_8x_dbtp": -10.488754544499306,
+      "work_db": 2.371934484706466,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "bdf8a43ad09b73cfd107d3125efb84d59814a7a87f21f9f7471a96ee6fc5bd14"
+    },
+    {
+      "id": "fader-dnb-22",
+      "true_peak_8x_dbtp": -7.656050117306691,
+      "work_db": 4.800077454398986,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "849930d378470c0d91945b337efd163334792cd4addd7c8e7444168461ffd388"
+    },
+    {
+      "id": "fader-dnb-23",
+      "true_peak_8x_dbtp": -13.515621729562346,
+      "work_db": 9.324019551927883,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "4e230893906b49101890a0279a20079fedcc78976c4a60e9b45ecae84c0d8011"
+    },
+    {
+      "id": "fader-dnb-24",
+      "true_peak_8x_dbtp": -6.960592390989078,
+      "work_db": 2.349954365073121,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "3bcffef2035e86350066bd27b6af368763f6f1973a7487a678877a5cbf7d1541"
+    },
+    {
+      "id": "fader-dnb-25",
+      "true_peak_8x_dbtp": -12.331856849084522,
+      "work_db": 4.873256094393756,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e14ef043a4cf0939a69034cc1a25c6599449cb94b6ab5933f7f6832c771a95ba"
+    },
+    {
+      "id": "fader-dnb-26",
+      "true_peak_8x_dbtp": -18.169095094808554,
+      "work_db": 9.399997710981143,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "83f91ce52292040f576c65f1a21d9cd40a7b7cd5ed1a346ad8531085913eb8b0"
+    },
+    {
+      "id": "fader-dnb-27",
+      "true_peak_8x_dbtp": -7.521385712861985,
+      "work_db": 2.425051177622904,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "9206f1f41cf7529300f3a57acdaf9ec6a0f8069bdf9c8651497d9edcd5865c2a"
+    },
+    {
+      "id": "fader-dnb-28",
+      "true_peak_8x_dbtp": -12.019616246608397,
+      "work_db": 4.94872657875976,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "6be5ef5470b76c27a749c2802de9ea90f995a2ba4bee0462c552d2dff6b77f30"
+    },
+    {
+      "id": "fader-dnb-29",
+      "true_peak_8x_dbtp": -12.831744775765227,
+      "work_db": 9.300194603143545,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "5e64fb9f51e6e79bdc4a24ea3a99251d50adc80682bd2f25377a99034f949f44"
+    },
+    {
+      "id": "fader-dnb-30",
+      "true_peak_8x_dbtp": -10.27642307895142,
+      "work_db": 2.323253744925721,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "53a210638abd50b3f2a62e9b88a164af275d07680e2021f032173312310cb652"
+    },
+    {
+      "id": "fader-dnb-31",
+      "true_peak_8x_dbtp": -16.032949503246655,
+      "work_db": 4.849994659146398,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "789aede7ec22a5d6280004a6df47ac434a8925b88d69be90e966ccad375f2b81"
+    },
+    {
+      "id": "fader-dnb-32",
+      "true_peak_8x_dbtp": -10.524321125186663,
+      "work_db": 9.375497206240116,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "c0c41f12183e24544dc2326a35e7de71688af86b6847fe6d7c8ce5ec6367ea96"
+    },
+    {
+      "id": "fader-dnb-33",
+      "true_peak_8x_dbtp": -9.921663464496444,
+      "work_db": 2.399984920211125,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "12ace27997c608132d7b387ce0cbe01443ecb71259e8ab1ebb54806e89fd25f9"
+    },
+    {
+      "id": "fader-dnb-34",
+      "true_peak_8x_dbtp": -6.532853659479651,
+      "work_db": 2.30006681769348,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e47c2c603694ab3e5fc3f3b893faa2c0f0acbcbc85ce108673f4039151dc03c4"
+    },
+    {
+      "id": "fader-dnb-35",
+      "true_peak_8x_dbtp": -6.872926602455677,
+      "work_db": 4.824813574652089,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "ae206205666d096d87b452255ea94805290143867036d0b3f4800f8f2edbfed8"
+    },
+    {
+      "id": "fader-dnb-36",
+      "true_peak_8x_dbtp": -18.328581157212472,
+      "work_db": 9.35000228997364,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "5a1e45f286f82f68568872b98ee1bf77ca7653cf770b9ecfec87970d85615d42"
+    },
+    {
+      "id": "fader-dnb-37",
+      "true_peak_8x_dbtp": -6.697845865011539,
+      "work_db": 2.374999122051087,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "4ecf3677b187158d13777d1a071dbcd22bcbba791411a7920d5bedb517a0493d"
+    },
+    {
+      "id": "fader-dnb-38",
+      "true_peak_8x_dbtp": -9.576405545502029,
+      "work_db": 4.899597407640736,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "2ed83a4e0cd2809512efbf291247bcc50bf8aef820eaa8f12c186efba2f42921"
+    },
+    {
+      "id": "fader-dnb-39",
+      "true_peak_8x_dbtp": -11.678608609176573,
+      "work_db": 4.798904807201164,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "50ff6db56a30818a5483e212fa0ccbef4c8a5a93e406b50f97a265da98331f72"
+    },
+    {
+      "id": "fader-dnb-40",
+      "true_peak_8x_dbtp": -26.178891585432424,
+      "work_db": 9.324918214614945,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e487fcc86d59303a7623e72f0717543854026576e9f0293c9994957c7ba7ab1c"
+    },
+    {
+      "id": "fader-dnb-41",
+      "true_peak_8x_dbtp": -12.574929987007623,
+      "work_db": 2.347444712488617,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "5647e72806d44c166ca29c718005c52a26070994ae62c414491069ad77833a21"
+    },
+    {
+      "id": "fader-dnb-42",
+      "true_peak_8x_dbtp": -13.869219293212291,
+      "work_db": 4.875000000287808,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "f180826a1e87fefb6b8f4ba71cfefa9cb344b396dd48f2bfa60bcfb88842fbb7"
+    },
+    {
+      "id": "fader-dnb-43",
+      "true_peak_8x_dbtp": -14.601051661736093,
+      "work_db": 9.299675825033876,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "eb661cc33bc21a3c56a5f758702f6692ecd29cee224c341f6ec146c748175d01"
+    },
+    {
+      "id": "fader-dnb-44",
+      "true_peak_8x_dbtp": -10.406154515286115,
+      "work_db": 2.321228395034776,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "48ab637288e60bbe2828fbfcdb897b0d9b9f475bc7f19b7ad719f863207702bd"
+    },
+    {
+      "id": "fader-dnb-45",
+      "true_peak_8x_dbtp": -13.837832689311098,
+      "work_db": 4.84999465942695,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "fc2700048d31d4d54df00aa0b543141f31e113c4568b2cb87c9d1e2563da25b7"
+    },
+    {
+      "id": "fader-dnb-46",
+      "true_peak_8x_dbtp": -11.532266095346026,
+      "work_db": 9.373641117290498,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "a8f89d6bd999974710e067924dc31669006564aa71d2dc2e36a9fa756f9eed55"
+    },
+    {
+      "id": "fader-dnb-47",
+      "true_peak_8x_dbtp": -11.273926065758342,
+      "work_db": 2.299999237660323,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "17b0825335e72fa724e44f547db25ff9a108502adba9f2e694072e3d2573aacc"
+    },
+    {
+      "id": "fader-dnb-48",
+      "true_peak_8x_dbtp": -7.928800384572804,
+      "work_db": 4.824823177322259,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "4c85ccdbad865ea15a498bacc436b4808df77cd77fcbcdc731b49badb2467666"
+    },
+    {
+      "id": "fader-dnb-49",
+      "true_peak_8x_dbtp": -18.323931883829804,
+      "work_db": 9.349998474209949,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "e950fe745ecbae83473c36879e749c94892e13f9b322a9f28237ad36e58e3c47"
+    },
+    {
+      "id": "fader-dnb-50",
+      "true_peak_8x_dbtp": -9.764447772284852,
+      "work_db": 2.370930713877693,
+      "calibration_delta_db": 0.0,
+      "calibration_pcm_exact": true,
+      "wav_sha256": "80fbe71ef5a6fe79353116632f0c3094eb36b74e7259983bf89fce6b17e15ec8"
+    }
+  ]
+}

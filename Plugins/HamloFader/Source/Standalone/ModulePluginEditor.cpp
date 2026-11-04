@@ -3,6 +3,8 @@
 #include "UI/HamloFaderPanel.h"
 #include "UI/ModuleHelp.h"
 #include "UI/PresetScreen.h"
+#include "UI/FaderV2Panel.h"
+#include "Core/ModulePresets.h"
 
 namespace hpeq::standalone
 {
@@ -45,22 +47,21 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
 {
     using namespace hpeq::ui;
     {
-            auto p = std::make_unique<HamloFaderPanel>();
-            p->readMeters = [this]
-            {
-                FaderStatus status;processor.readStatus(status);
-                if(status.legacy)return HamloFaderPanel::Meters {static_cast<float>(status.legacyInput),static_cast<float>(status.legacyOutput),static_cast<float>(status.legacyLong)};
-                return HamloFaderPanel::Meters {static_cast<float>(status.reading.input.rmsM),static_cast<float>(status.reading.output.rmsM),static_cast<float>(status.reading.input.rmsS)};
-            };
-            installPanel(std::move(p));
+            auto p = std::make_unique<FaderV2Panel>(processor);
+            refreshPanel=[view=p.get()]{view->refresh();};
+            panel=std::move(p);addAndMakeVisible(*panel);
     }
 
     // Hamlo line (2026-10-29): the preset screen top left, as on HamloComp / HamloUdarnik / HamloRedWall / HamloMag
     presets = std::make_unique<ui::PresetScreen>();
     {
         std::vector<ui::PresetScreen::Entry> entries;
+        const auto& bank=hpeq::presets::factoryModulePresets(processor.getSpec().type);
         for (int i = 1; i < processor.getNumPrograms(); ++i)
-            entries.push_back({ i, {}, {}, processor.getProgramName(i), {} });
+        {
+            const auto& recipe=bank[static_cast<size_t>(i-1)];
+            entries.push_back({ i, recipe.genre, recipe.group, processor.getProgramName(i), recipe.note });
+        }
         presets->setEntries(std::move(entries));
     }
     presets->onSelect = [this](int program)
@@ -124,7 +125,7 @@ void ModulePluginEditor::timerCallback()
     if (refreshPanel)
         refreshPanel();
     if (presets != nullptr)
-        presets->setCurrent(processor.getCurrentProgram(), false);
+        presets->setCurrent(processor.getCurrentProgram(), processor.isProgramModified());
 }
 
 void ModulePluginEditor::visibilityChanged()
