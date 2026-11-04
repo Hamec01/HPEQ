@@ -149,12 +149,12 @@ private:
     void tapeStage(int engine, float* x, int numChannels, double q) noexcept;
     void motionStage(float* x, int numChannels, double q) noexcept;
     // R2: a lane on its band (FULL: the lane on x as before), SHAPE A / B
-    void runLane(int lane, float* x, int numChannels, double q) noexcept;
+    void runLane(int lane, float* x, int numChannels, double q, const float* source = nullptr) noexcept;
     void shapeStage(int shape, float* x, int numChannels, double q) noexcept;
     double shapeLevel(int shape, double q) noexcept;
     void updateCrossovers() noexcept;
     // R3: THROW A / B
-    void throwStage(int lane, float* x, int numChannels, double q) noexcept;
+    void throwStage(int lane, float* x, int numChannels, double q, const float* source = nullptr) noexcept;
     double throwLevel(int lane, double q) noexcept;
     double motionLevel(double q) noexcept;
 
@@ -266,7 +266,7 @@ private:
     // it is cleared when the lane wakes up or changes its target.
     struct ThrowLane
     {
-        bool on = true, empty = true, asleep = true;
+        bool on = true, empty = true, asleep = true, inputSource = false;
         int target = 0, applied = -1, time = 7, note = 0;
         double mixTarget = 1.0, depth = 1.0, tail = 0.5, tone = 0.5, mix = 0.0;
         std::array<float, 4> quads {};

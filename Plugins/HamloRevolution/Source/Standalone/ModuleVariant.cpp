@@ -323,7 +323,9 @@ ModuleSpec makeRevolution()
                choice("simpleTarget", "Target", 2, kPageOnly, { "Hats", "Snare", "Tops", "Full" }),
                choice("simpleLock", "Lock", 0, kPageOnly, { "Off", "On" }),
                // GLITCH 2: the block engine (SIMPLE and the genre presets turn it on; old projects stay Legacy)
-               choice("glitchEngine", "Glitch Engine", 0, s::kGlitchEngine, { "Legacy", "Block" }) } };
+               choice("glitchEngine", "Glitch Engine", 0, s::kGlitchEngine, { "Legacy", "Block" }),
+               choice("throwASource", "Throw A Source", 0, s::kThrowASource, { "Chain", "Input" }),
+               choice("throwBSource", "Throw B Source", 0, s::kThrowBSource, { "Chain", "Input" }) } };
 }
 
 float transformed(float value, ValueTransform transform) noexcept
@@ -372,6 +374,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout(Module
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     for (const auto& p : moduleSpec(kind).parameters)
     {
+        // New controls follow the existing host bypass parameter as well as the old DSP controls.
+        if (p.id == "throwASource" || p.id == "throwBSource")
+            continue;
         const juce::ParameterID id { p.id, 1 };
         if (!p.choices.isEmpty())
         {
@@ -384,6 +389,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout(Module
         layout.add(std::make_unique<juce::AudioParameterFloat>(id, p.name, range, p.defaultValue, attributes));
     }
     layout.add(std::make_unique<juce::AudioParameterBool>(juce::ParameterID { "bypass", 1 }, "Bypass", false));
+    if (kind == ModuleKind::Revolution)
+    {
+        layout.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID { "throwASource", 1 }, "Throw A Source", juce::StringArray { "Chain", "Input" }, 0));
+        layout.add(std::make_unique<juce::AudioParameterChoice>(juce::ParameterID { "throwBSource", 1 }, "Throw B Source", juce::StringArray { "Chain", "Input" }, 0));
+    }
     return layout;
 }
 

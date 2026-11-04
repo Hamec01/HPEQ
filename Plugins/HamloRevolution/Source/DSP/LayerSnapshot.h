@@ -107,6 +107,8 @@ constexpr int kThrowLaneBase = 176, kThrowBandBase = 206;
 constexpr int kGrooveBase = 208, kGrooveSteps = 16, kGrooveAmount = 224;
 // GLITCH 2: 0 = the legacy GLITCH (HPEQ's actions), 1 = the block engine (docs/GLITCH_RESEARCH.md)
 constexpr int kGlitchEngine = 228;
+// R10: independent INPUT capture for sends. Zero retains the exact CHAIN path.
+constexpr int kThrowASource = 229, kThrowBSource = 230;
 // where lane l's settings and band are (TIME, GLITCH, MOTION, SHAPE A, SHAPE B, THROW A, THROW B)
 constexpr int laneSettings(int lane)
 {

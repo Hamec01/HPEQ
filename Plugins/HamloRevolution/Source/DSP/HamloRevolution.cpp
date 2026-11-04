@@ -364,6 +364,7 @@ void RevolutionEngine::readParams(const FxSlotParams& p) noexcept
         auto& th = throws[static_cast<size_t>(i)];
         const auto b = static_cast<size_t>(slot::kThrowBase + i * slot::kThrowStride);
         th.on = v[b + slot::kThrowOn] >= 0.5f;
+        th.inputSource = v[i == 0 ? slot::kThrowASource : slot::kThrowBSource] >= 0.5f;
         th.mixTarget = std::clamp(static_cast<double>(v[b + slot::kThrowMix]), 0.0, 1.0);
         th.depth = std::clamp(static_cast<double>(v[b + slot::kThrowDepth]), 0.0, 1.0);
         th.target = std::clamp(static_cast<int>(std::lround(v[b + slot::kThrowTarget])), 0, rev::kThrowTargets - 1);
@@ -1534,8 +1535,11 @@ void RevolutionEngine::updateCrossovers() noexcept
     }
 }
 
-void RevolutionEngine::runLane(int lane, float* x, int numChannels, double q) noexcept
+void RevolutionEngine::runLane(int lane, float* x, int numChannels, double q, const float* source) noexcept
 {
+    const bool independent = source != nullptr && lane >= rev::kFirstThrow
+        && throws[static_cast<size_t>(lane - rev::kFirstThrow)].inputSource
+        && rev::throwIsSend(throws[static_cast<size_t>(lane - rev::kFirstThrow)].target);
     const auto run = [&](float* y)
     {
         if (lane == rev::Motion)
@@ -1550,6 +1554,11 @@ void RevolutionEngine::runLane(int lane, float* x, int numChannels, double q) no
     const int b = band[static_cast<size_t>(lane)];
     if (b == rev::Full)
     {
+        if (independent)
+        {
+            throwStage(lane - rev::kFirstThrow, x, numChannels, q, source);
+            return;
+        }
         if (lane >= rev::kEngines && lane < rev::kFirstThrow && shapes[static_cast<size_t>(lane - rev::kEngines)].empty)
             return; // an empty SHAPE lane: exactly dry (an empty THROW lane decides itself: its tail may still ring)
         run(x);
@@ -1560,7 +1569,7 @@ void RevolutionEngine::runLane(int lane, float* x, int numChannels, double q) no
     float bands[3][2] {};
     for (int ch = 0; ch < numChannels; ++ch)
     {
-        const double in = x[ch];
+        const double in = independent ? source[ch] : x[ch];
         double low = sp.s[1].run(ch, sp.s[0].run(ch, in));
         const double rest = sp.s[3].run(ch, sp.s[2].run(ch, in));
         const double mid = sp.s[5].run(ch, sp.s[4].run(ch, rest));
@@ -1570,6 +1579,14 @@ void RevolutionEngine::runLane(int lane, float* x, int numChannels, double q) no
         bands[0][ch] = static_cast<float>(low);
         bands[1][ch] = static_cast<float>(mid);
         bands[2][ch] = static_cast<float>(high);
+    }
+    if (independent)
+    {
+        float selected[2] {};
+        for (int ch = 0; ch < numChannels; ++ch)
+            selected[ch] = b == rev::Tops ? bands[1][ch] + bands[2][ch] : bands[b - 1][ch];
+        throwStage(lane - rev::kFirstThrow, x, numChannels, q, selected);
+        return; // The existing chain's dry signal must not acquire the input crossover's phase.
     }
     if (b == rev::Tops)
     {
@@ -1777,8 +1794,9 @@ double RevolutionEngine::throwLevel(int lane, double q) noexcept
     return here;
 }
 
-void RevolutionEngine::throwStage(int lane, float* x, int numChannels, double q) noexcept
+void RevolutionEngine::throwStage(int lane, float* x, int numChannels, double q, const float* source) noexcept
 {
+    const float* feed = source != nullptr ? source : x;
     auto& th = throws[static_cast<size_t>(lane)];
     const double target = th.on ? th.mixTarget : 0.0;
     const double ramp = 1.0 / (0.01 * sampleRate);
@@ -1830,11 +1848,11 @@ void RevolutionEngine::throwStage(int lane, float* x, int numChannels, double q)
             }
             if (tonal || !stereo)
                 for (int ch = 0; ch < numChannels; ++ch)
-                    th.line[static_cast<size_t>(ch)][static_cast<size_t>(th.write)] = static_cast<float>(m * x[ch] + fb * th.damp[static_cast<size_t>(ch)]);
+                    th.line[static_cast<size_t>(ch)][static_cast<size_t>(th.write)] = static_cast<float>(m * feed[ch] + fb * th.damp[static_cast<size_t>(ch)]);
             else
             {
                 // ping-pong: the send enters on the left, every echo crosses to the other side
-                th.line[0][static_cast<size_t>(th.write)] = static_cast<float>(m * 0.5 * (x[0] + x[1]) + fb * th.damp[1]);
+                th.line[0][static_cast<size_t>(th.write)] = static_cast<float>(m * 0.5 * (feed[0] + feed[1]) + fb * th.damp[1]);
                 th.line[1][static_cast<size_t>(th.write)] = static_cast<float>(fb * th.damp[0]);
             }
             th.write = th.write + 1 == static_cast<int>(th.line[0].size()) ? 0 : th.write + 1;
@@ -1852,7 +1870,7 @@ void RevolutionEngine::throwStage(int lane, float* x, int numChannels, double q)
                         = std::pow(10.0, -3.0 * static_cast<double>(th.fdn[static_cast<size_t>(i)].size()) / (decay * sampleRate));
                 th.coefA = onePole(2000.0 * std::pow(8.0, th.tone)); // damping 2 .. 16 kHz
             }
-            double in = m * (stereo ? 0.5 * (x[0] + x[1]) : x[0]);
+            double in = m * (stereo ? 0.5 * (feed[0] + feed[1]) : feed[0]);
             for (int i = 0; i < 4; ++i)
             {
                 auto& d = th.diffuser[static_cast<size_t>(i)];
@@ -2055,7 +2073,7 @@ void RevolutionEngine::process(float* const* channels, int numChannels, int numS
         for (int s = 0; s < rev::kShapes; ++s)
             runLane(rev::kEngines + s, x, numChannels, q);
         for (int t = 0; t < rev::kThrows; ++t)
-            runLane(rev::kFirstThrow + t, x, numChannels, q);
+            runLane(rev::kFirstThrow + t, x, numChannels, q, in);
         analyse(in, numChannels, wrap(motionStep.k, steps));
         listenTiming(in, numChannels, q);
         float inPeak = 0.0f, outPeak = 0.0f;

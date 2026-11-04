@@ -1,0 +1,2400 @@
+{
+  "version": "0.3.0",
+  "parent": "5e89bae",
+  "native_expectations": 4769,
+  "files": {
+    ".gitattributes": {
+      "sha256": "b419f974c10a5c6952de0f482f6109681edd816879d1b24766c87f3791637ad6",
+      "normalized": true
+    },
+    "AGENTS.md": {
+      "sha256": "2879ac110c4255f5680da8f407f63126cfb70d4066bb299ce4006db7232d2e7c",
+      "normalized": true
+    },
+    "Assets/hardware_pack/buttons_and_lamps/button_soviet_on_off_red.png": {
+      "sha256": "1777ec9c38c019a40caec69d4040becf0267c6471144727dfc4e9abdcd393804",
+      "normalized": false
+    },
+    "Assets/hardware_pack/buttons_and_lamps/lamp_panel_red_off.png": {
+      "sha256": "5dcb9e073a5351d996b91646e650b113603535ba9d37fa0e2520b929b341e0e6",
+      "normalized": false
+    },
+    "Assets/hardware_pack/buttons_and_lamps/lamp_panel_red_on.png": {
+      "sha256": "961d0dd5213ac77039330de2583023d3b75720ee844513ba98c1396e95f6a9ec",
+      "normalized": false
+    },
+    "Assets/hardware_pack/index.html": {
+      "sha256": "3abf3d135cfe2029b2c0fe6ea8c034789d6b7b6ae06a15179a331a232d855ec9",
+      "normalized": true
+    },
+    "Assets/hardware_pack/knobs/knob_aluminum_brass_insert.png": {
+      "sha256": "1d018a2364311191b1131677900db77b2d97575c73ec27befc756e5de3cc060b",
+      "normalized": false
+    },
+    "Assets/hardware_pack/knobs/knob_bakelite_ribbed.png": {
+      "sha256": "ebfd5c38473736f45cb809136ee0b7f9494d842e0c833583b43878457e323e6f",
+      "normalized": false
+    },
+    "Assets/hardware_pack/knobs/knob_chipped_iron_dark.png": {
+      "sha256": "1ab61d5e15878e3463711823157858fac69bc075b500f94729b7abc2c37700be",
+      "normalized": false
+    },
+    "Assets/hardware_pack/knobs/knob_lathe_steel_rust.png": {
+      "sha256": "bc45569e6b475690b8aef1cffe39767efd453f945629c9acfefbd7bfeb531870",
+      "normalized": false
+    },
+    "Assets/hardware_pack/pointers/pointer_black_instrument.png": {
+      "sha256": "6f6141eaeff024409627a30b3689fe393c9c026463df632a937e47b80ffae513",
+      "normalized": false
+    },
+    "Assets/hardware_pack/pointers/pointer_brass_wedge.png": {
+      "sha256": "63f616ccb4b084068a8efe940f7ec5b26d1e663f69eaaaf893afadecf496fb26",
+      "normalized": false
+    },
+    "Assets/hardware_pack/pointers/pointer_red_tip_brass_collar.png": {
+      "sha256": "aed95ce004b07cff2bcde66288208cf5e600aa37961a078fc00c4cb54c47397e",
+      "normalized": false
+    },
+    "Assets/hardware_pack/pointers/pointer_white_enamel.png": {
+      "sha256": "40c08e813af9379b9b4d6cd62e393cd3e3e0731cd0b0ca481fa60f5692682085",
+      "normalized": false
+    },
+    "Assets/hardware_pack/README.md": {
+      "sha256": "6d95c2c65ceffaad053135c3a73adb1c2109e37fc239fedac6733f510cde4466",
+      "normalized": true
+    },
+    "Assets/hardware_pack/scales/scale_arc_ticks.png": {
+      "sha256": "cc124e7a9e863e75d39a4350d6a24c536a1dbb1f24ebe7be0d6dee22b700b04d",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_down.png": {
+      "sha256": "ddc5a7a4833a73d71c4b5c90358ca7a4dcb8ab8ed515dfbe5e4ba3900fd968c3",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_lever_down.png": {
+      "sha256": "e2b067c64e51436bbc442660746ecf4dbf2271b50f36e48e01fe91bccd13e271",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_lever_up.png": {
+      "sha256": "96f3f24994e8967e1695ad26fcf8f9f1bb0cf48be4a6a9718574686cc7239080",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_neutral.png": {
+      "sha256": "a5880db0ef5d0522a4c04995ffbe4a98ff054af6be955a11a66a39c1e332599a",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_plate.png": {
+      "sha256": "6ad10f42962f5638fa60f94fd257ad0f733d906a0b52818bb1c0a1f6f1526845",
+      "normalized": false
+    },
+    "Assets/hardware_pack/switches/toggle_switch_up.png": {
+      "sha256": "5848ed9b0fedd23b8deb18ed2bb40c2ba0a7cfec3ac43d141ace0a8fb9d6ff00",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_00.png": {
+      "sha256": "d70e6d16b3cb4e5cb1c3765dd775ceb57d891da0f18d203461cac2ac408ca181",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_01.png": {
+      "sha256": "16ba2e1182fa7c77c68e13619b1bb78c031d2d83e871de0f50ab2b9147360666",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_02.png": {
+      "sha256": "7b329b134ca31748b1e1006031facaa20e327af4589c413bf4e09cb5113538c4",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_03.png": {
+      "sha256": "86e32f4fdc3018efabffbc848648960cfb8b90615fac5d9b9a72f3d8843f7af5",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_04.png": {
+      "sha256": "8c2192cd45d3c3eff4a19b7a9c51917a0e73763f82e6bef770f4fb17904132e4",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_05.png": {
+      "sha256": "054faa28f6d022c91ae30507ba97c35a21fa9ea6da0ef64e0e551d7677912a6a",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_06.png": {
+      "sha256": "b6fc99c8f35b8432ca08eaa531ce4cd8b0f8b587b93ba94b9f54aea01728b078",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_07.png": {
+      "sha256": "627f55850b093628f4db2e152074b15990b72db0324eede40f8068bff92c3418",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_08.png": {
+      "sha256": "500eda782ca255b14c3f15c1b0bc927323da704b8dd67fa9dc37a4d20aae9a6d",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_09.png": {
+      "sha256": "f8ce85e1e7ea5df341b3505885acd9a5fe8bae9d14057361580596d4dc4eea5e",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_10.png": {
+      "sha256": "21378ed757ae612be3f3ca0f6b3767c7e60bb822dd371394734697fbb0c0b160",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_11.png": {
+      "sha256": "16b4ec534f08f4c5b884515e225ed1e82721c7dd6e25c102e957b8d965963f0e",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_12.png": {
+      "sha256": "bd4d755c80c6c6da8021f3264c0591beb5c9a2fd8efdc22508cbe5e92c031a2c",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_13.png": {
+      "sha256": "ee09c589bcde2a57f02e1999f8c038e2cc152f613a0971b95fcbeb118d5da325",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_14.png": {
+      "sha256": "b3a788f6849c57ad312ada5a84b71c2c5418083dbcfc20317d90551d50b2214f",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_15.png": {
+      "sha256": "19cc4b84d78a48295d4859eb15c69009e3857bd25fd12184ed496c5467d7684f",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_16.png": {
+      "sha256": "3c5b90b68953cfe77b5b38528a2ae81189e137a18c280be688b1085865c6318d",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_17.png": {
+      "sha256": "feec61473fbf01fccc0d7e3c0892af49b9d5d0f3a685a2cd0e4c8d6794ee0040",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_18.png": {
+      "sha256": "02d38607f78c0554ee7c48505a2294eb302ffff27d613db52443b95811cb505a",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_19.png": {
+      "sha256": "769cc665648cc85b7e2d10f4fbb5f8fc3d328be2e04c378bb7436a2d09febb4c",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_20.png": {
+      "sha256": "f2df7d10c1a943eb97a00d9169a98e06b63afd10b10db046b4c209eaa1c1f552",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_21.png": {
+      "sha256": "12871468ea9a7474ea6b79dc0c63c79b224add5ed8faea2bb92337e5a8b9ac53",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_22.png": {
+      "sha256": "adb5478dca80d98aa6bdb1d58d845e3c9762bc1f4203056e7c63ed18bec49469",
+      "normalized": false
+    },
+    "Assets/scratches/ussr_23.png": {
+      "sha256": "e1e722408a5437ccb0a3f81542336a64ec310c4deac7aa66750840667204e388",
+      "normalized": false
+    },
+    "Assets/tubes/lenin_off.png": {
+      "sha256": "b1bd9fe003e2aed86876e66dcddfe17eb8aaf782f6623c719ed972dd9ef63d3d",
+      "normalized": false
+    },
+    "Assets/tubes/lenin_on.png": {
+      "sha256": "6e61753c231f9478cae0202a2eac67d1d30ce98abe0b6d73a6e21fcc8513b5fe",
+      "normalized": false
+    },
+    "Assets/tubes/stalin_off.png": {
+      "sha256": "3c4d5097b9cdeee1d96bd5b4b329c9a0f91a61952853fee741560f7cb35af360",
+      "normalized": false
+    },
+    "Assets/tubes/stalin_on.png": {
+      "sha256": "77011f97987d2a3c8c341fd372e79399f8a5b862e695fa859dc2be40344a05d6",
+      "normalized": false
+    },
+    "cmake/PatchJuceWindowsRenderer.cmake": {
+      "sha256": "eef31294f4929035bdbff82928c66bbbbc3adfea85a53be8e3a57e9628973fd6",
+      "normalized": true
+    },
+    "CMakeLists.txt": {
+      "sha256": "5f93fd4a74d0203d794977baad8b4b878393dfbecde6aef392968962528f595a",
+      "normalized": true
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/break170_DRUM_FILL_seed1_BEFORE_then_AFTER.wav": {
+      "sha256": "5bcbfa5b70855d6235cb954a4ae4cfe6367b0628b99973dfa2871b56f1df1bff",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/break170_DRUM_FILL_seed8_BEFORE_then_AFTER.wav": {
+      "sha256": "69f0ff747a1ff35573b39d3f0ea168097adf47fb94cc4768ff7da3573b083124",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/break170_RISE_seed1_BEFORE_then_AFTER.wav": {
+      "sha256": "7b55e35001291d731d3ab5ab69e9e4ff961d911e4945b1172ddca9c874a02f23",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/break170_RISE_seed8_BEFORE_then_AFTER.wav": {
+      "sha256": "2cff7f62843573da9a125d906ae3c28fd54e09ee3a15f2fa77096da7d4e5c9aa",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/comparisons.json": {
+      "sha256": "abc05e37101d52e466665b6ae50a4ba43db4c2aa7c68a67457fbed7598296648",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/drums120_DRUM_FILL_seed1_BEFORE_then_AFTER.wav": {
+      "sha256": "db40c929d9cc716b1677e0d1c8e91b551cb8f905700e9c1e46920e22f7460a1f",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/drums120_DRUM_FILL_seed8_BEFORE_then_AFTER.wav": {
+      "sha256": "7eab89a631b905761c8a3e1c05e082bb99b4372861f10d2498e92116587d04e9",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/drums120_RISE_seed1_BEFORE_then_AFTER.wav": {
+      "sha256": "7af578b16c980b1d04ca8583782b52995000f42ebc58b6cc63aa47edc2bfb20a",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/drums120_RISE_seed8_BEFORE_then_AFTER.wav": {
+      "sha256": "0aa7b9cbb4dea0babd7f23211cd8665e9c129785fb741db9c2a35548891e7d43",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/README.txt": {
+      "sha256": "815af24afc9f1e9a5327beb7da44e7014690da393fdb4d7bd384e44f4f922468",
+      "normalized": true
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/toms90_DRUM_FILL_seed1_BEFORE_then_AFTER.wav": {
+      "sha256": "c0430c66cd9fd0a700a84eed45f80ed7ed3e739ec6267798655e1edb9628dd99",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/toms90_DRUM_FILL_seed8_BEFORE_then_AFTER.wav": {
+      "sha256": "2f5649053389d53bc1dec63995d0d45607061f86ecd74db38252cf4c34a14627",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/toms90_RISE_seed1_BEFORE_then_AFTER.wav": {
+      "sha256": "a027681d6173da47e44a108f49440b7adb57a933a3bc3faef710e8cedc6c69e2",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/Audio/toms90_RISE_seed8_BEFORE_then_AFTER.wav": {
+      "sha256": "4a958330d74436b37c8994234668e4fe496a5e4f7f97d0a8eff162cf94dd6fdc",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/HamloRevolution.vst3/Contents/Resources/moduleinfo.json": {
+      "sha256": "59229998c20903ec6db89743267d419b54a882c738c207d7c7a1cc92f709be7f",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/HamloRevolution.vst3/Contents/x86_64-win/HamloRevolution.vst3": {
+      "sha256": "2810e209ea85559626df8a474405efc9a8731f320b2ebeea099737b454f7ce49",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/HamloRevolution.vst3/Contents/x86_64-win/HamloRevolution.vst3.sha256": {
+      "sha256": "581313c7808355e4a1a3da4e90257b85e45d14369bd645a42ccd8d41340cfdba",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12/README.txt": {
+      "sha256": "230f5189c74d4e619488d63a7c25bec9817125b14c482a99742a2f19898a7ed2",
+      "normalized": true
+    },
+    "dist/HamloRevolution-0.3.0-r12-win64-vst3.zip": {
+      "sha256": "8923f1b230b903032146d3e1eb98b667a4124d52c15c4e1fd1e128cccbb3275f",
+      "normalized": false
+    },
+    "dist/HamloRevolution-0.3.0-r12-win64-vst3.zip.sha256": {
+      "sha256": "ce77d119850c0c0ba8c8927374ec2a01b7ac54ae35a21085562b441417394074",
+      "normalized": false
+    },
+    "docs/NEXT_STAGE.md": {
+      "sha256": "ad3b9ad77b510f50f7603b38af0784d2b44b934874e21e418c59de1a2f48da79",
+      "normalized": true
+    },
+    "docs/R12_HANDOFF.md": {
+      "sha256": "e274ccfbf68b314b78aa365ca0d06eefa04f0f9afa9f1e0beca66756143ba249",
+      "normalized": true
+    },
+    "docs/reports/r12/after_delivery.json": {
+      "sha256": "4b23729eaa1b9249b01af13eb8903d0a1484e5126bc3f9d4511d583c58d6a3f6",
+      "normalized": false
+    },
+    "docs/reports/r12/after_final.json": {
+      "sha256": "5261fca68624f7f7739c4e9d6f22ae45ea433226ae91aaa44601ff9ee0a4c0e1",
+      "normalized": false
+    },
+    "docs/reports/r12/after_initial.json": {
+      "sha256": "5426f213c443e448d7fea2be735b76fdc44c13ea48d48e0b22ebddb977d137f1",
+      "normalized": false
+    },
+    "docs/reports/r12/after_release.json": {
+      "sha256": "af879e4125f0e5f9eaad3773ed39284959ba5225f13ed8f087ca7991c9fa1732",
+      "normalized": false
+    },
+    "docs/reports/r12/analysis_delivery.json": {
+      "sha256": "92728cb6bc9aaf04f70c28efcd0fea5d0f7652c4a439942a28eeb43f77f65019",
+      "normalized": false
+    },
+    "docs/reports/r12/analysis_final.json": {
+      "sha256": "9cf51b57a8bf499df0b898a385f69fff59cc5d4745a6c35d6bb6911db1ebb518",
+      "normalized": false
+    },
+    "docs/reports/r12/analysis_initial.json": {
+      "sha256": "82976e3e8aee90b915d4a64b13e31342e0a80dd2e32c5aa3366f0b519e75d8c0",
+      "normalized": false
+    },
+    "docs/reports/r12/analysis_release.json": {
+      "sha256": "9ca48f60ff97b4e106cf65754b5f7f77cae928f9dd2da6cc3767270d91273a10",
+      "normalized": false
+    },
+    "docs/reports/r12/analysis_v2.json": {
+      "sha256": "635b5355c2e8005aee0f7f62b522b9a17b196f5931011d6544543c4852a078af",
+      "normalized": false
+    },
+    "docs/reports/r12/before.json": {
+      "sha256": "295169d13fdd7336afb8b901370edc5dffc681133f73ccb041297e76450a350a",
+      "normalized": false
+    },
+    "docs/reports/r12/environment.json": {
+      "sha256": "9841466c30ac9c686fe229ca162413a4a1a38b7e195eb183e182c57b398a6557",
+      "normalized": false
+    },
+    "docs/reports/r12/materials.json": {
+      "sha256": "b43d06364c63b20b09e3382781fff12d983e4ecfd41f8799196154e7da94e196",
+      "normalized": false
+    },
+    "docs/reports/r12/native_final.txt": {
+      "sha256": "c8bdd35c1caf33b6df04f2cd29a1eaaa9480dd4c4c2ee4f4bf441e25309a095e",
+      "normalized": false
+    },
+    "docs/reports/r12/native_initial.txt": {
+      "sha256": "5538f59b0dc0794233cb1ca5e5ecca0f77bcb3c6f58712a2f6d1a46b14a78156",
+      "normalized": false
+    },
+    "docs/reports/r12/native_release.txt": {
+      "sha256": "b5625dfe48d0a95fe97f7268cc88046c58d66a2f0560cf1bdfd0212ea762aec7",
+      "normalized": false
+    },
+    "docs/reports/r12/playback_before.json": {
+      "sha256": "c71dd42b8800475e47b4f76daed9a46cbe27d8872b98daa8f78d2a13d7c57872",
+      "normalized": false
+    },
+    "docs/reports/r12/playback_final.json": {
+      "sha256": "c71dd42b8800475e47b4f76daed9a46cbe27d8872b98daa8f78d2a13d7c57872",
+      "normalized": false
+    },
+    "docs/reports/r12/REPORT.md": {
+      "sha256": "880fe69ac407198c588a4a4723df785418ca6709dd783a84a6950763b5f74ea5",
+      "normalized": false
+    },
+    "docs/reports/r12/screens/classic.png": {
+      "sha256": "365c9d4a98914e6e10e71505313dc7e254a93365e56d5190a6617641edbd1135",
+      "normalized": false
+    },
+    "docs/reports/r12/screens/classic_final.png": {
+      "sha256": "28f382c9e072b6b0e10ec9fff711ad8b7d6df3dceebfe3e877e912ce1d4b3965",
+      "normalized": false
+    },
+    "docs/reports/r12/screens/fill.png": {
+      "sha256": "585c1b1e37631b20d83b18f2afa0d0ab749e2c7e7e1b27b6d71131cfca3c3b20",
+      "normalized": false
+    },
+    "docs/reports/r12/screens/fill_final.png": {
+      "sha256": "5501d0f9ab226668843f5e5a65e4543fb8cb8ec0975c45dfee5f39fd4bac03ad",
+      "normalized": false
+    },
+    "docs/reports/r12/screens/minimum.png": {
+      "sha256": "72acc47b8ffaa20a28eb2f0a27101993498f3942a60758db20781efe0245c24a",
+      "normalized": false
+    },
+    "docs/reports/r12/screens/minimum_final.png": {
+      "sha256": "52782ffbf3fd551b7b86b72427e6bf6466217c6dbd33090d92f89e7feadcef7a",
+      "normalized": false
+    },
+    "docs/reports/r12/screens/rise.png": {
+      "sha256": "7ce3c756449f2b797bb440e0c2e036e8aa8dc4ebddf28d881329b458caf80c3a",
+      "normalized": false
+    },
+    "docs/reports/r12/screens/rise_final.png": {
+      "sha256": "7449d13e9749e252f661ca727795950a58757a81546d4d0257cce09cd8018844",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/identity.json": {
+      "sha256": "75e7b90b73711d101b404588d05982d84c87e42f3b8c6881becf02dc719a28f9",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_10/HamloRevolution.vst3_20261104T115623.852+0200.txt": {
+      "sha256": "7ec45f32893ba55c483b3bbc2cefd3f65a81684f56a5056a4adc9c9c193fb133",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_10/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_10/stdout.txt": {
+      "sha256": "2b5d334b588029fea26e190d6bfbce169ee9d2b6424baac1ea6d4c1ec8541c74",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_5/HamloRevolution.vst3_20261104T115432.567+0200.txt": {
+      "sha256": "fc3e03a4bad96e1059029547ed181106f030c3a90413a599c2940952071aa972",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_5/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_5/stdout.txt": {
+      "sha256": "5e76a1f09e1f443f8b94819ecfca04b8d05720b4f134770022b0f9aa5de11cfb",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_6/HamloRevolution.vst3_20261104T115441.363+0200.txt": {
+      "sha256": "54022f6b98e1edb2e88fcce7414b5a54ac2d0d1279fc53b6aa4efbadd138fd80",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_6/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_6/stdout.txt": {
+      "sha256": "6373a60bbab9d19f3df2932d301291828e884045e2b89a42f96d309e01d0be19",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_7/HamloRevolution.vst3_20261104T115504.533+0200.txt": {
+      "sha256": "2e246235faf2805a8f848cff269f3b9b4129e756c5e72a37561ed1ec379addd1",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_7/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_7/stdout.txt": {
+      "sha256": "d085548f77805f258d0aa92b051899b56e26728546fa91085c9391aaa703515c",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_8/HamloRevolution.vst3_20261104T115530.658+0200.txt": {
+      "sha256": "e8249a4c43fbcd0c3580022a29b703e127a0a6c64ac3c21913cb0ebf1335f70d",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_8/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_8/stdout.txt": {
+      "sha256": "41a309704c20ea4e4791151ad28292012864c9b85298a45f6874bb36a1b5ca16",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_9/HamloRevolution.vst3_20261104T115557.613+0200.txt": {
+      "sha256": "2e7d46e1873c8f7c26fe92b3ba96f8c6825048a628324bba2b1a8547eea54fa7",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_9/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/pluginval_9/stdout.txt": {
+      "sha256": "b1ef2304579f5c55a8d932b8cb5438745eecd4e3cef5114cfea3fb90e655ba6b",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/steinberg.err": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/steinberg.txt": {
+      "sha256": "f21da6c93e6d6865d0361ea6d4e0087f110279e2eed80a4cc9d9ec6bb439c4f2",
+      "normalized": false
+    },
+    "docs/reports/r12/validators/summary.txt": {
+      "sha256": "b086b774f9dd99a2ceeb015ae90ab67b5706fce3466937aeb9568ff9c9bcc4d4",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/identity.json": {
+      "sha256": "73c68304fa2d3145bef33584df07e9ae72a494738cbd8147685b39f273fab4fe",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_10/HamloRevolution.vst3_20261104T120229.408+0200.txt": {
+      "sha256": "7ec45f32893ba55c483b3bbc2cefd3f65a81684f56a5056a4adc9c9c193fb133",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_10/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_10/stdout.txt": {
+      "sha256": "2b5d334b588029fea26e190d6bfbce169ee9d2b6424baac1ea6d4c1ec8541c74",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_5/HamloRevolution.vst3_20261104T120037.099+0200.txt": {
+      "sha256": "fc3e03a4bad96e1059029547ed181106f030c3a90413a599c2940952071aa972",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_5/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_5/stdout.txt": {
+      "sha256": "5e76a1f09e1f443f8b94819ecfca04b8d05720b4f134770022b0f9aa5de11cfb",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_6/HamloRevolution.vst3_20261104T120046.542+0200.txt": {
+      "sha256": "54022f6b98e1edb2e88fcce7414b5a54ac2d0d1279fc53b6aa4efbadd138fd80",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_6/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_6/stdout.txt": {
+      "sha256": "6373a60bbab9d19f3df2932d301291828e884045e2b89a42f96d309e01d0be19",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_7/HamloRevolution.vst3_20261104T120110.647+0200.txt": {
+      "sha256": "2e246235faf2805a8f848cff269f3b9b4129e756c5e72a37561ed1ec379addd1",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_7/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_7/stdout.txt": {
+      "sha256": "d085548f77805f258d0aa92b051899b56e26728546fa91085c9391aaa703515c",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_8/HamloRevolution.vst3_20261104T120136.934+0200.txt": {
+      "sha256": "e8249a4c43fbcd0c3580022a29b703e127a0a6c64ac3c21913cb0ebf1335f70d",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_8/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_8/stdout.txt": {
+      "sha256": "41a309704c20ea4e4791151ad28292012864c9b85298a45f6874bb36a1b5ca16",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_9/HamloRevolution.vst3_20261104T120201.873+0200.txt": {
+      "sha256": "2e7d46e1873c8f7c26fe92b3ba96f8c6825048a628324bba2b1a8547eea54fa7",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_9/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/pluginval_9/stdout.txt": {
+      "sha256": "b1ef2304579f5c55a8d932b8cb5438745eecd4e3cef5114cfea3fb90e655ba6b",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/steinberg.err": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/steinberg.txt": {
+      "sha256": "f21da6c93e6d6865d0361ea6d4e0087f110279e2eed80a4cc9d9ec6bb439c4f2",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_delivery/summary.txt": {
+      "sha256": "b086b774f9dd99a2ceeb015ae90ab67b5706fce3466937aeb9568ff9c9bcc4d4",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/identity.json": {
+      "sha256": "9f301908f06f4f04a683c8c05a27d71cd59ff5809670eefc559ecfa59a494fda",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_10/HamloRevolution.vst3_20261104T121202.622+0200.txt": {
+      "sha256": "7ec45f32893ba55c483b3bbc2cefd3f65a81684f56a5056a4adc9c9c193fb133",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_10/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_10/stdout.txt": {
+      "sha256": "2b5d334b588029fea26e190d6bfbce169ee9d2b6424baac1ea6d4c1ec8541c74",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_5/HamloRevolution.vst3_20261104T120948.763+0200.txt": {
+      "sha256": "fc3e03a4bad96e1059029547ed181106f030c3a90413a599c2940952071aa972",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_5/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_5/stdout.txt": {
+      "sha256": "5e76a1f09e1f443f8b94819ecfca04b8d05720b4f134770022b0f9aa5de11cfb",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_6/HamloRevolution.vst3_20261104T120957.941+0200.txt": {
+      "sha256": "54022f6b98e1edb2e88fcce7414b5a54ac2d0d1279fc53b6aa4efbadd138fd80",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_6/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_6/stdout.txt": {
+      "sha256": "6373a60bbab9d19f3df2932d301291828e884045e2b89a42f96d309e01d0be19",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_7/HamloRevolution.vst3_20261104T121023.098+0200.txt": {
+      "sha256": "2e246235faf2805a8f848cff269f3b9b4129e756c5e72a37561ed1ec379addd1",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_7/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_7/stdout.txt": {
+      "sha256": "d085548f77805f258d0aa92b051899b56e26728546fa91085c9391aaa703515c",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_8/HamloRevolution.vst3_20261104T121051.913+0200.txt": {
+      "sha256": "e8249a4c43fbcd0c3580022a29b703e127a0a6c64ac3c21913cb0ebf1335f70d",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_8/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_8/stdout.txt": {
+      "sha256": "41a309704c20ea4e4791151ad28292012864c9b85298a45f6874bb36a1b5ca16",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_9/HamloRevolution.vst3_20261104T121127.780+0200.txt": {
+      "sha256": "2e7d46e1873c8f7c26fe92b3ba96f8c6825048a628324bba2b1a8547eea54fa7",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_9/stderr.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/pluginval_9/stdout.txt": {
+      "sha256": "b1ef2304579f5c55a8d932b8cb5438745eecd4e3cef5114cfea3fb90e655ba6b",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/steinberg.err": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/steinberg.txt": {
+      "sha256": "f21da6c93e6d6865d0361ea6d4e0087f110279e2eed80a4cc9d9ec6bb439c4f2",
+      "normalized": false
+    },
+    "docs/reports/r12/validators_final/summary.txt": {
+      "sha256": "b086b774f9dd99a2ceeb015ae90ab67b5706fce3466937aeb9568ff9c9bcc4d4",
+      "normalized": false
+    },
+    "docs/TRANSITIONS_V2.md": {
+      "sha256": "374dd90ff71779b73c45354b19617eab0fe82d75ea91b9dda70819d068c94779",
+      "normalized": true
+    },
+    "out/r12/accepted/Assets/hardware_pack/buttons_and_lamps/button_soviet_on_off_red.png": {
+      "sha256": "1777ec9c38c019a40caec69d4040becf0267c6471144727dfc4e9abdcd393804",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/buttons_and_lamps/lamp_panel_red_off.png": {
+      "sha256": "5dcb9e073a5351d996b91646e650b113603535ba9d37fa0e2520b929b341e0e6",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/buttons_and_lamps/lamp_panel_red_on.png": {
+      "sha256": "961d0dd5213ac77039330de2583023d3b75720ee844513ba98c1396e95f6a9ec",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/index.html": {
+      "sha256": "3abf3d135cfe2029b2c0fe6ea8c034789d6b7b6ae06a15179a331a232d855ec9",
+      "normalized": true
+    },
+    "out/r12/accepted/Assets/hardware_pack/knobs/knob_aluminum_brass_insert.png": {
+      "sha256": "1d018a2364311191b1131677900db77b2d97575c73ec27befc756e5de3cc060b",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/knobs/knob_bakelite_ribbed.png": {
+      "sha256": "ebfd5c38473736f45cb809136ee0b7f9494d842e0c833583b43878457e323e6f",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/knobs/knob_chipped_iron_dark.png": {
+      "sha256": "1ab61d5e15878e3463711823157858fac69bc075b500f94729b7abc2c37700be",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/knobs/knob_lathe_steel_rust.png": {
+      "sha256": "bc45569e6b475690b8aef1cffe39767efd453f945629c9acfefbd7bfeb531870",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/pointers/pointer_black_instrument.png": {
+      "sha256": "6f6141eaeff024409627a30b3689fe393c9c026463df632a937e47b80ffae513",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/pointers/pointer_brass_wedge.png": {
+      "sha256": "63f616ccb4b084068a8efe940f7ec5b26d1e663f69eaaaf893afadecf496fb26",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/pointers/pointer_red_tip_brass_collar.png": {
+      "sha256": "aed95ce004b07cff2bcde66288208cf5e600aa37961a078fc00c4cb54c47397e",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/pointers/pointer_white_enamel.png": {
+      "sha256": "40c08e813af9379b9b4d6cd62e393cd3e3e0731cd0b0ca481fa60f5692682085",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/README.md": {
+      "sha256": "6d95c2c65ceffaad053135c3a73adb1c2109e37fc239fedac6733f510cde4466",
+      "normalized": true
+    },
+    "out/r12/accepted/Assets/hardware_pack/scales/scale_arc_ticks.png": {
+      "sha256": "cc124e7a9e863e75d39a4350d6a24c536a1dbb1f24ebe7be0d6dee22b700b04d",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/switches/toggle_switch_down.png": {
+      "sha256": "ddc5a7a4833a73d71c4b5c90358ca7a4dcb8ab8ed515dfbe5e4ba3900fd968c3",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/switches/toggle_switch_lever_down.png": {
+      "sha256": "e2b067c64e51436bbc442660746ecf4dbf2271b50f36e48e01fe91bccd13e271",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/switches/toggle_switch_lever_up.png": {
+      "sha256": "96f3f24994e8967e1695ad26fcf8f9f1bb0cf48be4a6a9718574686cc7239080",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/switches/toggle_switch_neutral.png": {
+      "sha256": "a5880db0ef5d0522a4c04995ffbe4a98ff054af6be955a11a66a39c1e332599a",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/switches/toggle_switch_plate.png": {
+      "sha256": "6ad10f42962f5638fa60f94fd257ad0f733d906a0b52818bb1c0a1f6f1526845",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/hardware_pack/switches/toggle_switch_up.png": {
+      "sha256": "5848ed9b0fedd23b8deb18ed2bb40c2ba0a7cfec3ac43d141ace0a8fb9d6ff00",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_00.png": {
+      "sha256": "d70e6d16b3cb4e5cb1c3765dd775ceb57d891da0f18d203461cac2ac408ca181",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_01.png": {
+      "sha256": "16ba2e1182fa7c77c68e13619b1bb78c031d2d83e871de0f50ab2b9147360666",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_02.png": {
+      "sha256": "7b329b134ca31748b1e1006031facaa20e327af4589c413bf4e09cb5113538c4",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_03.png": {
+      "sha256": "86e32f4fdc3018efabffbc848648960cfb8b90615fac5d9b9a72f3d8843f7af5",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_04.png": {
+      "sha256": "8c2192cd45d3c3eff4a19b7a9c51917a0e73763f82e6bef770f4fb17904132e4",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_05.png": {
+      "sha256": "054faa28f6d022c91ae30507ba97c35a21fa9ea6da0ef64e0e551d7677912a6a",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_06.png": {
+      "sha256": "b6fc99c8f35b8432ca08eaa531ce4cd8b0f8b587b93ba94b9f54aea01728b078",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_07.png": {
+      "sha256": "627f55850b093628f4db2e152074b15990b72db0324eede40f8068bff92c3418",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_08.png": {
+      "sha256": "500eda782ca255b14c3f15c1b0bc927323da704b8dd67fa9dc37a4d20aae9a6d",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_09.png": {
+      "sha256": "f8ce85e1e7ea5df341b3505885acd9a5fe8bae9d14057361580596d4dc4eea5e",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_10.png": {
+      "sha256": "21378ed757ae612be3f3ca0f6b3767c7e60bb822dd371394734697fbb0c0b160",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_11.png": {
+      "sha256": "16b4ec534f08f4c5b884515e225ed1e82721c7dd6e25c102e957b8d965963f0e",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_12.png": {
+      "sha256": "bd4d755c80c6c6da8021f3264c0591beb5c9a2fd8efdc22508cbe5e92c031a2c",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_13.png": {
+      "sha256": "ee09c589bcde2a57f02e1999f8c038e2cc152f613a0971b95fcbeb118d5da325",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_14.png": {
+      "sha256": "b3a788f6849c57ad312ada5a84b71c2c5418083dbcfc20317d90551d50b2214f",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_15.png": {
+      "sha256": "19cc4b84d78a48295d4859eb15c69009e3857bd25fd12184ed496c5467d7684f",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_16.png": {
+      "sha256": "3c5b90b68953cfe77b5b38528a2ae81189e137a18c280be688b1085865c6318d",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_17.png": {
+      "sha256": "feec61473fbf01fccc0d7e3c0892af49b9d5d0f3a685a2cd0e4c8d6794ee0040",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_18.png": {
+      "sha256": "02d38607f78c0554ee7c48505a2294eb302ffff27d613db52443b95811cb505a",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_19.png": {
+      "sha256": "769cc665648cc85b7e2d10f4fbb5f8fc3d328be2e04c378bb7436a2d09febb4c",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_20.png": {
+      "sha256": "f2df7d10c1a943eb97a00d9169a98e06b63afd10b10db046b4c209eaa1c1f552",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_21.png": {
+      "sha256": "12871468ea9a7474ea6b79dc0c63c79b224add5ed8faea2bb92337e5a8b9ac53",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_22.png": {
+      "sha256": "adb5478dca80d98aa6bdb1d58d845e3c9762bc1f4203056e7c63ed18bec49469",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/scratches/ussr_23.png": {
+      "sha256": "e1e722408a5437ccb0a3f81542336a64ec310c4deac7aa66750840667204e388",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/tubes/lenin_off.png": {
+      "sha256": "b1bd9fe003e2aed86876e66dcddfe17eb8aaf782f6623c719ed972dd9ef63d3d",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/tubes/lenin_on.png": {
+      "sha256": "6e61753c231f9478cae0202a2eac67d1d30ce98abe0b6d73a6e21fcc8513b5fe",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/tubes/stalin_off.png": {
+      "sha256": "3c4d5097b9cdeee1d96bd5b4b329c9a0f91a61952853fee741560f7cb35af360",
+      "normalized": false
+    },
+    "out/r12/accepted/Assets/tubes/stalin_on.png": {
+      "sha256": "77011f97987d2a3c8c341fd372e79399f8a5b862e695fa859dc2be40344a05d6",
+      "normalized": false
+    },
+    "out/r12/accepted/cmake/PatchJuceWindowsRenderer.cmake": {
+      "sha256": "eef31294f4929035bdbff82928c66bbbbc3adfea85a53be8e3a57e9628973fd6",
+      "normalized": true
+    },
+    "out/r12/accepted/CMakeLists.txt": {
+      "sha256": "5f93fd4a74d0203d794977baad8b4b878393dfbecde6aef392968962528f595a",
+      "normalized": true
+    },
+    "out/r12/accepted/HamloRevolution.vst3/Contents/Resources/moduleinfo.json": {
+      "sha256": "59229998c20903ec6db89743267d419b54a882c738c207d7c7a1cc92f709be7f",
+      "normalized": false
+    },
+    "out/r12/accepted/HamloRevolution.vst3/Contents/x86_64-win/HamloRevolution.vst3": {
+      "sha256": "2810e209ea85559626df8a474405efc9a8731f320b2ebeea099737b454f7ce49",
+      "normalized": false
+    },
+    "out/r12/accepted/HamloRevolution.vst3/Contents/x86_64-win/HamloRevolution.vst3.sha256": {
+      "sha256": "581313c7808355e4a1a3da4e90257b85e45d14369bd645a42ccd8d41340cfdba",
+      "normalized": false
+    },
+    "out/r12/accepted/HamloRevolution_Snapshot.exe": {
+      "sha256": "fc1ac7bed0051de5bcdad25633d3c6e2bf7ef889a99c21103159fd4de232626d",
+      "normalized": false
+    },
+    "out/r12/accepted/HamloRevolution_SpatialLab.exe": {
+      "sha256": "c503757806f56eed6f6aca5359e0e6e683fe24ae3001b9d7bd39c3176b903a8b",
+      "normalized": false
+    },
+    "out/r12/accepted/HamloRevolution_Tests.exe": {
+      "sha256": "2b4939fc91a2af6fbe5a76f565f263232182ea56f16e2507f2f40f74baee2377",
+      "normalized": false
+    },
+    "out/r12/accepted/HamloRevolution_TransitionLab.exe": {
+      "sha256": "d1843e928e37d46502dc5ec0479033a5384b38d43fe50c3e17c532c21ae8f095",
+      "normalized": false
+    },
+    "out/r12/accepted/Source/Core/FxProjectState.cpp": {
+      "sha256": "e60dc2ac9787d5c2aac0e9fe43a06d31ad92e4cca0d013f76f4ea05ada850689",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/FxProjectState.h": {
+      "sha256": "133dd972a3488b114a7a6d728e3e39ed59c2388419ae7001db15daa0838cf771",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/ModulePresets.cpp": {
+      "sha256": "2c9f4e876fc5de4bb3952aead450ec78b47f37fdff95aa5baaff0f49b327fa1d",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/ModulePresets.h": {
+      "sha256": "a00794b0f1d0fbcfe61dc35ef3875e583202f1999eb3e8db32cff9aa25c241fa",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/Revolution.cpp": {
+      "sha256": "c48f58b694962845a2f99afcee100da2473638e02c81a2293333a1ba9944d821",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/Revolution.h": {
+      "sha256": "f7c2f361ee2a47b68cd5fbd348f349ff553ff1d898ea928f4e9acfea81b2657f",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/RevolutionPresets.cpp": {
+      "sha256": "c02fe1d0dc833c180e8a554284a0049ba53de655761d8d0bcad8f9274a27b86f",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/RevolutionPresets.h": {
+      "sha256": "67070ed08bd8589b5079848ee1c09f7f047ff3238e84d083715a07d44405cd03",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/RevolutionPresets.inc": {
+      "sha256": "056842dd382ab97b86d2244e5abf2758ab5425d06de2514ccd722d349c570b5d",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/RevolutionRecipes.cpp": {
+      "sha256": "9aa9aee370d31d3915198034393ab6b000b9f68d59ed62e68bbcbbae55e75ec5",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/RevolutionRecipes.h": {
+      "sha256": "aea4b91a69a8afc8dddbffb5d4ba5426010f2426ed58b8eae9d3983bb7370ad9",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/RevolutionSimple.cpp": {
+      "sha256": "b95d7285414235c8f999f171944bcd527f2c7cf52a67b0c8a950a92adacafb06",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Core/RevolutionSimple.h": {
+      "sha256": "de6099d1f4cd58229597297011f0e66d9ea13ba6a5348af3a490845b073bbb58",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/Biquad.cpp": {
+      "sha256": "2b9adc45c556e15d38ac84f9989c83e1ecd3f61dd7500243f1b4eba3bf2808bd",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/Biquad.h": {
+      "sha256": "819a517ff340ff875f3d96cf83f74bcb30c2258a81102a0ee6f7e57c9f8e1f4a",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/CrossoverTree.cpp": {
+      "sha256": "da40f9330722ebf76d0225d87ed8dadc52b35d9215ac0ef140d9775868229e07",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/CrossoverTree.h": {
+      "sha256": "acaa64940fba57be61c92834e43d57f175ca6f2a314e157461a1722deff1c657",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/DelayLine.h": {
+      "sha256": "e8397a978a3f2107ec6c23000eee6701326f6b479e28a5b674ad71d43ecec650",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/DspConfig.h": {
+      "sha256": "bcee350c9b988be1ff88027cb61a0ce6e8cfe1be58d9309daa4a8a377db589c0",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/EqDesign.cpp": {
+      "sha256": "56255e4ddcbc293683f4c6009309fcf638784182a1b61835d7f7026f7b8744b6",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/EqDesign.h": {
+      "sha256": "5f5bc63397d648969eccf7991e4ff98cd22cf44663a2a940f1eb34f0bfe73f0f",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/FxNodeProcessor.cpp": {
+      "sha256": "5f2de02705cc77f1e2c711627a5023a903e61f6ff7bf6f0ea8979a70edfd5cbc",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/FxNodeProcessor.h": {
+      "sha256": "24a562038920c5ea771f98c673b008e4c145d4b6525b59bd1c33f1d10133c544",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloEcho.cpp": {
+      "sha256": "c15f511e226e945bea837cfa8308e86a3cb0cf275b67b767729c77ecc1b85274",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloEcho.h": {
+      "sha256": "08203efbf43d9686d110d06cfada73b76c0bb45f2f783bbce94aec96c239f24e",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloMag.cpp": {
+      "sha256": "51c536d00e7f4cf03088e09284b107d4843c79186505df679136ce9824918c73",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloMag.h": {
+      "sha256": "89c688bc8b3a33dc95b9c528756f213bd2fddca2d42e723a6c7c469b565a9a21",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloRedWall.cpp": {
+      "sha256": "a92828adc02ea611712a5381fbbd4376ebb715eebaf10d6bb236584a7c0eb353",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloRedWall.h": {
+      "sha256": "0b10e76b28282323d80b22ec56385d4de50f269a63f558f7a2180b01ff02cc68",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloRevolution.cpp": {
+      "sha256": "8bad2e3644f3a4d3ce7f38f2cd086205806682db394048da5297edeeee3060e9",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloRevolution.h": {
+      "sha256": "680ecaf7bdd74a7e0e82c7bbb37c82266804a1552e9dd2796a890aa49573013a",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloShirota.cpp": {
+      "sha256": "5a0e2163d4a039439e0ae30a58373fb68889a388ed3bacd4d55cc125a2acc1fa",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloShirota.h": {
+      "sha256": "f14b21202801ea5c1a3357c63df0ae904eda56d1a7a010a940e07a93a3d1574a",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloUdarnik.cpp": {
+      "sha256": "e0cdf4f825859c143c1228130effe09c3783e21e73e63f1f1201432ba7889803",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloUdarnik.h": {
+      "sha256": "2ff42b69320cd39ff2fd2571ca3f5b9d1141c0fd34bb52c64a827651cbc50ae3",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloVerb.cpp": {
+      "sha256": "fbb60da61de447439461c627be402930ef0b958781ac3196ee3ab5a17822456a",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloVerb.h": {
+      "sha256": "fc66fe1e721a744b2ba2f64c46e713cc40cc8b7a5eb31bb712962ca182ab3f5f",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloZastava.cpp": {
+      "sha256": "0cec67127c96eb2a7ff29e54c7c6a4b1b9b56c853486c8fe02c5fc2a8d59db87",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/HamloZastava.h": {
+      "sha256": "76d78d5a0d72ff38e870b159e7cc8e101553bb8d7dd0e5d5909032323f0d89b9",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/LayerEngine.cpp": {
+      "sha256": "bb6a9d21c127f42c80e01c8415c672f9d5ec40a8302ec0b46c6771733f69fb80",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/LayerEngine.h": {
+      "sha256": "49e7bb7c05baf6a52a2bf53e4a637e45baf7162a1a8cdde094c7fdbd4cfbd330",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/LayerSnapshot.cpp": {
+      "sha256": "b66b1b66ef43d9f97ca7359ed0b8f91a49c577683657e1a7b0233ec74b581a61",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/LayerSnapshot.h": {
+      "sha256": "c03941f7c7d6ff5cf8d3b985a26615c0787ece6e4b6c5a66beecb3e312cef2a2",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/Pool.h": {
+      "sha256": "476352285dcd590c3c484d537ca6b7c1a35bb1f315f83a5b32d60d44cb343c4b",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/PreEqProcessor.cpp": {
+      "sha256": "5047bf2433634eafa53059106b1562057902c771fe42c12ff4b7630470ceb6c9",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/PreEqProcessor.h": {
+      "sha256": "91564944f937bb1421831901df416fe558f3c4b241f68df351a130e533328b2c",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/Processors.cpp": {
+      "sha256": "d5075075bf35b40fe08b768a02242198906ee161f2dccea23a124f6938e6d912",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/Processors.h": {
+      "sha256": "7329d9d8b3e43259a5ca111e253e42ce625c431f45cf418a984f6bea268e4396",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/ProcessorsM6.cpp": {
+      "sha256": "fc2af720f154ba9b389ffc5eff4143d69690a4db9036c75e540927dcee4617e6",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/ProcessorsM6.h": {
+      "sha256": "354579ac8458d81659a2b97d9bce72ea4cbf6b2f8a77ff44c017dfabec955d39",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/Ramp.h": {
+      "sha256": "0298fcb933b437140b4a5588e1f2aab4a3afa1b190f32506a0d724a2036de6b9",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/ReverbProcessor.cpp": {
+      "sha256": "a49f12385789ce23ec81631a95046415d960abfe69d71840cdb9761ec0c45e12",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/ReverbProcessor.h": {
+      "sha256": "130afce00de038d759c050ef7cd2dde3ceedbaae19d650d833b79bb9f4d93953",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/RevolutionFft.h": {
+      "sha256": "ba9345a2af7de3aa6c85a33c157a3461e74a75899f0d5f63671c2d51f9d9b750",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/TransitionRecipes.cpp": {
+      "sha256": "0c5bf9652fccab60332c89ee78b1aa6bbfd081f0f73a6770141541560b05c6c1",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/TransitionRender.cpp": {
+      "sha256": "565ac081a7348b13dcbe50bf7cb27857975faac1fbb0c8f2cadcf5fc1fbaa4b8",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/DSP/TransitionRender.h": {
+      "sha256": "2402383d749006392e968c581cf50757d55a87606b621f7e3fd2fcc4c932f34d",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Link/HamloLinkClient.cpp": {
+      "sha256": "ccd4fd37734d9efee9bf70f0bec588bebdb3a8c738e32f6d2490ba9c7434b3aa",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Link/HamloLinkClient.h": {
+      "sha256": "6977d2a8afdd09314f3bc01aeb6521458b0fcf17e97b839d463b89a01e216413",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Link/HamloLinkProtocol.cpp": {
+      "sha256": "7fee828db372741df8c546762c2e2797be035f9de7dbd763b37339bc0f90bcf8",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Link/HamloLinkProtocol.h": {
+      "sha256": "366fd24cf4c944eeeb5248e54afa71e39b4862d9e0a98aca72ed40645e3c8b92",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Standalone/ModulePluginEditor.cpp": {
+      "sha256": "c305c8d8bf0b7fa009d58dcb4ba0670510c74ffb78a64dc092be6bbf8dab95c9",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Standalone/ModulePluginEditor.h": {
+      "sha256": "76869a8dc2b3e31cf16be1499959d497ccc535fabc93a0a14ab330248868904e",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Standalone/ModulePluginEntry.cpp": {
+      "sha256": "795ab8d1d4dd779278eb2c0aa12c7da914cc3be1c82668f3bd3cc0be8280efd7",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Standalone/ModulePluginProcessor.cpp": {
+      "sha256": "139668377338ac91586974caaf0ae560e7803e88e4f57ca9c4a6fde5569702ab",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Standalone/ModulePluginProcessor.h": {
+      "sha256": "ac127935b13cb187f1993baa5877c76469ab101303fd88cb4fc292046d081d33",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Standalone/ModuleVariant.cpp": {
+      "sha256": "467412bb954774a260d96991327f2971341b72c214cb25bdd9dbe3a829bffd03",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Standalone/ModuleVariant.h": {
+      "sha256": "7369aa60d7d83b372edea37b0b77abb3c9562e39c6c3761f5794989646c4ffeb",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Standalone/RevolutionSample.cpp": {
+      "sha256": "5cfdd042d34ccda30b75c8c298ed616e0325f7b122fef7ca412a1edf488ec070",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/Standalone/RevolutionSample.h": {
+      "sha256": "f63f02e916a7ba58c6713d5f414c531e50a590f92a9723375ee0c3703d8181fb",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/BlackSteel.cpp": {
+      "sha256": "6c79f1312bf78195ff09173c0f84976969d5d2c8db19ff3ab27e344997bfa5ef",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/BlackSteel.h": {
+      "sha256": "d3011aea55d26e515fc04de49657fba9189b2651ba4b9b5fe068b5ca84db3f88",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloCompPanel.cpp": {
+      "sha256": "9164f91ed7270e955915d92f60f38c2dbda9d99afa2aa3d69b347553e2fe533f",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloCompPanel.h": {
+      "sha256": "e5736b41fabb1c899f52627b53b4721fe2250e4ba528478470ac143f49e41a0b",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloEchoPanel.cpp": {
+      "sha256": "83b4d018e30eda91d1421102ca8ae0e31582877a38c00a1ef8c51ecfa2ea8b0a",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloEchoPanel.h": {
+      "sha256": "89811ca5393b462e3d862530a5583524b7c9148e8cb335c61c381232d21b4f36",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloMagPanel.cpp": {
+      "sha256": "a5ae0dd44b3bb80771f0b5540418f6772b00297ecdc289a3b4402664f40dffb1",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloMagPanel.h": {
+      "sha256": "1c9b370ded908084ce2069f876a753be5ca4ca53c6e224c31bba806f20979f1c",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloRedWallPanel.cpp": {
+      "sha256": "0803ffc79c21dbb2909aacf8ec9dec995c83a4322ce04ce57a33b219aae24760",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloRedWallPanel.h": {
+      "sha256": "698d67a1c4446ce55101178c358005161f95d3560d30ecd7a451f95511b3d0bc",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloRevolutionPanel.cpp": {
+      "sha256": "addedd99ba815b72e9192359762466e5d9d606d84d9d6dca7d54d9f126db86a6",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloRevolutionPanel.h": {
+      "sha256": "28931ac4a5f8ded7dbca10c1df4b62ceae9e3bd5341dcc7150a32f4cc2e5b966",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloRevolutionSimplePage.cpp": {
+      "sha256": "a3b04e04d96831bcb5793cf2fc2aafb0d6f69c671f6e5a0a78f4fdf7eb762cde",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloRevolutionSimplePage.h": {
+      "sha256": "d36f4a29bc6727734fec8eab13ffb28c0ede6f4413f81951e5cc6828b259f265",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloRevolutionTransitionPage.cpp": {
+      "sha256": "9a03dd06458ec9b9875b9be52c92576594b1319ca509f1caa7752172dfa3f0f6",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloRevolutionTransitionPage.h": {
+      "sha256": "97e8c50d01f2213de74cb0244531dfc637826fd1a4de79cfd024c55c653ab68b",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloShirotaPanel.cpp": {
+      "sha256": "ddcb7c19606bf1605a968c3222f0d641613d9bb90ada325568d084dcc0f26cbf",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloShirotaPanel.h": {
+      "sha256": "2e0c24e4f645febb843c4d5994047c077be822b83024535770b88cae90fe9418",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloUdarnikPanel.cpp": {
+      "sha256": "392decfd9a9e4d0629039bf308c0832fb0d9fc2a28c88f97d0ff2dde1803d87a",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloUdarnikPanel.h": {
+      "sha256": "6b71bdf4d6c722ea9917b45644038fead563c10356181eeeba270d272de7c2aa",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloVerbPanel.cpp": {
+      "sha256": "64f33e0a18cecbefdcbcb66378f47e69083b2551012f75078dbc609fdbadf40e",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloVerbPanel.h": {
+      "sha256": "e407bd7c5f6a7087004e2b7638f354855251abe6c8033627bbf5dcf766df5042",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloZastavaPanel.cpp": {
+      "sha256": "cb8e92b1dacbe9ed177b06cda68de184120db80560231619c4ae5c0115f941d5",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/HamloZastavaPanel.h": {
+      "sha256": "720946822aaf00b1a60822885e99d9856b2019d8dbd809463ff2563e7f07b1c5",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/ModuleHelp.h": {
+      "sha256": "f2630cb46a19f323570f2e6146c994b0af122a93edee09892786c9cb05532f17",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/PresetScreen.cpp": {
+      "sha256": "ce90663c90b18020b23991b338cf5f00f39d8e5e3cfdd4d1053f3297402fedce",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/PresetScreen.h": {
+      "sha256": "7b2a5560311f9a4ff17c64ffb4ac3da6aa85c2b0335b183e5025d4ce8faf049d",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/RevolutionHelp.cpp": {
+      "sha256": "1f7badc2c879e05f0889b07a30a7be584692bef084cc862955c7beccc54cf40d",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/RevolutionHelp.h": {
+      "sha256": "b2176f11369631fdf33d6589819b63089ac117c56fae45016c034fad4f15215d",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/RevolutionSampleBar.cpp": {
+      "sha256": "e8a823d417afb3e70114b45623cb77a7843e9cd0e124a63b9e82827da7ee944a",
+      "normalized": true
+    },
+    "out/r12/accepted/Source/UI/RevolutionSampleBar.h": {
+      "sha256": "1e664689f706ffd611f32af1a5335b0464bb5063f532582073935b3ec2a593e6",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/AllocationAudit.cpp": {
+      "sha256": "165eea0bd9a2ce93c783fd1c935cbdaa168d3862074732348b9f4f8245566840",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/AllocationAudit.h": {
+      "sha256": "d948fcaf914d9bc5559f6302ef581392297e934b0ed03b7a7befec9cb62d6c1c",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/GlitchTests.cpp": {
+      "sha256": "5c835429db01978e203b01872cd94dc411b9452da92609fe2adada5cc3df4be2",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/GoldenTests.cpp": {
+      "sha256": "ac41b5327d3e190707b1a3672f87c7b6f2e8bf6e01f9dc60a6ad0f0b161a921c",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/ImpactLab.cpp": {
+      "sha256": "ee1b0aaac5bffad413ff8070455afd1be4f7d9967380105a9cddcdb63b03e963",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/LaneTests.cpp": {
+      "sha256": "32446d34ed02b83b215320cffad2dcc5d9f8c02000178033c24c236d1a8cd05c",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/LinkTests.cpp": {
+      "sha256": "1139fc26fefee8c83cf6c1bb18ed8ccee4ae77e1c9be6a7aafa286ec70959b85",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/ListenTests.cpp": {
+      "sha256": "0178cdca8cb62cd6161a6000bdf605216faea826699c2a302de60fa261c44344",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/PluginTests.cpp": {
+      "sha256": "f974a179d69d9ec17cddad4ba6cceed49624a93dfd8b5d2f8a332c371d4b758c",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/PresetTests.cpp": {
+      "sha256": "702b54012ee6058c5679a6ce4a7a74e77ab7074bb6deae5c94304f67dd01ee78",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/RevolutionTests.cpp": {
+      "sha256": "a7d9b14976360bf57df0d5b40068116c27546bb8f358383c29593d8fa2c68714",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/SampleWorkspaceTests.cpp": {
+      "sha256": "14451bde0d76e3c68f39679334dd1d6324665b276e6cab61a97c76602a471ff9",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/ShapeTests.cpp": {
+      "sha256": "c6d273fe7701de5578aa814ed4a199e38a2a3819f6cbba7152564f7877bec6cc",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/SimpleTests.cpp": {
+      "sha256": "e9b101559f08a427fe7e7f217cb16aced4456115c52f0db84d6d8c0a16b549a1",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/SnapshotMain.cpp": {
+      "sha256": "16ec24da8081880a07b2305131b0a99b1e8c3aa46676b10941e342a89ea3376c",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/SpatialLab.cpp": {
+      "sha256": "5664ba5805351e6e52fab204241776e2d8b981821f7533e588d8909899201ddb",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/SpatialTests.cpp": {
+      "sha256": "cb5e348e620074f3582b9b823b2c0357eb9c092b8ca07632fc53d93bd8c7397d",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/TestMain.cpp": {
+      "sha256": "ba9cb8eaf8d92cc7b9a70f7450103825b3e75ee668f3c8e49d607d8ea5d572e1",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/TestSignals.h": {
+      "sha256": "8093bb51464634e03430d679bb218d6506767a2e57d35a08f1a648d256dd9b20",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/ThrowTests.cpp": {
+      "sha256": "66874cb55a698a7828b3a05e6c21383760cc6845dfa41002e5c9979c089036c5",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/TransitionLab.cpp": {
+      "sha256": "bc31e4416511131098e451be213fefd494455cb740c4bc7ca8a90e05c7dacbdb",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/TransitionRecipeTests.cpp": {
+      "sha256": "65bf28ecccf242e633cfb75befc4d4d917c54b04df9024f3d914d0ce90beea4f",
+      "normalized": true
+    },
+    "out/r12/accepted/Tests/TransitionTests.cpp": {
+      "sha256": "204b9a0779ce42b2de2094654301be0ffccc6417aaf1b141d7329da09f1b983d",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/analyze_transitions.py": {
+      "sha256": "454cebbaa8ccba141e6d5c88fa8f6203d8993473ece5d14c6cd1902e6a42d0bd",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/finalize_r10.py": {
+      "sha256": "7b70c38b1f599b5cb1d140af49404e8d93a1925c3f22edea587abebf738a4fd5",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/finalize_r12.py": {
+      "sha256": "89bdb07cbd0cfc7e71d769f70b702838a6c5e245291991c2fa928da5847bee01",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/revolution_presets.py": {
+      "sha256": "39d094e7676bd59a8f932d785f4fdac45eea6d327df4d99ff9f3dfd1a47686c6",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/transition_demos.py": {
+      "sha256": "dd25a92b1183a4cb078de8b59a1b1612c29f9532da4a5d6422baedb3ced5097b",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/transition_materials.py": {
+      "sha256": "1286eb128f951329de7725c041dd5154a2219a7f5175ca8c8be1feb1de45fc52",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/validate_r10.ps1": {
+      "sha256": "9fb7d99036cbdacbb1c0bd5ab6a030a2527040afe208e2a45c0dc18adbf051e1",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/validate_r12.ps1": {
+      "sha256": "ea555a4829d051f09f0b61ac1202d7826761047c9051720a037b073b9cdbe3a9",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/validate_r9.ps1": {
+      "sha256": "1f68a5f28b8b5af88c864945c0adacdee660f72fe5e26d3bc57565ac53371136",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/verify_r10.py": {
+      "sha256": "3b4434e48e743464ccd088d527132c32951c7ef27e4eff87e1815c0d4b99e30d",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/verify_r12.py": {
+      "sha256": "d8b024093ce83952c972056f329abc8d8532b580213bcb8f8169f55b5c48f2ae",
+      "normalized": true
+    },
+    "out/r12/accepted/Tools/verify_r9.py": {
+      "sha256": "74f08175c394394b0ad0bf935a1f73fdad1dabc8e1145de8ade1b3db2e88e882",
+      "normalized": true
+    },
+    "out/r12/baseline/HamloRevolution_TransitionLab.exe": {
+      "sha256": "b49d561bc959cef1b35076851119e7430afea54156f66fd4da7342322dc286e4",
+      "normalized": false
+    },
+    "out/r12/baseline/Source/Core/FxProjectState.cpp": {
+      "sha256": "e60dc2ac9787d5c2aac0e9fe43a06d31ad92e4cca0d013f76f4ea05ada850689",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/FxProjectState.h": {
+      "sha256": "133dd972a3488b114a7a6d728e3e39ed59c2388419ae7001db15daa0838cf771",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/ModulePresets.cpp": {
+      "sha256": "2c9f4e876fc5de4bb3952aead450ec78b47f37fdff95aa5baaff0f49b327fa1d",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/ModulePresets.h": {
+      "sha256": "a00794b0f1d0fbcfe61dc35ef3875e583202f1999eb3e8db32cff9aa25c241fa",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/Revolution.cpp": {
+      "sha256": "c48f58b694962845a2f99afcee100da2473638e02c81a2293333a1ba9944d821",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/Revolution.h": {
+      "sha256": "f7c2f361ee2a47b68cd5fbd348f349ff553ff1d898ea928f4e9acfea81b2657f",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/RevolutionPresets.cpp": {
+      "sha256": "c02fe1d0dc833c180e8a554284a0049ba53de655761d8d0bcad8f9274a27b86f",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/RevolutionPresets.h": {
+      "sha256": "67070ed08bd8589b5079848ee1c09f7f047ff3238e84d083715a07d44405cd03",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/RevolutionPresets.inc": {
+      "sha256": "056842dd382ab97b86d2244e5abf2758ab5425d06de2514ccd722d349c570b5d",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/RevolutionRecipes.cpp": {
+      "sha256": "9aa9aee370d31d3915198034393ab6b000b9f68d59ed62e68bbcbbae55e75ec5",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/RevolutionRecipes.h": {
+      "sha256": "aea4b91a69a8afc8dddbffb5d4ba5426010f2426ed58b8eae9d3983bb7370ad9",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/RevolutionSimple.cpp": {
+      "sha256": "b95d7285414235c8f999f171944bcd527f2c7cf52a67b0c8a950a92adacafb06",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Core/RevolutionSimple.h": {
+      "sha256": "de6099d1f4cd58229597297011f0e66d9ea13ba6a5348af3a490845b073bbb58",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/Biquad.cpp": {
+      "sha256": "2b9adc45c556e15d38ac84f9989c83e1ecd3f61dd7500243f1b4eba3bf2808bd",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/Biquad.h": {
+      "sha256": "819a517ff340ff875f3d96cf83f74bcb30c2258a81102a0ee6f7e57c9f8e1f4a",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/CrossoverTree.cpp": {
+      "sha256": "da40f9330722ebf76d0225d87ed8dadc52b35d9215ac0ef140d9775868229e07",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/CrossoverTree.h": {
+      "sha256": "acaa64940fba57be61c92834e43d57f175ca6f2a314e157461a1722deff1c657",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/DelayLine.h": {
+      "sha256": "e8397a978a3f2107ec6c23000eee6701326f6b479e28a5b674ad71d43ecec650",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/DspConfig.h": {
+      "sha256": "bcee350c9b988be1ff88027cb61a0ce6e8cfe1be58d9309daa4a8a377db589c0",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/EqDesign.cpp": {
+      "sha256": "56255e4ddcbc293683f4c6009309fcf638784182a1b61835d7f7026f7b8744b6",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/EqDesign.h": {
+      "sha256": "5f5bc63397d648969eccf7991e4ff98cd22cf44663a2a940f1eb34f0bfe73f0f",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/FxNodeProcessor.cpp": {
+      "sha256": "5f2de02705cc77f1e2c711627a5023a903e61f6ff7bf6f0ea8979a70edfd5cbc",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/FxNodeProcessor.h": {
+      "sha256": "24a562038920c5ea771f98c673b008e4c145d4b6525b59bd1c33f1d10133c544",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloEcho.cpp": {
+      "sha256": "c15f511e226e945bea837cfa8308e86a3cb0cf275b67b767729c77ecc1b85274",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloEcho.h": {
+      "sha256": "08203efbf43d9686d110d06cfada73b76c0bb45f2f783bbce94aec96c239f24e",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloMag.cpp": {
+      "sha256": "51c536d00e7f4cf03088e09284b107d4843c79186505df679136ce9824918c73",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloMag.h": {
+      "sha256": "89c688bc8b3a33dc95b9c528756f213bd2fddca2d42e723a6c7c469b565a9a21",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloRedWall.cpp": {
+      "sha256": "a92828adc02ea611712a5381fbbd4376ebb715eebaf10d6bb236584a7c0eb353",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloRedWall.h": {
+      "sha256": "0b10e76b28282323d80b22ec56385d4de50f269a63f558f7a2180b01ff02cc68",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloRevolution.cpp": {
+      "sha256": "8bad2e3644f3a4d3ce7f38f2cd086205806682db394048da5297edeeee3060e9",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloRevolution.h": {
+      "sha256": "680ecaf7bdd74a7e0e82c7bbb37c82266804a1552e9dd2796a890aa49573013a",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloShirota.cpp": {
+      "sha256": "5a0e2163d4a039439e0ae30a58373fb68889a388ed3bacd4d55cc125a2acc1fa",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloShirota.h": {
+      "sha256": "f14b21202801ea5c1a3357c63df0ae904eda56d1a7a010a940e07a93a3d1574a",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloUdarnik.cpp": {
+      "sha256": "e0cdf4f825859c143c1228130effe09c3783e21e73e63f1f1201432ba7889803",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloUdarnik.h": {
+      "sha256": "2ff42b69320cd39ff2fd2571ca3f5b9d1141c0fd34bb52c64a827651cbc50ae3",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloVerb.cpp": {
+      "sha256": "fbb60da61de447439461c627be402930ef0b958781ac3196ee3ab5a17822456a",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloVerb.h": {
+      "sha256": "fc66fe1e721a744b2ba2f64c46e713cc40cc8b7a5eb31bb712962ca182ab3f5f",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloZastava.cpp": {
+      "sha256": "0cec67127c96eb2a7ff29e54c7c6a4b1b9b56c853486c8fe02c5fc2a8d59db87",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/HamloZastava.h": {
+      "sha256": "76d78d5a0d72ff38e870b159e7cc8e101553bb8d7dd0e5d5909032323f0d89b9",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/LayerEngine.cpp": {
+      "sha256": "bb6a9d21c127f42c80e01c8415c672f9d5ec40a8302ec0b46c6771733f69fb80",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/LayerEngine.h": {
+      "sha256": "49e7bb7c05baf6a52a2bf53e4a637e45baf7162a1a8cdde094c7fdbd4cfbd330",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/LayerSnapshot.cpp": {
+      "sha256": "b66b1b66ef43d9f97ca7359ed0b8f91a49c577683657e1a7b0233ec74b581a61",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/LayerSnapshot.h": {
+      "sha256": "c03941f7c7d6ff5cf8d3b985a26615c0787ece6e4b6c5a66beecb3e312cef2a2",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/Pool.h": {
+      "sha256": "476352285dcd590c3c484d537ca6b7c1a35bb1f315f83a5b32d60d44cb343c4b",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/PreEqProcessor.cpp": {
+      "sha256": "5047bf2433634eafa53059106b1562057902c771fe42c12ff4b7630470ceb6c9",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/PreEqProcessor.h": {
+      "sha256": "91564944f937bb1421831901df416fe558f3c4b241f68df351a130e533328b2c",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/Processors.cpp": {
+      "sha256": "d5075075bf35b40fe08b768a02242198906ee161f2dccea23a124f6938e6d912",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/Processors.h": {
+      "sha256": "7329d9d8b3e43259a5ca111e253e42ce625c431f45cf418a984f6bea268e4396",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/ProcessorsM6.cpp": {
+      "sha256": "fc2af720f154ba9b389ffc5eff4143d69690a4db9036c75e540927dcee4617e6",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/ProcessorsM6.h": {
+      "sha256": "354579ac8458d81659a2b97d9bce72ea4cbf6b2f8a77ff44c017dfabec955d39",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/Ramp.h": {
+      "sha256": "0298fcb933b437140b4a5588e1f2aab4a3afa1b190f32506a0d724a2036de6b9",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/ReverbProcessor.cpp": {
+      "sha256": "a49f12385789ce23ec81631a95046415d960abfe69d71840cdb9761ec0c45e12",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/ReverbProcessor.h": {
+      "sha256": "130afce00de038d759c050ef7cd2dde3ceedbaae19d650d833b79bb9f4d93953",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/RevolutionFft.h": {
+      "sha256": "ba9345a2af7de3aa6c85a33c157a3461e74a75899f0d5f63671c2d51f9d9b750",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/TransitionRender.cpp": {
+      "sha256": "3f100493dc663182e4a6b0b31587acf66f77ed80fbc5e6dbadfcbc149cfff08a",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/DSP/TransitionRender.h": {
+      "sha256": "e5f4659d52c0395f996291decb777d026aa7e6c91eb45ead6e448f283eeb3947",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Link/HamloLinkClient.cpp": {
+      "sha256": "ccd4fd37734d9efee9bf70f0bec588bebdb3a8c738e32f6d2490ba9c7434b3aa",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Link/HamloLinkClient.h": {
+      "sha256": "6977d2a8afdd09314f3bc01aeb6521458b0fcf17e97b839d463b89a01e216413",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Link/HamloLinkProtocol.cpp": {
+      "sha256": "7fee828db372741df8c546762c2e2797be035f9de7dbd763b37339bc0f90bcf8",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Link/HamloLinkProtocol.h": {
+      "sha256": "366fd24cf4c944eeeb5248e54afa71e39b4862d9e0a98aca72ed40645e3c8b92",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Standalone/ModulePluginEditor.cpp": {
+      "sha256": "99df51aae993ebfc3e281e60166cba918d1a0af5179a8c2b59b966a0d551aeaa",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Standalone/ModulePluginEditor.h": {
+      "sha256": "76869a8dc2b3e31cf16be1499959d497ccc535fabc93a0a14ab330248868904e",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Standalone/ModulePluginEntry.cpp": {
+      "sha256": "795ab8d1d4dd779278eb2c0aa12c7da914cc3be1c82668f3bd3cc0be8280efd7",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Standalone/ModulePluginProcessor.cpp": {
+      "sha256": "a79632ccdfb6f9e9e4e8569cc15a314132e1c12c48200d2373ee2b56af17f9ff",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Standalone/ModulePluginProcessor.h": {
+      "sha256": "3e489bb7ad8abe19d13451b079f389f30c8fef59a6b5b2aa2a8fb35330f391f3",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Standalone/ModuleVariant.cpp": {
+      "sha256": "467412bb954774a260d96991327f2971341b72c214cb25bdd9dbe3a829bffd03",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Standalone/ModuleVariant.h": {
+      "sha256": "7369aa60d7d83b372edea37b0b77abb3c9562e39c6c3761f5794989646c4ffeb",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Standalone/RevolutionSample.cpp": {
+      "sha256": "5cfdd042d34ccda30b75c8c298ed616e0325f7b122fef7ca412a1edf488ec070",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/Standalone/RevolutionSample.h": {
+      "sha256": "f63f02e916a7ba58c6713d5f414c531e50a590f92a9723375ee0c3703d8181fb",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/BlackSteel.cpp": {
+      "sha256": "6c79f1312bf78195ff09173c0f84976969d5d2c8db19ff3ab27e344997bfa5ef",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/BlackSteel.h": {
+      "sha256": "d3011aea55d26e515fc04de49657fba9189b2651ba4b9b5fe068b5ca84db3f88",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloCompPanel.cpp": {
+      "sha256": "9164f91ed7270e955915d92f60f38c2dbda9d99afa2aa3d69b347553e2fe533f",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloCompPanel.h": {
+      "sha256": "e5736b41fabb1c899f52627b53b4721fe2250e4ba528478470ac143f49e41a0b",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloEchoPanel.cpp": {
+      "sha256": "83b4d018e30eda91d1421102ca8ae0e31582877a38c00a1ef8c51ecfa2ea8b0a",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloEchoPanel.h": {
+      "sha256": "89811ca5393b462e3d862530a5583524b7c9148e8cb335c61c381232d21b4f36",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloMagPanel.cpp": {
+      "sha256": "a5ae0dd44b3bb80771f0b5540418f6772b00297ecdc289a3b4402664f40dffb1",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloMagPanel.h": {
+      "sha256": "1c9b370ded908084ce2069f876a753be5ca4ca53c6e224c31bba806f20979f1c",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloRedWallPanel.cpp": {
+      "sha256": "0803ffc79c21dbb2909aacf8ec9dec995c83a4322ce04ce57a33b219aae24760",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloRedWallPanel.h": {
+      "sha256": "698d67a1c4446ce55101178c358005161f95d3560d30ecd7a451f95511b3d0bc",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloRevolutionPanel.cpp": {
+      "sha256": "addedd99ba815b72e9192359762466e5d9d606d84d9d6dca7d54d9f126db86a6",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloRevolutionPanel.h": {
+      "sha256": "28931ac4a5f8ded7dbca10c1df4b62ceae9e3bd5341dcc7150a32f4cc2e5b966",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloRevolutionSimplePage.cpp": {
+      "sha256": "a3b04e04d96831bcb5793cf2fc2aafb0d6f69c671f6e5a0a78f4fdf7eb762cde",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloRevolutionSimplePage.h": {
+      "sha256": "d36f4a29bc6727734fec8eab13ffb28c0ede6f4413f81951e5cc6828b259f265",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloRevolutionTransitionPage.cpp": {
+      "sha256": "a4a251c5296e09d8dae991727cdbf4cbcfff77b1de791c329343fa636ec9e7d0",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloRevolutionTransitionPage.h": {
+      "sha256": "a06e91ce23461dbebee551e83e933cec76a4bd0b59a9937c97834931fa07e72b",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloShirotaPanel.cpp": {
+      "sha256": "ddcb7c19606bf1605a968c3222f0d641613d9bb90ada325568d084dcc0f26cbf",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloShirotaPanel.h": {
+      "sha256": "2e0c24e4f645febb843c4d5994047c077be822b83024535770b88cae90fe9418",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloUdarnikPanel.cpp": {
+      "sha256": "392decfd9a9e4d0629039bf308c0832fb0d9fc2a28c88f97d0ff2dde1803d87a",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloUdarnikPanel.h": {
+      "sha256": "6b71bdf4d6c722ea9917b45644038fead563c10356181eeeba270d272de7c2aa",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloVerbPanel.cpp": {
+      "sha256": "64f33e0a18cecbefdcbcb66378f47e69083b2551012f75078dbc609fdbadf40e",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloVerbPanel.h": {
+      "sha256": "e407bd7c5f6a7087004e2b7638f354855251abe6c8033627bbf5dcf766df5042",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloZastavaPanel.cpp": {
+      "sha256": "cb8e92b1dacbe9ed177b06cda68de184120db80560231619c4ae5c0115f941d5",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/HamloZastavaPanel.h": {
+      "sha256": "720946822aaf00b1a60822885e99d9856b2019d8dbd809463ff2563e7f07b1c5",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/ModuleHelp.h": {
+      "sha256": "f2630cb46a19f323570f2e6146c994b0af122a93edee09892786c9cb05532f17",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/PresetScreen.cpp": {
+      "sha256": "ce90663c90b18020b23991b338cf5f00f39d8e5e3cfdd4d1053f3297402fedce",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/PresetScreen.h": {
+      "sha256": "7b2a5560311f9a4ff17c64ffb4ac3da6aa85c2b0335b183e5025d4ce8faf049d",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/RevolutionHelp.cpp": {
+      "sha256": "8391fa1cff8876d586307aece552a45ded9e9e8a23feaf82ec73768187fca73e",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/RevolutionHelp.h": {
+      "sha256": "b2176f11369631fdf33d6589819b63089ac117c56fae45016c034fad4f15215d",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/RevolutionSampleBar.cpp": {
+      "sha256": "24829d860b4e8e1464fba20da289ba494f194c598c14cfad5587ad18ef8a5dd0",
+      "normalized": true
+    },
+    "out/r12/baseline/Source/UI/RevolutionSampleBar.h": {
+      "sha256": "1e664689f706ffd611f32af1a5335b0464bb5063f532582073935b3ec2a593e6",
+      "normalized": true
+    },
+    "out/r12/baseline/TransitionLab.cpp": {
+      "sha256": "bc31e4416511131098e451be213fefd494455cb740c4bc7ca8a90e05c7dacbdb",
+      "normalized": true
+    },
+    "out/r12/materials/break170.wav": {
+      "sha256": "38b99f0d2bf97328a8c82fe429638d5e5b73863f036741efeca024f40fb9b916",
+      "normalized": false
+    },
+    "out/r12/materials/drums120.wav": {
+      "sha256": "f6ee0da759fe7b912a85528bfa20c87fa570e28e706afd5058d1c13ca2973110",
+      "normalized": false
+    },
+    "out/r12/materials/materials.json": {
+      "sha256": "b43d06364c63b20b09e3382781fff12d983e4ecfd41f8799196154e7da94e196",
+      "normalized": false
+    },
+    "out/r12/materials/toms90.wav": {
+      "sha256": "eee7687b54cbac6effe1969d74df8904308c77c4403b13e91313a2b139a2f437",
+      "normalized": false
+    },
+    "README.md": {
+      "sha256": "096253c819d7e8d5dab476aff56b3cd749cdcabbf7287dd4979db13fcb8bf494",
+      "normalized": true
+    },
+    "Source/Core/FxProjectState.cpp": {
+      "sha256": "e60dc2ac9787d5c2aac0e9fe43a06d31ad92e4cca0d013f76f4ea05ada850689",
+      "normalized": true
+    },
+    "Source/Core/FxProjectState.h": {
+      "sha256": "133dd972a3488b114a7a6d728e3e39ed59c2388419ae7001db15daa0838cf771",
+      "normalized": true
+    },
+    "Source/Core/ModulePresets.cpp": {
+      "sha256": "2c9f4e876fc5de4bb3952aead450ec78b47f37fdff95aa5baaff0f49b327fa1d",
+      "normalized": true
+    },
+    "Source/Core/ModulePresets.h": {
+      "sha256": "a00794b0f1d0fbcfe61dc35ef3875e583202f1999eb3e8db32cff9aa25c241fa",
+      "normalized": true
+    },
+    "Source/Core/Revolution.cpp": {
+      "sha256": "c48f58b694962845a2f99afcee100da2473638e02c81a2293333a1ba9944d821",
+      "normalized": true
+    },
+    "Source/Core/Revolution.h": {
+      "sha256": "f7c2f361ee2a47b68cd5fbd348f349ff553ff1d898ea928f4e9acfea81b2657f",
+      "normalized": true
+    },
+    "Source/Core/RevolutionPresets.cpp": {
+      "sha256": "c02fe1d0dc833c180e8a554284a0049ba53de655761d8d0bcad8f9274a27b86f",
+      "normalized": true
+    },
+    "Source/Core/RevolutionPresets.h": {
+      "sha256": "67070ed08bd8589b5079848ee1c09f7f047ff3238e84d083715a07d44405cd03",
+      "normalized": true
+    },
+    "Source/Core/RevolutionPresets.inc": {
+      "sha256": "056842dd382ab97b86d2244e5abf2758ab5425d06de2514ccd722d349c570b5d",
+      "normalized": true
+    },
+    "Source/Core/RevolutionRecipes.cpp": {
+      "sha256": "9aa9aee370d31d3915198034393ab6b000b9f68d59ed62e68bbcbbae55e75ec5",
+      "normalized": true
+    },
+    "Source/Core/RevolutionRecipes.h": {
+      "sha256": "aea4b91a69a8afc8dddbffb5d4ba5426010f2426ed58b8eae9d3983bb7370ad9",
+      "normalized": true
+    },
+    "Source/Core/RevolutionSimple.cpp": {
+      "sha256": "b95d7285414235c8f999f171944bcd527f2c7cf52a67b0c8a950a92adacafb06",
+      "normalized": true
+    },
+    "Source/Core/RevolutionSimple.h": {
+      "sha256": "de6099d1f4cd58229597297011f0e66d9ea13ba6a5348af3a490845b073bbb58",
+      "normalized": true
+    },
+    "Source/DSP/Biquad.cpp": {
+      "sha256": "2b9adc45c556e15d38ac84f9989c83e1ecd3f61dd7500243f1b4eba3bf2808bd",
+      "normalized": true
+    },
+    "Source/DSP/Biquad.h": {
+      "sha256": "819a517ff340ff875f3d96cf83f74bcb30c2258a81102a0ee6f7e57c9f8e1f4a",
+      "normalized": true
+    },
+    "Source/DSP/CrossoverTree.cpp": {
+      "sha256": "da40f9330722ebf76d0225d87ed8dadc52b35d9215ac0ef140d9775868229e07",
+      "normalized": true
+    },
+    "Source/DSP/CrossoverTree.h": {
+      "sha256": "acaa64940fba57be61c92834e43d57f175ca6f2a314e157461a1722deff1c657",
+      "normalized": true
+    },
+    "Source/DSP/DelayLine.h": {
+      "sha256": "e8397a978a3f2107ec6c23000eee6701326f6b479e28a5b674ad71d43ecec650",
+      "normalized": true
+    },
+    "Source/DSP/DspConfig.h": {
+      "sha256": "bcee350c9b988be1ff88027cb61a0ce6e8cfe1be58d9309daa4a8a377db589c0",
+      "normalized": true
+    },
+    "Source/DSP/EqDesign.cpp": {
+      "sha256": "56255e4ddcbc293683f4c6009309fcf638784182a1b61835d7f7026f7b8744b6",
+      "normalized": true
+    },
+    "Source/DSP/EqDesign.h": {
+      "sha256": "5f5bc63397d648969eccf7991e4ff98cd22cf44663a2a940f1eb34f0bfe73f0f",
+      "normalized": true
+    },
+    "Source/DSP/FxNodeProcessor.cpp": {
+      "sha256": "5f2de02705cc77f1e2c711627a5023a903e61f6ff7bf6f0ea8979a70edfd5cbc",
+      "normalized": true
+    },
+    "Source/DSP/FxNodeProcessor.h": {
+      "sha256": "24a562038920c5ea771f98c673b008e4c145d4b6525b59bd1c33f1d10133c544",
+      "normalized": true
+    },
+    "Source/DSP/HamloEcho.cpp": {
+      "sha256": "c15f511e226e945bea837cfa8308e86a3cb0cf275b67b767729c77ecc1b85274",
+      "normalized": true
+    },
+    "Source/DSP/HamloEcho.h": {
+      "sha256": "08203efbf43d9686d110d06cfada73b76c0bb45f2f783bbce94aec96c239f24e",
+      "normalized": true
+    },
+    "Source/DSP/HamloMag.cpp": {
+      "sha256": "51c536d00e7f4cf03088e09284b107d4843c79186505df679136ce9824918c73",
+      "normalized": true
+    },
+    "Source/DSP/HamloMag.h": {
+      "sha256": "89c688bc8b3a33dc95b9c528756f213bd2fddca2d42e723a6c7c469b565a9a21",
+      "normalized": true
+    },
+    "Source/DSP/HamloRedWall.cpp": {
+      "sha256": "a92828adc02ea611712a5381fbbd4376ebb715eebaf10d6bb236584a7c0eb353",
+      "normalized": true
+    },
+    "Source/DSP/HamloRedWall.h": {
+      "sha256": "0b10e76b28282323d80b22ec56385d4de50f269a63f558f7a2180b01ff02cc68",
+      "normalized": true
+    },
+    "Source/DSP/HamloRevolution.cpp": {
+      "sha256": "8bad2e3644f3a4d3ce7f38f2cd086205806682db394048da5297edeeee3060e9",
+      "normalized": true
+    },
+    "Source/DSP/HamloRevolution.h": {
+      "sha256": "680ecaf7bdd74a7e0e82c7bbb37c82266804a1552e9dd2796a890aa49573013a",
+      "normalized": true
+    },
+    "Source/DSP/HamloShirota.cpp": {
+      "sha256": "5a0e2163d4a039439e0ae30a58373fb68889a388ed3bacd4d55cc125a2acc1fa",
+      "normalized": true
+    },
+    "Source/DSP/HamloShirota.h": {
+      "sha256": "f14b21202801ea5c1a3357c63df0ae904eda56d1a7a010a940e07a93a3d1574a",
+      "normalized": true
+    },
+    "Source/DSP/HamloUdarnik.cpp": {
+      "sha256": "e0cdf4f825859c143c1228130effe09c3783e21e73e63f1f1201432ba7889803",
+      "normalized": true
+    },
+    "Source/DSP/HamloUdarnik.h": {
+      "sha256": "2ff42b69320cd39ff2fd2571ca3f5b9d1141c0fd34bb52c64a827651cbc50ae3",
+      "normalized": true
+    },
+    "Source/DSP/HamloVerb.cpp": {
+      "sha256": "fbb60da61de447439461c627be402930ef0b958781ac3196ee3ab5a17822456a",
+      "normalized": true
+    },
+    "Source/DSP/HamloVerb.h": {
+      "sha256": "fc66fe1e721a744b2ba2f64c46e713cc40cc8b7a5eb31bb712962ca182ab3f5f",
+      "normalized": true
+    },
+    "Source/DSP/HamloZastava.cpp": {
+      "sha256": "0cec67127c96eb2a7ff29e54c7c6a4b1b9b56c853486c8fe02c5fc2a8d59db87",
+      "normalized": true
+    },
+    "Source/DSP/HamloZastava.h": {
+      "sha256": "76d78d5a0d72ff38e870b159e7cc8e101553bb8d7dd0e5d5909032323f0d89b9",
+      "normalized": true
+    },
+    "Source/DSP/LayerEngine.cpp": {
+      "sha256": "bb6a9d21c127f42c80e01c8415c672f9d5ec40a8302ec0b46c6771733f69fb80",
+      "normalized": true
+    },
+    "Source/DSP/LayerEngine.h": {
+      "sha256": "49e7bb7c05baf6a52a2bf53e4a637e45baf7162a1a8cdde094c7fdbd4cfbd330",
+      "normalized": true
+    },
+    "Source/DSP/LayerSnapshot.cpp": {
+      "sha256": "b66b1b66ef43d9f97ca7359ed0b8f91a49c577683657e1a7b0233ec74b581a61",
+      "normalized": true
+    },
+    "Source/DSP/LayerSnapshot.h": {
+      "sha256": "c03941f7c7d6ff5cf8d3b985a26615c0787ece6e4b6c5a66beecb3e312cef2a2",
+      "normalized": true
+    },
+    "Source/DSP/Pool.h": {
+      "sha256": "476352285dcd590c3c484d537ca6b7c1a35bb1f315f83a5b32d60d44cb343c4b",
+      "normalized": true
+    },
+    "Source/DSP/PreEqProcessor.cpp": {
+      "sha256": "5047bf2433634eafa53059106b1562057902c771fe42c12ff4b7630470ceb6c9",
+      "normalized": true
+    },
+    "Source/DSP/PreEqProcessor.h": {
+      "sha256": "91564944f937bb1421831901df416fe558f3c4b241f68df351a130e533328b2c",
+      "normalized": true
+    },
+    "Source/DSP/Processors.cpp": {
+      "sha256": "d5075075bf35b40fe08b768a02242198906ee161f2dccea23a124f6938e6d912",
+      "normalized": true
+    },
+    "Source/DSP/Processors.h": {
+      "sha256": "7329d9d8b3e43259a5ca111e253e42ce625c431f45cf418a984f6bea268e4396",
+      "normalized": true
+    },
+    "Source/DSP/ProcessorsM6.cpp": {
+      "sha256": "fc2af720f154ba9b389ffc5eff4143d69690a4db9036c75e540927dcee4617e6",
+      "normalized": true
+    },
+    "Source/DSP/ProcessorsM6.h": {
+      "sha256": "354579ac8458d81659a2b97d9bce72ea4cbf6b2f8a77ff44c017dfabec955d39",
+      "normalized": true
+    },
+    "Source/DSP/Ramp.h": {
+      "sha256": "0298fcb933b437140b4a5588e1f2aab4a3afa1b190f32506a0d724a2036de6b9",
+      "normalized": true
+    },
+    "Source/DSP/ReverbProcessor.cpp": {
+      "sha256": "a49f12385789ce23ec81631a95046415d960abfe69d71840cdb9761ec0c45e12",
+      "normalized": true
+    },
+    "Source/DSP/ReverbProcessor.h": {
+      "sha256": "130afce00de038d759c050ef7cd2dde3ceedbaae19d650d833b79bb9f4d93953",
+      "normalized": true
+    },
+    "Source/DSP/RevolutionFft.h": {
+      "sha256": "ba9345a2af7de3aa6c85a33c157a3461e74a75899f0d5f63671c2d51f9d9b750",
+      "normalized": true
+    },
+    "Source/DSP/TransitionRecipes.cpp": {
+      "sha256": "0c5bf9652fccab60332c89ee78b1aa6bbfd081f0f73a6770141541560b05c6c1",
+      "normalized": true
+    },
+    "Source/DSP/TransitionRender.cpp": {
+      "sha256": "565ac081a7348b13dcbe50bf7cb27857975faac1fbb0c8f2cadcf5fc1fbaa4b8",
+      "normalized": true
+    },
+    "Source/DSP/TransitionRender.h": {
+      "sha256": "2402383d749006392e968c581cf50757d55a87606b621f7e3fd2fcc4c932f34d",
+      "normalized": true
+    },
+    "Source/Link/HamloLinkClient.cpp": {
+      "sha256": "ccd4fd37734d9efee9bf70f0bec588bebdb3a8c738e32f6d2490ba9c7434b3aa",
+      "normalized": true
+    },
+    "Source/Link/HamloLinkClient.h": {
+      "sha256": "6977d2a8afdd09314f3bc01aeb6521458b0fcf17e97b839d463b89a01e216413",
+      "normalized": true
+    },
+    "Source/Link/HamloLinkProtocol.cpp": {
+      "sha256": "7fee828db372741df8c546762c2e2797be035f9de7dbd763b37339bc0f90bcf8",
+      "normalized": true
+    },
+    "Source/Link/HamloLinkProtocol.h": {
+      "sha256": "366fd24cf4c944eeeb5248e54afa71e39b4862d9e0a98aca72ed40645e3c8b92",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginEditor.cpp": {
+      "sha256": "c305c8d8bf0b7fa009d58dcb4ba0670510c74ffb78a64dc092be6bbf8dab95c9",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginEditor.h": {
+      "sha256": "76869a8dc2b3e31cf16be1499959d497ccc535fabc93a0a14ab330248868904e",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginEntry.cpp": {
+      "sha256": "795ab8d1d4dd779278eb2c0aa12c7da914cc3be1c82668f3bd3cc0be8280efd7",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginProcessor.cpp": {
+      "sha256": "139668377338ac91586974caaf0ae560e7803e88e4f57ca9c4a6fde5569702ab",
+      "normalized": true
+    },
+    "Source/Standalone/ModulePluginProcessor.h": {
+      "sha256": "ac127935b13cb187f1993baa5877c76469ab101303fd88cb4fc292046d081d33",
+      "normalized": true
+    },
+    "Source/Standalone/ModuleVariant.cpp": {
+      "sha256": "467412bb954774a260d96991327f2971341b72c214cb25bdd9dbe3a829bffd03",
+      "normalized": true
+    },
+    "Source/Standalone/ModuleVariant.h": {
+      "sha256": "7369aa60d7d83b372edea37b0b77abb3c9562e39c6c3761f5794989646c4ffeb",
+      "normalized": true
+    },
+    "Source/Standalone/RevolutionSample.cpp": {
+      "sha256": "5cfdd042d34ccda30b75c8c298ed616e0325f7b122fef7ca412a1edf488ec070",
+      "normalized": true
+    },
+    "Source/Standalone/RevolutionSample.h": {
+      "sha256": "f63f02e916a7ba58c6713d5f414c531e50a590f92a9723375ee0c3703d8181fb",
+      "normalized": true
+    },
+    "Source/UI/BlackSteel.cpp": {
+      "sha256": "6c79f1312bf78195ff09173c0f84976969d5d2c8db19ff3ab27e344997bfa5ef",
+      "normalized": true
+    },
+    "Source/UI/BlackSteel.h": {
+      "sha256": "d3011aea55d26e515fc04de49657fba9189b2651ba4b9b5fe068b5ca84db3f88",
+      "normalized": true
+    },
+    "Source/UI/HamloCompPanel.cpp": {
+      "sha256": "9164f91ed7270e955915d92f60f38c2dbda9d99afa2aa3d69b347553e2fe533f",
+      "normalized": true
+    },
+    "Source/UI/HamloCompPanel.h": {
+      "sha256": "e5736b41fabb1c899f52627b53b4721fe2250e4ba528478470ac143f49e41a0b",
+      "normalized": true
+    },
+    "Source/UI/HamloEchoPanel.cpp": {
+      "sha256": "83b4d018e30eda91d1421102ca8ae0e31582877a38c00a1ef8c51ecfa2ea8b0a",
+      "normalized": true
+    },
+    "Source/UI/HamloEchoPanel.h": {
+      "sha256": "89811ca5393b462e3d862530a5583524b7c9148e8cb335c61c381232d21b4f36",
+      "normalized": true
+    },
+    "Source/UI/HamloMagPanel.cpp": {
+      "sha256": "a5ae0dd44b3bb80771f0b5540418f6772b00297ecdc289a3b4402664f40dffb1",
+      "normalized": true
+    },
+    "Source/UI/HamloMagPanel.h": {
+      "sha256": "1c9b370ded908084ce2069f876a753be5ca4ca53c6e224c31bba806f20979f1c",
+      "normalized": true
+    },
+    "Source/UI/HamloRedWallPanel.cpp": {
+      "sha256": "0803ffc79c21dbb2909aacf8ec9dec995c83a4322ce04ce57a33b219aae24760",
+      "normalized": true
+    },
+    "Source/UI/HamloRedWallPanel.h": {
+      "sha256": "698d67a1c4446ce55101178c358005161f95d3560d30ecd7a451f95511b3d0bc",
+      "normalized": true
+    },
+    "Source/UI/HamloRevolutionPanel.cpp": {
+      "sha256": "addedd99ba815b72e9192359762466e5d9d606d84d9d6dca7d54d9f126db86a6",
+      "normalized": true
+    },
+    "Source/UI/HamloRevolutionPanel.h": {
+      "sha256": "28931ac4a5f8ded7dbca10c1df4b62ceae9e3bd5341dcc7150a32f4cc2e5b966",
+      "normalized": true
+    },
+    "Source/UI/HamloRevolutionSimplePage.cpp": {
+      "sha256": "a3b04e04d96831bcb5793cf2fc2aafb0d6f69c671f6e5a0a78f4fdf7eb762cde",
+      "normalized": true
+    },
+    "Source/UI/HamloRevolutionSimplePage.h": {
+      "sha256": "d36f4a29bc6727734fec8eab13ffb28c0ede6f4413f81951e5cc6828b259f265",
+      "normalized": true
+    },
+    "Source/UI/HamloRevolutionTransitionPage.cpp": {
+      "sha256": "9a03dd06458ec9b9875b9be52c92576594b1319ca509f1caa7752172dfa3f0f6",
+      "normalized": true
+    },
+    "Source/UI/HamloRevolutionTransitionPage.h": {
+      "sha256": "97e8c50d01f2213de74cb0244531dfc637826fd1a4de79cfd024c55c653ab68b",
+      "normalized": true
+    },
+    "Source/UI/HamloShirotaPanel.cpp": {
+      "sha256": "ddcb7c19606bf1605a968c3222f0d641613d9bb90ada325568d084dcc0f26cbf",
+      "normalized": true
+    },
+    "Source/UI/HamloShirotaPanel.h": {
+      "sha256": "2e0c24e4f645febb843c4d5994047c077be822b83024535770b88cae90fe9418",
+      "normalized": true
+    },
+    "Source/UI/HamloUdarnikPanel.cpp": {
+      "sha256": "392decfd9a9e4d0629039bf308c0832fb0d9fc2a28c88f97d0ff2dde1803d87a",
+      "normalized": true
+    },
+    "Source/UI/HamloUdarnikPanel.h": {
+      "sha256": "6b71bdf4d6c722ea9917b45644038fead563c10356181eeeba270d272de7c2aa",
+      "normalized": true
+    },
+    "Source/UI/HamloVerbPanel.cpp": {
+      "sha256": "64f33e0a18cecbefdcbcb66378f47e69083b2551012f75078dbc609fdbadf40e",
+      "normalized": true
+    },
+    "Source/UI/HamloVerbPanel.h": {
+      "sha256": "e407bd7c5f6a7087004e2b7638f354855251abe6c8033627bbf5dcf766df5042",
+      "normalized": true
+    },
+    "Source/UI/HamloZastavaPanel.cpp": {
+      "sha256": "cb8e92b1dacbe9ed177b06cda68de184120db80560231619c4ae5c0115f941d5",
+      "normalized": true
+    },
+    "Source/UI/HamloZastavaPanel.h": {
+      "sha256": "720946822aaf00b1a60822885e99d9856b2019d8dbd809463ff2563e7f07b1c5",
+      "normalized": true
+    },
+    "Source/UI/ModuleHelp.h": {
+      "sha256": "f2630cb46a19f323570f2e6146c994b0af122a93edee09892786c9cb05532f17",
+      "normalized": true
+    },
+    "Source/UI/PresetScreen.cpp": {
+      "sha256": "ce90663c90b18020b23991b338cf5f00f39d8e5e3cfdd4d1053f3297402fedce",
+      "normalized": true
+    },
+    "Source/UI/PresetScreen.h": {
+      "sha256": "7b2a5560311f9a4ff17c64ffb4ac3da6aa85c2b0335b183e5025d4ce8faf049d",
+      "normalized": true
+    },
+    "Source/UI/RevolutionHelp.cpp": {
+      "sha256": "1f7badc2c879e05f0889b07a30a7be584692bef084cc862955c7beccc54cf40d",
+      "normalized": true
+    },
+    "Source/UI/RevolutionHelp.h": {
+      "sha256": "b2176f11369631fdf33d6589819b63089ac117c56fae45016c034fad4f15215d",
+      "normalized": true
+    },
+    "Source/UI/RevolutionSampleBar.cpp": {
+      "sha256": "e8a823d417afb3e70114b45623cb77a7843e9cd0e124a63b9e82827da7ee944a",
+      "normalized": true
+    },
+    "Source/UI/RevolutionSampleBar.h": {
+      "sha256": "1e664689f706ffd611f32af1a5335b0464bb5063f532582073935b3ec2a593e6",
+      "normalized": true
+    },
+    "Tests/AllocationAudit.cpp": {
+      "sha256": "165eea0bd9a2ce93c783fd1c935cbdaa168d3862074732348b9f4f8245566840",
+      "normalized": true
+    },
+    "Tests/AllocationAudit.h": {
+      "sha256": "d948fcaf914d9bc5559f6302ef581392297e934b0ed03b7a7befec9cb62d6c1c",
+      "normalized": true
+    },
+    "Tests/GlitchTests.cpp": {
+      "sha256": "5c835429db01978e203b01872cd94dc411b9452da92609fe2adada5cc3df4be2",
+      "normalized": true
+    },
+    "Tests/GoldenTests.cpp": {
+      "sha256": "ac41b5327d3e190707b1a3672f87c7b6f2e8bf6e01f9dc60a6ad0f0b161a921c",
+      "normalized": true
+    },
+    "Tests/ImpactLab.cpp": {
+      "sha256": "ee1b0aaac5bffad413ff8070455afd1be4f7d9967380105a9cddcdb63b03e963",
+      "normalized": true
+    },
+    "Tests/LaneTests.cpp": {
+      "sha256": "32446d34ed02b83b215320cffad2dcc5d9f8c02000178033c24c236d1a8cd05c",
+      "normalized": true
+    },
+    "Tests/LinkTests.cpp": {
+      "sha256": "1139fc26fefee8c83cf6c1bb18ed8ccee4ae77e1c9be6a7aafa286ec70959b85",
+      "normalized": true
+    },
+    "Tests/ListenTests.cpp": {
+      "sha256": "0178cdca8cb62cd6161a6000bdf605216faea826699c2a302de60fa261c44344",
+      "normalized": true
+    },
+    "Tests/PluginTests.cpp": {
+      "sha256": "f974a179d69d9ec17cddad4ba6cceed49624a93dfd8b5d2f8a332c371d4b758c",
+      "normalized": true
+    },
+    "Tests/PresetTests.cpp": {
+      "sha256": "702b54012ee6058c5679a6ce4a7a74e77ab7074bb6deae5c94304f67dd01ee78",
+      "normalized": true
+    },
+    "Tests/RevolutionTests.cpp": {
+      "sha256": "a7d9b14976360bf57df0d5b40068116c27546bb8f358383c29593d8fa2c68714",
+      "normalized": true
+    },
+    "Tests/SampleWorkspaceTests.cpp": {
+      "sha256": "14451bde0d76e3c68f39679334dd1d6324665b276e6cab61a97c76602a471ff9",
+      "normalized": true
+    },
+    "Tests/ShapeTests.cpp": {
+      "sha256": "c6d273fe7701de5578aa814ed4a199e38a2a3819f6cbba7152564f7877bec6cc",
+      "normalized": true
+    },
+    "Tests/SimpleTests.cpp": {
+      "sha256": "e9b101559f08a427fe7e7f217cb16aced4456115c52f0db84d6d8c0a16b549a1",
+      "normalized": true
+    },
+    "Tests/SnapshotMain.cpp": {
+      "sha256": "16ec24da8081880a07b2305131b0a99b1e8c3aa46676b10941e342a89ea3376c",
+      "normalized": true
+    },
+    "Tests/SpatialLab.cpp": {
+      "sha256": "5664ba5805351e6e52fab204241776e2d8b981821f7533e588d8909899201ddb",
+      "normalized": true
+    },
+    "Tests/SpatialTests.cpp": {
+      "sha256": "cb5e348e620074f3582b9b823b2c0357eb9c092b8ca07632fc53d93bd8c7397d",
+      "normalized": true
+    },
+    "Tests/TestMain.cpp": {
+      "sha256": "ba9cb8eaf8d92cc7b9a70f7450103825b3e75ee668f3c8e49d607d8ea5d572e1",
+      "normalized": true
+    },
+    "Tests/TestSignals.h": {
+      "sha256": "8093bb51464634e03430d679bb218d6506767a2e57d35a08f1a648d256dd9b20",
+      "normalized": true
+    },
+    "Tests/ThrowTests.cpp": {
+      "sha256": "66874cb55a698a7828b3a05e6c21383760cc6845dfa41002e5c9979c089036c5",
+      "normalized": true
+    },
+    "Tests/TransitionLab.cpp": {
+      "sha256": "bc31e4416511131098e451be213fefd494455cb740c4bc7ca8a90e05c7dacbdb",
+      "normalized": true
+    },
+    "Tests/TransitionRecipeTests.cpp": {
+      "sha256": "65bf28ecccf242e633cfb75befc4d4d917c54b04df9024f3d914d0ce90beea4f",
+      "normalized": true
+    },
+    "Tests/TransitionTests.cpp": {
+      "sha256": "204b9a0779ce42b2de2094654301be0ffccc6417aaf1b141d7329da09f1b983d",
+      "normalized": true
+    },
+    "Tools/analyze_transitions.py": {
+      "sha256": "454cebbaa8ccba141e6d5c88fa8f6203d8993473ece5d14c6cd1902e6a42d0bd",
+      "normalized": true
+    },
+    "Tools/finalize_r12.py": {
+      "sha256": "89bdb07cbd0cfc7e71d769f70b702838a6c5e245291991c2fa928da5847bee01",
+      "normalized": true
+    },
+    "Tools/transition_demos.py": {
+      "sha256": "dd25a92b1183a4cb078de8b59a1b1612c29f9532da4a5d6422baedb3ced5097b",
+      "normalized": true
+    },
+    "Tools/transition_materials.py": {
+      "sha256": "1286eb128f951329de7725c041dd5154a2219a7f5175ca8c8be1feb1de45fc52",
+      "normalized": true
+    },
+    "Tools/validate_r12.ps1": {
+      "sha256": "ea555a4829d051f09f0b61ac1202d7826761047c9051720a037b073b9cdbe3a9",
+      "normalized": true
+    },
+    "Tools/verify_r12.py": {
+      "sha256": "d8b024093ce83952c972056f329abc8d8532b580213bcb8f8169f55b5c48f2ae",
+      "normalized": true
+    }
+  },
+  "build_dll": "build/HamloRevolution_artefacts/Release/VST3/HamloRevolution.vst3/Contents/x86_64-win/HamloRevolution.vst3",
+  "delivery_dll": "dist/HamloRevolution-0.3.0-r12/HamloRevolution.vst3/Contents/x86_64-win/HamloRevolution.vst3",
+  "manual_FL_listening": "unverified",
+  "installer": "not requested",
+  "push": "not requested"
+}

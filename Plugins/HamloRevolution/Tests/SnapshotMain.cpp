@@ -43,7 +43,9 @@ int main(int argc, char* argv[])
             p.processBlock(block, midi);
         }
         p.setRendersFolder(juce::File::getSpecialLocation(juce::File::tempDirectory).getChildFile("HamloRevolutionSnapshot"));
-        p.makeTransition(0, 2, { 0.6, 0.8, 0.5, 0.7 }, true, true);
+        const bool fill=juce::String(argv[4]).contains("fill");
+        const int recipe=juce::String(argv[4]).contains("classic")?0:1;
+        p.makeTransition(fill?1:0,fill?1:2,hpeq::dsp::transition::defaultKnobs(fill?1:0),true,true,recipe);
         p.setPage(hpeq::standalone::ModulePluginProcessor::Page::Transition);
     }
 #endif
