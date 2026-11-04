@@ -6,7 +6,21 @@
 
 ---
 
-## Current checkpoint: ten plugin source branches / 2026-11-03
+## Current checkpoint: source refresh / 2026-11-04
+
+Owner requested push of all current work. Verified HamloVerb0.2.1 Keep Dry and
+HamloRevolution0.3.0 R12 are imported into their existing dedicated branches and
+merged into feature/hamlo-plugins. Other eight source snapshots are unchanged.
+All10 aggregate/topic subtree trees match their committed standalone source
+trees; full source ancestry retained. See Plugins/sync/2026-11-04.json.
+Revolution R12 source is E:/HamloRevolutionTransitions,feature/transition-v2,
+8470eeb; original E:/HamloRevolution remains dirty with parked R11, excluded.
+No DSP edits, new rebuild claim, binary/private-audio publication or main-HPEQ
+changes. Receipt verifiers passed for both updated products. Push must be
+non-force/atomic, followed by remote-head readback for all11 publication refs.
+Local publication evidence:out/publish-20261104. See Plugins/NEXT_STAGE.md.
+
+## Historical checkpoint: ten plugin source branches / 2026-11-03
 
 Owner explicitly requested commit/push of all plug-ins into HPEQ and allowed
 separate branches per plug-in. All ten standalone repositories were already
