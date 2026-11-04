@@ -547,11 +547,12 @@ bool ModulePluginProcessor::captureLastBars(int bars, juce::AudioBuffer<float>& 
 }
 
 ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int transitionKind, int bars, const std::array<double, 4>& knobs,
-                                                                       bool newCapture, bool newSeed)
+                                                                       bool newCapture, bool newSeed, int recipe)
 {
     auto t = lastTransition();
     auto& s = t.settings;
     s.kind = transitionKind;
+    s.recipe = std::clamp(recipe,0,7);
     s.bars = bars == 1 || bars == 4 ? bars : 2;
     s.knobs = knobs;
     s.sampleRate = currentSampleRate.load();

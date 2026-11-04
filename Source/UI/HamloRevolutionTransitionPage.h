@@ -17,7 +17,8 @@ class HamloRevolutionTransitionPage final : public juce::Component, public juce:
 public:
     struct Values
     {
-        int kind = 0, bars = 2;
+        int kind = 0, bars = 2, recipe = 1;
+        std::uint64_t seed = 1;
         std::array<double, 4> knobs { 0.6, 0.8, 0.5, 0.7 };
         bool valid = false, aligned = false, complete = false, previewing = false;
         double bpm = 120.0, playhead = -1.0; // 0 .. 1 while previewing
@@ -33,6 +34,7 @@ public:
 
     std::function<void(int kind)> onKind;
     std::function<void(int bars)> onBars;
+    std::function<void(int recipe)> onRecipe;
     std::function<void(int knob, double value)> onKnob; // while turning (no render)
     std::function<void()> onKnobsDone;                  // the gesture ended: render again
     std::function<void()> onGenerate, onPlay, onShowFile, onBack;
@@ -48,6 +50,7 @@ public:
     void pressUseInput();
     void chooseKind(int);
     void chooseBars(int);
+    void chooseRecipe(int);
     void setKnob(int knob, double value, bool done);
     juce::String helpKeyAt(juce::Point<float> local) const;
     juce::String getTooltip() override;

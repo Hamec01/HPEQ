@@ -2,6 +2,8 @@
 
 #include <array>
 #include <cstdint>
+#include <vector>
+#define HAMLO_TRANSITION_V2 1
 
 #include <juce_audio_basics/juce_audio_basics.h>
 
@@ -19,7 +21,19 @@ struct Settings
     // RISE: PITCH, ROLL, SWELL, SWEEP; FILL: CHOP, ROLL, REVERSE, STOP (0 .. 1)
     std::array<double, 4> knobs { 0.6, 0.8, 0.5, 0.7 };
     std::uint64_t seed = 1;
+    int recipe = 0; // 0 exact Classic,1 Auto,2..7 musical source-aware recipes
 };
+struct Event
+{
+    int at = 0, length = 0, source = 0;
+    double rate = 1, velocity = 1, pan = 0;
+    bool reverse = false;
+};
+struct Plan { int recipe = 0, attacks = 0; std::vector<Event> events; };
+const char* recipeName(int kind,int recipe) noexcept;
+int resolvedRecipe(const Settings&) noexcept;
+Plan makePlan(const juce::AudioBuffer<float>&,const Settings&);
+juce::AudioBuffer<float> renderEvolve(const juce::AudioBuffer<float>&,const Settings&);
 const char* knobName(int kind, int knob);
 std::array<double, 4> defaultKnobs(int kind) noexcept;
 

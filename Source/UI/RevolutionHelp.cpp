@@ -36,13 +36,16 @@ juce::String revolutionHelp(const juce::String& key)
         { "transitionKind", "RISE builds up into the next downbeat (roll, pitch, reverse swell, filter); FILL re-cuts the last bar and rolls "
                             "into the downbeat." },
         { "transitionBars", "BARS: how many of the last bars are used - and how long the transition is." },
+        { "transitionRecipe", "STYLE: AUTO picks one of six source-aware musical recipes. RISE: lift,pulse,swell,rush,arc,pressure. "
+                              "FILL: pocket,roll,break,triplets,scatter,turnaround. GENERATE varies attack choices,accents and timing. "
+                              "CLASSIC retains the previous renderer. Style changes reuse the source and seed." },
         { "transitionRise0", "PITCH: how far the roll climbs - up to an octave at 100 %." },
         { "transitionRise1", "ROLL: the main motion - the last beat repeated at 1/4, 1/8, 1/16, 1/32 into the downbeat." },
         { "transitionRise2", "SWELL: the last bar reversed through a long reverb - a swell into the end." },
         { "transitionRise3", "SWEEP: a rising, resonant high pass, the level and the width opening towards the end." },
-        { "transitionFill0", "CHOP: how much the last bar is re-cut (blocks of 3 + 3 + 2 eighths from other places in the bar)." },
-        { "transitionFill1", "ROLL: the last beat rolled 1/8 -> 1/16 -> 1/32, released on the downbeat." },
-        { "transitionFill2", "REVERSE: how likely the last eighth plays backwards." },
+        { "transitionFill0", "CHOP: density of source-attack edits and ghost notes across the final bar. Classic uses its old block cuts." },
+        { "transitionFill1", "ROLL: final-beat density and acceleration. New recipes vary the roll shape by seed; zero returns to sparse endings." },
+        { "transitionFill2", "REVERSE: backward pickups and selected ghost fragments; Classic reverses the last eighth." },
         { "transitionFill3", "STOP: how likely the last eighth ends in a tape stop." },
         { "transitionGenerate", "GENERATE: take the last bars again and make a new variation." },
         { "transitionPlay", "PLAY / STOP: hear the transition through the plug-in's output." },

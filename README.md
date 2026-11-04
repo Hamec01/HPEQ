@@ -1,4 +1,22 @@
-# HamloRevolution 0.2.2
+# HamloRevolution 0.3.0
+
+RISE / DRUM FILL now offers source-aware **STYLE** recipes. RISE:LIFT,PULSE,
+SWELL,RUSH,ARC,PRESSURE. DRUM FILL:POCKET,ROLL,BREAK,TRIPLETS,SCATTER,TURNAROUND.
+**AUTO** selects a family;**GENERATE** varies actual source attacks,timing,
+accents and pickups. Four knobs and1/2/4 bars remain. CLASSIC retains the old
+renderer. The sample toolbar keeps load,capture,preview,WAV export and drag.
+
+For a quick fill,open FILL,choose1 bar and try BREAK or TRIPLETS. For a riser,
+try RUSH or PRESSURE over2/4 bars. Adjust the four knobs,then GENERATE again.
+Normal sequencer playback,225 programs and existing projects are unchanged.
+
+4769 native checks,96 exact Classic corpus renders,96 new renders,225 exact
+normal program/state renders,pluginval5-10 and Steinberg537 pass.28 local audio
+references were analyzed;12 level-matched owner-material A/B files are prepared.
+No reference audio is embedded in the plugin. [Report](docs/reports/r12/REPORT.md),
+[handoff](docs/R12_HANDOFF.md). Delivery:dist/HamloRevolution-0.3.0-r12 and ZIP.
+This is the clean feature/transition-v2 checkout of HamloRevolution,not a new
+plugin. Original checkout:E:/HamloRevolution;its parked R11 draft is separate.
 
 Windows x64 VST3 rhythmic multi-effect sequencer. SIMPLE generates genre-aware
 patterns; ADVANCED edits TIME, GLITCH, MOTION, SHAPE and THROW lanes. RISE/FILL
@@ -56,5 +74,5 @@ build/Release/HamloRevolution_Tests.exe
 ```
 
 VST: `build/HamloRevolution_artefacts/Release/VST3/HamloRevolution.vst3`.
-Delivery: `dist/HamloRevolution-0.2.2-r10-win64-vst3.zip`, SHA256 beside it.
+Delivery: `dist/HamloRevolution-0.3.0-r12-win64-vst3.zip`, SHA256 beside it.
 The installed copy is untouched. No installer, push or subtree was produced.

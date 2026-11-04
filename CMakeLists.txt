@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloRevolution VERSION 0.2.2 LANGUAGES C CXX)
+project(HamloRevolution VERSION 0.3.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -77,6 +77,7 @@ add_library(HamloRevolution_Shared STATIC
     Source/Core/RevolutionRecipes.cpp
     Source/Core/RevolutionPresets.cpp
     Source/DSP/TransitionRender.cpp
+    Source/DSP/TransitionRecipes.cpp
     Source/Link/HamloLinkProtocol.cpp
     Source/Link/HamloLinkClient.cpp
     Source/UI/HamloUdarnikPanel.cpp
@@ -143,7 +144,7 @@ target_link_libraries(HamloRevolution
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SpatialTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp Tests/TransitionTests.cpp Tests/SampleWorkspaceTests.cpp Tests/AllocationAudit.cpp
+        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SpatialTests.cpp Tests/TransitionRecipeTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp Tests/TransitionTests.cpp Tests/SampleWorkspaceTests.cpp Tests/AllocationAudit.cpp
             Source/DSP/LayerSnapshot.cpp Source/Core/FxProjectState.cpp) # HPEQ's slot mapping: the reference of V1
     else()
         add_executable(HamloRevolution_Snapshot Tests/SnapshotMain.cpp)
@@ -169,3 +170,7 @@ target_link_libraries(HamloRevolution_ImpactLab PRIVATE HamloRevolution_Shared H
 add_executable(HamloRevolution_SpatialLab EXCLUDE_FROM_ALL Tests/SpatialLab.cpp)
 target_compile_definitions(HamloRevolution_SpatialLab PRIVATE HPEQ_MODULE_KIND=9 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
 target_link_libraries(HamloRevolution_SpatialLab PRIVATE HamloRevolution_Shared HamloRevolution_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
+
+add_executable(HamloRevolution_TransitionLab EXCLUDE_FROM_ALL Tests/TransitionLab.cpp)
+target_compile_definitions(HamloRevolution_TransitionLab PRIVATE HPEQ_MODULE_KIND=9 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloRevolution_TransitionLab PRIVATE HamloRevolution_Shared HamloRevolution_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)

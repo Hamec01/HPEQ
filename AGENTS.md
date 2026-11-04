@@ -6,7 +6,21 @@
 
 ---
 
-## Current checkpoint: Revolution R10 / 0.2.2 complete (2026-11-04)
+## Current checkpoint: Revolution R12 /0.3.0 transitions complete (2026-11-04)
+
+This is a clean feature checkout E:/HamloRevolutionTransitions,branchfeature/transition-v2,
+not a separate plugin. OriginalE:/HamloRevolution has a parked R11 draft. Follow
+ efficient-staged-work,no subagents;only requested transition work here. See
+ docs/R12_HANDOFF.md and docs/reports/r12/REPORT.md before historical R10 below.
+New source-attack RISE/DRUM FILL,6families each,Auto/Classic STYLE selector,
+1/2/4bars,fourmacros,source-end fades,bandlimited grains,8x/raw peak handling.
+Oldnormalplayback/program/state unchanged;Classic exact.4769native,96Classic,
+96modern corpus,225program/state comparisons,pluginval5-10/Steinberg537 pass.
+28localreferences analyzed;12same-RMS privateA/Bs prepared. Delivery0.3.0 VST3/
+ZIP/SHA256 in dist. No installer,installed replacement,HPEQ/subtree/push,manual
+FL listening claim or model switch. All authoritative hashes inacceptance.json;
+replayTools/verify_r12.py. Completion commit:gitlog-1. No active jobs after done.
+## Historical checkpoint: Revolution R10 / 0.2.2 complete (2026-11-04)
 
 Apply efficient-staged-work; no subagents. Work only E:/HamloRevolution.
 Parent71545ff; completion commit is git log-1. R10 fixes weak spatial generation:
