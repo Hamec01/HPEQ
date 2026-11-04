@@ -13,7 +13,8 @@ enum VerbParameterIndex
     ShapeSync, GateThreshold, ShapeTime, GateRelease, ShimmerAmount, ShimmerPitch,
     ShimmerFeedback, DuckAttack, DuckRelease, EqStart,
     KeepDry = EqStart + 60,
-    VerbParameterCount = KeepDry + 1
+    WetLevel = KeepDry + 1,
+    VerbParameterCount = WetLevel + 1
 };
 
 inline void appendVerbParameters(ModuleSpec& spec)
@@ -63,6 +64,7 @@ inline void appendVerbParameters(ModuleSpec& spec)
             number(id + "Q", label + "Q", 0.2f, 8, 0.707f, 0.5f);
         }
     choice("keepDry", "Keep Dry", { "Off", "On" });
+    number("wetDb", "Wet Level", -24, 24, 0, 1, "dB");
 }
 
 inline dsp::VerbV2Settings readVerbSettings(const std::vector<std::atomic<float>*>& values,

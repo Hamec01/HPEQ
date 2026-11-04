@@ -1,0 +1,30 @@
+Random seed: 0x1445310
+-----------------------------------------------------------------
+Starting tests in: Wet return level / Measured return on six neutral characters, unchanged laboratory...
+NEUTRAL 1 wet_dry_db=-4.081743
+NEUTRAL 2 wet_dry_db=-5.226611
+NEUTRAL 3 wet_dry_db=-6.306676
+NEUTRAL 4 wet_dry_db=-3.150844
+NEUTRAL 5 wet_dry_db=-7.318075
+NEUTRAL 6 wet_dry_db=-7.786163
+Completed tests in Wet return level / Measured return on six neutral characters, unchanged laboratory
+-----------------------------------------------------------------
+Starting tests in: Wet return level / Screenshot preset on owner keys2, Send with/without Reverse, full render...
+MATERIAL sha256=21a33d4574e2724773a5d500d77c0b9c1261fc5bcb08cdf5d510dc126d0b55b1 program=104
+SCREENSHOT shape=0 wet_dry_db=-11.552388
+SCREENSHOT shape=3 wet_dry_db=-12.540777
+Completed tests in Wet return level / Screenshot preset on owner keys2, Send with/without Reverse, full render
+-----------------------------------------------------------------
+Starting tests in: Wet return level / Send return trim measures selected gain, all six characters and Reverse...
+Completed tests in Wet return level / Send return trim measures selected gain, all six characters and Reverse
+-----------------------------------------------------------------
+Starting tests in: Wet return level / Dry unchanged; boosted Insert equals dry+Mix*Send; Legacy ignores trim...
+Completed tests in Wet return level / Dry unchanged; boosted Insert equals dry+Mix*Send; Legacy ignores trim
+-----------------------------------------------------------------
+Starting tests in: Wet return level / Trim state migration, recall, factory reset and modified marker...
+Completed tests in Wet return level / Trim state migration, recall, factory reset and modified marker
+-----------------------------------------------------------------
+Starting tests in: Wet return level / Trim sample automation and zero latency, mono/stereo, all block sizes...
+Completed tests in Wet return level / Trim sample automation and zero latency, mono/stereo, all block sizes
+
+HamloVerb_Tests: 149 expectations passed, 0 failed

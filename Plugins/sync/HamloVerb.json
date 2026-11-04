@@ -1,9 +1,9 @@
 {
   "plugin": "HamloVerb",
-  "version": "0.2.1",
-  "status": "Verified Keep Dry source snapshot; see plugin reports for release/listening limits",
-  "source_commit": "115db1322907b0445c46f9fefd74189e3d58fe5c",
-  "source_tree": "0f697ddf9508dbcc677e95ff3cc215dafcfd6a10",
+  "version": "0.2.2",
+  "status": "Verified Wet Level return-only gain;old sounds preserved;manual FL listening pending",
+  "source_commit": "2ae0e1d6fb6652825811a476084a2c5e9db07029",
+  "source_tree": "4a54a1130861b688faf38dd11855e0295563619d",
   "source_branch": "master",
   "hpeq_branch": "plugins/hamloverb",
   "prefix": "Plugins/HamloVerb",
