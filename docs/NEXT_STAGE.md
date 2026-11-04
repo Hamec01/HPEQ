@@ -1,4 +1,15 @@
-# HamloFader: F4 interface accepted, F5 library/release next
+# HamloFader0.2.0 complete / F5
+
+Read docs/F5_HANDOFF.md.17432native,224host,678exactLegacy,200calibrated/compiled/
+independent8xcheckedpresets.208hostprograms. QUICK/ADVANCED/LEGACY allfourmodes,
+Matchdeliberate,RideNatural/Fast,Motion2..32point. Kernelunchanged.
+VST/ZIP/SHA256:dist/HamloFader-0.2.0;guardTools/verify_f5.py;frozenout/f5/accepted.
+No installer/installedoverwrite/manualFLclaim. OwnerauthorizedGitHubpush:
+syncverifiedcommitintoHPEQplugins/hamlofader andfeature/hamlo-plugins,verify
+trees/remoteheads,don'trewiremainDSP. No subagents/model switch/activejobs after
+release. Preserveallfailed/intermediatecalibration reports. Fullfacts inF5report.
+
+# Historical: F4 interface accepted, F5 library/release next
 
 2026-11-04. Parent3223d0d; F4 completion commit follows. New ownFaderV2Panel,
 QUICK/ADVANCED/LEGACY,all four modes,atomic meters/readiness/full,explicit safe

@@ -3,7 +3,8 @@ namespace hpeq::presets
 {
 namespace
 {
-const std::vector<ModulePreset> kGain {
+const std::vector<ModulePreset> kGain = [] {
+std::vector<ModulePreset> result {
     { "Unity", 1.0f, { { "gainDb", 0 } } },
     { "Pad -6 dB", 1.0f, { { "gainDb", -6 } } },
     { "Pad -12 dB", 1.0f, { { "gainDb", -12 } } },
@@ -12,6 +13,12 @@ const std::vector<ModulePreset> kGain {
     { "Match to -18 dBFS", 1.0f, { { "gainDb", 0 }, { "targetDb", -18 } } },
     { "Match to -14 dBFS", 1.0f, { { "gainDb", 0 }, { "targetDb", -14 } } },
 };
+const std::vector<ModulePreset> genres {
+    #include "FaderGenrePresets.inc"
+};
+result.insert(result.end(),genres.begin(),genres.end());
+return result;
+}();
 
 }
 const std::vector<ModulePreset>& factoryModulePresets(FxType)

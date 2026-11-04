@@ -1,0 +1,41 @@
+Версия MSBuild 18.5.4+cb4e32d21 для .NET Framework
+
+  Checking File Globs
+  HamloFader_Assets.vcxproj -> E:\HamloFader\build\Release\HamloFader_Assets.lib
+  FaderV2Panel.cpp
+  HamloFader_Shared.vcxproj -> E:\HamloFader\build\Release\HamloFader_Shared.lib
+  F5AuditionTests.cpp
+E:\HamloFader\Tests\F5AuditionTests.cpp(53,212): warning C4996: 'juce::AudioFormat::createWriterFor': Use the function taking an AudioFormatWriterOptions instead. [E:\HamloFader\build\HamloFader_Tests.vcxproj]
+  HamloFader_Tests.vcxproj -> E:\HamloFader\build\Release\HamloFader_Tests.exe
+Версия MSBuild 18.5.4+cb4e32d21 для .NET Framework
+
+  Checking File Globs
+  HamloFader_rc_lib.vcxproj -> E:\HamloFader\build\HamloFader_rc_lib.dir\Release\HamloFader_rc_lib.lib
+  HamloFader_vst3_helper.vcxproj -> E:\HamloFader\build\Release\HamloFader_vst3_helper.exe
+  HamloFader_Assets.vcxproj -> E:\HamloFader\build\Release\HamloFader_Assets.lib
+  HamloFader_Shared.vcxproj -> E:\HamloFader\build\Release\HamloFader_Shared.lib
+  HamloFader.vcxproj -> E:\HamloFader\build\HamloFader_artefacts\Release\HamloFader_SharedCode.lib
+     ????????? ?????????? E:/HamloFader/build/HamloFader_artefacts/Release/VST3/HamloFader.lib ? ?????? E:/HamloFader/build/HamloFader_artefacts/Release/VST3/HamloFader.exp
+  HamloFader_VST3.vcxproj -> E:\HamloFader\build\HamloFader_artefacts\Release\VST3\HamloFader.vst3\Contents\x86_64-win\HamloFader.vst3
+  removing moduleinfo.json
+  creating E:/HamloFader/build/HamloFader_artefacts/Release/VST3/HamloFader.vst3
+Версия MSBuild 18.5.4+cb4e32d21 для .NET Framework
+
+  Checking File Globs
+  HamloFader_Assets.vcxproj -> E:\HamloFader\build\Release\HamloFader_Assets.lib
+  HamloFader_Shared.vcxproj -> E:\HamloFader\build\Release\HamloFader_Shared.lib
+  HamloFader_Snapshot.vcxproj -> E:\HamloFader\build\Release\HamloFader_Snapshot.exe
+Версия MSBuild 18.5.4+cb4e32d21 для .NET Framework
+
+  Checking File Globs
+  HamloFader_Assets.vcxproj -> E:\HamloFader\build\Release\HamloFader_Assets.lib
+  HamloFader_Shared.vcxproj -> E:\HamloFader\build\Release\HamloFader_Shared.lib
+  F3HostMain.cpp
+  HamloFader_F3Host.vcxproj -> E:\HamloFader\build\Release\HamloFader_F3Host.exe
+Версия MSBuild 18.5.4+cb4e32d21 для .NET Framework
+
+  Checking File Globs
+  HamloFader_Assets.vcxproj -> E:\HamloFader\build\Release\HamloFader_Assets.lib
+  HamloFader_Shared.vcxproj -> E:\HamloFader\build\Release\HamloFader_Shared.lib
+  F5LegacyLab.cpp
+  HamloFader_F5Legacy.vcxproj -> E:\HamloFader\build\Release\HamloFader_F5Legacy.exe

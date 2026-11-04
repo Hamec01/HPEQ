@@ -1,0 +1,158 @@
+{
+  "dsp_sha256": "cb53e09571fb264ef80d40f8f2b7453794081fadc165a723c48373cc4bec2588",
+  "method_sha256": "fd1aea4ec1315feb61d7ed7474ba45458195f31ea3484e6987625f1aa3ef1b03",
+  "skeleton_sha256": "68f945a3b5cd25800beee1e9dc5a4ddb6195bc8b2ff7223abe7853f03e039690",
+  "mode": "calibrate",
+  "materials": {
+    "kick": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\kick.wav",
+      "source_sha256": "887293e288549a5b64fd42afe5a33aea4edd5160f1bd1b269d1661a8563af375",
+      "source_rate": 48000.0,
+      "start": 2304000,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.367282306476115,
+      "prepared_sha256": "99ccd94025a517d2a5eb77aeeadef6ce9b67182287687522bae44d0a1ac3c3d5"
+    },
+    "snare": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\snare.wav",
+      "source_sha256": "0862f92fc43c6a0ab4498ef4a5a46b8065663c9e3a1acffb343d975391094ffe",
+      "source_rate": 48000.0,
+      "start": 792000,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.510372384147829,
+      "prepared_sha256": "81ca1f350e36485281ecc9f91a0d37d4489b8242a6ac1058ba22c6e4a26a9dfa"
+    },
+    "hihat": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\hihat.wav",
+      "source_sha256": "c9b74c29571005b3e4bc1d7f3b2841b0dd47a9efb5926b90979a6280023b38af",
+      "source_rate": 48000.0,
+      "start": 2016000,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.384627767080529,
+      "prepared_sha256": "4fd090f3cb64fb4c0ed50ef4c3c364a87f6cf0ae8747e1f05d5c6f7b1899c4e4"
+    },
+    "perc": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\perc.wav",
+      "source_sha256": "7c44f2f45c4ab372b869bc4ce59635576857594478b5c05eda461bb705e9e6a9",
+      "source_rate": 48000.0,
+      "start": 1742400,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.607831323494854,
+      "prepared_sha256": "898f0be527738d2bdae99c8f17397d1acebddeb24ad37840cd98f504b8a0f7ea"
+    },
+    "drumbus1": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\drumbus1.wav",
+      "source_sha256": "faa8f04bdfa337cab344b8d7635a8c520ec1174261cefd8aa27c37a6cc3ada27",
+      "source_rate": 48000.0,
+      "start": 302400,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.898117997233847,
+      "prepared_sha256": "0b336c1b3c463fe2eac23f1dfc4f3abc6ac5314eae13a5dfea4f2fefa7e81d7f"
+    },
+    "bass1": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\bass1.wav",
+      "source_sha256": "f29f66cb1d1dce8c601c9fda89085ce87d4b6fbd0f2d7c260f541bdb6633bf82",
+      "source_rate": 48000.0,
+      "start": 321600,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.371569247868455,
+      "prepared_sha256": "d36c28c0b13b94bcc4d172c7584fbea9818dd81d2d3e87c35e02e6ea939cfd80"
+    },
+    "bass2": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\bass2.wav",
+      "source_sha256": "1a3ae96901087f62d181a73e10e658f185034cf128ee69af7e76f46d1949b292",
+      "source_rate": 48000.0,
+      "start": 408000,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.366618251779643,
+      "prepared_sha256": "815bd1c131746980043f33907a11a863e5f1b600a01b81cdfb83d9519dc1fda6"
+    },
+    "vocal_lead1": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead1.wav",
+      "source_sha256": "d8f4d6f7936574b373651bd8a90ce8e9bfde0f699ab64ef8adfda3177af9feb9",
+      "source_rate": 48000.0,
+      "start": 1521600,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.374712612975087,
+      "prepared_sha256": "572d5740cf2646b366979a397989c236cfac0ee9e92caa3a5c6c68bd36d57507"
+    },
+    "keys2": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\keys2.wav",
+      "source_sha256": "21a33d4574e2724773a5d500d77c0b9c1261fc5bcb08cdf5d510dc126d0b55b1",
+      "source_rate": 48000.0,
+      "start": 576000,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.452414466035804,
+      "prepared_sha256": "74bff847e517043fd252651aaad73328410aede1ab534b0d16a0126517b97cbd"
+    },
+    "keys": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\keys.wav",
+      "source_sha256": "251f5c79b7248078a9d4be68621728acee75f923e02a8a8adfe0e9f601942c4f",
+      "source_rate": 48000.0,
+      "start": 384000,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.736239949947169,
+      "prepared_sha256": "f397bbff2e29d6542899ac4d1eb977db8ed847db00a9c000722b7915ead21d3b"
+    },
+    "mixdown_boom_bap_3": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\mixdown_boom_bap_3.wav",
+      "source_sha256": "4deba822e35ae24c4495574f3d89573e69dda46eeb090a58cb8f0096a4a8f386",
+      "source_rate": 48000.0,
+      "start": 1204800,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.613419287760683,
+      "prepared_sha256": "dd9bbed340e3b80fcab0d1b993dca49617265e2e6bffa0aaef2bfa3232ae7f81"
+    },
+    "vocal_lead2": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead2.wav",
+      "source_sha256": "4d481ead44a23731738d6764914873f0a0dabd221f9f4cea0fa3233d9d2b1c70",
+      "source_rate": 48000.0,
+      "start": 1704000,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.471649021172518,
+      "prepared_sha256": "30509ffca0afe74d0f6b1948597b72007eebcde33210640a0e3a412c22484405"
+    },
+    "mixdown_sad_trap": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\mixdown_sad_trap.wav",
+      "source_sha256": "34ac70cc65d05226ef3cf892c053076b9f29522a9f4506990e04d3f31a09a5f8",
+      "source_rate": 48000.0,
+      "start": 1176000,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.464639562932666,
+      "prepared_sha256": "bdc2de6463faa3f2d03e5ce9b59dcbadf7a0d212facaf5ffd60de0cc27efff36"
+    },
+    "vocal_lead3": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\vocal_lead3.wav",
+      "source_sha256": "03d6120207bfe46dacc912d23a7a0df3b15c348b705b16fbf6c47b799c38f329",
+      "source_rate": 48000.0,
+      "start": 1267200,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.527862450888609,
+      "prepared_sha256": "ecb1a1d33705b1721f7dc0d413c11aab49f5139332865187d395ce71ad47b859"
+    },
+    "mixdown_Ardnold": {
+      "source": "C:\\Users\\Ham_h\\AppData\\Local\\Temp\\claude\\C--DRUMENGINE\\ec2c5161-f2c8-4110-8e0e-02c63cfee6b7\\scratchpad\\mat\\wav\\mixdown_Ardnold.wav",
+      "source_sha256": "54078b49ae0e85d3daf0daecc3b9bbc3fa15db66d269ab4ee3464e2aeedee2d2",
+      "source_rate": 48000.0,
+      "start": 1286400,
+      "source_length": 288000,
+      "samples": 288000,
+      "gain": 0.413661467566459,
+      "prepared_sha256": "945f2800e2ca1c332c41922f83a052ca93c1abaef2f8aa9c407b78a01d9d42ed"
+    }
+  }
+}

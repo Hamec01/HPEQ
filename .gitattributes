@@ -8,3 +8,7 @@ docs/reports/f3/validators*/** -whitespace
 docs/reports/f4/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/reports/f4/*.txt -whitespace
 docs/reports/f4/validators*/** -whitespace
+docs/reports/f5/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/reports/f5/*.txt -whitespace
+docs/reports/f5/validators*/** -whitespace
+Tools/fader_presets.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

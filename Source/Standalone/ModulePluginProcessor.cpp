@@ -350,7 +350,10 @@ void ModulePluginProcessor::setCurrentProgram(int index)
 {
     const auto& list = presets::factoryModulePresets(getSpec().type);
     currentProgram.store(juce::jlimit(0,static_cast<int>(list.size()),index),std::memory_order_relaxed);
-    resetNewParameters(true);
+    resetNewParameters(getCurrentProgram()<=7);
+    if(getCurrentProgram()>7)
+        for(const auto& control:faderControls())
+            setParameterValue(control.id,presets::presetValue(list[static_cast<size_t>(getCurrentProgram()-1)],control.id,control.initial));
     for (const auto& spec : getSpec().parameters)
     {
         double value = spec.defaultValue;
@@ -367,7 +370,7 @@ bool ModulePluginProcessor::isProgramModified() const
     auto expected=[&](const juce::String& id,double fallback){return index>0&&index<=static_cast<int>(list.size())?presets::presetValue(list[static_cast<size_t>(index-1)],id,fallback):fallback;};
     auto differs=[&](const juce::String& id,double value){auto* par=parameter(id);return par&&std::abs(par->getValue()-par->convertTo0to1(static_cast<float>(value)))>1e-6f;};
     for(const auto& spec:getSpec().parameters)if(differs(spec.id,expected(spec.id,spec.defaultValue)))return true;
-    for(const auto& c:faderControls())if(differs(c.id,expected(c.id,c.id=="engine"?0.:c.initial)))return true;
+    for(const auto& c:faderControls())if(differs(c.id,expected(c.id,c.id=="engine"?(index>7?1.:0.):c.initial)))return true;
     return false;
 }
 

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloFader VERSION 0.1.0 LANGUAGES C CXX)
+project(HamloFader VERSION 0.2.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -90,6 +90,14 @@ juce_add_plugin(HamloFader
     VST3_CATEGORIES Fx
     FORMATS VST3
     PRODUCT_NAME "HamloFader")
+if(WIN32)
+    # JUCE's generated RC rule depends on the icon but omits Info.txt. Include
+    # it so an incremental version bump updates Windows File/ProductVersion.
+    get_target_property(fader_generated_dir HamloFader JUCE_GENERATED_SOURCES_DIRECTORY)
+    get_target_property(fader_info_file HamloFader JUCE_INFO_FILE)
+    add_custom_command(OUTPUT "${fader_generated_dir}/HamloFader_resources.rc"
+        APPEND DEPENDS "${fader_info_file}")
+endif()
 target_sources(HamloFader PRIVATE Source/Standalone/ModulePluginEntry.cpp)
 target_compile_definitions(HamloFader PRIVATE
     HPEQ_MODULE_KIND=8
@@ -113,7 +121,7 @@ target_link_libraries(HamloFader
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloFader_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/F4UITests.cpp)
+        add_executable(HamloFader_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/F4UITests.cpp Tests/F5LibraryTests.cpp Tests/F5AuditionTests.cpp)
     else()
         add_executable(HamloFader_Snapshot Tests/SnapshotMain.cpp)
     endif()
@@ -193,6 +201,11 @@ target_compile_definitions(HamloFader_F3Host PRIVATE HPEQ_MODULE_KIND=8 JUCE_WEB
 target_link_libraries(HamloFader_F3Host PRIVATE HamloFader_Shared HamloFader_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
 
 option(HAMLO_FADER_F3_REGRESSION "Build local frozen Motion regression probe" OFF)
+add_executable(HamloFader_F5Legacy EXCLUDE_FROM_ALL Tests/F5LegacyLab.cpp Tests/AllocationAudit.cpp)
+add_dependencies(HamloFader_F5Legacy HamloFader_F3Identity)
+target_include_directories(HamloFader_F5Legacy PRIVATE "${CMAKE_CURRENT_BINARY_DIR}" Tests)
+target_compile_definitions(HamloFader_F5Legacy PRIVATE HPEQ_MODULE_KIND=8 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloFader_F5Legacy PRIVATE HamloFader_Shared HamloFader_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
 if(HAMLO_FADER_F3_REGRESSION)
     add_executable(HamloFader_F3Regression EXCLUDE_FROM_ALL Tests/F3HostMain.cpp Tests/AllocationAudit.cpp out/f3/candidate_v2/Source/DSP/FaderKernel.cpp)
     add_dependencies(HamloFader_F3Regression HamloFader_F3Identity)

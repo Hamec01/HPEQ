@@ -4,6 +4,7 @@
 #include "UI/ModuleHelp.h"
 #include "UI/PresetScreen.h"
 #include "UI/FaderV2Panel.h"
+#include "Core/ModulePresets.h"
 
 namespace hpeq::standalone
 {
@@ -55,8 +56,12 @@ ModulePluginEditor::ModulePluginEditor(ModulePluginProcessor& owner)
     presets = std::make_unique<ui::PresetScreen>();
     {
         std::vector<ui::PresetScreen::Entry> entries;
+        const auto& bank=hpeq::presets::factoryModulePresets(processor.getSpec().type);
         for (int i = 1; i < processor.getNumPrograms(); ++i)
-            entries.push_back({ i, {}, {}, processor.getProgramName(i), {} });
+        {
+            const auto& recipe=bank[static_cast<size_t>(i-1)];
+            entries.push_back({ i, recipe.genre, recipe.group, processor.getProgramName(i), recipe.note });
+        }
         presets->setEntries(std::move(entries));
     }
     presets->onSelect = [this](int program)

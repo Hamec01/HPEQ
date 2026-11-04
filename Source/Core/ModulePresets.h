@@ -6,6 +6,7 @@
 #include <juce_core/juce_core.h>
 
 #include "DSP/FaderSettings.h"
+#define HAMLO_FADER_LIBRARY 1
 
 namespace hpeq::presets
 {
@@ -17,6 +18,13 @@ struct ModulePreset
     const char* name;
     float mix;
     std::vector<std::pair<const char*, double>> values;
+    const char* id="";
+    const char* genre="";
+    const char* group="";
+    const char* note="";
+    const char* material="";
+    const char* depth="";
+    double bpm=120,goalDb=2;
 };
 
 const std::vector<ModulePreset>& factoryModulePresets(FxType);
