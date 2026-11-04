@@ -6,7 +6,22 @@
 
 ---
 
-## Current checkpoint: source refresh / 2026-11-04
+## Current checkpoint: Fader0.2.0 + Verb0.2.2 publication / 2026-11-04
+
+Owner requested completion and push. Verified Fader0.2.0(aef8c4d) now has full
+QUICK/ADVANCED/LEGACY,200genre recipes/208programs,17432native,224host,678exact
+Legacyrenders,200compiled/calibrated/8xchecks,validatorspass. Verb0.2.2(2ae0e1d)
+adds explicit wet-only return trim;receipt replaypassed. Dedicated branches
+plugins/hamlofader andplugins/hamloverb updated with full history,merged into
+feature/hamlo-plugins. Other8 snapshots unchanged,including Revolution0.3.0.
+Exacttrees/ancestry/scopeverifiedforall10. Manifest:sync/2026-11-04-fader-verb.json.
+Fader is no longer unfinished F3;historical lists below retain old facts only.
+ManualFLlistening remains;noinstaller/installedoverwrite/binaryorprivateaudio
+GitHubrelease/mainHPEQrewiring. Localpublishreceipts:out/publish-20261104-fader-verb.
+Atomicnonforcepushall11refs thenremoteheadreadback required. No subagents/model
+switch. Futurepushesstillrequireownerrequest. Read Plugins/NEXT_STAGE.md.
+
+## Historical checkpoint: source refresh / 2026-11-04
 
 Owner requested push of all current work. Verified HamloVerb0.2.1 Keep Dry and
 HamloRevolution0.3.0 R12 are imported into their existing dedicated branches and

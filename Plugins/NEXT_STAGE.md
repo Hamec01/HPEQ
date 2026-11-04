@@ -1,4 +1,27 @@
-# Hamlo source refresh handoff - 2026-11-04
+# Fader0.2.0 and Verb0.2.2 publication / 2026-11-04
+
+Owner requested Fader completion and GitHub push. Fadersourceaef8c4d nowcomplete
+UI+200recipes/208programs,17432native,224host,678exactLegacy,200/200compiled/
+calibrated/independent8xchecked,validatorspass. Verbsource2ae0e1d includesWetLevel
+andKeepDry,1634native/208unchangedprograms/390M0/validatorspass. Both current
+receiptverifiers replayed before imports. No speculative DSP work in this sync.
+
+Imported full standalone history into existing plugins/hamlofader and
+plugins/hamloverb branches,merged intofeature/hamlo-plugins. All10 aggregate/topic
+trees exactlyequalcommittedstandalones andretainancestry. Dedicateddiffs only
+ownprefix/manifest;aggregatediff onlyPlugins/. Other8sources unchanged from
+prior publication. Registry:sync/2026-11-04-fader-verb.json. FaderpendingF3list
+is now historical;0.2.0 is the accepted VST-only release,not an installer.
+
+Publicationmetadata commit follows thishandoff (gitlog-1). Pushaggregate+10topic
+refs atomically withoutforce,thenreadbackall11heads. Localreceipt/tool/logdir:
+out/publish-20261104-fader-verb. KeepmainE:/HPEQ onfeature/hpeq-m0-m1;parked
+RevolutionR11dirtysourceuntouched. SourceR12 remainsTransitionscheckout8470eeb.
+No raw privateaudio/VSTZIP/installerupload,installedoverwrite,manualFLclaim or
+mainDSPrewiring. Those binaries remainlocaldist. No subagents/model switch.
+Futurepushes neednewownerrequest. Mediumsufficesforgit;ownercontrolsmodel.
+
+# Historical source refresh handoff - 2026-11-04
 
 Owner requested all current sources pushed to GitHub Hamec01/HPEQ. Updated
 dedicated plugins/hamloverb to HamloVerb0.2.1 source115db13 and
