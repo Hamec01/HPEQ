@@ -6,35 +6,49 @@
 
 ---
 
-## Current checkpoint: Revolution R9 / 0.2.1 complete (2026-11-03)
+## Current checkpoint: Revolution R12 /0.3.0 transitions complete (2026-11-04)
 
-Apply efficient-staged-work; no subagents. Current work is E:/HamloRevolution,
-not old Mag/Revolution design-only TODOs below. No HPEQ/HPDG edits, installed-copy
-replacement, installer, push/subtree or claimed model switch.
+This is a clean feature checkout E:/HamloRevolutionTransitions,branchfeature/transition-v2,
+not a separate plugin. OriginalE:/HamloRevolution has a parked R11 draft. Follow
+ efficient-staged-work,no subagents;only requested transition work here. See
+ docs/R12_HANDOFF.md and docs/reports/r12/REPORT.md before historical R10 below.
+New source-attack RISE/DRUM FILL,6families each,Auto/Classic STYLE selector,
+1/2/4bars,fourmacros,source-end fades,bandlimited grains,8x/raw peak handling.
+Oldnormalplayback/program/state unchanged;Classic exact.4769native,96Classic,
+96modern corpus,225program/state comparisons,pluginval5-10/Steinberg537 pass.
+28localreferences analyzed;12same-RMS privateA/Bs prepared. Delivery0.3.0 VST3/
+ZIP/SHA256 in dist. No installer,installed replacement,HPEQ/subtree/push,manual
+FL listening claim or model switch. All authoritative hashes inacceptance.json;
+replayTools/verify_r12.py. Completion commit:gitlog-1. No active jobs after done.
+## Historical checkpoint: Revolution R10 / 0.2.2 complete (2026-11-04)
 
-Owner requested a weak-effect audit plus direct sample load, WAV export and
-incoming/outgoing drag. Completed: shared sample toolbar on SIMPLE/ADVANCED,
-local-clock audition/loop, worker decode/resample/offline bounce,32f mono/stereo
-WAV with0/2/4/8s tail, current-result drag; toolbar adapts to RISE/FILL's separate
-24-bit workflow. Source workspace is temporary and not in project audio state.
-Old presets/parameters/engine/generator unchanged; explicit BOLD selects a
-strong FULL/Chaos/everybar100%recipe. TOPS bass modulation measured0.179dB vs
-FULL6.811dB on80Hz probe; subtraction alone was misleading due to filter phase.
+Apply efficient-staged-work; no subagents. Work only E:/HamloRevolution.
+Parent71545ff; completion commit is git log-1. R10 fixes weak spatial generation:
+Advanced SHAPE/THROW GEN is target-aware, resets stale scheduling/chance,
+preserves target/time/note/band/other lanes and varies structural gestures.
+Sends capture the strongest attack plus varying extra regions. Explicit SIMPLE
+GENERATE/control edits/BOLD add INPUT delay+reverb. HPDG pattern updates use this
+same modern generation path. Old225 program loads use frozen R6 generation.
 
-1286native/190new workspace checks pass;8paired renders exact; import alias
-probe-112.887dBFS; zero measured audio C++allocations and block1/64/127/512/4096
-PCM exact. pluginval5..10/Steinberg537 pass on release DLL. Mono export, float
-headroom, stale results, rate changes, cancellation, source/file protection,
-transition file immutability and resize/drop routes tested. Snapshot inspection
-includes main/advanced/transition/minimum. No manual FL/Explorer drag claim.
+Two appended source parameters (after old bypass):throwASource/throwBSource,
+0 CHAIN (old exact path),1 INPUT (original audio,selected band). Captions and
+right-click target menu expose the choice. Inserts keep chain input. Missing
+sources reset to CHAIN even on an already edited instance. Audio buffers/latency
+unchanged; no audio allocation. Existing sample workspace retained.
 
-Report docs/reports/r9/REPORT.md; receipt acceptance.json; replay Tools/verify_r9.py.
-Authoritative native_release,after_release,before_v2,validators_release,
-screens/*_release; *_final* are intermediate. Sources/binaries before:
-out/r9/baseline; final:out/r9/accepted. ZIP/SHA256 in dist. Installed VST untouched.
-No active jobs after final verification. Local stage commit follows the handoff.
-Next: owner listening/OS drag feedback, then only requested work. See
- docs/NEXT_STAGE.md for exact APIs/commands/caveats. Model/effort not changed.
+4365 native pass;225 old program PCM+state reloads exact;16/16 spatial probes
+pass,return/dry -10.71..-1.94dB,peak<0.470. Full/Tops,mono/stereo,blocks
+1/64/127/512/4096 exact and zero measured C++audio allocations. pluginval5-10,
+Steinberg537 and screenshots/receipt in docs/reports/r10. Methods/failed first
+fixture and Techno quiet-hat recipe disclosed in docs/THROW_GENERATION.md/report.
+
+Delivery:dist/HamloRevolution-0.2.2-r10/HamloRevolution.vst3 plus ZIP/SHA256,
+controlled A/B clips. Replay Tools/verify_r10.py. Frozen out/r10 retains R9
+sources/binary/states, immutable SpatialLab method and final artifacts. Report's
+acceptance.json is authoritative for delivery binary/native/validator identities.
+Old R9 receipt still belongs to its frozen source, not current R10. No installer,
+installed-copy replacement,HPEQ/subtree/push. No active jobs after completion.
+Next:owner FL listening feedback only. See docs/NEXT_STAGE.md. Model unchanged.
 
 ## 1. Продукт и владелец
 

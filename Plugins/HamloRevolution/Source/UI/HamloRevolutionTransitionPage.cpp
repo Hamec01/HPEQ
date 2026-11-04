@@ -25,6 +25,7 @@ const juce::Point<float> kGenerate { 140.0f, 556.0f };
 const juce::Rectangle<float> kPlay { 230.0f, 532.0f, 170.0f, 48.0f }, kShowFile { 420.0f, 532.0f, 190.0f, 48.0f };
 const juce::Rectangle<float> kStatus { 640.0f, 516.0f, 500.0f, 80.0f };
 const juce::Rectangle<float> kWave { 60.0f, 640.0f, 1060.0f, 330.0f };
+const juce::Rectangle<float> kRecipe { 420.0f, 118.0f, 430.0f, 30.0f };
 } // namespace
 
 HamloRevolutionTransitionPage::HamloRevolutionTransitionPage() { setOpaque(true); }
@@ -96,7 +97,11 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     crtButton(g, kBack, "BACK", false);
     crtButton(g, kUseInput, "USE INPUT", values.sourceName.isEmpty());
     crtButton(g, kindRect(0), "RISE", values.kind == tr::Rise);
-    crtButton(g, kindRect(1), "FILL", values.kind == tr::Fill);
+    crtButton(g, kindRect(1), "DRUM FILL", values.kind == tr::Fill);
+    tr::Settings recipeSettings;recipeSettings.kind=values.kind;recipeSettings.recipe=values.recipe;recipeSettings.seed=values.seed;
+    juce::String recipeLabel="STYLE / ";recipeLabel<<tr::recipeName(values.kind,values.recipe);
+    if(values.recipe==1)recipeLabel<<" - "<<tr::recipeName(values.kind,tr::resolvedRecipe(recipeSettings));
+    crtButton(g,kRecipe,recipeLabel+"  v",values.recipe!=0);
     for (int i = 0; i < 3; ++i)
         crtButton(g, barsRect(i), juce::String(kBarChoices[static_cast<size_t>(i)]), values.bars == kBarChoices[static_cast<size_t>(i)]);
     for (int k = 0; k < 4; ++k)
@@ -219,6 +224,13 @@ void HamloRevolutionTransitionPage::chooseBars(int bars)
     repaint();
 }
 
+void HamloRevolutionTransitionPage::chooseRecipe(int recipe)
+{
+    values.recipe=juce::jlimit(0,7,recipe);
+    if(onRecipe)onRecipe(values.recipe);
+    repaint();
+}
+
 void HamloRevolutionTransitionPage::setKnob(int knob, double v, bool done)
 {
     values.knobs[static_cast<size_t>(juce::jlimit(0, 3, knob))] = juce::jlimit(0.0, 1.0, v);
@@ -232,6 +244,7 @@ void HamloRevolutionTransitionPage::setKnob(int knob, double v, bool done)
 juce::String HamloRevolutionTransitionPage::helpKeyAt(juce::Point<float> local) const
 {
     const auto d = toDesign(local);
+    if(kRecipe.contains(d))return "transitionRecipe";
     if (kBack.contains(d))
         return "transitionBack";
     if (kUseInput.contains(d))
@@ -261,6 +274,15 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
 {
     const auto d = toDesign(e.position);
     waveDown = dragged = false;
+    if(kRecipe.contains(d))
+    {
+        juce::PopupMenu menu;
+        for(int recipe=0;recipe<8;++recipe)menu.addItem(recipe+1,tr::recipeName(values.kind,recipe),true,values.recipe==recipe);
+        juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
+        const auto target=kRecipe.transformedBy(juce::AffineTransform::scale(scale).translated(offset)).toNearestInt();
+        menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withTargetScreenArea(localAreaToGlobal(target)),[safe](int result){if(safe&&result>0)safe->chooseRecipe(result-1);});
+        return;
+    }
     if (kBack.contains(d))
         return pressBack();
     if (kUseInput.contains(d))

@@ -1,0 +1,35 @@
+Random seed: 0x1f446b5
+-----------------------------------------------------------------
+Starting tests in: Transition recipes / Auto has12+ structural plans per16 seeds; every fixed recipe4+ per8,not gain-only...
+kind=0 recipe=1 structures=16
+kind=0 recipe=2 structures=8
+kind=0 recipe=3 structures=8
+kind=0 recipe=4 structures=8
+kind=0 recipe=5 structures=8
+kind=0 recipe=6 structures=8
+kind=0 recipe=7 structures=8
+kind=1 recipe=1 structures=16
+kind=1 recipe=2 structures=8
+kind=1 recipe=3 structures=8
+kind=1 recipe=4 structures=8
+kind=1 recipe=5 structures=8
+kind=1 recipe=6 structures=8
+kind=1 recipe=7 structures=8
+Completed tests in Transition recipes / Auto has12+ structural plans per16 seeds; every fixed recipe4+ per8,not gain-only
+-----------------------------------------------------------------
+Starting tests in: Transition recipes / Exact bar lengths and finite soft endings across rates,tempos,bars and both kinds...
+Completed tests in Transition recipes / Exact bar lengths and finite soft endings across rates,tempos,bars and both kinds
+-----------------------------------------------------------------
+Starting tests in: Transition recipes / Determinism,silence,mono source and earlier Fill bars preserve the source up to master gain...
+Completed tests in Transition recipes / Determinism,silence,mono source and earlier Fill bars preserve the source up to master gain
+-----------------------------------------------------------------
+Starting tests in: Transition recipes / All controls affect new audio; zero Fill controls retain source and fade only...
+!!! Test 8 failed: kind 1 knob 3
+
+FAILED!!  1 test failed, out of a total of 8
+
+-----------------------------------------------------------------
+Starting tests in: Transition recipes / Modern recipe UI reaches capture/export; existing clips immutable and original API remains Classic...
+Completed tests in Transition recipes / Modern recipe UI reaches capture/export; existing clips immutable and original API remains Classic
+
+HamloRevolution_Tests: 398 expectations passed, 1 failed

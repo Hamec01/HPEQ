@@ -471,7 +471,7 @@ void ModulePluginEditor::installTransitionPage()
     const auto render = [this, tp](bool capture, bool seed)
     {
         const auto& v = tp->getValues();
-        processor.makeTransition(v.kind, v.bars, v.knobs, capture, seed);
+        processor.makeTransition(v.kind, v.bars, v.knobs, capture, seed,v.recipe);
         tp->setClip(processor.transitionClip());
         if (refreshTransition)
             refreshTransition();
@@ -485,6 +485,7 @@ void ModulePluginEditor::installTransitionPage()
         render(false, false); // the same capture and seed, the other recipe
     };
     tp->onBars = [render](int) { render(true, false); };
+    tp->onRecipe = [render](int) { render(false,false); };
     tp->onKnobsDone = [render] { render(false, false); };
     tp->onGenerate = [render] { render(true, true); };
     tp->onPlay = [this] { processor.setPreview(!processor.isPreviewing()); };
@@ -516,6 +517,7 @@ void ModulePluginEditor::installTransitionPage()
         auto v = tp->getValues();
         const auto t = processor.lastTransition();
         v.valid = t.valid;
+        if(t.valid){v.recipe=t.settings.recipe;v.seed=t.settings.seed;}
         v.aligned = t.aligned;
         v.complete = t.complete;
         v.bpm = t.valid ? t.settings.bpm : processor.getHostBpm();
@@ -528,7 +530,11 @@ void ModulePluginEditor::installTransitionPage()
     };
     addChildComponent(*tp);
     if (processor.lastTransition().valid) // a clip made before the editor opened
-        tp->setClip(processor.transitionClip());
+    {
+        const auto t=processor.lastTransition();auto v=tp->getValues();
+        v.kind=t.settings.kind;v.bars=t.settings.bars;v.knobs=t.settings.knobs;v.recipe=t.settings.recipe;v.seed=t.settings.seed;
+        tp->setValues(v);tp->setClip(processor.transitionClip());
+    }
 }
 
 void ModulePluginEditor::openTransition(int kind)
@@ -537,6 +543,7 @@ void ModulePluginEditor::openTransition(int kind)
         return;
     auto v = transitionPage->getValues();
     v.kind = kind;
+    if(!processor.lastTransition().valid)v.bars=kind==dsp::transition::Fill?1:2;
     v.knobs = dsp::transition::defaultKnobs(kind);
     transitionPage->setValues(v);
     processor.setPage(ModulePluginProcessor::Page::Transition);

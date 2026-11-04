@@ -36,13 +36,16 @@ juce::String revolutionHelp(const juce::String& key)
         { "transitionKind", "RISE builds up into the next downbeat (roll, pitch, reverse swell, filter); FILL re-cuts the last bar and rolls "
                             "into the downbeat." },
         { "transitionBars", "BARS: how many of the last bars are used - and how long the transition is." },
+        { "transitionRecipe", "STYLE: AUTO picks one of six source-aware musical recipes. RISE: lift,pulse,swell,rush,arc,pressure. "
+                              "FILL: pocket,roll,break,triplets,scatter,turnaround. GENERATE varies attack choices,accents and timing. "
+                              "CLASSIC retains the previous renderer. Style changes reuse the source and seed." },
         { "transitionRise0", "PITCH: how far the roll climbs - up to an octave at 100 %." },
         { "transitionRise1", "ROLL: the main motion - the last beat repeated at 1/4, 1/8, 1/16, 1/32 into the downbeat." },
         { "transitionRise2", "SWELL: the last bar reversed through a long reverb - a swell into the end." },
         { "transitionRise3", "SWEEP: a rising, resonant high pass, the level and the width opening towards the end." },
-        { "transitionFill0", "CHOP: how much the last bar is re-cut (blocks of 3 + 3 + 2 eighths from other places in the bar)." },
-        { "transitionFill1", "ROLL: the last beat rolled 1/8 -> 1/16 -> 1/32, released on the downbeat." },
-        { "transitionFill2", "REVERSE: how likely the last eighth plays backwards." },
+        { "transitionFill0", "CHOP: density of source-attack edits and ghost notes across the final bar. Classic uses its old block cuts." },
+        { "transitionFill1", "ROLL: final-beat density and acceleration. New recipes vary the roll shape by seed; zero returns to sparse endings." },
+        { "transitionFill2", "REVERSE: backward pickups and selected ghost fragments; Classic reverses the last eighth." },
         { "transitionFill3", "STOP: how likely the last eighth ends in a tape stop." },
         { "transitionGenerate", "GENERATE: take the last bars again and make a new variation." },
         { "transitionPlay", "PLAY / STOP: hear the transition through the plug-in's output." },
@@ -70,7 +73,9 @@ juce::String revolutionHelp(const juce::String& key)
         { "lanePlate", "The lane's menu: LENGTH (polymeter), RATE, CONDITION, BAND, steps 17 - 32, CURVE (SHAPE)." },
         { "laneCells", "The steps. TIME / GLITCH: click for the next action, drag to paint it over more steps, right click for the "
                        "action and its probability. Level lanes: drag up / down and across to draw." },
-        { "laneGenerate", "GEN: a new pattern for this lane only (SHAPE / THROW: from SIMPLE's genre and intent, a new seed each press)." },
+        { "laneGenerate", "GEN: a target-aware recipe for this lane only. SHAPE: rhythmic envelopes. THROW: captures attacks, "
+                          "enables the effect, sets visible mix/depth/tail/tone and clears old chance/condition restrictions. "
+                          "Time, note and band stay yours. Sends use INPUT; repeated presses change the rhythm." },
         { "laneLock", "LOCK: lock every step of this lane (GENERATE keeps them)." },
         // ---- lanes
         { "timeOn", "TIME on / off: half speed, reverse, freeze, tape stop, double speed." },
@@ -109,9 +114,11 @@ juce::String revolutionHelp(const juce::String& key)
         { "throwATone", "THROW A TONE: damping, the phaser's centre, the flanger's sweep, or VINYL's crackle." },
         { "throwBTone", "THROW B TONE: damping, the phaser's centre, the flanger's sweep, or VINYL's crackle." },
         { "throwATarget", "THROW A TARGET: DELAY, TONAL (a delay tuned to NOTE), REVERB - their tails ring on; PHASER, FLANGER, "
-                          "VINYL, DOWNSAMPLE - on the step only. Right click: TIME and NOTE." },
+                          "VINYL, DOWNSAMPLE - on the step only. Right click: TIME, NOTE and INPUT / CHAIN send source." },
         { "throwBTarget", "THROW B TARGET: DELAY, TONAL (a delay tuned to NOTE), REVERB - their tails ring on; PHASER, FLANGER, "
-                          "VINYL, DOWNSAMPLE - on the step only. Right click: TIME and NOTE." },
+                          "VINYL, DOWNSAMPLE - on the step only. Right click: TIME, NOTE and INPUT / CHAIN send source." },
+        { "throwASource", "THROW A SOURCE: INPUT captures the original audio in this lane's band; CHAIN captures the previous lanes. Send targets only." },
+        { "throwBSource", "THROW B SOURCE: INPUT captures the original audio in this lane's band; CHAIN captures the previous lanes. Send targets only." },
         { "throwATime", "THROW A TIME: the delay time, or the LFO period of PHASER / FLANGER / VINYL." },
         { "throwBTime", "THROW B TIME: the delay time, or the LFO period of PHASER / FLANGER / VINYL." },
         { "glitchEngine", "GLITCH ENGINE: LEGACY (HPEQ's actions, old projects) or BLOCK - the playing audio itself cut and repeated "

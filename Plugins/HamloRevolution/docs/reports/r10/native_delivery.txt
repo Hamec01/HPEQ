@@ -1,0 +1,439 @@
+Random seed: 0x1e98dad
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Parameters: every spec of HPEQ's HamloRevolution at its default, then bypass...
+Completed tests in Plug-in / Parameters: every spec of HPEQ's HamloRevolution at its default, then bypass
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Latency: fixed, the same at 44.1 and 48 kHz settings and for every program...
+  0 samples at 48 kHz
+Completed tests in Plug-in / Latency: fixed, the same at 44.1 and 48 kHz settings and for every program
+-----------------------------------------------------------------
+Starting tests in: Plug-in / ON off: the input delayed by the latency, bit-exact...
+Completed tests in Plug-in / ON off: the input delayed by the latency, bit-exact
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Every program: finite and bounded on drums...
+Completed tests in Plug-in / Every program: finite and bounded on drums
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (the last program)...
+Completed tests in Plug-in / Host blocks 1, 64, 127, 512 and 4096 after prepare(256) bit-identical (the last program)
+-----------------------------------------------------------------
+Starting tests in: Plug-in / State: save / load round trip...
+Completed tests in Plug-in / State: save / load round trip
+-----------------------------------------------------------------
+Starting tests in: Plug-in / Page: the spec's size; the preset screen top left with every program; a program from it loads...
+Completed tests in Plug-in / Page: the spec's size; the preset screen top left with every program; a program from it loads
+-----------------------------------------------------------------
+Starting tests in: Revolution / V1: the slot of Default and of every preset = the slot HPEQ makes from the same module (bit-exact)...
+Completed tests in Revolution / V1: the slot of Default and of every preset = the slot HPEQ makes from the same module (bit-exact)
+-----------------------------------------------------------------
+Starting tests in: Revolution / State: the pattern, its locks and allowed actions, the feel and the seed round trip; GENERATE keeps them...
+Completed tests in Revolution / State: the pattern, its locks and allowed actions, the feel and the seed round trip; GENERATE keeps them
+-----------------------------------------------------------------
+Starting tests in: Revolution / State without the pattern element (parameters only): the Default pattern (Musical, seed 1)...
+Completed tests in Revolution / State without the pattern element (parameters only): the Default pattern (Musical, seed 1)
+-----------------------------------------------------------------
+Starting tests in: Revolution / The pattern drives the DSP: a playing loop changes with the pattern, all-pass pattern = dry at MIX 1...
+  empty pattern vs dry: -400.0 dB
+Completed tests in Revolution / The pattern drives the DSP: a playing loop changes with the pattern, all-pass pattern = dry at MIX 1
+-----------------------------------------------------------------
+Starting tests in: Revolution / Host blocks 64, 127, 4096 after prepare(256), playing: bit-identical (block 1: PluginTests, stopped)...
+Completed tests in Revolution / Host blocks 64, 127, 4096 after prepare(256), playing: bit-identical (block 1: PluginTests, stopped)
+-----------------------------------------------------------------
+Starting tests in: Revolution / Page: GENERATE / NEW SEED / a step click reach the processor; the page shows the processor's pattern...
+Completed tests in Revolution / Page: GENERATE / NEW SEED / a step click reach the processor; the page shows the processor's pattern
+-----------------------------------------------------------------
+Starting tests in: HPDG Link / V12: connected to an HPDG: LINKED, the snapshot arrives field for field, once...
+Completed tests in HPDG Link / V12: connected to an HPDG: LINKED, the snapshot arrives field for field, once
+-----------------------------------------------------------------
+Starting tests in: HPDG Link / A new pattern in HPDG: taken once...
+Completed tests in HPDG Link / A new pattern in HPDG: taken once
+-----------------------------------------------------------------
+Starting tests in: HPDG Link / HPDG gone (no heartbeat 2 s): LOST, the last snapshot kept; back: LINKED...
+Completed tests in HPDG Link / HPDG gone (no heartbeat 2 s): LOST, the last snapshot kept; back: LINKED
+-----------------------------------------------------------------
+Starting tests in: HPDG Link / HPDG closed (heartbeat 0, file deleted): LOST...
+Completed tests in HPDG Link / HPDG closed (heartbeat 0, file deleted): LOST
+-----------------------------------------------------------------
+Starting tests in: HPDG Link / A newer protocol (major 2): refused, UPDATE...
+Completed tests in HPDG Link / A newer protocol (major 2): refused, UPDATE
+-----------------------------------------------------------------
+Starting tests in: HPDG Link / AUTO (no HPDG chosen): links to a live HPDG; with none, SEARCHING...
+Completed tests in HPDG Link / AUTO (no HPDG chosen): links to a live HPDG; with none, SEARCHING
+-----------------------------------------------------------------
+Starting tests in: HPDG Link / The polling thread: LINKED within a second, a new pattern arrives by itself...
+Completed tests in HPDG Link / The polling thread: LINKED within a second, a new pattern arrives by itself
+-----------------------------------------------------------------
+Starting tests in: HPDG Link / V13: the link (on, which HPDG) is saved with the plug-in and restored...
+Completed tests in HPDG Link / V13: the link (on, which HPDG) is saved with the plug-in and restored
+-----------------------------------------------------------------
+Starting tests in: Golden / V1: every program and the clock / stretch variants = the R0 output, bit for bit (blocks 256)...
+  programs: 0x958d48bbd97f7530ULL, 0xab0af8a709d3a3dbULL, 0xd781752a25bc90e6ULL, 0x4039b4406aa1816fULL, 0x761cf584edd718ebULL, 0xee1a9f85fa843638ULL, 0xd9a3c8294de725e7ULL, 0xc33856a02a25c2b5ULL, 0xfb380d7c8546ec94ULL, 0x8b88a323499c867ULL, 0x5e031e130f40b522ULL, 0xc245ba756766fbfaULL, 0x600be73bfd70bfdbULL, 0x63fbdc1490a040f1ULL, 0x8b7ca1acbf59121cULL, 0x8b45e8b6e5df98dULL, 0x3bd26839f0550486ULL, 0x15049fb3889efee6ULL, 0xd133067a7045f74fULL, 0xdb0961dc050699dfULL, 0xb72cf749c490f287ULL, 0x3f35639432be7e6eULL, 0xd7dcb363e22f8532ULL, 0xdf91f743144b1492ULL, 
+  variants: 0xd344d5fd840362caULL, 0x491e081d01664a4eULL, 0x1fba947f870d334ULL, 0xaf272aaaac35a713ULL, 0x580c6b50e63e3af6ULL, 0x2f82ea027b461f39ULL, 0x59363d0f7148fe02ULL, 0x51169fb8b5a5e7c0ULL, 0xe320f21136a788eULL, 
+Completed tests in Golden / V1: every program and the clock / stretch variants = the R0 output, bit for bit (blocks 256)
+-----------------------------------------------------------------
+Starting tests in: Lanes / LENGTH 3: the lane repeats every 3 steps (a polymeter against STEPS 16)...
+Completed tests in Lanes / LENGTH 3: the lane repeats every 3 steps (a polymeter against STEPS 16)
+-----------------------------------------------------------------
+Starting tests in: Lanes / LENGTH 32: steps 17 .. 32 are their own values...
+Completed tests in Lanes / LENGTH 32: steps 17 .. 32 are their own values
+-----------------------------------------------------------------
+Starting tests in: Lanes / CONDITION 1:2 (length 4): the even cycles play, the odd ones pass; 4:4 only every 4th cycle...
+Completed tests in Lanes / CONDITION 1:2 (length 4): the even cycles play, the odd ones pass; 4:4 only every 4th cycle
+-----------------------------------------------------------------
+Starting tests in: Lanes / PROBABILITY 50 %: 40 .. 60 % of the events over 64 cycles; 100 %: all; the same on a second run...
+  50 %: 60 / 128 events ..x.x..xx.x..x.xxx.xxx..x..xx....xx.xxx.....x.x.x.x..xx..xx....x....x.xxxx......xx.x..xx..x...x.xxx.xxx.....xxxx.x..xx.x.xx.xx.x
+  100 %: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Completed tests in Lanes / PROBABILITY 50 %: 40 .. 60 % of the events over 64 cycles; 100 %: all; the same on a second run
+-----------------------------------------------------------------
+Starting tests in: Lanes / V2: RATE 1/8 on a 1/16 grid with swing: the gap starts within 1 sample of the lane's swung step...
+  0.325 s: first changed sample 15601, step at 15600
+  0.825 s: first changed sample 39601, step at 39600
+  1.325 s: first changed sample 63601, step at 63600
+Completed tests in Lanes / V2: RATE 1/8 on a 1/16 grid with swing: the gap starts within 1 sample of the lane's swung step
+-----------------------------------------------------------------
+Starting tests in: Lanes / SCENE: scene 2 plays its own pattern; an unedited scene = scene 1 bit for bit...
+Completed tests in Lanes / SCENE: scene 2 plays its own pattern; an unedited scene = scene 1 bit for bit
+-----------------------------------------------------------------
+Starting tests in: Lanes / V3: blocks 1, 64, 127, 4096 after prepare(256) bit-identical with lanes, rates, conditions, chance on...
+Completed tests in Lanes / V3: blocks 1, 64, 127, 4096 after prepare(256) bit-identical with lanes, rates, conditions, chance on
+-----------------------------------------------------------------
+Starting tests in: Lanes / V6: latency 0 with lanes; V13: scenes and lanes round trip, an R0 state loads with lanes at defaults...
+Completed tests in Lanes / V6: latency 0 with lanes; V13: scenes and lanes round trip, an R0 state loads with lanes at defaults
+-----------------------------------------------------------------
+Starting tests in: Lanes / Page: lane menus, probability, steps 17 .. 32 and SCENE reach the processor...
+Completed tests in Lanes / Page: lane menus, probability, steps 17 .. 32 and SCENE reach the processor
+-----------------------------------------------------------------
+Starting tests in: Shape and bands / V5: every lane on a band with an empty pattern: the magnitude 20 Hz .. 20 kHz flat within 0.1 dB...
+  magnitude -0.000 .. 0.000 dB
+Completed tests in Shape and bands / V5: every lane on a band with an empty pattern: the magnitude 20 Hz .. 20 kHz flat within 0.1 dB
+-----------------------------------------------------------------
+Starting tests in: Shape and bands / Band isolation: GLITCH GAP on HIGH over 60 Hz + 6 kHz: 60 Hz within 0.5 dB of dry, 6 kHz >= 30 dB down...
+  in the gap: 60 Hz -0.00 dB, 6 kHz -32.2 dB
+Completed tests in Shape and bands / Band isolation: GLITCH GAP on HIGH over 60 Hz + 6 kHz: 60 Hz within 0.5 dB of dry, 6 kHz >= 30 dB down
+-----------------------------------------------------------------
+Starting tests in: Shape and bands / V4: a 1/16 VOLUME gate (levels 15 / 0) on DC: the gain's second difference <= -40 dB (steps and CURVE)...
+  STEPS: second difference -65.6 dB, gate depth on step 1 1.000
+  CURVE: second difference -132.5 dB, gate depth on step 1 0.500
+Completed tests in Shape and bands / V4: a 1/16 VOLUME gate (levels 15 / 0) on DC: the gain's second difference <= -40 dB (steps and CURVE)
+-----------------------------------------------------------------
+Starting tests in: Shape and bands / CURVE passes through the step levels at the step starts...
+  largest miss 0.0000
+Completed tests in Shape and bands / CURVE passes through the step levels at the step starts
+-----------------------------------------------------------------
+Starting tests in: Shape and bands / Targets: LOW PASS takes 8 kHz down >= 20 dB; BAND PASS keeps its centre; PAN alternates >= 10 dB; DRIVE...
+  LOW PASS at level 15: 8 kHz -70.8 dB
+  DRIVE at level 15: THD 33.5 %, peak -0.00 dB
+Completed tests in Shape and bands / Targets: LOW PASS takes 8 kHz down >= 20 dB; BAND PASS keeps its centre; PAN alternates >= 10 dB; DRIVE
+-----------------------------------------------------------------
+Starting tests in: Shape and bands / An empty SHAPE lane (ON, any target) = dry bit for bit...
+Completed tests in Shape and bands / An empty SHAPE lane (ON, any target) = dry bit for bit
+-----------------------------------------------------------------
+Starting tests in: Shape and bands / V3: blocks 1, 64, 127, 4096 after prepare(256) bit-identical with bands and both SHAPE lanes on...
+Completed tests in Shape and bands / V3: blocks 1, 64, 127, 4096 after prepare(256) bit-identical with bands and both SHAPE lanes on
+-----------------------------------------------------------------
+Starting tests in: Shape and bands / V6 latency 0; V13: bands, SHAPE steps and parameters round trip...
+Completed tests in Shape and bands / V6 latency 0; V13: bands, SHAPE steps and parameters round trip
+-----------------------------------------------------------------
+Starting tests in: Shape and bands / Page: SHAPE levels, BAND, CURVE and TARGET reach the processor...
+Completed tests in Shape and bands / Page: SHAPE levels, BAND, CURVE and TARGET reach the processor
+-----------------------------------------------------------------
+Starting tests in: Throw / An empty THROW lane (ON, every target, A and B) = dry bit for bit...
+Completed tests in Throw / An empty THROW lane (ON, every target, A and B) = dry bit for bit
+-----------------------------------------------------------------
+Starting tests in: Throw / DELAY: echoes at TIME within 1 sample, ping-pong, echo 2 / echo 1 = 0.9 x TAIL, no send from level 0...
+  impulse at 3000: the left echo's peak at 21000 (expected 21000), right channel there 0.000000
+  echo 1 (left) -0.00 dB, echo 2 (right) / echo 1 -6.94 dB (expected -6.94), from the level-0 step -240.0 dB
+Completed tests in Throw / DELAY: echoes at TIME within 1 sample, ping-pong, echo 2 / echo 1 = 0.9 x TAIL, no send from level 0
+-----------------------------------------------------------------
+Starting tests in: Throw / TONAL: the spectrum peaks at NOTE (A = 220 Hz) within 1 %...
+  peak 218.99 Hz (A3 = 220 Hz, -0.46 %)
+Completed tests in Throw / TONAL: the spectrum peaks at NOTE (A = 220 Hz) within 1 %
+-----------------------------------------------------------------
+Starting tests in: Throw / REVERB: T30 within 25 % of the nominal decay (TAIL 50 % = 2.225 s)...
+  T30 1.867 s, nominal 2.225 s (-16.1 %)
+Completed tests in Throw / REVERB: T30 within 25 % of the nominal decay (TAIL 50 % = 2.225 s)
+-----------------------------------------------------------------
+Starting tests in: Throw / PHASER and FLANGER move a 1 kHz sine's level by >= 10 dB over the LFO (1 bar)...
+  PHASER: 1 kHz moves -16.6 .. 2.6 dB
+  FLANGER: 1 kHz moves -16.2 .. 2.8 dB
+Completed tests in Throw / PHASER and FLANGER move a 1 kHz sine's level by >= 10 dB over the LFO (1 bar)
+-----------------------------------------------------------------
+Starting tests in: Throw / VINYL: wow moves 1 kHz by >= 0.3 %; BRAKE (TAIL 100 %) lowers it by >= 40 % in the step's last quarter...
+  wow: 987.48 .. 1012.52 Hz (2.50 %)
+  brake: 181.9 Hz over the last quarter of the step (81.8 % lower)
+Completed tests in Throw / VINYL: wow moves 1 kHz by >= 0.3 %; BRAKE (TAIL 100 %) lowers it by >= 40 % in the step's last quarter
+-----------------------------------------------------------------
+Starting tests in: Throw / DOWNSAMPLE at level 15: the fs / 32 alias of 1 kHz (500 Hz) >= -30 dB re the tone...
+  500 Hz alias 6.0 dB re 1 kHz
+Completed tests in Throw / DOWNSAMPLE at level 15: the fs / 32 alias of 1 kHz (500 Hz) >= -30 dB re the tone
+-----------------------------------------------------------------
+Starting tests in: Throw / An emptied DELAY lane keeps its tail, then goes idle: the output = the input exactly...
+  the echo after the lane was emptied (0.75 s): 0.4 dB re the input
+Completed tests in Throw / An emptied DELAY lane keeps its tail, then goes idle: the output = the input exactly
+-----------------------------------------------------------------
+Starting tests in: Throw / V4: a 100 Hz sine, a 1/16 gate (15 / 0): the fourth difference at step boundaries <= -40 dB or <= the steady effect's...
+  DELAY: at the boundaries -72.0 dB, the effect itself -31.6 dB
+  TONAL: at the boundaries -121.6 dB, the effect itself -122.2 dB
+  REVERB: at the boundaries -106.2 dB, the effect itself -106.0 dB
+  PHASER: at the boundaries -66.1 dB, the effect itself -69.7 dB
+  FLANGER: at the boundaries -75.8 dB, the effect itself -111.2 dB
+  VINYL: at the boundaries -48.3 dB, the effect itself -62.8 dB
+  DOWNSMP: at the boundaries 1.2 dB, the effect itself 1.9 dB
+Completed tests in Throw / V4: a 100 Hz sine, a 1/16 gate (15 / 0): the fourth difference at step boundaries <= -40 dB or <= the steady effect's
+-----------------------------------------------------------------
+Starting tests in: Throw / V3: blocks 1, 64, 127, 4096 after prepare(256) bit-identical with both THROW lanes on (every target)...
+Completed tests in Throw / V3: blocks 1, 64, 127, 4096 after prepare(256) bit-identical with both THROW lanes on (every target)
+-----------------------------------------------------------------
+Starting tests in: Throw / V7: CPU, 48 kHz / 256, every lane type on, every pair of THROW targets: <= 15 % of the block time...
+  worst pair FLANGER + VINYL: 3.83 % of the block time
+Completed tests in Throw / V7: CPU, 48 kHz / 256, every lane type on, every pair of THROW targets: <= 15 % of the block time
+-----------------------------------------------------------------
+Starting tests in: Throw / V6 latency 0; V13: THROW parameters, steps and scenes round trip...
+Completed tests in Throw / V6 latency 0; V13: THROW parameters, steps and scenes round trip
+-----------------------------------------------------------------
+Starting tests in: Throw / Page: THROW levels and BAND reach the processor...
+Completed tests in Throw / Page: THROW levels and BAND reach the processor
+-----------------------------------------------------------------
+Starting tests in: Spatial recipes / INPUT sends survive a fully closed upstream gate; old CHAIN stays closed...
+target 0 gated chain energy=0.0000000000 input energy=125.461381
+target 2 gated chain energy=0.0000000000 input energy=551.784131
+Completed tests in Spatial recipes / INPUT sends survive a fully closed upstream gate; old CHAIN stays closed
+-----------------------------------------------------------------
+Starting tests in: Spatial recipes / INPUT routing respects frequency band and does not filter the dry chain...
+band rejection -88.48 dB
+band rejection -90.41 dB
+Completed tests in Spatial recipes / INPUT routing respects frequency band and does not filter the dry chain
+-----------------------------------------------------------------
+Starting tests in: Spatial recipes / New routing deterministic for all blocks, both layouts and sources; zero C++ audio allocation...
+Completed tests in Spatial recipes / New routing deterministic for all blocks, both layouts and sources; zero C++ audio allocation
+-----------------------------------------------------------------
+Starting tests in: Spatial recipes / Target-aware recipes vary structure, capture attacks and remove stale scheduling...
+Completed tests in Spatial recipes / Target-aware recipes vary structure, capture attacks and remove stale scheduling
+-----------------------------------------------------------------
+Starting tests in: Spatial recipes / GEN preserves target/time/note/band and only touches selected lane parameters...
+Completed tests in Spatial recipes / GEN preserves target/time/note/band and only touches selected lane parameters
+-----------------------------------------------------------------
+Starting tests in: Spatial recipes / Every spatial variation captures the strongest detected attack, including sustained sources...
+Completed tests in Spatial recipes / Every spatial variation captures the strongest detected attack, including sustained sources
+-----------------------------------------------------------------
+Starting tests in: Spatial recipes / Explicit generation adds delay/reverb; old program loading retains CHAIN...
+Completed tests in Spatial recipes / Explicit generation adds delay/reverb; old program loading retains CHAIN
+-----------------------------------------------------------------
+Starting tests in: Simple / Hits from an HPDG snapshot: the roles per 1/16 and the groove...
+Completed tests in Simple / Hits from an HPDG snapshot: the roles per 1/16 and the groove
+-----------------------------------------------------------------
+Starting tests in: Simple / V10: events never fall as AMOUNT rises; fills at the phrase end; TARGET HATS stays on HIGH...
+  120 / 120 cases monotonic; fills at the phrase end 6236 / 6236; TARGET HATS lanes on HIGH 740 / 740
+Completed tests in Simple / V10: events never fall as AMOUNT rises; fills at the phrase end; TARGET HATS stays on HIGH
+-----------------------------------------------------------------
+Starting tests in: Simple / V8: on-hit events only where the TARGET's role hits (SNARE: 1/16s 5 and 13)...
+  on-hit events 28, off the snare's hits 0
+Completed tests in Simple / V8: on-hit events only where the TARGET's role hits (SNARE: 1/16s 5 and 13)
+-----------------------------------------------------------------
+Starting tests in: Simple / V11: VARIATION 0 (FILL OFF): bar n = bar n + 1 for every lane; VARIATION 100 %: bars differ, rules hold...
+  VARIATION 0: 40 / 40 repeat bar for bar; VARIATION 100 %: 40 / 40 vary, rules hold in 40
+Completed tests in Simple / V11: VARIATION 0 (FILL OFF): bar n = bar n + 1 for every lane; VARIATION 100 %: bars differ, rules hold
+-----------------------------------------------------------------
+Starting tests in: Simple / V12: linked, SIMPLE: GENRE AUTO = HPDG's genre; a new HPDG pattern regenerates; LOCK keeps; HPDG gone keeps...
+Completed tests in Simple / V12: linked, SIMPLE: GENRE AUTO = HPDG's genre; a new HPDG pattern regenerates; LOCK keeps; HPDG gone keeps
+-----------------------------------------------------------------
+Starting tests in: Simple / V9: GROOVE 100 % linked: a GLITCH gap starts at HPDG's hit time within 1 ms; GROOVE 0: on the straight grid...
+  step 5: straight at 24001 (grid 24000), grooved 24501, HPDG's offset 500.0 samples: off by 0.000 ms
+  step 6: straight at 30001 (grid 30000), grooved 31001, HPDG's offset 1000.0 samples: off by 0.000 ms
+  step 13: straight at 72001 (grid 72000), grooved 72501, HPDG's offset 500.0 samples: off by 0.000 ms
+Completed tests in Simple / V9: GROOVE 100 % linked: a GLITCH gap starts at HPDG's hit time within 1 ms; GROOVE 0: on the straight grid
+-----------------------------------------------------------------
+Starting tests in: Simple / V3: blocks 1, 64, 127, 4096 after prepare(256) bit-identical with a SIMPLE pattern and GROOVE 100 %...
+Completed tests in Simple / V3: blocks 1, 64, 127, 4096 after prepare(256) bit-identical with a SIMPLE pattern and GROOVE 100 %
+-----------------------------------------------------------------
+Starting tests in: Simple / V13: the page, SIMPLE settings and the groove round trip; an R3 state opens ADVANCED unchanged...
+Completed tests in Simple / V13: the page, SIMPLE settings and the groove round trip; an R3 state opens ADVANCED unchanged
+-----------------------------------------------------------------
+Starting tests in: Simple / TOPS: GLITCH GAP on TOPS over 60 Hz + 6 kHz: 60 Hz within 0.5 dB of dry, 6 kHz >= 30 dB down...
+  in the gap: 60 Hz -0.07 dB, 6 kHz -120.0 dB
+Completed tests in Simple / TOPS: GLITCH GAP on TOPS over 60 Hz + 6 kHz: 60 Hz within 0.5 dB of dry, 6 kHz >= 30 dB down
+-----------------------------------------------------------------
+Starting tests in: Simple / Page: SIMPLE shown for a new instance; GENERATE, GENRE and the page switch reach the processor...
+Completed tests in Simple / Page: SIMPLE shown for a new instance; GENERATE, GENRE and the page switch reach the processor
+-----------------------------------------------------------------
+Starting tests in: Listen / Timing: after 4 bars the offsets within 1 ms of the loop's; presence >= 0.5 on hits, < 0.5 without...
+  largest timing error 0.021 ms; presence right on 16 / 16 sixteenths
+Completed tests in Listen / Timing: after 4 bars the offsets within 1 ms of the loop's; presence >= 0.5 on hits, < 0.5 without
+-----------------------------------------------------------------
+Starting tests in: Listen / V8 (LISTEN): GENERATE unlinked captures the heard hits and timing; on-hit events only where the input hits...
+  heard mask f5ff; on-hit events 2, off the input's hits 0
+Completed tests in Listen / V8 (LISTEN): GENERATE unlinked captures the heard hits and timing; on-hit events only where the input hits
+-----------------------------------------------------------------
+Starting tests in: Listen / V9 (LISTEN): GROOVE 100 %: a GLITCH gap on 1/16s 5 and 6 starts at the loop's hit time within 1 ms...
+  1/16 5: the gap moved 480 samples, the loop's hit 480 late: off by 0.000 ms
+  1/16 6: the gap moved 720 samples, the loop's hit 720 late: off by 0.000 ms
+Completed tests in Listen / V9 (LISTEN): GROOVE 100 %: a GLITCH gap on 1/16s 5 and 6 starts at the loop's hit time within 1 ms
+-----------------------------------------------------------------
+Starting tests in: Listen / V13: the heard timing and the feel round trip...
+Completed tests in Listen / V13: the heard timing and the feel round trip
+-----------------------------------------------------------------
+Starting tests in: Listen / Key: linked, HPDG's key A then D: both throws' NOTE follow (ADVANCED too); LOCK keeps NOTE...
+Completed tests in Listen / Key: linked, HPDG's key A then D: both throws' NOTE follow (ADVANCED too); LOCK keeps NOTE
+-----------------------------------------------------------------
+Starting tests in: Presets / 225 programs; unique names; HPEQ's 24 where they were...
+Completed tests in Presets / 225 programs; unique names; HPEQ's 24 where they were
+-----------------------------------------------------------------
+Starting tests in: Presets / Every genre preset: deterministic, SIMPLE, writes events, finite and bounded on the drum loop...
+  200 / 200 pass; the loudest: 1.51 dBFS (Reverse Into Drop)
+Completed tests in Presets / Every genre preset: deterministic, SIMPLE, writes events, finite and bounded on the drum loop
+-----------------------------------------------------------------
+Starting tests in: Presets / The preset screen: 4 genres + Factory; each genre 50 presets in 6 groups...
+Completed tests in Presets / The preset screen: 4 genres + Factory; each genre 50 presets in 6 groups
+-----------------------------------------------------------------
+Starting tests in: Presets / Painting: a drag over GLITCH steps 3 .. 7 sets all five to the first step's new value...
+  GLITCH steps 1 .. 8: 0 0 1 1 1 1 1 0 
+Completed tests in Presets / Painting: a drag over GLITCH steps 3 .. 7 sets all five to the first step's new value
+-----------------------------------------------------------------
+Starting tests in: Presets / Help: every control of both pages has a text...
+  missing: none
+Completed tests in Presets / Help: every control of both pages has a text
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / The robot, before / after: the level's repetition period on a steady 1 kHz sine (a 4-step run)...
+  BEFORE: legacy RATCHET at DEPTH 78 % (what SIMPLE wrote at AMOUNT 63 %): 16.0 ms = 62.5 Hz
+  AFTER REPEAT: no repetition
+  AFTER ROLL: 62.0 ms
+  AFTER CHOP: no repetition
+  AFTER DROP: no repetition
+  AFTER SHUFFLE: no repetition
+  AFTER REVERSE: no repetition
+Completed tests in Glitch 2 / The robot, before / after: the level's repetition period on a steady 1 kHz sine (a 4-step run)
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / ROLL: 1/32 (62.5 ms at 120 BPM; 1/48 on a triplet grid), each repeat -1.4 dB at DEPTH 50 % (within 0.5 dB)...
+  repeats re the first: -1.4 -2.8 -4.2 -5.6 -7.1 -8.5 dB; largest miss 0.00 dB
+Completed tests in Glitch 2 / ROLL: 1/32 (62.5 ms at 120 BPM; 1/48 on a triplet grid), each repeat -1.4 dB at DEPTH 50 % (within 0.5 dB)
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / CHOP: 1/16 pieces gated to 45 %: the dry audio, then silence, in each...
+  silent share in the run 56.9 % (gate 45 %: about 55 %)
+Completed tests in Glitch 2 / CHOP: 1/16 pieces gated to 45 %: the dry audio, then silence, in each
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / The playing audio itself: SHUFFLE plays the loop from earlier in the bar, sample for sample (no added sound)...
+  SHUFFLE plays the loop 1.500 beats earlier; mean difference 0.000000003
+Completed tests in Glitch 2 / The playing audio itself: SHUFFLE plays the loop from earlier in the bar, sample for sample (no added sound)
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / No clicks: a 100 Hz sine through each block action: the fourth difference <= -40 dB re the peak...
+  REPEAT: -66.0 dB at 12097 (step 2 + 97)
+  ROLL: -67.3 dB at 54097 (step 9 + 97)
+  RISE: -65.3 dB at 87029 (step 14 + 3029)
+  CHOP: -66.2 dB at 54097 (step 9 + 97)
+  DROP: -66.7 dB at 54097 (step 9 + 97)
+  SHUFFLE: -66.0 dB at 72097 (step 12 + 97)
+  REVERSE: -66.0 dB at 48097 (step 8 + 97)
+  STOP: -70.7 dB at 54002 (step 9 + 2)
+Completed tests in Glitch 2 / No clicks: a 100 Hz sine through each block action: the fourth difference <= -40 dB re the peak
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / Old projects keep the legacy GLITCH: a state without glitchEngine loads as Legacy...
+Completed tests in Glitch 2 / Old projects keep the legacy GLITCH: a state without glitchEngine loads as Legacy
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / The glitch formula: events per bar within the INTENT budget, never side by side, within the INTENT's share, RISE in the second half, SHAPE always written...
+  180 cases: within the budget 180, never side by side 180, GLITCH within its INTENT's share 180, RISE in the tail 160 / 160, SHAPE written 180
+Completed tests in Glitch 2 / The glitch formula: events per bar within the INTENT budget, never side by side, within the INTENT's share, RISE in the second half, SHAPE always written
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / The owner's case (TRAP, SUBTLE, AMOUNT 63 %, FULL, HPDG hats on the eighths): before 8 RATCHETs a bar; now...
+  GLITCH bar 1: . . . . . . . . . . RP RP . . . . (1 event)
+Completed tests in Glitch 2 / The owner's case (TRAP, SUBTLE, AMOUNT 63 %, FULL, HPDG hats on the eighths): before 8 RATCHETs a bar; now
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / Material: a sustained pad is heard as sustained; its glitches sit on the beats, fewer than on drums...
+  dynamics: pad 2.9 dB (sustained below 9 dB)
+  dynamics: drums 23.2 dB
+  pad: 1 glitch events, off the beats 0
+Completed tests in Glitch 2 / Material: a sustained pad is heard as sustained; its glitches sit on the beats, fewer than on drums
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / Lengths (owner: SIMPLE's effects are too short): SHAPE coverage, the mean event length of GLITCH / THROW in beats...
+  SHAPE coverage 84.7 % of its cycle; GLITCH events 0.69 beats; THROW events 0.64 beats (95 / 129 events)
+Completed tests in Glitch 2 / Lengths (owner: SIMPLE's effects are too short): SHAPE coverage, the mean event length of GLITCH / THROW in beats
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / GEN on SHAPE A / B and THROW A / B: that lane gets steps, the others stay; each press a new pattern...
+  SHAPE A: written 1, the others kept 1, a second press differs 1
+  SHAPE B: written 1, the others kept 1, a second press differs 1
+  THROW A: written 1, the others kept 1, a second press differs 1
+  THROW B: written 1, the others kept 1, a second press differs 1
+Completed tests in Glitch 2 / GEN on SHAPE A / B and THROW A / B: that lane gets steps, the others stay; each press a new pattern
+-----------------------------------------------------------------
+Starting tests in: Glitch 2 / Renders for listening (HAMLO_RENDER): drums and a pad, the legacy RATCHET vs GLITCH 2's actions, the owner's TRAP case...
+Completed tests in Glitch 2 / Renders for listening (HAMLO_RENDER): drums and a pad, the legacy RATCHET vs GLITCH 2's actions, the owner's TRAP case
+-----------------------------------------------------------------
+Starting tests in: Transition / Capture: a click on every bar line at 120 BPM: the last 2 bars start on a click, exactly 2 bars long...
+  captured 192000 samples (2 bars = 192000), the first click at 0, clicks 2, aligned 1
+Completed tests in Transition / Capture: a click on every bar line at 120 BPM: the last 2 bars start on a click, exactly 2 bars long
+-----------------------------------------------------------------
+Starting tests in: Transition / RISE: N bars long, the last quarter >= 6 dB louder, the centroid rising, the fade to 0 at the bar line...
+  drums: 192000 samples; last quarter 14.0 dB above the first; centroid 511.391 -> 10926.7 Hz
+  pad: 192000 samples; last quarter 12.6 dB above the first; centroid 552.758 -> 1264.49 Hz
+Completed tests in Transition / RISE: N bars long, the last quarter >= 6 dB louder, the centroid rising, the fade to 0 at the bar line
+-----------------------------------------------------------------
+Starting tests in: Transition / RISE on a 440 Hz sine, PITCH 100 %: the end an octave up (within 3 %); grain edges click-free (<= -40 dB)...
+  the end at 884.7 Hz (880 expected); the fourth difference -52.2 dB re the peak
+Completed tests in Transition / RISE on a 440 Hz sine, PITCH 100 %: the end an octave up (within 3 %); grain edges click-free (<= -40 dB)
+-----------------------------------------------------------------
+Starting tests in: Transition / FILL: N bars long; the bars before the last >= 75 % the source; the last bar re-cut; the last beat rolled...
+  bar 1 identical 100.0 %; bar 2 differs -3.7 dB; the roll's repeats correlate 1.000
+Completed tests in Transition / FILL: N bars long; the bars before the last >= 75 % the source; the last bar re-cut; the last beat rolled
+-----------------------------------------------------------------
+Starting tests in: Transition / Determinism: the same source, settings and seed = the same samples; a new seed = another clip...
+Completed tests in Transition / Determinism: the same source, settings and seed = the same samples; a new seed = another clip
+-----------------------------------------------------------------
+Starting tests in: Transition / The WAV and the preview: written, reads back (24-bit), the preview plays the clip through the output...
+  Rise_120bpm_2bars_74e139.wav: 192000 samples, largest difference 0.000000119
+Completed tests in Transition / The WAV and the preview: written, reads back (24-bit), the preview plays the clip through the output
+-----------------------------------------------------------------
+Starting tests in: Transition / A sample dropped on the page: the source (resampled 44.1 -> 48 kHz, repeated to the bars); USE INPUT goes back...
+  from dropped_1k.wav: 1000.0 Hz at 48 kHz (1000 expected); repeated after 38400 samples (correlation 1.0000)
+Completed tests in Transition / A sample dropped on the page: the source (resampled 44.1 -> 48 kHz, repeated to the bars); USE INPUT goes back
+-----------------------------------------------------------------
+Starting tests in: Transition / Page: SIMPLE's [RISE] opens the transition page with a fresh clip; BACK returns to SIMPLE...
+Completed tests in Transition / Page: SIMPLE's [RISE] opens the transition page with a fresh clip; BACK returns to SIMPLE
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Sample fixture is written successfully...
+Completed tests in Sample workspace R9 / Sample fixture is written successfully
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Matching-rate load is exact; input mode does not touch host audio...
+Completed tests in Sample workspace R9 / Matching-rate load is exact; input mode does not touch host audio
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Invalid, nonfinite and too-long files preserve the previous source...
+Completed tests in Sample workspace R9 / Invalid, nonfinite and too-long files preserve the previous source
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Mono resampling preserves pitch, duration, channel identity and finite output...
+Completed tests in Sample workspace R9 / Mono resampling preserves pitch, duration, channel identity and finite output
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Downsampling removes out-of-band input, rather than folding into16kHz...
+Downsampling residual=-112.887 dBFS
+Completed tests in Sample workspace R9 / Downsampling removes out-of-band input, rather than folding into16kHz
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Rate changes use cached source on the worker and stop playback...
+Completed tests in Sample workspace R9 / Rate changes use cached source on the worker and stop playback
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Sample playback through actual sequencer is exact across callback schedules...
+Completed tests in Sample workspace R9 / Sample playback through actual sequencer is exact across callback schedules
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / 32-bit float export is the actual offline sequencer output, with selected tail...
+Completed tests in Sample workspace R9 / 32-bit float export is the actual offline sequencer output, with selected tail
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Float WAV metadata and headroom are preserved at Mix0...
+Completed tests in Sample workspace R9 / Float WAV metadata and headroom are preserved at Mix0
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Mono host export keeps mono layout and actual left-input PCM...
+Completed tests in Sample workspace R9 / Mono host export keeps mono layout and actual left-input PCM
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Export failure preserves files; source cannot be overwritten; state load stops audition...
+Completed tests in Sample workspace R9 / Export failure preserves files; source cannot be overwritten; state load stops audition
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Bounded audio handoff remains finite under repeated loads and cancellation...
+Completed tests in Sample workspace R9 / Bounded audio handoff remains finite under repeated loads and cancellation
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / BOLD is explicit, preserves genre, writes strong full-band settings...
+Completed tests in Sample workspace R9 / BOLD is explicit, preserves genre, writes strong full-band settings
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Dragged transition files remain immutable; failed writes are not marked valid...
+Completed tests in Sample workspace R9 / Dragged transition files remain immutable; failed writes are not marked valid
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Closing during a queued render cancels the worker safely...
+Completed tests in Sample workspace R9 / Closing during a queued render cancels the worker safely
+-----------------------------------------------------------------
+Starting tests in: Sample workspace R9 / Main-page file drop and toolbar controls are reachable without moving preset screen...
+Completed tests in Sample workspace R9 / Main-page file drop and toolbar controls are reachable without moving preset screen
+
+HamloRevolution_Tests: 4365 expectations passed, 0 failed
