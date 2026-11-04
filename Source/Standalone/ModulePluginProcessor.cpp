@@ -3,6 +3,7 @@
 #include <juce_audio_formats/juce_audio_formats.h>
 #include "Core/ModulePresets.h"
 #include "Core/RevolutionPresets.h"
+#include "Core/RevolutionRecipes.h"
 
 #include "DSP/ProcessorsM6.h"
 #include "DSP/ReverbProcessor.h"
@@ -77,7 +78,7 @@ revolution::simple::Result ModulePluginProcessor::lastSimple() const
     return simpleResult;
 }
 
-void ModulePluginProcessor::generateSimple(bool newSeed)
+void ModulePluginProcessor::generateSimple(bool newSeed, bool expressive)
 {
     namespace simple = revolution::simple;
     auto state = getRevolutionState();
@@ -128,7 +129,9 @@ void ModulePluginProcessor::generateSimple(bool newSeed)
                 if (((state.heardMask >> s) & 1) != 0)
                     hits.groove[static_cast<size_t>(s)] = state.heard[static_cast<size_t>(s)];
     }
-    const auto result = simple::generate(settings, hits, getHostBpm());
+    auto result = simple::generate(settings, hits, getHostBpm());
+    if (expressive)
+        simple::addSpatialRecipes(result, settings, hits);
     for (const auto& [id, value] : result.parameters)
         setParameterValue(id, value);
     state.pattern = result.pattern;
@@ -176,28 +179,15 @@ void ModulePluginProcessor::generateLane(int lane)
         const int genre = simple::resolveGenre(settings.genre, {}, getHostBpm());
         hits = revolution::hasFeel(state.feel) ? simple::hitsFromFeel(state.feel, genre) : simple::templateHits(genre);
     }
-    // each press: a new seed, an INTENT zone and an AMOUNT drawn from it (the lane's rules hang on the hits more than on
-    // the seed); a result that is empty or the same as now is drawn again (up to 12 times)
-    const auto current = state.lanes[static_cast<size_t>(lane)].first;
-    for (int attempt = 0; attempt < 12; ++attempt)
-    {
-        settings.seed = revolution::mix64(static_cast<std::uint64_t>(state.seed) ^ (0x9E3779B97F4A7C15ull * static_cast<std::uint64_t>(lane + 1))
-                                          ^ (static_cast<std::uint64_t>(++laneGenerations) << 20));
-        settings.intent = (static_cast<double>(settings.seed % simple::kIntents) + 0.5) / simple::kIntents;
-        settings.amount = 0.3 + 0.6 * revolution::unitOf(revolution::mix64(settings.seed));
-        const auto r = simple::generate(settings, hits, getHostBpm());
-        const auto& from = r.lanes[static_cast<size_t>(lane)];
-        const bool empty = std::all_of(from.first.begin(), from.first.end(), [](auto v) { return v == 0; });
-        if ((empty || from.first == current) && attempt < 11)
-            continue;
-        auto& to = state.lanes[static_cast<size_t>(lane)];
-        to.first = from.first;
-        to.extra = from.extra;
-        to.probability = from.probability;
-        to.length = from.length;
-        to.rate = from.rate;
-        break;
-    }
+    const char* targetId = lane == 3 ? "shapeATarget" : lane == 4 ? "shapeBTarget" : lane == 5 ? "throwATarget" : "throwBTarget";
+    const int target = juce::roundToInt(parameterValue(targetId));
+    const int variant = static_cast<int>((++laneGenerations + revolution::mix64(static_cast<std::uint64_t>(state.seed))) & 7);
+    const auto r = simple::levelRecipe(lane, target, variant, settings, hits);
+    const int oldBand = state.lanes[static_cast<size_t>(lane)].band;
+    state.lanes[static_cast<size_t>(lane)] = r.lanes[static_cast<size_t>(lane)];
+    state.lanes[static_cast<size_t>(lane)].band = oldBand;
+    for (const auto& [id, value] : r.parameters)
+        setParameterValue(id, value);
     setRevolutionState(state);
 }
 
@@ -804,9 +794,16 @@ void ModulePluginProcessor::setStateInformation(const void* data, int size)
                 xml->removeChildElement(old, true);
             // GLITCH 2: a state saved before it has no glitchEngine: its GLITCH steps are the legacy actions
             const bool knowsGlitchEngine = kind == ModuleKind::Revolution && xml->getChildByAttribute("id", "glitchEngine") != nullptr;
+            const bool knowsSourceA = xml->getChildByAttribute("id", "throwASource") != nullptr;
+            const bool knowsSourceB = xml->getChildByAttribute("id", "throwBSource") != nullptr;
             parameters.replaceState(juce::ValueTree::fromXml(*xml));
             if (kind == ModuleKind::Revolution && !knowsGlitchEngine)
                 setParameterValue("glitchEngine", 0);
+            if (kind == ModuleKind::Revolution)
+            {
+                if (!knowsSourceA) setParameterValue("throwASource", 0);
+                if (!knowsSourceB) setParameterValue("throwBSource", 0);
+            }
         }
 }
 
@@ -872,7 +869,7 @@ void ModulePluginProcessor::setCurrentProgram(int index)
         RevolutionState first;
         first.seed = static_cast<juce::int64>(g->seed);
         resetScenes(first);
-        generateSimple(false);
+        generateSimple(false, false); // R10: retain the calibrated R6 library; explicit GENERATE opts in.
         return;
     }
     const auto& list = presets::factoryModulePresets(getSpec().type);

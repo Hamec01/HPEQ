@@ -35,7 +35,8 @@ public:
                  ThrowAMix, ThrowADepth, ThrowATail, ThrowATone, ThrowBMix, ThrowBDepth, ThrowBTail, ThrowBTone, NumParams };
     enum Switch { Order, Character, Grid, Triplet, Free, TimeOn, GlitchOn, MotionOn, MotionTarget, Stretch, Listen,
                   ShapeAOn, ShapeATarget, ShapeACurve, ShapeBOn, ShapeBTarget, ShapeBCurve,
-                  ThrowAOn, ThrowATarget, ThrowATime, ThrowANote, ThrowBOn, ThrowBTarget, ThrowBTime, ThrowBNote, GlitchEngine, NumSwitches };
+                  ThrowAOn, ThrowATarget, ThrowATime, ThrowANote, ThrowBOn, ThrowBTarget, ThrowBTime, ThrowBNote, GlitchEngine,
+                  ThrowASource, ThrowBSource, NumSwitches };
 
     struct Values
     {

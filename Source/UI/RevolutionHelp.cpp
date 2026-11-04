@@ -70,7 +70,9 @@ juce::String revolutionHelp(const juce::String& key)
         { "lanePlate", "The lane's menu: LENGTH (polymeter), RATE, CONDITION, BAND, steps 17 - 32, CURVE (SHAPE)." },
         { "laneCells", "The steps. TIME / GLITCH: click for the next action, drag to paint it over more steps, right click for the "
                        "action and its probability. Level lanes: drag up / down and across to draw." },
-        { "laneGenerate", "GEN: a new pattern for this lane only (SHAPE / THROW: from SIMPLE's genre and intent, a new seed each press)." },
+        { "laneGenerate", "GEN: a target-aware recipe for this lane only. SHAPE: rhythmic envelopes. THROW: captures attacks, "
+                          "enables the effect, sets visible mix/depth/tail/tone and clears old chance/condition restrictions. "
+                          "Time, note and band stay yours. Sends use INPUT; repeated presses change the rhythm." },
         { "laneLock", "LOCK: lock every step of this lane (GENERATE keeps them)." },
         // ---- lanes
         { "timeOn", "TIME on / off: half speed, reverse, freeze, tape stop, double speed." },
@@ -109,9 +111,11 @@ juce::String revolutionHelp(const juce::String& key)
         { "throwATone", "THROW A TONE: damping, the phaser's centre, the flanger's sweep, or VINYL's crackle." },
         { "throwBTone", "THROW B TONE: damping, the phaser's centre, the flanger's sweep, or VINYL's crackle." },
         { "throwATarget", "THROW A TARGET: DELAY, TONAL (a delay tuned to NOTE), REVERB - their tails ring on; PHASER, FLANGER, "
-                          "VINYL, DOWNSAMPLE - on the step only. Right click: TIME and NOTE." },
+                          "VINYL, DOWNSAMPLE - on the step only. Right click: TIME, NOTE and INPUT / CHAIN send source." },
         { "throwBTarget", "THROW B TARGET: DELAY, TONAL (a delay tuned to NOTE), REVERB - their tails ring on; PHASER, FLANGER, "
-                          "VINYL, DOWNSAMPLE - on the step only. Right click: TIME and NOTE." },
+                          "VINYL, DOWNSAMPLE - on the step only. Right click: TIME, NOTE and INPUT / CHAIN send source." },
+        { "throwASource", "THROW A SOURCE: INPUT captures the original audio in this lane's band; CHAIN captures the previous lanes. Send targets only." },
+        { "throwBSource", "THROW B SOURCE: INPUT captures the original audio in this lane's band; CHAIN captures the previous lanes. Send targets only." },
         { "throwATime", "THROW A TIME: the delay time, or the LFO period of PHASER / FLANGER / VINYL." },
         { "throwBTime", "THROW B TIME: the delay time, or the LFO period of PHASER / FLANGER / VINYL." },
         { "glitchEngine", "GLITCH ENGINE: LEGACY (HPEQ's actions, old projects) or BLOCK - the playing audio itself cut and repeated "

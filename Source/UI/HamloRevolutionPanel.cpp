@@ -193,7 +193,7 @@ const char* HamloRevolutionPanel::keyFor(Switch s)
     static constexpr const char* keys[] { "order", "character", "grid", "triplet", "free", "timeOn", "glitchOn", "motionOn", "motionTarget",
                                           "timeStretch", "listen", "shapeAOn", "shapeATarget", "shapeACurve", "shapeBOn", "shapeBTarget",
                                           "shapeBCurve", "throwAOn", "throwATarget", "throwATime", "throwANote", "throwBOn", "throwBTarget",
-                                          "throwBTime", "throwBNote", "glitchEngine" };
+                                          "throwBTime", "throwBNote", "glitchEngine", "throwASource", "throwBSource" };
     return keys[s];
 }
 
@@ -509,7 +509,10 @@ void HamloRevolutionPanel::paintStep(int engine, int cell, int value)
 
 void HamloRevolutionPanel::showThrowMenu(int lane)
 {
-    juce::PopupMenu menu, targets, times, notes;
+    juce::PopupMenu menu, targets, times, notes, sources;
+    const auto sourceSwitch = lane == 5 ? ThrowASource : ThrowBSource;
+    sources.addItem(780, "CHAIN - after the previous lanes", true, values.switches[sourceSwitch] == 0);
+    sources.addItem(781, "INPUT - before the lanes (selected band)", true, values.switches[sourceSwitch] == 1);
     for (int t = 0; t < rev::kThrowTargets; ++t)
         targets.addItem(700 + t, rev::throwTargetName(t), true, values.switches[static_cast<size_t>(targetSwitchFor(lane))] == t);
     for (int t = 0; t < rev::kThrowTimes; ++t)
@@ -520,11 +523,14 @@ void HamloRevolutionPanel::showThrowMenu(int lane)
     menu.addSubMenu("Target", targets);
     menu.addSubMenu("Time (DELAY; the LFO of PHASER, FLANGER, VINYL)", times);
     menu.addSubMenu("Note (TONAL)", notes);
+    menu.addSubMenu("Send source (DELAY / TONAL / REVERB)", sources);
     juce::Component::SafePointer<HamloRevolutionPanel> self(this);
     menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this), [self, lane](int result)
     {
         if (self == nullptr || result == 0)
             return;
+        if (result >= 780)
+            return self->setSwitch(lane == 5 ? ThrowASource : ThrowBSource, result - 780);
         if (result >= 740)
             return self->setSwitch(throwNoteSwitch(lane), result - 740);
         if (result >= 720)
@@ -930,6 +936,13 @@ void HamloRevolutionPanel::drawRows(juce::Graphics& g) const
             tag = rev::bandName(values.lanes[static_cast<size_t>(lane)].band);
         if (isShape(lane) && values.switches[static_cast<size_t>(curveSwitchFor(lane))] != 0)
             tag = tag.isEmpty() ? juce::String("CURVE") : tag + " C";
+        if (isThrow(lane) && rev::throwIsSend(values.switches[static_cast<size_t>(targetSwitchFor(lane))]))
+        {
+            const auto source = values.switches[lane == 5 ? ThrowASource : ThrowBSource] == 1 ? "INPUT" : "CHAIN";
+            g.setFont(monoFont(10.0f).withStyle("Bold"));
+            g.setColour(inkFor(lane).withAlpha(0.9f));
+            g.drawText(source, bandTag(lane).translated(0.0f, 13.0f).withHeight(11.0f), juce::Justification::centredLeft);
+        }
         if (tag.isNotEmpty())
         {
             g.setFont(monoFont(11.0f).withStyle("Bold"));

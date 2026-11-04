@@ -120,7 +120,7 @@ public:
     int previewPosition() const noexcept { return previewPos.load(); }
     static juce::File rendersFolder();
     void setRendersFolder(const juce::File& f) { rendersOverride = f; } // tests: not Documents
-    void generateSimple(bool newSeed);
+    void generateSimple(bool newSeed, bool expressive = true);
     void simpleEdited();   // a SIMPLE setting changed: regenerate unless LOCK
     // GEN on a SHAPE / THROW lane (ADVANCED): the generator's steps for that lane (SIMPLE's settings, a new seed per
     // press); the other lanes, the lane's band and every parameter stay
