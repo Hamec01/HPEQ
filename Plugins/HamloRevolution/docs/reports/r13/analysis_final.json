@@ -1,0 +1,1141 @@
+{
+  "method": "128-cell ending RMS; pairwise 1-cosine; 8 seeds/source; gain invariant. Independent scipy 8x Kaiser10 true peak.",
+  "before_sha256": "1a3b7f7693570d060badc91b4615514af1ee79272fc61e1951169f3c3e57830d",
+  "after_sha256": "c29386e8f60198b960fd8cbea763528c8c349ffd3ea0fed2301ea13fe966bc68",
+  "old_exact": 288,
+  "new_renders": 96,
+  "structures": [
+    {
+      "source": "drums120",
+      "recipe": 8,
+      "seeds": 64,
+      "plans": 64,
+      "rhythm_masks32": 64
+    },
+    {
+      "source": "drums120",
+      "recipe": 9,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 10,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 11,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 12,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 13,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 14,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 15,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 16,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 17,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 18,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 19,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums120",
+      "recipe": 20,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 8,
+      "seeds": 64,
+      "plans": 64,
+      "rhythm_masks32": 64
+    },
+    {
+      "source": "toms90",
+      "recipe": 9,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 10,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 11,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 12,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 13,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 14,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 15,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 16,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 17,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 18,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 19,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "toms90",
+      "recipe": 20,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 8,
+      "seeds": 64,
+      "plans": 64,
+      "rhythm_masks32": 64
+    },
+    {
+      "source": "break170",
+      "recipe": 9,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 10,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 11,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 12,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 13,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 14,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 15,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 16,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 17,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 18,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 19,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "break170",
+      "recipe": 20,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 8,
+      "seeds": 64,
+      "plans": 64,
+      "rhythm_masks32": 64
+    },
+    {
+      "source": "drums140",
+      "recipe": 9,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 10,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 11,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 12,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 13,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 14,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 15,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 16,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 17,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 31
+    },
+    {
+      "source": "drums140",
+      "recipe": 18,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 19,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums140",
+      "recipe": 20,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 8,
+      "seeds": 64,
+      "plans": 64,
+      "rhythm_masks32": 64
+    },
+    {
+      "source": "drums90",
+      "recipe": 9,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 10,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 11,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 12,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 13,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 14,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 15,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 16,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 17,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 18,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 19,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums90",
+      "recipe": 20,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 8,
+      "seeds": 64,
+      "plans": 64,
+      "rhythm_masks32": 64
+    },
+    {
+      "source": "drums170",
+      "recipe": 9,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 10,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 11,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 12,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 13,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 14,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 15,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 16,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 17,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 18,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 19,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    },
+    {
+      "source": "drums170",
+      "recipe": 20,
+      "seeds": 32,
+      "plans": 32,
+      "rhythm_masks32": 32
+    }
+  ],
+  "diversity": [
+    {
+      "source": "break170",
+      "old": {
+        "mean_cosine_distance": 0.2531641503587975,
+        "minimum_cosine_distance": 0.11539108501464712
+      },
+      "new": {
+        "mean_cosine_distance": 0.34883203757399844,
+        "minimum_cosine_distance": 0.14704987884854948
+      },
+      "ratio": 1.3778887614206647
+    },
+    {
+      "source": "drums120",
+      "old": {
+        "mean_cosine_distance": 0.36588428199900475,
+        "minimum_cosine_distance": 0.2161249647977992
+      },
+      "new": {
+        "mean_cosine_distance": 0.4496714728936974,
+        "minimum_cosine_distance": 0.2580972979969237
+      },
+      "ratio": 1.2289991536037632
+    },
+    {
+      "source": "drums140",
+      "old": {
+        "mean_cosine_distance": 0.42533044735111086,
+        "minimum_cosine_distance": 0.19410567461441253
+      },
+      "new": {
+        "mean_cosine_distance": 0.46110447806759824,
+        "minimum_cosine_distance": 0.2164566246126024
+      },
+      "ratio": 1.0841087933847253
+    },
+    {
+      "source": "drums170",
+      "old": {
+        "mean_cosine_distance": 0.4403735484924134,
+        "minimum_cosine_distance": 0.21626001216540314
+      },
+      "new": {
+        "mean_cosine_distance": 0.3450601546143326,
+        "minimum_cosine_distance": 0.16336872391083623
+      },
+      "ratio": 0.7835624001387476
+    },
+    {
+      "source": "drums90",
+      "old": {
+        "mean_cosine_distance": 0.3484475537037349,
+        "minimum_cosine_distance": 0.19645658179394265
+      },
+      "new": {
+        "mean_cosine_distance": 0.47633445106081185,
+        "minimum_cosine_distance": 0.2593753276518287
+      },
+      "ratio": 1.3670190707259544
+    },
+    {
+      "source": "toms90",
+      "old": {
+        "mean_cosine_distance": 0.2936374706211474,
+        "minimum_cosine_distance": 0.08566569783231404
+      },
+      "new": {
+        "mean_cosine_distance": 0.5475546530851748,
+        "minimum_cosine_distance": 0.31093492344976215
+      },
+      "ratio": 1.86473017877079
+    }
+  ],
+  "audio": [
+    {
+      "file": "break170_1_8_1_1.wav",
+      "sha256": "e6ddd0ddfe56be122811c6cf5e2fdfaf7a16d028b3a3468d23cb64808bb12097",
+      "true_peak_db": -6.228582406098808
+    },
+    {
+      "file": "break170_1_8_1_2.wav",
+      "sha256": "6a142e1eca0248e631efebfd2d74a9521b5d64d249cbfee02cf12e5ba2aa4cbc",
+      "true_peak_db": -6.228555879929608
+    },
+    {
+      "file": "break170_1_8_1_3.wav",
+      "sha256": "9bb16eabfdeb8ad81b7100d90acf65c05f2ed5d1e413045156ef35689e2eefb3",
+      "true_peak_db": -6.228555873626901
+    },
+    {
+      "file": "break170_1_8_1_4.wav",
+      "sha256": "a88db52ec4c4e2166eee899888f0271626e56672c531d23622af37713212bd58",
+      "true_peak_db": -5.904064807597283
+    },
+    {
+      "file": "break170_1_8_1_5.wav",
+      "sha256": "8c3af25fb28e678f00d8edf33b8a6cd4251c75f72b27d4a88a1b93fd2f4a52e8",
+      "true_peak_db": -5.957250530100237
+    },
+    {
+      "file": "break170_1_8_1_6.wav",
+      "sha256": "b50e0ea2449ff0e51466ecfba820d223dcbd69ad944e9c40d871a6789e1f6fda",
+      "true_peak_db": -6.228555876796515
+    },
+    {
+      "file": "break170_1_8_1_7.wav",
+      "sha256": "dde202811ebc32ae486a87395b406309898fd6da10a01e4c735f10f438ff9c03",
+      "true_peak_db": -6.027616097399292
+    },
+    {
+      "file": "break170_1_8_1_8.wav",
+      "sha256": "a71312191b2e74cfbf6acb91d664e51923e697d15b88846cfe9347b8d0628a65",
+      "true_peak_db": -6.228555873626901
+    },
+    {
+      "file": "drums120_1_8_1_1.wav",
+      "sha256": "80aab44c1d8dda6bfbc371a6ad43445940772dba135b9f600e6a618f29b5518b",
+      "true_peak_db": -5.3601541763874785
+    },
+    {
+      "file": "drums120_1_8_1_2.wav",
+      "sha256": "e1ac135fc8a07c0870e822375d74e692d1c5c8c1b69fc9848b530b27960146bd",
+      "true_peak_db": -6.5979065659425595
+    },
+    {
+      "file": "drums120_1_8_1_3.wav",
+      "sha256": "bd909e3ea5a1be0415fa13271523c79464cf78cf053be2533b405fc035c794ec",
+      "true_peak_db": -6.70693284446597
+    },
+    {
+      "file": "drums120_1_8_1_4.wav",
+      "sha256": "f1d320fc9c5e848787ddb3fb7bd853cb1a33f35d2338d167e58cd7cbb9cfa77d",
+      "true_peak_db": -6.582070532334643
+    },
+    {
+      "file": "drums120_1_8_1_5.wav",
+      "sha256": "b0f2b8d4238a34ff1741a3b7e2c5b49d03bdc1c6d22326271bf9b23a8f9de220",
+      "true_peak_db": -6.202705661472542
+    },
+    {
+      "file": "drums120_1_8_1_6.wav",
+      "sha256": "b1f26e30370c78f383816550747d4e5b8f661911d28333a71e5b52ec5a2806e9",
+      "true_peak_db": -5.204587167465028
+    },
+    {
+      "file": "drums120_1_8_1_7.wav",
+      "sha256": "f7b59aa6eaea9b34d0e0620beeede79011d11ed77e71636828d9eca378cb38df",
+      "true_peak_db": -6.788932220440724
+    },
+    {
+      "file": "drums120_1_8_1_8.wav",
+      "sha256": "09855c7ccc0d5d2a55e9b882cc181d1ff56ead2240a1c7211d8dde95bf9449f9",
+      "true_peak_db": -6.674018265454586
+    },
+    {
+      "file": "drums140_1_8_1_1.wav",
+      "sha256": "975cb9c93dc6572fb557a9074aa8c948d117594e5b7c5bb56f6e183c75ae6c03",
+      "true_peak_db": -2.5286401305028705
+    },
+    {
+      "file": "drums140_1_8_1_2.wav",
+      "sha256": "bc0469f94fcafb41979d33840ab6fe98ecae059c6f6c0f282a21a9228a43c62f",
+      "true_peak_db": -3.6304897159739764
+    },
+    {
+      "file": "drums140_1_8_1_3.wav",
+      "sha256": "ac5c3f45569e50ee4f2863e66cb433ba8c71a2dc66833e90227220c84da26529",
+      "true_peak_db": -3.636104936178073
+    },
+    {
+      "file": "drums140_1_8_1_4.wav",
+      "sha256": "eb59323ccef4321e53a9747b3ba0b6b4a1222cd0b2090abcdcaec60b742f6fe7",
+      "true_peak_db": -3.838605592227468
+    },
+    {
+      "file": "drums140_1_8_1_5.wav",
+      "sha256": "61726e23cb1b0704508f77463c703e8c4d58e5dfe000409d0000efed57095c08",
+      "true_peak_db": -3.8113413447778615
+    },
+    {
+      "file": "drums140_1_8_1_6.wav",
+      "sha256": "b72ac0f783c8027604a0e6bc6a1437a1a867a711e3541fe8a3428c139e10b3e3",
+      "true_peak_db": -2.7879677794268187
+    },
+    {
+      "file": "drums140_1_8_1_7.wav",
+      "sha256": "e2a20657927bf9b12bc22d10e3a7e3799d552b9b86e98971fd27ce4eb5f6687b",
+      "true_peak_db": -3.5077065894882815
+    },
+    {
+      "file": "drums140_1_8_1_8.wav",
+      "sha256": "d75c8bd609ef121ba742f78d3e98b66b00465aa828d72fa3c26c898d8080b20f",
+      "true_peak_db": -3.613986066933079
+    },
+    {
+      "file": "drums170_1_8_1_1.wav",
+      "sha256": "89b6ae9a844ba63eef5bbea01aa1013dfa419eb66bf3d0815027b3bfe12bce72",
+      "true_peak_db": -3.747489185391511
+    },
+    {
+      "file": "drums170_1_8_1_2.wav",
+      "sha256": "718c0a166777c72a8da5e16f822782677999358fa2429b21013553c8e3c1cb11",
+      "true_peak_db": -3.678444741859972
+    },
+    {
+      "file": "drums170_1_8_1_3.wav",
+      "sha256": "542a00aa85a8216ea9c2ae675681ee1779f9d1ba3d5e1e6c5b389091e8edd5a3",
+      "true_peak_db": -3.652342873537571
+    },
+    {
+      "file": "drums170_1_8_1_4.wav",
+      "sha256": "3530723bc1f044f49b07278d6d0e7fb96ebdfcd009f0cdd658462fd6dd787b34",
+      "true_peak_db": -4.163826046706375
+    },
+    {
+      "file": "drums170_1_8_1_5.wav",
+      "sha256": "68c653a83b4c48680dea629131fa70195fd31df730229ef8529a7a46d2a34399",
+      "true_peak_db": -3.8951829276231793
+    },
+    {
+      "file": "drums170_1_8_1_6.wav",
+      "sha256": "481c5d96cda31f15a4202ce44967421f651ea2d7408187c452c1ae909108c42e",
+      "true_peak_db": -3.708543385020672
+    },
+    {
+      "file": "drums170_1_8_1_7.wav",
+      "sha256": "91579e47f842e4e53424e98dd56c57cbd77b6863ca15cc30e7e14232f6daa403",
+      "true_peak_db": -4.042391361807339
+    },
+    {
+      "file": "drums170_1_8_1_8.wav",
+      "sha256": "fa95e7b3f42893145d431dceeddafc319b0cbe0e225a4d097931e3d2d7be9a65",
+      "true_peak_db": -3.7243246852614726
+    },
+    {
+      "file": "drums90_1_8_1_1.wav",
+      "sha256": "50bed15025f07fe1b7886e4326a98f5ef87bbed44ce809bd6aff8b73578347dd",
+      "true_peak_db": -6.279072792189666
+    },
+    {
+      "file": "drums90_1_8_1_2.wav",
+      "sha256": "a506ad37142885e6f77bc9d0a96b05f16cb42ef6a3eefa99326417c369b134b5",
+      "true_peak_db": -6.074236634300609
+    },
+    {
+      "file": "drums90_1_8_1_3.wav",
+      "sha256": "b0e592bf984223fc6c9e0ba0a1c31191c569d336ee29d67a842a99190a1e4a33",
+      "true_peak_db": -3.254531846779127
+    },
+    {
+      "file": "drums90_1_8_1_4.wav",
+      "sha256": "71ee9fc6089ed5ea4a2baebab9f9068c6ea7a090cc5d624d10613acdf937ef76",
+      "true_peak_db": -4.26749640081559
+    },
+    {
+      "file": "drums90_1_8_1_5.wav",
+      "sha256": "a74ee5f8536b335103f0e4c560f614c165bac3efdda4926e7bdcc02871514003",
+      "true_peak_db": -3.2217025193890327
+    },
+    {
+      "file": "drums90_1_8_1_6.wav",
+      "sha256": "68fc5c94e4fdaf05dc7172e589f0e884fa88833641bcd7eae9650eb7ea56b024",
+      "true_peak_db": -3.1609282899457254
+    },
+    {
+      "file": "drums90_1_8_1_7.wav",
+      "sha256": "c76431ec4a3332d7fe19fbb7f219833d4719488b71315b119ed7cb46fbc08f01",
+      "true_peak_db": -7.580969421344426
+    },
+    {
+      "file": "drums90_1_8_1_8.wav",
+      "sha256": "f7b7de0bbdb5f93ddb9bd46ec4b2895637a5ed32bb29b17c258088d755e02f36",
+      "true_peak_db": -5.811069323403419
+    },
+    {
+      "file": "toms90_1_8_1_1.wav",
+      "sha256": "9108223642f1b11d42d6e7399a8f0c40a20cbf7324d7f39ceebd3bddcc05627d",
+      "true_peak_db": -2.9227077684194516
+    },
+    {
+      "file": "toms90_1_8_1_2.wav",
+      "sha256": "5ac06e08512eff308ecbcafcabfa49d91f229be5ad5666dec726d8a448dfa9de",
+      "true_peak_db": -3.9834485486576043
+    },
+    {
+      "file": "toms90_1_8_1_3.wav",
+      "sha256": "326b8ab5bc07e11eb49481a5032e67dfaadcfd0f5ba0a16b194cd89fac10a316",
+      "true_peak_db": -4.2176443295169745
+    },
+    {
+      "file": "toms90_1_8_1_4.wav",
+      "sha256": "b614fc9cc8b014576849803d09fe081c857eb4e018012b25e285186abf3859c3",
+      "true_peak_db": -4.231312384559645
+    },
+    {
+      "file": "toms90_1_8_1_5.wav",
+      "sha256": "d19accbd182d17f93477bfa170882cd8ed1ec7a85e9cb5d5c14ad4b44f6c8782",
+      "true_peak_db": -3.9666385485996347
+    },
+    {
+      "file": "toms90_1_8_1_6.wav",
+      "sha256": "d909eb42fb518fa8db5cbb88bc5cbab1812f99b44ecfcf344f1ad3cc0c0e9e82",
+      "true_peak_db": -3.182035634453264
+    },
+    {
+      "file": "toms90_1_8_1_7.wav",
+      "sha256": "2a89bda5b43588ececf3cb685b3fc126d200da065fc56b72bdf01da498d85667",
+      "true_peak_db": -2.8254296048536776
+    },
+    {
+      "file": "toms90_1_8_1_8.wav",
+      "sha256": "496a6188ddd742cebca68de067d01a0f5d23997af47a4df083b9f17881206fab",
+      "true_peak_db": -3.9666385485996347
+    }
+  ],
+  "demos": [
+    {
+      "file": "break170_seed1_R12_then_R13.wav",
+      "seed": 1,
+      "source": "break170",
+      "true_peak_db": -1.1999999091390103,
+      "sha256": "8bd08d9b6f0c5585298b91fdeb36fbdb983b6bbdd746925d3c9e0c0f390f86d5",
+      "rms_difference_db": 1.288347911695049,
+      "matched_rms_db": -18.50626821905482,
+      "old_sha256": "1df98def05104c485bcf1e3b3c4440cb93d97d959893e05de5f26eb1c48df4a2",
+      "new_sha256": "e6ddd0ddfe56be122811c6cf5e2fdfaf7a16d028b3a3468d23cb64808bb12097"
+    },
+    {
+      "file": "break170_seed2_R12_then_R13.wav",
+      "seed": 2,
+      "source": "break170",
+      "true_peak_db": -1.199999840221717,
+      "sha256": "5ec72478d2e9d8fd0374d6bc7b1a5b8f31cbb6d821d0860f3b938cc7d06b8cf8",
+      "rms_difference_db": 2.0160169016181646,
+      "matched_rms_db": -19.256860673755288,
+      "old_sha256": "14173943a59eab0304a604c56b409d3fa64d20a74cc3c105df5ecb5c08b8923d",
+      "new_sha256": "6a142e1eca0248e631efebfd2d74a9521b5d64d249cbfee02cf12e5ba2aa4cbc"
+    },
+    {
+      "file": "break170_seed3_R12_then_R13.wav",
+      "seed": 3,
+      "source": "break170",
+      "true_peak_db": -1.1999998331140223,
+      "sha256": "52533da24aa7a8b1621f065fbedf6f21da1f4a54e1ba610a768091cec910400f",
+      "rms_difference_db": 3.7548603687946995,
+      "matched_rms_db": -19.52500435433289,
+      "old_sha256": "04bf095cfbd00e7db226b1beb8ab073c978aad25f666b4c04cda068fb5fe6b1e",
+      "new_sha256": "9bb16eabfdeb8ad81b7100d90acf65c05f2ed5d1e413045156ef35689e2eefb3"
+    },
+    {
+      "file": "break170_seed4_R12_then_R13.wav",
+      "seed": 4,
+      "source": "break170",
+      "true_peak_db": -1.1999999282738618,
+      "sha256": "7a917fe408167f95b704c77780ae49166370e80b759fb01ec998e857b80ca410",
+      "rms_difference_db": 1.3413027995137838,
+      "matched_rms_db": -19.075078553913,
+      "old_sha256": "0b63ad07a458ba66ddd00b40462af06609df1c8e1d961434fe31673053d91d39",
+      "new_sha256": "a88db52ec4c4e2166eee899888f0271626e56672c531d23622af37713212bd58"
+    },
+    {
+      "file": "drums120_seed1_R12_then_R13.wav",
+      "seed": 1,
+      "source": "drums120",
+      "true_peak_db": -4.8059685520924695,
+      "sha256": "8a33197004ee3f7ba3d2dfc6a21080f45024d2dabe4e8fdf5fddcca966e0a9a2",
+      "rms_difference_db": -1.4821350846247165,
+      "matched_rms_db": -18.0,
+      "old_sha256": "09ed82c17f21b99a89476e9217ba94490f28c9e8fb6fcd5b9d29695c44e3e485",
+      "new_sha256": "80aab44c1d8dda6bfbc371a6ad43445940772dba135b9f600e6a618f29b5518b"
+    },
+    {
+      "file": "drums120_seed2_R12_then_R13.wav",
+      "seed": 2,
+      "source": "drums120",
+      "true_peak_db": -1.5291369441512819,
+      "sha256": "2c8f873a823f212e21154006c67b26eb60fa9b6563aebfbe6ab433bc579ce692",
+      "rms_difference_db": 5.27537036266027,
+      "matched_rms_db": -18.0,
+      "old_sha256": "15d29e76b9548d5473ffe321df29e133e1dd00ee5542e66602de31f797879e55",
+      "new_sha256": "e1ac135fc8a07c0870e822375d74e692d1c5c8c1b69fc9848b530b27960146bd"
+    },
+    {
+      "file": "drums120_seed3_R12_then_R13.wav",
+      "seed": 3,
+      "source": "drums120",
+      "true_peak_db": -1.1999998273795194,
+      "sha256": "7a62d6030b007bf328d09329983b01569258fcf4edbf9cc106200d75432b7a01",
+      "rms_difference_db": 7.754259274600463,
+      "matched_rms_db": -21.73628000159965,
+      "old_sha256": "d1145acf5e6341fb9ac98910f88af2107554f4e1600ba75895d6fd9be9a68439",
+      "new_sha256": "bd909e3ea5a1be0415fa13271523c79464cf78cf053be2533b405fc035c794ec"
+    },
+    {
+      "file": "drums120_seed4_R12_then_R13.wav",
+      "seed": 4,
+      "source": "drums120",
+      "true_peak_db": -2.8290826664277287,
+      "sha256": "10eac6840bbf5b03cf40fcfb9bb6e519fd2113e3c8d7db29ff49beeea828ebc5",
+      "rms_difference_db": 2.884697404815497,
+      "matched_rms_db": -18.0,
+      "old_sha256": "bc9ee51ccf0118af106b1de18b7dabf2a5d0beb6954d3c7e48e24a00fc4675a1",
+      "new_sha256": "f1d320fc9c5e848787ddb3fb7bd853cb1a33f35d2338d167e58cd7cbb9cfa77d"
+    },
+    {
+      "file": "drums140_seed1_R12_then_R13.wav",
+      "seed": 1,
+      "source": "drums140",
+      "true_peak_db": -1.2000002414996527,
+      "sha256": "8c8d3acb99ab331c7ce7d9092af3e8f854d1d2f7730367fdf3983b37339ecd60",
+      "rms_difference_db": 2.602278176450563,
+      "matched_rms_db": -19.254821825593073,
+      "old_sha256": "240ee1e3a6ba4f971a09e037fb840add7ab74742a7049e410abd35e7e46f3e93",
+      "new_sha256": "975cb9c93dc6572fb557a9074aa8c948d117594e5b7c5bb56f6e183c75ae6c03"
+    },
+    {
+      "file": "drums140_seed2_R12_then_R13.wav",
+      "seed": 2,
+      "source": "drums140",
+      "true_peak_db": -1.2909355308197157,
+      "sha256": "e267f9e8fe7449f87dac5f7368fbef0d680edbe369b515179f65b56efd7d52ef",
+      "rms_difference_db": 1.913393896145037,
+      "matched_rms_db": -18.0,
+      "old_sha256": "753048d9e63f6cc19eec28717221bf8455dc7227e7dbc15151fe0c1ac5fcfdb1",
+      "new_sha256": "bc0469f94fcafb41979d33840ab6fe98ecae059c6f6c0f282a21a9228a43c62f"
+    },
+    {
+      "file": "drums140_seed3_R12_then_R13.wav",
+      "seed": 3,
+      "source": "drums140",
+      "true_peak_db": -1.2000002414996527,
+      "sha256": "efce6811e596ca8a050d7e0bc1054193f06a8cc9beec4f189e6c6e556da760da",
+      "rms_difference_db": 6.673224411923218,
+      "matched_rms_db": -22.176621197633107,
+      "old_sha256": "8d6701e6de78b3875c1af46fbda6434aef32245e820151ed2de59b2147ddebd1",
+      "new_sha256": "ac5c3f45569e50ee4f2863e66cb433ba8c71a2dc66833e90227220c84da26529"
+    },
+    {
+      "file": "drums140_seed4_R12_then_R13.wav",
+      "seed": 4,
+      "source": "drums140",
+      "true_peak_db": -1.2000002414996527,
+      "sha256": "e476a1c2734494fd26281d07e50b79d6f4ae45579e006b39f94be5451ffa4f64",
+      "rms_difference_db": 5.319904350959269,
+      "matched_rms_db": -20.063893616831614,
+      "old_sha256": "639c141780fd1457def7875a6269a174a3ace8cdd4130da6767ff14bd7634802",
+      "new_sha256": "eb59323ccef4321e53a9747b3ba0b6b4a1222cd0b2090abcdcaec60b742f6fe7"
+    },
+    {
+      "file": "drums170_seed1_R12_then_R13.wav",
+      "seed": 1,
+      "source": "drums170",
+      "true_peak_db": -1.2000002414996527,
+      "sha256": "8e6930fd8866fdbfa230128bc48dbb8a29eea6778cd6f13fa480c225cecdd7d2",
+      "rms_difference_db": 2.079050805222372,
+      "matched_rms_db": -20.151121605780542,
+      "old_sha256": "3ecba8c6335f30daef620afa53b642e577e1aa9bee3dfcce7a3a137a88add77b",
+      "new_sha256": "89b6ae9a844ba63eef5bbea01aa1013dfa419eb66bf3d0815027b3bfe12bce72"
+    },
+    {
+      "file": "drums170_seed2_R12_then_R13.wav",
+      "seed": 2,
+      "source": "drums170",
+      "true_peak_db": -1.1999999483189776,
+      "sha256": "51faa43761c8cdb22b50d35a299db814b8f97ecb51b9eb80183d5505bb5862d0",
+      "rms_difference_db": 3.8590147634600442,
+      "matched_rms_db": -21.02888687340719,
+      "old_sha256": "93cf882dd0f1dcf2a5dd4f05d4bb436927f10f21dbe69f5fc33a04e944711b1a",
+      "new_sha256": "718c0a166777c72a8da5e16f822782677999358fa2429b21013553c8e3c1cb11"
+    },
+    {
+      "file": "drums170_seed3_R12_then_R13.wav",
+      "seed": 3,
+      "source": "drums170",
+      "true_peak_db": -1.200000001917002,
+      "sha256": "4d342e39968ca02de2633c1ca3dbb9c2b116447e9e181fad8fd6aee037165a29",
+      "rms_difference_db": 4.458409127241152,
+      "matched_rms_db": -21.13497349232444,
+      "old_sha256": "29422589ac1e8d74e8a3ed0356265ea29c12efb0390f327f34857547f1002375",
+      "new_sha256": "542a00aa85a8216ea9c2ae675681ee1779f9d1ba3d5e1e6c5b389091e8edd5a3"
+    },
+    {
+      "file": "drums170_seed4_R12_then_R13.wav",
+      "seed": 4,
+      "source": "drums170",
+      "true_peak_db": -1.2000001302497725,
+      "sha256": "f943793537f56304367bdaf84db95e6abb6cdb5b58fa7bf16d8e77d6d1693c83",
+      "rms_difference_db": 5.298195560732371,
+      "matched_rms_db": -22.684576512866805,
+      "old_sha256": "aa8e20ec33f3ee7a891dbe25f2e1b1394268fab65519818e4fb59c7e26715aa6",
+      "new_sha256": "3530723bc1f044f49b07278d6d0e7fb96ebdfcd009f0cdd658462fd6dd787b34"
+    },
+    {
+      "file": "drums90_seed1_R12_then_R13.wav",
+      "seed": 1,
+      "source": "drums90",
+      "true_peak_db": -1.2000001839313048,
+      "sha256": "e6a8e254736221a316a3d8d87fdd1ac3273adf2843c95d27728cd6b404b67395",
+      "rms_difference_db": 5.496321985714077,
+      "matched_rms_db": -21.279356055146312,
+      "old_sha256": "a961e1383824022960ae651f259f10c068da0cf7cb9890103b00264b44875bc3",
+      "new_sha256": "50bed15025f07fe1b7886e4326a98f5ef87bbed44ce809bd6aff8b73578347dd"
+    },
+    {
+      "file": "drums90_seed2_R12_then_R13.wav",
+      "seed": 2,
+      "source": "drums90",
+      "true_peak_db": -1.2000002414996527,
+      "sha256": "c55796660afe63a246db16b0ab05043a2e3d273a3ebb4c2bbe323e342893245a",
+      "rms_difference_db": 7.344648412711972,
+      "matched_rms_db": -22.330668603998667,
+      "old_sha256": "a7c763e0cf668db1b7f036996ddd436e8e26b116bf2c8b79d08ac3f602fe87b9",
+      "new_sha256": "a506ad37142885e6f77bc9d0a96b05f16cb42ef6a3eefa99326417c369b134b5"
+    },
+    {
+      "file": "drums90_seed3_R12_then_R13.wav",
+      "seed": 3,
+      "source": "drums90",
+      "true_peak_db": -1.2000000347650517,
+      "sha256": "d86478d3ed918124e2571d6980cd6bcaa7c611f853b106ee3e21368095537148",
+      "rms_difference_db": 10.030378596416663,
+      "matched_rms_db": -26.641636525019855,
+      "old_sha256": "375fc55475eb8adf54953a1c16c82651aceed1a083663ebd1819627dce5fbf69",
+      "new_sha256": "b0e592bf984223fc6c9e0ba0a1c31191c569d336ee29d67a842a99190a1e4a33"
+    },
+    {
+      "file": "drums90_seed4_R12_then_R13.wav",
+      "seed": 4,
+      "source": "drums90",
+      "true_peak_db": -1.2000003114443112,
+      "sha256": "8b58aa641eee29bafc61b6cb39bda596935c62a65047ed1b1d28b2bd28c7e2b8",
+      "rms_difference_db": 8.354573921441325,
+      "matched_rms_db": -25.151536627534654,
+      "old_sha256": "9418faee6a486e1db49312892e6bb765313de176bfd694ca8e0da18a57a8f7d4",
+      "new_sha256": "71ee9fc6089ed5ea4a2baebab9f9068c6ea7a090cc5d624d10613acdf937ef76"
+    },
+    {
+      "file": "toms90_seed1_R12_then_R13.wav",
+      "seed": 1,
+      "source": "toms90",
+      "true_peak_db": -1.200000001243582,
+      "sha256": "02295bfbe065164a7183e011a074aa0793a3a309af51c9c728eddb944a714abc",
+      "rms_difference_db": -4.604512189766606,
+      "matched_rms_db": -22.692483729209176,
+      "old_sha256": "7d04716d1a8f6829c9c1f864a9adef75a017a79937c3be773b250e6e95623a5e",
+      "new_sha256": "9108223642f1b11d42d6e7399a8f0c40a20cbf7324d7f39ceebd3bddcc05627d"
+    },
+    {
+      "file": "toms90_seed2_R12_then_R13.wav",
+      "seed": 2,
+      "source": "toms90",
+      "true_peak_db": -1.1999999430066886,
+      "sha256": "32c74e66e634e4533ef73997ef2b76ce42710ad2c70eb7d3747e24e28991a054",
+      "rms_difference_db": -2.1261187975159803,
+      "matched_rms_db": -23.1886061528824,
+      "old_sha256": "472a314892380dd968eb6c64ab3a709c7bc74f40d258b7467a02a53d6289c802",
+      "new_sha256": "5ac06e08512eff308ecbcafcabfa49d91f229be5ad5666dec726d8a448dfa9de"
+    },
+    {
+      "file": "toms90_seed3_R12_then_R13.wav",
+      "seed": 3,
+      "source": "toms90",
+      "true_peak_db": -1.1999997542847183,
+      "sha256": "d636b92d043063eada674ed100763e45e79d1a6ef7dff68ce3fdf9f784ae360d",
+      "rms_difference_db": 1.780400749161797,
+      "matched_rms_db": -28.33852657752462,
+      "old_sha256": "5b131f01ff00903c5ab595d1069ac5fefd2ed1be34c05a8489947711216d7265",
+      "new_sha256": "326b8ab5bc07e11eb49481a5032e67dfaadcfd0f5ba0a16b194cd89fac10a316"
+    },
+    {
+      "file": "toms90_seed4_R12_then_R13.wav",
+      "seed": 4,
+      "source": "toms90",
+      "true_peak_db": -1.2000002414996527,
+      "sha256": "bbbdb86337c9d0e58f052e459e0325902ca0a906b3ce3b745f8298c107c81fbc",
+      "rms_difference_db": 1.050258382346217,
+      "matched_rms_db": -24.21491245292274,
+      "old_sha256": "eb2c15a41148c336f489585204f066da4dc2ea2f5cc22daaebad91a88c84fe21",
+      "new_sha256": "b614fc9cc8b014576849803d09fe081c857eb4e018012b25e285186abf3859c3"
+    }
+  ],
+  "render_ms_new": {
+    "mean": 122.65410729166668,
+    "max": 441.20320000000004
+  }
+}

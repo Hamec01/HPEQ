@@ -6,7 +6,38 @@
 
 ---
 
-## Current checkpoint: Revolution R12 /0.3.0 transitions complete (2026-11-04)
+## Current checkpoint: Revolution R14 /0.4.0 drum-kit composer (2026-11-05)
+
+E:/HamloRevolutionTransitions,feature/transition-v2,parentfe46e5c. No subagents.
+Read docs/R14_HANDOFF.md and docs/reports/r14/REPORT.md. Owner found R13 weak;
+new Fill21AUTO COMPOSE/22..29eight families use separate band/time kick/snare/hat
+streams,reference-informed counts/phase/build,32candidate scoring with20ms
+input-similarity tolerance,strong snare-roll anchors and kit switches/rhythm rows.
+597/790reference fills analyzed;aggregate grammar only,no embedded audio/patterns.
+Old0..20andRise preserved;225normalprogram/state exact.5336native/0,444old exact,
+96new,54variation probes,Auto64/64masks,fixed32/32,48independent8xpeaks,24private
+equal-RMS source/R13/R14auditions,pluginval5..10/Steinberg537pass. Independent
+onset-similarity median falls36.88%;ready-fill stress input is nearly unchanged.
+No perfect-stem/musical-taste/manualFLclaim. First12.52%goal failure disclosed.
+Delivery0.4.0VST3/ZIP/SHA/receipt verified;replayTools/verify_r14.py. Completion
+commit:gitlog-1. Original R11 remains parked. No installer,installed overwrite,
+HPEQ/subtree/push or model switch. Handoff records scope,commands and limitations.
+
+## Historical checkpoint: Revolution R13 /0.3.1 drum-fill slicer (2026-11-05)
+
+Work only E:/HamloRevolutionTransitions,feature/transition-v2,parent8470eeb.
+No subagents;original E:/HamloRevolution R11 remains parked. Read
+docs/R13_HANDOFF.md and docs/reports/r13/REPORT.md. New Fill8Auto/9..20twelve
+families,low/body/air slice heuristics,1/2/4beat ending,FX,NEW VARIATION reuses
+capture. Recipe0..7both kinds and Rise exact;225normalprogram/state unchanged.
+4897native,288old exact,96new corpus,78variation probes,48independent8xpeaks,
+24matched-level localA/B,pluginval5..10/Steinberg537. Five of six source-envelope
+diversity comparisons improve;dense drums170 remains0.784xR12(disclosed).
+Portable0.3.1VST3/ZIP/SHA and receipt verified. No installer,installed replacement,
+HPEQ/subtree/push or manual FL/listening claim. ReplayTools/verify_r13.py.
+Completion commit:gitlog-1. No model switch. See handoff for commands/limits.
+
+## Historical checkpoint: Revolution R12 /0.3.0 transitions complete (2026-11-04)
 
 This is a clean feature checkout E:/HamloRevolutionTransitions,branchfeature/transition-v2,
 not a separate plugin. OriginalE:/HamloRevolution has a parked R11 draft. Follow

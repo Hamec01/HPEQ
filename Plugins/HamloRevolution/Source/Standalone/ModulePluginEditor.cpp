@@ -471,7 +471,7 @@ void ModulePluginEditor::installTransitionPage()
     const auto render = [this, tp](bool capture, bool seed)
     {
         const auto& v = tp->getValues();
-        processor.makeTransition(v.kind, v.bars, v.knobs, capture, seed,v.recipe);
+        processor.makeTransition(v.kind, v.bars, v.knobs, capture, seed,v.recipe,v.fillBeats,v.fillFx,v.kitEnabled);
         tp->setClip(processor.transitionClip());
         if (refreshTransition)
             refreshTransition();
@@ -480,6 +480,7 @@ void ModulePluginEditor::installTransitionPage()
     {
         auto v = tp->getValues();
         v.kind = kind;
+        v.recipe = kind == tr::Fill ? 21 : 1;
         v.knobs = tr::defaultKnobs(kind);
         tp->setValues(v);
         render(false, false); // the same capture and seed, the other recipe
@@ -488,6 +489,8 @@ void ModulePluginEditor::installTransitionPage()
     tp->onRecipe = [render](int) { render(false,false); };
     tp->onKnobsDone = [render] { render(false, false); };
     tp->onGenerate = [render] { render(true, true); };
+    tp->onVariation = [render] { render(false, true); };
+    tp->onFillOptions = [render] { render(false, false); };
     tp->onPlay = [this] { processor.setPreview(!processor.isPreviewing()); };
     tp->onShowFile = [this]
     {
@@ -517,7 +520,7 @@ void ModulePluginEditor::installTransitionPage()
         auto v = tp->getValues();
         const auto t = processor.lastTransition();
         v.valid = t.valid;
-        if(t.valid){v.recipe=t.settings.recipe;v.seed=t.settings.seed;}
+        if(t.valid){v.recipe=t.settings.recipe;v.seed=t.settings.seed;v.kitCounts=t.kitCounts;v.kitMask=t.kitMask;}
         v.aligned = t.aligned;
         v.complete = t.complete;
         v.bpm = t.valid ? t.settings.bpm : processor.getHostBpm();
@@ -533,6 +536,8 @@ void ModulePluginEditor::installTransitionPage()
     {
         const auto t=processor.lastTransition();auto v=tp->getValues();
         v.kind=t.settings.kind;v.bars=t.settings.bars;v.knobs=t.settings.knobs;v.recipe=t.settings.recipe;v.seed=t.settings.seed;
+        v.fillBeats=t.settings.fillBeats;v.fillFx=t.settings.fillFx;
+        v.kitEnabled=t.settings.kitEnabled;
         tp->setValues(v);tp->setClip(processor.transitionClip());
     }
 }
@@ -543,6 +548,7 @@ void ModulePluginEditor::openTransition(int kind)
         return;
     auto v = transitionPage->getValues();
     v.kind = kind;
+    v.recipe = kind == dsp::transition::Fill ? 21 : 1;
     if(!processor.lastTransition().valid)v.bars=kind==dsp::transition::Fill?1:2;
     v.knobs = dsp::transition::defaultKnobs(kind);
     transitionPage->setValues(v);

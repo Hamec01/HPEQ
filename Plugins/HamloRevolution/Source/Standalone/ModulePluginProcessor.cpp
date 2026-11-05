@@ -547,17 +547,21 @@ bool ModulePluginProcessor::captureLastBars(int bars, juce::AudioBuffer<float>& 
 }
 
 ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int transitionKind, int bars, const std::array<double, 4>& knobs,
-                                                                       bool newCapture, bool newSeed, int recipe)
+                                                                       bool newCapture, bool newSeed, int recipe, int fillBeats, double fillFx, std::array<bool,3> kitEnabled)
 {
     auto t = lastTransition();
     auto& s = t.settings;
     s.kind = transitionKind;
-    s.recipe = std::clamp(recipe,0,7);
+    s.recipe = std::clamp(recipe,0,dsp::transition::maximumRecipe(transitionKind));
+    s.fillBeats = fillBeats == 1 || fillBeats == 2 ? fillBeats : 4;
+    s.fillFx = std::isfinite(fillFx) ? std::clamp(fillFx,0.0,1.0) : 0.0;
+    s.kitEnabled = kitEnabled;
     s.bars = bars == 1 || bars == 4 ? bars : 2;
     s.knobs = knobs;
     s.sampleRate = currentSampleRate.load();
     if (newSeed || !t.valid)
-        s.seed = revolution::mix64(s.seed + static_cast<std::uint64_t>(juce::Time::getHighResolutionTicks()));
+        s.seed = t.valid && !newCapture && s.kind == dsp::transition::Fill && s.recipe >= 8 ? s.seed + 1
+                 : revolution::mix64(s.seed + static_cast<std::uint64_t>(juce::Time::getHighResolutionTicks()));
     if (droppedFile != juce::File())
     {
         // the dropped sample: from its start, repeated to fill the bars (the host's tempo sets the bars)
@@ -583,7 +587,10 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
         t.aligned = aligned;
         t.complete = complete;
     }
-    const auto clip = dsp::transition::render(transitionSource, s);
+    dsp::transition::Plan plan;
+    const auto clip = s.kind==dsp::transition::Fill&&s.recipe>=21 ? dsp::transition::renderComposedFill(transitionSource,s,&plan) : dsp::transition::render(transitionSource, s);
+    t.kitCounts=plan.kitCounts;t.kitMask={};t.inputSimilarity=plan.inputSimilarity;
+    for(const auto& e:plan.events)t.kitMask[static_cast<size_t>(e.role)]|=1u<<std::clamp(static_cast<int>(e.at*32LL/std::max(1,clip.getNumSamples())),0,31);
     // write the WAV (24-bit, the session rate): the page drags this file into the DAW
     const auto folder = rendersOverride != juce::File() ? rendersOverride : rendersFolder();
     folder.createDirectory();
