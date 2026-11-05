@@ -25,7 +25,9 @@ const juce::Point<float> kGenerate { 140.0f, 556.0f };
 const juce::Rectangle<float> kPlay { 230.0f, 532.0f, 170.0f, 48.0f }, kShowFile { 420.0f, 532.0f, 190.0f, 48.0f };
 const juce::Rectangle<float> kStatus { 640.0f, 516.0f, 500.0f, 80.0f };
 const juce::Rectangle<float> kWave { 60.0f, 640.0f, 1060.0f, 330.0f };
-const juce::Rectangle<float> kRecipe { 420.0f, 118.0f, 430.0f, 30.0f };
+const juce::Rectangle<float> kRecipe { 420.0f, 118.0f, 720.0f, 30.0f };
+const juce::Rectangle<float> kPhrase { 60.0f, 260.0f, 330.0f, 28.0f }, kFx { 420.0f, 260.0f, 330.0f, 28.0f };
+const juce::Rectangle<float> kVariation { 800.0f, 602.0f, 320.0f, 28.0f };
 } // namespace
 
 HamloRevolutionTransitionPage::HamloRevolutionTransitionPage() { setOpaque(true); }
@@ -100,8 +102,14 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     crtButton(g, kindRect(1), "DRUM FILL", values.kind == tr::Fill);
     tr::Settings recipeSettings;recipeSettings.kind=values.kind;recipeSettings.recipe=values.recipe;recipeSettings.seed=values.seed;
     juce::String recipeLabel="STYLE / ";recipeLabel<<tr::recipeName(values.kind,values.recipe);
-    if(values.recipe==1)recipeLabel<<" - "<<tr::recipeName(values.kind,tr::resolvedRecipe(recipeSettings));
+    if(values.recipe==1||values.recipe==8)recipeLabel<<" - "<<tr::recipeName(values.kind,tr::resolvedRecipe(recipeSettings));
     crtButton(g,kRecipe,recipeLabel+"  v",values.recipe!=0);
+    if(values.kind==tr::Fill&&values.recipe>=8)
+    {
+        crtButton(g,kPhrase,"EDIT LAST / "+juce::String(values.fillBeats)+" BEAT"+(values.fillBeats==1?"":"S")+"  v",true);
+        crtButton(g,kFx,"FILTER + ROOM / "+juce::String(juce::roundToInt(values.fillFx*100))+" %  v",values.fillFx>0);
+    }
+    crtButton(g,kVariation,"NEW VARIATION / SAME SOURCE",false);
     for (int i = 0; i < 3; ++i)
         crtButton(g, barsRect(i), juce::String(kBarChoices[static_cast<size_t>(i)]), values.bars == kBarChoices[static_cast<size_t>(i)]);
     for (int k = 0; k < 4; ++k)
@@ -134,6 +142,12 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
 
     // the waveform
     crtBegin(g, kWave);
+    if(values.kind==tr::Fill&&values.recipe>=8)
+    {
+        const float fraction=static_cast<float>(values.fillBeats)/(values.bars*4.0f);
+        g.setColour(juce::Colour(0xffffbc61).withAlpha(0.10f));
+        g.fillRect(kWave.withTrimmedLeft(kWave.getWidth()*(1-fraction)));
+    }
     const float mid = kWave.getCentreY(), half = kWave.getHeight() * 0.45f;
     float peak = 1.0e-6f;
     for (const auto& [lo, hi] : peaks)
@@ -170,6 +184,11 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
 }
 
 void HamloRevolutionTransitionPage::pressGenerate() { if (onGenerate) onGenerate(); }
+void HamloRevolutionTransitionPage::pressVariation() { if(onVariation)onVariation(); }
+void HamloRevolutionTransitionPage::chooseFillBeats(int beats)
+{values.fillBeats=beats==1||beats==2?beats:4;if(onFillOptions)onFillOptions();repaint();}
+void HamloRevolutionTransitionPage::chooseFillFx(double amount)
+{values.fillFx=std::isfinite(amount)?juce::jlimit(0.,1.,amount):0.;if(onFillOptions)onFillOptions();repaint();}
 void HamloRevolutionTransitionPage::pressPlay() { if (onPlay) onPlay(); }
 void HamloRevolutionTransitionPage::pressBack() { if (onBack) onBack(); }
 void HamloRevolutionTransitionPage::pressShowFile() { if (onShowFile) onShowFile(); }
@@ -226,7 +245,7 @@ void HamloRevolutionTransitionPage::chooseBars(int bars)
 
 void HamloRevolutionTransitionPage::chooseRecipe(int recipe)
 {
-    values.recipe=juce::jlimit(0,7,recipe);
+    values.recipe=juce::jlimit(0,tr::maximumRecipe(values.kind),recipe);
     if(onRecipe)onRecipe(values.recipe);
     repaint();
 }
@@ -245,6 +264,9 @@ juce::String HamloRevolutionTransitionPage::helpKeyAt(juce::Point<float> local) 
 {
     const auto d = toDesign(local);
     if(kRecipe.contains(d))return "transitionRecipe";
+    if(kVariation.contains(d))return "transitionVariation";
+    if(values.kind==tr::Fill&&values.recipe>=8)
+    {if(kPhrase.contains(d))return "transitionPhrase";if(kFx.contains(d))return "transitionFillFx";}
     if (kBack.contains(d))
         return "transitionBack";
     if (kUseInput.contains(d))
@@ -277,10 +299,28 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
     if(kRecipe.contains(d))
     {
         juce::PopupMenu menu;
-        for(int recipe=0;recipe<8;++recipe)menu.addItem(recipe+1,tr::recipeName(values.kind,recipe),true,values.recipe==recipe);
+        if(values.kind==tr::Fill)
+        {
+            for(int recipe=8;recipe<=20;++recipe)menu.addItem(recipe+1,tr::recipeName(values.kind,recipe),true,values.recipe==recipe);
+            juce::PopupMenu old;
+            for(int recipe=0;recipe<8;++recipe)old.addItem(recipe+1,tr::recipeName(values.kind,recipe),true,values.recipe==recipe);
+            menu.addSubMenu("CLASSIC / R12 RECIPES",old);
+        }
+        else for(int recipe=0;recipe<8;++recipe)menu.addItem(recipe+1,tr::recipeName(values.kind,recipe),true,values.recipe==recipe);
         juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
         const auto target=kRecipe.transformedBy(juce::AffineTransform::scale(scale).translated(offset)).toNearestInt();
         menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withTargetScreenArea(localAreaToGlobal(target)),[safe](int result){if(safe&&result>0)safe->chooseRecipe(result-1);});
+        return;
+    }
+    if(kVariation.contains(d))return pressVariation();
+    if(values.kind==tr::Fill&&values.recipe>=8&&(kPhrase.contains(d)||kFx.contains(d)))
+    {
+        const bool phrase=kPhrase.contains(d);juce::PopupMenu menu;
+        if(phrase)for(int i=0;i<3;++i)menu.addItem(i+1,juce::String(kBarChoices[static_cast<size_t>(i)])+" BEAT(S)",true,values.fillBeats==kBarChoices[static_cast<size_t>(i)]);
+        else for(int i=0;i<=20;++i)menu.addItem(i+1,juce::String(i*5)+" %",true,juce::roundToInt(values.fillFx*20)==i);
+        juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
+        const auto area=(phrase?kPhrase:kFx).transformedBy(juce::AffineTransform::scale(scale).translated(offset)).toNearestInt();
+        menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withTargetScreenArea(localAreaToGlobal(area)),[safe,phrase](int r){if(safe&&r>0){if(phrase)safe->chooseFillBeats(kBarChoices[static_cast<size_t>(r-1)]);else safe->chooseFillFx((r-1)*.05);}});
         return;
     }
     if (kBack.contains(d))

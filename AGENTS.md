@@ -6,7 +6,21 @@
 
 ---
 
-## Current checkpoint: Revolution R12 /0.3.0 transitions complete (2026-11-04)
+## Current checkpoint: Revolution R13 /0.3.1 drum-fill slicer (2026-11-05)
+
+Work only E:/HamloRevolutionTransitions,feature/transition-v2,parent8470eeb.
+No subagents;original E:/HamloRevolution R11 remains parked. Read
+docs/R13_HANDOFF.md and docs/reports/r13/REPORT.md. New Fill8Auto/9..20twelve
+families,low/body/air slice heuristics,1/2/4beat ending,FX,NEW VARIATION reuses
+capture. Recipe0..7both kinds and Rise exact;225normalprogram/state unchanged.
+4897native,288old exact,96new corpus,78variation probes,48independent8xpeaks,
+24matched-level localA/B,pluginval5..10/Steinberg537. Five of six source-envelope
+diversity comparisons improve;dense drums170 remains0.784xR12(disclosed).
+Portable0.3.1VST3/ZIP/SHA and receipt verified. No installer,installed replacement,
+HPEQ/subtree/push or manual FL/listening claim. ReplayTools/verify_r13.py.
+Completion commit:gitlog-1. No model switch. See handoff for commands/limits.
+
+## Historical checkpoint: Revolution R12 /0.3.0 transitions complete (2026-11-04)
 
 This is a clean feature checkout E:/HamloRevolutionTransitions,branchfeature/transition-v2,
 not a separate plugin. OriginalE:/HamloRevolution has a parked R11 draft. Follow

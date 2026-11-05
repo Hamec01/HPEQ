@@ -106,7 +106,7 @@ public:
         juce::File sourceFile; // a sample dropped on the page (none: the track's input)
     };
     // GENERATE on the page: capture now (newCapture) and / or a new seed, render, write the WAV
-    Transition makeTransition(int kind, int bars, const std::array<double, 4>& knobs, bool newCapture, bool newSeed, int recipe = 0);
+    Transition makeTransition(int kind, int bars, const std::array<double, 4>& knobs, bool newCapture, bool newSeed, int recipe = 0, int fillBeats = 4, double fillFx = 0.35);
     Transition lastTransition() const;
     juce::AudioBuffer<float> transitionClip() const; // a copy for the page's waveform
     // the input of the last N bars: bar-aligned when playing, else the latest audio; false when nothing was heard

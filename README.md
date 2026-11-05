@@ -1,20 +1,26 @@
-# HamloRevolution 0.3.0
+# HamloRevolution 0.3.1
 
-RISE / DRUM FILL now offers source-aware **STYLE** recipes. RISE:LIFT,PULSE,
-SWELL,RUSH,ARC,PRESSURE. DRUM FILL:POCKET,ROLL,BREAK,TRIPLETS,SCATTER,TURNAROUND.
-**AUTO** selects a family;**GENERATE** varies actual source attacks,timing,
-accents and pickups. Four knobs and1/2/4 bars remain. CLASSIC retains the old
-renderer. The sample toolbar keeps load,capture,preview,WAV export and drag.
+DRUM FILL now has an **AUTO SLICER** and twelve new phrase families:POCKET SWITCH,
+BACKBEAT ROLL,KICK EXCHANGE,TRIPLET FLOW,BROKEN CUTS,TOM CASCADE,CALL / RESPONSE,
+REVERSE PICKUP,DOUBLE TIME,STUTTER RATCHET,GHOST WALK,DROP SPACE. The slicer chooses
+low/body/air-oriented source fragments,builds accents,ghosts,roll ramps,reverse
+pickups,pitch falls and actual gaps. FILTER + ROOM adds a high-pass sweep and
+selected-hit room. Spectral roles are a heuristic,not stem separation.
 
-For a quick fill,open FILL,choose1 bar and try BREAK or TRIPLETS. For a riser,
-try RUSH or PRESSURE over2/4 bars. Adjust the four knobs,then GENERATE again.
-Normal sequencer playback,225 programs and existing projects are unchanged.
+Open FILL,choose1bar,AUTO SLICER,and set EDIT LAST to1/2/4beats. **NEW VARIATION**
+keeps the source and changes the phrase;**GENERATE** captures again. Four macros
+remain:CHOP,ROLL,REVERSE,STOP. Load/capture,preview,WAV export and drag remain.
+Match host BPM to the source;sample loading does not detect/stretch tempo.
+CLASSIC / R12 RECIPES retains the earlier styles. RISE,normal sequencer playback,
+225programs and existing projects are unchanged.
 
-4769 native checks,96 exact Classic corpus renders,96 new renders,225 exact
-normal program/state renders,pluginval5-10 and Steinberg537 pass.28 local audio
-references were analyzed;12 level-matched owner-material A/B files are prepared.
-No reference audio is embedded in the plugin. [Report](docs/reports/r12/REPORT.md),
-[handoff](docs/R12_HANDOFF.md). Delivery:dist/HamloRevolution-0.3.0-r12 and ZIP.
+4897native checks,288old exact corpus renders,96new renders,225exact program/
+state comparisons,pluginval5..10andSteinberg537pass.32local fills analyzed;
+24level-matched owner-source A/B files prepared. New Auto has64/64distinct rhythm
+masks;fixed families minimum31/32. Envelope diversity improves on5/6sources;
+one dense170BPMloop remains lower than R12. No reference audio is embedded.
+[Report](docs/reports/r13/REPORT.md),[handoff](docs/R13_HANDOFF.md).
+Delivery:dist/HamloRevolution-0.3.1-r13 and ZIP.
 This is the clean feature/transition-v2 checkout of HamloRevolution,not a new
 plugin. Original checkout:E:/HamloRevolution;its parked R11 draft is separate.
 
@@ -74,5 +80,5 @@ build/Release/HamloRevolution_Tests.exe
 ```
 
 VST: `build/HamloRevolution_artefacts/Release/VST3/HamloRevolution.vst3`.
-Delivery: `dist/HamloRevolution-0.3.0-r12-win64-vst3.zip`, SHA256 beside it.
+Delivery: `dist/HamloRevolution-0.3.1-r13-win64-vst3.zip`, SHA256 beside it.
 The installed copy is untouched. No installer, push or subtree was produced.

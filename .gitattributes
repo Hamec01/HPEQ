@@ -8,3 +8,6 @@ docs/reports/r10/native*.txt -whitespace
 docs/reports/r12/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/reports/r12/validators*/** -whitespace
 docs/reports/r12/*.txt -whitespace
+docs/reports/r13/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+docs/reports/r13/validators*/** -whitespace
+docs/reports/r13/*.txt -whitespace

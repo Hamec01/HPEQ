@@ -1,0 +1,40 @@
+Random seed: 0x50c7dcb
+-----------------------------------------------------------------
+Starting tests in: Drum fill slicer R13 / Rhythm diversity excludes pitch, pan, reverse, effects and gain...
+recipe=8 masks=64 plans=64
+recipe=9 masks=32 plans=32
+recipe=10 masks=32 plans=32
+recipe=11 masks=32 plans=32
+recipe=12 masks=32 plans=32
+recipe=13 masks=32 plans=32
+recipe=14 masks=32 plans=32
+recipe=15 masks=32 plans=32
+recipe=16 masks=32 plans=32
+recipe=17 masks=32 plans=32
+recipe=18 masks=32 plans=32
+recipe=19 masks=32 plans=32
+recipe=20 masks=32 plans=32
+Completed tests in Drum fill slicer R13 / Rhythm diversity excludes pitch, pan, reverse, effects and gain
+-----------------------------------------------------------------
+Starting tests in: Drum fill slicer R13 / Only selected ending changes; exact length, deterministic, neutral and soft endpoint...
+Completed tests in Drum fill slicer R13 / Only selected ending changes; exact length, deterministic, neutral and soft endpoint
+-----------------------------------------------------------------
+Starting tests in: Drum fill slicer R13 / Role analysis distinguishes separated low, body and air attacks...
+Completed tests in Drum fill slicer R13 / Role analysis distinguishes separated low, body and air attacks
+-----------------------------------------------------------------
+Starting tests in: Drum fill slicer R13 / Controls produce actual audio; coherent roll ramps, pitch falls, reverse and final rest...
+!!! Test 1 failed: same body slice grows
+
+FAILED!!  1 test failed, out of a total of 10
+
+-----------------------------------------------------------------
+Starting tests in: Drum fill slicer R13 / Rates, tempi, durations, silence, mono and hostile numbers stay bounded...
+!!! Test 77 failed
+
+FAILED!!  1 test failed, out of a total of 77
+
+-----------------------------------------------------------------
+Starting tests in: Drum fill slicer R13 / UI variation reuses input, keeps files immutable and restores scratch controls...
+Completed tests in Drum fill slicer R13 / UI variation reuses input, keeps files immutable and restores scratch controls
+
+HamloRevolution_Tests: 123 expectations passed, 2 failed

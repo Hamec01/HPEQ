@@ -36,9 +36,9 @@ juce::String revolutionHelp(const juce::String& key)
         { "transitionKind", "RISE builds up into the next downbeat (roll, pitch, reverse swell, filter); FILL re-cuts the last bar and rolls "
                             "into the downbeat." },
         { "transitionBars", "BARS: how many of the last bars are used - and how long the transition is." },
-        { "transitionRecipe", "STYLE: AUTO picks one of six source-aware musical recipes. RISE: lift,pulse,swell,rush,arc,pressure. "
-                              "FILL: pocket,roll,break,triplets,scatter,turnaround. GENERATE varies attack choices,accents and timing. "
-                              "CLASSIC retains the previous renderer. Style changes reuse the source and seed." },
+        { "transitionRecipe", "STYLE: FILL AUTO SLICER chooses twelve phrase families: pocket, roll, kick exchange, triplets, broken cuts, "
+                              "tom cascade, call/response, reverse, double-time, ratchets, ghosts and drop space. NEW VARIATION changes the seed. "
+                              "CLASSIC / R12 RECIPES retain the earlier renderers. RISE stays unchanged. Style changes reuse source and seed." },
         { "transitionRise0", "PITCH: how far the roll climbs - up to an octave at 100 %." },
         { "transitionRise1", "ROLL: the main motion - the last beat repeated at 1/4, 1/8, 1/16, 1/32 into the downbeat." },
         { "transitionRise2", "SWELL: the last bar reversed through a long reverb - a swell into the end." },
@@ -46,7 +46,10 @@ juce::String revolutionHelp(const juce::String& key)
         { "transitionFill0", "CHOP: density of source-attack edits and ghost notes across the final bar. Classic uses its old block cuts." },
         { "transitionFill1", "ROLL: final-beat density and acceleration. New recipes vary the roll shape by seed; zero returns to sparse endings." },
         { "transitionFill2", "REVERSE: backward pickups and selected ghost fragments; Classic reverses the last eighth." },
-        { "transitionFill3", "STOP: how likely the last eighth ends in a tape stop." },
+        { "transitionFill3", "STOP: new slicer leaves a soft final rest before the drop. R12/Classic retain their tape-stop ending." },
+        { "transitionVariation", "NEW VARIATION: keep the captured audio, change the seed and rebuild timing, rests and source order. GENERATE captures the track again." },
+        { "transitionPhrase", "EDIT LAST: replace the final 1, 2 or 4 beats of the selected capture. Earlier audio stays intact except protection of an already hot source. The amber waveform region is the edited ending." },
+        { "transitionFillFx", "FILTER + ROOM: rising high-pass and additive room on a selected body hit. Zero disables both. STOP can leave a final gap before the next downbeat. The result remains exactly the selected bar length." },
         { "transitionGenerate", "GENERATE: take the last bars again and make a new variation." },
         { "transitionPlay", "PLAY / STOP: hear the transition through the plug-in's output." },
         { "transitionShowFile", "SHOW FILE: the WAV in Explorer (Documents / HamloProd / HamloRevolution / Renders), if dragging does not work in your host." },
