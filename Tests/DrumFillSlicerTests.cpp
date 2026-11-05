@@ -85,7 +85,7 @@ public:
             std::unique_ptr<juce::AudioProcessorEditor> owner(p->createEditor());auto* editor=dynamic_cast<hpeq::standalone::ModulePluginEditor*>(owner.get());auto* page=editor?editor->getTransitionPage():nullptr;expect(page!=nullptr);
             if(page)
             {
-                page->chooseKind(tr::Fill);page->chooseFillBeats(2);page->chooseFillFx(.65);const auto before=p->lastTransition();juce::MemoryBlock original;before.file.loadFileAsData(original);const auto captured=p->transitionClip();
+                page->chooseKind(tr::Fill);page->chooseRecipe(8);page->chooseFillBeats(2);page->chooseFillFx(.65);const auto before=p->lastTransition();juce::MemoryBlock original;before.file.loadFileAsData(original);const auto captured=p->transitionClip();
                 // Replace the live capture history with a different source.
                 // NEW VARIATION must still use the earlier drum capture.
                 const auto other=sine(4,333,-18,2);for(int at=0;at<192000;at+=256){auto block=segment(other,at,256);p->processBlock(block,midi);}

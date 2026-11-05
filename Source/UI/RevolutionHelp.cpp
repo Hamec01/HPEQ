@@ -36,9 +36,9 @@ juce::String revolutionHelp(const juce::String& key)
         { "transitionKind", "RISE builds up into the next downbeat (roll, pitch, reverse swell, filter); FILL re-cuts the last bar and rolls "
                             "into the downbeat." },
         { "transitionBars", "BARS: how many of the last bars are used - and how long the transition is." },
-        { "transitionRecipe", "STYLE: FILL AUTO SLICER chooses twelve phrase families: pocket, roll, kick exchange, triplets, broken cuts, "
-                              "tom cascade, call/response, reverse, double-time, ratchets, ghosts and drop space. NEW VARIATION changes the seed. "
-                              "CLASSIC / R12 RECIPES retain the earlier renderers. RISE stays unchanged. Style changes reuse source and seed." },
+        { "transitionRecipe", "STYLE: AUTO COMPOSE builds independent kick, snare and hat parts. Eight families range from snare torrents and hat weaving "
+                              "to triplet breaks and call/response. Composition favours different attacks from the input loop. NEW VARIATION keeps the source. "
+                              "R13 SLICER and CLASSIC / R12 RECIPES retain the earlier renderers. RISE stays unchanged." },
         { "transitionRise0", "PITCH: how far the roll climbs - up to an octave at 100 %." },
         { "transitionRise1", "ROLL: the main motion - the last beat repeated at 1/4, 1/8, 1/16, 1/32 into the downbeat." },
         { "transitionRise2", "SWELL: the last bar reversed through a long reverb - a swell into the end." },
@@ -48,6 +48,7 @@ juce::String revolutionHelp(const juce::String& key)
         { "transitionFill2", "REVERSE: backward pickups and selected ghost fragments; Classic reverses the last eighth." },
         { "transitionFill3", "STOP: new slicer leaves a soft final rest before the drop. R12/Classic retain their tape-stop ending." },
         { "transitionVariation", "NEW VARIATION: keep the captured audio, change the seed and rebuild timing, rests and source order. GENERATE captures the track again." },
+        { "transitionKit", "KICK / SNARE / HAT: enable each extracted band/time role independently. Switch off two to audition the third. SLICES counts available source hits. Overlapping drums are filtered, not perfectly separated stems. The coloured rows show the newly composed rhythm." },
         { "transitionPhrase", "EDIT LAST: replace the final 1, 2 or 4 beats of the selected capture. Earlier audio stays intact except protection of an already hot source. The amber waveform region is the edited ending." },
         { "transitionFillFx", "FILTER + ROOM: rising high-pass and additive room on a selected body hit. Zero disables both. STOP can leave a final gap before the next downbeat. The result remains exactly the selected bar length." },
         { "transitionGenerate", "GENERATE: take the last bars again and make a new variation." },

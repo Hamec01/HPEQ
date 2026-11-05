@@ -20,6 +20,9 @@ public:
         int kind = 0, bars = 2, recipe = 1;
         int fillBeats = 4;
         double fillFx = 0.35;
+        std::array<bool,3> kitEnabled { true,true,true };
+        std::array<int,3> kitCounts {};
+        std::array<std::uint32_t,3> kitMask {};
         std::uint64_t seed = 1;
         std::array<double, 4> knobs { 0.6, 0.8, 0.5, 0.7 };
         bool valid = false, aligned = false, complete = false, previewing = false;
@@ -56,6 +59,7 @@ public:
     void chooseFillBeats(int);
     void chooseFillFx(double);
     void pressVariation();
+    void toggleKit(int role);
     void setKnob(int knob, double value, bool done);
     juce::String helpKeyAt(juce::Point<float> local) const;
     juce::String getTooltip() override;

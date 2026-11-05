@@ -94,7 +94,7 @@ public:
              expectEquals(page->getValues().recipe,6);page->chooseKind(tr::Fill);
              owned.reset();owned.reset(p->createEditor());editor=dynamic_cast<hpeq::standalone::ModulePluginEditor*>(owned.get());
              expectEquals(editor->getTransitionPage()->getValues().kind,static_cast<int>(tr::Fill));
-             expectEquals(editor->getTransitionPage()->getValues().recipe,8); // Selecting Fill starts the R13 slicer.
+             expectEquals(editor->getTransitionPage()->getValues().recipe,21); // Selecting Fill starts the composer.
             }
             const auto legacy=p->makeTransition(0,1,tr::defaultKnobs(tr::Rise),true,false);expectEquals(legacy.settings.recipe,0);
         }

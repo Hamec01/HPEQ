@@ -5,6 +5,7 @@
 #include <vector>
 #define HAMLO_TRANSITION_V2 1
 #define HAMLO_DRUM_FILL_V3 1
+#define HAMLO_DRUM_COMPOSE 1
 
 #include <juce_audio_basics/juce_audio_basics.h>
 
@@ -25,6 +26,7 @@ struct Settings
     int recipe = 0; // 0 exact Classic,1 Auto,2..7 musical source-aware recipes
     int fillBeats = 4; // New slicer: replace only the last 1, 2 or 4 beats.
     double fillFx = 0.35;
+    std::array<bool,3> kitEnabled { true,true,true };
 };
 struct Event
 {
@@ -42,14 +44,19 @@ struct Plan
     std::vector<Event> events;
     std::vector<Slice> slices;
     int phraseStart = 0, phraseEnd = 0, stopSample = -1;
+    double inputSimilarity = 0;
+    std::array<int,3> kitCounts {};
 };
-inline int maximumRecipe(int kind) noexcept { return kind == Fill ? 20 : 7; }
+inline int maximumRecipe(int kind) noexcept { return kind == Fill ? 29 : 7; }
 const char* recipeName(int kind,int recipe) noexcept;
 int resolvedRecipe(const Settings&) noexcept;
 Plan makePlan(const juce::AudioBuffer<float>&,const Settings&);
 juce::AudioBuffer<float> renderEvolve(const juce::AudioBuffer<float>&,const Settings&);
 Plan makeSlicedFillPlan(const juce::AudioBuffer<float>&, const Settings&);
 juce::AudioBuffer<float> renderSlicedFill(const juce::AudioBuffer<float>&, const Settings&);
+std::array<juce::AudioBuffer<float>,3> extractDrumBands(const juce::AudioBuffer<float>&,double sampleRate);
+Plan makeComposedFillPlan(const juce::AudioBuffer<float>&,const Settings&);
+juce::AudioBuffer<float> renderComposedFill(const juce::AudioBuffer<float>&,const Settings&,Plan* info=nullptr);
 const char* knobName(int kind, int knob);
 std::array<double, 4> defaultKnobs(int kind) noexcept;
 

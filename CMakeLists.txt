@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloRevolution VERSION 0.3.1 LANGUAGES C CXX)
+project(HamloRevolution VERSION 0.4.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -79,6 +79,7 @@ add_library(HamloRevolution_Shared STATIC
     Source/DSP/TransitionRender.cpp
     Source/DSP/TransitionRecipes.cpp
     Source/DSP/DrumFillSlicer.cpp
+    Source/DSP/DrumFillComposer.cpp
     Source/Link/HamloLinkProtocol.cpp
     Source/Link/HamloLinkClient.cpp
     Source/UI/HamloUdarnikPanel.cpp
@@ -152,7 +153,7 @@ target_link_libraries(HamloRevolution
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SpatialTests.cpp Tests/TransitionRecipeTests.cpp Tests/DrumFillSlicerTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp Tests/TransitionTests.cpp Tests/SampleWorkspaceTests.cpp Tests/AllocationAudit.cpp
+        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SpatialTests.cpp Tests/TransitionRecipeTests.cpp Tests/DrumFillSlicerTests.cpp Tests/DrumComposeTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp Tests/TransitionTests.cpp Tests/SampleWorkspaceTests.cpp Tests/AllocationAudit.cpp
             Source/DSP/LayerSnapshot.cpp Source/Core/FxProjectState.cpp) # HPEQ's slot mapping: the reference of V1
     else()
         add_executable(HamloRevolution_Snapshot Tests/SnapshotMain.cpp)
@@ -181,6 +182,9 @@ target_link_libraries(HamloRevolution_SpatialLab PRIVATE HamloRevolution_Shared 
 
 add_executable(HamloRevolution_TransitionLab EXCLUDE_FROM_ALL Tests/TransitionLab.cpp)
 add_executable(HamloRevolution_DrumFillLab EXCLUDE_FROM_ALL Tests/DrumFillLab.cpp)
+add_executable(HamloRevolution_DrumComposeLab EXCLUDE_FROM_ALL Tests/DrumComposeLab.cpp)
+target_compile_definitions(HamloRevolution_DrumComposeLab PRIVATE HPEQ_MODULE_KIND=9 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
+target_link_libraries(HamloRevolution_DrumComposeLab PRIVATE HamloRevolution_Shared HamloRevolution_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
 target_compile_definitions(HamloRevolution_DrumFillLab PRIVATE HPEQ_MODULE_KIND=9 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
 target_link_libraries(HamloRevolution_DrumFillLab PRIVATE HamloRevolution_Shared HamloRevolution_Assets juce::juce_audio_utils juce::juce_dsp juce::juce_audio_formats juce::juce_cryptography juce::juce_recommended_config_flags)
 target_compile_definitions(HamloRevolution_TransitionLab PRIVATE HPEQ_MODULE_KIND=9 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_MODAL_LOOPS_PERMITTED=1)
