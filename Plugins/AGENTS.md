@@ -6,7 +6,22 @@
 
 ---
 
-## Current checkpoint: Fader0.2.0 + Verb0.2.2 publication / 2026-11-04
+## Current checkpoint: Revolution0.4.0 publication / 2026-11-05
+
+Owner requested all current plugin work pushed. Audited10standalone checkouts;
+only Revolution advanced. Imported full R13/R14 history from clean source
+E:/HamloRevolutionTransitions,feature/transition-v2,4f8f7bb. R14receipt replay
+passes:5336native,444old exact,96new renders,597reference analyses,225program/
+states,48peaks,24private auditions,validators. No new DSP/build claim here.
+Dedicated plugins/hamlorevolution updated;merged into feature/hamlo-plugins.
+All10aggregate/topic subtrees exactly match standalone committed trees and
+retain full ancestry;other9topics unchanged. Manifest:sync/2026-11-05-revolution-r14.json.
+Push11refs atomically without force,then read back all remote heads. Local
+publication proof:out/publish-20261105-revolution-r14. MainE:/HPEQ and parked
+original RevolutionR11 remain unchanged. No VST/ZIP/private audio upload or
+mainDSP rewiring. No subagents/model switch. Read Plugins/NEXT_STAGE.md.
+
+## Historical checkpoint: Fader0.2.0 + Verb0.2.2 publication / 2026-11-04
 
 Owner requested completion and push. Verified Fader0.2.0(aef8c4d) now has full
 QUICK/ADVANCED/LEGACY,200genre recipes/208programs,17432native,224host,678exact

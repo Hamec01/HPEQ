@@ -1,4 +1,31 @@
-# Fader0.2.0 and Verb0.2.2 publication / 2026-11-04
+# Revolution0.4.0 publication / 2026-11-05
+
+Owner requested all current plugins pushed to GitHub Hamec01/HPEQ. All10clean
+standalone checkouts audited. Revolution advanced from8470eeb/R12/0.3.0to
+4f8f7bb/R14/0.4.0;other9source heads and dedicated topics unchanged. Latest
+R14receipt verifier passed before import. No DSP edit or new build/test claim
+in this source-only publication.
+
+Imported full R13/R14history into existing plugins/hamlorevolution,then merged
+into feature/hamlo-plugins. All10aggregate/topic subtree treeIDs exactly match
+committed standalones and retain source ancestry. Dedicated diffs touch only
+own subtree/provenance;aggregate diff onlyPlugins/. Registry updated separately
+from payload. Manifest:sync/2026-11-05-revolution-r14.json. Completion metadata
+commit isgitlog-1. Atomic nonforcepushall11refs andremote-head readback required;
+local audit/registry/preflight/push/readback proof inout/publish-20261105-revolution-r14.
+
+R14includes kit composer,reference-informed formula,5336native,444old exact,
+225program/states,48independent peaks,24private listening comparisons and
+validators. ManualFLlistening remains for owner. VSTZIP/private WAVs stay local;
+no GitHubbinary release. MainE:/HPEQ remains onfeature/hpeq-m0-m1. Original
+E:/HamloRevolution R11draft is still parked/uncommitted;fingerprint it before/
+after anddo not publish/mix it. Source headstreesunchanged after sync.
+
+No active jobs/uncommitted publication edits after completion. Futurepushes
+still require ownerrequest. No subagents/model switch;medium suits known git
+operations. Next:ownerFLfeedback or explicitnexttask. Don't auto-merge into main.
+
+# Historical Fader0.2.0 and Verb0.2.2 publication / 2026-11-04
 
 Owner requested Fader completion and GitHub push. Fadersourceaef8c4d nowcomplete
 UI+200recipes/208programs,17432native,224host,678exactLegacy,200/200compiled/
