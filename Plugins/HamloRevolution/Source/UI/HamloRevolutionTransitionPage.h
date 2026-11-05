@@ -18,6 +18,11 @@ public:
     struct Values
     {
         int kind = 0, bars = 2, recipe = 1;
+        int fillBeats = 4;
+        double fillFx = 0.35;
+        std::array<bool,3> kitEnabled { true,true,true };
+        std::array<int,3> kitCounts {};
+        std::array<std::uint32_t,3> kitMask {};
         std::uint64_t seed = 1;
         std::array<double, 4> knobs { 0.6, 0.8, 0.5, 0.7 };
         bool valid = false, aligned = false, complete = false, previewing = false;
@@ -37,7 +42,7 @@ public:
     std::function<void(int recipe)> onRecipe;
     std::function<void(int knob, double value)> onKnob; // while turning (no render)
     std::function<void()> onKnobsDone;                  // the gesture ended: render again
-    std::function<void()> onGenerate, onPlay, onShowFile, onBack;
+    std::function<void()> onGenerate, onVariation, onFillOptions, onPlay, onShowFile, onBack;
     std::function<juce::File()> fileToDrag;
     std::function<void(const juce::File&)> onSampleDropped; // a sample dropped on the page: the new source
     std::function<void()> onUseInput;                       // USE INPUT: the track's input again
@@ -51,6 +56,10 @@ public:
     void chooseKind(int);
     void chooseBars(int);
     void chooseRecipe(int);
+    void chooseFillBeats(int);
+    void chooseFillFx(double);
+    void pressVariation();
+    void toggleKit(int role);
     void setKnob(int knob, double value, bool done);
     juce::String helpKeyAt(juce::Point<float> local) const;
     juce::String getTooltip() override;

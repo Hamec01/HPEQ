@@ -83,13 +83,23 @@ const char* recipeName(int kind,int recipe) noexcept
 {
     static constexpr const char* rise[]{"CLASSIC","AUTO","LIFT","PULSE","SWELL","RUSH","ARC","PRESSURE"};
     static constexpr const char* fill[]{"CLASSIC","AUTO","POCKET","ROLL","BREAK","TRIPLETS","SCATTER","TURNAROUND"};
+    static constexpr const char* sliced[]{"AUTO SLICER","POCKET SWITCH","BACKBEAT ROLL","KICK EXCHANGE","TRIPLET FLOW","BROKEN CUTS","TOM CASCADE","CALL / RESPONSE","REVERSE PICKUP","DOUBLE TIME","STUTTER RATCHET","GHOST WALK","DROP SPACE"};
+    static constexpr const char* composed[]{"AUTO COMPOSE","SNARE TORRENT","KICK / SNARE","HAT WEAVE","ROLL / ANSWER","TRIPLET BREAK","HALF-TIME CUT","CROSS RHYTHM","FINAL BURST"};
+    if(kind==Fill&&recipe>=21)return composed[std::clamp(recipe-21,0,8)];
+    if(kind==Fill&&recipe>=8)return sliced[std::clamp(recipe-8,0,12)];
     return (kind==Rise?rise:fill)[std::clamp(recipe,0,7)];
 }
 int resolvedRecipe(const Settings& s) noexcept
-{return s.recipe==1?2+static_cast<int>(hash(s.seed^0x52495345ull)%6):std::clamp(s.recipe,0,7);}
+{
+    if(s.kind==Fill&&s.recipe>=21)return s.recipe==21?22+static_cast<int>(s.seed%8):std::clamp(s.recipe,22,29);
+    if(s.kind==Fill&&s.recipe>=8)return s.recipe==8?9+static_cast<int>((s.seed%12+hash(s.seed/12^0x46494c4c523133ull)%12)%12):std::clamp(s.recipe,9,20);
+    return s.recipe==1?2+static_cast<int>(hash(s.seed^0x52495345ull)%6):std::clamp(s.recipe,0,7);
+}
 
 Plan makePlan(const juce::AudioBuffer<float>& source,const Settings& s)
 {
+    if(s.kind==Fill&&s.recipe>=21)return makeComposedFillPlan(source,s);
+    if(s.kind==Fill&&s.recipe>=8)return makeSlicedFillPlan(source,s);
     Plan plan;plan.recipe=resolvedRecipe(s);if(source.getNumChannels()<1||source.getNumSamples()==0)return plan;
     const auto bank=attacks(source,s.sampleRate);plan.attacks=static_cast<int>(bank.size());
     const int length=lengthSamples(s);const double beat=s.sampleRate*60/s.bpm,bar=beat*4;

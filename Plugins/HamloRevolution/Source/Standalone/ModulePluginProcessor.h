@@ -104,9 +104,12 @@ public:
         juce::File file;
         bool valid = false;
         juce::File sourceFile; // a sample dropped on the page (none: the track's input)
+        std::array<int,3> kitCounts {};
+        std::array<std::uint32_t,3> kitMask {};
+        double inputSimilarity = 0;
     };
     // GENERATE on the page: capture now (newCapture) and / or a new seed, render, write the WAV
-    Transition makeTransition(int kind, int bars, const std::array<double, 4>& knobs, bool newCapture, bool newSeed, int recipe = 0);
+    Transition makeTransition(int kind, int bars, const std::array<double, 4>& knobs, bool newCapture, bool newSeed, int recipe = 0, int fillBeats = 4, double fillFx = 0.35, std::array<bool,3> kitEnabled = {true,true,true});
     Transition lastTransition() const;
     juce::AudioBuffer<float> transitionClip() const; // a copy for the page's waveform
     // the input of the last N bars: bar-aligned when playing, else the latest audio; false when nothing was heard

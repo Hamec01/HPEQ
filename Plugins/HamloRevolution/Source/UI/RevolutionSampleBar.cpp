@@ -71,7 +71,7 @@ bool RevolutionSampleBar::isTransition()const noexcept{return processor.getPage(
 void RevolutionSampleBar::renderTransition(bool capture)
 {
  fileMessage.clear();
- const auto t=processor.lastTransition();processor.makeTransition(t.settings.kind,t.settings.bars,t.settings.knobs,capture,false,t.settings.recipe);
+ const auto t=processor.lastTransition();processor.makeTransition(t.settings.kind,t.settings.bars,t.settings.knobs,capture,false,t.settings.recipe,t.settings.fillBeats,t.settings.fillFx,t.settings.kitEnabled);
  if(onTransitionRendered)onTransitionRendered();
  refresh();
 }

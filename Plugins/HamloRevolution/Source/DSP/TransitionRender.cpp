@@ -309,6 +309,8 @@ int lengthSamples(const Settings& s) noexcept
 
 juce::AudioBuffer<float> render(const juce::AudioBuffer<float>& source, const Settings& s)
 {
+    if(s.kind==Fill&&s.recipe>=21)return renderComposedFill(source,s);
+    if(s.kind==Fill&&s.recipe>=8)return renderSlicedFill(source,s);
     if(s.recipe>0)return renderEvolve(source,s);
     const int length = lengthSamples(s);
     juce::AudioBuffer<float> src(2, length);

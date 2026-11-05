@@ -1,13 +1,13 @@
 {
   "plugin": "HamloRevolution",
-  "version": "0.3.0",
-  "status": "Verified R12 source-aware Rise and Drum Fill snapshot; parked R11 draft excluded",
-  "source_commit": "8470eeb16d6c28bda17dc4acfd9d084a9f44df75",
-  "source_tree": "9e69025456602feffc94d30abf5aea9b73b98f1b",
+  "version": "0.4.0",
+  "status": "Verified R14 reference-informed kick/snare/hat drum composer; R13 slicer and earlier renderers retained; parked R11 excluded",
+  "source_commit": "4f8f7bb9f3934aaf08f2c4c355e11904db284518",
+  "source_tree": "1c5f4ab88471e3164f479b00187b901b79a9498e",
   "source_branch": "feature/transition-v2",
   "hpeq_branch": "plugins/hamlorevolution",
   "prefix": "Plugins/HamloRevolution",
   "base_hpeq_commit": "28d237edd89827d46badf96315a3cc7708d1f964",
-  "sync_date": "2026-11-04",
+  "sync_date": "2026-11-05",
   "scope": "Standalone plugin subtree; HPEQ main DSP is unchanged"
 }
