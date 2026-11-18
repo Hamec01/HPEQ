@@ -252,6 +252,8 @@ hpeq_add_module_plugin(HamloUdarnik HamloUdarnik com.hamloprod.hamloudarnik HmUd
 hpeq_add_module_plugin(HamloZastava HamloZastava com.hamloprod.hamlozastava HmZa 6)
 hpeq_add_module_plugin(HamloShirota HamloShirota com.hamloprod.hamloshirota HmSh 7)
 
+add_subdirectory(Plugins/HamloTochka)
+
 add_custom_target(HPEQ_ModuleVSTs
     DEPENDS HamloComp_VST3 HamloVerb_VST3 HamloEcho_VST3 HamloMag_VST3
             HamloRedWall_VST3 HamloUdarnik_VST3 HamloZastava_VST3 HamloShirota_VST3)
