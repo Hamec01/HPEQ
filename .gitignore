@@ -1,4 +1,5 @@
 /build*/
+/batvst/
 /out/
 CMakeUserPresets.json
 .vs/

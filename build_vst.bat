@@ -28,6 +28,9 @@ echo.
 echo Done:
 echo   %HPEQ_VST%
 
+if not exist "%~dp0batvst" mkdir "%~dp0batvst"
+xcopy "%HPEQ_VST%" "%~dp0batvst\HPEQ.vst3\" /E /I /Y /Q >nul
+
 if /i not "%~1"=="install" goto :ok
 
 echo.
