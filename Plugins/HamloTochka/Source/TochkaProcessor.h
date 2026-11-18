@@ -4,7 +4,7 @@
 
 #include "Analysis/AudioCapture.h"
 #include "Analysis/LoudnessMeter.h"
-#include "DSP/PreEqProcessor.h"
+#include "KeyedEq.h"
 
 namespace hamlo::tochka
 {
@@ -59,7 +59,11 @@ public:
     bool presetEdited() const noexcept { return modified.load(); }
     double sampleRateHz() const noexcept { return sampleRate.load(); }
     hpeq::AudioCapture& audioCapture() noexcept { return capture; }
+    hpeq::AudioCapture& keyAudioCapture() noexcept { return keyCapture; }
+    bool keyBusActive() const noexcept { return keyActive.load(std::memory_order_relaxed); }
     void enableCapture(bool enabled) noexcept { captureEnabled.store(enabled); }
+    bool usesExternalKey(int index) const noexcept;
+    void setExternalKey(int index, bool);
 
     void setDry(bool);
     bool isDry() const noexcept { return bypassValue->load() >= 0.5f; }
@@ -70,7 +74,7 @@ public:
     void clearMatch();
 
     enum Field { On, Shape, Slope, Channel, Solo, Dynamic, Detect, Frequency, Gain, Q,
-                 Threshold, Ratio, Range, Attack, Release, FieldCount };
+                 Threshold, Ratio, Range, Attack, Release, ExternalKey, FieldCount };
 
 private:
     static juce::String parameterId(int band, int field);
@@ -91,13 +95,14 @@ private:
     std::atomic<bool> modified { false };
     std::atomic<std::uint32_t> occupied { 0 };
 
-    hpeq::dsp::PreEqProcessor eq;
+    hpeq::dsp::KeyedEq eq;
     int controlPhase = 0;
     std::atomic<double> sampleRate { 48000.0 };
     std::array<std::array<float, 512>, 2> dryStorage {};
     juce::SmoothedValue<float> wetMix, matchGain;
-    hpeq::AudioCapture capture;
+    hpeq::AudioCapture capture, keyCapture;
     std::atomic<bool> captureEnabled { false };
+    std::atomic<bool> keyActive { false };
 
     hpeq::LoudnessMeter dryMeter, wetMeter;
     unsigned nextLearnId = 0;

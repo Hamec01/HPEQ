@@ -2,7 +2,7 @@ set(hpeq_source "${PROJECT_SOURCE_DIR}/Source")
 set(preset_source "${PROJECT_SOURCE_DIR}/Plugins/HamloMag/Source")
 
 juce_add_plugin(HamloTochka
-    VERSION 0.1.0
+    VERSION 0.2.0
     COMPANY_NAME "HamloProd"
     BUNDLE_ID com.hamloprod.hamlotochka
     PLUGIN_MANUFACTURER_CODE BBLB
@@ -15,15 +15,23 @@ juce_add_plugin(HamloTochka
     FORMATS VST3
     PRODUCT_NAME "HamloTochka")
 
+if (TARGET HamloTochka_rc_lib)
+    # JUCE 8.0.12 omits this dependency from its Windows resource command.
+    get_target_property(tochka_generated HamloTochka JUCE_GENERATED_SOURCES_DIRECTORY)
+    get_target_property(tochka_info HamloTochka JUCE_INFO_FILE)
+    add_custom_command(OUTPUT "${tochka_generated}/HamloTochka_resources.rc"
+        APPEND DEPENDS "${tochka_info}")
+endif()
+
 target_sources(HamloTochka PRIVATE
     Source/TochkaProcessor.cpp
     Source/TochkaEditor.cpp
     Source/PresetScreen.cpp
+    Source/KeyedEq.cpp
     "${hpeq_source}/Analysis/LoudnessMeter.cpp"
     "${hpeq_source}/Analysis/SpectrumAnalyzer.cpp"
     "${hpeq_source}/DSP/Biquad.cpp"
     "${hpeq_source}/DSP/EqDesign.cpp"
-    "${hpeq_source}/DSP/PreEqProcessor.cpp"
     "${hpeq_source}/UI/AnalysisModel.cpp"
     "${hpeq_source}/UI/BlackSteel.cpp"
     "${hpeq_source}/UI/HamloTochkaPanel.cpp"

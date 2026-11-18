@@ -77,6 +77,130 @@ void set(juce::AudioPluginInstance& plugin, const juce::String& name, float norm
     parameter(plugin, name).setValueNotifyingHost(normalized);
 }
 
+float scalableParameter(float value, float low, float high)
+{
+    juce::NormalisableRange<float> range(low, high);
+    range.setSkewForCentre(std::sqrt(low * high));
+    return range.convertTo0to1(value);
+}
+
+struct KeyFrequencies
+{
+    double target = 125.0;
+    double probe = 2000.0;
+    double offBand = 4000.0;
+    double body = 0.0;
+};
+
+std::vector<float> renderKey(juce::AudioPluginInstance& plugin, int keyChannels,
+                             bool audibleMain = true, int mainChannels = 2, KeyFrequencies frequencies = {})
+{
+    const auto mono = juce::AudioChannelSet::mono();
+    const auto stereo = juce::AudioChannelSet::stereo();
+    auto layout = plugin.getBusesLayout();
+    layout.inputBuses.set(0, mainChannels == 1 ? mono : stereo);
+    layout.inputBuses.set(1, keyChannels == 2 ? stereo : keyChannels == 1 ? mono : juce::AudioChannelSet::disabled());
+    layout.outputBuses.set(0, layout.inputBuses.getFirst());
+    check(plugin.setBusesLayout(layout), "host accepted the requested sidechain layout");
+    plugin.prepareToPlay(rate, 512);
+
+    constexpr auto total = static_cast<int>(2.0 * rate);
+    constexpr int block = 512;
+    std::vector<float> result;
+    result.reserve(total);
+    juce::AudioBuffer<float> buffer(mainChannels + keyChannels, block);
+    juce::MidiBuffer midi;
+    for (int pos = 0; pos < total; pos += block)
+    {
+        const auto frames = juce::jmin(block, total - pos);
+        buffer.setSize(mainChannels + keyChannels, frames, false, false, true);
+        for (int frame = 0; frame < frames; ++frame)
+        {
+            const auto t = (pos + frame) / rate;
+            const auto phase = 2.0 * juce::MathConstants<double>::pi * t;
+            const auto program = audibleMain ? static_cast<float>(0.15 * std::sin(frequencies.target * phase)
+                                                                  + 0.06 * std::sin(frequencies.probe * phase)) : 0.0f;
+            const auto key = t >= 0.5 && t < 1.0
+                ? static_cast<float>(0.35 * std::sin(frequencies.target * phase) + 0.12 * std::sin(frequencies.body * phase))
+                : t >= 1.55 ? static_cast<float>(0.35 * std::sin(frequencies.offBand * phase)) : 0.0f;
+            for (int ch = 0; ch < mainChannels; ++ch)
+                buffer.setSample(ch, frame, program);
+            if (keyChannels == 2)
+                buffer.setSample(mainChannels, frame, 0.0f);
+            if (keyChannels > 0)
+                buffer.setSample(mainChannels + keyChannels - 1, frame, key);
+        }
+        plugin.processBlock(buffer, midi);
+        result.insert(result.end(), buffer.getReadPointer(0), buffer.getReadPointer(0) + frames);
+    }
+    plugin.releaseResources();
+    return result;
+}
+
+double toneLevel(const std::vector<float>& signal, double hz, double startSeconds, double endSeconds)
+{
+    const auto start = static_cast<int>(startSeconds * rate);
+    const auto end = static_cast<int>(endSeconds * rate);
+    std::complex<double> projection {};
+    for (int i = start; i < end; ++i)
+        projection += static_cast<double>(signal[static_cast<size_t>(i)])
+                     * std::polar(1.0, -2.0 * juce::MathConstants<double>::pi * hz * i / rate);
+    return juce::Decibels::gainToDecibels(2.0 * std::abs(projection) / (end - start), -200.0);
+}
+
+void checkSidechain(juce::AudioPluginInstance& plugin)
+{
+    set(plugin, "Band 01 Enabled", 1.0f);
+    set(plugin, "Band 01 Dynamic", 1.0f);
+    set(plugin, "Band 01 External Key", 1.0f);
+    set(plugin, "Band 01 Frequency", scalableParameter(125.0f, 10.0f, 22000.0f));
+    set(plugin, "Band 01 Q", scalableParameter(4.0f, 0.1f, 18.0f));
+    set(plugin, "Band 01 Threshold", 0.6f); // -24 dB
+
+    check(plugin.getBusCount(true) == 2 && plugin.getLatencySamples() == 0, "external bus and zero latency");
+    for (int channels : { 2, 1 })
+    {
+        const auto signal = renderKey(plugin, channels, true, channels);
+        const auto dry125 = toneLevel(signal, 125.0, 0.2, 0.4);
+        const auto cut = toneLevel(signal, 125.0, 0.8, 1.0) - dry125;
+        const auto other = toneLevel(signal, 2000.0, 0.8, 1.0) - toneLevel(signal, 2000.0, 0.2, 0.4);
+        const auto recovered = toneLevel(signal, 125.0, 1.4, 1.5) - dry125;
+        const auto offBand = toneLevel(signal, 125.0, 1.8, 2.0) - dry125;
+        std::cout << "Key " << channels << " ch: target " << cut << ", outside " << other
+                  << ", released " << recovered << ", off-band trigger " << offBand << " dB\n";
+        check(std::abs(cut + 6.0) <= 0.2, "keyed bell reaches its requested depth");
+        check(std::abs(other) <= 0.1, "outside frequency remains within tolerance");
+        check(std::abs(recovered) <= 0.1, "gain returns after the key releases");
+        check(std::abs(offBand) <= 0.1, "out-of-band key does not trigger the bell");
+    }
+
+    const auto withoutKey = renderKey(plugin, 0);
+    check(std::abs(toneLevel(withoutKey, 125.0, 0.8, 1.0) - juce::Decibels::gainToDecibels(0.15)) <= 0.1,
+          "disabled key bus does not fall back to the main signal");
+    const auto withoutProgram = renderKey(plugin, 2, false);
+    check(std::all_of(withoutProgram.begin(), withoutProgram.end(), [](float x) { return x == 0.0f; }),
+          "key audio stays out of the output");
+}
+
+void checkVocalPocket(juce::AudioPluginInstance& plugin)
+{
+    constexpr KeyFrequencies vocal { 2500.0, 250.0, 100.0, 700.0 };
+    set(plugin, "Band 01 Enabled", 1.0f);
+    set(plugin, "Band 01 Dynamic", 1.0f);
+    set(plugin, "Band 01 External Key", 1.0f);
+    set(plugin, "Band 01 Frequency", scalableParameter(static_cast<float>(vocal.target), 10.0f, 22000.0f));
+    set(plugin, "Band 01 Q", scalableParameter(4.0f, 0.1f, 18.0f));
+    set(plugin, "Band 01 Threshold", 0.6f);
+    const auto signal = renderKey(plugin, 1, true, 2, vocal);
+    const auto targetBefore = toneLevel(signal, vocal.target, 0.2, 0.4);
+    const auto cut = toneLevel(signal, vocal.target, 0.8, 1.0) - targetBefore;
+    const auto low = toneLevel(signal, vocal.probe, 0.8, 1.0) - toneLevel(signal, vocal.probe, 0.2, 0.4);
+    const auto recovered = toneLevel(signal, vocal.target, 1.4, 1.5) - targetBefore;
+    std::cout << "Vocal key: presence " << cut << ", low probe " << low << ", released " << recovered << " dB\n";
+    check(std::abs(cut + 6.0) <= 0.2 && std::abs(low) <= 0.1 && std::abs(recovered) <= 0.1,
+          "vocal key opens a presence pocket and releases it");
+}
+
 Signal render(juce::AudioPluginInstance& plugin, const Signal& input, int channels, int block, bool automate = false)
 {
     auto layout = plugin.getBusesLayout();
@@ -161,7 +285,7 @@ int main(int argc, char** argv)
         juce::OwnedArray<juce::PluginDescription> descriptions;
         formats.getFormat(0)->findAllTypesForFile(descriptions, bundle.getFullPathName());
         check(descriptions.size() == 1 && descriptions[0]->name == "HamloTochka"
-              && descriptions[0]->version == "0.1.0", "VST3 identity");
+              && descriptions[0]->version == "0.2.0", "VST3 identity");
         const auto make = [&]()
         {
             juce::String error;
@@ -208,6 +332,40 @@ int main(int argc, char** argv)
 
         auto editor = std::unique_ptr<juce::AudioProcessorEditor>(restored->createEditorIfNeeded());
         check(editor != nullptr, "VST3 editor created");
+
+        auto keyed = make();
+        checkSidechain(*keyed);
+        juce::MemoryBlock keyState;
+        keyed->getStateInformation(keyState);
+        auto restoredKey = make();
+        restoredKey->setStateInformation(keyState.getData(), static_cast<int>(keyState.getSize()));
+        check(parameter(*restoredKey, "Band 01 External Key").getValue() == 1.0f, "external key source saved");
+        check(renderKey(*restoredKey, 2) == renderKey(*keyed, 2), "external signal remains identical when reloaded");
+        auto vocalPocket = make();
+        checkVocalPocket(*vocalPocket);
+
+        if (argc >= 3)
+        {
+            juce::OwnedArray<juce::PluginDescription> oldDescriptions;
+            formats.getFormat(0)->findAllTypesForFile(oldDescriptions, juce::String::fromUTF8(argv[2]));
+            check(oldDescriptions.size() == 1 && oldDescriptions[0]->version == "0.1.0"
+                  && descriptions[0]->uniqueId == oldDescriptions[0]->uniqueId, "0.1 VST3 identity retained");
+            juce::String error;
+            auto old = formats.createPluginInstance(*oldDescriptions[0], rate, 256, error);
+            check(old != nullptr, "0.1 instance");
+            set(*old, "Band 01 Enabled", 1.0f);
+            set(*old, "Band 01 Dynamic", 1.0f);
+            set(*old, "Band 01 Gain", 0.625f);
+            const auto baseline = render(*old, input, 2, 127);
+            juce::MemoryBlock oldState;
+            old->getStateInformation(oldState);
+            auto migration = make();
+            set(*migration, "Band 01 External Key", 1.0f);
+            render(*migration, input, 2, 256);
+            migration->setStateInformation(oldState.getData(), static_cast<int>(oldState.getSize()));
+            check(parameter(*migration, "Band 01 External Key").getValue() == 0.0f, "0.1 state defaults to self detection");
+            check(same(baseline, render(*migration, input, 2, 127), 2), "0.1 session audio stays bit-exact");
+        }
         std::cout << "HamloTochka: " << checks << " VST3 checks passed.\n";
         return 0;
     }

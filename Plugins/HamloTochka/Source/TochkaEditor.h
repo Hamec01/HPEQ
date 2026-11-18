@@ -36,13 +36,14 @@ private:
     juce::Rectangle<int> at(float x, float y, float width, float height) const;
 
     Processor& audio;
-    hpeq::ui::AnalysisModel analysis;
+    hpeq::ui::AnalysisModel analysis, keyAnalysis;
     hpeq::ui::SteelLookAndFeel lookAndFeel;
     hpeq::ui::HamloTochkaPanel panel;
     hamlo::ui::PresetScreen presetScreen;
     juce::ComboBox bandSelector, spectrumView;
     juce::TextButton add { "ADD BAND" }, compare { "B: EQ" }, learn { "LEARN MATCH" }, clear { "CLEAR" };
-    juce::Label matchStatus;
+    juce::TextButton keySource { "KEY: SELF" };
+    juce::Label matchStatus, keyStatus;
     juce::Rectangle<float> graph;
     int selected = 0;
     int panelGesture = -1;

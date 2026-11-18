@@ -60,6 +60,45 @@ std::vector<float> renderAutomation(int blockSize)
     }
     return output;
 }
+
+void runPreview(hamlo::tochka::Processor& processor, const juce::File& output)
+{
+    auto layout = processor.getBusesLayout();
+    layout.inputBuses.set(1, juce::AudioChannelSet::mono());
+    if (!processor.setBusesLayout(layout))
+        throw std::runtime_error("Native mono key layout failed");
+    processor.setCurrentProgram(0);
+    auto band = processor.band(0);
+    band.active = true;
+    band.dynamic = true;
+    band.frequencyHz = 125.0f;
+    band.thresholdDb = -24.0f;
+    band.q = 4.0f;
+    processor.editBand(0, band);
+    processor.setExternalKey(0, true);
+    processor.prepareToPlay(rate, frames);
+    processor.enableCapture(true);
+    juce::MidiBuffer midi;
+    juce::AudioBuffer<float> buffer(3, frames);
+    for (int b = 0; b < 128; ++b)
+    {
+        for (int i = 0; i < frames; ++i)
+        {
+            const auto t = juce::MathConstants<double>::twoPi * (i + b * frames) / rate;
+            const auto x = static_cast<float>(0.15 * std::sin(125.0 * t) + 0.06 * std::sin(2000.0 * t));
+            buffer.setSample(0, i, x);
+            buffer.setSample(1, i, x);
+            buffer.setSample(2, i, static_cast<float>(0.35 * std::sin(125.0 * t)));
+        }
+        processor.processBlock(buffer, midi);
+    }
+    auto editor = std::unique_ptr<juce::AudioProcessorEditor>(processor.createEditor());
+    auto screenshot = editor->createComponentSnapshot(editor->getLocalBounds());
+    juce::FileOutputStream file(output);
+    if (!file.openedOk() || !file.setPosition(0) || file.truncate().failed()
+        || !juce::PNGImageFormat().writeImageToStream(screenshot, file))
+        throw std::runtime_error("Could not write editor screenshot");
+}
 } // namespace
 
 int main(int argc, char** argv)
@@ -106,15 +145,13 @@ int main(int argc, char** argv)
         if (!deEss.active || !deEss.dynamic || deEss.detect != 1 || processor->matchDb() != 0.0f)
             throw std::runtime_error("Factory de-ess did not set the voice detector and clear match gain");
 
-        auto editor = std::unique_ptr<juce::AudioProcessorEditor>(processor->createEditorIfNeeded());
+        auto editor = std::unique_ptr<juce::AudioProcessorEditor>(processor->createEditor());
         if (editor == nullptr || editor->getWidth() != 1180 || editor->getHeight() != 820)
             throw std::runtime_error("Unexpected editor size");
         if (argc == 2)
         {
-            auto screenshot = editor->createComponentSnapshot(editor->getLocalBounds());
-            juce::FileOutputStream file { juce::File(juce::String::fromUTF8(argv[1])) };
-            if (!file.openedOk() || !juce::PNGImageFormat().writeImageToStream(screenshot, file))
-                throw std::runtime_error("Could not write editor screenshot");
+            editor.reset();
+            runPreview(*processor, juce::File(juce::String::fromUTF8(argv[1])));
         }
 
         std::cout << "HamloTochka: native block sizes passed; held match difference " << error

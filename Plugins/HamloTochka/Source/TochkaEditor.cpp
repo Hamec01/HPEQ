@@ -15,6 +15,7 @@ using View = hpeq::ui::AnalysisModel::View;
 constexpr float width = 1180.0f, height = 820.0f, minHz = 20.0f, dbLimit = 24.0f;
 const juce::Colour ink { 0xffffb347 }, muted { 0xff817e69 }, grid { 0xff29372e };
 const juce::Colour inputInk { 0xff4c936a }, outputInk { 0xff82e7a5 };
+const juce::Colour keyInk { 0xff81baff };
 
 hpeq::EqNodeState panelNode(const Processor::Band& band)
 {
@@ -102,11 +103,13 @@ double responseDb(const std::vector<DisplayBand>& designs, View view, double rat
 } // namespace
 
 Editor::Editor(Processor& processor)
-    : AudioProcessorEditor(processor), audio(processor), analysis(processor.audioCapture())
+    : AudioProcessorEditor(processor), audio(processor), analysis(processor.audioCapture()),
+      keyAnalysis(processor.keyAudioCapture())
 {
     setLookAndFeel(&lookAndFeel);
-    const std::array<juce::Component*, 9> children {
-        &panel, &presetScreen, &bandSelector, &spectrumView, &add, &compare, &learn, &clear, &matchStatus
+    const std::array<juce::Component*, 11> children {
+        &panel, &presetScreen, &bandSelector, &spectrumView, &add, &compare, &learn, &clear, &matchStatus,
+        &keySource, &keyStatus
     };
     for (auto* component : children)
         addAndMakeVisible(component);
@@ -134,10 +137,20 @@ Editor::Editor(Processor& processor)
     spectrumView.onChange = [this]
     {
         analysis.view = static_cast<View>(spectrumView.getSelectedId() - 1);
+        keyAnalysis.view = analysis.view;
         repaint(graph.getSmallestIntegerContainer());
     };
     add.setTooltip("Add a bell band. You can also double-click the graph.");
     add.onClick = [this] { addBand(1000.0f, 0.0f); };
+    keySource.setTooltip("Toggle the selected band's dynamic detector between the main input and the VST3 sidechain.");
+    keySource.onClick = [this]
+    {
+        audio.setExternalKey(selected, !audio.usesExternalKey(selected));
+        syncPanel();
+    };
+    keyStatus.setFont(hpeq::ui::steel::monoFont(12.0f));
+    keyStatus.setColour(juce::Label::textColourId, keyInk);
+    keyStatus.setJustificationType(juce::Justification::centredLeft);
     compare.setTooltip("Compare the dry input with the processed output.");
     compare.onClick = [this] { audio.setDry(!audio.isDry()); timerCallback(); };
     learn.setTooltip("Play a passage, then press again to hold a loudness correction.");
@@ -221,7 +234,14 @@ void Editor::endGesture()
 
 void Editor::syncPanel()
 {
-    panel.setValues({ panelNode(audio.band(selected)), selected + 1 });
+    const auto band = audio.band(selected);
+    panel.setValues({ panelNode(band), selected + 1 });
+    panel.settleDynamicGain(band.active && band.dynamic ? audio.dynamicGain(selected) : 0.0f);
+    const auto external = audio.usesExternalKey(selected);
+    const auto active = audio.keyBusActive();
+    keySource.setButtonText(external ? "KEY: EXT" : "KEY: SELF");
+    keySource.setToggleState(external, juce::dontSendNotification);
+    keyStatus.setText(active ? "KEY INPUT" : external ? "NO KEY BUS" : "", juce::dontSendNotification);
 }
 
 void Editor::selectBand(int index)
@@ -236,6 +256,8 @@ void Editor::selectBand(int index)
 void Editor::timerCallback()
 {
     analysis.update();
+    if (audio.keyBusActive())
+        keyAnalysis.update();
     if (!dragging && panelGesture < 0)
         syncPanel();
     const auto dry = audio.isDry();
@@ -267,6 +289,8 @@ void Editor::resized()
     graph = at(69, 152, 1042, 276).toFloat();
     bandSelector.setBounds(at(56, 457, 136, 30));
     add.setBounds(at(202, 457, 120, 30));
+    keySource.setBounds(at(332, 457, 128, 30));
+    keyStatus.setBounds(at(472, 457, 135, 30));
     spectrumView.setBounds(at(1008, 457, 116, 30));
     panel.setBounds(at(40, 495, 1100, 318));
 }
@@ -364,6 +388,8 @@ void Editor::drawGraph(juce::Graphics& g)
     };
     drawSpectrum(analysis.inputSpectrum(), inputInk);
     drawSpectrum(analysis.outputSpectrum(), outputInk);
+    if (audio.keyBusActive())
+        drawSpectrum(keyAnalysis.inputSpectrum(), keyInk);
 
     std::vector<DisplayBand> designs;
     designs.reserve(hpeq::kMaxEqNodesPerLayer);
@@ -380,7 +406,7 @@ void Editor::drawGraph(juce::Graphics& g)
     for (int i = 0; i <= samples; ++i)
     {
         const float x = graph.getX() + graph.getWidth() * static_cast<float>(i) / static_cast<float>(samples);
-        const auto value = responseDb(designs, analysis.view, rate, hzAt(x), audio.getTotalNumInputChannels() == 1);
+        const auto value = responseDb(designs, analysis.view, rate, hzAt(x), audio.getMainBusNumInputChannels() == 1);
         const auto y = yFor(static_cast<float>(value));
         if (i == 0) curve.startNewSubPath(x, y);
         else curve.lineTo(x, y);
