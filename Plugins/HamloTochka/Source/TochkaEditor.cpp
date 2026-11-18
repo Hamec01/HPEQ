@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <cmath>
 #include <complex>
+#include <iterator>
+
+#include "UI/Theme.h"
 
 namespace hamlo::tochka
 {
@@ -16,6 +19,22 @@ constexpr float width = 1180.0f, height = 820.0f, minHz = 20.0f, dbLimit = 24.0f
 const juce::Colour ink { 0xffffb347 }, muted { 0xff817e69 }, grid { 0xff29372e };
 const juce::Colour inputInk { 0xff4c936a }, outputInk { 0xff82e7a5 };
 const juce::Colour keyInk { 0xff81baff };
+const juce::Colour rangeInk { 0xffabb1b3 }, cutInk { 0xff6cbfd7 }, boostInk { 0xffbdde91 };
+
+bool hasRange(const Processor::Band& band)
+{
+    return band.active && band.dynamic && hpeq::dsp::isGainShape(band.shape);
+}
+
+bool cutShape(hpeq::EqShape shape)
+{
+    return shape == hpeq::EqShape::LowCut || shape == hpeq::EqShape::HighCut;
+}
+
+bool controlModifier(juce::ModifierKeys mods)
+{
+    return mods.isCtrlDown() || mods.isCommandDown();
+}
 
 hpeq::EqNodeState panelNode(const Processor::Band& band)
 {
@@ -107,16 +126,16 @@ Editor::Editor(Processor& processor)
       keyAnalysis(processor.keyAudioCapture())
 {
     setLookAndFeel(&lookAndFeel);
-    const std::array<juce::Component*, 11> children {
+    const std::array<juce::Component*, 12> children {
         &panel, &presetScreen, &bandSelector, &spectrumView, &add, &compare, &learn, &clear, &matchStatus,
-        &keySource, &keyStatus
+        &keySource, &keyStatus, &analysisMode
     };
     for (auto* component : children)
         addAndMakeVisible(component);
 
     std::vector<hamlo::ui::PresetScreen::Entry> entries;
     for (const auto& preset : Processor::presets())
-        entries.push_back({ static_cast<int>(entries.size()), "Factory", preset.group, preset.name, preset.description });
+        entries.push_back({ static_cast<int>(entries.size()), preset.genre, preset.group, preset.name, preset.description });
     presetScreen.setEntries(std::move(entries));
     presetScreen.onSelect = [this](int program)
     {
@@ -130,6 +149,14 @@ Editor::Editor(Processor& processor)
         bandSelector.addItem("Band " + juce::String(slot + 1), slot + 1);
     bandSelector.setTooltip("Select a band to edit.");
     bandSelector.onChange = [this] { selectBand(bandSelector.getSelectedId() - 1); };
+
+    analysisMode.addItemList({ "INPUT / OUT", "OUT - IN" }, 1);
+    analysisMode.setTooltip("Show input/output spectra or the measured output minus input in dB.");
+    analysisMode.onChange = [this]
+    {
+        audio.showDifference(analysisMode.getSelectedId() == 2);
+        repaint();
+    };
 
     spectrumView.addItemList({ "Mid", "Left", "Right", "Side" }, 1);
     spectrumView.setSelectedId(1, juce::dontSendNotification);
@@ -206,6 +233,8 @@ Editor::Editor(Processor& processor)
     selectBand(0);
     audio.enableCapture(true);
     timerCallback();
+    if (audio.getCurrentProgram() == 0)
+        presetScreen.setFilter("All", "All");
     startTimerHz(24);
 }
 
@@ -224,11 +253,17 @@ void Editor::endGesture()
         audio.endBandGesture(selected, panelGesture);
         panelGesture = -1;
     }
-    if (dragging)
+    if (dragging != Drag::None)
     {
-        audio.endBandGesture(selected, Processor::Frequency);
-        audio.endBandGesture(selected, Processor::Gain);
-        dragging = false;
+        if (dragging == Drag::Point)
+        {
+            audio.endBandGesture(selected, Processor::Frequency);
+            if (hpeq::dsp::isGainShape(dragStart.shape))
+                audio.endBandGesture(selected, Processor::Gain);
+        }
+        else
+            audio.endBandGesture(selected, dragging == Drag::Q ? Processor::Q : Processor::Range);
+        dragging = Drag::None;
     }
 }
 
@@ -236,7 +271,8 @@ void Editor::syncPanel()
 {
     const auto band = audio.band(selected);
     panel.setValues({ panelNode(band), selected + 1 });
-    panel.settleDynamicGain(band.active && band.dynamic ? audio.dynamicGain(selected) : 0.0f);
+    const auto offset = hasRange(band) ? audio.dynamicGain(selected) : 0.0f;
+    panel.settleDynamicGain(std::abs(offset) < 0.05f ? 0.0f : offset);
     const auto external = audio.usesExternalKey(selected);
     const auto active = audio.keyBusActive();
     keySource.setButtonText(external ? "KEY: EXT" : "KEY: SELF");
@@ -258,8 +294,14 @@ void Editor::timerCallback()
     analysis.update();
     if (audio.keyBusActive())
         keyAnalysis.update();
-    if (!dragging && panelGesture < 0)
+    if (dragging == Drag::None && panelGesture < 0)
         syncPanel();
+    const auto mode = audio.showsDifference() ? 2 : 1;
+    if (analysisMode.getSelectedId() != mode)
+    {
+        analysisMode.setSelectedId(mode, juce::dontSendNotification);
+        repaint();
+    }
     const auto dry = audio.isDry();
     compare.setButtonText(dry ? "A: DRY" : "B: EQ");
     compare.setToggleState(dry, juce::dontSendNotification);
@@ -291,6 +333,7 @@ void Editor::resized()
     add.setBounds(at(202, 457, 120, 30));
     keySource.setBounds(at(332, 457, 128, 30));
     keyStatus.setBounds(at(472, 457, 135, 30));
+    analysisMode.setBounds(at(884, 457, 116, 30));
     spectrumView.setBounds(at(1008, 457, 116, 30));
     panel.setBounds(at(40, 495, 1100, 318));
 }
@@ -305,12 +348,15 @@ void Editor::paint(juce::Graphics& g)
     g.fillRoundedRectangle(at(56, 140, 1068, 309).toFloat(), 8.0f);
     drawGraph(g);
     g.setFont(hpeq::ui::steel::monoFont(12.0f));
-    g.setColour(inputInk);
-    g.drawText("INPUT", at(676, 459, 74, 28), juce::Justification::centred);
-    g.setColour(outputInk);
-    g.drawText("OUTPUT", at(752, 459, 74, 28), juce::Justification::centred);
+    const auto difference = audio.showsDifference();
+    g.setColour(difference ? cutInk : inputInk);
+    g.drawText(difference ? "CUT" : "INPUT", at(593, 459, 65, 28), juce::Justification::centred);
+    g.setColour(difference ? boostInk : outputInk);
+    g.drawText(difference ? "BOOST" : "OUTPUT", at(659, 459, 70, 28), juce::Justification::centred);
     g.setColour(ink);
-    g.drawText("EQ CURVE", at(831, 459, 100, 28), juce::Justification::centred);
+    g.drawText("LIVE EQ", at(731, 459, 67, 28), juce::Justification::centred);
+    g.setColour(rangeInk);
+    g.drawText("RANGE", at(800, 459, 69, 28), juce::Justification::centred);
 }
 
 float Editor::xFor(float hz) const noexcept
@@ -338,6 +384,7 @@ float Editor::dbAt(float y) const noexcept
 
 void Editor::drawGraph(juce::Graphics& g)
 {
+    const bool difference = audio.showsDifference();
     g.setFont(hpeq::ui::steel::monoFont(10.0f));
     for (const auto hz : { 30.0f, 60.0f, 100.0f, 200.0f, 500.0f, 1000.0f, 2000.0f, 5000.0f, 10000.0f, 20000.0f })
     {
@@ -356,11 +403,14 @@ void Editor::drawGraph(juce::Graphics& g)
         g.setColour(db == 0.0f ? grid.brighter(0.6f) : grid);
         g.drawHorizontalLine(juce::roundToInt(y), graph.getX(), graph.getRight());
         g.setColour(muted);
-        g.drawText(juce::String(db, 0), juce::Rectangle<float>(graph.getRight() - 27.0f, y - 6.0f, 24.0f, 12.0f), juce::Justification::centredRight);
+        const auto label = juce::String(db, 0) + (db == 24.0f ? " dB" : "");
+        g.drawText(label, juce::Rectangle<float>(graph.getRight() - 49.0f, y - 6.0f, 46.0f, 12.0f), juce::Justification::centredRight);
     }
     g.setColour(inputInk);
     for (const auto level : { -96.0f, -72.0f, -48.0f, -24.0f, 0.0f })
     {
+        if (difference)
+            break;
         const auto y = juce::jmap(level, -96.0f, 0.0f, graph.getBottom(), graph.getY());
         const auto label = level == 0.0f ? juce::String("0 dBFS") : juce::String(level, 0);
         g.drawText(label, juce::Rectangle<float>(graph.getX() + 3.0f, y - 6.0f, 56.0f, 12.0f), juce::Justification::centredLeft);
@@ -386,30 +436,88 @@ void Editor::drawGraph(juce::Graphics& g)
         g.setColour(colour);
         g.strokePath(path, juce::PathStrokeType(1.15f));
     };
-    drawSpectrum(analysis.inputSpectrum(), inputInk);
-    drawSpectrum(analysis.outputSpectrum(), outputInk);
-    if (audio.keyBusActive())
-        drawSpectrum(keyAnalysis.inputSpectrum(), keyInk);
+    if (difference)
+        drawMeasuredDifference(g);
+    else
+    {
+        drawSpectrum(analysis.inputSpectrum(), inputInk);
+        drawSpectrum(analysis.outputSpectrum(), outputInk);
+        if (audio.keyBusActive())
+            drawSpectrum(keyAnalysis.inputSpectrum(), keyInk);
+    }
 
-    std::vector<DisplayBand> designs;
-    designs.reserve(hpeq::kMaxEqNodesPerLayer);
+    std::vector<DisplayBand> live, stationary, limit;
+    live.reserve(hpeq::kMaxEqNodesPerLayer);
+    stationary.reserve(hpeq::kMaxEqNodesPerLayer);
+    limit.reserve(hpeq::kMaxEqNodesPerLayer);
+    const auto selectedBand = audio.band(selected);
+    const auto showRange = hasRange(selectedBand) && std::abs(selectedBand.rangeDb) > 0.001f;
+    bool showStatic = false;
     for (int slot = 0; slot < hpeq::kMaxEqNodesPerLayer; ++slot)
     {
         const auto band = audio.band(slot);
-        if (band.active)
-            designs.push_back({ hpeq::dsp::designBand(band.shape, band.slopeDbPerOct, rate, band.frequencyHz,
-                                    band.gainDb + audio.dynamicGain(slot), band.q), band.channel });
+        if (!band.active)
+            continue;
+        const auto design = [&](float gain)
+        {
+            return DisplayBand { hpeq::dsp::designBand(band.shape, band.slopeDbPerOct, rate,
+                                                       band.frequencyHz, gain, band.q), band.channel };
+        };
+        const auto base = design(band.gainDb);
+        const auto offset = audio.dynamicGain(slot);
+        live.push_back(offset == 0.0f ? base : design(band.gainDb + offset));
+        stationary.push_back(base);
+        limit.push_back(showRange && slot == selected ? design(band.gainDb + band.rangeDb) : base);
+        showStatic = showStatic || offset != 0.0f || showRange;
     }
 
-    juce::Path curve;
+    juce::Path curve, staticCurve, rangeCurve, rangeArea;
     constexpr int samples = 240;
+    std::array<juce::Point<float>, samples + 1> rangePoints {};
+    const auto mono = audio.getMainBusNumInputChannels() == 1;
+    const auto plot = [](juce::Path& path, int index, juce::Point<float> point)
+    {
+        if (index == 0) path.startNewSubPath(point);
+        else path.lineTo(point);
+    };
     for (int i = 0; i <= samples; ++i)
     {
         const float x = graph.getX() + graph.getWidth() * static_cast<float>(i) / static_cast<float>(samples);
-        const auto value = responseDb(designs, analysis.view, rate, hzAt(x), audio.getMainBusNumInputChannels() == 1);
-        const auto y = yFor(static_cast<float>(value));
-        if (i == 0) curve.startNewSubPath(x, y);
-        else curve.lineTo(x, y);
+        const auto hz = hzAt(x);
+        const auto project = [&](const std::vector<DisplayBand>& designs)
+        {
+            return juce::Point<float> { x, yFor(static_cast<float>(responseDb(designs, analysis.view, rate, hz, mono))) };
+        };
+        plot(curve, i, project(live));
+        if (showStatic)
+        {
+            const auto point = project(stationary);
+            plot(staticCurve, i, point);
+            if (showRange)
+            {
+                rangePoints[static_cast<size_t>(i)] = project(limit);
+                plot(rangeCurve, i, rangePoints[static_cast<size_t>(i)]);
+                plot(rangeArea, i, point);
+            }
+        }
+    }
+    if (showRange)
+    {
+        for (auto i = rangePoints.rbegin(); i != rangePoints.rend(); ++i)
+            rangeArea.lineTo(*i);
+        rangeArea.closeSubPath();
+        g.setColour(rangeInk.withAlpha(0.24f));
+        g.fillPath(rangeArea);
+        g.setColour(rangeInk.withAlpha(0.85f));
+        g.strokePath(rangeCurve, juce::PathStrokeType(1.1f));
+    }
+    if (showStatic)
+    {
+        const float dashes[] { 3.5f, 3.5f };
+        juce::Path dashed;
+        juce::PathStrokeType(1.0f).createDashedStroke(dashed, staticCurve, dashes, 2);
+        g.setColour(rangeInk.withAlpha(0.72f));
+        g.fillPath(dashed);
     }
     g.setColour(ink);
     g.strokePath(curve, juce::PathStrokeType(1.7f));
@@ -419,11 +527,76 @@ void Editor::drawGraph(juce::Graphics& g)
         if (!audio.hasBand(slot))
             continue;
         const auto x = xFor(band.frequencyHz), y = yFor(hpeq::dsp::isGainShape(band.shape) ? band.gainDb : 0.0f);
+        if (hasRange(band) && std::abs(band.rangeDb) > 0.001f)
+        {
+            const auto limitY = yFor(band.gainDb + band.rangeDb);
+            g.setColour(rangeInk.withAlpha(slot == selected ? 0.95f : 0.5f));
+            g.drawLine(x, y, x, limitY, 1.0f);
+            g.fillRoundedRectangle(x - 4.0f, limitY - 4.0f, 8.0f, 8.0f, 1.5f);
+            if (slot == selected && std::abs(limitY - y) > 12.0f)
+            {
+                const auto text = juce::String(band.rangeDb > 0.0f ? "+" : "") + juce::String(band.rangeDb, 1) + " dB";
+                const auto labelX = x + 75.0f < graph.getRight() ? x + 10.0f : x - 78.0f;
+                g.drawText(text, juce::Rectangle<float>(labelX, limitY - 8.0f, 68.0f, 16.0f), juce::Justification::centredLeft);
+            }
+        }
         g.setColour(band.active ? (slot == selected ? ink : muted.brighter(0.5f)) : muted.darker(0.45f));
         g.fillEllipse(x - 8.0f, y - 8.0f, 16.0f, 16.0f);
         g.setColour(juce::Colours::black);
         g.drawText(juce::String(slot + 1), juce::Rectangle<float>(x - 10.0f, y - 8.0f, 20.0f, 16.0f), juce::Justification::centred);
     }
+}
+
+void Editor::drawMeasuredDifference(juce::Graphics& g) const
+{
+    const auto& bins = analysis.differenceSpectrum();
+    if (bins.size() < 2)
+        return;
+    juce::Path cuts, boosts;
+    const auto zero = yFor(0.0f);
+    const auto rate = static_cast<float>(audio.sampleRateHz());
+    auto previous = juce::Point<float>();
+    bool linked = false;
+    const auto fillSpan = [&](juce::Point<float> a, juce::Point<float> b)
+    {
+        auto& path = a.y + b.y >= 2.0f * zero ? cuts : boosts;
+        path.startNewSubPath(a.x, zero);
+        path.lineTo(a);
+        path.lineTo(b);
+        path.lineTo(b.x, zero);
+        path.closeSubPath();
+    };
+    for (int i = 0; i <= 512; ++i)
+    {
+        const auto x = graph.getX() + graph.getWidth() * static_cast<float>(i) / 512.0f;
+        const auto bin = hzAt(x) * static_cast<float>(analysis.fftSize()) / rate;
+        const auto low = juce::jlimit(0, static_cast<int>(bins.size()) - 2, static_cast<int>(bin));
+        const auto a = bins[static_cast<size_t>(low)], b = bins[static_cast<size_t>(low + 1)];
+        if (!std::isfinite(a) || !std::isfinite(b))
+        {
+            linked = false;
+            continue;
+        }
+        const auto point = juce::Point<float>(x, yFor(juce::jmap(bin - static_cast<float>(low), a, b)));
+        if (linked)
+        {
+            if ((previous.y < zero && point.y > zero) || (previous.y > zero && point.y < zero))
+            {
+                const auto t = (zero - previous.y) / (point.y - previous.y);
+                const juce::Point<float> crossing { juce::jmap(t, previous.x, point.x), zero };
+                fillSpan(previous, crossing);
+                fillSpan(crossing, point);
+            }
+            else
+                fillSpan(previous, point);
+        }
+        linked = true;
+        previous = point;
+    }
+    g.setColour(cutInk.withAlpha(0.68f));
+    g.fillPath(cuts);
+    g.setColour(boostInk.withAlpha(0.68f));
+    g.fillPath(boosts);
 }
 
 int Editor::findPoint(juce::Point<float> point) const
@@ -445,7 +618,29 @@ int Editor::findPoint(juce::Point<float> point) const
     return best;
 }
 
-void Editor::addBand(float hz, float gain)
+int Editor::findRangeHandle(juce::Point<float> point) const
+{
+    int best = -1;
+    float distance = 9.0f;
+    for (int slot = 0; slot < hpeq::kMaxEqNodesPerLayer; ++slot)
+    {
+        const auto band = audio.band(slot);
+        if (!hasRange(band))
+            continue;
+        const auto end = yFor(band.gainDb + band.rangeDb);
+        if (std::abs(end - yFor(band.gainDb)) < 9.0f)
+            continue;
+        const auto d = point.getDistanceFrom({ xFor(band.frequencyHz), end });
+        if (d < distance)
+        {
+            best = slot;
+            distance = d;
+        }
+    }
+    return best;
+}
+
+void Editor::addBand(float hz, float gain, bool dynamic)
 {
     for (int slot = 0; slot < hpeq::kMaxEqNodesPerLayer; ++slot)
         if (!audio.hasBand(slot))
@@ -453,7 +648,10 @@ void Editor::addBand(float hz, float gain)
             Processor::Band band;
             band.active = true;
             band.frequencyHz = hz;
-            band.gainDb = gain;
+            band.gainDb = dynamic ? 0.0f : gain;
+            band.dynamic = dynamic;
+            if (dynamic && std::abs(gain) >= 0.5f)
+                band.rangeDb = gain;
             audio.editBand(slot, band);
             selectBand(slot);
             return;
@@ -462,24 +660,66 @@ void Editor::addBand(float hz, float gain)
 
 void Editor::mouseDown(const juce::MouseEvent& e)
 {
-    if (e.mods.isLeftButtonDown() && graph.contains(e.position))
-        if (const auto slot = findPoint(e.position); slot >= 0)
+    if (!graph.contains(e.position))
+        return;
+    const auto handle = findRangeHandle(e.position);
+    const auto slot = handle >= 0 ? handle : findPoint(e.position);
+    if (slot < 0)
+        return;
+    selectBand(slot);
+    if (e.mods.isPopupMenu())
+    {
+        showBandMenu(slot);
+        return;
+    }
+    if (!e.mods.isLeftButtonDown())
+        return;
+    dragStart = audio.band(slot);
+    if (handle >= 0)
+    {
+        dragging = Drag::Range;
+        audio.beginBandGesture(slot, Processor::Range);
+    }
+    else if (e.mods.isAltDown())
+    {
+        dragStart.active = !dragStart.active;
+        audio.editBand(slot, dragStart);
+        syncPanel();
+    }
+    else if (controlModifier(e.mods))
+    {
+        if (!cutShape(dragStart.shape))
         {
-            selectBand(slot);
-            dragging = true;
-            audio.beginBandGesture(slot, Processor::Frequency);
-            audio.beginBandGesture(slot, Processor::Gain);
+            dragging = Drag::Q;
+            audio.beginBandGesture(slot, Processor::Q);
         }
+    }
+    else
+    {
+        dragging = Drag::Point;
+        audio.beginBandGesture(slot, Processor::Frequency);
+        if (hpeq::dsp::isGainShape(dragStart.shape))
+            audio.beginBandGesture(slot, Processor::Gain);
+    }
 }
 
 void Editor::mouseDrag(const juce::MouseEvent& e)
 {
-    if (!dragging)
+    if (dragging == Drag::None)
         return;
     auto band = audio.band(selected);
-    band.frequencyHz = hzAt(e.position.x);
-    if (hpeq::dsp::isGainShape(band.shape))
-        band.gainDb = dbAt(e.position.y);
+    const float fine = e.mods.isShiftDown() ? 0.2f : 1.0f;
+    const auto delta = (e.position - e.mouseDownPosition) * fine;
+    if (dragging == Drag::Q)
+        band.q = juce::jlimit(0.1f, 18.0f, dragStart.q * std::exp2(-7.0f * delta.y / graph.getHeight()));
+    else if (dragging == Drag::Range)
+        band.rangeDb = juce::jlimit(-24.0f, 24.0f, dragStart.rangeDb - 2.0f * dbLimit * delta.y / graph.getHeight());
+    else
+    {
+        band.frequencyHz = hzAt(xFor(dragStart.frequencyHz) + delta.x);
+        if (hpeq::dsp::isGainShape(band.shape))
+            band.gainDb = dbAt(yFor(dragStart.gainDb) + delta.y);
+    }
     audio.editBand(selected, band, true);
     syncPanel();
     repaint(graph.getSmallestIntegerContainer());
@@ -489,7 +729,103 @@ void Editor::mouseUp(const juce::MouseEvent&) { endGesture(); }
 
 void Editor::mouseDoubleClick(const juce::MouseEvent& e)
 {
-    if (graph.contains(e.position) && findPoint(e.position) < 0)
-        addBand(hzAt(e.position.x), dbAt(e.position.y));
+    if (e.mods.isLeftButtonDown() && graph.contains(e.position)
+        && findPoint(e.position) < 0 && findRangeHandle(e.position) < 0)
+        addBand(hzAt(e.position.x), dbAt(e.position.y), e.mods.isAltDown());
+}
+
+void Editor::mouseWheelMove(const juce::MouseEvent& e, const juce::MouseWheelDetails& wheel)
+{
+    if (!graph.contains(e.position) || wheel.deltaY == 0.0f || wheel.isInertial)
+        return;
+    const auto pointed = findPoint(e.position);
+    const auto handle = findRangeHandle(e.position);
+    const auto slot = dragging != Drag::None ? selected : pointed >= 0 ? pointed : handle >= 0 ? handle : selected;
+    if (!audio.hasBand(slot))
+        return;
+    if (slot != selected)
+        selectBand(slot);
+
+    auto band = audio.band(slot);
+    const auto delta = wheel.deltaY * (wheel.isReversed ? -1.0f : 1.0f);
+    const auto turn = wheel.isSmooth ? juce::jlimit(-4.0f, 4.0f, 6.0f * delta) : std::copysign(1.0f, delta);
+    const auto fine = e.mods.isShiftDown() ? 0.2f : 1.0f;
+    auto field = Processor::Q;
+    if (e.mods.isAltDown())
+    {
+        if (!hpeq::dsp::isGainShape(band.shape))
+            return;
+        field = Processor::Range;
+        band.rangeDb = juce::jlimit(-24.0f, 24.0f, (band.dynamic ? band.rangeDb : 0.0f) + 0.75f * fine * turn);
+        band.dynamic = true;
+    }
+    else if (controlModifier(e.mods))
+    {
+        if (!hpeq::dsp::isGainShape(band.shape))
+            return;
+        field = Processor::Gain;
+        band.gainDb = juce::jlimit(-24.0f, 24.0f, band.gainDb + 0.75f * fine * turn);
+    }
+    else if (cutShape(band.shape))
+    {
+        field = Processor::Slope;
+        if (wheelSlopeBand != slot || !wheel.isSmooth)
+            wheelSlopeRemainder = 0.0f;
+        wheelSlopeBand = slot;
+        wheelSlopeRemainder += turn;
+        const auto steps = static_cast<int>(wheelSlopeRemainder);
+        if (steps == 0)
+            return;
+        wheelSlopeRemainder -= static_cast<float>(steps);
+        const auto first = std::begin(hpeq::dsp::kEqSlopes);
+        const auto last = std::end(hpeq::dsp::kEqSlopes);
+        const auto current = static_cast<int>(std::find(first, last, band.slopeDbPerOct) - first);
+        band.slopeDbPerOct = first[juce::jlimit(0, static_cast<int>(last - first) - 1, current + steps)];
+    }
+    else
+        band.q = juce::jlimit(0.1f, 18.0f, band.q * std::exp2(0.25f * fine * turn));
+
+    const auto existingGesture = (field == Processor::Q && dragging == Drag::Q)
+        || (field == Processor::Gain && dragging == Drag::Point) || (field == Processor::Range && dragging == Drag::Range);
+    audio.editBand(slot, band, existingGesture);
+    syncPanel();
+    repaint(graph.getSmallestIntegerContainer());
+}
+
+void Editor::showBandMenu(int slot)
+{
+    const auto band = audio.band(slot);
+    juce::PopupMenu menu, shapes;
+    for (int i = 0; i <= static_cast<int>(hpeq::EqShape::AllPass); ++i)
+    {
+        const auto shape = static_cast<hpeq::EqShape>(i);
+        shapes.addItem(100 + i, hpeq::ui::shapeName(shape), true, band.shape == shape);
+    }
+    menu.addSubMenu("Shape", shapes);
+    menu.addItem(1, band.active ? "Disable band" : "Enable band");
+    menu.addItem(2, band.dynamic ? "Disable dynamics" : "Enable dynamics", hpeq::dsp::isGainShape(band.shape));
+    menu.addItem(3, band.solo ? "Unsolo band" : "Solo band", band.active);
+    menu.addItem(4, "Reset Q", !cutShape(band.shape));
+    menu.addSeparator();
+    menu.addItem(5, "Delete band");
+    menu.showMenuAsync({}, [safe = juce::Component::SafePointer<Editor>(this), slot](int action)
+    {
+        if (safe == nullptr || action == 0 || !safe->audio.hasBand(slot))
+            return;
+        auto edited = safe->audio.band(slot);
+        if (action == 5)
+            safe->audio.deleteBand(slot);
+        else
+        {
+            if (action >= 100) edited.shape = static_cast<hpeq::EqShape>(action - 100);
+            if (action == 1) edited.active = !edited.active;
+            if (action == 2) edited.dynamic = !edited.dynamic;
+            if (action == 3) edited.solo = !edited.solo;
+            if (action == 4) edited.q = 0.707f;
+            safe->audio.editBand(slot, edited);
+        }
+        safe->syncPanel();
+        safe->repaint(safe->graph.getSmallestIntegerContainer());
+    });
 }
 } // namespace hamlo::tochka

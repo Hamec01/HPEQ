@@ -52,11 +52,51 @@ constexpr Band deEss()
     band.releaseMs = 40.0f;
     return band;
 }
+
+enum KeySource { Self, External, Voice };
+struct Recipe
+{
+    const char* group;
+    const char* name;
+    const char* note;
+    EqShape shape;
+    std::array<float, 4> frequencyHz;
+    float gainDb;
+    float q;
+    float rangeDb = 0.0f;
+    float attackMs = 3.0f;
+    float releaseBeats = 0.2f;
+    int slope = 12;
+    ChannelMode channel = ChannelMode::Stereo;
+    KeySource key = Self;
+};
+
+constexpr auto Bell = EqShape::Bell, LowCut = EqShape::LowCut, HighCut = EqShape::HighCut,
+               LowShelf = EqShape::LowShelf, HighShelf = EqShape::HighShelf, Tilt = EqShape::Tilt;
+constexpr auto Stereo = ChannelMode::Stereo, Side = ChannelMode::Side, Mid = ChannelMode::Mid;
+constexpr Recipe recipes[] {
+#include "GenrePresets.inc"
+};
+static_assert(std::size(recipes) == 50);
+
+constexpr struct Genre
+{
+    const char* name;
+    const char* prefix;
+    float bpm, gain, attack;
+} genres[] {
+    { "Boom Bap", "BB ", 90.0f, 1.05f, 1.12f },
+    { "Trap", "TRAP ", 140.0f, 1.10f, 0.95f },
+    { "Techno", "TECHNO ", 132.0f, 0.96f, 1.00f },
+    { "DnB", "DNB ", 174.0f, 1.06f, 0.83f }
+};
 } // namespace
 
-const std::array<Preset, 10>& Processor::presets()
+const std::vector<Preset>& Processor::presets()
 {
-    static constexpr std::array<Preset, 10> bank {{
+    static const auto bank = []
+    {
+        std::vector<Preset> entries {
         { "Default", "General", "Empty EQ and unity output", {} },
         { "Sub Cleanup", "Utility", "Gentle 25 Hz low cut", { point(EqShape::LowCut, 25.0f) } },
         { "Kick Click", "Drums", "Add attack around 2.5 kHz", { point(EqShape::Bell, 2500.0f, 2.5f, 1.1f) } },
@@ -70,7 +110,32 @@ const std::array<Preset, 10>& Processor::presets()
         { "Voice De-Ess", "Vocal", "Voice-relative dynamic cut near 7 kHz", { deEss() } },
         { "Side Low Cut", "Stereo", "High-pass the side channel at 100 Hz",
           { point(EqShape::LowCut, 100.0f, 0.0f, 0.707f, 12, ChannelMode::Side) } }
-    }};
+        };
+        entries.reserve(entries.size() + std::size(recipes) * std::size(genres));
+        for (size_t style = 0; style < std::size(genres); ++style)
+        {
+            const auto& genre = genres[style];
+            for (const auto& recipe : recipes)
+            {
+                auto band = point(recipe.shape, recipe.frequencyHz[style], recipe.gainDb * genre.gain,
+                                  recipe.q, recipe.slope, recipe.channel);
+                if (recipe.rangeDb != 0.0f)
+                {
+                    band.dynamic = true;
+                    band.detect = recipe.key == Voice ? 1 : 0;
+                    band.rangeDb = recipe.rangeDb;
+                    band.attackMs = recipe.attackMs * genre.attack;
+                    band.releaseMs = recipe.releaseBeats * 60000.0f / genre.bpm;
+                    band.ratio = recipe.key == Voice ? 4.0f : 3.0f;
+                    // Reference input is a nominal -18 dBFS RMS probe or an external key.
+                    band.thresholdDb = recipe.key == Voice ? -28.0f : -19.0f - std::abs(recipe.rangeDb) * 1.05f;
+                }
+                entries.push_back({ juce::String(genre.prefix) + recipe.name, recipe.group, recipe.note,
+                                    { band }, genre.name, recipe.key == External });
+            }
+        }
+        return entries;
+    }();
     return bank;
 }
 
@@ -138,6 +203,7 @@ Processor::Processor()
                                       .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
       state(*this, nullptr, stateType, parameterLayout())
 {
+    (void) presets();
     bypassParameter = state.getParameter(bypassId);
     matchParameter = state.getParameter(matchId);
     bypassValue = state.getRawParameterValue(bypassId);
@@ -406,7 +472,7 @@ int Processor::getNumPrograms() { return static_cast<int>(presets().size()); }
 
 const juce::String Processor::getProgramName(int index)
 {
-    return juce::isPositiveAndBelow(index, getNumPrograms()) ? presets()[static_cast<size_t>(index)].name : "";
+    return juce::isPositiveAndBelow(index, getNumPrograms()) ? presets()[static_cast<size_t>(index)].name : juce::String();
 }
 
 void Processor::setCurrentProgram(int index)
@@ -424,7 +490,7 @@ void Processor::setCurrentProgram(int index)
         else
             writeParameter(*bandParameters[n][On], 0.0f, false);
         writeBand(slot, next, false);
-        writeParameter(*bandParameters[n][ExternalKey], 0.0f, false);
+        writeParameter(*bandParameters[n][ExternalKey], slot == 0 && preset.firstBandExternal ? 1.0f : 0.0f, false);
     }
     occupied.store(used);
     learnRequest.store(0);
@@ -439,6 +505,7 @@ void Processor::getStateInformation(juce::MemoryBlock& target)
     saved.setProperty("schema", 1, nullptr);
     saved.setProperty("program", getCurrentProgram(), nullptr);
     saved.setProperty("edited", presetEdited(), nullptr);
+    saved.setProperty("spectrumDifference", showsDifference(), nullptr);
     saved.setProperty("occupied", static_cast<int>(occupied.load()), nullptr);
     if (auto xml = saved.createXml())
         copyXmlToBinary(*xml, target);
@@ -453,6 +520,7 @@ void Processor::setStateInformation(const void* bytes, int size)
             return;
         program.store(juce::jlimit(0, getNumPrograms() - 1, static_cast<int>(restored.getProperty("program", 0))));
         modified.store(static_cast<bool>(restored.getProperty("edited", false)));
+        showDifference(static_cast<bool>(restored.getProperty("spectrumDifference", false)));
         occupied.store(static_cast<std::uint32_t>(static_cast<int>(restored.getProperty("occupied", 0))));
         learnRequest.store(0);
         // A 0.1 state has no key controls. Clear any previously selected keys

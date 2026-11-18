@@ -2,7 +2,7 @@ set(hpeq_source "${PROJECT_SOURCE_DIR}/Source")
 set(preset_source "${PROJECT_SOURCE_DIR}/Plugins/HamloMag/Source")
 
 juce_add_plugin(HamloTochka
-    VERSION 0.2.0
+    VERSION 0.3.0
     COMPANY_NAME "HamloProd"
     BUNDLE_ID com.hamloprod.hamlotochka
     PLUGIN_MANUFACTURER_CODE BBLB

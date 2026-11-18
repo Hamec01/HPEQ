@@ -1,4 +1,4 @@
-# HamloTochka 0.2.0
+# HamloTochka 0.3.0
 
 HamloTochka is a Windows x64 VST3 dynamic EQ built around HPEQ's PRE-EQ.
 Build from the HPEQ checkout with its JUCE 8.0.12 configuration.
@@ -16,6 +16,33 @@ provides the shape, slope, channel, dynamic controls, solo and de-ess.
 A/B switches between dry input and EQ output. Learn Match measures both signals
 over the same passage and holds a bounded output correction when pressed again.
 Check the correction after changing the EQ. The toolbar also clears the correction.
+
+## EQ graph
+
+- Drag a point to set frequency and gain. Wheel over a point or the selected
+  band to adjust Q. A low/high cut uses its stepped slope. Shift makes
+  continuous edits finer.
+- Ctrl-drag changes Q and Ctrl-wheel changes gain. Alt-wheel sets the dynamic
+  range and Alt-click toggles a band. Alt-double-click on an empty part of the
+  graph creates a dynamic bell. Right-click a point to open its band menu.
+- The gray handle shows each active band's dynamic range. Drag it to change
+  that range. The selected band adds a gray response ribbon. Amber follows
+  the effective EQ curve while the detector is running.
+- **OUT - IN** plots measured output minus measured input in dB. Blue shows cuts
+  and green shows boosts. The trace omits FFT bins at or below −80 dBFS input.
+  The plug-in state includes the display mode.
+
+## Factory library
+
+The bank contains 210 programs, with 50 recipes each for Boom Bap, Trap,
+Techno and DnB after the ten original programs. Shelf, cut, bell, tilt, dynamic,
+de-ess and keyed recipes have individual frequency targets. Release times
+for the genre dynamics are defined in beats at the genre's reference tempo.
+The note on a keyed preset identifies the source to route to the sidechain.
+
+The original program indices and saved audio state carry forward.
+VST3 hosts that store preset automation as normalized program values may
+rescale those automation values when the program list grows.
 
 ## First-stage acceptance
 
@@ -49,9 +76,14 @@ state preserves each band's key mode.
 
 ## Release build checks
 
-- The JUCE VST3 host passed 46 checks at 48 kHz. With a 0.1.0 bundle supplied
-  as the second argument, it passed 50 checks. The migrated session was
-  bit-exact to 0.1.0, including when reloaded into an existing keyed instance.
+- The JUCE VST3 host passed 46 checks at 48 kHz. With a 0.2.0 bundle supplied
+  as the second argument, it passed 78 checks. Both the self-detector and keyed
+  sessions rendered bit-for-bit after migration.
+- The measured spectrum displayed −6.00 dB at the test bin for a −6 dB bell.
+  Wheel, modifier and range drag tests passed in the editor.
+- All 200 new recipes rendered with finite output on synthetic material.
+  The 60 dynamic bell probes moved in the intended direction within their
+  programmed range. Maximum sample peak was −10.38 dBFS on that material.
 - The 125 Hz synthetic key produced a −6.00 dB cut and changed the 2 kHz probe
   by −0.0016 dB. A separate vocal-like key produced a −6.00 dB cut at 2.5 kHz
   and changed the 250 Hz probe by −0.0041 dB. Both cuts released to unity.

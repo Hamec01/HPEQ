@@ -285,7 +285,7 @@ int main(int argc, char** argv)
         juce::OwnedArray<juce::PluginDescription> descriptions;
         formats.getFormat(0)->findAllTypesForFile(descriptions, bundle.getFullPathName());
         check(descriptions.size() == 1 && descriptions[0]->name == "HamloTochka"
-              && descriptions[0]->version == "0.2.0", "VST3 identity");
+              && descriptions[0]->version == "0.3.0", "VST3 identity");
         const auto make = [&]()
         {
             juce::String error;
@@ -297,7 +297,9 @@ int main(int argc, char** argv)
 
         auto plugin = make();
         check(plugin->getLatencySamples() == 0, "zero reported latency");
-        check(plugin->getNumPrograms() == 10 && plugin->getProgramName(8) == "Voice De-Ess", "factory programs");
+        check(plugin->getNumPrograms() == 210 && plugin->getProgramName(8) == "Voice De-Ess"
+              && plugin->getProgramName(10) == "BB Floor Rumble Cut"
+              && plugin->getProgramName(209) == "DNB Mid Definition", "factory programs");
         const auto input = signal();
         for (int channels : { 1, 2 })
             check(same(input, render(*plugin, input, channels, 127), channels), "bit-exact neutral pass-through");
@@ -348,11 +350,15 @@ int main(int argc, char** argv)
         {
             juce::OwnedArray<juce::PluginDescription> oldDescriptions;
             formats.getFormat(0)->findAllTypesForFile(oldDescriptions, juce::String::fromUTF8(argv[2]));
-            check(oldDescriptions.size() == 1 && oldDescriptions[0]->version == "0.1.0"
-                  && descriptions[0]->uniqueId == oldDescriptions[0]->uniqueId, "0.1 VST3 identity retained");
+            check(oldDescriptions.size() == 1
+                  && (oldDescriptions[0]->version == "0.1.0" || oldDescriptions[0]->version == "0.2.0")
+                  && descriptions[0]->uniqueId == oldDescriptions[0]->uniqueId, "legacy VST3 identity retained");
+            const auto hasLegacyKey = oldDescriptions[0]->version == "0.2.0";
             juce::String error;
             auto old = formats.createPluginInstance(*oldDescriptions[0], rate, 256, error);
-            check(old != nullptr, "0.1 instance");
+            check(old != nullptr, "legacy instance");
+            for (int p = 0; p < old->getNumPrograms(); ++p)
+                check(old->getProgramName(p) == plugin->getProgramName(p), "legacy program index retained");
             set(*old, "Band 01 Enabled", 1.0f);
             set(*old, "Band 01 Dynamic", 1.0f);
             set(*old, "Band 01 Gain", 0.625f);
@@ -363,8 +369,18 @@ int main(int argc, char** argv)
             set(*migration, "Band 01 External Key", 1.0f);
             render(*migration, input, 2, 256);
             migration->setStateInformation(oldState.getData(), static_cast<int>(oldState.getSize()));
-            check(parameter(*migration, "Band 01 External Key").getValue() == 0.0f, "0.1 state defaults to self detection");
-            check(same(baseline, render(*migration, input, 2, 127), 2), "0.1 session audio stays bit-exact");
+            check(parameter(*migration, "Band 01 External Key").getValue() == 0.0f, "legacy state restores self detection");
+            check(same(baseline, render(*migration, input, 2, 127), 2), "legacy session audio stays bit-exact");
+            if (hasLegacyKey)
+            {
+                set(*old, "Band 01 Gain", 0.5f);
+                checkSidechain(*old);
+                const auto keyedBaseline = renderKey(*old, 2);
+                juce::MemoryBlock oldKeyState;
+                old->getStateInformation(oldKeyState);
+                migration->setStateInformation(oldKeyState.getData(), static_cast<int>(oldKeyState.getSize()));
+                check(renderKey(*migration, 2) == keyedBaseline, "0.2 keyed session audio stays bit-exact");
+            }
         }
         std::cout << "HamloTochka: " << checks << " VST3 checks passed.\n";
         return 0;

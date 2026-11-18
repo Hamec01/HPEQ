@@ -10,10 +10,12 @@ namespace hamlo::tochka
 {
 struct Preset
 {
-    const char* name;
+    juce::String name;
     const char* group;
     const char* description;
     std::array<hpeq::dsp::EqBandParams, 2> bands {};
+    const char* genre = "Factory";
+    bool firstBandExternal = false;
 };
 
 class Processor final : public juce::AudioProcessor
@@ -48,7 +50,7 @@ public:
     void getStateInformation(juce::MemoryBlock&) override;
     void setStateInformation(const void*, int) override;
 
-    static const std::array<Preset, 10>& presets();
+    static const std::vector<Preset>& presets();
     Band band(int index) const noexcept;
     bool hasBand(int index) const noexcept;
     void editBand(int index, const Band&, bool inGesture = false);
@@ -64,6 +66,8 @@ public:
     void enableCapture(bool enabled) noexcept { captureEnabled.store(enabled); }
     bool usesExternalKey(int index) const noexcept;
     void setExternalKey(int index, bool);
+    bool showsDifference() const noexcept { return differenceView.load(std::memory_order_relaxed); }
+    void showDifference(bool enabled) noexcept { differenceView.store(enabled, std::memory_order_relaxed); }
 
     void setDry(bool);
     bool isDry() const noexcept { return bypassValue->load() >= 0.5f; }
@@ -93,6 +97,7 @@ private:
     juce::RangedAudioParameter* matchParameter = nullptr;
     std::atomic<int> program { 0 };
     std::atomic<bool> modified { false };
+    std::atomic<bool> differenceView { false };
     std::atomic<std::uint32_t> occupied { 0 };
 
     hpeq::dsp::KeyedEq eq;
