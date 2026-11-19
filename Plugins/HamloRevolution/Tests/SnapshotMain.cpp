@@ -59,6 +59,21 @@ int main(int argc, char* argv[])
     }
     std::unique_ptr<juce::AudioProcessorEditor> e(p.createEditor());
     e->setSize(p.getSpec().editorWidth, p.getSpec().editorHeight);
+#if HPEQ_MODULE_KIND == 9
+    // R15: "transition fill phrase [whole]": PHRASE FILL with user marks on the source (kick, hat, snare, perc, tom)
+    if (argc > 4 && juce::String(argv[4]).contains("phrase"))
+        if (auto* editor = dynamic_cast<hpeq::standalone::ModulePluginEditor*>(e.get()))
+        {
+            auto* page = editor->getTransitionPage();
+            page->chooseKind(hpeq::dsp::transition::Fill);
+            if (juce::String(argv[4]).contains("whole"))
+                page->chooseFillBeats(hpeq::dsp::transition::kWholeLoop);
+            const auto hits = page->getValues().hits;
+            const int roles[] { 0, 2, 1, 3, 4, 2 };
+            for (size_t i = 0; i < hits.size() && i < 6; ++i)
+                page->markRegion(hits[i].getStart(), hits[i].getEnd(), roles[i]);
+        }
+#endif
     if(argc>4&&juce::String(argv[4]).contains("minimum"))e->setSize(p.getSpec().editorWidth/2,p.getSpec().editorHeight/2);
     const float scale = argc > 3 ? static_cast<float>(juce::String(argv[3]).getDoubleValue()) : 1.0f;
     const auto image = e->createComponentSnapshot(e->getLocalBounds(), true, scale);

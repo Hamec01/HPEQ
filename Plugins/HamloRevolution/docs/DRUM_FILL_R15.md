@@ -126,3 +126,106 @@ listed here because the numbers would otherwise look better than the per-case tr
 - Real full mixes (drums + music) were not in the lab corpus; the drumness / conservative path is tested only on
   synthetic signals. No tom role exists. 4/4 only. Host BPM must match the loop.
 - Score weights remain a hypothesis to fit on owner A/B choices.
+
+## R15b: user marks, PERC, WHOLE LOOP (owner request, same day)
+
+- **Marks (optional).** On PHRASE FILL the wave shows the source (faint) behind the result. Right-click a hit to
+  snap to its analysed region, or right-drag any region, then choose KICK / SNARE / HAT / PERC. Right-click an
+  existing mark to relabel it (its role is ticked) or REMOVE MARK; UNDO LAST MARK (64 steps) and CLEAR ALL MARKS
+  are in the same menu. Without marks everything stays automatic.
+- **How marks are used.** The strongest attack inside a marked region takes the mark's role with full confidence;
+  the region's end is the slice end; no cleaning filter. A role with at least one mark uses only marked hits;
+  unmarked roles stay automatic. A region with no detected attack gets one at its first strong sample.
+- **PERC** exists only from marks (the analyser never invents it). It plays the snare lane when there is no snare,
+  and in 70 % of candidates answers ghost snares and some off-beat hats. Own kit switch and rhythm row.
+- **WHOLE LOOP** (EDIT menu, PHRASE recipes only): every bar is re-made from the start of the source, with the
+  strong original kick / snare hits kept as the skeleton, bar ends answering, the final bar resolving. Older
+  recipes fall back to their 4-beat edit.
+- Marks live with the instance like the kit switches (survive NEW VARIATION and editor reopening); a new capture,
+  bar change or sample clears them and their undo history.
+
+Verified: 6390 native checks / 0 failed, including an owner scenario test (WAV dropped -> FILL -> mark kick and a
+wrong snare -> relabel -> undo -> remove -> clear -> undo -> perc -> NEW VARIATION keeps marks and the dragged WAV
+-> WHOLE LOOP -> PERC switch -> editor reopen -> GENERATE clears marks). Lab numbers unchanged (marks off).
+Screens: `out/r15/screens/phrase_marks.png`, `phrase_whole.png` (local, not in Git). Not FL-tested.
+
+## R15c: phrase formula from the acoustic reference (targets written before code)
+
+Owner: "Da, popravj" after `docs/reports/r15/ACOUSTIC_REFERENCE.md`. Same tool before and after
+(`Tools/r15_reference.py`, R15 group = last bar of the 36 4-beat lab renders, unchanged). "Before" = that report.
+The reference is acoustic: it informs Boom Bap and DnB (break-based) fully, Trap and Techno only partly.
+
+| # | Measure (R15 group) | Before | Acoustic A / live BB | Target |
+|---|---|---|---|---|
+| C1 | Syncopation, median | 0.35 | 0.51 / 0.59 | >= 0.45 |
+| C2 | Share on 8ths / on 16ths | .67 / .14 | .32 / .22, .42 / .40 | <= .55 / >= .22 |
+| C3 | Longest run of even strokes, median | 3 | 5 / 7 | >= 5 |
+| C4 | Last 16th empty | 39 % | 58 % / 71 % | 50..75 % |
+| C5 | Dynamics beat 4 / beat 1, median | 1.15 | 0.72 / 0.59 | <= 1.0 |
+| C6 | Microtiming median / off-grid share | 3.3 ms / .11 | 9.2 / 11.1 ms, .24 / .11 | 5..9 ms / <= .15 |
+| C7 | TOM mark (user marks only; toms are ~40 % of acoustic hits) | none | - | mark, kit switch, runs |
+| C8 | No regression: native tests, lab tone cosine (median), recall / role accuracy | 0.994 | - | all pass, >= 0.98, unchanged |
+
+Doubts written before the run: the measured bar includes R15's kept groove beats (quantized source), so C1/C2/C6
+cannot reach acoustic values by the figure alone; C6 includes analyser error (~2.7 ms on clean snare rolls); the
+lab grid-deviation metric (0.16 ticks) will rise with deliberate microtiming and is not a target any more.
+
+### R15c results (2026-11-19, corrected tool, 36 R15 4-beat renders; per-genre n = 9)
+
+| # | Measure | Before | After | Target | Met |
+|---|---|---|---|---|---|
+| C1 | Syncopation median (BB / DnB / Trap / Techno) | 0.35 (.36/.33/.33/.37) | 0.40 (.46/.44/.39/.34) | >= 0.45 | no (BB yes) |
+| C2 | 8ths / 16ths | .67 / .14 | .62 / .20 | <= .55 / >= .22 | no |
+| C3 | Longest even run, median | 3 | 5 | >= 5 | yes |
+| C4 | Last 16th empty | 8 % | 47 % | *corrected: 8..41 %* | over by 6 pts |
+| C5 | Beat 4 / beat 1; tension | 1.15; +0.19 | 0.96; +0.08 | <= 1.0 | yes |
+| C6 | Microtiming median (BB / DnB / Trap / Techno); off-grid | 3.3 ms; .11 | 5.0 ms (10.0/2.8/6.0/0.9); .12 | 5..9 ms; <= .15 | yes (just) |
+| C7 | TOM mark | none | mark, kit switch, row, descending runs | mark | yes (R15d, below) |
+| C8 | Tests; tone cosine median / worst; level worst; recall, role acc. | 6390; .994/.274; 11.4 dB; .885, .961 | 6391 / 0 failed; .994/.319; 11.4 dB; unchanged | pass, >= .98 | yes |
+
+What changed in the formula: 42 new cells over 4 genres (linear kick/snare 16ths, cadences with a rest on the last 16th, RUN
+cells), a RUN mode (20..60 % of candidates by CHOP: even strokes over the last two beats into a run cadence), a
+flatter energy contour (0.7..1.0 of base, first 0.45..1.0), T = 0.5 x closeness of tension to +0.05 plus landing
+(first: raw tension), a run term +0.4 N (N = longest even stream 3..6 -> 0..1), syncopation targets BB 0.55 /
+Trap 0.50 / DnB 0.55 / Techno 0.40 (first 0.35 / 0.45 / 0.45 / 0.30), and deterministic feel in ms (ghosts +9,
+backbeat accents +5, added kicks -3, hats +4 on odd / -1.5 on even 16ths, rolls / runs rushing -2..-6 by figure
+position; scaled BB 1.0, DnB 0.7, Trap / Techno 0.35, conservative x0.5). Anchors, carried hats, reverse and
+grace notes are not moved.
+
+Changes after a measured run (disclosed, rule 4):
+1. **Measurement error found.** `rest_last_16th` used `tick >= 90` with no tolerance: rushed or pre-rolled last-16th
+   hits counted as rests. Fixed (split half-way, 87), all groups re-measured. This changed the reference itself:
+   acoustic 41 % (not 58 %), live BB 12 % (not 71 %), rolls 8 % (not 47 %). Target C4 (50..75 %) came from the
+   wrong numbers; corrected range 8..41 % (the measured groups). R15c is 6 points over it (Techno 78 %, Trap 67 %).
+2. Landing weights: first R15c run rewarded only the rest (+0.35, hit +0.15) -> 86 % rest on the wrong tool. A
+   retune to +0.2 was made and then reverted once the tool error was found. Final: hit on the last 16th and
+   "strong last 8th, then rest" are both +0.35 (the choice comes from the cell library).
+3. New Trap cadence `...x / ..X. / RRR.` put a kick into 1-beat hat-only windows: worst level +18.8 dB (first
+   R15 11.4). Its kick was removed: worst 11.4 dB again.
+4. Lab grid deviation (0.16 -> 0.19 ticks median) rises by design (feel); it is no longer a target.
+
+Not met and why: C1 / C2 - the measured bar includes the 1..2 kept groove beats (quantized source, 8th hats) and
+Techno keeps quarter kicks, so the figure alone cannot move the whole-bar numbers to acoustic values (doubt written
+before the run). C6 is met overall by Boom Bap and Trap; DnB 2.8 ms (its rushing rolls are short at 172 BPM).
+C7 TOM was done in the next step (R15d).
+Same seed now gives a different phrase than the R15 build from earlier today (R15 is unreleased).
+Renders: `out/r15/r15c` (local). Not listened to in FL.
+
+## R15d: TOM mark (owner: "Da, delaj TOM")
+
+- **TOM is a 5th role, from marks only** (the analyser never classifies a tom, like PERC). Mark menu, kit switch
+  (`TOM / ON / n SLICES`, orange) and rhythm row on the page; `kKitRoles` 4 -> 5. Kit switches and marks are not in
+  the saved state, so no state migration; all kit arrays default to ON.
+- **How toms are played.** With tom marks, 75 % of candidates are tom candidates. In them the normal and accented
+  snare strokes of the later figure (from 40 % of the figure on for 3+ beat fills, the whole figure for 1..2 beats,
+  each bar's second half in WHOLE LOOP) move to the toms; ghosts and rolls stay on the snare. Without a snare and
+  a perc, toms play the snare lane. Several toms are ordered high -> low by the zero-crossing rate of their body
+  (5..80 ms after the attack) and the fill runs down them in time. Toms choke only their own drum. Slice length
+  up to 0.40 s. Family name gets "+ TOMS".
+- **Verified.** 6444 native checks / 0 failed. New test: never invented without marks; 2 marked toms (low marked
+  first on purpose) used in >= 6 of 12 seeds (62 strokes), only the marked hits, the high tom always before the low
+  one, switch mutes, deterministic, bounded. Owner scenario adds a TOM mark from the page. Without marks all 228
+  lab renders are bit-identical to R15c (hash compare). Screen `out/r15/screens/phrase_tom.png` checked: five
+  buttons and five rows fit.
+- **Limits.** Pitch order is a zero-crossing heuristic (a tom with a loud stick click may sort higher than it
+  sounds). Not FL-tested.

@@ -1,0 +1,231 @@
+{
+ "A_acoustic": {
+  "files_listed": 153,
+  "files_measured": 146,
+  "hits_per_bar_median": 14,
+  "hits_per_beat_mean": [
+   3.97,
+   3.7,
+   3.73,
+   2.68
+  ],
+  "role_share_kick_snare_hat": [
+   0.148,
+   0.777,
+   0.075
+  ],
+  "tomlike_share": 0.399,
+  "grid_class_share": {
+   "8th": 0.323,
+   "16th": 0.223,
+   "32nd": 0.106,
+   "triplet": 0.107,
+   "off-grid": 0.24
+  },
+  "syncopation_median_p25_p75": [
+   0.508,
+   0.439,
+   0.574
+  ],
+  "tension_median_p25_p75": [
+   -0.085,
+   -0.287,
+   0.064
+  ],
+  "landing_accent_share": 0.26,
+  "rest_last_16th_share": 0.411,
+  "rest_last_8th_share": 0.288,
+  "microtiming_ms_median": 9.2,
+  "fastest_ioi_ticks_median": 2.0730000000000004,
+  "longest_even_run_median": 5,
+  "dynamics_beat4_over_beat1_median": 0.72,
+  "first_dense_beat_hist": {
+   "1": 119,
+   "3": 3,
+   "5": 8,
+   "2": 14,
+   "4": 2
+  }
+ },
+ "B_live_bb": {
+  "files_listed": 24,
+  "files_measured": 24,
+  "hits_per_bar_median": 15,
+  "hits_per_beat_mean": [
+   3.79,
+   3.29,
+   4.42,
+   3.38
+  ],
+  "role_share_kick_snare_hat": [
+   0.408,
+   0.567,
+   0.025
+  ],
+  "tomlike_share": 0.109,
+  "grid_class_share": {
+   "8th": 0.416,
+   "16th": 0.4,
+   "32nd": 0.039,
+   "triplet": 0.033,
+   "off-grid": 0.111
+  },
+  "syncopation_median_p25_p75": [
+   0.591,
+   0.544,
+   0.616
+  ],
+  "tension_median_p25_p75": [
+   -0.043,
+   -0.187,
+   0.106
+  ],
+  "landing_accent_share": 0.042,
+  "rest_last_16th_share": 0.125,
+  "rest_last_8th_share": 0.083,
+  "microtiming_ms_median": 11.14,
+  "fastest_ioi_ticks_median": 2.362000000000002,
+  "longest_even_run_median": 7,
+  "dynamics_beat4_over_beat1_median": 0.59,
+  "first_dense_beat_hist": {
+   "1": 22,
+   "2": 2
+  }
+ },
+ "C_snare_roll": {
+  "files_listed": 36,
+  "files_measured": 36,
+  "hits_per_bar_median": 16,
+  "hits_per_beat_mean": [
+   3.83,
+   4.03,
+   4.28,
+   3.36
+  ],
+  "role_share_kick_snare_hat": [
+   0.0,
+   1.0,
+   0.0
+  ],
+  "tomlike_share": 0.373,
+  "grid_class_share": {
+   "8th": 0.516,
+   "16th": 0.376,
+   "32nd": 0.001,
+   "triplet": 0.105,
+   "off-grid": 0.002
+  },
+  "syncopation_median_p25_p75": [
+   0.577,
+   0.457,
+   0.612
+  ],
+  "tension_median_p25_p75": [
+   0.204,
+   0.141,
+   0.298
+  ],
+  "landing_accent_share": 0.611,
+  "rest_last_16th_share": 0.083,
+  "rest_last_8th_share": 0.028,
+  "microtiming_ms_median": 2.66,
+  "fastest_ioi_ticks_median": 5.576999999999998,
+  "longest_even_run_median": 15,
+  "dynamics_beat4_over_beat1_median": 1.34,
+  "first_dense_beat_hist": {
+   "1": 32,
+   "2": 3,
+   "5": 1
+  }
+ },
+ "R15_phrase": {
+  "files_listed": 36,
+  "files_measured": 36,
+  "hits_per_bar_median": 12,
+  "hits_per_beat_mean": [
+   3,
+   2.42,
+   4.08,
+   2.78
+  ],
+  "role_share_kick_snare_hat": [
+   0.343,
+   0.356,
+   0.301
+  ],
+  "tomlike_share": 0.0,
+  "grid_class_share": {
+   "8th": 0.621,
+   "16th": 0.203,
+   "32nd": 0.008,
+   "triplet": 0.047,
+   "off-grid": 0.12
+  },
+  "syncopation_median_p25_p75": [
+   0.401,
+   0.352,
+   0.455
+  ],
+  "tension_median_p25_p75": [
+   0.079,
+   0.005,
+   0.194
+  ],
+  "landing_accent_share": 0.111,
+  "rest_last_16th_share": 0.472,
+  "rest_last_8th_share": 0.028,
+  "microtiming_ms_median": 5.02,
+  "fastest_ioi_ticks_median": 4.184999999999988,
+  "longest_even_run_median": 5,
+  "dynamics_beat4_over_beat1_median": 0.96,
+  "first_dense_beat_hist": {
+   "1": 30,
+   "2": 6
+  }
+ },
+ "R14_compose": {
+  "files_listed": 36,
+  "files_measured": 36,
+  "hits_per_bar_median": 21,
+  "hits_per_beat_mean": [
+   4.17,
+   4.78,
+   5.36,
+   6.64
+  ],
+  "role_share_kick_snare_hat": [
+   0.239,
+   0.531,
+   0.23
+  ],
+  "tomlike_share": 0.007,
+  "grid_class_share": {
+   "8th": 0.06,
+   "16th": 0.14,
+   "32nd": 0.141,
+   "triplet": 0.221,
+   "off-grid": 0.437
+  },
+  "syncopation_median_p25_p75": [
+   0.574,
+   0.542,
+   0.613
+  ],
+  "tension_median_p25_p75": [
+   0.275,
+   0.095,
+   0.393
+  ],
+  "landing_accent_share": 0.472,
+  "rest_last_16th_share": 0,
+  "rest_last_8th_share": 0,
+  "microtiming_ms_median": 13.71,
+  "fastest_ioi_ticks_median": 2.236000000000004,
+  "longest_even_run_median": 9,
+  "dynamics_beat4_over_beat1_median": 2.05,
+  "first_dense_beat_hist": {
+   "1": 30,
+   "2": 6
+  }
+ }
+}

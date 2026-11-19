@@ -84,8 +84,8 @@ double percentile(std::vector<double> v, double q)
     return v[static_cast<size_t>(std::clamp(q, 0.0, 1.0) * static_cast<double>(v.size() - 1))];
 }
 // nominal slice length per role, seconds (a hit longer than this is choked)
-constexpr double nominal[kRoles] { 0.30, 0.24, 0.09 };
-constexpr double needed[kRoles] { 0.16, 0.12, 0.045 };
+constexpr double nominal[kRoles] { 0.30, 0.24, 0.09, 0.22, 0.40 };
+constexpr double needed[kRoles] { 0.16, 0.12, 0.045, 0.06, 0.12 };
 } // namespace
 
 const char* genreName(int genre) noexcept
@@ -95,11 +95,11 @@ const char* genreName(int genre) noexcept
 }
 const char* roleName(int role) noexcept
 {
-    static constexpr const char* names[] { "KICK", "SNARE", "HAT" };
-    return names[std::clamp(role, 0, 2)];
+    static constexpr const char* names[] { "KICK", "SNARE", "HAT", "PERC", "TOM" };
+    return names[std::clamp(role, 0, kRoles - 1)];
 }
 
-Analysis analyse(const juce::AudioBuffer<float>& stereo, double fs, double bpm)
+Analysis analyse(const juce::AudioBuffer<float>& stereo, double fs, double bpm, const std::vector<Mark>& marks)
 {
     Analysis a;
     const int length = stereo.getNumSamples();
@@ -250,11 +250,11 @@ Analysis analyse(const juce::AudioBuffer<float>& stereo, double fs, double bpm)
         // as snare. Body and decay terms were added after that run; see docs/DRUM_FILL_R15.md.
         const double body = std::clamp(std::log10(fr[1] + 1e-5) + 3.0, -1.0, 1.0); // second run: 1e-4 / 1.5 still read a bodiless hat as snare
         const double ring = std::clamp((decay - 90.0) / 60.0, -1.0, 1.0);
-        const double score[kRoles] { 2.4 * fr[0] + 0.3 * fr[1] - 1.0 * fr[2] - 1.6 * fr[3],
+        const double score[kAutoRoles] { 2.4 * fr[0] + 0.3 * fr[1] - 1.0 * fr[2] - 1.6 * fr[3],
                                      1.5 * fr[2] + 1.1 * fr[1] + 0.5 * fr[3] - 1.3 * fr[0] + 0.6 * body + 0.5 * ring,
                                      2.6 * fr[3] - 0.6 * fr[2] - 1.4 * fr[0] - 1.2 * fr[1] - 1.2 * body - 0.5 * ring };
         double sum = 0;
-        for (int r = 0; r < kRoles; ++r)
+        for (int r = 0; r < kAutoRoles; ++r)
             sum += (o.p[static_cast<size_t>(r)] = std::exp(6.0 * score[r]));
         for (auto& v : o.p)
             v /= sum;
@@ -283,7 +283,7 @@ Analysis analyse(const juce::AudioBuffer<float>& stereo, double fs, double bpm)
         o.start = std::max(0, o.attack - static_cast<int>(0.0015 * fs));
         masking.push_back(total / (total + pre));
         // own-band masking: sustained energy in the role's own bands before the attack (bass, pads, tails)
-        static constexpr int ownBands[kRoles][2] { { 0, 1 }, { 1, 2 }, { 3, 3 } };
+        static constexpr int ownBands[kRoles][2] { { 0, 1 }, { 1, 2 }, { 3, 3 }, { 2, 3 }, { 1, 2 } };
         double own = 0, ownPre = 0;
         for (int b : { ownBands[o.role][0], ownBands[o.role][1] })
         {
@@ -355,6 +355,57 @@ Analysis analyse(const juce::AudioBuffer<float>& stereo, double fs, double bpm)
         }
         std::stable_sort(a.onsets.begin(), a.onsets.end(), [](const Onset& p1, const Onset& p2) { return p1.start < p2.start; });
     }
+    // the user's marks win: the strongest attack inside a marked region takes the mark's role, full confidence and
+    // the region's end as its slice end; a region without a detected attack gets one at its first strong sample
+    for (const auto& m : marks)
+    {
+        const int from = std::clamp(std::min(m.start, m.end), 0, length - 1), to = std::clamp(std::max(m.start, m.end), from + 1, length);
+        if (to - from < static_cast<int>(0.004 * fs) || m.role < 0 || m.role >= kRoles)
+            continue;
+        const int slack = static_cast<int>(0.005 * fs);
+        a.onsets.erase(std::remove_if(a.onsets.begin(), a.onsets.end(), [&](const Onset& o) { return o.secondary && o.attack >= from - slack && o.attack < to; }), a.onsets.end());
+        int best = -1;
+        double strongest = -1;
+        for (int i = 0; i < static_cast<int>(a.onsets.size()); ++i)
+        {
+            const auto& o = a.onsets[static_cast<size_t>(i)];
+            const double total = o.novelty[0] + o.novelty[1] + o.novelty[2] + o.novelty[3];
+            if (!o.marked && o.attack >= from - slack && o.attack < to && total > strongest)
+            {
+                strongest = total;
+                best = i;
+            }
+        }
+        if (best < 0)
+        {
+            Onset o;
+            float top = 0;
+            for (int n = from; n < to; ++n)
+                top = std::max(top, std::abs(mono[static_cast<size_t>(n)]));
+            o.attack = from;
+            for (int n = from; n < to; ++n)
+                if (std::abs(mono[static_cast<size_t>(n)]) > 0.25f * top)
+                {
+                    o.attack = n;
+                    break;
+                }
+            o.start = std::max(0, o.attack - static_cast<int>(0.0015 * fs));
+            a.onsets.push_back(o);
+            best = static_cast<int>(a.onsets.size()) - 1;
+        }
+        auto& o = a.onsets[static_cast<size_t>(best)];
+        o.role = m.role;
+        o.p = {};
+        o.p[static_cast<size_t>(m.role)] = 1;
+        o.conf = 1;
+        o.isolation = 1;
+        o.clean = Full;
+        o.marked = true;
+        o.secondary = false;
+        o.start = std::max(0, std::min(o.start, to - 1));
+        o.free = std::max(16, to - o.start);
+    }
+    std::stable_sort(a.onsets.begin(), a.onsets.end(), [](const Onset& p1, const Onset& p2) { return p1.start < p2.start; });
     // peaks on the slice that would be played (after cleaning)
     const juce::AudioBuffer<float> clean[4] { stereo, filtered(stereo, fs, 3500, false), filtered(stereo, fs, 200, true), filtered(stereo, fs, 5000, true) };
     for (auto& o : a.onsets)
@@ -492,7 +543,10 @@ double fadeCurve(double x) noexcept { return 0.5 - 0.5 * std::cos(pi * std::clam
 // '.' rest, 'g' ghost, 'x' normal, 'X' accent, 'f' flam (grace + accent), 'r' two 32nds, 'R' three 32nd
 // triplets, 'q' four 64ths (only with a clean hat source and ROLL high).
 struct Cell { int energy; const char* k; const char* s; const char* h; };
-struct Library { std::vector<Cell> figure, cadence; bool carryHats; double syncopation, density; };
+// R15c (acoustic reference, docs/reports/r15/ACOUSTIC_REFERENCE.md): more 16th / linear figures, RUN cells (even
+// strokes carried over the bar line into the cadence), cadences that rest on the last 16th and land on the next
+// downbeat, syncopation targets raised from the first guesses (BB 0.35, Trap 0.45, DnB 0.45, Techno 0.30).
+struct Library { std::vector<Cell> figure, cadence, run, runCadence; bool carryHats; double syncopation, density; };
 const Library& library(int genre)
 {
     static const Library libs[kGenres] {
@@ -500,33 +554,47 @@ const Library& library(int genre)
           { { 0, "X..x", "....", "...." }, { 0, "X...", "..g.", "...." }, { 0, "....", "X...", "...." },
             { 1, "X.x.", "...g", "...." }, { 1, "..x.", "X..g", "...." }, { 1, "X...", "..X.", "...." }, { 1, "x...", "g.X.", "...." },
             { 2, "....", "X.gX", "...." }, { 2, "X..x", "..X.", "...." }, { 2, "....", "gXgX", "...." }, { 2, "x...", ".XX.", "...." },
-            { 3, "....", "XXgX", "...." }, { 3, "....", "rXrX", "...." }, { 3, "x.x.", ".X.X", "...." }, { 3, "....", "fXgX", "...." } },
+            { 3, "....", "XXgX", "...." }, { 3, "....", "rXrX", "...." }, { 3, "x.x.", ".X.X", "...." }, { 3, "....", "fXgX", "...." },
+            { 1, "x..x", ".g..", "...." }, { 2, "x.x.", ".x.X", "...." }, { 2, "...x", "gX..", "...." }, { 3, "x..x", ".XX.", "...." } },
           { { 0, "....", "X.XX", "...." }, { 0, "X...", "..fX", "...." }, { 0, "x...", "..XX", "...." }, { 0, "....", "XgXX", "...." },
-            { 0, "......", "XxXxXX", "......" }, { 0, "X...", ".X.X", "...." } },
-          false, 0.35, 2.2 },
+            { 0, "......", "XxXxXX", "......" }, { 0, "X...", ".X.X", "...." },
+            { 0, "....", "XxX.", "...." }, { 0, "x...", ".XX.", "...." }, { 0, "....", "rXX.", "...." }, { 0, "x..x", ".X..", "...." },
+            { 0, "....", "gXf.", "...." } },
+          { { 2, "....", "xxxx", "...." }, { 2, "x.x.", ".x.x", "...." }, { 3, "....", "gxgX", "...." }, { 3, "x..x", ".xx.", "...." } },
+          { { 0, "....", "xxX.", "...." }, { 0, "x...", ".xX.", "...." }, { 0, "x.x.", ".x..", "...." }, { 0, "....", "xxXX", "...." } },
+          false, 0.55, 2.2 },
         { // TRAP: hats carry and accelerate, 32nd/triplet rolls, sparse kick answers, half-time snare
           { { 0, "X...", "....", "x.x." }, { 0, "..x.", "....", "xxxx" }, { 0, "X...", "....", "xxxx" },
             { 1, "X...", "....", "x.rr" }, { 1, "..X.", "....", "x.x." }, { 1, "X.....", "......", "xxxxxx" }, { 1, "....", "X...", "x.xx" },
             { 2, "....", "X...", "rrrr" }, { 2, "X..x", "....", "xRxR" }, { 2, "....", "....", "RRRR" }, { 2, "......", "......", "xxxxxx" },
             { 3, "....", "..XX", "rrrr" }, { 3, "....", "X...", "qqqq" }, { 3, "X...", "....", "RRqq" }, { 3, "....", "X.XX", "rr.." } },
           { { 0, "....", "X...", "rrRq" }, { 0, "....", "..XX", "RRRR" }, { 0, "x...", "X...", "qqqq" }, { 0, "....", "X.X.", "rrrr" },
-            { 0, "......", "X..X..", "xxxxxx" }, { 0, "X...", "...X", "rRqq" } },
-          true, 0.45, 3.4 },
+            { 0, "......", "X..X..", "xxxxxx" }, { 0, "X...", "...X", "rRqq" },
+            { 0, "....", "X...", "rrr." }, { 0, "....", "..X.", "RRR." } },
+          { { 2, "...x", "..X.", "xxxx" }, { 2, "....", "....", "rrrr" }, { 3, "x...", "..X.", "RRRR" } },
+          { { 0, "....", "X...", "rrr." }, { 0, "....", "..X.", "xxx." }, { 0, "x...", "X...", "RRqq" } },
+          true, 0.50, 3.4 },
         { // DNB: break exchange, offset snares, short bursts on real hits
           { { 0, "X...", "....", "..x." }, { 0, "....", "X...", "..x." }, { 0, "X.x.", "....", "...." },
             { 1, "X.x.", "....", "..x." }, { 1, "..X.", "X...", "...." }, { 1, "X...", "..gX", "...." }, { 1, "..x.", "X..g", "...." },
             { 2, "....", "X.gX", "...." }, { 2, "..x.", "X..X", "...." }, { 2, "X..x", "..X.", "...." }, { 2, "....", "gXXg", "...." },
             { 3, "....", "XXgX", "...." }, { 3, "x...", ".XXX", "...." }, { 3, "....", "rrXX", "...." }, { 3, "X...", "rXrX", "...." } },
           { { 0, "....", "XXXX", "...." }, { 0, "X...", "..XX", "...." }, { 0, "....", "XgXX", "...." }, { 0, "....", "rrrX", "...." },
-            { 0, "......", "XXxXXX", "......" } },
-          false, 0.45, 2.8 },
+            { 0, "......", "XXxXXX", "......" },
+            { 0, "....", "XXX.", "...." }, { 0, "x...", ".xX.", "...." }, { 0, "....", "rrX.", "...." }, { 0, "..x.", "X.X.", "...." } },
+          { { 2, "....", "xxxx", "...." }, { 2, "x.x.", ".x.x", "...." }, { 3, "x..x", ".xx.", "...." }, { 3, "....", "gxxX", "...." } },
+          { { 0, "....", "xxX.", "...." }, { 0, "x...", ".xX.", "...." }, { 0, "....", "xxXX", "...." } },
+          false, 0.55, 2.8 },
         { // TECHNO: every quarter kick stays (hard rule, unless STOP drops it), snare/hat tension builds
           { { 0, "X...", "....", "..x." }, { 0, "X...", "..x.", "..x." },
             { 1, "X...", "....", ".xxx" }, { 1, "X...", "..x.", "x.x." }, { 1, "X...", "x.x.", "...." },
             { 2, "X...", "xxxx", "...." }, { 2, "X...", "x.xx", ".x.x" }, { 2, "X...", ".x.x", "x.x." },
             { 3, "X...", "rrrr", "...." }, { 3, "X...", "xxxx", "xxxx" }, { 3, "X...", "rrxx", "...." } },
-          { { 0, "X...", "rrrr", "...." }, { 0, "X...", "xxrr", "...." }, { 0, "X...", "XXXX", "...." }, { 0, "X...", "xXxX", "x.x." } },
-          true, 0.30, 3.0 } };
+          { { 0, "X...", "rrrr", "...." }, { 0, "X...", "xxrr", "...." }, { 0, "X...", "XXXX", "...." }, { 0, "X...", "xXxX", "x.x." },
+            { 0, "X...", "xxX.", "...." }, { 0, "X...", ".xX.", "x..." } },
+          { { 2, "X...", ".xxx", "...." }, { 3, "X...", "xxxx", "...." } },
+          { { 0, "X...", "xxX.", "...." }, { 0, "X...", "xxxX", "...." } },
+          true, 0.40, 3.0 } };
     return libs[std::clamp(genre, 0, kGenres - 1)];
 }
 
@@ -535,15 +603,17 @@ struct Ev
     double tick = 0; // 24ths from the window start, straight grid (swing and microtiming added on scheduling)
     int role = Kick, source = -1; // onset index
     double velocity = 1;
-    bool anchor = false, carried = false, reverse = false, roll = false, grace = false;
+    bool anchor = false, carried = false, reverse = false, roll = false, grace = false, run = false;
     int sample = 0; // anchors and carried hits: their exact original start
 };
 struct Candidate
 {
     std::vector<Ev> events;
     int turn = 0, genre = BoomBap;
-    std::array<int, 4> cells { -1, -1, -1, -1 };
-    bool drop = false, reverse = false, triplet = false;
+    std::array<int, 16> cells {};
+    bool perc = false; // perc colour: user-marked perc answers ghost snares and some off-beat hats
+    bool tom = false;  // tom colour: user-marked toms take the snare strokes of the second half and the runs
+    bool drop = false, reverse = false, triplet = false, run = false;
     double score = -1e30, change = 0;
     int anchors = 0;
 };
@@ -552,9 +622,11 @@ struct Context
 {
     const Analysis* a = nullptr;
     Settings s;
-    int length = 0, genre = BoomBap, status = Generated;
+    int length = 0, genre = BoomBap, status = Generated, beats = 4;
+    bool whole = false;
     double windowStart = 0, windowTicks = 0, gridOrigin = 0; // samples / ticks / samples
     std::array<std::vector<int>, kRoles> pool; // usable onsets per role, best first
+    std::vector<int> toms;                     // marked toms, highest pitch first (a fill descends the kit)
     std::vector<int> original;                 // onsets inside the window
     double chop = 0.6, roll = 0.7, reverse = 0.4, stop = 0.3;
 };
@@ -587,15 +659,16 @@ int pick(const Context& x, int role, char kind, std::uint64_t seed, int stroke)
 
 void addCell(const Context& x, Candidate& c, const Cell& cell, double beatTick, double progress, std::uint64_t seed, bool rollsAllowed, bool upgradeRolls)
 {
-    const char* lanes[kRoles] { cell.k, cell.s, cell.h };
-    for (int role = 0; role < kRoles; ++role)
+    const char* lanes[kAutoRoles] { cell.k, cell.s, cell.h };
+    for (int lane = 0; lane < kAutoRoles; ++lane)
     {
-        const int div = static_cast<int>(std::strlen(lanes[role]));
+        const int role = lane;
+        const int div = static_cast<int>(std::strlen(lanes[lane]));
         if (div == 6)
             c.triplet = true;
         for (int i = 0; i < div; ++i)
         {
-            char k = lanes[role][i];
+            char k = lanes[lane][i];
             if (k == '.')
                 continue;
             if (!rollsAllowed && (k == 'r' || k == 'R' || k == 'q'))
@@ -608,11 +681,34 @@ void addCell(const Context& x, Candidate& c, const Cell& cell, double beatTick, 
             const double base = (k == 'X' ? 1.0 : k == 'f' ? 1.0 : k == 'g' ? 0.42 : 0.8) * (0.86 + 0.14 * progress);
             const auto push = [&](double t, double v, char kind, bool roll, bool grace, int stroke)
             {
-                const int src = pick(x, role, kind, seed + static_cast<std::uint64_t>(role) * 101 + static_cast<std::uint64_t>(t * 8), stroke);
+                // perc only from the user's marks: it plays the snare lane when there is no snare, answers ghost
+                // snares and some off-beat hats when this candidate uses perc colour
+                int use = role;
+                const bool offBeat = std::abs(std::fmod(t, 12.0) - 6.0) < 0.01;
+                if (!x.pool[Perc].empty() && ((role == Snare && x.pool[Snare].empty()) || (c.perc && role == Snare && kind == 'g')
+                                              || (c.perc && role == Hat && !roll && offBeat && rnd(seed, static_cast<std::uint64_t>(t * 8) + 555) < 0.5)))
+                    use = Perc;
+                // toms only from the user's marks: in a tom candidate the normal / accented snare strokes of the
+                // later figure (each bar's second half in WHOLE LOOP) move to the toms, high to low through it;
+                // ghosts and rolls stay on the snare. Without snare and perc the toms play the snare lane.
+                const double figureStart = c.turn * ticksPerBeat, span = std::max(1.0, x.windowTicks - figureStart);
+                const double where = x.whole ? std::fmod(std::max(0.0, t - figureStart), 4 * ticksPerBeat) / (4 * ticksPerBeat) : std::clamp((t - figureStart) / span, 0.0, 0.999);
+                const double zone = x.whole || x.windowTicks - figureStart >= 3 * ticksPerBeat ? 0.4 : 0.0;
+                if (!x.toms.empty() && role == Snare && use == Snare
+                    && ((c.tom && !roll && kind != 'g' && where >= zone) || (x.pool[Snare].empty() && x.pool[Perc].empty())))
+                    use = Tom;
+                int src = -1;
+                if (use == Tom)
+                {
+                    const double local = zone > 0 && where >= zone ? (where - zone) / (1 - zone) : where;
+                    src = x.toms[static_cast<size_t>(std::min<int>(static_cast<int>(local * static_cast<double>(x.toms.size())), static_cast<int>(x.toms.size()) - 1))];
+                }
+                else
+                    src = pick(x, use, kind, seed + static_cast<std::uint64_t>(use) * 101 + static_cast<std::uint64_t>(t * 8), stroke);
                 if (src < 0)
                     return;
                 Ev e;
-                e.tick = t; e.role = role; e.source = src; e.velocity = std::clamp(v, 0.1, 1.2); e.roll = roll; e.grace = grace;
+                e.tick = t; e.role = use; e.source = src; e.velocity = std::clamp(v, 0.1, 1.2); e.roll = roll; e.grace = grace;
                 c.events.push_back(e);
             };
             if (k == 'r' || k == 'R' || k == 'q')
@@ -672,10 +768,14 @@ Candidate build(const Context& x, int index)
     const std::uint64_t seed = mix(x.s.seed * 0x9e3779b97f4a7c15ull + static_cast<std::uint64_t>(index) * 0x632be59bd9b4e019ull + 0x50485241ull);
     Candidate c;
     c.genre = x.genre;
-    const int beats = x.s.fillBeats;
-    // turn point: how many beats of the original pulse stay before the figure
+    const int beats = x.beats;
+    c.perc = !x.pool[Perc].empty() && rnd(seed, 3) < 0.7;
+    c.tom = !x.toms.empty() && x.status != Conservative && rnd(seed, 4) < 0.75;
+    // turn point: how many beats of the original pulse stay before the figure (WHOLE LOOP: none)
     if (x.status == Conservative)
         c.turn = beats - 1;
+    else if (x.whole)
+        c.turn = 0;
     else if (beats == 4)
         c.turn = rnd(seed, 1) < 0.25 + 0.5 * x.chop ? 1 : 2;
     else if (beats == 2)
@@ -685,21 +785,45 @@ Candidate build(const Context& x, int index)
     const int figureBeats = beats - c.turn;
     const double turnTick = c.turn * ticksPerBeat;
     const bool rolls = x.roll >= 0.2, upgrade = x.roll >= 0.8 && rnd(seed, 2) < 0.6;
-    // energy contour rises to the cadence; CHOP lifts the whole contour
+    // energy contour: R15c flattened (first: 0.45 -> 1.0 of base); acoustic fills are not louder or denser at the
+    // end (beat 4 / beat 1 = 0.72). CHOP lifts the whole contour.
     const double base = 0.4 + 2.4 * x.chop;
+    // RUN: an even stroke stream over the last two beats into a cadence that rests on the last 16th (acoustic
+    // players run 5..7 even strokes; R15 first measured 3)
+    c.run = x.status != Conservative && figureBeats >= 2 && x.chop >= 0.25 && rnd(seed, 5) < 0.2 + 0.4 * x.chop;
+    const auto choose = [&](const std::vector<Cell>& from, std::uint64_t salt)
+    {
+        const int n = static_cast<int>(from.size());
+        return std::min<int>(static_cast<int>(rnd(seed, salt) * n), n - 1);
+    };
     for (int j = 0; j < figureBeats; ++j)
     {
         const double beatTick = turnTick + j * ticksPerBeat, progress = figureBeats > 1 ? static_cast<double>(j) / (figureBeats - 1) : 1.0;
         const Cell* cell = nullptr;
-        if (j == figureBeats - 1)
+        const bool runBeat = c.run && j >= figureBeats - 2;
+        if (runBeat && j == figureBeats - 1)
         {
-            const int choice = static_cast<int>(rnd(seed, 10 + static_cast<std::uint64_t>(j)) * static_cast<double>(lib.cadence.size()));
+            const int choice = choose(lib.runCadence, 50);
+            c.cells[static_cast<size_t>(j)] = 300 + choice;
+            cell = &lib.runCadence[static_cast<size_t>(choice)];
+        }
+        else if (runBeat)
+        {
+            const int choice = choose(lib.run, 51);
+            c.cells[static_cast<size_t>(j)] = 200 + choice;
+            cell = &lib.run[static_cast<size_t>(choice)];
+        }
+        else if (j == figureBeats - 1)
+        {
+            const int choice = choose(lib.cadence, 10 + static_cast<std::uint64_t>(j));
             c.cells[static_cast<size_t>(j)] = 100 + choice;
-            cell = &lib.cadence[static_cast<size_t>(std::min<int>(choice, static_cast<int>(lib.cadence.size()) - 1))];
+            cell = &lib.cadence[static_cast<size_t>(choice)];
         }
         else
         {
-            int energy = static_cast<int>(std::lround(base * (0.45 + 0.55 * progress) + (rnd(seed, 20 + static_cast<std::uint64_t>(j)) - 0.5) * 0.9));
+            int energy = static_cast<int>(std::lround(base * (0.7 + 0.3 * progress) + (rnd(seed, 20 + static_cast<std::uint64_t>(j)) - 0.5) * 0.9));
+            if (x.whole && j % 4 == 3)
+                ++energy; // WHOLE LOOP: every bar answers on its last beat, the final bar resolves
             energy = std::clamp(energy, 0, x.status == Conservative ? 1 : 3);
             std::vector<int> options;
             for (int i = 0; i < static_cast<int>(lib.figure.size()); ++i)
@@ -710,7 +834,10 @@ Candidate build(const Context& x, int index)
             cell = &lib.figure[static_cast<size_t>(choice)];
         }
         const auto before = c.events.size();
-        addCell(x, c, *cell, beatTick, progress, seed + static_cast<std::uint64_t>(j) * 977, rolls, upgrade && j == figureBeats - 1);
+        addCell(x, c, *cell, beatTick, progress, seed + static_cast<std::uint64_t>(j) * 977, rolls, upgrade && j == figureBeats - 1 && !runBeat);
+        if (runBeat)
+            for (auto i = before; i < c.events.size(); ++i)
+                c.events[i].run = true;
         // hats of the source carry under calm cells (and always in Trap / Techno) if the cell has none
         bool cellHats = false;
         for (auto i = before; i < c.events.size(); ++i)
@@ -792,18 +919,27 @@ Candidate build(const Context& x, int index)
     c.events.erase(std::remove_if(c.events.begin(), c.events.end(), [&](const Ev& e) { return !x.s.kitEnabled[static_cast<size_t>(e.role)]; }), c.events.end());
     std::stable_sort(c.events.begin(), c.events.end(), [](const Ev& p, const Ev& q) { return p.tick < q.tick || (p.tick == q.tick && p.role < q.role); });
 
-    // ---- score: Q = 1.2 T + 0.8 V + 0.6 D - 1.5 X - 2.0 U - 1.2 R - 0.6 M + 0.5 F (heuristic baseline) ----
+    // ---- score: Q = 1.2 T + 0.8 V + 0.6 D - 1.5 X - 2.0 U - 1.2 R - 0.6 M + 0.5 F + 0.4 N (heuristic baseline) ----
     double early = 0, late = 0, weight = 0, syncopated = 0, uncertain = 0, risk = 0, collisions = 0;
     const double mid = turnTick + 0.5 * (end - turnTick);
-    bool landing = false;
+    // landing: a strong hit on the last 16th, or a strong hit in the last 8th and then a rest, are both landings
+    // (corrected acoustic reference: last 16th empty in 41 % acoustic, 12 % live boom bap, 8 % snare rolls).
+    // R15c first run rewarded only the rest (+0.35, the hit +0.15) from a measurement that counted a slightly early
+    // last-16th hit as a rest; R15 first: only the strong last-16th hit counted.
+    bool landLast16 = false, strongLast8 = false, anyLast16 = false;
+    const double finish = end - dropTicks;
     int counted = 0;
     for (size_t i = 0; i < c.events.size(); ++i)
     {
         const auto& e = c.events[i];
         const double v2 = e.velocity * e.velocity;
         (e.tick < mid ? early : late) += v2;
-        if (e.velocity >= 0.9 && e.tick >= end - 7 - dropTicks && !e.carried)
-            landing = true;
+        if (e.tick >= finish - 6 + 0.5)
+            anyLast16 = true;
+        if (e.velocity >= 0.9 && !e.carried && e.tick >= finish - 7)
+            landLast16 = true;
+        else if (e.velocity >= 0.9 && !e.carried && e.tick >= finish - 13)
+            strongLast8 = true;
         const double pos = std::fmod(e.tick, ticksPerBeat) / 6.0, near = std::round(pos);
         const int s16 = static_cast<int>(near) % 4;
         if (std::abs(pos - near) < 0.2)
@@ -834,7 +970,12 @@ Candidate build(const Context& x, int index)
         ++counted;
     }
     const double n = std::max(1, counted);
-    const double T = (late - early) / (late + early + 1e-9) + (landing || (c.drop && c.reverse) ? 0.35 : 0.0);
+    // T: R15c keeps a slight build only (target +0.05; acoustic full-bar fills measured -0.09, snare rolls +0.20);
+    // first: T = tension, so every candidate was pushed to crescendo
+    const double tension = (late - early) / (late + early + 1e-9);
+    const double shape = std::clamp(1 - std::pow((tension - 0.05) / 0.35, 2.0), -1.0, 1.0);
+    const double land = (c.drop && c.reverse) || landLast16 || (strongLast8 && !anyLast16) ? 0.35 : 0.0;
+    const double T = 0.5 * shape + land;
     std::vector<Ev> original;
     for (int o : x.original)
     {
@@ -872,9 +1013,24 @@ Candidate build(const Context& x, int index)
     }
     const double levelDb = originalEnergy > 0 ? 10 * std::log10((fillEnergy + 1e-30) / originalEnergy) : 0.0;
     const double L = levelDb < -3 ? (-3 - levelDb) / 6 : levelDb > 9 ? (levelDb - 9) / 6 : 0.0;
+    // N: longest stream of even strokes (16ths, 32nds or triplets) - acoustic median 5..7, R15 first 3
+    int runLength = 1, longest = 1;
+    double previous = -1e9;
+    for (const auto& e : c.events)
+    {
+        if (e.grace)
+            continue;
+        const double d = e.tick - previous;
+        if (d < 0.5)
+            continue; // a stacked hit (kick + snare together) does not break or extend the stream
+        runLength = std::abs(d - 6) <= 0.6 || std::abs(d - 3) <= 0.6 || std::abs(d - 4) <= 0.6 ? runLength + 1 : 1;
+        longest = std::max(longest, runLength);
+        previous = e.tick;
+    }
+    const double N = std::clamp((longest - 3) / 3.0, 0.0, 1.0);
     // a triplet run over a straight groove is a deliberate colour, not the default answer
     const double tripletPrior = c.triplet && a.swing < 1.5 ? 0.3 : 0.0;
-    c.score = -tripletPrior - 0.8 * L + 1.2 * T + 0.8 * V + 0.6 * D - 1.5 * X - 2.0 * U - 1.2 * R - 0.6 * M + 0.5 * F + 1e-4 * rnd(seed, 99);
+    c.score = -tripletPrior - 0.8 * L + 1.2 * T + 0.8 * V + 0.6 * D - 1.5 * X - 2.0 * U - 1.2 * R - 0.6 * M + 0.5 * F + 0.4 * N + 1e-4 * rnd(seed, 99);
     if (c.events.empty())
         c.score = -1e9;
     return c;
@@ -901,6 +1057,18 @@ juce::String familyName(const Context& x, const Candidate& c)
         name << " + DROP";
     if (c.reverse)
         name << " + REVERSE";
+    int percs = 0;
+    for (const auto& e : c.events)
+        percs += e.role == Perc && !e.anchor ? 1 : 0;
+    if (percs >= 2)
+        name << " + PERC";
+    int toms = 0;
+    for (const auto& e : c.events)
+        toms += e.role == Tom ? 1 : 0;
+    if (toms >= 2)
+        name << " + TOMS";
+    if (x.whole)
+        name = "WHOLE LOOP: " + name;
     return name;
 }
 
@@ -919,7 +1087,7 @@ bool sanitize(Settings& s)
     s.kind = Fill;
     s.bpm = std::clamp(s.bpm, 20.0, 999.0);
     s.bars = s.bars == 1 || s.bars == 4 ? s.bars : 2;
-    s.fillBeats = s.fillBeats == 1 || s.fillBeats == 2 ? s.fillBeats : 4;
+    s.fillBeats = s.fillBeats == 1 || s.fillBeats == 2 || s.fillBeats == kWholeLoop ? s.fillBeats : 4;
     s.recipe = std::clamp(s.recipe, kPhraseRecipe, kPhraseRecipe + 4);
     s.fillFx = std::isfinite(s.fillFx) ? std::clamp(s.fillFx, 0.0, 1.0) : 0.0;
     for (auto& k : s.knobs)
@@ -947,29 +1115,69 @@ Result plan(const juce::AudioBuffer<float>& source, const Settings& s)
     x.s = s;
     x.length = source.getNumSamples();
     x.chop = s.knobs[0]; x.roll = s.knobs[1]; x.reverse = s.knobs[2]; x.stop = s.knobs[3];
-    r.analysis = analyse(source, s.sampleRate, s.bpm);
+    r.analysis = analyse(source, s.sampleRate, s.bpm, s.marks);
+    x.whole = s.fillBeats == kWholeLoop;
+    x.beats = x.whole ? s.bars * 4 : s.fillBeats;
     const auto& a = r.analysis;
     x.a = &r.analysis;
     auto& p = r.plan;
     p.recipe = s.recipe;
     p.phraseEnd = x.length;
     const double beat = s.sampleRate * 60.0 / s.bpm;
-    x.windowStart = x.length - beat * s.fillBeats;
-    x.windowTicks = s.fillBeats * ticksPerBeat;
+    x.windowStart = std::max(0.0, x.length - beat * x.beats);
+    x.windowTicks = x.beats * ticksPerBeat;
     p.phraseStart = static_cast<int>(std::lround(x.windowStart));
     r.cut = p.phraseStart;
     for (int role = 0; role < kRoles; ++role)
     {
+        // a role the user marked uses only the marked hits; other roles stay automatic
+        const bool userRole = std::any_of(a.onsets.begin(), a.onsets.end(), [&](const Onset& o) { return o.marked && o.role == role; });
         for (int i = 0; i < static_cast<int>(a.onsets.size()); ++i)
-            if (a.onsets[static_cast<size_t>(i)].role == role && quality(a.onsets[static_cast<size_t>(i)]) >= kUsable)
+        {
+            const auto& o = a.onsets[static_cast<size_t>(i)];
+            if (o.role == role && quality(o) >= kUsable && (!userRole || o.marked))
                 x.pool[static_cast<size_t>(role)].push_back(i);
+        }
         std::stable_sort(x.pool[static_cast<size_t>(role)].begin(), x.pool[static_cast<size_t>(role)].end(),
                          [&](int i, int j) { return quality(a.onsets[static_cast<size_t>(i)]) > quality(a.onsets[static_cast<size_t>(j)]); });
         p.kitCounts[static_cast<size_t>(role)] = static_cast<int>(x.pool[static_cast<size_t>(role)].size());
     }
+    // toms high -> low by pitch: zero-crossing rate of the body 5..80 ms after the attack (a tom is a pitched,
+    // ringing drum; the higher tom crosses zero more often)
+    {
+        std::vector<std::pair<double, int>> pitched;
+        for (int i : x.pool[Tom])
+        {
+            const auto& o = a.onsets[static_cast<size_t>(i)];
+            const int from = std::min(x.length - 1, o.attack + static_cast<int>(0.005 * s.sampleRate));
+            const int to = std::min({ x.length, o.attack + static_cast<int>(0.080 * s.sampleRate), o.start + std::max(1, o.free) });
+            int crossings = 0;
+            float previous = 0;
+            for (int n = from; n < to; ++n)
+            {
+                float v = 0;
+                for (int ch = 0; ch < source.getNumChannels(); ++ch)
+                    v += source.getSample(ch, n);
+                if ((v > 0) != (previous > 0) && n > from)
+                    ++crossings;
+                previous = v;
+            }
+            pitched.push_back({ to > from ? crossings / static_cast<double>(to - from) : 0.0, i });
+        }
+        std::stable_sort(pitched.begin(), pitched.end(), [](const auto& p1, const auto& p2) { return p1.first > p2.first; });
+        for (const auto& entry : pitched)
+            x.toms.push_back(entry.second);
+    }
     for (int i = 0; i < static_cast<int>(a.onsets.size()); ++i)
         if (!a.onsets[static_cast<size_t>(i)].secondary && a.onsets[static_cast<size_t>(i)].attack >= a.phase + x.windowStart - 0.004 * s.sampleRate)
             x.original.push_back(i);
+    for (const auto& o : a.onsets) // the page snaps marks to these hit regions
+        if (!o.secondary)
+        {
+            Slice slice;
+            slice.sample = o.start; slice.end = o.start + o.free; slice.role = o.role;
+            p.slices.push_back(slice);
+        }
     x.genre = s.recipe == kPhraseRecipe ? a.genre : s.recipe - kPhraseRecipe - 1;
     p.genre = x.genre;
     if (std::all_of(s.knobs.begin(), s.knobs.end(), [](double v) { return v == 0; }))
@@ -1019,6 +1227,31 @@ Result plan(const juce::AudioBuffer<float>& source, const Settings& s)
     p.reason = x.status == Conservative ? (a.drumness < 0.35 ? "MIXED / SUSTAINED AUDIO - CAREFUL LAST-BEAT FILL" : "LOOSE TIMING - CAREFUL LAST-BEAT FILL") : "";
     // schedule: straight grid -> swing on odd 16ths -> role microtiming -> samples
     const double origin = a.phase + x.windowStart;
+    // R15c systematic feel, deterministic (no random jitter): acoustic fills sit 9..11 ms from the grid, R15 first
+    // measured 3.3 ms. Ghost notes late, backbeat accents laid back, added kicks a little ahead, off-beat hat 16ths
+    // late, rolls and runs rushing into the cadence. Scaled by genre: played styles more than programmed ones.
+    const double feelScale = (x.status == Conservative ? 0.5 : 1.0) * (x.genre == BoomBap ? 1.0 : x.genre == DnB ? 0.7 : 0.35);
+    const double figureStart = best.turn * ticksPerBeat, figureLength = std::max(1.0, x.windowTicks - figureStart);
+    const auto feelMs = [&](const Ev& e)
+    {
+        if (e.reverse || e.grace)
+            return 0.0;
+        const double progress = std::clamp((e.tick - figureStart) / figureLength, 0.0, 1.0);
+        const double in16 = std::fmod(e.tick, ticksPerBeat) / 6.0;
+        const bool on16 = std::abs(in16 - std::round(in16)) < 0.05, odd16 = on16 && static_cast<int>(std::round(in16)) % 2 != 0;
+        double ms = 0;
+        if (e.roll || e.run)
+            ms = -(2.0 + 4.0 * progress); // rushing, more towards the bar line
+        else if (e.velocity < 0.5)
+            ms = 9.0; // ghost notes behind the beat
+        else if (e.role == Snare && on16 && !odd16)
+            ms = 5.0; // laid-back accents
+        else if (e.role == Kick)
+            ms = -3.0;
+        else if (e.role == Hat)
+            ms = odd16 ? 4.0 : -1.5;
+        return ms * feelScale;
+    };
     const auto toSample = [&](const Ev& e)
     {
         if (e.anchor || e.carried)
@@ -1029,7 +1262,7 @@ Result plan(const juce::AudioBuffer<float>& source, const Settings& s)
             t += a.swing;
         if (!e.reverse)
             t += a.offset[static_cast<size_t>(e.role)];
-        return static_cast<int>(std::lround(origin + t * a.beat / ticksPerBeat)) - static_cast<int>(0.0015 * s.sampleRate);
+        return static_cast<int>(std::lround(origin + t * a.beat / ticksPerBeat + feelMs(e) * 0.001 * s.sampleRate)) - static_cast<int>(0.0015 * s.sampleRate);
     };
     const int turnSample = static_cast<int>(std::lround(origin + best.turn * ticksPerBeat * a.beat / ticksPerBeat)) - static_cast<int>(0.004 * s.sampleRate);
     r.cut = std::clamp(turnSample, 0, x.length - 1);
@@ -1056,10 +1289,11 @@ Result plan(const juce::AudioBuffer<float>& source, const Settings& s)
         usedWeight += e.velocity;
     }
     std::stable_sort(r.hits.begin(), r.hits.end(), [](const Scheduled& p1, const Scheduled& p2) { return p1.at < p2.at; });
-    // same-role choke: a new snare stroke stops the previous one (a drum, not a pile of copies)
+    // same-role choke: a new snare stroke stops the previous one (a drum, not a pile of copies); toms choke only
+    // their own drum (different marked toms ring together)
     for (size_t i = 0; i < r.hits.size(); ++i)
         for (size_t j = i + 1; j < r.hits.size(); ++j)
-            if (r.hits[j].role == r.hits[i].role && !r.hits[j].reverse)
+            if (r.hits[j].role == r.hits[i].role && !r.hits[j].reverse && (r.hits[i].role != Tom || r.hits[j].source == r.hits[i].source))
             {
                 r.hits[i].length = std::min(r.hits[i].length, r.hits[j].at - r.hits[i].at + static_cast<int>(0.002 * s.sampleRate));
                 break;

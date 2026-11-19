@@ -28,8 +28,14 @@ const juce::Rectangle<float> kWave { 60.0f, 640.0f, 1060.0f, 330.0f };
 const juce::Rectangle<float> kRecipe { 420.0f, 118.0f, 720.0f, 30.0f };
 const juce::Rectangle<float> kPhrase { 60.0f, 260.0f, 330.0f, 28.0f }, kFx { 420.0f, 260.0f, 330.0f, 28.0f };
 const juce::Rectangle<float> kVariation { 800.0f, 602.0f, 320.0f, 28.0f };
-juce::Rectangle<float> kitRect(int role){return {60.0f+360.0f*role,480.0f,330.0f,28.0f};}
-constexpr const char* kitNames[]{"KICK","SNARE","HAT"};
+juce::Rectangle<float> kitRect(int role,int count=3){const float step=1080.0f/static_cast<float>(count);return {60.0f+step*static_cast<float>(role),480.0f,step-30.0f,28.0f};}
+constexpr const char* kitNames[]{"KICK","SNARE","HAT","PERC","TOM"};
+const juce::Colour kitColours[]{juce::Colour(0xffffc75d),juce::Colour(0xffff75b9),juce::Colour(0xff6ddfe8),juce::Colour(0xffb48cff),juce::Colour(0xffff9a4d)};
+bool phraseRecipe(int kind,int recipe){return kind==tr::Fill&&recipe>=tr::kPhraseRecipe;}
+int kitCount(int kind,int recipe){return phraseRecipe(kind,recipe)?tr::kKitRoles:3;}
+// waveform columns run from kWave.x + 4 over width - 8 (as the peaks are drawn)
+float sampleToX(int sample,int length){return kWave.getX()+4.0f+(kWave.getWidth()-8.0f)*static_cast<float>(sample)/static_cast<float>(std::max(1,length));}
+int xToSample(float x,int length){return juce::jlimit(0,std::max(0,length-1),static_cast<int>((x-kWave.getX()-4.0f)/(kWave.getWidth()-8.0f)*static_cast<float>(length)));}
 } // namespace
 
 HamloRevolutionTransitionPage::HamloRevolutionTransitionPage() { setOpaque(true); }
@@ -37,6 +43,90 @@ HamloRevolutionTransitionPage::HamloRevolutionTransitionPage() { setOpaque(true)
 void HamloRevolutionTransitionPage::setValues(const Values& v)
 {
     values = v;
+    repaint();
+}
+
+void HamloRevolutionTransitionPage::setSource(const juce::AudioBuffer<float>& source)
+{
+    const int columns = static_cast<int>(kWave.getWidth()) - 8, n = source.getNumSamples();
+    sourceLength = n;
+    sourcePeaks.assign(static_cast<size_t>(columns), { 0.0f, 0.0f });
+    if (n == 0 || source.getNumChannels() == 0)
+        return repaint();
+    for (int c = 0; c < columns; ++c)
+    {
+        const int from = static_cast<int>(static_cast<long long>(n) * c / columns), to = std::max(from + 1, static_cast<int>(static_cast<long long>(n) * (c + 1) / columns));
+        float lo = 0.0f, hi = 0.0f;
+        for (int i = from; i < to && i < n; ++i)
+            for (int ch = 0; ch < source.getNumChannels(); ++ch)
+            {
+                lo = std::min(lo, source.getSample(ch, i));
+                hi = std::max(hi, source.getSample(ch, i));
+            }
+        sourcePeaks[static_cast<size_t>(c)] = { lo, hi };
+    }
+    repaint();
+}
+
+juce::Range<int> HamloRevolutionTransitionPage::hitAt(int sample) const
+{
+    juce::Range<int> found;
+    for (const auto& h : values.hits)
+    {
+        if (h.contains(sample))
+            return h;
+        if (h.getStart() <= sample)
+            found = h;
+    }
+    return found;
+}
+
+void HamloRevolutionTransitionPage::markRegion(int start, int end, int role)
+{
+    if (end < start)
+        std::swap(start, end);
+    if (end - start < 8)
+        return;
+    auto& marks = values.marks;
+    markHistory.push_back(marks);
+    if (markHistory.size() > 64)
+        markHistory.erase(markHistory.begin());
+    marks.erase(std::remove_if(marks.begin(), marks.end(), [&](const tr::Mark& m) { return m.start < end && start < m.end; }), marks.end());
+    if (role >= 0 && role < tr::kKitRoles)
+        marks.push_back({ start, end, role });
+    std::sort(marks.begin(), marks.end(), [](const tr::Mark& a, const tr::Mark& b) { return a.start < b.start; });
+    if (onMarks)
+        onMarks();
+    repaint();
+}
+
+int HamloRevolutionTransitionPage::markAt(int sample) const
+{
+    for (size_t i = 0; i < values.marks.size(); ++i)
+        if (sample >= values.marks[i].start && sample < values.marks[i].end)
+            return static_cast<int>(i);
+    return -1;
+}
+
+void HamloRevolutionTransitionPage::undoMark()
+{
+    if (markHistory.empty())
+        return;
+    values.marks = markHistory.back();
+    markHistory.pop_back();
+    if (onMarks)
+        onMarks();
+    repaint();
+}
+
+void HamloRevolutionTransitionPage::clearMarks()
+{
+    if (values.marks.empty())
+        return;
+    markHistory.push_back(values.marks);
+    values.marks.clear();
+    if (onMarks)
+        onMarks();
     repaint();
 }
 
@@ -108,12 +198,12 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     crtButton(g,kRecipe,recipeLabel+"  v",values.recipe!=0);
     if(values.kind==tr::Fill&&values.recipe>=8)
     {
-        crtButton(g,kPhrase,"EDIT LAST / "+juce::String(values.fillBeats)+" BEAT"+(values.fillBeats==1?"":"S")+"  v",true);
+        crtButton(g,kPhrase,values.fillBeats==tr::kWholeLoop?juce::String("EDIT / WHOLE LOOP  v"):"EDIT LAST / "+juce::String(values.fillBeats)+" BEAT"+(values.fillBeats==1?"":"S")+"  v",true);
         crtButton(g,kFx,"FILTER + ROOM / "+juce::String(juce::roundToInt(values.fillFx*100))+" %  v",values.fillFx>0);
     }
     crtButton(g,kVariation,"NEW VARIATION / SAME SOURCE",false);
-    if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<3;++r)
-        crtButton(g,kitRect(r),juce::String(kitNames[r])+" / "+(values.kitEnabled[static_cast<size_t>(r)]?"ON":"OFF")+" / "+juce::String(values.kitCounts[static_cast<size_t>(r)])+" SLICES",values.kitEnabled[static_cast<size_t>(r)]);
+    if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<kitCount(values.kind,values.recipe);++r)
+        crtButton(g,kitRect(r,kitCount(values.kind,values.recipe)),juce::String(kitNames[r])+" / "+(values.kitEnabled[static_cast<size_t>(r)]?"ON":"OFF")+" / "+juce::String(values.kitCounts[static_cast<size_t>(r)])+" SLICES",values.kitEnabled[static_cast<size_t>(r)]);
     for (int i = 0; i < 3; ++i)
         crtButton(g, barsRect(i), juce::String(kBarChoices[static_cast<size_t>(i)]), values.bars == kBarChoices[static_cast<size_t>(i)]);
     for (int k = 0; k < 4; ++k)
@@ -148,7 +238,7 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     crtBegin(g, kWave);
     if(values.kind==tr::Fill&&values.recipe>=8)
     {
-        const float fraction=static_cast<float>(values.fillBeats)/(values.bars*4.0f);
+        const float fraction=values.fillBeats==tr::kWholeLoop?1.0f:static_cast<float>(values.fillBeats)/(values.bars*4.0f);
         g.setColour(juce::Colour(0xffffbc61).withAlpha(0.10f));
         g.fillRect(kWave.withTrimmedLeft(kWave.getWidth()*(1-fraction)));
     }
@@ -156,6 +246,35 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     float peak = 1.0e-6f;
     for (const auto& [lo, hi] : peaks)
         peak = std::max({ peak, -lo, hi });
+    const bool phrase = phraseRecipe(values.kind, values.recipe) && sourceLength > 0 && !sourcePeaks.empty();
+    if (phrase)
+    {
+        // R15: the source behind the result (what the marks point at), then the user's marks
+        for (const auto& [lo, hi] : sourcePeaks)
+            peak = std::max({ peak, -lo, hi });
+        for (size_t c = 0; c < sourcePeaks.size(); ++c)
+        {
+            g.setColour(juce::Colours::white.withAlpha(0.16f));
+            g.drawVerticalLine(juce::roundToInt(kWave.getX() + 4.0f + static_cast<float>(c)), mid - half * sourcePeaks[c].second / peak, mid - half * sourcePeaks[c].first / peak + 1.0f);
+        }
+        for (const auto& m : values.marks)
+        {
+            const float x0 = sampleToX(m.start, sourceLength), x1 = std::max(x0 + 2.0f, sampleToX(m.end, sourceLength));
+            const auto colour = kitColours[juce::jlimit(0, tr::kKitRoles - 1, m.role)];
+            const juce::Rectangle<float> box(x0, kWave.getY() + 44.0f, x1 - x0, kWave.getHeight() - 110.0f);
+            g.setColour(colour.withAlpha(0.20f));
+            g.fillRect(box);
+            g.setColour(colour.withAlpha(0.9f));
+            g.drawRect(box, 1.0f);
+            g.setFont(10.0f);
+            g.drawText(kitNames[juce::jlimit(0, tr::kKitRoles - 1, m.role)], juce::Rectangle<float>(x0 + 2.0f, kWave.getY() + 46.0f, 60.0f, 12.0f), juce::Justification::centredLeft);
+        }
+        if (marking)
+        {
+            g.setColour(juce::Colours::white.withAlpha(0.14f));
+            g.fillRect(juce::Rectangle<float>(std::min(markFrom, markTo), kWave.getY() + 2.0f, std::abs(markTo - markFrom) + 1.0f, kWave.getHeight() - 4.0f));
+        }
+    }
     const auto ink = juce::Colour(0xff6dff9a);
     for (size_t c = 0; c < peaks.size(); ++c)
     {
@@ -181,10 +300,10 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     crtEnd(g, kWave);
     if(values.kind==tr::Fill&&values.recipe>=21)
     {
-        const juce::Colour colours[]{juce::Colour(0xffffc75d),juce::Colour(0xffff75b9),juce::Colour(0xff6ddfe8)};
+        const int rows=kitCount(values.kind,values.recipe);const float rowStep=rows>=5?11.5f:rows==4?14.0f:18.0f;const float cellHeight=std::min(11.0f,rowStep-2.0f);const auto* colours=kitColours;
         g.setColour(juce::Colours::black.withAlpha(.88f));g.fillRect(kWave.withTrimmedTop(kWave.getHeight()-60));
-        for(int r=0;r<3;++r){const float y=kWave.getBottom()-56+r*18.0f;g.setColour(colours[r]);g.setFont(10.0f);g.drawText(kitNames[r],juce::Rectangle<float>(kWave.getX()+8,y,52,15),juce::Justification::centredLeft);
-            for(int cell=0;cell<32;++cell){const bool on=(values.kitMask[static_cast<size_t>(r)]&(1u<<cell))!=0;g.setColour(colours[r].withAlpha(on?.9f:.08f));g.fillRect(kWave.getX()+65+cell*(kWave.getWidth()-74)/32,y+2,(kWave.getWidth()-74)/32-2,11.0f);}}
+        for(int r=0;r<rows;++r){const float y=kWave.getBottom()-58+r*rowStep;g.setColour(colours[r]);g.setFont(10.0f);g.drawText(kitNames[r],juce::Rectangle<float>(kWave.getX()+8,y,52,cellHeight+3.0f),juce::Justification::centredLeft);
+            for(int cell=0;cell<32;++cell){const bool on=(values.kitMask[static_cast<size_t>(r)]&(1u<<cell))!=0;g.setColour(colours[r].withAlpha(on?.9f:.08f));g.fillRect(kWave.getX()+65+cell*(kWave.getWidth()-74)/32,y+2,(kWave.getWidth()-74)/32-2,cellHeight);}}
     }
     if (dropHover)
     {
@@ -199,9 +318,9 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
 void HamloRevolutionTransitionPage::pressGenerate() { if (onGenerate) onGenerate(); }
 void HamloRevolutionTransitionPage::pressVariation() { if(onVariation)onVariation(); }
 void HamloRevolutionTransitionPage::toggleKit(int role)
-{if(role<0||role>2)return;values.kitEnabled[static_cast<size_t>(role)]=!values.kitEnabled[static_cast<size_t>(role)];if(onFillOptions)onFillOptions();repaint();}
+{if(role<0||role>=kitCount(values.kind,values.recipe))return;values.kitEnabled[static_cast<size_t>(role)]=!values.kitEnabled[static_cast<size_t>(role)];if(onFillOptions)onFillOptions();repaint();}
 void HamloRevolutionTransitionPage::chooseFillBeats(int beats)
-{values.fillBeats=beats==1||beats==2?beats:4;if(onFillOptions)onFillOptions();repaint();}
+{values.fillBeats=beats==1||beats==2||(beats==tr::kWholeLoop&&phraseRecipe(values.kind,values.recipe))?beats:4;if(onFillOptions)onFillOptions();repaint();}
 void HamloRevolutionTransitionPage::chooseFillFx(double amount)
 {values.fillFx=std::isfinite(amount)?juce::jlimit(0.,1.,amount):0.;if(onFillOptions)onFillOptions();repaint();}
 void HamloRevolutionTransitionPage::pressPlay() { if (onPlay) onPlay(); }
@@ -280,7 +399,7 @@ juce::String HamloRevolutionTransitionPage::helpKeyAt(juce::Point<float> local) 
     const auto d = toDesign(local);
     if(kRecipe.contains(d))return "transitionRecipe";
     if(kVariation.contains(d))return "transitionVariation";
-    if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<3;++r)if(kitRect(r).contains(d))return "transitionKit";
+    if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<kitCount(values.kind,values.recipe);++r)if(kitRect(r,kitCount(values.kind,values.recipe)).contains(d))return "transitionKit";
     if(values.kind==tr::Fill&&values.recipe>=8)
     {if(kPhrase.contains(d))return "transitionPhrase";if(kFx.contains(d))return "transitionFillFx";}
     if (kBack.contains(d))
@@ -335,15 +454,16 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
         return;
     }
     if(kVariation.contains(d))return pressVariation();
-    if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<3;++r)if(kitRect(r).contains(d))return toggleKit(r);
+    if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<kitCount(values.kind,values.recipe);++r)if(kitRect(r,kitCount(values.kind,values.recipe)).contains(d))return toggleKit(r);
     if(values.kind==tr::Fill&&values.recipe>=8&&(kPhrase.contains(d)||kFx.contains(d)))
     {
         const bool phrase=kPhrase.contains(d);juce::PopupMenu menu;
-        if(phrase)for(int i=0;i<3;++i)menu.addItem(i+1,juce::String(kBarChoices[static_cast<size_t>(i)])+" BEAT(S)",true,values.fillBeats==kBarChoices[static_cast<size_t>(i)]);
+        if(phrase){for(int i=0;i<3;++i)menu.addItem(i+1,juce::String(kBarChoices[static_cast<size_t>(i)])+" BEAT(S)",true,values.fillBeats==kBarChoices[static_cast<size_t>(i)]);
+            if(phraseRecipe(values.kind,values.recipe))menu.addItem(4,"WHOLE LOOP (EVERY BAR)",true,values.fillBeats==tr::kWholeLoop);}
         else for(int i=0;i<=20;++i)menu.addItem(i+1,juce::String(i*5)+" %",true,juce::roundToInt(values.fillFx*20)==i);
         juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
         const auto area=(phrase?kPhrase:kFx).transformedBy(juce::AffineTransform::scale(scale).translated(offset)).toNearestInt();
-        menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withTargetScreenArea(localAreaToGlobal(area)),[safe,phrase](int r){if(safe&&r>0){if(phrase)safe->chooseFillBeats(kBarChoices[static_cast<size_t>(r-1)]);else safe->chooseFillFx((r-1)*.05);}});
+        menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withTargetScreenArea(localAreaToGlobal(area)),[safe,phrase](int r){if(safe&&r>0){if(phrase)safe->chooseFillBeats(r==4?tr::kWholeLoop:kBarChoices[static_cast<size_t>(r-1)]);else safe->chooseFillFx((r-1)*.05);}});
         return;
     }
     if (kBack.contains(d))
@@ -364,6 +484,12 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
         return pressShowFile();
     if (kWave.contains(d))
     {
+        if (e.mods.isPopupMenu() && phraseRecipe(values.kind, values.recipe) && sourceLength > 0)
+        {
+            marking = true; // R15: right-click a hit, or right-drag a region, then choose its drum
+            markFrom = markTo = d.x;
+            return;
+        }
         waveDown = true; // a drag from here exports the WAV
         return;
     }
@@ -379,6 +505,12 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
 
 void HamloRevolutionTransitionPage::mouseDrag(const juce::MouseEvent& e)
 {
+    if (marking)
+    {
+        markTo = juce::jlimit(kWave.getX(), kWave.getRight(), toDesign(e.position).x);
+        repaint();
+        return;
+    }
     if (waveDown && !dragged && e.getDistanceFromDragStart() > 6 && fileToDrag)
     {
         dragged = true;
@@ -393,6 +525,52 @@ void HamloRevolutionTransitionPage::mouseDrag(const juce::MouseEvent& e)
 
 void HamloRevolutionTransitionPage::mouseUp(const juce::MouseEvent&)
 {
+    if (marking)
+    {
+        marking = false;
+        juce::Range<int> region;
+        int current = -1; // the role of the mark that was clicked (relabel / remove it)
+        if (std::abs(markTo - markFrom) < 4.0f)
+        {
+            const int sample = xToSample(markFrom, sourceLength), index = markAt(sample);
+            if (index >= 0)
+            {
+                const auto& m = values.marks[static_cast<size_t>(index)];
+                region = { m.start, m.end };
+                current = m.role;
+            }
+            else
+                region = hitAt(sample);
+        }
+        else
+            region = { xToSample(std::min(markFrom, markTo), sourceLength), xToSample(std::max(markFrom, markTo), sourceLength) };
+        repaint();
+        if (region.getLength() < 8)
+            return;
+        bool marked = false;
+        for (const auto& m : values.marks)
+            marked = marked || (m.start < region.getEnd() && region.getStart() < m.end);
+        juce::PopupMenu menu;
+        menu.addSectionHeader(current >= 0 ? "CHANGE THIS MARK" : "THIS HIT IS ...");
+        for (int r = 0; r < tr::kKitRoles; ++r)
+            menu.addItem(r + 1, kitNames[r], true, r == current);
+        menu.addSeparator();
+        menu.addItem(10, "REMOVE MARK", marked);
+        menu.addItem(12, "UNDO LAST MARK", !markHistory.empty());
+        menu.addItem(11, "CLEAR ALL MARKS", !values.marks.empty());
+        juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
+        menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withMousePosition(), [safe, region](int result)
+        {
+            if (!safe || result <= 0)
+                return;
+            if (result == 11)
+                return safe->clearMarks();
+            if (result == 12)
+                return safe->undoMark();
+            safe->markRegion(region.getStart(), region.getEnd(), result == 10 ? -1 : result - 1);
+        });
+        return;
+    }
     if (dragKnob >= 0 && onKnobsDone)
         onKnobsDone();
     dragKnob = -1;

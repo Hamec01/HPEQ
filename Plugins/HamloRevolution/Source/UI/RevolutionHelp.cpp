@@ -54,7 +54,7 @@ juce::String revolutionHelp(const juce::String& key)
         { "transitionGenerate", "GENERATE: take the last bars again and make a new variation." },
         { "transitionPlay", "PLAY / STOP: hear the transition through the plug-in's output." },
         { "transitionShowFile", "SHOW FILE: the WAV in Explorer (Documents / HamloProd / HamloRevolution / Renders), if dragging does not work in your host." },
-        { "transitionWave", "Drag the wave into your DAW: it drops the WAV (24-bit, the session rate) where you let go." },
+        { "transitionWave", "Drag the wave into your DAW: it drops the WAV (24-bit, the session rate) where you let go. PHRASE FILL: right-click a hit (or right-drag a region) to mark it KICK, SNARE, HAT, PERC or TOM. Optional: marked roles use only your hits, the rest stays automatic. Mark several toms: the fill runs down them from the highest to the lowest." },
         { "simplePage", "SIMPLE: back to the five-knob page (it rewrites the pattern when you turn something there)." },
         { "preview", "What the generator wrote: TIME / GLITCH actions and the levels of the other lanes, with each lane's band." },
         // ---- ADVANCED: global

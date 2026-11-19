@@ -10,7 +10,9 @@
 // Everything here runs offline on the message thread; nothing is called from processBlock.
 namespace hpeq::dsp::transition::phrase
 {
-enum Role { Kick, Snare, Hat, kRoles };
+enum Role { Kick, Snare, Hat, Perc, Tom, kRoles };
+constexpr int kAutoRoles = 3; // the analyser classifies kick / snare / hat; perc and tom exist only as user marks
+static_assert(kRoles == kKitRoles);
 enum Genre { BoomBap, Trap, DnB, Techno, kGenres };
 enum Status { Bypass, Conservative, Generated };
 enum Clean { Full, LowPass, HighPassLow, HighPassHigh }; // which contaminating band a slice is cleaned of
@@ -21,7 +23,8 @@ struct Onset
     double tick = 0;                     // 24ths of a beat from the (phase-corrected) source start
     std::array<double, kRoles> p {};     // role posterior
     int role = Kick, clean = Full;
-    bool secondary = false;              // a second drum inside another hit (clap on a kick), cleaned of the first
+    bool secondary = false;
+    bool marked = false;                 // the user labelled this hit on the wave: its role and slice are trusted              // a second drum inside another hit (clap on a kick), cleaned of the first
     double conf = 0, isolation = 0, peak = 0, decayMs = 0;
     std::array<double, 4> novelty {};    // band novelty energy: sub, low-mid, mid, high
 };
@@ -43,7 +46,9 @@ struct Analysis
 constexpr double kUsable = 0.30; // minimum conf * isolation for a source slice
 inline double quality(const Onset& o) noexcept { return o.conf * o.isolation; }
 
-Analysis analyse(const juce::AudioBuffer<float>& stereo, double sampleRate, double bpm);
+// marks: the user's labels (source samples); a marked region's strongest attack takes the mark's role and the
+// region's end as its slice end. Without marks the analysis is fully automatic.
+Analysis analyse(const juce::AudioBuffer<float>& stereo, double sampleRate, double bpm, const std::vector<Mark>& marks = {});
 const char* genreName(int genre) noexcept;
 const char* roleName(int role) noexcept;
 } // namespace hpeq::dsp::transition::phrase

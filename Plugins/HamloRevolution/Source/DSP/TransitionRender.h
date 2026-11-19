@@ -16,6 +16,14 @@ namespace hpeq::dsp::transition
 {
 enum Kind { Rise, Fill };
 
+// R15: a hit the user marked on the wave (source samples) as kick 0, snare 1, hat 2 or perc 3
+struct Mark
+{
+    int start = 0, end = 0, role = 0;
+    bool operator==(const Mark& o) const noexcept { return start == o.start && end == o.end && role == o.role; }
+};
+constexpr int kKitRoles = 5; // kick, snare, hat, perc, tom (perc and tom only from marks)
+
 struct Settings
 {
     int kind = Rise;
@@ -27,7 +35,8 @@ struct Settings
     int recipe = 0; // 0 exact Classic,1 Auto,2..7 musical source-aware recipes
     int fillBeats = 4; // New slicer: replace only the last 1, 2 or 4 beats.
     double fillFx = 0.35;
-    std::array<bool,3> kitEnabled { true,true,true };
+    std::array<bool,kKitRoles> kitEnabled { true,true,true,true,true };
+    std::vector<Mark> marks; // R15 PHRASE FILL: the user's labels win over the automatic roles
 };
 struct Event
 {
@@ -46,7 +55,7 @@ struct Plan
     std::vector<Slice> slices;
     int phraseStart = 0, phraseEnd = 0, stopSample = -1;
     double inputSimilarity = 0;
-    std::array<int,3> kitCounts {};
+    std::array<int,kKitRoles> kitCounts {};
     // R15 PHRASE FILL diagnostics (other recipes leave the defaults)
     int status = 2, genre = -1, anchors = 0; // status: 0 bypass, 1 conservative, 2 generated
     double confidence = 0;
@@ -64,6 +73,7 @@ Plan makeComposedFillPlan(const juce::AudioBuffer<float>&,const Settings&);
 juce::AudioBuffer<float> renderComposedFill(const juce::AudioBuffer<float>&,const Settings&,Plan* info=nullptr);
 // R15 PHRASE FILL (recipes 30 AUTO, 31 BOOM BAP, 32 TRAP, 33 DNB, 34 TECHNO): docs/DRUM_FILL_R15.md
 constexpr int kPhraseRecipe = 30;
+constexpr int kWholeLoop = 99; // fillBeats for PHRASE FILL: re-make every bar of the source, not only its end
 Plan makePhraseFillPlan(const juce::AudioBuffer<float>&,const Settings&);
 juce::AudioBuffer<float> renderPhraseFill(const juce::AudioBuffer<float>&,const Settings&,Plan* info=nullptr);
 const char* knobName(int kind, int knob);

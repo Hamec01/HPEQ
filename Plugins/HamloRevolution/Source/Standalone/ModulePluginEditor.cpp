@@ -471,8 +471,12 @@ void ModulePluginEditor::installTransitionPage()
     const auto render = [this, tp](bool capture, bool seed)
     {
         const auto& v = tp->getValues();
-        processor.makeTransition(v.kind, v.bars, v.knobs, capture, seed,v.recipe,v.fillBeats,v.fillFx,v.kitEnabled);
+        // marks belong to one source: a new capture (GENERATE, bars, sample) starts unmarked
+        if (capture)
+            tp->forgetMarks();
+        processor.makeTransition(v.kind, v.bars, v.knobs, capture, seed,v.recipe,v.fillBeats,v.fillFx,v.kitEnabled,capture?std::vector<tr::Mark>{}:v.marks);
         tp->setClip(processor.transitionClip());
+        tp->setSource(processor.transitionSourceCopy());
         if (refreshTransition)
             refreshTransition();
     };
@@ -491,6 +495,7 @@ void ModulePluginEditor::installTransitionPage()
     tp->onGenerate = [render] { render(true, true); };
     tp->onVariation = [render] { render(false, true); };
     tp->onFillOptions = [render] { render(false, false); };
+    tp->onMarks = [render] { render(false, false); };
     tp->onPlay = [this] { processor.setPreview(!processor.isPreviewing()); };
     tp->onShowFile = [this]
     {
@@ -520,7 +525,7 @@ void ModulePluginEditor::installTransitionPage()
         auto v = tp->getValues();
         const auto t = processor.lastTransition();
         v.valid = t.valid;
-        if(t.valid){v.recipe=t.settings.recipe;v.seed=t.settings.seed;v.kitCounts=t.kitCounts;v.kitMask=t.kitMask;v.fillInfo=t.fillInfo;}
+        if(t.valid){v.recipe=t.settings.recipe;v.seed=t.settings.seed;v.kitCounts=t.kitCounts;v.kitMask=t.kitMask;v.fillInfo=t.fillInfo;v.hits=t.hits;v.marks=t.settings.marks;v.fillBeats=t.settings.fillBeats;}
         v.aligned = t.aligned;
         v.complete = t.complete;
         v.bpm = t.valid ? t.settings.bpm : processor.getHostBpm();
@@ -537,8 +542,8 @@ void ModulePluginEditor::installTransitionPage()
         const auto t=processor.lastTransition();auto v=tp->getValues();
         v.kind=t.settings.kind;v.bars=t.settings.bars;v.knobs=t.settings.knobs;v.recipe=t.settings.recipe;v.seed=t.settings.seed;
         v.fillBeats=t.settings.fillBeats;v.fillFx=t.settings.fillFx;
-        v.kitEnabled=t.settings.kitEnabled;
-        tp->setValues(v);tp->setClip(processor.transitionClip());
+        v.kitEnabled=t.settings.kitEnabled;v.marks=t.settings.marks;v.hits=t.hits;
+        tp->setValues(v);tp->setClip(processor.transitionClip());tp->setSource(processor.transitionSourceCopy());
     }
 }
 
