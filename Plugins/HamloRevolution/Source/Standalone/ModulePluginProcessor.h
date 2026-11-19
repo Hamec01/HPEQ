@@ -122,6 +122,10 @@ public:
     // fill the bars, at the session rate; false when it cannot be read. useInputForTransition goes back to the input.
     bool useSampleForTransition(const juce::File&);
     void useInputForTransition();
+    // R16: the dropped sample's own tempo (0 = the host's, as before); a new sample starts on the host's tempo
+    void setSampleBpm(double bpm) noexcept { sampleBpm = std::isfinite(bpm) && bpm >= 40.0 && bpm <= 250.0 ? bpm : 0.0; }
+    double getSampleBpm() const noexcept { return sampleBpm; }
+    double droppedSampleSeconds() const noexcept { return droppedSample.getNumSamples() / std::max(1.0, currentSampleRate.load()); }
     bool isPreviewing() const noexcept { return previewOn.load(); }
     int previewPosition() const noexcept { return previewPos.load(); }
     static juce::File rendersFolder();
@@ -193,6 +197,7 @@ private:
     juce::File rendersOverride;
     juce::AudioBuffer<float> droppedSample; // at the session rate (message thread)
     juce::File droppedFile;
+    double sampleBpm = 0.0; // R16 (message thread)
     std::uint32_t laneGenerations = 0;
     revolution::simple::Result simpleResult; // revolutionLock
     struct Follower;

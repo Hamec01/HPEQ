@@ -360,6 +360,11 @@ Analysis analyse(const juce::AudioBuffer<float>& stereo, double fs, double bpm, 
     for (const auto& m : marks)
     {
         const int from = std::clamp(std::min(m.start, m.end), 0, length - 1), to = std::clamp(std::max(m.start, m.end), from + 1, length);
+        if (m.role == kSampleMark) // R16: not a drum - every attack inside is dropped from the drum analysis
+        {
+            a.onsets.erase(std::remove_if(a.onsets.begin(), a.onsets.end(), [&](const Onset& o) { return o.attack >= from && o.attack < to; }), a.onsets.end());
+            continue;
+        }
         if (to - from < static_cast<int>(0.004 * fs) || m.role < 0 || m.role >= kRoles)
             continue;
         const int slack = static_cast<int>(0.005 * fs);

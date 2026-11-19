@@ -23,6 +23,9 @@ struct Mark
     bool operator==(const Mark& o) const noexcept { return start == o.start && end == o.end && role == o.role; }
 };
 constexpr int kKitRoles = 5; // kick, snare, hat, perc, tom (perc and tom only from marks)
+// R16: a mark role after the kit: "not a drum" (a melody / vocal / sample part). Attacks inside it are never
+// used as drum hits; the region stays as it is in the source.
+constexpr int kSampleMark = kKitRoles;
 
 struct Settings
 {

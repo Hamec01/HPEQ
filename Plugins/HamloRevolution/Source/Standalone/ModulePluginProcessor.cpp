@@ -566,8 +566,9 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
                  : revolution::mix64(s.seed + static_cast<std::uint64_t>(juce::Time::getHighResolutionTicks()));
     if (droppedFile != juce::File())
     {
-        // the dropped sample: from its start, repeated to fill the bars (the host's tempo sets the bars)
-        s.bpm = getHostBpm();
+        // the dropped sample: from its start, repeated to fill the bars (the host's tempo sets the bars, or R16 the
+        // sample's own BPM when the page set one)
+        s.bpm = sampleBpm > 0.0 ? sampleBpm : getHostBpm();
         const int length = dsp::transition::lengthSamples(s), n = droppedSample.getNumSamples();
         transitionSource.setSize(2, length, false, true, false);
         transitionSource.clear();
@@ -679,6 +680,7 @@ bool ModulePluginProcessor::useSampleForTransition(const juce::File& file)
         interpolator.process(ratio, raw.getReadPointer(ch), droppedSample.getWritePointer(ch), out, length, 0);
     }
     droppedFile = file;
+    sampleBpm = 0.0; // R16: a new sample starts on the host's tempo
     return true;
 }
 
@@ -686,6 +688,7 @@ void ModulePluginProcessor::useInputForTransition()
 {
     droppedFile = juce::File();
     droppedSample.setSize(2, 0);
+    sampleBpm = 0.0;
 }
 
 void ModulePluginProcessor::setPreview(bool on) noexcept

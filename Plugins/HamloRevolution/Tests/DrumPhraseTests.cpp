@@ -584,6 +584,106 @@ public:
             expectEquals(p->lastTransition().settings.fillBeats, 4); // R14 has no whole-loop mode
             folder.deleteRecursively();
         }
+        beginTest("R16: SAMPLE mark, selection, GRID snap, zoom, sample BPM, CLEAR");
+        {
+            using P = hpeq::standalone::ModulePluginProcessor;
+            using Page = hpeq::ui::HamloRevolutionTransitionPage;
+            expectEquals(Page::bpmFromName("fill_88bpm_1bars_ca904b.wav"), 88.0);
+            expectEquals(Page::bpmFromName("Loop 92 BPM.wav"), 92.0);
+            expectEquals(Page::bpmFromName("kick.wav"), 0.0);
+            expectEquals(Page::bpmFromName("x_5bpm.wav"), 0.0);
+            auto p = std::make_unique<P>(hpeq::standalone::ModuleKind::Revolution);
+            p->prepareToPlay(48000, 256);
+            const auto folder = juce::File::getSpecialLocation(juce::File::tempDirectory).getChildFile("HamloR16Tests");
+            folder.deleteRecursively();
+            folder.createDirectory();
+            p->setRendersFolder(folder);
+            const auto wavFile = folder.getChildFile("loop_120bpm.wav");
+            {
+                auto loop = drums(4.0);
+                loop.applyGain(0.35f);
+                std::unique_ptr<juce::OutputStream> stream = wavFile.createOutputStream();
+                juce::WavAudioFormat format;
+                auto writer = format.createWriterFor(stream, juce::AudioFormatWriterOptions {}.withSampleRate(48000).withNumChannels(2).withBitsPerSample(24));
+                expect(writer != nullptr && writer->writeFromAudioSampleBuffer(loop, 0, loop.getNumSamples()));
+            }
+            expect(p->useSampleForTransition(wavFile));
+            std::unique_ptr<juce::AudioProcessorEditor> owner(p->createEditor());
+            auto* page = dynamic_cast<hpeq::standalone::ModulePluginEditor*>(owner.get())->getTransitionPage();
+            page->chooseKind(tr::Fill);
+            const auto hits = page->getValues().hits;
+            expect(hits.size() >= 6);
+            const auto autoCounts = p->lastTransition().kitCounts;
+            const auto autoTotal = autoCounts[ph::Kick] + autoCounts[ph::Snare] + autoCounts[ph::Hat];
+            // SAMPLE: the hits inside are not drums any more; the rest stays automatic; removing it restores the result
+            page->markRegion(hits[1].getStart(), hits[1].getEnd(), tr::kSampleMark);
+            expectEquals(static_cast<int>(p->lastTransition().settings.marks.size()), 1);
+            expectEquals(p->lastTransition().settings.marks[0].role, tr::kSampleMark);
+            const auto sampled = p->lastTransition().kitCounts;
+            expect(sampled[ph::Kick] + sampled[ph::Snare] + sampled[ph::Hat] < autoTotal, "a SAMPLE region gives no drum hits");
+            for (const auto& h : p->lastTransition().hits)
+                expect(!(h.getStart() >= hits[1].getStart() && h.getStart() < hits[1].getEnd()), "no hit region inside SAMPLE");
+            expect(p->lastTransition().valid);
+            page->markRegion(hits[1].getStart(), hits[1].getEnd(), -1);
+            expect(p->lastTransition().kitCounts == autoCounts, "SAMPLE removed = the automatic result again");
+            // selection: pending until labelled; a label clears it
+            page->selectRegion(hits[2].getEnd(), hits[2].getStart());
+            expect(page->getSelection() == hits[2], "selection, reversed edges sorted");
+            expect(p->lastTransition().settings.marks.empty(), "a selection alone changes nothing");
+            page->markRegion(page->getSelection().getStart(), page->getSelection().getEnd(), ph::Kick);
+            expect(page->getSelection().isEmpty(), "labelled: selection gone");
+            expectEquals(p->lastTransition().kitCounts[ph::Kick], 1);
+            // GRID: off = no snap; 1/16 snaps to sixteenths of the bars
+            const int length = p->transitionSourceCopy().getNumSamples();
+            expectEquals(page->snapToGrid(1234), 1234);
+            page->chooseGrid(3);
+            const double sixteenth = length / (page->getValues().bars * 16.0);
+            expectEquals(page->snapToGrid(static_cast<int>(sixteenth * 3 + 10)), static_cast<int>(std::lround(sixteenth * 3)));
+            // zoom: around a point, clamped, back to whole
+            page->zoomAround(0.5, 0.25);
+            expectWithinAbsoluteError(page->getView().getLength(), 0.25, 1e-9);
+            expectWithinAbsoluteError(page->getView().getStart(), 0.375, 1e-9);
+            page->zoomAround(0.99, 0.001);
+            expectWithinAbsoluteError(page->getView().getLength(), 1.0 / 64.0, 1e-9);
+            expect(page->getView().getEnd() <= 1.0 + 1e-12);
+            page->setView(-3.0, 9.0);
+            expect(page->getView() == juce::Range<double>(0.0, 1.0));
+            // sample BPM: 60 BPM makes the source twice as long as 120; host again restores it; marks start again
+            expectEquals(p->getHostBpm(), 120.0); // no audio was processed: the default host tempo
+            page->chooseBpm(0.0);
+            const int at120 = p->lastTransition().settings.bars * 4 * 60 * 48000 / 120;
+            expectEquals(p->transitionSourceCopy().getNumSamples(), at120);
+            page->chooseBpm(60.0);
+            expectEquals(p->lastTransition().settings.bpm, 60.0);
+            expectEquals(p->transitionSourceCopy().getNumSamples(), 2 * at120);
+            expect(p->lastTransition().settings.marks.empty(), "a new BPM = a new source: unmarked");
+            page->chooseBpm(10.0);
+            expectEquals(p->getSampleBpm(), 0.0, "out of range = the host's tempo");
+            // CLEAR: same source and seed, defaults back, marks gone
+            page->chooseBpm(90.0);
+            page->markRegion(page->getValues().hits[0].getStart(), page->getValues().hits[0].getEnd(), ph::Snare);
+            page->chooseFillBeats(2);
+            page->toggleKit(ph::Hat);
+            page->zoomAround(0.3, 0.5);
+            const auto seed = p->lastTransition().settings.seed;
+            const auto source = p->transitionSourceCopy();
+            page->pressClear();
+            const auto cleared = p->lastTransition();
+            expect(cleared.settings.marks.empty() && page->getValues().marks.empty(), "CLEAR: no marks");
+            expectEquals(cleared.settings.fillBeats, 4);
+            expect(cleared.settings.kitEnabled[ph::Hat], "CLEAR: kit back on");
+            expectEquals(cleared.settings.recipe, tr::kPhraseRecipe);
+            expectEquals(cleared.settings.seed, seed, "CLEAR keeps the seed");
+            expectEquals(cleared.settings.bpm, 90.0, "CLEAR keeps the sample's BPM");
+            expect(page->getView() == juce::Range<double>(0.0, 1.0), "CLEAR: whole wave");
+            expect(cleared.sourceFile == wavFile && p->transitionSourceCopy().getNumSamples() == source.getNumSamples(), "CLEAR: the same source, no new drop");
+            expectEquals(page->getValues().grid, 3, "GRID stays");
+            // a new sample starts on the host's tempo again
+            expect(p->useSampleForTransition(wavFile));
+            expectEquals(p->getSampleBpm(), 0.0);
+            owner.reset();
+            folder.deleteRecursively();
+        }
     }
 };
 static DrumPhraseTests drumPhraseTests;

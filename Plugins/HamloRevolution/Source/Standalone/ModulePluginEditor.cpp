@@ -496,6 +496,24 @@ void ModulePluginEditor::installTransitionPage()
     tp->onVariation = [render] { render(false, true); };
     tp->onFillOptions = [render] { render(false, false); };
     tp->onMarks = [render] { render(false, false); };
+    tp->onBpm = [this, render](double bpm)
+    {
+        processor.setSampleBpm(bpm);
+        render(true, false); // the bars are another length now: a new source, the same seed
+    };
+    tp->onClear = [tp, render]
+    {
+        // R16 CLEAR: start over on the same source and seed - the kind's default style, knobs and options
+        auto v = tp->getValues();
+        v.recipe = v.kind == tr::Fill ? tr::kPhraseRecipe : 1;
+        v.knobs = tr::defaultKnobs(v.kind);
+        v.fillBeats = 4;
+        v.fillFx = 0.35;
+        v.kitEnabled.fill(true);
+        v.marks.clear();
+        tp->setValues(v);
+        render(false, false);
+    };
     tp->onPlay = [this] { processor.setPreview(!processor.isPreviewing()); };
     tp->onShowFile = [this]
     {
@@ -529,6 +547,9 @@ void ModulePluginEditor::installTransitionPage()
         v.aligned = t.aligned;
         v.complete = t.complete;
         v.bpm = t.valid ? t.settings.bpm : processor.getHostBpm();
+        v.hostBpm = processor.getHostBpm();
+        v.sampleBpm = processor.getSampleBpm();
+        v.sampleSeconds = processor.droppedSampleSeconds();
         v.fileName = t.valid ? t.file.getFileName() : juce::String();
         v.sourceName = t.sourceFile.getFileName();
         v.previewing = processor.isPreviewing();

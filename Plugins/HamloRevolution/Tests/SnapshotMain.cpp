@@ -72,6 +72,13 @@ int main(int argc, char* argv[])
             const int roles[] { 0, 2, 1, 3, 4, 2 };
             for (size_t i = 0; i < hits.size() && i < 6; ++i)
                 page->markRegion(hits[i].getStart(), hits[i].getEnd(), roles[i]);
+            if (juce::String(argv[4]).contains("r16") && hits.size() > 7) // R16: a SAMPLE mark, a pending selection, GRID 1/16, zoom
+            {
+                page->markRegion(hits[5].getStart(), hits[5].getEnd(), hpeq::dsp::transition::kSampleMark);
+                page->chooseGrid(3);
+                page->selectRegion(hits[7].getStart(), hits[7].getEnd());
+                page->zoomAround(0.0, 0.6);
+            }
         }
 #endif
     if(argc>4&&juce::String(argv[4]).contains("minimum"))e->setSize(p.getSpec().editorWidth/2,p.getSpec().editorHeight/2);

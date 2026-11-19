@@ -1,6 +1,7 @@
 #include "UI/HamloRevolutionTransitionPage.h"
 
 #include <cmath>
+#include <iterator>
 
 #include "DSP/TransitionRender.h"
 #include "UI/BlackSteel.h"
@@ -29,14 +30,108 @@ const juce::Rectangle<float> kRecipe { 420.0f, 118.0f, 720.0f, 30.0f };
 const juce::Rectangle<float> kPhrase { 60.0f, 260.0f, 330.0f, 28.0f }, kFx { 420.0f, 260.0f, 330.0f, 28.0f };
 const juce::Rectangle<float> kVariation { 800.0f, 602.0f, 320.0f, 28.0f };
 juce::Rectangle<float> kitRect(int role,int count=3){const float step=1080.0f/static_cast<float>(count);return {60.0f+step*static_cast<float>(role),480.0f,step-30.0f,28.0f};}
-constexpr const char* kitNames[]{"KICK","SNARE","HAT","PERC","TOM"};
-const juce::Colour kitColours[]{juce::Colour(0xffffc75d),juce::Colour(0xffff75b9),juce::Colour(0xff6ddfe8),juce::Colour(0xffb48cff),juce::Colour(0xffff9a4d)};
+constexpr const char* kitNames[]{"KICK","SNARE","HAT","PERC","TOM","SAMPLE"}; // R16: SAMPLE = not a drum (marks only)
+const juce::Colour kitColours[]{juce::Colour(0xffffc75d),juce::Colour(0xffff75b9),juce::Colour(0xff6ddfe8),juce::Colour(0xffb48cff),juce::Colour(0xffff9a4d),juce::Colour(0xffc9d3dc)};
+static_assert(std::size(kitNames) == tr::kSampleMark + 1);
 bool phraseRecipe(int kind,int recipe){return kind==tr::Fill&&recipe>=tr::kPhraseRecipe;}
 int kitCount(int kind,int recipe){return phraseRecipe(kind,recipe)?tr::kKitRoles:3;}
-// waveform columns run from kWave.x + 4 over width - 8 (as the peaks are drawn)
-float sampleToX(int sample,int length){return kWave.getX()+4.0f+(kWave.getWidth()-8.0f)*static_cast<float>(sample)/static_cast<float>(std::max(1,length));}
-int xToSample(float x,int length){return juce::jlimit(0,std::max(0,length-1),static_cast<int>((x-kWave.getX()-4.0f)/(kWave.getWidth()-8.0f)*static_cast<float>(length)));}
+// R16: GRID / BPM / CLEAR row under the controls, left of NEW VARIATION
+const juce::Rectangle<float> kGrid { 60.0f, 602.0f, 200.0f, 28.0f }, kBpm { 275.0f, 602.0f, 250.0f, 28.0f }, kClear { 540.0f, 602.0f, 240.0f, 28.0f };
+constexpr const char* gridNames[] { "OFF", "1/4", "1/8", "1/16", "1/32", "1/8 T", "1/16 T" };
+constexpr int gridPerBeat[] { 0, 1, 2, 4, 8, 3, 6 };
+constexpr int kGrids = 7;
+constexpr double kMinView = 1.0 / 64.0; // the deepest zoom: 1/64 of the wave
 } // namespace
+
+// waveform columns run from kWave.x + 4 over width - 8 (as the peaks are drawn), over the shown view
+float HamloRevolutionTransitionPage::fractionToX(double fraction) const
+{
+    return kWave.getX() + 4.0f + (kWave.getWidth() - 8.0f) * static_cast<float>((fraction - viewStart) / std::max(1.0e-9, viewEnd - viewStart));
+}
+
+double HamloRevolutionTransitionPage::xToFraction(float x) const
+{
+    return viewStart + (viewEnd - viewStart) * juce::jlimit(0.0, 1.0, static_cast<double>((x - kWave.getX() - 4.0f) / (kWave.getWidth() - 8.0f)));
+}
+
+int HamloRevolutionTransitionPage::xToSample(float x, int length) const
+{
+    return juce::jlimit(0, std::max(0, length - 1), static_cast<int>(xToFraction(x) * length));
+}
+
+int HamloRevolutionTransitionPage::snapToGrid(int sample) const
+{
+    const int grid = juce::jlimit(0, kGrids - 1, values.grid);
+    if (grid == 0 || sourceLength <= 0)
+        return sample;
+    const double steps = static_cast<double>(values.bars * 4 * gridPerBeat[grid]), step = sourceLength / steps;
+    return juce::jlimit(0, sourceLength, static_cast<int>(std::lround(std::round(sample / step) * step)));
+}
+
+double HamloRevolutionTransitionPage::bpmFromName(const juce::String& fileName)
+{
+    // the digits right before "bpm" (fill_88bpm, Loop 92 BPM, 140bpm_...)
+    const auto lower = fileName.toLowerCase();
+    for (int at = lower.indexOf("bpm"); at >= 0; at = lower.indexOf(at + 1, "bpm"))
+    {
+        int end = at;
+        while (end > 0 && lower[end - 1] == ' ')
+            --end;
+        int start = end;
+        while (start > 0 && juce::CharacterFunctions::isDigit(lower[start - 1]))
+            --start;
+        const double bpm = lower.substring(start, end).getDoubleValue();
+        if (end - start >= 2 && bpm >= 40.0 && bpm <= 250.0)
+            return bpm;
+    }
+    return 0.0;
+}
+
+void HamloRevolutionTransitionPage::updatePeaks()
+{
+    const int columns = static_cast<int>(kWave.getWidth()) - 8;
+    const auto peaksOf = [&](const juce::AudioBuffer<float>& b, std::vector<std::pair<float, float>>& out)
+    {
+        const int n = b.getNumSamples();
+        out.assign(static_cast<size_t>(columns), { 0.0f, 0.0f });
+        if (n == 0 || b.getNumChannels() == 0)
+            return;
+        const double first = viewStart * n, span = (viewEnd - viewStart) * n;
+        for (int c = 0; c < columns; ++c)
+        {
+            const int from = juce::jlimit(0, n - 1, static_cast<int>(first + span * c / columns));
+            const int to = juce::jlimit(from + 1, n, static_cast<int>(first + span * (c + 1) / columns));
+            float lo = 0.0f, hi = 0.0f;
+            for (int i = from; i < to; ++i)
+                for (int ch = 0; ch < b.getNumChannels(); ++ch)
+                {
+                    lo = std::min(lo, b.getSample(ch, i));
+                    hi = std::max(hi, b.getSample(ch, i));
+                }
+            out[static_cast<size_t>(c)] = { lo, hi };
+        }
+    };
+    peaksOf(clipBuffer, peaks);
+    peaksOf(sourceBuffer, sourcePeaks);
+    if (sourceBuffer.getNumSamples() == 0)
+        sourcePeaks.clear();
+}
+
+void HamloRevolutionTransitionPage::setView(double start, double end)
+{
+    const double width = juce::jlimit(kMinView, 1.0, end - start);
+    viewStart = juce::jlimit(0.0, 1.0 - width, start);
+    viewEnd = viewStart + width;
+    updatePeaks();
+    repaint();
+}
+
+void HamloRevolutionTransitionPage::zoomAround(double fraction, double factor)
+{
+    const double width = juce::jlimit(kMinView, 1.0, (viewEnd - viewStart) * factor);
+    const double at = (fraction - viewStart) / std::max(1.0e-9, viewEnd - viewStart); // where the mouse sits in the view
+    setView(fraction - at * width, fraction - at * width + width);
+}
 
 HamloRevolutionTransitionPage::HamloRevolutionTransitionPage() { setOpaque(true); }
 
@@ -48,23 +143,15 @@ void HamloRevolutionTransitionPage::setValues(const Values& v)
 
 void HamloRevolutionTransitionPage::setSource(const juce::AudioBuffer<float>& source)
 {
-    const int columns = static_cast<int>(kWave.getWidth()) - 8, n = source.getNumSamples();
-    sourceLength = n;
-    sourcePeaks.assign(static_cast<size_t>(columns), { 0.0f, 0.0f });
-    if (n == 0 || source.getNumChannels() == 0)
-        return repaint();
-    for (int c = 0; c < columns; ++c)
+    if (source.getNumSamples() != sourceLength) // another source length: the old zoom and selection mean nothing
     {
-        const int from = static_cast<int>(static_cast<long long>(n) * c / columns), to = std::max(from + 1, static_cast<int>(static_cast<long long>(n) * (c + 1) / columns));
-        float lo = 0.0f, hi = 0.0f;
-        for (int i = from; i < to && i < n; ++i)
-            for (int ch = 0; ch < source.getNumChannels(); ++ch)
-            {
-                lo = std::min(lo, source.getSample(ch, i));
-                hi = std::max(hi, source.getSample(ch, i));
-            }
-        sourcePeaks[static_cast<size_t>(c)] = { lo, hi };
+        viewStart = 0.0;
+        viewEnd = 1.0;
+        selection = {};
     }
+    sourceLength = source.getNumSamples();
+    sourceBuffer.makeCopyOf(source);
+    updatePeaks();
     repaint();
 }
 
@@ -92,7 +179,8 @@ void HamloRevolutionTransitionPage::markRegion(int start, int end, int role)
     if (markHistory.size() > 64)
         markHistory.erase(markHistory.begin());
     marks.erase(std::remove_if(marks.begin(), marks.end(), [&](const tr::Mark& m) { return m.start < end && start < m.end; }), marks.end());
-    if (role >= 0 && role < tr::kKitRoles)
+    selection = {};
+    if (role >= 0 && role <= tr::kSampleMark)
         marks.push_back({ start, end, role });
     std::sort(marks.begin(), marks.end(), [](const tr::Mark& a, const tr::Mark& b) { return a.start < b.start; });
     if (onMarks)
@@ -132,22 +220,8 @@ void HamloRevolutionTransitionPage::clearMarks()
 
 void HamloRevolutionTransitionPage::setClip(const juce::AudioBuffer<float>& clip)
 {
-    const int columns = static_cast<int>(kWave.getWidth()) - 8, n = clip.getNumSamples();
-    peaks.assign(static_cast<size_t>(columns), { 0.0f, 0.0f });
-    if (n == 0 || clip.getNumChannels() == 0)
-        return repaint();
-    for (int c = 0; c < columns; ++c)
-    {
-        const int from = static_cast<int>(static_cast<long long>(n) * c / columns), to = std::max(from + 1, static_cast<int>(static_cast<long long>(n) * (c + 1) / columns));
-        float lo = 0.0f, hi = 0.0f;
-        for (int i = from; i < to && i < n; ++i)
-            for (int ch = 0; ch < clip.getNumChannels(); ++ch)
-            {
-                lo = std::min(lo, clip.getSample(ch, i));
-                hi = std::max(hi, clip.getSample(ch, i));
-            }
-        peaks[static_cast<size_t>(c)] = { lo, hi };
-    }
+    clipBuffer.makeCopyOf(clip);
+    updatePeaks();
     repaint();
 }
 
@@ -202,6 +276,11 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
         crtButton(g,kFx,"FILTER + ROOM / "+juce::String(juce::roundToInt(values.fillFx*100))+" %  v",values.fillFx>0);
     }
     crtButton(g,kVariation,"NEW VARIATION / SAME SOURCE",false);
+    crtButton(g, kGrid, juce::String("GRID / ") + gridNames[juce::jlimit(0, kGrids - 1, values.grid)] + "  v", values.grid != 0);
+    crtButton(g, kBpm, values.sourceName.isEmpty() ? "BPM / HOST " + juce::String(juce::roundToInt(values.hostBpm))
+                       : "BPM / " + (values.sampleBpm > 0.0 ? juce::String(values.sampleBpm, values.sampleBpm == std::round(values.sampleBpm) ? 0 : 1) : "HOST " + juce::String(juce::roundToInt(values.hostBpm))) + "  v",
+              values.sampleBpm > 0.0 && values.sourceName.isNotEmpty());
+    crtButton(g, kClear, "CLEAR / START OVER", false);
     if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<kitCount(values.kind,values.recipe);++r)
         crtButton(g,kitRect(r,kitCount(values.kind,values.recipe)),juce::String(kitNames[r])+" / "+(values.kitEnabled[static_cast<size_t>(r)]?"ON":"OFF")+" / "+juce::String(values.kitCounts[static_cast<size_t>(r)])+" SLICES",values.kitEnabled[static_cast<size_t>(r)]);
     for (int i = 0; i < 3; ++i)
@@ -240,7 +319,8 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     {
         const float fraction=values.fillBeats==tr::kWholeLoop?1.0f:static_cast<float>(values.fillBeats)/(values.bars*4.0f);
         g.setColour(juce::Colour(0xffffbc61).withAlpha(0.10f));
-        g.fillRect(kWave.withTrimmedLeft(kWave.getWidth()*(1-fraction)));
+        const float from=std::max(kWave.getX(),fractionToX(1.0-fraction));
+        if(from<kWave.getRight())g.fillRect(kWave.withLeft(fraction>=1.0f?kWave.getX():from));
     }
     const float mid = kWave.getCentreY(), half = kWave.getHeight() * 0.45f;
     float peak = 1.0e-6f;
@@ -260,14 +340,29 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
         for (const auto& m : values.marks)
         {
             const float x0 = sampleToX(m.start, sourceLength), x1 = std::max(x0 + 2.0f, sampleToX(m.end, sourceLength));
-            const auto colour = kitColours[juce::jlimit(0, tr::kKitRoles - 1, m.role)];
+            const int role = juce::jlimit(0, tr::kSampleMark, m.role);
+            const auto colour = kitColours[role];
             const juce::Rectangle<float> box(x0, kWave.getY() + 44.0f, x1 - x0, kWave.getHeight() - 110.0f);
-            g.setColour(colour.withAlpha(0.20f));
+            g.setColour(colour.withAlpha(role == tr::kSampleMark ? 0.12f : 0.20f));
             g.fillRect(box);
             g.setColour(colour.withAlpha(0.9f));
             g.drawRect(box, 1.0f);
             g.setFont(10.0f);
-            g.drawText(kitNames[juce::jlimit(0, tr::kKitRoles - 1, m.role)], juce::Rectangle<float>(x0 + 2.0f, kWave.getY() + 46.0f, 60.0f, 12.0f), juce::Justification::centredLeft);
+            g.drawText(kitNames[role], juce::Rectangle<float>(x0 + 2.0f, kWave.getY() + 46.0f, 60.0f, 12.0f), juce::Justification::centredLeft);
+        }
+        if (!selection.isEmpty()) // R16: right-drag selection, waiting for a role
+        {
+            const float x0 = sampleToX(selection.getStart(), sourceLength), x1 = std::max(x0 + 2.0f, sampleToX(selection.getEnd(), sourceLength));
+            const juce::Rectangle<float> box(x0, kWave.getY() + 2.0f, x1 - x0, kWave.getHeight() - 64.0f);
+            g.setColour(juce::Colours::white.withAlpha(0.13f));
+            g.fillRect(box);
+            g.setColour(juce::Colours::white.withAlpha(0.85f));
+            const float dash[] { 4.0f, 3.0f };
+            for (const auto& edge : { juce::Line<float>(box.getTopLeft(), box.getTopRight()), juce::Line<float>(box.getBottomLeft(), box.getBottomRight()),
+                                      juce::Line<float>(box.getTopLeft(), box.getBottomLeft()), juce::Line<float>(box.getTopRight(), box.getBottomRight()) })
+                g.drawDashedLine(edge, dash, 2, 1.2f);
+            g.setFont(10.0f);
+            g.drawText("LEFT-CLICK: WHAT IS IT?", juce::Rectangle<float>(x0 + 3.0f, box.getBottom() - 15.0f, 160.0f, 12.0f), juce::Justification::centredLeft);
         }
         if (marking)
         {
@@ -282,17 +377,36 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
         g.setColour(ink.withAlpha(0.75f));
         g.drawVerticalLine(juce::roundToInt(x), mid - half * peaks[c].second / peak, mid - half * peaks[c].first / peak + 1.0f);
     }
+    const int perBeat = gridPerBeat[juce::jlimit(0, kGrids - 1, values.grid)];
+    if (perBeat > 0) // R16 GRID: the finer lines (the beat lines are drawn below)
+    {
+        const int steps = values.bars * 4 * perBeat;
+        for (int i = 1; i < steps; ++i)
+        {
+            const float x = fractionToX(static_cast<double>(i) / steps);
+            if (i % perBeat != 0 && x > kWave.getX() && x < kWave.getRight())
+            {
+                g.setColour(ink.withAlpha(0.06f));
+                g.drawVerticalLine(juce::roundToInt(x), kWave.getY() + 2.0f, kWave.getBottom() - 2.0f);
+            }
+        }
+    }
     for (int b = 1; b < values.bars * 4; ++b) // beat lines
     {
-        const float x = kWave.getX() + kWave.getWidth() * static_cast<float>(b) / static_cast<float>(values.bars * 4);
+        const float x = fractionToX(static_cast<double>(b) / (values.bars * 4));
+        if (x <= kWave.getX() || x >= kWave.getRight())
+            continue;
         g.setColour(ink.withAlpha(b % 4 == 0 ? 0.35f : 0.12f));
         g.drawVerticalLine(juce::roundToInt(x), kWave.getY() + 2.0f, kWave.getBottom() - 2.0f);
     }
     if (values.playhead >= 0.0)
     {
         g.setColour(juce::Colours::white.withAlpha(0.8f));
-        g.drawVerticalLine(juce::roundToInt(kWave.getX() + kWave.getWidth() * static_cast<float>(values.playhead)), kWave.getY(), kWave.getBottom());
+        g.drawVerticalLine(juce::roundToInt(fractionToX(values.playhead)), kWave.getY(), kWave.getBottom());
     }
+    if (viewEnd - viewStart < 0.999) // R16 zoom: how deep, and the way back
+        crtText(g, "ZOOM x" + juce::String((1.0 / (viewEnd - viewStart)), 1) + "  /  DOUBLE-CLICK: WHOLE WAVE",
+                { kWave.getRight() - 330.0f, kWave.getY() + 6.0f, 320.0f, 16.0f }, 11.0f, juce::Justification::centredRight, 0.8f);
     if (values.valid)
         crtText(g, values.fileName, { kWave.getX() + 8.0f, kWave.getY() + 6.0f, 600.0f, 16.0f }, 11.0f, juce::Justification::centredLeft, 0.7f);
     if (values.valid && values.kind == tr::Fill && values.recipe >= tr::kPhraseRecipe && values.fillInfo.isNotEmpty())
@@ -323,6 +437,129 @@ void HamloRevolutionTransitionPage::chooseFillBeats(int beats)
 {values.fillBeats=beats==1||beats==2||(beats==tr::kWholeLoop&&phraseRecipe(values.kind,values.recipe))?beats:4;if(onFillOptions)onFillOptions();repaint();}
 void HamloRevolutionTransitionPage::chooseFillFx(double amount)
 {values.fillFx=std::isfinite(amount)?juce::jlimit(0.,1.,amount):0.;if(onFillOptions)onFillOptions();repaint();}
+void HamloRevolutionTransitionPage::pressClear()
+{
+    // R16: start over on the same source - no marks, no selection, the whole wave; the owner sets the defaults
+    markHistory.clear();
+    values.marks.clear();
+    selection = {};
+    setView(0.0, 1.0);
+    if (onClear)
+        onClear();
+    repaint();
+}
+void HamloRevolutionTransitionPage::chooseGrid(int grid)
+{
+    values.grid = juce::jlimit(0, kGrids - 1, grid);
+    repaint();
+}
+void HamloRevolutionTransitionPage::chooseBpm(double bpm)
+{
+    values.sampleBpm = std::isfinite(bpm) && bpm >= 40.0 && bpm <= 250.0 ? bpm : 0.0;
+    if (onBpm)
+        onBpm(values.sampleBpm);
+    repaint();
+}
+void HamloRevolutionTransitionPage::selectRegion(int start, int end)
+{
+    if (end < start)
+        std::swap(start, end);
+    start = juce::jlimit(0, std::max(0, sourceLength), start);
+    end = juce::jlimit(0, std::max(0, sourceLength), end);
+    selection = end - start >= 8 ? juce::Range<int>(start, end) : juce::Range<int>();
+    repaint();
+}
+
+void HamloRevolutionTransitionPage::showRoleMenu(juce::Range<int> region, int current)
+{
+    bool marked = false;
+    for (const auto& m : values.marks)
+        marked = marked || (m.start < region.getEnd() && region.getStart() < m.end);
+    juce::PopupMenu menu;
+    menu.addSectionHeader(current >= 0 ? "CHANGE THIS MARK" : "THIS IS ...");
+    for (int r = 0; r < tr::kKitRoles; ++r)
+        menu.addItem(r + 1, kitNames[r], true, r == current);
+    menu.addItem(tr::kSampleMark + 1, "SAMPLE (NOT A DRUM)", true, current == tr::kSampleMark);
+    menu.addSeparator();
+    menu.addItem(10, "REMOVE MARK", marked);
+    menu.addItem(13, "CANCEL SELECTION", !selection.isEmpty());
+    menu.addItem(12, "UNDO LAST MARK", !markHistory.empty());
+    menu.addItem(11, "CLEAR ALL MARKS", !values.marks.empty());
+    juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withMousePosition(), [safe, region](int result)
+    {
+        if (!safe || result <= 0)
+            return;
+        if (result == 13)
+            return safe->selectRegion(0, 0);
+        if (result == 11)
+            return safe->clearMarks();
+        if (result == 12)
+            return safe->undoMark();
+        safe->markRegion(region.getStart(), region.getEnd(), result == 10 ? -1 : result - 1);
+    });
+}
+
+void HamloRevolutionTransitionPage::showBpmMenu()
+{
+    juce::PopupMenu menu;
+    const bool sample = values.sourceName.isNotEmpty();
+    if (!sample)
+    {
+        menu.addSectionHeader("THE TRACK'S INPUT FOLLOWS THE HOST TEMPO");
+        menu.addItem(1, "HOST  " + juce::String(juce::roundToInt(values.hostBpm)) + " BPM", false, true);
+        menu.addSectionHeader("DROP A SAMPLE TO SET ITS OWN BPM");
+    }
+    else
+    {
+        menu.addSectionHeader("THE SAMPLE'S TEMPO");
+        menu.addItem(1, "HOST  " + juce::String(juce::roundToInt(values.hostBpm)) + " BPM", true, values.sampleBpm <= 0.0);
+        const double named = bpmFromName(values.sourceName);
+        menu.addItem(2, named > 0.0 ? "FROM THE FILE NAME  " + juce::String(named, 0) + " BPM" : juce::String("FROM THE FILE NAME  (NONE)"), named > 0.0,
+                     named > 0.0 && std::abs(values.sampleBpm - named) < 1.0e-6);
+        const double fit = values.sampleSeconds > 0.0 ? values.bars * 240.0 / values.sampleSeconds : 0.0;
+        const bool fits = fit >= 40.0 && fit <= 250.0;
+        menu.addItem(3, fits ? "FIT THE SAMPLE TO " + juce::String(values.bars) + (values.bars == 1 ? " BAR  " : " BARS  ") + juce::String(fit, 1) + " BPM"
+                             : juce::String("FIT THE SAMPLE TO THE BARS  (OUT OF RANGE)"),
+                     fits, fits && std::abs(values.sampleBpm - fit) < 0.05);
+        menu.addSeparator();
+        for (int from = 60; from < 200; from += 20)
+        {
+            juce::PopupMenu sub;
+            for (int bpm = from; bpm < from + 20; ++bpm)
+                sub.addItem(1000 + bpm, juce::String(bpm) + " BPM", true, std::abs(values.sampleBpm - bpm) < 1.0e-6);
+            menu.addSubMenu(juce::String(from) + " - " + juce::String(from + 19), sub);
+        }
+        menu.addItem(4, "TYPE A VALUE ...");
+    }
+    juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
+    const auto area = kBpm.transformedBy(juce::AffineTransform::scale(scale).translated(offset)).toNearestInt();
+    const double named = bpmFromName(values.sourceName), fit = values.sampleSeconds > 0.0 ? values.bars * 240.0 / values.sampleSeconds : 0.0;
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withTargetScreenArea(localAreaToGlobal(area)), [safe, named, fit](int r)
+    {
+        if (!safe || r <= 0)
+            return;
+        if (r == 1)
+            return safe->chooseBpm(0.0);
+        if (r == 2)
+            return safe->chooseBpm(named);
+        if (r == 3)
+            return safe->chooseBpm(std::round(fit * 10.0) / 10.0);
+        if (r >= 1000)
+            return safe->chooseBpm(r - 1000);
+        auto* window = new juce::AlertWindow("BPM", "The sample's tempo, 40 .. 250", juce::MessageBoxIconType::NoIcon);
+        window->addTextEditor("bpm", safe->values.sampleBpm > 0.0 ? juce::String(safe->values.sampleBpm, 1) : juce::String(juce::roundToInt(safe->values.hostBpm)));
+        window->addButton("OK", 1, juce::KeyPress(juce::KeyPress::returnKey));
+        window->addButton("CANCEL", 0, juce::KeyPress(juce::KeyPress::escapeKey));
+        window->enterModalState(true, juce::ModalCallbackFunction::create([safe, window](int ok)
+        {
+            const double bpm = window->getTextEditorContents("bpm").getDoubleValue();
+            if (safe && ok == 1 && bpm >= 40.0 && bpm <= 250.0)
+                safe->chooseBpm(bpm);
+        }), true);
+    });
+}
+
 void HamloRevolutionTransitionPage::pressPlay() { if (onPlay) onPlay(); }
 void HamloRevolutionTransitionPage::pressBack() { if (onBack) onBack(); }
 void HamloRevolutionTransitionPage::pressShowFile() { if (onShowFile) onShowFile(); }
@@ -398,6 +635,9 @@ juce::String HamloRevolutionTransitionPage::helpKeyAt(juce::Point<float> local) 
 {
     const auto d = toDesign(local);
     if(kRecipe.contains(d))return "transitionRecipe";
+    if(kGrid.contains(d))return "transitionGrid";
+    if(kBpm.contains(d))return "transitionBpm";
+    if(kClear.contains(d))return "transitionClear";
     if(kVariation.contains(d))return "transitionVariation";
     if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<kitCount(values.kind,values.recipe);++r)if(kitRect(r,kitCount(values.kind,values.recipe)).contains(d))return "transitionKit";
     if(values.kind==tr::Fill&&values.recipe>=8)
@@ -430,7 +670,7 @@ juce::String HamloRevolutionTransitionPage::getTooltip() { return revolutionHelp
 void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
 {
     const auto d = toDesign(e.position);
-    waveDown = dragged = false;
+    waveDown = dragged = roleClick = false;
     if(kRecipe.contains(d))
     {
         juce::PopupMenu menu;
@@ -454,6 +694,18 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
         return;
     }
     if(kVariation.contains(d))return pressVariation();
+    if(kClear.contains(d))return pressClear();
+    if(kBpm.contains(d))return showBpmMenu();
+    if(kGrid.contains(d))
+    {
+        juce::PopupMenu menu;
+        menu.addSectionHeader("GRID: LINES ON THE WAVE, SELECTIONS SNAP");
+        for(int i=0;i<kGrids;++i)menu.addItem(i+1,i==0?juce::String("OFF (BEATS, NO SNAP)"):juce::String(gridNames[i]),true,values.grid==i);
+        juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
+        const auto area=kGrid.transformedBy(juce::AffineTransform::scale(scale).translated(offset)).toNearestInt();
+        menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withTargetScreenArea(localAreaToGlobal(area)),[safe](int r){if(safe&&r>0)safe->chooseGrid(r-1);});
+        return;
+    }
     if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<kitCount(values.kind,values.recipe);++r)if(kitRect(r,kitCount(values.kind,values.recipe)).contains(d))return toggleKit(r);
     if(values.kind==tr::Fill&&values.recipe>=8&&(kPhrase.contains(d)||kFx.contains(d)))
     {
@@ -484,13 +736,24 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
         return pressShowFile();
     if (kWave.contains(d))
     {
-        if (e.mods.isPopupMenu() && phraseRecipe(values.kind, values.recipe) && sourceLength > 0)
+        const bool phrase = phraseRecipe(values.kind, values.recipe) && sourceLength > 0;
+        if (e.mods.isPopupMenu() && phrase)
         {
-            marking = true; // R15: right-click a hit, or right-drag a region, then choose its drum
+            marking = true; // R16: right-click a hit, or right-drag a region: it is selected; a left-click labels it
             markFrom = markTo = d.x;
             return;
         }
         waveDown = true; // a drag from here exports the WAV
+        if (phrase && d.y < kWave.getBottom() - 60.0f)
+        {
+            const int sample = xToSample(d.x, sourceLength);
+            roleClick = selection.contains(sample) || markAt(sample) >= 0; // a click without a drag opens "THIS IS ..."
+            if (!roleClick && !selection.isEmpty())
+            {
+                selection = {}; // a left-click elsewhere drops the selection
+                repaint();
+            }
+        }
         return;
     }
     for (int k = 0; k < 4; ++k)
@@ -523,57 +786,84 @@ void HamloRevolutionTransitionPage::mouseDrag(const juce::MouseEvent& e)
         setKnob(dragKnob, dragStart + static_cast<double>((dragStartY - e.position.y) / (220.0f * scale)), false);
 }
 
-void HamloRevolutionTransitionPage::mouseUp(const juce::MouseEvent&)
+void HamloRevolutionTransitionPage::mouseUp(const juce::MouseEvent& e)
 {
     if (marking)
     {
+        // R16: the right button only selects (a click: the hit / mark under it; a drag: the region, snapped to GRID)
         marking = false;
         juce::Range<int> region;
-        int current = -1; // the role of the mark that was clicked (relabel / remove it)
         if (std::abs(markTo - markFrom) < 4.0f)
         {
             const int sample = xToSample(markFrom, sourceLength), index = markAt(sample);
             if (index >= 0)
-            {
-                const auto& m = values.marks[static_cast<size_t>(index)];
-                region = { m.start, m.end };
-                current = m.role;
-            }
+                region = { values.marks[static_cast<size_t>(index)].start, values.marks[static_cast<size_t>(index)].end };
             else
                 region = hitAt(sample);
         }
         else
-            region = { xToSample(std::min(markFrom, markTo), sourceLength), xToSample(std::max(markFrom, markTo), sourceLength) };
-        repaint();
-        if (region.getLength() < 8)
-            return;
-        bool marked = false;
-        for (const auto& m : values.marks)
-            marked = marked || (m.start < region.getEnd() && region.getStart() < m.end);
-        juce::PopupMenu menu;
-        menu.addSectionHeader(current >= 0 ? "CHANGE THIS MARK" : "THIS HIT IS ...");
-        for (int r = 0; r < tr::kKitRoles; ++r)
-            menu.addItem(r + 1, kitNames[r], true, r == current);
-        menu.addSeparator();
-        menu.addItem(10, "REMOVE MARK", marked);
-        menu.addItem(12, "UNDO LAST MARK", !markHistory.empty());
-        menu.addItem(11, "CLEAR ALL MARKS", !values.marks.empty());
-        juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
-        menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(this).withMousePosition(), [safe, region](int result)
         {
-            if (!safe || result <= 0)
-                return;
-            if (result == 11)
-                return safe->clearMarks();
-            if (result == 12)
-                return safe->undoMark();
-            safe->markRegion(region.getStart(), region.getEnd(), result == 10 ? -1 : result - 1);
-        });
+            int a = snapToGrid(xToSample(std::min(markFrom, markTo), sourceLength)), b = snapToGrid(xToSample(std::max(markFrom, markTo), sourceLength));
+            if (b <= a) // both edges snapped to one line: keep the drag as it was
+            {
+                a = xToSample(std::min(markFrom, markTo), sourceLength);
+                b = xToSample(std::max(markFrom, markTo), sourceLength);
+            }
+            region = { a, b };
+        }
+        selectRegion(region.getStart(), region.getEnd());
         return;
     }
+    if (roleClick && waveDown && !dragged)
+    {
+        // R16: a left-click on the selection (or on a mark) asks what it is
+        roleClick = false;
+        waveDown = false;
+        const int sample = xToSample(toDesign(e.position).x, sourceLength);
+        if (!selection.isEmpty() && selection.contains(sample))
+        {
+            int current = -1;
+            for (const auto& m : values.marks)
+                if (m.start == selection.getStart() && m.end == selection.getEnd())
+                    current = m.role;
+            return showRoleMenu(selection, current);
+        }
+        if (const int index = markAt(sample); index >= 0)
+        {
+            const auto m = values.marks[static_cast<size_t>(index)];
+            return showRoleMenu({ m.start, m.end }, m.role);
+        }
+        return;
+    }
+    roleClick = false;
     if (dragKnob >= 0 && onKnobsDone)
         onKnobsDone();
     dragKnob = -1;
     waveDown = false;
+}
+
+void HamloRevolutionTransitionPage::mouseWheelMove(const juce::MouseEvent& e, const juce::MouseWheelDetails& wheel)
+{
+    const auto d = toDesign(e.position);
+    if (!kWave.contains(d) || (sourceLength <= 0 && clipBuffer.getNumSamples() <= 0))
+        return juce::Component::mouseWheelMove(e, wheel);
+    const float vertical = wheel.isReversed ? -wheel.deltaY : wheel.deltaY;
+    if (e.mods.isShiftDown() || std::abs(wheel.deltaX) > std::abs(wheel.deltaY))
+    {
+        // shift + wheel (or a sideways swipe): move along the zoomed wave
+        const float along = std::abs(wheel.deltaX) > std::abs(wheel.deltaY) ? wheel.deltaX : vertical;
+        const double width = viewEnd - viewStart;
+        return setView(viewStart - along * width * 0.5, viewEnd - along * width * 0.5);
+    }
+    if (vertical == 0.0f)
+        return;
+    // the wheel zooms in / out around the mouse; one notch is about x1.25
+    zoomAround(xToFraction(d.x), std::pow(0.8, juce::jlimit(-4.0, 4.0, static_cast<double>(vertical) / 0.12)));
+}
+
+void HamloRevolutionTransitionPage::mouseDoubleClick(const juce::MouseEvent& e)
+{
+    if (kWave.contains(toDesign(e.position)))
+        setView(0.0, 1.0); // the whole wave again
 }
 } // namespace hpeq::ui

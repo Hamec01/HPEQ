@@ -34,6 +34,10 @@ public:
         double bpm = 120.0, playhead = -1.0; // 0 .. 1 while previewing
         juce::String fileName;
         juce::String sourceName; // a dropped sample's name; empty = the track's input
+        // R16: the wave's GRID (0 off: beat lines only, no snap; 1 1/4, 2 1/8, 3 1/16, 4 1/32, 5 1/8T, 6 1/16T)
+        int grid = 0;
+        // R16: the dropped sample's tempo (0 = the host's), the host's tempo and the sample's length (BPM menu)
+        double sampleBpm = 0.0, hostBpm = 120.0, sampleSeconds = 0.0;
     };
 
     HamloRevolutionTransitionPage();
@@ -53,6 +57,8 @@ public:
     std::function<juce::File()> fileToDrag;
     std::function<void(const juce::File&)> onSampleDropped; // a sample dropped on the page: the new source
     std::function<void()> onUseInput;                       // USE INPUT: the track's input again
+    std::function<void()> onClear;                          // R16 CLEAR: start over on the same source
+    std::function<void(double bpm)> onBpm;                  // R16: the dropped sample's tempo (0 = the host's)
 
     // the controls, also for tests
     void pressGenerate();
@@ -67,10 +73,20 @@ public:
     void chooseFillFx(double);
     void pressVariation();
     void toggleKit(int role);
-    void markRegion(int start, int end, int role); // R15: role 0..3; -1 removes marks overlapping the region
+    void pressClear();
+    void chooseGrid(int grid);
+    void chooseBpm(double bpm); // 0 = the host's tempo; else 40 .. 250
+    void selectRegion(int start, int end); // R16: the pending selection (source samples); labelled by a left-click
+    juce::Range<int> getSelection() const noexcept { return selection; }
+    void setView(double start, double end); // R16 zoom: the shown part of the wave, 0 .. 1
+    juce::Range<double> getView() const noexcept { return { viewStart, viewEnd }; }
+    void zoomAround(double fraction, double factor); // factor < 1 zooms in, keeping `fraction` under the mouse
+    int snapToGrid(int sample) const;                // the nearest grid line (GRID off: unchanged)
+    static double bpmFromName(const juce::String& fileName); // "fill_88bpm.wav" -> 88, none -> 0
+    void markRegion(int start, int end, int role); // R15: role 0..4 (R16: 5 SAMPLE); -1 removes marks overlapping the region
     void clearMarks();
     void undoMark();
-    void forgetMarks() { values.marks.clear(); markHistory.clear(); repaint(); } // a new source: no marks, no undo                               // back to the marks before the last change
+    void forgetMarks() { values.marks.clear(); markHistory.clear(); selection = {}; repaint(); } // a new source: no marks, no undo
     int markAt(int sample) const;                  // index of the mark containing a source sample, -1 none
     juce::Range<int> hitAt(int sample) const;      // the analysed hit region containing / before a source sample
     void setKnob(int knob, double value, bool done);
@@ -88,13 +104,26 @@ public:
     void mouseDown(const juce::MouseEvent&) override;
     void mouseDrag(const juce::MouseEvent&) override;
     void mouseUp(const juce::MouseEvent&) override;
+    void mouseWheelMove(const juce::MouseEvent&, const juce::MouseWheelDetails&) override;
+    void mouseDoubleClick(const juce::MouseEvent&) override;
 
 private:
     juce::Point<float> toDesign(juce::Point<float>) const;
+    float fractionToX(double fraction) const;           // design x of a position 0 .. 1 in the shown view
+    double xToFraction(float x) const;
+    float sampleToX(int sample, int length) const { return fractionToX(static_cast<double>(sample) / std::max(1, length)); }
+    int xToSample(float x, int length) const;
+    void updatePeaks();                                 // peaks of the shown view (zoom)
+    void showRoleMenu(juce::Range<int> region, int current);
+    void showBpmMenu();
 
     Values values;
     std::vector<std::pair<float, float>> peaks; // min / max per waveform column
     std::vector<std::pair<float, float>> sourcePeaks;
+    juce::AudioBuffer<float> clipBuffer, sourceBuffer; // kept to draw the zoomed view
+    double viewStart = 0.0, viewEnd = 1.0;
+    juce::Range<int> selection;   // R16: right-drag selection waiting for a role (left-click it)
+    bool roleClick = false;       // a left press on the selection / a mark: its role menu on release (no drag)
     int sourceLength = 0;
     bool marking = false;      // a right-button gesture on the wave
     float markFrom = 0, markTo = 0; // design x of the gesture
