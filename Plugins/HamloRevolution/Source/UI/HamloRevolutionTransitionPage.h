@@ -26,7 +26,7 @@ public:
         std::array<int,hpeq::dsp::transition::kKitRoles> kitCounts {};
         std::array<std::uint32_t,hpeq::dsp::transition::kKitRoles> kitMask {};
         std::vector<hpeq::dsp::transition::Mark> marks;           // R15: the user's labels on the source (optional)
-        std::vector<juce::Range<int>> hits;     // analysed hit regions of the source: a right-click snaps to one
+        std::vector<juce::Range<int>> hits;     // analysed hit regions of the source: a left-click selects one
         juce::String fillInfo; // R15 PHRASE FILL diagnostics line
         std::uint64_t seed = 1;
         std::array<double, 4> knobs { 0.6, 0.8, 0.5, 0.7 };
@@ -76,7 +76,7 @@ public:
     void pressClear();
     void chooseGrid(int grid);
     void chooseBpm(double bpm); // 0 = the host's tempo; else 40 .. 250
-    void selectRegion(int start, int end); // R16: the pending selection (source samples); labelled by a left-click
+    void selectRegion(int start, int end); // R16: the pending selection (source samples); labelled by a right-click
     juce::Range<int> getSelection() const noexcept { return selection; }
     void setView(double start, double end); // R16 zoom: the shown part of the wave, 0 .. 1
     juce::Range<double> getView() const noexcept { return { viewStart, viewEnd }; }
@@ -122,8 +122,8 @@ private:
     std::vector<std::pair<float, float>> sourcePeaks;
     juce::AudioBuffer<float> clipBuffer, sourceBuffer; // kept to draw the zoomed view
     double viewStart = 0.0, viewEnd = 1.0;
-    juce::Range<int> selection;   // R16: right-drag selection waiting for a role (left-click it)
-    bool roleClick = false;       // a left press on the selection / a mark: its role menu on release (no drag)
+    juce::Range<int> selection;   // R16: left-drag selection waiting for a role (right-click it)
+    static constexpr float kExportStrip = 40.0f; // PHRASE FILL: a drag from the wave's top line (the file name) exports the WAV
     int sourceLength = 0;
     bool marking = false;      // a right-button gesture on the wave
     float markFrom = 0, markTo = 0; // design x of the gesture

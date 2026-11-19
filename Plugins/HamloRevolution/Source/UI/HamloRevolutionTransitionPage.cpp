@@ -350,7 +350,7 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
             g.setFont(10.0f);
             g.drawText(kitNames[role], juce::Rectangle<float>(x0 + 2.0f, kWave.getY() + 46.0f, 60.0f, 12.0f), juce::Justification::centredLeft);
         }
-        if (!selection.isEmpty()) // R16: right-drag selection, waiting for a role
+        if (!selection.isEmpty()) // R16: left-drag selection, waiting for a role
         {
             const float x0 = sampleToX(selection.getStart(), sourceLength), x1 = std::max(x0 + 2.0f, sampleToX(selection.getEnd(), sourceLength));
             const juce::Rectangle<float> box(x0, kWave.getY() + 2.0f, x1 - x0, kWave.getHeight() - 64.0f);
@@ -362,7 +362,7 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
                                       juce::Line<float>(box.getTopLeft(), box.getBottomLeft()), juce::Line<float>(box.getTopRight(), box.getBottomRight()) })
                 g.drawDashedLine(edge, dash, 2, 1.2f);
             g.setFont(10.0f);
-            g.drawText("LEFT-CLICK: WHAT IS IT?", juce::Rectangle<float>(x0 + 3.0f, box.getBottom() - 15.0f, 160.0f, 12.0f), juce::Justification::centredLeft);
+            g.drawText("RIGHT-CLICK: WHAT IS IT?", juce::Rectangle<float>(x0 + 3.0f, box.getBottom() - 15.0f, 160.0f, 12.0f), juce::Justification::centredLeft);
         }
         if (marking)
         {
@@ -408,7 +408,7 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
         crtText(g, "ZOOM x" + juce::String((1.0 / (viewEnd - viewStart)), 1) + "  /  DOUBLE-CLICK: WHOLE WAVE",
                 { kWave.getRight() - 330.0f, kWave.getY() + 6.0f, 320.0f, 16.0f }, 11.0f, juce::Justification::centredRight, 0.8f);
     if (values.valid)
-        crtText(g, values.fileName, { kWave.getX() + 8.0f, kWave.getY() + 6.0f, 600.0f, 16.0f }, 11.0f, juce::Justification::centredLeft, 0.7f);
+        crtText(g, phrase ? values.fileName + "   <- DRAG THIS LINE (OR ALT + DRAG) INTO THE DAW" : values.fileName, { kWave.getX() + 8.0f, kWave.getY() + 6.0f, 600.0f, 16.0f }, 11.0f, juce::Justification::centredLeft, 0.7f);
     if (values.valid && values.kind == tr::Fill && values.recipe >= tr::kPhraseRecipe && values.fillInfo.isNotEmpty())
         crtText(g, values.fillInfo, { kWave.getX() + 8.0f, kWave.getY() + 24.0f, kWave.getWidth() - 16.0f, 16.0f }, 11.0f, juce::Justification::centredLeft, 0.95f);
     crtEnd(g, kWave);
@@ -670,7 +670,7 @@ juce::String HamloRevolutionTransitionPage::getTooltip() { return revolutionHelp
 void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
 {
     const auto d = toDesign(e.position);
-    waveDown = dragged = roleClick = false;
+    waveDown = dragged = false;
     if(kRecipe.contains(d))
     {
         juce::PopupMenu menu;
@@ -737,23 +737,36 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
     if (kWave.contains(d))
     {
         const bool phrase = phraseRecipe(values.kind, values.recipe) && sourceLength > 0;
-        if (e.mods.isPopupMenu() && phrase)
+        if (phrase && e.mods.isPopupMenu())
         {
-            marking = true; // R16: right-click a hit, or right-drag a region: it is selected; a left-click labels it
+            // R16 (owner fix): a right-click asks what it is - the selection, else the mark, else the hit under the mouse
+            const int sample = xToSample(d.x, sourceLength);
+            if (!selection.isEmpty() && selection.contains(sample))
+            {
+                int current = -1;
+                for (const auto& m : values.marks)
+                    if (m.start == selection.getStart() && m.end == selection.getEnd())
+                        current = m.role;
+                return showRoleMenu(selection, current);
+            }
+            if (const int index = markAt(sample); index >= 0)
+            {
+                const auto m = values.marks[static_cast<size_t>(index)];
+                return showRoleMenu({ m.start, m.end }, m.role);
+            }
+            const auto hit = hitAt(sample);
+            selectRegion(hit.getStart(), hit.getEnd());
+            if (!selection.isEmpty())
+                showRoleMenu(selection, -1);
+            return;
+        }
+        if (phrase && d.y >= kWave.getY() + kExportStrip && !e.mods.isAltDown())
+        {
+            marking = true; // R16: a left-click selects a hit, a left-drag a region; a right-click labels it
             markFrom = markTo = d.x;
             return;
         }
-        waveDown = true; // a drag from here exports the WAV
-        if (phrase && d.y < kWave.getBottom() - 60.0f)
-        {
-            const int sample = xToSample(d.x, sourceLength);
-            roleClick = selection.contains(sample) || markAt(sample) >= 0; // a click without a drag opens "THIS IS ..."
-            if (!roleClick && !selection.isEmpty())
-            {
-                selection = {}; // a left-click elsewhere drops the selection
-                repaint();
-            }
-        }
+        waveDown = true; // a drag from here exports the WAV (PHRASE FILL: from the top line, or alt + drag)
         return;
     }
     for (int k = 0; k < 4; ++k)
@@ -786,11 +799,11 @@ void HamloRevolutionTransitionPage::mouseDrag(const juce::MouseEvent& e)
         setKnob(dragKnob, dragStart + static_cast<double>((dragStartY - e.position.y) / (220.0f * scale)), false);
 }
 
-void HamloRevolutionTransitionPage::mouseUp(const juce::MouseEvent& e)
+void HamloRevolutionTransitionPage::mouseUp(const juce::MouseEvent&)
 {
     if (marking)
     {
-        // R16: the right button only selects (a click: the hit / mark under it; a drag: the region, snapped to GRID)
+        // R16: the left button selects (a click: the hit / mark under it; a drag: the region, snapped to GRID)
         marking = false;
         juce::Range<int> region;
         if (std::abs(markTo - markFrom) < 4.0f)
@@ -814,28 +827,6 @@ void HamloRevolutionTransitionPage::mouseUp(const juce::MouseEvent& e)
         selectRegion(region.getStart(), region.getEnd());
         return;
     }
-    if (roleClick && waveDown && !dragged)
-    {
-        // R16: a left-click on the selection (or on a mark) asks what it is
-        roleClick = false;
-        waveDown = false;
-        const int sample = xToSample(toDesign(e.position).x, sourceLength);
-        if (!selection.isEmpty() && selection.contains(sample))
-        {
-            int current = -1;
-            for (const auto& m : values.marks)
-                if (m.start == selection.getStart() && m.end == selection.getEnd())
-                    current = m.role;
-            return showRoleMenu(selection, current);
-        }
-        if (const int index = markAt(sample); index >= 0)
-        {
-            const auto m = values.marks[static_cast<size_t>(index)];
-            return showRoleMenu({ m.start, m.end }, m.role);
-        }
-        return;
-    }
-    roleClick = false;
     if (dragKnob >= 0 && onKnobsDone)
         onKnobsDone();
     dragKnob = -1;
