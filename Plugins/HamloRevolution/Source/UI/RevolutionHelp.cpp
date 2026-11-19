@@ -36,7 +36,11 @@ juce::String revolutionHelp(const juce::String& key)
         { "transitionKind", "RISE builds up into the next downbeat (roll, pitch, reverse swell, filter); FILL re-cuts the last bar and rolls "
                             "into the downbeat." },
         { "transitionBars", "BARS: how many of the last bars are used - and how long the transition is." },
-        { "transitionRecipe", "STYLE: AUTO COMPOSE builds independent kick, snare and hat parts. Eight families range from snare torrents and hat weaving "
+        { "transitionRecipe", "STYLE (FILL): R17 FILL TYPES first. FILL AUTO picks one from the source and the length; BUILD accelerates snares 1/4 -> 1/32 into the downbeat; "
+                              "AROUND THE KIT runs snare -> high -> middle -> floor tom (made from the snare when no toms are marked); BIG SNARE leads repeated snares into one huge, "
+                              "reverbed snare; GROOVE BREAK keeps the groove and answers on the last beat; TRAP ROLL rolls the hats faster and higher; SAMPLE CHOP cuts any audio "
+                              "(stutter, rearrange, half speed, tape stop) - a SAMPLE mark on the wave picks the material. NEW VARIATION gives another variant. "
+                              "The older recipes are in the submenus. RISE: AUTO COMPOSE builds independent kick, snare and hat parts. Eight families range from snare torrents and hat weaving "
                               "to triplet breaks and call/response. Composition favours different attacks from the input loop. NEW VARIATION keeps the source. "
                               "R13 SLICER and CLASSIC / R12 RECIPES retain the earlier renderers. RISE stays unchanged." },
         { "transitionRise0", "PITCH: how far the roll climbs - up to an octave at 100 %." },
@@ -47,9 +51,13 @@ juce::String revolutionHelp(const juce::String& key)
         { "transitionFill1", "ROLL: final-beat density and acceleration. New recipes vary the roll shape by seed; zero returns to sparse endings." },
         { "transitionFill2", "REVERSE: backward pickups and selected ghost fragments; Classic reverses the last eighth." },
         { "transitionFill3", "STOP: new slicer leaves a soft final rest before the drop. R12/Classic retain their tape-stop ending." },
+        { "transitionR17Knob0", "ENERGY: how big the fill is - density, speed (1/16 .. 1/32 .. 1/64), the crescendo and the kick drive." },
+        { "transitionR17Knob1", "SPACE: breath - how long the drums ring before the next stroke, the room on the fill and the landing's tail." },
+        { "transitionR17Knob2", "PITCH: pitch movement - builds and rolls rise (up to +7 semitones), made toms spread wider, chops step up." },
+        { "transitionR17Knob3", "DROP: silence before the downbeat (1/16 .. 1/4 beat); the room tail rings through it. Zero runs straight into the one." },
         { "transitionVariation", "NEW VARIATION: keep the captured audio, change the seed and rebuild timing, rests and source order. GENERATE captures the track again." },
         { "transitionKit", "KICK / SNARE / HAT: enable each extracted band/time role independently. Switch off two to audition the third. SLICES counts available source hits. Overlapping drums are filtered, not perfectly separated stems. The coloured rows show the newly composed rhythm." },
-        { "transitionPhrase", "EDIT LAST: replace the final 1, 2 or 4 beats of the selected capture. Earlier audio stays intact except protection of an already hot source. The amber waveform region is the edited ending." },
+        { "transitionPhrase", "EDIT LAST: replace the final 1, 2 or 4 beats of the selected capture (R17 types: also 8 beats on 2 and 4 bar sources). Earlier audio stays intact except protection of an already hot source. The amber waveform region is the edited ending." },
         { "transitionFillFx", "FILTER + ROOM: rising high-pass and additive room on a selected body hit. Zero disables both. STOP can leave a final gap before the next downbeat. The result remains exactly the selected bar length." },
         { "transitionGenerate", "GENERATE: take the last bars again and make a new variation." },
         { "transitionPlay", "PLAY / STOP: hear the transition through the plug-in's output." },

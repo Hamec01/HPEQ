@@ -484,8 +484,8 @@ void ModulePluginEditor::installTransitionPage()
     {
         auto v = tp->getValues();
         v.kind = kind;
-        v.recipe = kind == tr::Fill ? tr::kPhraseRecipe : 1;
-        v.knobs = tr::defaultKnobs(kind);
+        v.recipe = kind == tr::Fill ? tr::kR17Recipe : 1; // R17: FILL AUTO
+        v.knobs = tr::defaultKnobs(kind, v.recipe);
         tp->setValues(v);
         render(false, false); // the same capture and seed, the other recipe
     };
@@ -505,8 +505,8 @@ void ModulePluginEditor::installTransitionPage()
     {
         // R16 CLEAR: start over on the same source and seed - the kind's default style, knobs and options
         auto v = tp->getValues();
-        v.recipe = v.kind == tr::Fill ? tr::kPhraseRecipe : 1;
-        v.knobs = tr::defaultKnobs(v.kind);
+        v.recipe = v.kind == tr::Fill ? tr::kR17Recipe : 1;
+        v.knobs = tr::defaultKnobs(v.kind, v.recipe);
         v.fillBeats = 4;
         v.fillFx = 0.35;
         v.kitEnabled.fill(true);
@@ -574,9 +574,9 @@ void ModulePluginEditor::openTransition(int kind)
         return;
     auto v = transitionPage->getValues();
     v.kind = kind;
-    v.recipe = kind == dsp::transition::Fill ? dsp::transition::kPhraseRecipe : 1;
+    v.recipe = kind == dsp::transition::Fill ? dsp::transition::kR17Recipe : 1;
     if(!processor.lastTransition().valid)v.bars=kind==dsp::transition::Fill?1:2;
-    v.knobs = dsp::transition::defaultKnobs(kind);
+    v.knobs = dsp::transition::defaultKnobs(kind, v.recipe);
     transitionPage->setValues(v);
     processor.setPage(ModulePluginProcessor::Page::Transition);
     applyPage();

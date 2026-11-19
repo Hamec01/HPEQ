@@ -297,6 +297,17 @@ const char* knobName(int kind, int knob)
     return (kind == Rise ? rise : fill)[std::clamp(knob, 0, 3)];
 }
 
+const char* knobName(int kind, int recipe, int knob)
+{
+    static constexpr const char* r17[4] { "ENERGY", "SPACE", "PITCH", "DROP" };
+    return isR17(kind, recipe) ? r17[std::clamp(knob, 0, 3)] : knobName(kind, knob);
+}
+
+std::array<double, 4> defaultKnobs(int kind, int recipe) noexcept
+{
+    return isR17(kind, recipe) ? std::array<double, 4> { 0.6, 0.4, 0.5, 0.25 } : defaultKnobs(kind);
+}
+
 std::array<double, 4> defaultKnobs(int kind) noexcept
 {
     return kind == Rise ? std::array<double, 4> { 0.6, 0.8, 0.5, 0.7 } : std::array<double, 4> { 0.6, 0.7, 0.4, 0.3 };
@@ -309,6 +320,7 @@ int lengthSamples(const Settings& s) noexcept
 
 juce::AudioBuffer<float> render(const juce::AudioBuffer<float>& source, const Settings& s)
 {
+    if(isR17(s.kind,s.recipe))return renderR17Fill(source,s);
     if(s.kind==Fill&&s.recipe>=30)return renderPhraseFill(source,s);
     if(s.kind==Fill&&s.recipe>=21)return renderComposedFill(source,s);
     if(s.kind==Fill&&s.recipe>=8)return renderSlicedFill(source,s);

@@ -268,7 +268,7 @@ public:
         }
         beginTest("Recipe names, ranges and legacy recipes are unchanged");
         {
-            expectEquals(tr::maximumRecipe(tr::Fill), 34);
+            expectEquals(tr::maximumRecipe(tr::Fill), tr::kR17Last); // R17 appended 35 .. 41 (was 34)
             expectEquals(tr::maximumRecipe(tr::Rise), 7);
             expectEquals(juce::String(tr::recipeName(tr::Fill, 30)), juce::String("PHRASE AUTO"));
             expectEquals(juce::String(tr::recipeName(tr::Fill, 34)), juce::String("PHRASE TECHNO"));
@@ -473,6 +473,8 @@ public:
             };
             // 2. DRUM FILL opens on PHRASE AUTO, no marks needed
             page->chooseKind(tr::Fill);
+            expectEquals(page->getValues().recipe, tr::kR17Recipe); // R17: FILL AUTO is the default now (was PHRASE AUTO)
+            page->chooseRecipe(tr::kPhraseRecipe);                  // this scenario is about R15 PHRASE FILL
             expectEquals(page->getValues().recipe, tr::kPhraseRecipe);
             checkRender("auto, unmarked");
             const auto hits = page->getValues().hits;
@@ -557,6 +559,8 @@ public:
             auto* editor = dynamic_cast<hpeq::standalone::ModulePluginEditor*>(owner.get());
             auto* page = editor->getTransitionPage();
             page->chooseKind(tr::Fill);
+            expectEquals(page->getValues().recipe, tr::kR17Recipe); // R17: FILL AUTO is the default now (was PHRASE AUTO)
+            page->chooseRecipe(tr::kPhraseRecipe);                  // this scenario is about R15 PHRASE FILL
             expectEquals(page->getValues().recipe, tr::kPhraseRecipe);
             const auto t = p->lastTransition();
             expect(t.valid);
@@ -672,7 +676,7 @@ public:
             expect(cleared.settings.marks.empty() && page->getValues().marks.empty(), "CLEAR: no marks");
             expectEquals(cleared.settings.fillBeats, 4);
             expect(cleared.settings.kitEnabled[ph::Hat], "CLEAR: kit back on");
-            expectEquals(cleared.settings.recipe, tr::kPhraseRecipe);
+            expectEquals(cleared.settings.recipe, tr::kR17Recipe); // R17: CLEAR returns to the default, FILL AUTO
             expectEquals(cleared.settings.seed, seed, "CLEAR keeps the seed");
             expectEquals(cleared.settings.bpm, 90.0, "CLEAR keeps the sample's BPM");
             expect(page->getView() == juce::Range<double>(0.0, 1.0), "CLEAR: whole wave");

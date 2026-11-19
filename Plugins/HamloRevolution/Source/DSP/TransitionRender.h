@@ -64,7 +64,11 @@ struct Plan
     double confidence = 0;
     juce::String family, reason;
 };
-inline int maximumRecipe(int kind) noexcept { return kind == Fill ? 34 : 7; }
+// R17 FILL ENGINE (docs/R17_FILL_ENGINE.md): 35 FILL AUTO, 36 BUILD, 37 AROUND THE KIT, 38 BIG SNARE, 39 GROOVE BREAK,
+// 40 TRAP ROLL, 41 SAMPLE CHOP. Knobs ENERGY / SPACE / PITCH / DROP; fillBeats 1, 2, 4 or 8.
+constexpr int kR17Recipe = 35, kR17Last = 41;
+inline bool isR17(int kind, int recipe) noexcept { return kind == Fill && recipe >= kR17Recipe; }
+inline int maximumRecipe(int kind) noexcept { return kind == Fill ? kR17Last : 7; }
 const char* recipeName(int kind,int recipe) noexcept;
 int resolvedRecipe(const Settings&) noexcept;
 Plan makePlan(const juce::AudioBuffer<float>&,const Settings&);
@@ -79,8 +83,12 @@ constexpr int kPhraseRecipe = 30;
 constexpr int kWholeLoop = 99; // fillBeats for PHRASE FILL: re-make every bar of the source, not only its end
 Plan makePhraseFillPlan(const juce::AudioBuffer<float>&,const Settings&);
 juce::AudioBuffer<float> renderPhraseFill(const juce::AudioBuffer<float>&,const Settings&,Plan* info=nullptr);
-const char* knobName(int kind, int knob);
+Plan makeR17FillPlan(const juce::AudioBuffer<float>&,const Settings&);
+juce::AudioBuffer<float> renderR17Fill(const juce::AudioBuffer<float>&,const Settings&,Plan* info=nullptr);
+const char* knobName(int kind, int knob);                 // the old names (CHOP / ROLL / REVERSE / STOP for FILL)
+const char* knobName(int kind, int recipe, int knob);     // R17: ENERGY / SPACE / PITCH / DROP
 std::array<double, 4> defaultKnobs(int kind) noexcept;
+std::array<double, 4> defaultKnobs(int kind, int recipe) noexcept;
 
 int lengthSamples(const Settings&) noexcept; // N bars of 4/4 at the tempo
 // `source`: N bars (lengthSamples), stereo; the result has the same length and ends on the bar line.

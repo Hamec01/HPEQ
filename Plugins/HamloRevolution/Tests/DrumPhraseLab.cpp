@@ -266,14 +266,19 @@ int main(int argc, char** argv)
                       << " timing " << a.timing << " usable " << a.usable[0] << "/" << a.usable[1] << "/" << a.usable[2] << "\n";
             wav(out.getChildFile(key + "_source.wav"), loop);
             const int beat = static_cast<int>(fs * 60 / p.bpm);
-            for (int recipe : { tr::kPhraseRecipe, 21 })
+            // R17: PHRASE_R17=1 renders the R17 types (35 .. 41) instead of R15 / R14
+            const bool r17 = juce::SystemStats::getEnvironmentVariable("PHRASE_R17", {}).isNotEmpty();
+            const std::vector<int> recipes = r17 ? std::vector<int> { 35, 36, 37, 38, 39, 40, 41 } : std::vector<int> { tr::kPhraseRecipe, 21 };
+            for (int recipe : recipes)
                 for (int beats : { 1, 2, 4 })
                     for (int seed = 1; seed <= 3; ++seed)
                     {
                         auto t = s;
                         t.recipe = recipe; t.fillBeats = beats; t.seed = static_cast<std::uint64_t>(seed);
+                        if (tr::isR17(tr::Fill, recipe))
+                            t.knobs = tr::defaultKnobs(tr::Fill, recipe);
                         tr::Plan plan;
-                        const auto y = recipe == 21 ? tr::renderComposedFill(loop, t, &plan) : tr::renderPhraseFill(loop, t, &plan);
+                        const auto y = tr::isR17(tr::Fill, recipe) ? tr::renderR17Fill(loop, t, &plan) : recipe == 21 ? tr::renderComposedFill(loop, t, &plan) : tr::renderPhraseFill(loop, t, &plan);
                         juce::AudioBuffer<float> listen(2, 2 * length + beat);
                         for (int c = 0; c < 2; ++c)
                         {
@@ -281,7 +286,7 @@ int main(int argc, char** argv)
                             listen.copyFrom(c, length, y, c, 0, length);
                             listen.copyFrom(c, 2 * length, loop, c, 0, beat);
                         }
-                        const juce::String name = key + (recipe == 21 ? "_r14_" : "_phrase_") + juce::String(beats) + "b_s" + juce::String(seed);
+                        const juce::String name = key + (tr::isR17(tr::Fill, recipe) ? "_r17_" + juce::String(tr::recipeName(tr::Fill, recipe)).replace(" ", "").toLowerCase() + "_" : recipe == 21 ? "_r14_" : "_phrase_") + juce::String(beats) + "b_s" + juce::String(seed);
                         wav(out.getChildFile(name + ".wav"), listen);
                         const auto checked = check(loop, y, p.bpm, beats);
                         checks[recipe].push_back(checked);
@@ -311,7 +316,7 @@ int main(int argc, char** argv)
         for (const auto& c : list) { cosine.push_back(c.cosine); level.push_back(std::abs(c.levelDb)); grid.push_back(c.gridTicks); }
         const auto median = [](std::vector<double> v) { std::sort(v.begin(), v.end()); return v.empty() ? 0.0 : v[v.size() / 2]; };
         const auto worst = [](const std::vector<double>& v, bool high) { return v.empty() ? 0.0 : high ? *std::max_element(v.begin(), v.end()) : *std::min_element(v.begin(), v.end()); };
-        std::cout << (recipe == 21 ? "R14 AUTO COMPOSE" : "R15 PHRASE") << " renders " << list.size() << ": band-tone cosine median " << median(cosine) << " worst " << worst(cosine, false)
+        std::cout << (recipe == 21 ? "R14 AUTO COMPOSE" : recipe == tr::kPhraseRecipe ? "R15 PHRASE" : tr::recipeName(tr::Fill, recipe)) << " renders " << list.size() << ": band-tone cosine median " << median(cosine) << " worst " << worst(cosine, false)
                   << " | |level diff| dB median " << median(level) << " worst " << worst(level, true) << " | onset grid deviation ticks median " << median(grid) << " worst " << worst(grid, true) << std::endl;
     }
     for (const auto& [role, row] : confusion)

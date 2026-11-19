@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(HamloRevolution VERSION 0.4.2 LANGUAGES C CXX)
+project(HamloRevolution VERSION 0.5.0 LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -81,6 +81,7 @@ add_library(HamloRevolution_Shared STATIC
     Source/DSP/DrumFillSlicer.cpp
     Source/DSP/DrumFillComposer.cpp
     Source/DSP/DrumPhraseFill.cpp
+    Source/DSP/DrumFillR17.cpp
     Source/Link/HamloLinkProtocol.cpp
     Source/Link/HamloLinkClient.cpp
     Source/UI/HamloUdarnikPanel.cpp
@@ -154,7 +155,7 @@ target_link_libraries(HamloRevolution
 # --- Tests and the page snapshot ----------------------------------------------------------------------
 foreach(tool Tests Snapshot)
     if (tool STREQUAL "Tests")
-        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SpatialTests.cpp Tests/TransitionRecipeTests.cpp Tests/DrumFillSlicerTests.cpp Tests/DrumComposeTests.cpp Tests/DrumPhraseTests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp Tests/TransitionTests.cpp Tests/SampleWorkspaceTests.cpp Tests/AllocationAudit.cpp
+        add_executable(HamloRevolution_Tests Tests/TestMain.cpp Tests/PluginTests.cpp Tests/RevolutionTests.cpp Tests/LinkTests.cpp Tests/GoldenTests.cpp Tests/LaneTests.cpp Tests/ShapeTests.cpp Tests/ThrowTests.cpp Tests/SpatialTests.cpp Tests/TransitionRecipeTests.cpp Tests/DrumFillSlicerTests.cpp Tests/DrumComposeTests.cpp Tests/DrumPhraseTests.cpp Tests/DrumFillR17Tests.cpp Tests/SimpleTests.cpp Tests/ListenTests.cpp Tests/PresetTests.cpp Tests/GlitchTests.cpp Tests/TransitionTests.cpp Tests/SampleWorkspaceTests.cpp Tests/AllocationAudit.cpp
             Source/DSP/LayerSnapshot.cpp Source/Core/FxProjectState.cpp) # HPEQ's slot mapping: the reference of V1
     else()
         add_executable(HamloRevolution_Snapshot Tests/SnapshotMain.cpp)

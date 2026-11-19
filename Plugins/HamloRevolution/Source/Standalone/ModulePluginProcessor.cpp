@@ -554,7 +554,8 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
     s.kind = transitionKind;
     s.recipe = std::clamp(recipe,0,dsp::transition::maximumRecipe(transitionKind));
     s.fillBeats = fillBeats == 1 || fillBeats == 2 ? fillBeats
-                  : fillBeats == dsp::transition::kWholeLoop && s.recipe >= dsp::transition::kPhraseRecipe ? fillBeats : 4;
+                  : fillBeats == 8 && dsp::transition::isR17(transitionKind, s.recipe) ? fillBeats // R17: two bars of fill
+                  : fillBeats == dsp::transition::kWholeLoop && s.recipe >= dsp::transition::kPhraseRecipe && !dsp::transition::isR17(transitionKind, s.recipe) ? fillBeats : 4;
     s.fillFx = std::isfinite(fillFx) ? std::clamp(fillFx,0.0,1.0) : 0.0;
     s.kitEnabled = kitEnabled;
     s.marks = std::move(marks);
@@ -591,7 +592,8 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
         t.complete = complete;
     }
     dsp::transition::Plan plan;
-    const auto clip = s.kind==dsp::transition::Fill&&s.recipe>=dsp::transition::kPhraseRecipe ? dsp::transition::renderPhraseFill(transitionSource,s,&plan)
+    const auto clip = dsp::transition::isR17(s.kind,s.recipe) ? dsp::transition::renderR17Fill(transitionSource,s,&plan)
+                    : s.kind==dsp::transition::Fill&&s.recipe>=dsp::transition::kPhraseRecipe ? dsp::transition::renderPhraseFill(transitionSource,s,&plan)
                     : s.kind==dsp::transition::Fill&&s.recipe>=21 ? dsp::transition::renderComposedFill(transitionSource,s,&plan) : dsp::transition::render(transitionSource, s);
     t.kitCounts=plan.kitCounts;t.kitMask={};t.inputSimilarity=plan.inputSimilarity;t.fillInfo={};t.hits.clear();
     if(s.kind==dsp::transition::Fill&&s.recipe>=dsp::transition::kPhraseRecipe)
@@ -600,6 +602,7 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
         const juce::String genre=plan.genre>=0&&plan.genre<4?genres[plan.genre]:"";
         for(const auto& slice:plan.slices)t.hits.push_back({slice.sample,std::max(slice.sample+1,slice.end)});
         if(plan.status==0)t.fillInfo=plan.reason;
+        else if(dsp::transition::isR17(s.kind,s.recipe))t.fillInfo=plan.family+(plan.reason.isNotEmpty()?" / "+plan.reason:juce::String()); // R17
         else t.fillInfo=genre+" / "+plan.family+" / "+juce::String(plan.anchors)+" ANCHORS KEPT / CONF "+juce::String(juce::roundToInt(plan.confidence*100))+"%"
                         +(plan.status==1?" / "+plan.reason:juce::String());
     }

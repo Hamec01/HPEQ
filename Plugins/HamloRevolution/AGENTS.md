@@ -6,7 +6,15 @@
 
 ---
 
-## Current checkpoint: Revolution R14 /0.4.0 drum-kit composer (2026-11-05)
+## Current checkpoint: Revolution R17 / 0.5.0 fill engine rebuilt (2026-11-19)
+
+Owner: the drum fill always sounded weak (no breath, motion, rhythm); "re-make it completely, other knobs are fine,
+and fill from samples too". docs/R17_FILL_ENGINE.md: recipes 35 FILL AUTO .. 41 SAMPLE CHOP (BUILD, AROUND THE KIT,
+BIG SNARE, GROOVE BREAK, TRAP ROLL, SAMPLE CHOP), knobs ENERGY / SPACE / PITCH / DROP, 8-beat fills, FILL AUTO is the
+page default. Recipes 0 .. 34 untouched. Tests F1 .. F8, full suite 8598/0. Lab listening set E:/HPM/R17_listen.
+Work now lives in E:/HPM (all repos on main; HPEQ main mirrors Plugins/HamloRevolution). Owner's FL feedback next.
+
+## Historical checkpoint: Revolution R14 /0.4.0 drum-kit composer (2026-11-05)
 
 E:/HamloRevolutionTransitions,feature/transition-v2,parentfe46e5c. No subagents.
 Read docs/R14_HANDOFF.md and docs/reports/r14/REPORT.md. Owner found R13 weak;

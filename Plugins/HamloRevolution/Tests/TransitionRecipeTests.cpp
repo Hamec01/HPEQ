@@ -94,7 +94,7 @@ public:
              expectEquals(page->getValues().recipe,6);page->chooseKind(tr::Fill);
              owned.reset();owned.reset(p->createEditor());editor=dynamic_cast<hpeq::standalone::ModulePluginEditor*>(owned.get());
              expectEquals(editor->getTransitionPage()->getValues().kind,static_cast<int>(tr::Fill));
-             expectEquals(editor->getTransitionPage()->getValues().recipe,tr::kPhraseRecipe); // R15: Selecting Fill starts PHRASE AUTO (was 21 AUTO COMPOSE in R14).
+             expectEquals(editor->getTransitionPage()->getValues().recipe,tr::kR17Recipe); // R17: Selecting Fill starts FILL AUTO (R15: PHRASE AUTO, R14: 21 AUTO COMPOSE).
             }
             const auto legacy=p->makeTransition(0,1,tr::defaultKnobs(tr::Rise),true,false);expectEquals(legacy.settings.recipe,0);
         }

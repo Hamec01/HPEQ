@@ -86,6 +86,8 @@ const char* recipeName(int kind,int recipe) noexcept
     static constexpr const char* sliced[]{"AUTO SLICER","POCKET SWITCH","BACKBEAT ROLL","KICK EXCHANGE","TRIPLET FLOW","BROKEN CUTS","TOM CASCADE","CALL / RESPONSE","REVERSE PICKUP","DOUBLE TIME","STUTTER RATCHET","GHOST WALK","DROP SPACE"};
     static constexpr const char* composed[]{"AUTO COMPOSE","SNARE TORRENT","KICK / SNARE","HAT WEAVE","ROLL / ANSWER","TRIPLET BREAK","HALF-TIME CUT","CROSS RHYTHM","FINAL BURST"};
     static constexpr const char* phrase[]{"PHRASE AUTO","PHRASE BOOM BAP","PHRASE TRAP","PHRASE DNB","PHRASE TECHNO"};
+    static constexpr const char* r17[]{"FILL AUTO","BUILD","AROUND THE KIT","BIG SNARE","GROOVE BREAK","TRAP ROLL","SAMPLE CHOP"};
+    if(kind==Fill&&recipe>=kR17Recipe)return r17[std::clamp(recipe-kR17Recipe,0,kR17Last-kR17Recipe)];
     if(kind==Fill&&recipe>=30)return phrase[std::clamp(recipe-30,0,4)];
     if(kind==Fill&&recipe>=21)return composed[std::clamp(recipe-21,0,8)];
     if(kind==Fill&&recipe>=8)return sliced[std::clamp(recipe-8,0,12)];
@@ -93,6 +95,7 @@ const char* recipeName(int kind,int recipe) noexcept
 }
 int resolvedRecipe(const Settings& s) noexcept
 {
+    if(isR17(s.kind,s.recipe))return std::clamp(s.recipe,kR17Recipe,kR17Last);
     if(s.kind==Fill&&s.recipe>=30)return std::clamp(s.recipe,30,34);
     if(s.kind==Fill&&s.recipe>=21)return s.recipe==21?22+static_cast<int>(s.seed%8):std::clamp(s.recipe,22,29);
     if(s.kind==Fill&&s.recipe>=8)return s.recipe==8?9+static_cast<int>((s.seed%12+hash(s.seed/12^0x46494c4c523133ull)%12)%12):std::clamp(s.recipe,9,20);
@@ -101,6 +104,7 @@ int resolvedRecipe(const Settings& s) noexcept
 
 Plan makePlan(const juce::AudioBuffer<float>& source,const Settings& s)
 {
+    if(isR17(s.kind,s.recipe))return makeR17FillPlan(source,s);
     if(s.kind==Fill&&s.recipe>=30)return makePhraseFillPlan(source,s);
     if(s.kind==Fill&&s.recipe>=21)return makeComposedFillPlan(source,s);
     if(s.kind==Fill&&s.recipe>=8)return makeSlicedFillPlan(source,s);
