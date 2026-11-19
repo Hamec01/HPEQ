@@ -480,7 +480,7 @@ void ModulePluginEditor::installTransitionPage()
     {
         auto v = tp->getValues();
         v.kind = kind;
-        v.recipe = kind == tr::Fill ? 21 : 1;
+        v.recipe = kind == tr::Fill ? tr::kPhraseRecipe : 1;
         v.knobs = tr::defaultKnobs(kind);
         tp->setValues(v);
         render(false, false); // the same capture and seed, the other recipe
@@ -520,7 +520,7 @@ void ModulePluginEditor::installTransitionPage()
         auto v = tp->getValues();
         const auto t = processor.lastTransition();
         v.valid = t.valid;
-        if(t.valid){v.recipe=t.settings.recipe;v.seed=t.settings.seed;v.kitCounts=t.kitCounts;v.kitMask=t.kitMask;}
+        if(t.valid){v.recipe=t.settings.recipe;v.seed=t.settings.seed;v.kitCounts=t.kitCounts;v.kitMask=t.kitMask;v.fillInfo=t.fillInfo;}
         v.aligned = t.aligned;
         v.complete = t.complete;
         v.bpm = t.valid ? t.settings.bpm : processor.getHostBpm();
@@ -548,7 +548,7 @@ void ModulePluginEditor::openTransition(int kind)
         return;
     auto v = transitionPage->getValues();
     v.kind = kind;
-    v.recipe = kind == dsp::transition::Fill ? 21 : 1;
+    v.recipe = kind == dsp::transition::Fill ? dsp::transition::kPhraseRecipe : 1;
     if(!processor.lastTransition().valid)v.bars=kind==dsp::transition::Fill?1:2;
     v.knobs = dsp::transition::defaultKnobs(kind);
     transitionPage->setValues(v);

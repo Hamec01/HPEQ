@@ -176,6 +176,8 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     }
     if (values.valid)
         crtText(g, values.fileName, { kWave.getX() + 8.0f, kWave.getY() + 6.0f, 600.0f, 16.0f }, 11.0f, juce::Justification::centredLeft, 0.7f);
+    if (values.valid && values.kind == tr::Fill && values.recipe >= tr::kPhraseRecipe && values.fillInfo.isNotEmpty())
+        crtText(g, values.fillInfo, { kWave.getX() + 8.0f, kWave.getY() + 24.0f, kWave.getWidth() - 16.0f, 16.0f }, 11.0f, juce::Justification::centredLeft, 0.95f);
     crtEnd(g, kWave);
     if(values.kind==tr::Fill&&values.recipe>=21)
     {
@@ -315,7 +317,10 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
         juce::PopupMenu menu;
         if(values.kind==tr::Fill)
         {
-            for(int recipe=21;recipe<=29;++recipe)menu.addItem(recipe+1,tr::recipeName(values.kind,recipe),true,values.recipe==recipe);
+            for(int recipe=tr::kPhraseRecipe;recipe<=tr::kPhraseRecipe+4;++recipe)menu.addItem(recipe+1,tr::recipeName(values.kind,recipe),true,values.recipe==recipe);
+            juce::PopupMenu composer;
+            for(int recipe=21;recipe<=29;++recipe)composer.addItem(recipe+1,tr::recipeName(values.kind,recipe),true,values.recipe==recipe);
+            menu.addSubMenu("R14 AUTO COMPOSE RECIPES",composer);
             juce::PopupMenu slicer;
             for(int recipe=8;recipe<=20;++recipe)slicer.addItem(recipe+1,tr::recipeName(values.kind,recipe),true,values.recipe==recipe);
             menu.addSubMenu("R13 SLICER RECIPES",slicer);

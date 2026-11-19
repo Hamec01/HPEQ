@@ -107,6 +107,7 @@ public:
         std::array<int,3> kitCounts {};
         std::array<std::uint32_t,3> kitMask {};
         double inputSimilarity = 0;
+        juce::String fillInfo; // R15 PHRASE FILL: genre / family / anchors / confidence, or why the source was kept
     };
     // GENERATE on the page: capture now (newCapture) and / or a new seed, render, write the WAV
     Transition makeTransition(int kind, int bars, const std::array<double, 4>& knobs, bool newCapture, bool newSeed, int recipe = 0, int fillBeats = 4, double fillFx = 0.35, std::array<bool,3> kitEnabled = {true,true,true});

@@ -6,6 +6,7 @@
 #define HAMLO_TRANSITION_V2 1
 #define HAMLO_DRUM_FILL_V3 1
 #define HAMLO_DRUM_COMPOSE 1
+#define HAMLO_DRUM_PHRASE 1
 
 #include <juce_audio_basics/juce_audio_basics.h>
 
@@ -46,8 +47,12 @@ struct Plan
     int phraseStart = 0, phraseEnd = 0, stopSample = -1;
     double inputSimilarity = 0;
     std::array<int,3> kitCounts {};
+    // R15 PHRASE FILL diagnostics (other recipes leave the defaults)
+    int status = 2, genre = -1, anchors = 0; // status: 0 bypass, 1 conservative, 2 generated
+    double confidence = 0;
+    juce::String family, reason;
 };
-inline int maximumRecipe(int kind) noexcept { return kind == Fill ? 29 : 7; }
+inline int maximumRecipe(int kind) noexcept { return kind == Fill ? 34 : 7; }
 const char* recipeName(int kind,int recipe) noexcept;
 int resolvedRecipe(const Settings&) noexcept;
 Plan makePlan(const juce::AudioBuffer<float>&,const Settings&);
@@ -57,6 +62,10 @@ juce::AudioBuffer<float> renderSlicedFill(const juce::AudioBuffer<float>&, const
 std::array<juce::AudioBuffer<float>,3> extractDrumBands(const juce::AudioBuffer<float>&,double sampleRate);
 Plan makeComposedFillPlan(const juce::AudioBuffer<float>&,const Settings&);
 juce::AudioBuffer<float> renderComposedFill(const juce::AudioBuffer<float>&,const Settings&,Plan* info=nullptr);
+// R15 PHRASE FILL (recipes 30 AUTO, 31 BOOM BAP, 32 TRAP, 33 DNB, 34 TECHNO): docs/DRUM_FILL_R15.md
+constexpr int kPhraseRecipe = 30;
+Plan makePhraseFillPlan(const juce::AudioBuffer<float>&,const Settings&);
+juce::AudioBuffer<float> renderPhraseFill(const juce::AudioBuffer<float>&,const Settings&,Plan* info=nullptr);
 const char* knobName(int kind, int knob);
 std::array<double, 4> defaultKnobs(int kind) noexcept;
 

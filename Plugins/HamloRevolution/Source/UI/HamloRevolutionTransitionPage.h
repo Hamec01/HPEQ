@@ -23,6 +23,7 @@ public:
         std::array<bool,3> kitEnabled { true,true,true };
         std::array<int,3> kitCounts {};
         std::array<std::uint32_t,3> kitMask {};
+        juce::String fillInfo; // R15 PHRASE FILL diagnostics line
         std::uint64_t seed = 1;
         std::array<double, 4> knobs { 0.6, 0.8, 0.5, 0.7 };
         bool valid = false, aligned = false, complete = false, previewing = false;

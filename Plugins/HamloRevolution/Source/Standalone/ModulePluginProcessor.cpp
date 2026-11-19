@@ -588,8 +588,17 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
         t.complete = complete;
     }
     dsp::transition::Plan plan;
-    const auto clip = s.kind==dsp::transition::Fill&&s.recipe>=21 ? dsp::transition::renderComposedFill(transitionSource,s,&plan) : dsp::transition::render(transitionSource, s);
-    t.kitCounts=plan.kitCounts;t.kitMask={};t.inputSimilarity=plan.inputSimilarity;
+    const auto clip = s.kind==dsp::transition::Fill&&s.recipe>=dsp::transition::kPhraseRecipe ? dsp::transition::renderPhraseFill(transitionSource,s,&plan)
+                    : s.kind==dsp::transition::Fill&&s.recipe>=21 ? dsp::transition::renderComposedFill(transitionSource,s,&plan) : dsp::transition::render(transitionSource, s);
+    t.kitCounts=plan.kitCounts;t.kitMask={};t.inputSimilarity=plan.inputSimilarity;t.fillInfo={};
+    if(s.kind==dsp::transition::Fill&&s.recipe>=dsp::transition::kPhraseRecipe)
+    {
+        static constexpr const char* genres[]{"BOOM BAP","TRAP","DNB","TECHNO"};
+        const juce::String genre=plan.genre>=0&&plan.genre<4?genres[plan.genre]:"";
+        if(plan.status==0)t.fillInfo=plan.reason;
+        else t.fillInfo=genre+" / "+plan.family+" / "+juce::String(plan.anchors)+" ANCHORS KEPT / CONF "+juce::String(juce::roundToInt(plan.confidence*100))+"%"
+                        +(plan.status==1?" / "+plan.reason:juce::String());
+    }
     for(const auto& e:plan.events)t.kitMask[static_cast<size_t>(e.role)]|=1u<<std::clamp(static_cast<int>(e.at*32LL/std::max(1,clip.getNumSamples())),0,31);
     // write the WAV (24-bit, the session rate): the page drags this file into the DAW
     const auto folder = rendersOverride != juce::File() ? rendersOverride : rendersFolder();
