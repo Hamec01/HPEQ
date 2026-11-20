@@ -53,6 +53,7 @@ struct LayerPools
 class FxNodeProcessor
 {
 public:
+    ~FxNodeProcessor();
     // Alignment capacities for a sample rate (largest slot: 10 ms look-ahead or 4x oversampling).
     static int maxSlotLatency(double sampleRate);
     static int maxNodeLatency(double sampleRate) { return maxSlotLatency(sampleRate) * kMaxFxPerNode; }
@@ -124,6 +125,7 @@ private:
         int pooled = -1;
         int silentSamples = 0;
         int latency = 0;
+        native::Runtime* nativeRuntime=nullptr;
         AlignmentDelay align;
         GainProcessor gain;
         CompressorProcessor compressor;

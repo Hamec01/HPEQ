@@ -153,6 +153,7 @@ std::optional<FxSlotState> loadModulePreset(const juce::File& file, FxType expec
     if (!tree.hasType("FxSlot") || tree["type"].toString() != toString(expected))
         return std::nullopt;
     auto module = moduleFromTree(tree);
+    if(!isModuleSupported(module))return std::nullopt;
     module.enabled = true;
     return module;
 }

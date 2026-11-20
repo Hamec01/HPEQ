@@ -1,0 +1,2713 @@
+{
+  "parameter_source_sha256": {
+    "Plugins/HamloComp/Source/Plugin/Parameters.h": "b99cb8a593d04972e032f40a90e01790565af8bf9bdfb197fa22b73d91e4fb9b",
+    "Plugins/HamloEcho/Source/Standalone/ModuleVariant.cpp": "bf0d9cb773c3b9ffdc82df999612cd94619509eb39092260dddf9fbb7843ae8e",
+    "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp": "77e31aee104bb1e65937924bf894ee538e91286b0f9a4d030d386fc1e7976053",
+    "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp": "df14676c186c5debcdaa29b09233cc5e2db87a407ac8c2b255b572c251ce9c53",
+    "Plugins/HamloFader/Source/Standalone/ModuleVariant.cpp": "80f043c0d94db74da5314f080bd14ecc005b292521bb962499a111d2033d3487",
+    "Plugins/HamloMag/Source/Plugin/Parameters.h": "365d77af02f789a64309ba331c974c41783e30e2db773cfa8867cd9ba1175b76",
+    "Plugins/HamloRedWall/Source/Plugin/Parameters.h": "d32f439f7fd2199db92453bf57ede540fccb596004f2eeb020a40f863ade4fb3",
+    "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp": "101c74a54e94018ebf91daf153fb3fece6cf745a4bd082e88b41d5abb90cac5a",
+    "Plugins/HamloShirota/Source/Standalone/ModuleVariant.cpp": "69218db69c9b9f9d4dd45b49866c5f746c86075565528dfcdc67720cce2551cd",
+    "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp": "e4c6e32d1e439f6c006d2132e53f5e2a0dded39d4c2ef461a5599f9d1390e7bf",
+    "Plugins/HamloUdarnik/Source/Plugin/Parameters.h": "f18be5ed0c9e42644343f94bb6159b4361b9bbe16c12a0d95198371696e24113",
+    "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp": "ca6ca5749f597f58179e8e235fce249f30e70276c031c8eac30826db525f514b",
+    "Plugins/HamloVerb/Source/Standalone/VerbParameters.h": "700a60d38d1d2ca3577d807ef80c3979665122dc9c429a22c0067fc066feefaf",
+    "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp": "d6eb2cdd8230a36a3dff6a5dc95b34eeb88baa89abf99a7788d46809b053b352",
+    "Plugins/HamloZastava/Source/Standalone/ModuleVariant.cpp": "dce4fd4174bcb8f3dbf56c344e969c8c78458998fc5d31e9733af849deb63db9"
+  },
+  "parameters": {
+    "HamloComp": {
+      "attackMs": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 100.0,
+        "minimum": 0.1,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "autoMakeup": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "character": {
+        "choices": [
+          "Clean",
+          "Punch",
+          "Glue"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 2.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "detector": {
+        "choices": [
+          "Peak",
+          "RMS"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "kneeDb": {
+        "default": 6.0,
+        "interval": 0,
+        "maximum": 40.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "makeupDb": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 24.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "mix": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "model": {
+        "choices": [
+          "Classic",
+          "VCA",
+          "FET",
+          "Opto",
+          "Tube"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 4.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "ratio": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 20.0,
+        "minimum": 1.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "releaseMs": {
+        "default": 80.0,
+        "interval": 0,
+        "maximum": 1000.0,
+        "minimum": 10.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "source": {
+        "choices": [
+          "All",
+          "Drums",
+          "Samples",
+          "Voc"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 3.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      },
+      "thresholdDb": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 0.0,
+        "minimum": -60.0,
+        "origin": "Plugins/HamloComp/Source/Plugin/Parameters.h"
+      }
+    },
+    "HamloEcho": {
+      "echoMode": {
+        "choices": [
+          "Legacy",
+          "Score"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "quickEnabled": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreBands": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreColor": {
+        "choices": [
+          "Clean",
+          "Warm",
+          "Tape",
+          "BBD",
+          "Dust"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 4,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreDrive": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 18,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreDuck": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreFeedback": {
+        "default": 0.3,
+        "interval": 0,
+        "maximum": 0.9,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreFeedbackMs": {
+        "default": 500,
+        "interval": 0,
+        "maximum": 4000,
+        "minimum": 20,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreFeedbackPitch": {
+        "default": 0,
+        "interval": 1,
+        "maximum": 12,
+        "minimum": -12,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreFeedbackSync": {
+        "choices": [
+          "Free",
+          "1/32",
+          "1/16",
+          "1/16 D",
+          "1/8 T",
+          "1/8",
+          "1/8 D",
+          "1/4 T",
+          "1/4",
+          "1/4 D",
+          "1/2",
+          "1/1"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 11,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreFreeze": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreGlitch": {
+        "choices": [
+          "Off",
+          "Repeat",
+          "Reverse",
+          "Stutter",
+          "Tape Stop",
+          "Omit"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 5,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreGlitchAmount": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreHighCut": {
+        "default": 20000,
+        "interval": 0,
+        "maximum": 20000,
+        "minimum": 500,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreLowCut": {
+        "default": 10,
+        "interval": 0,
+        "maximum": 2000,
+        "minimum": 10,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreMix": {
+        "default": 0.35,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreOutput": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 12,
+        "minimum": -24,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreRouting": {
+        "choices": [
+          "Insert",
+          "Send"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreSource": {
+        "default": 60,
+        "interval": 1,
+        "maximum": 127,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreSpaceDecay": {
+        "default": 2,
+        "interval": 0,
+        "maximum": 20,
+        "minimum": 0.1,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreSpaceMix": {
+        "default": 0.25,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreSwing": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 0.75,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "scoreWidth": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1.5,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1Fragment": {
+        "default": 125,
+        "interval": 0,
+        "maximum": 2000,
+        "minimum": 50,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1Gain": {
+        "default": -12,
+        "interval": 0,
+        "maximum": 0,
+        "minimum": -48,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1High": {
+        "default": 20000,
+        "interval": 0,
+        "maximum": 20000,
+        "minimum": 500,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1Low": {
+        "default": 10,
+        "interval": 0,
+        "maximum": 2000,
+        "minimum": 10,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1Note": {
+        "default": 48,
+        "interval": 1,
+        "maximum": 127,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1On": {
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1Pan": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": -1,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1Repeats": {
+        "default": 4,
+        "interval": 1,
+        "maximum": 8,
+        "minimum": 2,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1Shape": {
+        "choices": [
+          "Forward",
+          "Reverse",
+          "Stutter",
+          "Tape Stop",
+          "Skip"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 4,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1SpaceSend": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1Sync": {
+        "choices": [
+          "Free",
+          "1/32",
+          "1/16",
+          "1/16 D",
+          "1/8 T",
+          "1/8",
+          "1/8 D",
+          "1/4 T",
+          "1/4",
+          "1/4 D",
+          "1/2",
+          "1/1"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 11,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap1Time": {
+        "default": 250,
+        "interval": 0,
+        "maximum": 4000,
+        "minimum": 1,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2Fragment": {
+        "default": 125,
+        "interval": 0,
+        "maximum": 2000,
+        "minimum": 50,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2Gain": {
+        "default": -12,
+        "interval": 0,
+        "maximum": 0,
+        "minimum": -48,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2High": {
+        "default": 20000,
+        "interval": 0,
+        "maximum": 20000,
+        "minimum": 500,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2Low": {
+        "default": 10,
+        "interval": 0,
+        "maximum": 2000,
+        "minimum": 10,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2Note": {
+        "default": 55,
+        "interval": 1,
+        "maximum": 127,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2On": {
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2Pan": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": -1,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2Repeats": {
+        "default": 4,
+        "interval": 1,
+        "maximum": 8,
+        "minimum": 2,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2Shape": {
+        "choices": [
+          "Forward",
+          "Reverse",
+          "Stutter",
+          "Tape Stop",
+          "Skip"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 4,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2SpaceSend": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2Sync": {
+        "choices": [
+          "Free",
+          "1/32",
+          "1/16",
+          "1/16 D",
+          "1/8 T",
+          "1/8",
+          "1/8 D",
+          "1/4 T",
+          "1/4",
+          "1/4 D",
+          "1/2",
+          "1/1"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 11,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap2Time": {
+        "default": 500,
+        "interval": 0,
+        "maximum": 4000,
+        "minimum": 1,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap3On": {
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap4On": {
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap5On": {
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap6On": {
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap7On": {
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      },
+      "tap8On": {
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloEcho/Source/Standalone/ScoreParameters.cpp"
+      }
+    },
+    "HamloFader": {
+      "beats": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 32,
+        "minimum": 0.125,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "depthDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 90,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "edgeMs": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 50,
+        "minimum": 0.1,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "enabled": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "engine": {
+        "choices": [
+          "Legacy",
+          "Modern"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "fallMs": {
+        "default": 120,
+        "interval": 0,
+        "maximum": 5000,
+        "minimum": 0.1,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "floorDb": {
+        "default": -55,
+        "interval": 0,
+        "maximum": -20,
+        "minimum": -90,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "gainDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": -60,
+        "origin": "Plugins/HamloFader/Source/Standalone/ModuleVariant.cpp"
+      },
+      "holdMs": {
+        "default": 80,
+        "interval": 0,
+        "maximum": 1000,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "inputDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": -60,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "leftDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": -24,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "level00": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "level01": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "level02": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "level03": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "matchBoost": {
+        "default": 12,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "matchCeiling": {
+        "default": -1,
+        "interval": 0,
+        "maximum": 0,
+        "minimum": -24,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "matchCut": {
+        "default": 24,
+        "interval": 0,
+        "maximum": 60,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "matchedDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": -60,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "maxBoost": {
+        "default": 6,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "maxCut": {
+        "default": 12,
+        "interval": 0,
+        "maximum": 60,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "measure": {
+        "choices": [
+          "RMS",
+          "LUFS"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "mix": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/ModuleVariant.cpp"
+      },
+      "mode": {
+        "choices": [
+          "Trim",
+          "Match",
+          "Ride",
+          "Motion"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 3,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "mute": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/ModuleVariant.cpp"
+      },
+      "outputDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": -60,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "peakGuard": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "points": {
+        "default": 16,
+        "interval": 1,
+        "maximum": 32,
+        "minimum": 2,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "polarity": {
+        "choices": [
+          "Off",
+          "Left",
+          "Right",
+          "Both"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 3,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/ModuleVariant.cpp"
+      },
+      "rightDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": -24,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "rightPhase": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "riseMs": {
+        "default": 250,
+        "interval": 0,
+        "maximum": 5000,
+        "minimum": 0.1,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "routing": {
+        "choices": [
+          "Stereo",
+          "Mono Sum",
+          "Left to Both",
+          "Right to Both"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 3,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "shape": {
+        "choices": [
+          "Custom",
+          "Sine",
+          "Triangle"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 2,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "smooth": {
+        "choices": [
+          "Linear",
+          "Smooth"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "solo": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/ModuleVariant.cpp"
+      },
+      "strength": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "sync": {
+        "choices": [
+          "Free",
+          "Sync"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloFader/Source/Standalone/FaderHostControls.cpp"
+      },
+      "targetDb": {
+        "default": -18,
+        "interval": 0,
+        "maximum": 0,
+        "minimum": -40,
+        "origin": "Plugins/HamloFader/Source/Standalone/ModuleVariant.cpp"
+      }
+    },
+    "HamloMag": {
+      "autoGain": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "crackle": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "delta": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "driveDb": {
+        "default": 6.0,
+        "interval": 0,
+        "maximum": 48.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "dynamics": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": -1.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "evenOdd": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": -1.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "harmonics": {
+        "default": 0.5,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "hiss": {
+        "default": 0.15,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "hum": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "match": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "mix": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "model": {
+        "choices": [
+          "Classic",
+          "Tape",
+          "Tube",
+          "Iron",
+          "Germanium",
+          "Vinyl"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 5.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "noiseFollow": {
+        "choices": [
+          "Always",
+          "Follow"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "oversampling": {
+        "choices": [
+          "1x",
+          "2x",
+          "4x",
+          "8x"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 3.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "phoneBass": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "punish": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "sampler": {
+        "choices": [
+          "Off",
+          "SP-1200",
+          "MPC60",
+          "S950"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 3.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "speed": {
+        "choices": [
+          "1",
+          "2",
+          "3"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 2.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "steep": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "subProtectHz": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 300.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "tapeBias": {
+        "default": 0.5,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "thump": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "tone": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": -1.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "trimDb": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 24.0,
+        "minimum": -24.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      },
+      "wow": {
+        "default": 0.15,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloMag/Source/Plugin/Parameters.h"
+      }
+    },
+    "HamloRedWall": {
+      "autoRelease": {
+        "choices": [
+          "Manual",
+          "Auto"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "ceilingDb": {
+        "default": -1.0,
+        "interval": 0,
+        "maximum": 0.0,
+        "minimum": -20.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "drive": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "engine": {
+        "choices": [
+          "Classic",
+          "V2"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "link": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "lookaheadMs": {
+        "default": 2.0,
+        "interval": 0,
+        "maximum": 10.0,
+        "minimum": 0.1,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "mix": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "monitor": {
+        "choices": [
+          "Normal",
+          "Unity",
+          "Delta"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 2.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "outputDb": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 0.0,
+        "minimum": -24.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "releaseMs": {
+        "default": 60.0,
+        "interval": 0,
+        "maximum": 1000.0,
+        "minimum": 1.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "style": {
+        "choices": [
+          "GLASNOST",
+          "STAKHANOV",
+          "OCTOBER"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 2.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "thresholdDb": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 0.0,
+        "minimum": -30.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "truePeak": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      },
+      "tube": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloRedWall/Source/Plugin/Parameters.h"
+      }
+    },
+    "HamloRevolution": {
+      "fadeMs": {
+        "default": 2,
+        "interval": 0,
+        "maximum": 8,
+        "minimum": 0.5,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "free": {
+        "choices": [
+          "Sync",
+          "Free"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "glitchDepth": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "glitchEngine": {
+        "choices": [
+          "Legacy",
+          "Block"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "glitchMix": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "glitchOn": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "grid": {
+        "choices": [
+          "1/4",
+          "1/8",
+          "1/16",
+          "1/32"
+        ],
+        "default": 2,
+        "interval": 1,
+        "maximum": 3,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "humanize": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "listen": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "mix": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "motionDepth": {
+        "default": 0.6,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "motionMix": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "motionOn": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "motionSmooth": {
+        "default": 0.3,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "motionTarget": {
+        "choices": [
+          "Volume",
+          "Low Pass",
+          "High Pass",
+          "Width",
+          "Crush"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 4,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "order": {
+        "choices": [
+          "T-G-M",
+          "T-M-G",
+          "G-T-M",
+          "G-M-T",
+          "M-T-G",
+          "M-G-T"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 5,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "scene": {
+        "choices": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 7,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "shapeADepth": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "shapeAOn": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "shapeASmooth": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "shapeATarget": {
+        "choices": [
+          "Volume",
+          "Low Pass",
+          "High Pass",
+          "Band Pass",
+          "Pan",
+          "Width",
+          "Drive",
+          "Crush"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 7,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "shapeBOn": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "swing": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "throwAMix": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "throwAOn": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "throwATail": {
+        "default": 0.5,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "throwATarget": {
+        "choices": [
+          "Delay",
+          "Tonal",
+          "Reverb",
+          "Phaser",
+          "Flanger",
+          "Vinyl",
+          "Downsample"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 6,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "throwATime": {
+        "choices": [
+          "1/32",
+          "1/16T",
+          "1/16",
+          "1/8T",
+          "1/16D",
+          "1/8",
+          "1/4T",
+          "1/8D",
+          "1/4",
+          "1/4D",
+          "1/2",
+          "1 Bar",
+          "2 Bars",
+          "4 Bars"
+        ],
+        "default": 7,
+        "interval": 1,
+        "maximum": 13,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "throwBOn": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "timeDepth": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "timeMix": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "timeOn": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "timeStretch": {
+        "choices": [
+          "Tape",
+          "Rhythm",
+          "Clean"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 2,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      },
+      "triplet": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloRevolution/Source/Standalone/ModuleVariant.cpp"
+      }
+    },
+    "HamloShirota": {
+      "v2Floor": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 0.95,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Generate": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1.5,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Generator": {
+        "choices": [
+          "Phase",
+          "Micro",
+          "Diffuse"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 2,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Guard": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2HighSplit": {
+        "default": 3000,
+        "interval": 0,
+        "maximum": 12000,
+        "minimum": 1500,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2HighWidth": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 4,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2LowSplit": {
+        "default": 300,
+        "interval": 0,
+        "maximum": 1500,
+        "minimum": 60,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2LowWidth": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 4,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2MidWidth": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 4,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Mix": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Mode": {
+        "choices": [
+          "Legacy",
+          "Stereo / Space",
+          "Binaural"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 2,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Mono": {
+        "choices": [
+          "Stereo",
+          "Mono"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2MonoBass": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 500,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Motion": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Node0Angle": {
+        "default": -90,
+        "interval": 0,
+        "maximum": 180,
+        "minimum": -180,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Node0HoldBeat": {
+        "default": 0.5,
+        "interval": 0,
+        "maximum": 64,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Node0TravelBeat": {
+        "default": 1.5,
+        "interval": 0,
+        "maximum": 64,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Node1Angle": {
+        "default": 90,
+        "interval": 0,
+        "maximum": 180,
+        "minimum": -180,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Node1HoldBeat": {
+        "default": 0.5,
+        "interval": 0,
+        "maximum": 64,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Node1TravelBeat": {
+        "default": 1.5,
+        "interval": 0,
+        "maximum": 64,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Nodes": {
+        "default": 2,
+        "interval": 1,
+        "maximum": 16,
+        "minimum": 1,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Output": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 12,
+        "minimum": -24,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2PositionOn": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Unit": {
+        "choices": [
+          "Milliseconds",
+          "Quarter-note beats"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      },
+      "v2Width": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 4,
+        "minimum": 0,
+        "origin": "Plugins/HamloShirota/Source/Standalone/V2Parameters.cpp"
+      }
+    },
+    "HamloUdarnik": {
+      "attackDb": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 24.0,
+        "minimum": -24.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "decay": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 2.0,
+        "minimum": 0.5,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "engine": {
+        "choices": [
+          "Classic",
+          "V2"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "listen": {
+        "choices": [
+          "Full",
+          "Attack",
+          "Body"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 2.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "lookahead": {
+        "choices": [
+          "Sputnik",
+          "Vostok",
+          "Soyuz"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 2.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "mix": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "outputDb": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 12.0,
+        "minimum": -24.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "preserve": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "protect": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 1.0,
+        "interval": 1,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "rise": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 2.0,
+        "minimum": 0.5,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "sensitivity": {
+        "default": 1.0,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "speed": {
+        "default": 0.5,
+        "interval": 0,
+        "maximum": 1.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "style": {
+        "choices": [
+          "PRAVDA",
+          "UDARNIK",
+          "PERESTROIKA"
+        ],
+        "default": 0.0,
+        "interval": 1,
+        "maximum": 2.0,
+        "minimum": 0.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      },
+      "sustainDb": {
+        "default": 0.0,
+        "interval": 0,
+        "maximum": 24.0,
+        "minimum": -24.0,
+        "origin": "Plugins/HamloUdarnik/Source/Plugin/Parameters.h"
+      }
+    },
+    "HamloVerb": {
+      "bassMult": {
+        "default": 1.2,
+        "interval": 0,
+        "maximum": 4,
+        "minimum": 0.25,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "decaySeconds": {
+        "default": 2.4,
+        "interval": 0,
+        "maximum": 30,
+        "minimum": 0.1,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "duck": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "earlyDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 12,
+        "minimum": -60,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "engine": {
+        "choices": [
+          "Legacy",
+          "Clean",
+          "Warm",
+          "Velvet",
+          "Crisp",
+          "Deep",
+          "Bloom"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 6,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "freeze": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "gateReleaseMs": {
+        "default": 30,
+        "interval": 0,
+        "maximum": 500,
+        "minimum": 1,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "hfDecayRatio": {
+        "default": 0.5,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0.05,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "highCutHz": {
+        "default": 12000,
+        "interval": 0,
+        "maximum": 20000,
+        "minimum": 1000,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "keepDry": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "lateDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 12,
+        "minimum": -60,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "lowCutHz": {
+        "default": 80,
+        "interval": 0,
+        "maximum": 1000,
+        "minimum": 10,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "mix": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "modDepth": {
+        "default": 0.4,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "outputDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 12,
+        "minimum": -24,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "predelayMs": {
+        "default": 20,
+        "interval": 0,
+        "maximum": 500,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "predelaySync": {
+        "choices": [
+          "Free",
+          "1/64",
+          "1/32",
+          "1/16T",
+          "1/16",
+          "1/8T",
+          "1/16D",
+          "1/8",
+          "1/4T",
+          "1/8D",
+          "1/4",
+          "1/2"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 11,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "routing": {
+        "choices": [
+          "Insert",
+          "Send"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "shapeSync": {
+        "choices": [
+          "Free",
+          "1/64",
+          "1/32",
+          "1/16T",
+          "1/16",
+          "1/8T",
+          "1/16D",
+          "1/8",
+          "1/4T",
+          "1/8D",
+          "1/4",
+          "1/2"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 11,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "shapeTimeMs": {
+        "default": 250,
+        "interval": 0,
+        "maximum": 2000,
+        "minimum": 50,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "shimmerAmount": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "shimmerFeedback": {
+        "default": 0.35,
+        "interval": 0,
+        "maximum": 0.85,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "shimmerPitch": {
+        "default": 12,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": -12,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "space": {
+        "choices": [
+          "Classic",
+          "Room",
+          "Chamber",
+          "Hall",
+          "Plate",
+          "Cathedral",
+          "Ambience"
+        ],
+        "default": 3,
+        "interval": 1,
+        "maximum": 6,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      },
+      "timeShape": {
+        "choices": [
+          "Off",
+          "Gated",
+          "Reverse Swell",
+          "Reverse Audio"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 3,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "wetDb": {
+        "default": 0,
+        "interval": 0,
+        "maximum": 24,
+        "minimum": -24,
+        "origin": "Plugins/HamloVerb/Source/Standalone/VerbParameters.h"
+      },
+      "width": {
+        "default": 1,
+        "interval": 0,
+        "maximum": 1.5,
+        "minimum": 0,
+        "origin": "Plugins/HamloVerb/Source/Standalone/ModuleVariant.cpp"
+      }
+    },
+    "HamloZastava": {
+      "v2_attack": {
+        "default": 1,
+        "interval": 0.01,
+        "maximum": 200,
+        "minimum": 0.01,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_beats": {
+        "default": 0.25,
+        "interval": 0.015625,
+        "maximum": 16,
+        "minimum": 0.015625,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_body": {
+        "default": 20,
+        "interval": 0.01,
+        "maximum": 2000,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_enabled": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_engine": {
+        "choices": [
+          "Legacy",
+          "Clean",
+          "Drum",
+          "Duck",
+          "Rhythm"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 4,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_expand": {
+        "choices": [
+          "Gate",
+          "Expand"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_external": {
+        "choices": [
+          "Main",
+          "External"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_hold": {
+        "default": 20,
+        "interval": 0.01,
+        "maximum": 2000,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_hp": {
+        "default": 0,
+        "interval": 1,
+        "maximum": 20000,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_hysteresis": {
+        "default": 4,
+        "interval": 0.01,
+        "maximum": 24,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_knee": {
+        "default": 6,
+        "interval": 0.01,
+        "maximum": 24,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_link": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_listen": {
+        "choices": [
+          "Off",
+          "On"
+        ],
+        "default": 0,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_lookahead": {
+        "default": 2,
+        "interval": 0.01,
+        "maximum": 5,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_lp": {
+        "default": 0,
+        "interval": 1,
+        "maximum": 20000,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_mix": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_output": {
+        "default": 0,
+        "interval": 0.01,
+        "maximum": 12,
+        "minimum": -24,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_range": {
+        "default": 40,
+        "interval": 0.01,
+        "maximum": 90,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_ratio": {
+        "default": 4,
+        "interval": 0.01,
+        "maximum": 100,
+        "minimum": 1,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_release": {
+        "default": 100,
+        "interval": 0.01,
+        "maximum": 5000,
+        "minimum": 0.01,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step1": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step10": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step11": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step12": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step13": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step14": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step15": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step16": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step17": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step18": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step19": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step2": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step20": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step21": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step22": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step23": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step24": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step25": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step26": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step27": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step28": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step29": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step3": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step30": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step31": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step32": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step4": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step5": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step6": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step7": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step8": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_step9": {
+        "default": 1,
+        "interval": 0.001,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_steps": {
+        "default": 16,
+        "interval": 1,
+        "maximum": 32,
+        "minimum": 16,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_sync": {
+        "choices": [
+          "Free",
+          "Tempo"
+        ],
+        "default": 1,
+        "interval": 1,
+        "maximum": 1,
+        "minimum": 0,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_tail": {
+        "default": 100,
+        "interval": 0.01,
+        "maximum": 5000,
+        "minimum": 0.01,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      },
+      "v2_threshold": {
+        "default": -40,
+        "interval": 0.01,
+        "maximum": 0,
+        "minimum": -90,
+        "origin": "Plugins/HamloZastava/Source/Standalone/ModernParameters.cpp"
+      }
+    }
+  },
+  "schema_scope": "used literal native IDs plus explicitly expanded source families; not the complete host ABI",
+  "sources": {
+    "HamloComp": {
+      "imported_tree": "21506ec89e982e90c186be1e3aea697ec8f69478",
+      "source_checkout": "HamloComp",
+      "source_commit": "c7d344bffc598eb9dd012db94772462648081a99",
+      "source_tree": "21506ec89e982e90c186be1e3aea697ec8f69478",
+      "version": "0.2.0"
+    },
+    "HamloEcho": {
+      "imported_tree": "29a00b5c04ca5503e3dce1ea377b09f7bc805930",
+      "source_checkout": "HamloEcho",
+      "source_commit": "00dedb88cc3d4420fd6ba641ad7d710400e22c24",
+      "source_tree": "29a00b5c04ca5503e3dce1ea377b09f7bc805930",
+      "version": "0.2.2"
+    },
+    "HamloFader": {
+      "imported_tree": "724dfcb9ab2ee10529125626f60c127cfcf703c6",
+      "source_checkout": "HamloFader",
+      "source_commit": "aef8c4dab83919a1f3eae98fd5836a59890f9042",
+      "source_tree": "724dfcb9ab2ee10529125626f60c127cfcf703c6",
+      "version": "0.2.0"
+    },
+    "HamloMag": {
+      "imported_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+      "source_checkout": "HamloMag",
+      "source_commit": "c5dcd10dcfdd8d9248e4b06b73114b9eb3b2b5d3",
+      "source_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+      "version": "0.2.1"
+    },
+    "HamloRedWall": {
+      "imported_tree": "4baefbd3e9083eb63ce0475d2d803633d0bd0590",
+      "source_checkout": "HamloRedWall",
+      "source_commit": "d3c9f9a47e94dfe258ebaa71db3de576c815ca94",
+      "source_tree": "4baefbd3e9083eb63ce0475d2d803633d0bd0590",
+      "version": "0.3.0"
+    },
+    "HamloRevolution": {
+      "imported_tree": "834a095eb7107beb593e9e3e78f2fed6d8e317cf",
+      "source_checkout": "HamloRevolutionTransitions",
+      "source_commit": "997f2e2156a588727eb14e47449928d5ca7bffb3",
+      "source_tree": "834a095eb7107beb593e9e3e78f2fed6d8e317cf",
+      "version": "0.5.1"
+    },
+    "HamloShirota": {
+      "imported_tree": "f1a6963dc7b863725399a5c82933f1b8f6737d56",
+      "source_checkout": "HamloShirota",
+      "source_commit": "ea316b0ea17763303188d06dce14dd9e8e3ffd37",
+      "source_tree": "f1a6963dc7b863725399a5c82933f1b8f6737d56",
+      "version": "0.2.0"
+    },
+    "HamloUdarnik": {
+      "imported_tree": "2dcf0ecd83c25e0144e0d65e814bb95649dd3dfd",
+      "source_checkout": "HamloUdarnik",
+      "source_commit": "11d37dbff5fe7ccbe87f4becf17daa5b13b02f8f",
+      "source_tree": "2dcf0ecd83c25e0144e0d65e814bb95649dd3dfd",
+      "version": "0.2.0"
+    },
+    "HamloVerb": {
+      "imported_tree": "4a54a1130861b688faf38dd11855e0295563619d",
+      "source_checkout": "HamloVerb",
+      "source_commit": "2ae0e1d6fb6652825811a476084a2c5e9db07029",
+      "source_tree": "4a54a1130861b688faf38dd11855e0295563619d",
+      "version": "0.2.2"
+    },
+    "HamloZastava": {
+      "imported_tree": "bcf48c0145c13c5e1bea0a1fd4acb6ba4069485e",
+      "source_checkout": "HamloZastava",
+      "source_commit": "ccc1de21b095acc6b424d00c78122acd8d4fa748",
+      "source_tree": "bcf48c0145c13c5e1bea0a1fd4acb6ba4069485e",
+      "version": "0.2.0"
+    }
+  }
+}

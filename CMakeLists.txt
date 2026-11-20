@@ -37,6 +37,7 @@ endif()
 set(HPEQ_HPDG_SOURCE_DIR "" CACHE PATH "HPDG Source/ directory for M0 measurements (optional)")
 
 enable_testing()
+include(cmake/HamloNative.cmake)
 
 # --- Plugin -----------------------------------------------------------------------------------
 juce_add_plugin(HPEQ
@@ -145,6 +146,7 @@ juce_add_binary_data(HPEQ_Assets NAMESPACE HpeqAssets
 target_link_libraries(HPEQ
     PUBLIC
         HPEQ_Assets
+        HPEQ_NativeRuntime
         # Test executables link the plugin's shared code; these modules are compiled once, here.
         juce::juce_audio_utils
         juce::juce_dsp
@@ -200,6 +202,7 @@ target_compile_definitions(HPEQ_ModuleShared
         JUCE_USE_CURL=0
         JUCE_VST3_CAN_REPLACE_VST2=0)
 target_link_libraries(HPEQ_ModuleShared
+    PUBLIC HPEQ_NativeRuntime
     PRIVATE
         juce::juce_recommended_config_flags
         juce::juce_recommended_warning_flags)
@@ -346,6 +349,10 @@ add_executable(HPEQ_Lab
     Tests/Tools/LabUi.cpp)
 target_include_directories(HPEQ_Lab PRIVATE Tests)
 target_link_libraries(HPEQ_Lab PRIVATE HPEQ)
+
+# RACK1 compatibility probe; the same renderer is used before/after native adapters.
+add_executable(HPEQ_RackLab Tests/Tools/RackLabMain.cpp)
+target_link_libraries(HPEQ_RackLab PRIVATE HPEQ)
 
 # M0 tool: fixtures, baseline metrics, HPDG block audit.
 add_executable(HPEQ_Harness

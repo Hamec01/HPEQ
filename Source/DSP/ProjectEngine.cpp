@@ -41,7 +41,7 @@ int ProjectEngine::latencyFor(const FxProjectState& project, double sampleRate)
     int sum = 0, max = 0;
     for (const auto& layer : project.layers)
     {
-        const int l = LayerEngine::latencyFor(makeSnapshot(layer), sampleRate);
+        const int l = LayerEngine::latencyFor(makeSnapshot(layer,sampleRate), sampleRate);
         sum += l;
         max = std::max(max, l);
     }
@@ -50,6 +50,7 @@ int ProjectEngine::latencyFor(const FxProjectState& project, double sampleRate)
 
 ProjectEngine::ProjectEngine()
 {
+    nativeRegistry=std::make_unique<native::Registry>();
     // Engines exist from the start so a project published before prepare() is not lost.
     for (auto& layer : layers)
         layer.engine = std::make_unique<LayerEngine>();
@@ -57,6 +58,17 @@ ProjectEngine::ProjectEngine()
 
 void ProjectEngine::prepare(double newSampleRate, int maxBlockSize)
 {
+    const bool rebuildNative=!nativeRegistry->empty();
+    if(rebuildNative)
+    {
+        // Host has suspended audio for prepare. Drain every old raw pointer
+        // before destroying/reallocating native delay memory at the new rate.
+        for(auto& layer:layers)
+        {
+            layer.engine->publish(LayerSnapshot{});layer.engine->update();layer.engine->reset();
+        }
+        nativeRegistry->clear();
+    }
     sampleRate = newSampleRate;
     maxBlock = std::max(1, maxBlockSize);
     rampSteps = stepsFor(kMixRampSeconds, sampleRate);
@@ -74,6 +86,7 @@ void ProjectEngine::prepare(double newSampleRate, int maxBlockSize)
         for (auto& channel : *group)
             channel.assign(static_cast<size_t>(maxBlock), 0.0f);
     reset();
+    if(rebuildNative && !publish(lastPublished))throw std::runtime_error(lastError.toStdString());
 }
 
 void ProjectEngine::reset() noexcept
@@ -101,11 +114,22 @@ void ProjectEngine::reset() noexcept
     freshStart = true;
 }
 
-void ProjectEngine::publish(const FxProjectState& project) noexcept
+bool ProjectEngine::publish(const FxProjectState& project) noexcept
 {
-    for (size_t j = 0; j < layers.size(); ++j)
-        layers[j].engine->publish(makeSnapshot(project.layers[j]));
-    exchange.publish(makeProjectSnapshot(project));
+    try
+    {
+        auto saved=project;
+        for(auto& layer:saved.layers)assignEngineSlots(layer);
+        auto images=std::make_unique<std::array<LayerSnapshot,kNumLayers>>();
+        for(size_t j=0;j<layers.size();++j)(*images)[j]=makeSnapshot(saved.layers[j],sampleRate);
+        juce::String error;
+        if(!nativeRegistry->stage(saved,*images,sampleRate,std::max(1,maxBlock),error))
+        {lastError=error;return false;}
+        for(size_t j=0;j<layers.size();++j)layers[j].engine->publish((*images)[j]);
+        auto controls=makeProjectSnapshot(project);controls.nativeGeneration=nativeRegistry->generation();
+        exchange.publish(controls);lastPublished=std::move(saved);lastError.clear();return true;
+    }
+    catch(const std::exception& e){lastError=e.what();return false;}
 }
 
 void ProjectEngine::applySnapshot() noexcept
@@ -279,6 +303,7 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
         max = std::max(max, lj[j]);
     }
     latency = routing == LayerRouting::Serial ? std::min(sum, latencyCap) : max;
+    nativeRegistry->acknowledge(exchange.current().nativeGeneration);
     freshStart = false;
 
     for (int start = 0; start < numSamples; start += maxBlock)

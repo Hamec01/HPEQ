@@ -63,10 +63,11 @@ public:
 
     // Project model: message thread / host state thread only, never the audio thread.
     FxProjectState getProject() const;
-    void setProject(FxProjectState);
+    bool setProject(FxProjectState);
+    juce::String getProjectError() const { return engine.publicationError(); }
 
     // Undoable edit of the project (message thread). No-op if `change` leaves the project unchanged.
-    void editProject(const juce::String& actionName, const std::function<void(FxProjectState&)>& change);
+    bool editProject(const juce::String& actionName, const std::function<void(FxProjectState&)>& change);
     juce::UndoManager& getUndoManager() noexcept { return undoManager; }
 
     // The layer the editor shows (saved with the state, not an undoable edit).

@@ -1,4 +1,5 @@
 #include "Core/FxProjectState.h"
+#include "Rack/NativeApi.h"
 
 #include "Core/Revolution.h"
 
@@ -176,6 +177,12 @@ juce::ValueTree slotToTree(const FxSlotState& slot)
     for (const auto& p : slot.parameters)
         params.setProperty(p.name, p.value.isDouble() ? exactText(static_cast<double>(p.value)) : p.value, nullptr);
     tree.appendChild(params, nullptr);
+    if(slot.engineRevision!=0)
+    {
+        tree.setProperty("engineRevision",slot.engineRevision,nullptr);
+        if(slot.nativeState.getSize()>0)
+            tree.setProperty("nativeStateBase64",slot.nativeState.toBase64Encoding(),nullptr);
+    }
     return tree;
 }
 
@@ -185,6 +192,9 @@ FxSlotState slotFromTree(const juce::ValueTree& tree)
     slot.type = fxNames.parse(tree[ids::type], FxType::Compressor);
     slot.enabled = tree.getProperty(ids::enabled, true);
     slot.mix = static_cast<float>(readDouble(tree, ids::mix, 1.0));
+    slot.engineRevision=tree.getProperty("engineRevision",0);
+    if(tree.hasProperty("nativeStateBase64") && !slot.nativeState.fromBase64Encoding(tree["nativeStateBase64"].toString()))
+        slot.engineRevision=-1; // retain an explicit failure, never turn corrupt native state into legacy
     const auto params = tree.getChildWithName(ids::params);
     for (int i = 0; i < params.getNumProperties(); ++i)
     {
@@ -198,6 +208,51 @@ FxSlotState slotFromTree(const juce::ValueTree& tree)
 
 juce::ValueTree moduleToTree(const FxSlotState& slot) { return slotToTree(slot); }
 FxSlotState moduleFromTree(const juce::ValueTree& tree) { return slotFromTree(tree); }
+
+FxSlotState makeNativeModule(FxType type)
+{
+    FxSlotState slot;slot.type=type;slot.engineRevision=native::kRevision;
+    slot.parameters=native::defaultParameters(type);
+    slot.mix=type==FxType::Reverb||type==FxType::Delay?0.f:1.f;
+    return slot;
+}
+
+bool isModuleSupported(const FxSlotState& slot,juce::String* error)
+{
+    juce::String reason;
+    if(slot.engineRevision==0 && slot.nativeState.getSize()==0)return true;
+    if(slot.engineRevision!=native::kRevision)reason="Unsupported module engine revision";
+    else if(slot.nativeState.getSize()>16*1024*1024)reason="Native structural state exceeds capacity";
+    else
+    {
+        native::Values values;
+        if(native::describe(slot.type,slot.parameters,48000,values,reason))
+        {
+            if(slot.nativeState.getSize()==0)return true;
+            const auto xml=juce::AudioProcessor::getXmlFromBinary(slot.nativeState.getData(),static_cast<int>(slot.nativeState.getSize()));
+            if(xml!=nullptr && xml->getTagName()==native::productName(slot.type))
+            {
+                for(const auto& p:native::layout(slot.type))
+                    if(!slot.parameters.contains(p.id)){reason="Incomplete native physical parameter state";break;}
+                if(reason.isEmpty())return true;
+            }
+            else reason="Invalid native structural state";
+        }
+    }
+    if(error!=nullptr)*error=reason;
+    return false;
+}
+
+int projectSchemaVersion(const FxProjectState& project)
+{
+    for(const auto& layer:project.layers)
+    {
+        for(const auto& slot:layer.mixChain)if(slot.engineRevision!=0)return 2;
+        for(const auto& node:layer.fxNodes)for(const auto& slot:node.chain)if(slot.engineRevision!=0)return 2;
+        for(const auto& node:layer.eqNodes)for(const auto& slot:node.chain)if(slot.engineRevision!=0)return 2;
+    }
+    return 1;
+}
 
 std::array<LayerState, kNumLayers> FxProjectState::makeDefaultLayers()
 {
@@ -526,7 +581,7 @@ void sanitize(FxProjectState& project)
 juce::ValueTree toValueTree(const FxProjectState& project)
 {
     juce::ValueTree root(ids::project);
-    root.setProperty(ids::schemaVersion, kStateSchemaVersion, nullptr);
+    root.setProperty(ids::schemaVersion, projectSchemaVersion(project), nullptr);
     root.setProperty(ids::routing, routingNames.name(project.routing), nullptr);
     if (project.lenin) // written only when on: older projects and saved states stay as they were
         root.setProperty("lenin", true, nullptr);
@@ -714,6 +769,14 @@ std::optional<FxProjectState> fromValueTree(const juce::ValueTree& root, juce::S
         }
     }
 
+    juce::String nativeError;
+    for(const auto& layer:project.layers)
+    {
+        for(const auto& slot:layer.mixChain)if(!isModuleSupported(slot,&nativeError))return fail(nativeError);
+        for(const auto& node:layer.fxNodes)for(const auto& slot:node.chain)if(!isModuleSupported(slot,&nativeError))return fail(nativeError);
+        for(const auto& node:layer.eqNodes)for(const auto& slot:node.chain)if(!isModuleSupported(slot,&nativeError))return fail(nativeError);
+    }
+    if(version<projectSchemaVersion(project))return fail("Native module requires schemaVersion 2");
     sanitize(project);
     return project;
 }

@@ -1,0 +1,41 @@
+{
+  "status": "paused_by_owner; unfinished WIP",
+  "date": "2026-11-20",
+  "branch": "main",
+  "base_commit": "45d61b3",
+  "legacy_before": {
+    "presets": 224,
+    "rendered": 224,
+    "failures": 0,
+    "fixture_sha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b"
+  },
+  "release_checkpoint": {
+    "native_libraries_compiled": 10,
+    "tools_compiled": [
+      "HPEQ_RackLab",
+      "HPEQ_Tests"
+    ],
+    "inputs_edited_after_build": [
+      "Source/Rack/NativeApi.h",
+      "Tests/Unit/StateTests.cpp",
+      "scripts/hamlorack/build_bank.py",
+      "scripts/hamlorack/generate_native.py"
+    ],
+    "current_source_fully_rebuilt": false
+  },
+  "not_run": [
+    "legacy_after_exact_comparison",
+    "native_adapter_parity",
+    "new_runtime_unit_tests",
+    "debug_crt_allocation_probe",
+    "native_timing_channel_block_matrix",
+    "host_validators",
+    "new_ui_verification",
+    "250_recipe_audio_calibration",
+    "listening"
+  ],
+  "active_jobs": [],
+  "source_scope": "RACK0 designs plus unfinished RACK1; Plugins and legacy factory payloads unchanged",
+  "push_scope": "source and nonaudio receipts only; no binaries or raw/private audio",
+  "commit_preflight": "Design artifacts regenerated after removing extra EOF blank lines; targeted LF attributes keep their byte-level checks stable."
+}

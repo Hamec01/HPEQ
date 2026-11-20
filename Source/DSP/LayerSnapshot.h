@@ -5,6 +5,7 @@
 #include <type_traits>
 
 #include "Core/FxProjectState.h"
+#include "Rack/NativeApi.h"
 
 namespace hpeq::dsp
 {
@@ -32,6 +33,8 @@ struct FxSlotParams
     FxType type = FxType::Gain;
     float mix = 1.0f;
     std::array<float, 48> values {};
+    int engineRevision=0;
+    native::Values nativeValues;
 };
 
 namespace slot
@@ -141,7 +144,7 @@ static_assert(std::is_trivially_copyable_v<LayerSnapshot>);
 bool isEqShapeProcessed(EqShape) noexcept;
 bool isFxTypeProcessed(FxType) noexcept;
 
-LayerSnapshot makeSnapshot(const LayerState&);
+LayerSnapshot makeSnapshot(const LayerState&,double nativeRate=48000.0);
 
 // Single-writer / single-reader triple buffer. The writer never blocks the reader and the reader
 // never allocates or waits; it always sees the most recent complete snapshot.

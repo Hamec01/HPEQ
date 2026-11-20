@@ -8,6 +8,7 @@
 #include "DSP/DelayLine.h"
 #include "DSP/LayerEngine.h"
 #include "DSP/Ramp.h"
+#include "Rack/NativeRegistry.h"
 
 namespace hpeq::dsp
 {
@@ -25,6 +26,7 @@ struct LayerControlParams
 
 struct ProjectSnapshot
 {
+    std::uint64_t nativeGeneration=0;
     LayerRouting routing = LayerRouting::Parallel;
     std::array<LayerControlParams, kNumLayers> layers {};
 };
@@ -50,7 +52,7 @@ ProjectSnapshot makeProjectSnapshot(const FxProjectState&);
 class ProjectEngine
 {
 public:
-    static int maxLayerLatency(double sampleRate) { return FxNodeProcessor::maxNodeLatency(sampleRate); }
+    static int maxLayerLatency(double sampleRate) { return 2*FxNodeProcessor::maxNodeLatency(sampleRate); } // frequency nodes, then whole-layer chain
     static int maxLatency(double sampleRate) { return maxLayerLatency(sampleRate) * kNumLayers; }
 
     ProjectEngine();
@@ -58,7 +60,9 @@ public:
     void reset() noexcept;
 
     // Message thread. Publishes every layer and the routing/controls.
-    void publish(const FxProjectState&) noexcept;
+    bool publish(const FxProjectState&) noexcept;
+    const juce::String& publicationError() const noexcept { return lastError; }
+    double nativeTailSeconds() const noexcept { return nativeRegistry->tailSeconds(); }
 
     void process(float* const* channels, int numChannels, int numSamples, const Transport& = {}) noexcept;
 
@@ -96,7 +100,10 @@ private:
     SnapshotExchange<ProjectSnapshot> exchange;
     LayerRouting routing = LayerRouting::Parallel;
     std::unique_ptr<LayerPools> pools;
+    std::unique_ptr<native::Registry> nativeRegistry; // outlives the layer engines and their runtime references
     std::array<Layer, kNumLayers> layers;
+    FxProjectState lastPublished;
+    juce::String lastError;
     AlignmentDelay inputAlign; // Parallel: D_L(x)
 
     std::array<std::vector<float>, kMaxChannels> dryAligned, work, current, component, rest;

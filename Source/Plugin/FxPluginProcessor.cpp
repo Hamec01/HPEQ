@@ -14,8 +14,8 @@ class ProjectEdit final : public juce::UndoableAction
 public:
     ProjectEdit(FxPluginProcessor& p, FxProjectState beforeEdit, FxProjectState afterEdit)
         : processor(p), before(std::move(beforeEdit)), after(std::move(afterEdit)) {}
-    bool perform() override { processor.setProject(after); return true; }
-    bool undo() override { processor.setProject(before); return true; }
+    bool perform() override { return processor.setProject(after); }
+    bool undo() override { return processor.setProject(before); }
     int getSizeInUnits() override { return 1; }
 
 private:
@@ -49,6 +49,7 @@ FxPluginProcessor::FxPluginProcessor()
 
 void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamplesPerBlock)
 {
+    const juce::ScopedLock lock(projectLock); // serializes native topology allocation with message-thread publication
     const int maxBlock = juce::jmax(1, maximumExpectedSamplesPerBlock);
     currentSampleRate.store(sampleRate, std::memory_order_relaxed);
     capture.reset();
@@ -62,7 +63,6 @@ void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamp
     wetAmount.reset(bypassParameter->get() ? 0.0 : 1.0);
     gain.reset(sampleRate, kGainRampSeconds);
     gain.setCurrentAndTargetValue(targetGain(outputGainDb->load(), bypassParameter->get()));
-    const juce::ScopedLock lock(projectLock);
     updateLatencyAndTail(project);
 }
 
@@ -205,15 +205,15 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
     outputLoudness.process(buffer.getArrayOfReadPointers(), channels, numSamples);
 }
 
-void FxPluginProcessor::editProject(const juce::String& actionName, const std::function<void(FxProjectState&)>& change)
+bool FxPluginProcessor::editProject(const juce::String& actionName, const std::function<void(FxProjectState&)>& change)
 {
     auto before = getProject();
     auto after = before;
     change(after);
     sanitize(after);
     if (toValueTree(after).isEquivalentTo(toValueTree(before)))
-        return;
-    undoManager.perform(new ProjectEdit(*this, std::move(before), std::move(after)), actionName);
+        return true;
+    return undoManager.perform(new ProjectEdit(*this, std::move(before), std::move(after)), actionName);
 }
 
 void FxPluginProcessor::selectLayer(int index)
@@ -278,12 +278,12 @@ FxProjectState FxPluginProcessor::getProject() const
     return project;
 }
 
-void FxPluginProcessor::setProject(FxProjectState newProject)
+bool FxPluginProcessor::setProject(FxProjectState newProject)
 {
     sanitize(newProject);
     const juce::ScopedLock lock(projectLock);
+    if(!engine.publish(newProject))return false;
     project = std::move(newProject);
-    engine.publish(project);
     tubeLenin.store(project.lenin, std::memory_order_relaxed);
     tubeStalin.store(project.stalin, std::memory_order_relaxed);
     tubeLeninMix.store(project.leninMix, std::memory_order_relaxed);
@@ -291,6 +291,7 @@ void FxPluginProcessor::setProject(FxProjectState newProject)
 
     updateLatencyAndTail(project);
     sendChangeMessage(); // the editor refreshes on the message thread
+    return true;
 }
 
 void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
@@ -305,13 +306,13 @@ void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
         if (!layerState.enabled)
             continue;
         double tail = 0.0;
-        const auto snapshot = dsp::makeSnapshot(layerState);
+        const auto snapshot = dsp::makeSnapshot(layerState,sampleRate);
         std::array<dsp::FxNodeParams, kMaxFxNodesPerLayer + 1> all {};
         std::copy(snapshot.fx.begin(), snapshot.fx.end(), all.begin());
         all.back() = snapshot.mix;
         for (const auto& node : all)
             for (int k = 0; node.active && k < node.numSlots; ++k)
-                if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active)
+                if (const auto& slot = node.slots[static_cast<size_t>(k)]; slot.active && slot.engineRevision==0)
                 {
                     if (slot.type == FxType::Reverb)
                         tail = std::max(tail, dsp::ReverbProcessor::tailSeconds(slot, hostBpm.load(std::memory_order_relaxed)));
@@ -321,7 +322,7 @@ void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
         sum += tail;
         max = std::max(max, tail);
     }
-    tailSeconds.store((state.routing == LayerRouting::Serial ? sum : max) + latency / sampleRate, std::memory_order_relaxed);
+    tailSeconds.store((state.routing == LayerRouting::Serial ? sum : max) + engine.nativeTailSeconds() + latency / sampleRate, std::memory_order_relaxed);
     if (latency != getLatencySamples())
         setLatencySamples(latency);
 }
@@ -329,11 +330,12 @@ void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
 void FxPluginProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
     juce::ValueTree root(kStateRoot);
-    root.setProperty(kStateSchema, kStateSchemaVersion, nullptr);
+    const auto saved=getProject();
+    root.setProperty(kStateSchema, projectSchemaVersion(saved), nullptr);
     if (const auto name = getPresetName(); name.isNotEmpty())
         root.setProperty("presetName", name, nullptr);
     root.appendChild(parameters.copyState(), nullptr);
-    root.appendChild(toValueTree(getProject()), nullptr);
+    root.appendChild(toValueTree(saved), nullptr);
     if (auto xml = root.createXml())
         copyXmlToBinary(*xml, destData);
 }
@@ -355,6 +357,8 @@ void FxPluginProcessor::setStateInformation(const void* data, int sizeInBytes)
     if (!restored.has_value())
         return;
 
+    if(!setProject(std::move(*restored)))return;
+
     const auto parametersTree = root.getChildWithName(kParametersTree);
     if (parametersTree.isValid())
         parameters.replaceState(parametersTree);
@@ -362,7 +366,6 @@ void FxPluginProcessor::setStateInformation(const void* data, int sizeInBytes)
         const juce::ScopedLock lock(projectLock);
         presetName = root["presetName"].toString();
     }
-    setProject(std::move(*restored));
 }
 
 bool FxPluginProcessor::loadPreset(const void* data, int sizeInBytes, const juce::String& name)
@@ -379,7 +382,7 @@ bool FxPluginProcessor::loadPreset(const void* data, int sizeInBytes, const juce
         return false;
 
     undoManager.beginNewTransaction("Preset " + name);
-    editProject("Preset " + name, [&restored](FxProjectState& p) { p = *restored; });
+    if(!editProject("Preset " + name, [&restored](FxProjectState& p) { p = *restored; }))return false;
     // Output gain comes with the preset (not undoable: it is a host parameter); Bypass stays.
     const auto parametersTree = root.getChildWithName(kParametersTree);
     for (const auto& child : parametersTree)

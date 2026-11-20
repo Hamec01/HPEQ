@@ -4,6 +4,7 @@
 #include "DSP/EqDesign.h"
 
 #include <cmath>
+#include <stdexcept>
 
 namespace hpeq::dsp
 {
@@ -15,12 +16,21 @@ float param(const juce::NamedValueSet& set, const char* key, float fallback)
     return value != nullptr ? static_cast<float>(static_cast<double>(*value)) : fallback;
 }
 
-FxSlotParams makeSlot(const FxSlotState& state)
+FxSlotParams makeSlot(const FxSlotState& state,double nativeRate)
 {
     FxSlotParams slotParams;
     slotParams.type = state.type;
     slotParams.mix = state.mix;
     slotParams.active = state.enabled && isFxTypeProcessed(state.type);
+    slotParams.engineRevision=state.engineRevision;
+    if(state.engineRevision!=0)
+    {
+        juce::String error;
+        if(state.engineRevision!=native::kRevision || !native::describe(state.type,state.parameters,nativeRate,slotParams.nativeValues,error))
+            throw std::invalid_argument(error.isEmpty()?"Unsupported native engine revision":error.toStdString());
+        if(state.type==FxType::Gain)slotParams.values[slot::kFadSolo]=param(state.parameters,"solo",0.f);
+        return slotParams;
+    }
     switch (state.type)
     {
         case FxType::Gain:
@@ -241,7 +251,7 @@ bool isFxTypeProcessed(FxType) noexcept
     return true; // M6: every FX type of the model is implemented
 }
 
-LayerSnapshot makeSnapshot(const LayerState& layer)
+LayerSnapshot makeSnapshot(const LayerState& layer,double nativeRate)
 {
     LayerSnapshot snapshot;
     for (size_t i = 0; i < layer.eqNodes.size() && i < snapshot.eq.size(); ++i)
@@ -268,7 +278,7 @@ LayerSnapshot makeSnapshot(const LayerState& layer)
     // sanitized project are kept; an unsanitized layer gets the same assignment on a copy.
     auto slotted = layer;
     assignEngineSlots(slotted);
-    const auto fill = [](FxNodeParams& fx, bool active, double lowHz, double highHz, float mix, ChannelMode channel,
+    const auto fill = [nativeRate](FxNodeParams& fx, bool active, double lowHz, double highHz, float mix, ChannelMode channel,
                          const std::vector<FxSlotState>& chain)
     {
         fx.active = active;
@@ -278,7 +288,7 @@ LayerSnapshot makeSnapshot(const LayerState& layer)
         fx.channel = channel;
         fx.numSlots = static_cast<int>(std::min(chain.size(), fx.slots.size()));
         for (int s = 0; s < fx.numSlots; ++s)
-            fx.slots[static_cast<size_t>(s)] = makeSlot(chain[static_cast<size_t>(s)]);
+            fx.slots[static_cast<size_t>(s)] = makeSlot(chain[static_cast<size_t>(s)],nativeRate);
     };
     for (const auto& node : slotted.fxNodes)
         if (node.engineSlot >= 0)

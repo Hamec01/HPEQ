@@ -97,7 +97,7 @@ public:
             expect(tree.isEquivalentTo(toValueTree(*restored)));
             expectEquals(static_cast<int>(restored->layers[3].fxNodes[0].chain.size()), 6);
             expect(restored->layers[3].fxNodes[0].chain[5].type == FxType::MonstaFx);
-            expectEquals(static_cast<int>(tree[juce::Identifier("schemaVersion")]), kStateSchemaVersion);
+            expectEquals(static_cast<int>(tree[juce::Identifier("schemaVersion")]), 1); // legacy writes stay schema 1; schema 2 is opt-in
         }
 
         beginTest("plugin state: parameters, project and sound survive save/restore");

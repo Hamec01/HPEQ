@@ -13,7 +13,7 @@ namespace hpeq
 // Pure data: no DSP, no UI, no HPDG types. Edited on the message thread; the audio thread will get
 // immutable snapshots of it from M2 on, never this object.
 
-constexpr int kStateSchemaVersion = 1;
+constexpr int kStateSchemaVersion = 2; // maximum supported; legacy projects still write schema 1
 constexpr int kNumLayers = 10;
 constexpr int kMaxEqNodesPerLayer = 24;  // 01 §3 starting budget, to be refined by measurement
 constexpr int kMaxFxNodesPerLayer = 8;
@@ -34,6 +34,8 @@ struct FxSlotState
     bool enabled = true;
     float mix = 1.0f;
     juce::NamedValueSet parameters; // processor-specific, defined with each processor
+    int engineRevision = 0; // absent/0: exact legacy path; 1: pinned native beta wrapper
+    juce::MemoryBlock nativeState; // optional complete native structural state; physical parameters above are authoritative
 };
 
 struct EqNodeState
@@ -119,6 +121,9 @@ void copyLayerInto(FxProjectState&, const LayerState& source, int targetIndex);
 // HamloRevolution with an empty pattern. The DSP's own defaults (used when a key is absent, e.g. in older
 // projects) are unchanged.
 FxSlotState defaultModule(FxType);
+FxSlotState makeNativeModule(FxType);
+bool isModuleSupported(const FxSlotState&,juce::String* error=nullptr);
+int projectSchemaVersion(const FxProjectState&);
 // The base the factory module presets are written against (the module defaults before the owner's
 // "everything at zero"): a preset sets only the keys it changes, so its sound must not move with
 // defaultModule().

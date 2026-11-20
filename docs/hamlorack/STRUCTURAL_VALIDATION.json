@@ -1,0 +1,33 @@
+{
+  "recipes": 250,
+  "unique_processing": 250,
+  "banks": {
+    "Boom Bap": 50,
+    "Trap": 50,
+    "Techno": 50,
+    "Drum and Bass": 50,
+    "Studio": 50
+  },
+  "module_instances": {
+    "HamloComp": 142,
+    "HamloEcho": 32,
+    "HamloFader": 17,
+    "HamloMag": 118,
+    "HamloRedWall": 17,
+    "HamloRevolution": 20,
+    "HamloShirota": 41,
+    "HamloUdarnik": 53,
+    "HamloVerb": 64,
+    "HamloZastava": 14
+  },
+  "audio_status": "not_run; runtime adapters required",
+  "bank_sha256": "c1034f46a5f3d52e4805a569f1fb55285e8365d107dcde6cd757369b16e54889",
+  "native_contract_sha256": "d0bd876b5edeb2afe55c797b149ea2f3db1a2cf9a1677afad7b0336d2bb8c1d4",
+  "structural_gates": [
+    "S1 source identity",
+    "S2 count/native IDs/ranges/grid",
+    "S3 exact topology uniqueness",
+    "S4 capacities/scene routing"
+  ],
+  "audio_gates": "A1-A9 pending; see RACK0_DESIGN.md"
+}

@@ -1,0 +1,2257 @@
+{
+  "status": "before_capture_only; after comparison not run",
+  "base_hpeq_commit": "45d61b3",
+  "reference_executable_sha256": "280d5c6a450c1b2aedcca7a9da6a231446fcc2988f11ad7e292283c47c78e755",
+  "local_raw_render_directory": "out/rack1/legacy-before/renders",
+  "local_reference_source_manifest": "out/rack1/legacy-before/source-sha256.json",
+  "capture": {
+    "mode": "legacy-write",
+    "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+    "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+    "rendered": 224,
+    "cached": 0,
+    "failures": 0,
+    "presets": [
+      {
+        "id": "001",
+        "name": "Club Foundation",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "5f41a4c6e70794767b20429386a8e01f0ee5e48c85962f647fcefb1baf27bb9a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "acd728f26bef3b27517e1aa6d5aec8622526a33ca17438770d97a4eca96f155e",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "002",
+        "name": "Hip-Hop Knock",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "826ed3496dddbbebc185d769fa11617a8819f102c8c93d6451ed0f7c75cdf4e6",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "bb5e0002a90fb76d28f44c8db75a90104c4682a68da3e938c29e25790f11d4e0",
+        "latency": 338,
+        "finite": true
+      },
+      {
+        "id": "003",
+        "name": "Trap Kick Click",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "cb446b8e85bc1377675dab864d6b540556637ccbb6cff43782a734ca6f92218d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "1242fc62c66e634522b9a06d2af6ec14bf56662d3d8fbf410ebcbf08e26f85ed",
+        "latency": 200,
+        "finite": true
+      },
+      {
+        "id": "004",
+        "name": "Rock Kick Punch",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9f7ea801792f75ebf6c3129c324ed3b8c4e16e9b8ff44f983b8410c928b2a446",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "e13363d5e14d30834dc4035a94d5676f7ee5cdb69a11e2575547d9329cdff255",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "005",
+        "name": "Sub Thump",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "62e4cad91475f2e5b74b553ecd94ba497621aa4b3ca9a299ced3c56d7b575a0c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b9da80cd8711e0bcc465f98d93fadcc4d4698ef9aefe65f9b206db49005158ae",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "006",
+        "name": "Lo-Fi Dusty Kick",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "b1e4094cd1f40818703aa696d8d08371d38d69c105333cf76996de23ca83bda6",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "95556125d61f5efa96f464a971ebbf5f405afa8f05dd6b9f1d5da26232314442",
+        "latency": 242,
+        "finite": true
+      },
+      {
+        "id": "007",
+        "name": "Techno Rumble Kick",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "6deda6229ad00f958c675e06c6e9380d1fd6a42108e49d933f736da2f703d7e5",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "7e2d1cc42ee028b60b2e40cdb77d1fb5523bb30296b4bfda4dddbcfeef72a01a",
+        "latency": 265,
+        "finite": true
+      },
+      {
+        "id": "008",
+        "name": "Gated Kick Tight",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "dd30d4e438e3390813e5db3ba44ed1325b36cc10761be147be0f759454aad532",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "ecb26dee1d6a7cb0bc8cb9fd8f8d318957ebcdadd710e5fb3fdb1e167f7d338f",
+        "latency": 192,
+        "finite": true
+      },
+      {
+        "id": "009",
+        "name": "Kick Stalin Drive",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "cae0c4a356d10e6d650337599bdcd39ee9830e08ecc64046aa4ed1238de29c42",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "5f0814d60d90b9cec0131579873344c11c530952a222d6b0723f43e57c36c368",
+        "latency": 134,
+        "finite": true
+      },
+      {
+        "id": "010",
+        "name": "Drum &amp; Bass Kick",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "0cd84a41472e8858b065b061951c56fea274628e54dfb8e2bd2b1ef31084823d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "e986d1dbafcea0cc147fbea5a0576106d978f3ae5649a09bc89ac25bfc28e4f7",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "011",
+        "name": "Kick Soft Felt",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "418e6bb54770349116f7ca16d9a656de2021787385ab4b429cdf6b46e9b1fcaf",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "34589d17c58c9222e6fdbc777163be91cc5cbf70ab20dfc9b5c42a87868b8066",
+        "latency": 145,
+        "finite": true
+      },
+      {
+        "id": "012",
+        "name": "Kick Multiband Click",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "af0a74143d916dc89701eb59353cbe39884247ab7564e46a5914a1e30c849268",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "49038c463b65f9dd97412e72d055f6258731804cb24257b462cefa351970c491",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "013",
+        "name": "Kick Parallel Smash",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "62ea8e924d75ad96c58da08300c8b7cdf9c3545afb5499125e2bbd433dc59d06",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "98dd3d3a7f69a21bd4bb81627e13c641061a9db8a08aa676fb46f31a61b011d2",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "014",
+        "name": "Snare Crack",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "8bc8cbe5084c71b0b5b06138423b0387a3bfbd6617cbdb4dd9cb53a6a7bb89bb",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "5cb10800a792ac56973f6ef29095556d8e5be27394fe4cd22579300feb213533",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "015",
+        "name": "Fat Snare Body",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a0a8dcf9fca7c36924a1a899e97de1d376182f791cc46fda43631a2d9e18ffef",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "160d2eb1ac5aee09a6f463b9372c81907df1fc784780378a8fcb9ecbd92055dd",
+        "latency": 242,
+        "finite": true
+      },
+      {
+        "id": "016",
+        "name": "80s Snare Plate",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "f760e65ae893cbf44e74b27495576998530c553d6aa920c40326bd410c342870",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "bcfde655c36d3a7533fbe8cadc092f6858c6c8fd6a02a6f1b42016b0e29750a6",
+        "latency": 192,
+        "finite": true
+      },
+      {
+        "id": "017",
+        "name": "Trap Clap Snap",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "53c0d8b2d09663a5f9109e4e8b6a13b412814ffe6c5fe39b24a002121771c9e9",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "439b647183e25c8803bb27cf8ac0145c2ae4c9ac854e07e2442cc60daa6b7f87",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "018",
+        "name": "Boom Bap Snare",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "1b437529c54bf924c5825e925171e1cd108534003db46ccb46a366f623086a28",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d92f994b606bdbda0c46bc9ce45e9066bc8834096fda428a8a119e5ea632036f",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "019",
+        "name": "Rimshot Bright",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "6c7753b9370bc82f7e1aa69551c678e7fbb62f9cc492330d27f57c6bb238e0fd",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "64ff325618a0b0dddd384df637a9a27e26816fcf2a46f9809b7dded135dc07c4",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "020",
+        "name": "Snare Gate Live",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "36a724e04d5ab41c3c8c82b624059a2cb100373f33bfae40c99cb100d7898019",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "3f8d3aabc0988d0ed868e754ed9f9b973400f5fe877e87e5fc17100a99ac4299",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "021",
+        "name": "Snare Tape Crack",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "f82a280b5a20dc5e1c0342126ffa2dfd530ce12ff10cedd93ce2d7fb2b961d35",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "e1321a9dea1419a429520c510c23f95cc9559c5ad9cb26f17cdf63b9cf6abce6",
+        "latency": 338,
+        "finite": true
+      },
+      {
+        "id": "022",
+        "name": "Snare Long Hall",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "dca99676300952620e0efd24136a113cb675499f91aa170aeb32e4e1150fdc7a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "30d300abe272673d84b935e4c0519faf0475b219901c6f045fea50beb2a68a6d",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "023",
+        "name": "Snare Echo Throw",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "d80a7e218da158316d784fcad670f6e02107f83fcbe62e394a70eabbe3388400",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "dbee9a0b0bf08ec27ddb6a9194abb3b2204dde26f5a06bf00dcf00c0687e6f5e",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "024",
+        "name": "Snare Body Only",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "7a342035aa53cf89762e27ec0ae74bee219b015ac0bd92c7b2bbce5ec10b84d3",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "528ed916cd5a19d723c392bfaf1c01aa33e30c82db4655624126f26433744369",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "025",
+        "name": "Snare Parallel Smack",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "205c8b8edc0e8eb2aa3e0780e6d1f9bc64bbda004420d222998484568c191ea1",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "3fe6f778f806118150761627c3be9a3ee62833f33f156f07890b9d5dcf8644d8",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "026",
+        "name": "Hat Silk",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "d1346a50ee0010f4aefc9be48c83e37a1e152dfe188bbd3ac12cbda65b727dfe",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a5d8d5b7c6ea0e2906daff2491089a19fa7d1884b2bfc7e4900981a09f3ed588",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "027",
+        "name": "Trap Hat Tick",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "528d10b0e1e7809ab444174eb0c10ce20ff0703181eb2eeba3b036a64f347b30",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "aa20a260fda08603209bff3e2b506558f290f3279a3d9d3c511300ecbc4416fc",
+        "latency": 216,
+        "finite": true
+      },
+      {
+        "id": "028",
+        "name": "Tape Hats",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a0101d542209c997deac49d0eec8c0b8ae8e0bab7f676dcf69b47c6c099d3833",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "dba092e953d75c6c85fccd5259ec2c84340fa029594906ed5297782dc9f27a3a",
+        "latency": 242,
+        "finite": true
+      },
+      {
+        "id": "029",
+        "name": "Wide Shimmer Hats",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "109b56bf866099663e978e6222aa777d795edeb4230101dce88d26f9abd19b9b",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "e7756fcdaebd7223307deffd8b4502ee1b9125b608dc9e9a8a74c560a8b1075c",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "030",
+        "name": "Hats Pulled Back",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "3b7d94c7aa9c5afc1b006ae7203638b189ed9e98c95bcc463c21e23c0737b3e8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "364be114ea09d3af353bca4c313d08ce761944b3c3e4caf43fdcbe9cfcb8fdde",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "031",
+        "name": "Hat Groove Glitch",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "df6e63437204c76fe49d55aef775c56c414d1562c8060e6fb8de6a485e9d06ce",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "8ca90e1a018549b7660cef715c39e8fbce8d706217bf1aa9ffdd349e0f996337",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "032",
+        "name": "Hats Lo-Fi Vinyl",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "b886f132ba6aecf0387956fe702f92fe761eb8cf71512f12cc6d3f81d7c3438a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "337480de29cc3bef9d2b07a715b964a8c0274218cbba9b1afed967a128017510",
+        "latency": 242,
+        "finite": true
+      },
+      {
+        "id": "033",
+        "name": "Hats Ping-Pong 1/16",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "52d02a602c30bddc8882dfedcdca1baa47484ac49e0bdb47bc2c6d0b1b55cdef",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "00c57bb08be9b7a41ff55e9696d2326e58164d849c9bef10fe2ef8f2d166ddf2",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "034",
+        "name": "Hats Gate Chop",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "fbf1a4cab98b2cb291de5bdc2b231248fedf3dd5d5d124980fa23679684ef6f1",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "aea3684abab9ce5087c03fe2e4cff36a86f5a88b5b7273264d64450f60b05331",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "035",
+        "name": "Hat Ratchet Rolls",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "ecf54b8ed01587192856ea1c36ba4df0342c61cacc78e03e4ca71996e1a2523a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b53b688f042de1816617e52cc7e7247c0768ffd51a92fa8a8614c64d602afab5",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "036",
+        "name": "Perc Snap",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "33d2b7a27b7f620c87485408d83dd06fa28ebeb2ed0ad611bfcb2a456362003d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "77189c1e1214b749d4c20a38aff64d638f0fc99d757edb64ebaca630c55b7d90",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "037",
+        "name": "Shaker Space",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "7930d55d1564a91bfb91f045d99c730894ee3f280eac4a43450cc994816ec321",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "67bbb9c5f7cad56267183598155e5aee79f587ca08eab6d3637e465e7dd33b57",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "038",
+        "name": "Conga Warm",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "93906fd00a367add15cfe4612544fa533635f332fbde5a0b9ca069501e8c2cab",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "f6626ea453e36cc06448ffbec1703d72c507a0b57bc769113afb4de0d08d638e",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "039",
+        "name": "Perc Ping-Pong",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "3882218ce6d2642aa328cf83067f4cade32c660abfcabbab9f5377ade3d9cadf",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "f429ce948a61607fdd397780a0812ca01e81990402c3040fd0a5e2f1d663715d",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "040",
+        "name": "Perc Dub Space",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "afc1e98ea19508b0e7956b70eb15ef36de17b5b14ddea6a9d376345be889bedf",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d3bd5ea66d678e4b1670549fdec2691e5723f16901328ac6f17959e20f0771c9",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "041",
+        "name": "Perc Tight Gate",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "abbed397361f83a5a981bd48f848288f02126156e78d936163cee98432d6ccf5",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "637828c556f24a9bcdec6158b740541d40bae3571c9f90e2195e9ed4a8b81bd0",
+        "latency": 192,
+        "finite": true
+      },
+      {
+        "id": "042",
+        "name": "Perc Revolution Fills",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "39c922e28a4af91e4d8e0a8df509c59bd9702ad9a7ec2fbac32944e9174461c9",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a769dbc12a22a4ee72c8054cf69ad6d7cd17647a853b2faf42b1999cc6a4f692",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "043",
+        "name": "Perc Crushed",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "740d5141872d1c21bbfed5b39dc745b4f9c42be5ab0d0f741cdab13f8e638a8b",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "9e6ed775a803e4f7bdec6ffc3b45e7e708d3cdcb1c9b6a6e89b2f2de3dc60428",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "044",
+        "name": "Perc Wide Room",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "926c5d2c2f0c45e454e98100a364100efbf813f28a26ed315b47866a708db7cd",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "89ff230959e2be34544c28cdc799496500a0844077fc5c5c147244b9788bc46f",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "045",
+        "name": "Perc Triplet Stutter",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "bb1eb12fec94ee2772c4f84f1698ae9f8c19696a5f0c9aeff599703c035c23a1",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "0b0d4c6891737e27d56c53d1145b742972894d4e67d3871deed1f0fb50bf0f0a",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "046",
+        "name": "VCA Glue",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "1384e7282c2bdd699472f000d0fa031e2887ba6aabe61ee2e9344cb925548f48",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d5b5705e64202669ec930a4b6e2ef1cc0badc4add7210e6063362249532ef483",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "047",
+        "name": "Punch Bus",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "0ca65ffe55036e5acb0968397d1fe22a71617382976b75aa2e56d830613b99df",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "3eff795cbe32b66141bbe647c9e44d15ea160df8b495bd1ed8509817b3ef8320",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "048",
+        "name": "Tape Bus (Lenin)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "4ed7bf7dc1f29ba909576ea045245ec9e367ba8c3ef91c8b8090f7f2652298f5",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "8f9da1a47bcbf92e0f2cefab35f04645a9cf3634a2e77017915ba74be1a329b2",
+        "latency": 280,
+        "finite": true
+      },
+      {
+        "id": "049",
+        "name": "Boom Bap Crunch",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "3f7d5a8f327743938c4d09ac00403e0017a613f6553e812ff063a93579454c7c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "1a287257dd6a99be2e931a63f25d38f4b9392be3a426c7e670e7cb0c32df1cd1",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "050",
+        "name": "Multiband Drum Control",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c22288be50816fff0c41754fd3d63f70b5c9a1b1248d171ba7e644d0c9eafb7d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "315606ad30829d16eccc9638ab48f8cbae6aa82ee598053882e8ccda71a9125b",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "051",
+        "name": "Drum Room Air",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a2cb6e369d158a095f07b01d6810ca8e5353db64f8d258e0d56b84232292c3c8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "548c8c3791d40e0db34d6ea00e705c1f38e96af6e837b6cdde3d24d8bab707fd",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "052",
+        "name": "Stalin Drum Smash",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "6940025c0c0bc81f4d84750b9b9886a6e47e92f0a66e91e28f62336032cc489d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "de04434d44038af5c8cf2c4d74b255c8f20a11896e091f8b738c3ec78fc25b1d",
+        "latency": 38,
+        "finite": true
+      },
+      {
+        "id": "053",
+        "name": "Drum Bus Wide Top",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "afce04e981f6b5fb0983413b56c78f708bd2a75dd328cba614a6aafba4ab4b34",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "f7e9aa7159001d7795edfe68ce15b1fa90fb56695760015b2cbde622aacbb00c",
+        "latency": 240,
+        "finite": true
+      },
+      {
+        "id": "054",
+        "name": "Lo-Fi Drum Bus",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "5e8cae5dc1ab95e7cbb45df891f9eb575a4e7765ee980aef42fda9d1d6a9b4a2",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b08854026ba956e2fda2c67896be606a9c8cce5783c5b6fef123b0f3ae4014e0",
+        "latency": 363,
+        "finite": true
+      },
+      {
+        "id": "055",
+        "name": "Drum Bus Transient Tamer",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c567512d5709c53912b7583382c706a67267e37dd6e0345c9fd48a5369e85d18",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "44685b9be4fbe2d7c55ac969588aca36f8a1a67c93ca644142e50bc1a8ff9319",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "056",
+        "name": "Drum Bus Dub Space",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "dfffb9823b44844d1b61ccccd6f07954de23b40b261035d45226ba2af7be335b",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "4a38926b59b59ca091ab3437a97a6c505794fab6026bf75fb7e79497a900a0ab",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "057",
+        "name": "Drum Bus Limit",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a1cffc40a57498d1c0ca8f93d24cffe0f3be212c683720f4856ca3ddc5045e51",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "287b08494958a47686fdb16332d7839c5924f0ed6a7bd4e5edf3c30c0cf77198",
+        "latency": 104,
+        "finite": true
+      },
+      {
+        "id": "058",
+        "name": "Sub Mono Foundation",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "fd44d131b84e54913fb5c71d4205c46a79d9d54cfd5146394f0e218e99601b47",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "bb8210f68e3f459d956073f4d861adc5727874bfc4d2cd236f930fa6b4cdcb1f",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "059",
+        "name": "808 Translation",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "7b00bbb1c276c0814d72a8fc275855ae58159a195f0049ca161fe54fe3f9a7c0",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "1c69ea9b2b5270c1305fc5f97e0f83c3bd142f093505b93575c68d1e24ed8fb7",
+        "latency": 169,
+        "finite": true
+      },
+      {
+        "id": "060",
+        "name": "Growl Multiband",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "dd7bdc5389c919b3f0fba93b4e7341e5e82626b00dfecc27e81058ac04fb06c8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "3d6e4644a168d2bdf2817227acf453f96c3b70a066c4dbced6281b3c9a172809",
+        "latency": 169,
+        "finite": true
+      },
+      {
+        "id": "061",
+        "name": "Finger Bass Round",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "930b87ec2eefff5268ad79381784a4962c269d917cb76281e6bf783773e68c6d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "cb0c883dfc461b72994c1fb0b35f3823cad77cd734539346522a5184dd707a58",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "062",
+        "name": "Pick Bass Attack",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c61cc5d2dfcbb927c34eca8a46ee06266d7d5daabebecddb5be550f0f08cc88c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a3c2c1c78a1d5963fbb051855858727cb0cd1db28cd97da69a21a52a54e469ea",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "063",
+        "name": "Bass Tape Warmth",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "112a622ca56fd5e04640482e125c658970257d7c41ec3357a9692c2b57232f50",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "602030a9a279eaefc5479c3057beef7d01767871da028b6660b9f48ec059b7a6",
+        "latency": 242,
+        "finite": true
+      },
+      {
+        "id": "064",
+        "name": "Bass Duck Ready",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "26e4391e19b202eb3930fefaba426eff42b9313ea781c1dde2061da74bcce70e",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "3f7d8e173788d22dba7311b043fea0ae8fefc45a03a5e05a43c572da0ac998c9",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "065",
+        "name": "Bass Stalin Iron",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "b8719c9c7bee8566fba8b68419f3c122e7292c5e42e405d4a71692d807ab2051",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "f48ef3eea127f8fadb75f153aa6fa200d555ac6f184874176c28359249f5f2ec",
+        "latency": 38,
+        "finite": true
+      },
+      {
+        "id": "066",
+        "name": "Reese Controlled",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "eb667f0d70b40c482943f644e85219ff91861f20d4a11b488237698ebd8a1b3e",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "5c807ed69589f2c0e53e8479b1bd6c08f18aa26233f8361042af2a967443eae3",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "067",
+        "name": "Synthwave Bass",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "91cc4a0d6bff620fc1dab021ca423c3f07ee1e9ad55910a1e81ab517ab8d35aa",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "f3979adc681195039f6e0d5e98451ec09cd8a8d4a17dcdac95f63988cb8d272c",
+        "latency": 362,
+        "finite": true
+      },
+      {
+        "id": "068",
+        "name": "Bass Pump Without Sidechain",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "93cad7ea3d76b2815c8ae93cbc58551efe1abf33dbe3b71fe468b7027efbf171",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "f8a3dca836c758ce2ec56fcd7454078d93ac34b752d74e6d20c0bea1de40b290",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "069",
+        "name": "Acid Line Focus",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "147c58b88c7fa95ca89fb04a851e8624c6fe10e5a065cfd96d14aaffc0276d22",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "583167f7365c33e01c12e91f2121ce5fa37d032f6c53a5fd7463e9a8cd2bf7da",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "070",
+        "name": "808 Tape Stop Drops",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "bb42d0146c420d5016673cce4b0da0e855df68a69d32e3808369efb73feab74a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "ec06377cc3b5129300fa12f8619b6991466adf0fdb741317919e94b542cf6288",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "071",
+        "name": "Sub Focus Mono",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "365014a245c212a799ddb22e76a5f1b1185e6f7dfd03a51ee745bf77ccd4d259",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "6fb99dc407d3ca704713012b6d058276bf9f1c51c7753ccd3f350a6bb940dce4",
+        "latency": 169,
+        "finite": true
+      },
+      {
+        "id": "072",
+        "name": "Vocal Cinema (4 layers)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "739f2e3de7467556163cd747d3b303ccb363e01a65412ca16fcda359e94a9b48",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "485469367632f0ff54b7e32d99cf2401b661e24c55f7cf428683ac2c7f13fbe3",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "073",
+        "name": "Drum Factory (serial layers)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9d32d6edbed38ea10288a07e950f1992903ef686849af026046e781ee3ae1f59",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "16a65cea6c02c555034d32123c724e1e1a40ea699f7b9cf2186a9aefbb75c8bc",
+        "latency": 241,
+        "finite": true
+      },
+      {
+        "id": "074",
+        "name": "Drums Parallel Monster",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "eb2d5557d3e2111a66b9f987157c45fcd09ca1b119ab85f5813696d6501a7eb9",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "38c1c914958b7f9cbde789e914a4e4b88dd3a6f2fe859c476608fa6386ef5f4c",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "075",
+        "name": "Split-Band Bass Layers",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "7074fcdf92fb6a0c8e5a0dda08105a243993b7f50e8e9a8d2e6da70d89b7676d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "123e6198a4221d29486f719e834723e310fb6ff95d31b18836418f93d7117a7c",
+        "latency": 216,
+        "finite": true
+      },
+      {
+        "id": "076",
+        "name": "Vocal Octave Choir",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "796c0c5f75f50d84de43ff8ae82c8a0a38bc893c051af7a6b9855e01b47cb26c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b60c66fc1a098af93114050f670a9ec92f1c8eb165d83c96208f5d35a07e4f48",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "077",
+        "name": "Beat Switch-Up",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "d8be629b5d4e1c8d1dfc9536501f792dcc6b9c41bbd301d250eaf0102bf071c9",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "07368f1c569530b58f7f48325141621964f08cfd8f3ecc67c0063e45e19f9df7",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "078",
+        "name": "Vocal Chop Machine",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "fc6c4a19b86caac053fcd534e5f24b0c36ba0b9feb00a8a839aee7ae0a0ff8cf",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "760d49460056f31ee44898714bc87052511abab3cb048efb7f541066c8080539",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "079",
+        "name": "Full Mix Destruction",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a3ae1ccc906fa3126c5386df8fd72b1e484423ceaa0443df442749ca6e07790c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b8346590072f69deeda0a8c175d20e712332cd80d025a1566e41bcccb0b40b73",
+        "latency": 38,
+        "finite": true
+      },
+      {
+        "id": "080",
+        "name": "Bass Gated Motion",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "30472d1f521d797e15e6afe553e7cd956181a72959f42c2d0fe308f0c95755c9",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "268accc83b1e6d955d69a61b09dede622c0572cf66d36e2e0688eae47d2d80cd",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "081",
+        "name": "Revolution Width Pulse",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "b1f31ab0af02fd285f5d7bbf1b4044b49fea14ba94a0b17a5bdabbb4c6a7e627",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "baa429488c46f36a802c3618dbdab959f02200775a2a15c862a748495aca0a6d",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "082",
+        "name": "Revolution Crush Fills",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "2d67eb610fe49d73105f76b7b665524dc460e2773b3540e5bffbeaf1e8a35353",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "556d093791e1275f704ac8671679c0ea9259d7f0c3ec0f723dcb5dde45588e59",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "083",
+        "name": "Vocal Tape Stop Ends",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "570ee8863dfa9a44a240813055dae758151b7827d3ba710d7857b404cc18eb78",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "96e2191e20a21670cf826fe2974f9d21ab30740e285f8b3f9da63c5d3be9c58d",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "084",
+        "name": "Vocal Reverse Tails",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "343e7d6146684048bcd95991915eb8f7d1e2cfaa594e706ebfb527f9d6239705",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "7e0fa6732383134bf8a511ff6b1403682de6a04f365811fdb3e471241b008f74",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "085",
+        "name": "Boom Bap Swing Chops",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "10c0780b062677f98b397b6b2fc16a8a9820f11790390a798cee55494f75bca6",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "fb9d087fcce710ca098b0b73ff080bf9e621ad64266baa43216e6866f779a9e6",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "086",
+        "name": "Scratch Break",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "e584e4f72109b6161e205ad066124b1de1b64aa86d639c0ff80298a67aabb822",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "c072ef97ba731359ce06c3a29a44bbbdbced1741e1c15639701e53965553041c",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "087",
+        "name": "Double-Time Drum Rush",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "3d0c60bab8afbd26e352a6073b015c8e15855cd657dd207b4c316e691bd3adb0",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d8b8fa9b14028c628b9a96fa2e72a35ad48abbe8dea80b24f92f923b64ca0731",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "088",
+        "name": "Humanized Glitch Drums",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "868471c5ff72a1d785ef17f8a95892915e53b02366154080a69b941835e6b53c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "2916e3e0001447120fb8590aedae21bfb214469c2fc93b2ebef344b8ae1d8e3d",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "089",
+        "name": "Mix Gap Chopper",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "705e6bf3264fd70842b5126632b4f7d355cc6b24e97c48522ffd59af3fcecb57",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "5b64fc519097e4380ef4d1721e7f03edf0e50620550c1afd9c355a7ae24100ce",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "090",
+        "name": "Mix High-Pass Riser",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "e4c8c145a4ea6aa91aa52726c77581093c61ed61d5d4bf0aeec96e8dcd801bb0",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "7639213c0955bbcb8ed41885590895fe809477a7e7c246566b7b653d80b75843",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "091",
+        "name": "Mirror Destruction (M-G-T)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "22fbaabf4fc34b6c0d0e84fb9b63aef0127a6c90cd86b489282e683ebe07c44e",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "8beab3b752672513d50cfade67f98051936fa7cd99b12ccfc43197e2358ed9de",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "092",
+        "name": "De-Ess + Air Exciter",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "81baeba2eb573b463d42ef1b785f21ade315826b7b023a14e6f040893781c66b",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "1ece2620ad9dda590b5741707dffc909059c2b03590839663bef53b8a004654c",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "093",
+        "name": "Kick-Only Reverb",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "f40718642195c41a555af0659802e8746b8477bf797d10d0987604976e362861",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "09ef51cfb37a560642d436de9eb611d1f19d94d713c45cc4308e4ac54f31f08d",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "094",
+        "name": "Vocal Band Saturation",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "3a579394a25570ce51bdb82656d3dabe2b8bbcf16206a26d025e5a9819b82525",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d823712860a6689f86dbedeb468b0aae1c17d9f4cbc0e822af14c52a056a8de7",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "095",
+        "name": "Hi-Hat Only Echo",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9e4ab176d6d8f606083335162ba7b5f63f34d09298745004e5bb2cac9725abca",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d03441950953f3f2f29ef2bf7ceff875bded0e42c5ed68890a59a44d0ef63165",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "096",
+        "name": "Snare Band Reverb",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c755ddda765704982d500af8eda1b02aff815df9f147725bf274863dfd663aea",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "02cefa7b2e984d972611e868300f59318762f8e9d96f1b7899b7685d0bc5b83f",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "097",
+        "name": "Lenin + Stalin Full Chain",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "b3e65544592bcb56b12f9db0c500a000fea2bae2ab7cd749ca9463332476afa1",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "eb6f714351473505b86f0294f0e69188db73be850ecd056008b67a7e86696fc3",
+        "latency": 38,
+        "finite": true
+      },
+      {
+        "id": "098",
+        "name": "Stalin Vocal Radio",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "731a9ee7091a0a669d31300ecb120c7429e0b3b9368162c2af9e06a580b86c52",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "41f3ecae319a3cd6d9fa1f1388f62d7110ad83f88e368aa7dcf3d0bc4f335300",
+        "latency": 38,
+        "finite": true
+      },
+      {
+        "id": "099",
+        "name": "Lenin Vocal Warmth",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a301df34566efd85431bd41501d869cc0b136a52b95d4814fe761235ad8ef544",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b9e5f2d6846eebc9b1a60db22a0dbb06ee3aa8bf23e96fcd51e901219ab41229",
+        "latency": 38,
+        "finite": true
+      },
+      {
+        "id": "100",
+        "name": "Stalin Drum Room",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "0f2bf82a0a2e5f97ccac3574983c10f319f4d32275fef25917bf6d8a3d029c2a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "947b7000a375b169ac9034a0ec28d0075cd47c8e903fdecae3e4e6ba8c45a6d8",
+        "latency": 38,
+        "finite": true
+      },
+      {
+        "id": "101",
+        "name": "Pop Lead Polish",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "ce4ee73d3c35168920a5675f82ba37b5f70abc79dbc7c6bf5021cb83b344b911",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "4c51cbcb9cc2c07bb1d8bdf5258e83d9b87112404bc0c0737e0fbec629e86cdb",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "102",
+        "name": "Rap Vocal Upfront",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "0a3b2c761665a1677bb33f9fe101045689e2e0506f1617d05b033acf23790e0d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "e186d5caa36e710cd4173bb30262911887726722a2b82a54f84e037a4f5dff32",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "103",
+        "name": "Ballad Open Vocal",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "e848967487fb8f3e97b1b40bf1fdcf1e8c35a7ac15e07a205abd32adb8938022",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "ea3bc310227035e9efe513f26febc3165a5a7e2a4d1f7d3184fe0fa66e64b7cd",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "104",
+        "name": "Trap Vocal Air",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "fe37b06082ecd391fb143401e0c642ba5742a55eca21c263cea1bafe6298bea5",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "5b50afaf55542f1dc4f2b065eae12877376a343c30f795b92172fffe3c9d312a",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "105",
+        "name": "Rock Vocal Grit",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c3b4e5c80bcc461345b94d6930428b8f71b8c7dbe6162b9681ce884642348ede",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "fae504f59be60bf7d7f3840008c47081f142ccdd100efcfa82b40ea40b935dfc",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "106",
+        "name": "Soft Intimate Vocal",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "8aeb57eceae64da94c987c54ad36a391dd965d05863e6ee7f0ca5c097cb28c54",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "811e8079b74cf0999be8077df4af2e51f3556ea7626c618b5189fda4622dfd35",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "107",
+        "name": "Radio Telephone Voice",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c9a2a0b05bc945210c632929bc7d10b2fd6115258b735b8114031e556878663c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a9bbb330cad6ff7b79dd617f45c4ffeb43aef4f98da5ed20447063701fb0b72d",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "108",
+        "name": "Vintage Tube Vocal (Lenin)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "ef12c35a39c4261cd7b1047821d73b62b5a6fd04cec72f575a347108454cffd0",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "08534cff425abef994a20e4499d66ec6a0824c45696d1031d52e12024d91584f",
+        "latency": 280,
+        "finite": true
+      },
+      {
+        "id": "109",
+        "name": "Vocal Doubler Wide",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "ff379d8aa91938e5c681621af5370614b76ba2fc330f273a247e76c667b8c1f5",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "6d74046e3d26aa147e429c2a0ff996ccc89376879d88e44dd481790514414b13",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "110",
+        "name": "Vocal Throw Layer",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "8301a02908a49b7fe68c2ca6eb658323c630c83e284bb03f523336bda58a8795",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "c8b65fa0ee211b95113df607270b272ddec6f096e1900bbbcfb1b71e3f03bbd8",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "111",
+        "name": "Stutter Vocal (Revolution)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "213ea4175f9759ce498f16612750b1e622f4adb413302f451a723d2d7f5bf53b",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a154198a3b36f9165333d55bce60d7cdd8bec572d0a203b8d18cab53a89b9788",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "112",
+        "name": "Ad-Lib Space",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "0d9afca5c6bb7cee6473d0f0b079752bdc2cd79ffb7615553ab09b45450e0235",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "863827dd84a7ca323e46949e659757e016cad6a8d58fb6e961dfa3fff4388035",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "113",
+        "name": "Vocal Dynamic Clarity",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "dfb48d38d4fd48153d3dc5e1c000220fa0d7c1768ba18dd7dea1912b3c88c8e1",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "8750a2c0b432d1bc5deab5f21e43f5a7ce19e013db35c4e7acfbc4ad4dd0766b",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "114",
+        "name": "Lo-Fi Bedroom Vocal",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "90b77b03670640418e9344b78a11945283f860446ba9ac6ef398a267a15ae728",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "0ec4fa9edf8c14910d8cfae0f0d43ac1b026055c5b014e78cfc4ce89e4e0c29c",
+        "latency": 243,
+        "finite": true
+      },
+      {
+        "id": "115",
+        "name": "R&amp;B Silk Vocal",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "e6e8dccd96f408b5d1b806ee5f9260161d317918440e5a57c257fbb82081911c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "1cb7964c898f77d0b932e253372ff5800c948988348470ef57e0411bd7746363",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "116",
+        "name": "Indie Room Vocal",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "2cdf1689cb182a81ce68df525e5dbc4b846ba1025c5ea61c8cc620d33c72a0ec",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a9554d48a27508dabd492240a6168aa0475cdd468983f1be727c936a050d4852",
+        "latency": 242,
+        "finite": true
+      },
+      {
+        "id": "117",
+        "name": "Drill Vocal Tight",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "872b5fa46cf3b360a84ee31b5bad800ea17b066658dd4bb4bf341d136806f1ac",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d672be6d105918566d9afbe80c170c3eee557fce3324511171d2b85a4df65d1f",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "118",
+        "name": "Spoken Word Warm",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "177fa389f58a2aeed8355a34bce61da258577e9b0b5cf2d4a7e2aba4eca21f91",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "8fbe3a80aa972512d41efff615c31949d3b24c72a925c1b18199964e61e0fdc6",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "119",
+        "name": "Vocal Stalin Shout",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "8751526cef88b5244069ae04e5a13faf4b1fe9ec4dc565027e0324c7a3c531f8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "56ad08e9bf76ab761947c158fd2ff8a11c6670338294e4df4a204a140c3c320a",
+        "latency": 87,
+        "finite": true
+      },
+      {
+        "id": "120",
+        "name": "Vocal Big Hall Ballad",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "b07993592bbc3049459678c9196aacd4c5ee9366c12c3e116d64bd2879571c46",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "0e6197b7910452edb4e68616e9dd4b47f4317514cb9d9ee5070831ac9eca820b",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "121",
+        "name": "Vocal Air Multiband",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "873c859594e41168f248dbbe993c459b3667dcadb153170c3604aacfc0681b22",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "00df10e2332321fa3c7f77b3987317ba6d53474a0dd795902e9db908eb6b82b9",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "122",
+        "name": "Tuning Ready Vocal",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "6999433cfc4250a35e4d03c70dfe80b451b6d0d95470d3f1e875f527d6cae437",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "8ebe2c4d9d4f52692d6b13267ba1d1245231ef85b3c2ad62ffefedf54ba8a876",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "123",
+        "name": "Vocal Half-Time Hook",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "7a31e7251962e07b7a865f3d37265101bcd9f2ad5116ef30b8df99906d49f9fd",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "2d2e9ee61369999cec77db20914978c3ab8075e0278090c4bcb84cc4aea787ef",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "124",
+        "name": "Vocal Parallel Compression",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "5501d198e072a335f2fc1d181d00ab0dc1c2c461a86c22f1ca961c18d521b2df",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "5f03afb8f69fe1114f160eb046413570a17010dc546d15851c7f9ef2e4febc42",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "125",
+        "name": "Backing Pad Wide",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "07cf84a5e57c11bb6b1c86135deb9adac67c093ac735b6997a68b1afa6ad8b20",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "6ca9edb78684f72080d85ebd1aa998266629348c4c8356a53b7a4fc60b0a760b",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "126",
+        "name": "Gang Vocal Stack",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "cf306917a21e6f2f3d2adc2794732bfd535b7748201c28c88317324a55af7c80",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "c85d3b967872c65c4029a8ebb9f8671c789d463670659b7cbf29ccf3f17ca68b",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "127",
+        "name": "Harmony Air",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "abf5d8c1ee5d1e3b1e4c9e413739751df383af93d5f20414d180d801b6fd58fb",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a6631af1e18ae996e1fe31ab76a95cfdd3f75dbf84658bf34b69187589cf192f",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "128",
+        "name": "Choir Cathedral",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "d286b9b3e430b7cb64d8299683aa0735ba8ec2849121b03c4b460e799e7ec604",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d927432f74988079e3ad7f290795e53d35f62a2fcd1c36db3b2e034c9e16213b",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "129",
+        "name": "Backing Doubler",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "2f13c225ac98f3889438296571ee44c68a9dc8766884e33d1534d3c6dc2529c0",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b6b8fe0ae394c6099587a32fe86c5f386a9bac08e661e602486a882bcc1ccfde",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "130",
+        "name": "Backing Tape Blend",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "406fa407b7c1a3c92ab536c7c3dcd481242db05fb7fc2aa41cade2c3a9122e43",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "87c8bcaa724453582e0c45f8728afa5e03d1bab5742b0708cd7f51577342751f",
+        "latency": 280,
+        "finite": true
+      },
+      {
+        "id": "131",
+        "name": "Backing Ping-Pong Air",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "e76669d6365d51630029112334ff4451e694ac54445f9fd913ce00acfdb91456",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "0ec4bd1d041a9a4461e82fc3e2b99650d95d3d4fef13175ce6adeeb07ac80e54",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "132",
+        "name": "Backing Lo-Fi Chorus",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "ec8f73d35f3b4e178520955e670d0c44bd91a280512a184566963081a0e592b7",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "4879239c9825520726e8b3009a28b1821757090893d593550d5e827f5bded82a",
+        "latency": 363,
+        "finite": true
+      },
+      {
+        "id": "133",
+        "name": "Backing Behind Lead",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "b0eb8e307b1ffb0f70320a532aad7c91ecf73667fab4ad83081a0553dfe4a17b",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "74f4df4e094382355ab1d76f21d204a0cd98b45b83aef2e091a8f1083478048a",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "134",
+        "name": "Backing Reverse Swells",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "bb1eb1b7d14d91d33b08f7e57609f95a53ccb501d515a6f918b66d7167ed6015",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "60ea4a7e59ca0b95b38b04a427b7cfaf6dfb34360c9d37b725e3de778fee1b8f",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "135",
+        "name": "Acoustic Sparkle",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "859aa533eae84a1260efc4e8eb8b34dd6ed709a793a173e5b453c7d2ca989685",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "629de7f1f6a59d5d9576f04e9847cf8083b07036098d3902e6d09f452dd9ee5b",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "136",
+        "name": "Electric Crunch Body",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "70c952dabef1687b12465d8ed10d083991d9b9dc2faa495adb5e5a88dda0451c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "144debffb5f1a6f14f3525d146cf37dc8ad7fcfc48f85271ab59704a0e9101be",
+        "latency": 49,
+        "finite": true
+      },
+      {
+        "id": "137",
+        "name": "Clean Chorus Echo",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "20a5de02b62ed6be50a50f47d8ac32a5af75e200d97efed110d4482be03a2fc8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "4aaae9a2c93e522ac4055b3a7d19b23a8d1bedea84fea50d82e9362a45467916",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "138",
+        "name": "Wide Rhythm",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "0fac2a97968cda62559bd6c901c330f72521d08d5fd190e0abd945afffa2675d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b8dceff20a42d18e2f3ea323c0dc5f670e6a4b4af20d5df04e04e277c7030ed2",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "139",
+        "name": "Ambient Guitar Wash",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "3146ba0f9e0cd7bddba90693f4190d19a3c09977d4cec43fa0321418a2454e8f",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "3c894c5072fc47d7eae34e9c9c2baa0654727b6e3fff7c5b7b7a06d5303ca6bf",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "140",
+        "name": "Guitar Revolution Glitch",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "760c51f1ad10fe2fa924d21e419cd36f1b31232b3c9d978b04d057b0da8a2fe4",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b73843cc64d1ba3a2b8437e7a1d66e1b48662e0f48eecfca531da11949d824ba",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "141",
+        "name": "Guitar Lenin Amp Warmth",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c10d04f11dcd725d54cdf3608c3aee5625498086bfd9901eb54e4c333736fc3a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "4ef5aedd4cb9002f638403b2d04f5d34be235bc18a9d68e88040247dd3269854",
+        "latency": 280,
+        "finite": true
+      },
+      {
+        "id": "142",
+        "name": "Guitar Ping-Pong Delay",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "ba4be2c9833038bede67df048d31373e4606d84f7bfa64eddde01413f7a88031",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "4c4c65f301dfac957f15734e9d1222f643259dd4cd9bf5fd52222b89e184330b",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "143",
+        "name": "Guitar Tight Gate",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "796e15acc621642231bfe30255b94ee95f12e51fe61ac63cb0184b9ee8663426",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "39696da1b5c734e407f1254442b33d2979fcffe3f93e132bc6fcf958489034be",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "144",
+        "name": "Guitar Freeze Swell",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "38ebdc5b9dc003441c8f9ef4e1ae5abdef00cca2d7166285a9f01f3abd4a1817",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "c54b0420dcf36167b5bf169a784285c976b63938a543253a7d8e58433ec4393d",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "145",
+        "name": "Guitar Freeze Filter",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "57f9f582e83d2af5db7aa6b8ea093336b2c989e99a28f2f2c254d9081d9b48ac",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "27e99063ef1d311245973d562c604aff72ae1b77204ae629d392f202266f1b0b",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "146",
+        "name": "Acoustic Strum Even",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "2dd71e33242307933e5901d49e4e5efe2f6781b7b52c6f6ba7656a4541c4a60a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "fc89bb5a223a6cfc00029776d63297975e194cc002874fb6f8040b77ab997203",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "147",
+        "name": "Piano Clear",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "42e9f9494ae842f5f6f9de3cb7502a726c8f27ba1738a377ad3f185d197011ac",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "e27e3b924b023a2ce07bb716a43a76d14d1e2c42d46a2b886289568b7018c6f4",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "148",
+        "name": "Rhodes Tube Warmth",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "dbaf9c997877216ffa3d7c4ac1456319c63986a8dc209e09372a2bc7154db188",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "006de9904598a5983e1ef66f3799ad578bff45f027d165993e13c7ae9eea2832",
+        "latency": 169,
+        "finite": true
+      },
+      {
+        "id": "149",
+        "name": "Felt Lo-Fi Keys",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a859d61af14aa21733b7358f8dd5b8d0ac2ab87379f8845254bca65be540dabe",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "9decca2c26d4ca0fbfc753550b924d0cb9ac98387079030665808469f157230f",
+        "latency": 362,
+        "finite": true
+      },
+      {
+        "id": "150",
+        "name": "Keys Hall",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "4fcd83921b59dcccb1ed37579772c390bf5fce66728a5046b709a2fcd87cca1e",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "80fd3cd62cf00205956181295fdaebfa426988ce49c8cfb8441e7fb734747373",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "151",
+        "name": "Keys Freeze Pad",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "d1d190bee0dc99a428f11bb52482857e4dc537598bd4b6137f7a8a6a47fdc8d2",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "2920a5e03bfe059da20821d286bb4b9a91ca5b4537fb41d8a072515de8a0dd69",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "152",
+        "name": "Keys Tape Wobble",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "36b808c6497e55966839e072e5d081a41ef0d083c5f5c28304830d5cf249184d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "2e4c40f27bf4f3b211406c8b43e635b7d53543087d56045b031b921488e3247a",
+        "latency": 243,
+        "finite": true
+      },
+      {
+        "id": "153",
+        "name": "Keys Ping-Pong Dream",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "fb152cda05dc79136c7c56b2fda4df0fec7f3979464fefce628a8447a7976e7b",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "28d4bbae5a566a4f0d9d043171c01c83e3152504ae6baea50c63a1d3cb8ce772",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "154",
+        "name": "Keys Revolution Chops",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "611e31d20ece9c7bf639d3484e261edca26565dbf654d599d55f3e3a7ebd5922",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "42bdf07e943d237c7d1725f29777bcc8bbf1609c9ba1843e644d022511a99889",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "155",
+        "name": "Organ Stalin Grit",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "5e6685ce0cd47b7e7b2473ba102a6676387917d916dcfdc980b9675f3f32306a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "73e28333c81fca87b02d603dd2affae8a7cfd92ec5d7bd659a893bfc5d35659c",
+        "latency": 38,
+        "finite": true
+      },
+      {
+        "id": "156",
+        "name": "Keys Crush Pulse",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "daf9da8fcf3127e460a2c0d4239773ba9874dce4914fcfb7ddce2395cd7b5f95",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "4f0a316db4c2131c5f54fca54502d80b643c065f3d2f1d4e992d9fe9369fb0a8",
+        "latency": 242,
+        "finite": true
+      },
+      {
+        "id": "157",
+        "name": "Upright Piano Intimate",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "50c95bdec41886e82a8db941de09263a4b6cfff6a20d9afc4c1a076811e8bf13",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "e097f152225d3d93771b47860295675c0c5ff0270e51f22208a72272a8561ad9",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "158",
+        "name": "Synth Lead Cut",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "4d73215114ab30c8467cd72576da8b1fee26d70ad06cb07b060568a2d54f2c8f",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "f444f0ee3ea87a9d945efddddded1389300b23a7c9da98bf6c02279d0af36328",
+        "latency": 242,
+        "finite": true
+      },
+      {
+        "id": "159",
+        "name": "Pad Wide Soft",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "7bc888f1109368f6690bf39c1e88690fa6ec9a2834730ca63a6e0a0ca31c940c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "76537acdec0c68cf31b25ec55622d0146e0bb88b99892b57860f14136e49abbf",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "160",
+        "name": "Pluck Ping-Pong",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "b095d4318ca75882a48239698473d0973f186f2de0f2af96cbfece624fb56ab5",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "548c654a0c080a70cd9b838aa49991c8ea990e9bd790f92ef2bb2cfe4f758bc9",
+        "latency": 96,
+        "finite": true
+      },
+      {
+        "id": "161",
+        "name": "Synth Motion Filter",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "70661e23b05b5a1c316d81eb0aa9b08b82bca94fd848c55c25a2d0a98c58443c",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "7a8934efa32d074639857765fac74859ca22d3a1803b3b8d935ff03b6eaf1db2",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "162",
+        "name": "Arp Destruction",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9ab03b55e6f905d88d31ccfd50e60ea2eb71ca8fc27d6fc0fbd74d583c72870d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "7e9e4dc893a337a7dffc9c0bd67f17201bb26d90d6193ec457a91ed8ee947ba8",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "163",
+        "name": "Synth Bass Growl",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "66c74a71b16adf332690c3d4898ff7fbd655acb123e90c332604f497364ae3aa",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "bd5bd99d9942231ead474a1c651d472d458e2e567ec134c6427e646225eac060",
+        "latency": 169,
+        "finite": true
+      },
+      {
+        "id": "164",
+        "name": "Synth Lenin Analog",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "f14fcc007acf5c506a321752478fd237a7df75ab21482309e79643e6f642006d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "9df622936cead867cdb263fc40a71a9359895652058ae5f03b2752d3f0e2cfb5",
+        "latency": 87,
+        "finite": true
+      },
+      {
+        "id": "165",
+        "name": "Synth Stereo Cosmos",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "3c0d784c47715d4ac098352b2c08ef78cafa2303b6c8bd359e14a62103823656",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "5b4126782f3ee811d3b262032c7351454579dc47891ccae904dc1862382540dc",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "166",
+        "name": "Synth Tape Stop Fx",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "092c91bbc6c33c46851cf4af4350f5e45d52b771707265dbaca9d4f38d8c813b",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "0d7bb251977141413689d6b5dc008329e0250bb53e4fe86840e0f39225c2a44a",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "167",
+        "name": "Synth Freeze Drone",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "8a85e777790c0ea827353e396c6cc34a99b0f273d8950879f4c14d0705cdf96e",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "1574536b47454c127439673e8f3ce0e008d3a017add6e5f93a0e85cdc42a997a",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "168",
+        "name": "Pad Volume Chops",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "8fb455674182de35d25c9da002b614e7798533ad12adb44a59697e846f4cf80e",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "44ca2a2ab5033bb0a351d96989a15dbdc02149422ed4ae49148d65fb77603d3a",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "169",
+        "name": "Synth Lead Double",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "e733b29dacc257045a965310bffe0c4d36c1d4da9d5c6817e6545919668185b8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "c4f234d4e90d73dfc99505ad1a9a9ed0a9da6770399f93033558f67e26b6169f",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "170",
+        "name": "Mix Bus Glue",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "6b5839d895ec5b0c49685e52319a6effb5b945fcd7988e8bedea827daeca587d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "16465995a784e03550b8082f205cbe9827e21996a48f189c74e93e64b3b403cf",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "171",
+        "name": "Mix Bus Analog (Lenin)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "fb54b277a938bd4c455e4624dd04c94edd5cc4c82d42725af207117b04023cab",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "af55166da463b445e79760e2bd4496c22cbc4784f18c3193b46978198e31590f",
+        "latency": 280,
+        "finite": true
+      },
+      {
+        "id": "172",
+        "name": "Mix Bus Stalin Heat",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9e659fce5ef46f4b53a0e005e70512ab8c45b5618b40ab0bff0cee1239936a55",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "557603aeeca7010df7a01d2d9c9f5ee31dbd43daabd3a8f68c3650d6701b9753",
+        "latency": 38,
+        "finite": true
+      },
+      {
+        "id": "173",
+        "name": "Mix Bus Air &amp; Weight",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "0af509d559c52e6d3c0fc24a77863c52bbb414570151bb0bee03556331ff3196",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b8cd236e421b3716b69d4bb87daf03e961df0d8197d055ed256d27976f7add6b",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "174",
+        "name": "Mix Bus Multiband",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "6423953ce4679ee9a46332a6480c1a283f2f2b7a89dcafc1d4431b1be340d475",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d86cecbd1ec2a154ea930a880d3b6312a20d0afd9756ab7f1f7f9012189df3cd",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "175",
+        "name": "Mix Bus Parallel Punch",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "bae8f18aafcb1777add065e99aba64905537266f7b73f8825672649e66e8ea61",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d5522ecf32bd57a266ad32ed25ccabf8e4b54cfdcf59ae4ad97ccff7abacc3cb",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "176",
+        "name": "Mix Bus Wide Mono-Safe",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "f8650ca98bebc9ea348ebced02d7c4c501a94ac0250d117ec5455277a7be96f4",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "1acbb028a9572b78d27c9a6cf8301370e186e29640abc8eba5d6144d29f51a1a",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "177",
+        "name": "Mix Bus Tape 15 ips",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "bb303b3f33766c45a721802001863ea7807f6cc6678e47f33f0cb6aaf8d57aa3",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "9ea47a5eaac3708b6b3b11bd7e1f0bf783a164c771dba24f31ae2448b63944ab",
+        "latency": 242,
+        "finite": true
+      },
+      {
+        "id": "178",
+        "name": "Mix Bus Dynamic Mud",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c4c3ddafe97067d17e349fb430c8611a3982814cfd4f1359435a53b47f813e13",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "59c3fb8dee9614e27058638763437d0698b8782f37509386efdbaef6ac80e182",
+        "latency": 0,
+        "finite": true
+      },
+      {
+        "id": "179",
+        "name": "Mix Bus Vintage Radio",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c4c83dfbfc957c03377663b4b90bf737e12ffedec85b8b9fb41204684f6dca36",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "3fa40561062a25e720c26f62ab19a25f0b9de443f09d858a074ea9fc9890bad7",
+        "latency": 280,
+        "finite": true
+      },
+      {
+        "id": "180",
+        "name": "Mix Bus Low-End Focus",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a9f14c12d5bc2364df69ba0deb50b39dbdc402dbb979ec4542a139d2a00ecb90",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "0f8474fe0ab8f4874b1e381522221dfd9325492b10e8388f8e35149101898728",
+        "latency": 120,
+        "finite": true
+      },
+      {
+        "id": "181",
+        "name": "Pop Clean Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "8105fb015f229fc18f03928e2b3a5c4f15951ffa0da8b56be47f3dfbd1d1e8cf",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a9f499e5c263e70fe1b40aa8753f22bf22b6f322b925eab2b7ca6f99667fce7b",
+        "latency": 224,
+        "finite": true
+      },
+      {
+        "id": "182",
+        "name": "Pop Warm Master (Lenin)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "cd65f28d28f9d2951c4c0cf62ffa3d3667fe03ab4b54e73d631c86bd8bc4a2eb",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "e9381200043ac759d8a66329bdcd0b048a389273cea06851b50fcc740dea47bd",
+        "latency": 504,
+        "finite": true
+      },
+      {
+        "id": "183",
+        "name": "Pop Punch Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "2b2249af6b774a79169d352dce01bc39004d382c2c649c02c26b575b5d1312b2",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "0c6755af04e03495538c4bb778425c50f5c49e052b81082718427678d843d359",
+        "latency": 320,
+        "finite": true
+      },
+      {
+        "id": "184",
+        "name": "Pop Multiband Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a39df673a8b0a8de9e173e015dc874759f8a0c1dea83b1a139bc72d30d60a040",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "3f2118494c7b57aab58cfa5842250db29f70361d0b88256b4ab32fd3d4c0390f",
+        "latency": 466,
+        "finite": true
+      },
+      {
+        "id": "185",
+        "name": "Pop Streaming -14",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "a551c15a515510444c056018399a6a8d8150bd8fadabf9eed67950a12da34c1a",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b2b26e259ee690ac59dc03442e35914450b822fe477af0baa7646b76a4ca8e6e",
+        "latency": 104,
+        "finite": true
+      },
+      {
+        "id": "186",
+        "name": "Pop Loud Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9fe967ac5f636589904a6cd2ebb74afbfaff80ade818e91e6350c391e9c7f0fa",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "ee383252662ab0091dc635b45483f26970b89070b5fd846d5413b0ed025124a5",
+        "latency": 466,
+        "finite": true
+      },
+      {
+        "id": "187",
+        "name": "Pop Stalin Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "dd1553276df5cc48a19f4299e84649e8cb17e042eff9a231f32d0ac0efa4a4d6",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "be8588897546f5498d7e45445871e752438b8dbc13834df73b3456d5eec567f0",
+        "latency": 311,
+        "finite": true
+      },
+      {
+        "id": "188",
+        "name": "Rap Clean Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9059c4c9d32ff1a2e56c66aa8a8de1091d91a2eb563a987e0f86917339abd3e8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a942b4473f8a6c16da4e8809b1b28879f8cf598b8e67f34750767219b9faaa57",
+        "latency": 224,
+        "finite": true
+      },
+      {
+        "id": "189",
+        "name": "Rap Warm Master (Lenin)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "0f8694daf2eb4a272fa2e4db872873eae6347e5121ca8fd30cee6f5b39b2b307",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "655ebd94285a5dea58500990ea841f9025ddfd2d9cf0cab91007675cd8c0a1f2",
+        "latency": 504,
+        "finite": true
+      },
+      {
+        "id": "190",
+        "name": "Rap Punch Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "fbd137033a29a8669464789498b1148d5e14c0d34f4126fa831f7df80374d7b3",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "401fa21c087f9f0134884c586eb6e641661699829feaaf0caa6750b427ca1bfa",
+        "latency": 320,
+        "finite": true
+      },
+      {
+        "id": "191",
+        "name": "Rap Multiband Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "02a4b0ce1685cebe9f4772bc65fe04a5d455dc75543506ca2822a574adefdcc2",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a844cb01bf001f2a70c8cfd279a17f33eb7bdac38834ce94828a70e8142444d3",
+        "latency": 273,
+        "finite": true
+      },
+      {
+        "id": "192",
+        "name": "Rap Streaming -14",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "adbfb72ac1d262401c2ac7acc04c568ada762e0f6dbd034de326d42b48a843e6",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "40a3a57aff10638f9b571d4aa1cba2375bf963a305f1654444b0b4faec33d19d",
+        "latency": 104,
+        "finite": true
+      },
+      {
+        "id": "193",
+        "name": "Rap Loud Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "d84f8a8dd0224d0eef42718270c47d5df752b21e2d6ba821405d5d171cae93c1",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "83d764d2ba3ff0b5ce7e75af44ba93bfbf5803cf2b0b5558ee8cd3f1a50f63a1",
+        "latency": 466,
+        "finite": true
+      },
+      {
+        "id": "194",
+        "name": "Rap Stalin Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "d6fae6f6a0321673c9fe91527f7ffb5813a98f2a13b6e0670fc8763872a769ea",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "d3f13124f8933aa8e27d3b7485531a6653c6516c8271a24f0c05d71bcdb5e431",
+        "latency": 311,
+        "finite": true
+      },
+      {
+        "id": "195",
+        "name": "Trap Clean Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "5da7b1eb1f4298a83f2d23a7a2a5d6254517ce27ca1ad3f9e4074d569ae0fe4f",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "b3ef5d20afe54e9b3b8af000be1219cc1126138bb57433e1402cbf19477dc08b",
+        "latency": 224,
+        "finite": true
+      },
+      {
+        "id": "196",
+        "name": "Trap Warm Master (Lenin)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "6780fccd4f4ea4f8e777bebc69e1d18078b4aa11a7987cecb5ff2141739505c8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "af1f6601cdd188fdbe0a98a09102e068f712853ec02519b90210483056f9d148",
+        "latency": 504,
+        "finite": true
+      },
+      {
+        "id": "197",
+        "name": "Trap Punch Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "467d5acc312d4a0d381dcafca271693916aa8ff6df03a51fde70472d61aec652",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "3b899a2106f7dc8dfbf08d36e8fb7bf17d4216471841b01ebb4102b29bef55e8",
+        "latency": 320,
+        "finite": true
+      },
+      {
+        "id": "198",
+        "name": "Trap Multiband Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "5c490b4774bc5c5cbfbf82c7b2d3ee628a64179a1fca078f854a3441bf4c0a87",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "85cd0ddeefa00b36df6c6516495b0a59c8e17ec7de0043786716b364acb69ba8",
+        "latency": 273,
+        "finite": true
+      },
+      {
+        "id": "199",
+        "name": "Trap Streaming -14",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "ed03bd34061374ffe362d042f51cb19708f9a2ca3d34776809a3d4089fb456c8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "5c5c81099b2f075b15ee9802a767203333930171cb3f4a651e9dc2e321ed62f3",
+        "latency": 104,
+        "finite": true
+      },
+      {
+        "id": "200",
+        "name": "Trap Loud Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "8aabbf7c0bb63f1e3ef8c8bcd1cb7dab32f5380ca03885b9f99987c725373929",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "586da129c5dde8738833d2dc639c488ac52a0ab20b0557cc5877c91f0c861fd8",
+        "latency": 466,
+        "finite": true
+      },
+      {
+        "id": "201",
+        "name": "Trap Stalin Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "bbcc19b7d483eef317382e6543921d6797034e682695f26b7319ae8adcafb16d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "49c0730dcf1bbf04b58103611c2d9ba0f83df503dc8f0d5d440b3c3fdd341d23",
+        "latency": 311,
+        "finite": true
+      },
+      {
+        "id": "202",
+        "name": "Techno Clean Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "260b8b778b3dda8eaa70424771a468978bda1d6cef49de41a3933cb941e442da",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "6cecfbfbc9aa75471a1a3196d3da15fda0259493ca902109eca3056d4ae71290",
+        "latency": 224,
+        "finite": true
+      },
+      {
+        "id": "203",
+        "name": "Techno Warm Master (Lenin)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "f3928824f484cd72f5536e867536fd5436b5021425489897edacf8cea639b020",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "036a1f113f4a8f38473f328f533231299b5ef06417758b6c35a90012bb98480a",
+        "latency": 504,
+        "finite": true
+      },
+      {
+        "id": "204",
+        "name": "Techno Punch Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "5faa3633f853050dea9c079a8918721d8f95eb1d518fb688dee6eb1174fc2953",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "01dd6bda9e2981499fbde45b211cfd97b292913dd74686d277038e3bda728679",
+        "latency": 320,
+        "finite": true
+      },
+      {
+        "id": "205",
+        "name": "Techno Multiband Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "0c1d09fd6d4a8cd33eb7241ac7157404e4a5601a0c9f379e260a243a753e950f",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "a6a1eb6e1238801064a4cf6ae8d0958d59d648ce925dbbc38927c5100b4dc431",
+        "latency": 273,
+        "finite": true
+      },
+      {
+        "id": "206",
+        "name": "Techno Streaming -14",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "ccc39c246b2cb28b496a813a57197cda8bd055000b5f8a07f8ecfc2070fb44b7",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "52526bcadcd4ba68cff019fec265852cc158dd622c4dec83fb772fc0779ae72c",
+        "latency": 104,
+        "finite": true
+      },
+      {
+        "id": "207",
+        "name": "Techno Loud Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "de82a5a6c9326557ac84a502dccebf40686b0034972af76a25fd0881811cb362",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "efc87874ddd1282c341fe0c5c4130993ff6274619fb0db9fb1d095b80761d077",
+        "latency": 466,
+        "finite": true
+      },
+      {
+        "id": "208",
+        "name": "Techno Stalin Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9e0659b2701cf75a38d447877493a2407f83608674b6f9c66ff33c418d64344b",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "bc75de727487d745d10d61bdf1bb3867f9bc5a3c87020214b611c555ea68e1bb",
+        "latency": 311,
+        "finite": true
+      },
+      {
+        "id": "209",
+        "name": "House / EDM Clean Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "668ff1da50c6c32ebc647ed4643ff83bc9e529e7067493a51d34236f4d5737bc",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "7b92f6812856999133dc59543fbb211dbfb0c05d553b5b01dbe257ecd1299424",
+        "latency": 224,
+        "finite": true
+      },
+      {
+        "id": "210",
+        "name": "House / EDM Warm Master (Lenin)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "10913f790f89f2db9662623c05180b104b94d985a9aa2268cfec3be949d8ea20",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "0d2a4ae46b14c008ece669b5d1863ca1e60f78a5e6938e2b08d01a507dc1c0e8",
+        "latency": 504,
+        "finite": true
+      },
+      {
+        "id": "211",
+        "name": "House / EDM Punch Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "6b8d9f99cf264139f876dffa6c56310d48a2603462a964438f828ae17271cf34",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "79c6002e0f62c39429f35ef13f1de565ccc852832464bed88ad5095d9b7bde2a",
+        "latency": 320,
+        "finite": true
+      },
+      {
+        "id": "212",
+        "name": "House / EDM Multiband Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "5568f9156a1fba0cba98b7745064e13d62ca740ff1841fa0b38e2e91a8d05ff8",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "061429a6b5234685d13e77eec1b8de5797d849248ffd20502196a32eaf79ed7a",
+        "latency": 466,
+        "finite": true
+      },
+      {
+        "id": "213",
+        "name": "House / EDM Streaming -14",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "c804e58cc341e84f592d386956e979133049b6b850e1524c4d1ef693964ef173",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "72d9ae7dbf16cb97d3acef505757a780fdd1e4be030368b104b03e5b154280ca",
+        "latency": 104,
+        "finite": true
+      },
+      {
+        "id": "214",
+        "name": "House / EDM Loud Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "68ad519d81c553088b9d464c0e79b353786b33168639a225672cd3e9fbaba6a0",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "efc87874ddd1282c341fe0c5c4130993ff6274619fb0db9fb1d095b80761d077",
+        "latency": 466,
+        "finite": true
+      },
+      {
+        "id": "215",
+        "name": "House / EDM Stalin Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "5cc4223799ac6c59350431f974a4fc81ca3e1e4a87d1e18545af4780c9eaa587",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "bc75de727487d745d10d61bdf1bb3867f9bc5a3c87020214b611c555ea68e1bb",
+        "latency": 311,
+        "finite": true
+      },
+      {
+        "id": "216",
+        "name": "Rock / Indie Clean Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "3d5d4d598c9442cf7c6c5e1f63b2c2f6c88ae74ccb151ac602d2ea156af1c386",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "bd8a2361462880a873821d5721e0fb0019936014da0289117c2f9bcfc9151a13",
+        "latency": 224,
+        "finite": true
+      },
+      {
+        "id": "217",
+        "name": "Rock / Indie Warm Master (Lenin)",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "18a7e5622e48abcf2c5f576230ada57ac8f84be336ca4d328b240074dfe7ba09",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "8cf380c9aebccb5c489e4f069fc2e25c81e822ab9b488dc984c932650db864ac",
+        "latency": 504,
+        "finite": true
+      },
+      {
+        "id": "218",
+        "name": "Rock / Indie Punch Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9207e81f8a71eca333ddd1502d1dbc332e2a46f6afdd2c5216a1bfb3056ae644",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "6ed3d94e3afdef203a50cb5e534b4954905b9b4b91e23d1b68983398ad61df06",
+        "latency": 320,
+        "finite": true
+      },
+      {
+        "id": "219",
+        "name": "Rock / Indie Multiband Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "73864b1e63d513988d5c667a5251b716f45c17c78d19094b35355de25fbee623",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "011e73f6d6c194f7867078e3c6ab6025086621865abdacf25539de5e2b3e4218",
+        "latency": 273,
+        "finite": true
+      },
+      {
+        "id": "220",
+        "name": "Rock / Indie Streaming -14",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "9f39fb255af51b58f2d6e0060a7ec9aaa4be7ce172e6e16dfdf2c07967d8c408",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "8c1c3391ec4322ccf87abc13c9fa61b462f10353cee36442fbc58074a3ef826e",
+        "latency": 104,
+        "finite": true
+      },
+      {
+        "id": "221",
+        "name": "Rock / Indie Loud Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "fb4f493894cc843f28e30cf1740756b420f64623666fa4907720a7e6d649c4c2",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "ee383252662ab0091dc635b45483f26970b89070b5fd846d5413b0ed025124a5",
+        "latency": 466,
+        "finite": true
+      },
+      {
+        "id": "222",
+        "name": "Rock / Indie Stalin Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "fb6f41e0286ca460a74173f6e1d88820f37843be9796c233ef58f04dd298893d",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "be8588897546f5498d7e45445871e752438b8dbc13834df73b3456d5eec567f0",
+        "latency": 311,
+        "finite": true
+      },
+      {
+        "id": "223",
+        "name": "Lo-Fi Tape Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "bb191d84ce8b289e4dbedb873bcf5e7fbd284461d6e9afd6c35bff3cae9179c4",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "f3857f2ad5f3f6e8b472cb64be47a29cde5f9563182fedc635e916af6048fe15",
+        "latency": 346,
+        "finite": true
+      },
+      {
+        "id": "224",
+        "name": "Lo-Fi Vinyl Master",
+        "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+        "stateSha256": "361498e647916ad03484ecc2e017687153f45c4d0fcb3baf9468426e8d707b39",
+        "fixtureSha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+        "outputSha256": "6d32b7324090621dfdefd90d0b008ee7e7825ad356137e0792001b323cab234e",
+        "latency": 466,
+        "finite": true
+      }
+    ]
+  }
+}

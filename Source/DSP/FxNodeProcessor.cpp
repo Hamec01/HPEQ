@@ -5,8 +5,14 @@
 
 namespace hpeq::dsp
 {
+FxNodeProcessor::~FxNodeProcessor()
+{
+    for(auto& slot:slots)if(slot.nativeRuntime!=nullptr)slot.nativeRuntime->release();
+}
+
 int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
 {
+    if(p.engineRevision!=0)return p.nativeValues.latency;
     switch (p.type)
     {
         case FxType::Saturator: return SaturatorProcessor::latencySamples(p, sampleRate);
@@ -22,8 +28,9 @@ int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
 
 int FxNodeProcessor::maxSlotLatency(double sampleRate)
 {
-    return std::max(LimiterProcessor::maxLookaheadSamples(sampleRate) + RedWallCore::kTruePeakDelay,
-                    SaturatorProcessor::latencySamples(2) + static_cast<int>(std::lround(mag::kWowBaseSeconds * sampleRate)));
+    return std::max({LimiterProcessor::maxLookaheadSamples(sampleRate) + RedWallCore::kTruePeakDelay,
+                    SaturatorProcessor::latencySamples(2) + static_cast<int>(std::lround(mag::kWowBaseSeconds * sampleRate)),
+                    static_cast<int>(std::ceil(sampleRate*.020))+1024});
 }
 
 int FxNodeProcessor::nodeLatencyFor(const FxNodeParams& p, double sampleRate)
@@ -89,6 +96,7 @@ void FxNodeProcessor::releasePooled(Slot& slot) noexcept
 
 void FxNodeProcessor::stopSlot(Slot& slot) noexcept
 {
+    if(slot.nativeRuntime!=nullptr){slot.nativeRuntime->release();slot.nativeRuntime=nullptr;}
     releasePooled(slot);
     slot.running = false;
     slot.silentSamples = 0;
@@ -113,7 +121,13 @@ void FxNodeProcessor::startSlot(Slot& slot, const FxSlotParams& sp) noexcept
     slot.limiter.reset();
     slot.silentSamples = 0;
     slot.starved = false;
-    if (isPooled(sp.type) && pools != nullptr)
+    if(sp.engineRevision!=0)
+    {
+        slot.nativeRuntime=sp.nativeValues.runtime;
+        if(slot.nativeRuntime==nullptr){slot.starved=true;return;}
+        slot.nativeRuntime->retain();
+    }
+    if (sp.engineRevision==0 && isPooled(sp.type) && pools != nullptr)
     {
         slot.pooled = sp.type == FxType::Reverb ? pools->reverbs.acquire()
                     : sp.type == FxType::Delay  ? pools->delays.acquire()
@@ -190,9 +204,9 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
         const auto& sp = p.slots[static_cast<size_t>(k)];
         slot.wanted = slot.inChain && sp.active;
 
-        if (slot.running && slot.inChain && slot.type != sp.type)
+        if (slot.running && slot.inChain && (slot.type != sp.type || slot.nativeRuntime!=sp.nativeValues.runtime))
             stopSlot(slot); // a different processor: never reuse its state
-        if (slot.wanted && !slot.running)
+        if ((slot.wanted || (slot.inChain && sp.engineRevision!=0 && !isSend(sp.type))) && !slot.running)
             startSlot(slot, sp);
         if (!slot.wanted)
             slot.starved = false;
@@ -315,6 +329,50 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
     {
         if (!slot.inChain)
             continue;
+
+        if(slot.params.engineRevision!=0)
+        {
+            // Native wrappers already produce their declared fixed latency.
+            // Own MIX here exactly once and never use their legacy pool paths.
+            const float* const* d=chainPtr;
+            if(slot.latency>0)
+            {
+                slot.align.process(chainPtr,alignedPtr,workChannels,numSamples,slot.latency);
+                d=alignedPtr;
+            }
+            if(!slot.running || slot.nativeRuntime==nullptr)
+            {
+                if(slot.latency>0)for(int ch=0;ch<workChannels;++ch)std::copy(d[ch],d[ch]+numSamples,chainPtr[ch]);
+                continue;
+            }
+            const bool send=isSend(slot.type);
+            for(int i=0;i<numSamples;++i)
+            {
+                const float input=send?static_cast<float>(slot.inGate.next()):1.f;
+                for(int ch=0;ch<workChannels;++ch)workPtr[ch][i]=input*chainPtr[ch][i];
+            }
+            auto t=transport;
+            if(t.hasPosition)t.ppqAtBlockStart+=blockOffset*t.bpm/(60.0*sampleRate);
+            slot.nativeRuntime->process(workPtr,workChannels,numSamples,slot.params.nativeValues,
+                t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
+            float peak=0;
+            for(int i=0;i<numSamples;++i)
+            {
+                const float amount=static_cast<float>(slot.mix.next());
+                for(int ch=0;ch<workChannels;++ch)
+                {
+                    const float processed=workPtr[ch][i];peak=std::max(peak,std::abs(processed));
+                    const float drySample=d[ch][i];
+                    chainPtr[ch][i]=send?drySample+amount*processed
+                        :amount==1.f?processed:amount==0.f?drySample:drySample+amount*(processed-drySample);
+                }
+            }
+            const bool inputClosed=nodeClosed || (send&&!slot.inGate.isRamping()&&slot.inGate.value()==0);
+            slot.silentSamples=inputClosed&&peak<1.e-6f?slot.silentSamples+numSamples:0;
+            if(send && slot.silentSamples>=silenceSamples)stopSlot(slot);
+            else if((send&&!inputClosed) || (inputClosed&&slot.silentSamples<silenceSamples))sendRunning=true;
+            continue;
+        }
 
         if (isSend(slot.type) && slot.running)
         {

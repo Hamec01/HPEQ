@@ -1,7 +1,13 @@
-# HPEQ
+# HamloRack (HPEQ)
 
-Frequency-layer FX plugin (VST3 audio insert effect, Windows x64). Working name; the final product
-name is not decided yet.
+Frequency-layer FX plugin (VST3 audio insert effect, Windows x64). **HamloRack** is the new working
+product name. The existing build and saved-state identity remain HPEQ during integration.
+
+The [HamloRack design stage](docs/hamlorack/RACK0_DESIGN.md) specifies the beta-module adapters and
+250 authored preset candidates: [overview](docs/hamlorack/PRESET_OVERVIEW.md),
+[exact settings and individual intent/rejection checks](docs/hamlorack/PRESET_CATALOG.md).
+These designs are not yet executable factory programs: beta DSP integration and audio calibration
+remain pending. The current 224-preset legacy bank is preserved.
 
 Each layer runs **PRE-EQ → frequency-range FX nodes (up to 6 processors per node) → delta mix**, with
 up to 10 layers. The spec, roadmap and acceptance matrix are in [`docs/fx-addon/`](docs/fx-addon/);
