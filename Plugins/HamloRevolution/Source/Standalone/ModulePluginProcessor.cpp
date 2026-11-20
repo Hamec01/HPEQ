@@ -329,8 +329,8 @@ void ModulePluginProcessor::prepareToPlay(double sampleRate, int expectedBlockSi
     engine.update();
     if (kind == ModuleKind::Revolution)
     {
-        // RISE / FILL: 20 s of input (4 bars down to 48 BPM)
-        captureRing.setSize(2, static_cast<int>(std::ceil(20.0 * sampleRate)), false, true, false);
+        // RISE / FILL: 66 s of input (R18: 16 bars down to 59 BPM)
+        captureRing.setSize(2, static_cast<int>(std::ceil(66.0 * sampleRate)), false, true, false);
         captureWritten.store(0);
     }
 }
@@ -555,11 +555,11 @@ ModulePluginProcessor::Transition ModulePluginProcessor::makeTransition(int tran
     s.recipe = std::clamp(recipe,0,dsp::transition::maximumRecipe(transitionKind));
     s.fillBeats = fillBeats == 1 || fillBeats == 2 ? fillBeats
                   : fillBeats == 8 && dsp::transition::isR17(transitionKind, s.recipe) ? fillBeats // R17: two bars of fill
-                  : fillBeats == dsp::transition::kWholeLoop && s.recipe >= dsp::transition::kPhraseRecipe && !dsp::transition::isR17(transitionKind, s.recipe) ? fillBeats : 4;
+                  : fillBeats == dsp::transition::kWholeLoop && s.recipe >= dsp::transition::kPhraseRecipe && (!dsp::transition::isR17(transitionKind, s.recipe) || s.recipe == dsp::transition::kR17Chop) ? fillBeats : 4;
     s.fillFx = std::isfinite(fillFx) ? std::clamp(fillFx,0.0,1.0) : 0.0;
     s.kitEnabled = kitEnabled;
     s.marks = std::move(marks);
-    s.bars = bars == 1 || bars == 4 ? bars : 2;
+    s.bars = dsp::transition::legalBars(bars);
     s.knobs = knobs;
     s.sampleRate = currentSampleRate.load();
     if (newSeed || !t.valid)

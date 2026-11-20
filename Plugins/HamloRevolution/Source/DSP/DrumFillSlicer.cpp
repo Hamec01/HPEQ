@@ -102,7 +102,7 @@ Plan makeSlicedFillPlan(const juce::AudioBuffer<float>& source,const Settings& s
 {
     Plan plan;Settings s=settings;
     if(source.getNumChannels()<1||source.getNumSamples()==0||!std::isfinite(s.sampleRate)||!std::isfinite(s.bpm)||s.sampleRate<8000||s.sampleRate>192000)return plan;
-    s.bpm=std::clamp(s.bpm,20.,999.);s.bars=s.bars==1||s.bars==4?s.bars:2;s.fillBeats=s.fillBeats==1||s.fillBeats==2?s.fillBeats:4;
+    s.bpm=std::clamp(s.bpm,20.,999.);s.bars = legalBars(s.bars);s.fillBeats=s.fillBeats==1||s.fillBeats==2?s.fillBeats:4;
     for(auto& value:s.knobs)value=std::isfinite(value)?std::clamp(value,0.,1.):0.;
     juce::AudioBuffer<float> stereo;
     const juce::AudioBuffer<float>* input=&source;if(source.getNumChannels()==1){stereo.setSize(2,source.getNumSamples());for(int c=0;c<2;++c)stereo.copyFrom(c,0,source,0,0,source.getNumSamples());input=&stereo;}
@@ -201,7 +201,7 @@ Plan makeSlicedFillPlan(const juce::AudioBuffer<float>& source,const Settings& s
 juce::AudioBuffer<float> renderSlicedFill(const juce::AudioBuffer<float>& input,const Settings& original)
 {
     Settings s=original;if(!std::isfinite(s.sampleRate)||!std::isfinite(s.bpm)||s.sampleRate<8000||s.sampleRate>192000)return {};
-    s.kind=Fill;s.bpm=std::clamp(s.bpm,20.,999.);s.bars=s.bars==1||s.bars==4?s.bars:2;s.fillBeats=s.fillBeats==1||s.fillBeats==2?s.fillBeats:4;s.fillFx=std::isfinite(s.fillFx)?std::clamp(s.fillFx,0.,1.):0.;for(auto& k:s.knobs)k=std::isfinite(k)?std::clamp(k,0.,1.):0.;
+    s.kind=Fill;s.bpm=std::clamp(s.bpm,20.,999.);s.bars = legalBars(s.bars);s.fillBeats=s.fillBeats==1||s.fillBeats==2?s.fillBeats:4;s.fillFx=std::isfinite(s.fillFx)?std::clamp(s.fillFx,0.,1.):0.;for(auto& k:s.knobs)k=std::isfinite(k)?std::clamp(k,0.,1.):0.;
     const int length=lengthSamples(s);juce::AudioBuffer<float> source(2,length);source.clear();
     if(input.getNumChannels()>0)for(int c=0;c<2;++c)for(int n=0;n<std::min(length,input.getNumSamples());++n){const float v=input.getSample(std::min(c,input.getNumChannels()-1),n);source.setSample(c,n,std::isfinite(v)?v:0.f);}
     const auto plan=makeSlicedFillPlan(source,s);juce::AudioBuffer<float> out(source),sends(2,length);sends.clear();

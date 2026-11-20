@@ -93,3 +93,21 @@ the first beat again (the landing); 4 loops x 7 types x 2 lengths + the R15 rend
 
 Not done: no listening by the agent, no pluginval / Steinberg run, no installer, no manual FL check. Taste is the
 owner's call.
+
+## R18 / 0.5.1 — WHOLE SAMPLE and BARS 8 / 16 (2026-11-20)
+
+Owner in FL with 0.5.0: *when SAMPLE CHOP is chosen, re-cut the whole sample (there is no such choice); and BARS should
+be 1-2-4-8-16, only 1-2-4 now.*
+
+- SAMPLE CHOP opens on EDIT / WHOLE SAMPLE (fillBeats `kWholeLoop`; the other R17 types do not offer it, and leaving
+  SAMPLE CHOP goes back to the last 4 beats). Every bar but the last is re-cut from its own attacks (a SAMPLE mark: from
+  the marked material): a re-arrangement (50 %), three beats re-arranged plus a stutter on the 4th (30 %) or half speed
+  (20 %) - no tape stop mid-phrase. The last bar plays the chosen pattern (stutter / rearrange / half speed / tape stop)
+  into the downbeat. 1 / 2 / 4 / 8 beats of SAMPLE CHOP render exactly as in 0.5.0.
+- BARS 1, 2, 4, 8, 16 (`legalBars`, every engine; old projects only had 1 / 2 / 4, which are unchanged). The input
+  ring grew from 20 s to 66 s, enough for 16 bars down to 59 BPM; slower tempos capture what there is (not complete).
+  A dropped sample is repeated to fill the bars, as before.
+- Test F10: SAMPLE CHOP / WHOLE SAMPLE at 90 / 140 BPM, 1 / 4 / 16 bars, 4 seeds - finite, exact length, the ceiling,
+  deterministic, the first bar changed; BUILD ignores WHOLE SAMPLE. Page test: BARS 8 / 16 reach the processor, SAMPLE
+  CHOP sets WHOLE SAMPLE, BUILD resets it to 4 beats.
+- Not done: listening; 16-bar renders of the drum types (BUILD etc. still play the last 1 .. 8 beats of the 16 bars).

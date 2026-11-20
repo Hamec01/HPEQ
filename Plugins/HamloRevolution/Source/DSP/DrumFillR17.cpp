@@ -454,27 +454,33 @@ void buildChop(Ctx& x, std::vector<Hit>& h)
         x.voices.push_back(v);
         slice.push_back(static_cast<int>(x.voices.size()) - 1);
     }
-    // a long voice from the material's start (half speed and tape stop read through it)
-    Voice whole;
-    whole.start = m0;
-    whole.length = m1 - m0;
-    whole.role = ph::Perc;
-    x.voices.push_back(whole);
-    const int all = static_cast<int>(x.voices.size()) - 1;
-    const double W = x.W;
-    const int pattern = static_cast<int>(rnd(x.seed, 61) * 4);
-    // the stutter's piece: one of the two loudest of the first four slices (a quiet hat repeated is no fill)
-    std::vector<std::pair<double, int>> loudest;
-    for (size_t i = 0; i < std::min<size_t>(4, slice.size()); ++i)
+    const bool marked = x.detail.startsWith("SAMPLE MARK");
+    // a long voice from a point of the material (half speed and tape stop read through it)
+    const auto longVoice = [&](int from)
     {
-        const auto& v = x.voices[static_cast<size_t>(slice[i])];
-        double peak = 0;
-        for (int c = 0; c < x.source->getNumChannels(); ++c)
-            peak = std::max(peak, static_cast<double>(x.source->getMagnitude(c, v.start, std::min(v.length, static_cast<int>(0.1 * x.fs)))));
-        loudest.push_back({ peak, slice[i] });
-    }
-    std::stable_sort(loudest.begin(), loudest.end(), [](const auto& p1, const auto& p2) { return p1.first > p2.first; });
-    const int first = loudest[static_cast<size_t>(loudest.size() > 1 && rnd(x.seed, 62) < 0.35 ? 1 : 0)].second;
+        Voice v;
+        v.start = std::clamp(from, 0, x.length - 1);
+        v.length = std::max(64, m1 - v.start);
+        v.length = std::min(v.length, x.length - v.start);
+        v.role = ph::Perc;
+        x.voices.push_back(v);
+        return static_cast<int>(x.voices.size()) - 1;
+    };
+    // the stutter's piece: one of the two loudest of the first four slices (a quiet hat repeated is no fill)
+    const auto loudestOf = [&](const std::vector<int>& pieces, std::uint64_t salt)
+    {
+        std::vector<std::pair<double, int>> loudest;
+        for (size_t i = 0; i < std::min<size_t>(4, pieces.size()); ++i)
+        {
+            const auto& v = x.voices[static_cast<size_t>(pieces[i])];
+            double peak = 0;
+            for (int c = 0; c < x.source->getNumChannels(); ++c)
+                peak = std::max(peak, static_cast<double>(x.source->getMagnitude(c, v.start, std::min(v.length, static_cast<int>(0.1 * x.fs)))));
+            loudest.push_back({ peak, pieces[i] });
+        }
+        std::stable_sort(loudest.begin(), loudest.end(), [](const auto& p1, const auto& p2) { return p1.first > p2.first; });
+        return loudest[static_cast<size_t>(loudest.size() > 1 && rnd(x.seed, 62 + salt) < 0.35 ? 1 : 0)].second;
+    };
     const auto chop = [&](int voice, double t, double hold, double gain, double rate = 1, bool reverse = false)
     {
         Hit c;
@@ -482,65 +488,116 @@ void buildChop(Ctx& x, std::vector<Hit>& h)
         c.chop = true; c.swing = false; c.send = 0.3 * x.space;
         h.push_back(c);
     };
-    bool reversePickup = false;
-    if (pattern == 0) // STUTTER: one slice, faster and higher
+    static constexpr const char* kPatternNames[] { "STUTTER", "REARRANGE", "HALF SPEED", "TAPE STOP" };
+    // one pattern over [from, from + W) beats; salt 0 = the plain fill (the same random draws as 0.5.0)
+    const auto segment = [&](int pattern, double from, double W, const std::vector<int>& pieces, int first, int all, std::uint64_t salt)
     {
-        x.detail = x.detail.isEmpty() ? "STUTTER" : x.detail + " / STUTTER";
-        const std::vector<int> divs = x.energy < 0.5 ? std::vector<int> { 2, 4, 8 } : std::vector<int> { 2, 4, 8, 16 };
-        for (const auto& g : stages(W, divs))
+        if (pattern == 0) // STUTTER: one slice, faster and higher
         {
-            const double step = 1.0 / g.div;
-            for (double t = g.from; t < g.to - 1e-9; t += step)
-                chop(first, t, step * 0.85, dB(-4 * (1 - t / W)), semitones(x.pitch * 7 * std::pow(t / W, 1.5)));
-        }
-        reversePickup = rnd(x.seed, 63) < 0.4;
-    }
-    else if (pattern == 1) // REARRANGE: 1/8 pieces in another order, the last one backwards
-    {
-        x.detail = x.detail.isEmpty() ? "REARRANGE" : x.detail + " / REARRANGE";
-        const int eighths = static_cast<int>(std::lround(W * 2));
-        std::vector<int> order(slice.size());
-        std::iota(order.begin(), order.end(), 0);
-        for (size_t i = order.size(); i > 1; --i)
-            std::swap(order[i - 1], order[static_cast<size_t>(rnd(x.seed, 70 + i) * static_cast<double>(i))]);
-        const int doubled = static_cast<int>(rnd(x.seed, 64) * eighths);
-        for (int k = 0; k < eighths; ++k)
-        {
-            const int v = slice[static_cast<size_t>(order[static_cast<size_t>(k) % order.size()])];
-            const double pitchUp = x.pitch > 0.6 && k % 4 == 3 ? 12 : 0;
-            if (k == doubled)
+            const std::vector<int> divs = x.energy < 0.5 ? std::vector<int> { 2, 4, 8 } : std::vector<int> { 2, 4, 8, 16 };
+            for (const auto& g : stages(W, divs))
             {
-                chop(v, k * 0.5, 0.22, 0.95, semitones(pitchUp));
-                chop(v, k * 0.5 + 0.25, 0.22, 0.95, semitones(pitchUp));
+                const double step = 1.0 / g.div;
+                for (double t = g.from; t < g.to - 1e-9; t += step)
+                    chop(first, from + t, step * 0.85, dB(-4 * (1 - t / W)), semitones(x.pitch * 7 * std::pow(t / W, 1.5)));
             }
-            else if (k == eighths - 1 && rnd(x.seed, 65) < 0.6)
-                chop(v, k * 0.5, 0.5, 0.9, 1, true);
-            else
-                chop(v, k * 0.5, 0.48, 0.95, semitones(pitchUp));
         }
-    }
-    else if (pattern == 2) // HALF SPEED: the material, then an octave down, then a 1/32 stutter
+        else if (pattern == 1) // REARRANGE: 1/8 pieces in another order, the last one backwards
+        {
+            const int eighths = static_cast<int>(std::lround(W * 2));
+            std::vector<int> order(pieces.size());
+            std::iota(order.begin(), order.end(), 0);
+            for (size_t i = order.size(); i > 1; --i)
+                std::swap(order[i - 1], order[static_cast<size_t>(rnd(x.seed, 70 + i + salt) * static_cast<double>(i))]);
+            const int doubled = static_cast<int>(rnd(x.seed, 64 + salt) * eighths);
+            for (int k = 0; k < eighths; ++k)
+            {
+                const int v = pieces[static_cast<size_t>(order[static_cast<size_t>(k) % order.size()])];
+                const double pitchUp = x.pitch > 0.6 && k % 4 == 3 ? 12 : 0;
+                if (k == doubled)
+                {
+                    chop(v, from + k * 0.5, 0.22, 0.95, semitones(pitchUp));
+                    chop(v, from + k * 0.5 + 0.25, 0.22, 0.95, semitones(pitchUp));
+                }
+                else if (k == eighths - 1 && rnd(x.seed, 65 + salt) < 0.6)
+                    chop(v, from + k * 0.5, 0.5, 0.9, 1, true);
+                else
+                    chop(v, from + k * 0.5, 0.48, 0.95, semitones(pitchUp));
+            }
+        }
+        else if (pattern == 2) // HALF SPEED: the material, then an octave down, then a 1/32 stutter
+        {
+            const double half = std::floor(W) >= 2 ? std::floor(W / 2) : 0.5;
+            for (double t = 0; t < half - 1e-9; t += 0.5)
+                chop(pieces[static_cast<size_t>(static_cast<int>(t * 2) % static_cast<int>(pieces.size()))], from + t, 0.48, 0.95);
+            chop(all, from + half, W - half - 0.25, 0.95, 0.5);
+            for (int k = 0; k < 2; ++k)
+                chop(first, from + W - 0.25 + k * 0.125, 0.11, 0.9, semitones(x.pitch * 5));
+        }
+        else // TAPE STOP: a 1/16 stutter, then the material slowing down to a stop
+        {
+            const double half = W >= 2 ? W / 2 : 0.5;
+            for (double t = 0; t < half - 1e-9; t += 0.25)
+                chop(first, from + t, 0.2, dB(-3 * (1 - t / half)));
+            Hit stop;
+            stop.voice = all; stop.role = ph::Perc; stop.group = GChop; stop.beat = from + half; stop.holdBeats = W - half;
+            stop.rate = 1; stop.rateEnd = 0.06; stop.chop = true; stop.swing = false; stop.send = 0.3 * x.space;
+            h.push_back(stop);
+        }
+    };
+    // the pieces that start inside [b0, b1) source samples; too few: the material's pieces, turned by `turn`
+    const auto piecesIn = [&](double b0, double b1, int turn)
     {
-        x.detail = x.detail.isEmpty() ? "HALF SPEED" : x.detail + " / HALF SPEED";
-        const double half = std::floor(W) >= 2 ? std::floor(W / 2) : 0.5;
-        for (double t = 0; t < half - 1e-9; t += 0.5)
-            chop(slice[static_cast<size_t>(static_cast<int>(t * 2) % static_cast<int>(slice.size()))], t, 0.48, 0.95);
-        chop(all, half, W - half - 0.25, 0.95, 0.5);
-        for (int k = 0; k < 2; ++k)
-            chop(first, W - 0.25 + k * 0.125, 0.11, 0.9, semitones(x.pitch * 5));
-    }
-    else // TAPE STOP: a 1/16 stutter, then the material slowing down to a stop
+        std::vector<int> pieces;
+        if (!marked)
+            for (int v : slice)
+            {
+                const int at = x.voices[static_cast<size_t>(v)].start;
+                if (at >= b0 - 0.01 * x.fs && at < b1 - 0.01 * x.fs)
+                    pieces.push_back(v);
+            }
+        if (pieces.size() < 2)
+        {
+            pieces = slice;
+            std::rotate(pieces.begin(), pieces.begin() + static_cast<std::ptrdiff_t>(static_cast<size_t>(turn) % pieces.size()), pieces.end());
+        }
+        return pieces;
+    };
+    const double W = x.W;
+    const int pattern = static_cast<int>(rnd(x.seed, 61) * 4);
+    int first = loudestOf(slice, 0);
+    const juce::String name = kPatternNames[pattern];
+    if (x.s.fillBeats == kWholeLoop && W > 4) // R18 WHOLE SAMPLE: every bar re-cut from its own audio, the last one into the downbeat
     {
-        x.detail = x.detail.isEmpty() ? "TAPE STOP" : x.detail + " / TAPE STOP";
-        const double half = W >= 2 ? W / 2 : 0.5;
-        for (double t = 0; t < half - 1e-9; t += 0.25)
-            chop(first, t, 0.2, dB(-3 * (1 - t / half)));
-        Hit stop;
-        stop.voice = all; stop.role = ph::Perc; stop.group = GChop; stop.beat = half; stop.holdBeats = W - half;
-        stop.rate = 1; stop.rateEnd = 0.06; stop.chop = true; stop.swing = false; stop.send = 0.3 * x.space;
-        h.push_back(stop);
+        const int bars = static_cast<int>(std::floor(W / 4 + 1e-9));
+        for (int bar = 0; bar + 1 < bars; ++bar)
+        {
+            const std::uint64_t salt = 1000ull * static_cast<std::uint64_t>(bar + 1);
+            const double b0 = x.origin + bar * 4 * x.beat;
+            const auto pieces = piecesIn(b0, b0 + 4 * x.beat, bar);
+            const double pick = rnd(x.seed, 61 + salt); // mid-phrase: no tape stop (it would sound broken)
+            if (pick < 0.5)
+                segment(1, bar * 4.0, 4.0, pieces, 0, 0, salt);
+            else if (pick < 0.8) // three beats re-arranged, a stutter on the last
+            {
+                segment(1, bar * 4.0, 3.0, pieces, 0, 0, salt);
+                segment(0, bar * 4.0 + 3.0, 1.0, pieces, loudestOf(pieces, salt), 0, salt);
+            }
+            else
+                segment(2, bar * 4.0, 4.0, pieces, loudestOf(pieces, salt), longVoice(static_cast<int>(std::lround(marked ? m0 : b0))), salt);
+        }
+        const double lastFrom = (bars - 1) * 4.0, b0 = x.origin + lastFrom * x.beat;
+        const auto pieces = piecesIn(b0, static_cast<double>(x.length) + x.fs, bars - 1);
+        first = loudestOf(pieces, 9000);
+        segment(pattern, lastFrom, W - lastFrom, pieces, first, longVoice(static_cast<int>(std::lround(marked ? m0 : b0))), 9000);
+        x.detail = x.detail.isEmpty() ? "WHOLE SAMPLE / " + name : x.detail + " / WHOLE SAMPLE / " + name;
     }
-    if (reversePickup) // the last 1/8 backwards into the downbeat
+    else
+    {
+        x.detail = x.detail.isEmpty() ? name : x.detail + " / " + name;
+        segment(pattern, 0, W, slice, first, longVoice(m0), 0);
+    }
+    if (pattern == 0 && rnd(x.seed, 63) < 0.4) // the last 1/8 backwards into the downbeat
     {
         h.erase(std::remove_if(h.begin(), h.end(), [&](const Hit& c) { return c.beat >= W - 0.5 - 1e-9; }), h.end());
         chop(first, W - 0.5, 0.5, 0.9, 1, true);
@@ -933,9 +990,9 @@ bool sanitize(Settings& s)
         return false;
     s.kind = Fill;
     s.bpm = std::clamp(s.bpm, 20.0, 999.0);
-    s.bars = s.bars == 1 || s.bars == 4 ? s.bars : 2;
-    s.fillBeats = s.fillBeats == 1 || s.fillBeats == 2 || s.fillBeats == 8 ? s.fillBeats : 4;
     s.recipe = std::clamp(s.recipe, kR17Recipe, kR17Last);
+    s.bars = legalBars(s.bars);
+    s.fillBeats = s.fillBeats == 1 || s.fillBeats == 2 || s.fillBeats == 8 || (s.fillBeats == kWholeLoop && s.recipe == kR17Chop) ? s.fillBeats : 4; // R18: SAMPLE CHOP may take the whole source
     for (auto& k : s.knobs)
         k = std::isfinite(k) ? std::clamp(k, 0.0, 1.0) : 0.0;
     return true;

@@ -17,7 +17,7 @@ double fade(double x)noexcept{return .5-.5*std::cos(pi*std::clamp(x,0.,1.));}
 bool sanitize(Settings& s)
 {
     if(!std::isfinite(s.sampleRate)||s.sampleRate<8000||s.sampleRate>192000||!std::isfinite(s.bpm))return false;
-    s.kind=Fill;s.bpm=std::clamp(s.bpm,20.,999.);s.bars=s.bars==1||s.bars==4?s.bars:2;s.fillBeats=s.fillBeats==1||s.fillBeats==2?s.fillBeats:4;
+    s.kind=Fill;s.bpm=std::clamp(s.bpm,20.,999.);s.bars = legalBars(s.bars);s.fillBeats=s.fillBeats==1||s.fillBeats==2?s.fillBeats:4;
     s.fillFx=std::isfinite(s.fillFx)?std::clamp(s.fillFx,0.,1.):0.;for(auto& k:s.knobs)k=std::isfinite(k)?std::clamp(k,0.,1.):0.;return true;
 }
 juce::AudioBuffer<float> sourceBuffer(const juce::AudioBuffer<float>& input,const Settings& s)

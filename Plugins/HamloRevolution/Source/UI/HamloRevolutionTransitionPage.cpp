@@ -18,8 +18,8 @@ constexpr float kW = 1180.0f, kH = 1080.0f;
 constexpr float kPi = juce::MathConstants<float>::pi;
 const juce::Rectangle<float> kBack { 960.0f, 28.0f, 180.0f, 44.0f }, kUseInput { 800.0f, 28.0f, 150.0f, 44.0f };
 juce::Rectangle<float> kindRect(int k) { return { 60.0f + 216.0f * static_cast<float>(k), 196.0f, 200.0f, 48.0f }; }
-juce::Rectangle<float> barsRect(int i) { return { 700.0f + 110.0f * static_cast<float>(i), 196.0f, 96.0f, 48.0f }; }
-constexpr std::array<int, 3> kBarChoices { 1, 2, 4 };
+juce::Rectangle<float> barsRect(int i) { return { 700.0f + 88.0f * static_cast<float>(i), 196.0f, 76.0f, 48.0f }; } // R18: 1 2 4 8 16
+constexpr std::array<int, 5> kBarChoices { 1, 2, 4, 8, 16 };
 const std::array<juce::Point<float>, 4> kKnobs { { { 170.0f, 380.0f }, { 420.0f, 380.0f }, { 670.0f, 380.0f }, { 920.0f, 380.0f } } };
 constexpr float kKnobScale = 0.85f;
 const juce::Point<float> kGenerate { 140.0f, 556.0f };
@@ -272,7 +272,7 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     crtButton(g,kRecipe,recipeLabel+"  v",values.recipe!=0);
     if(values.kind==tr::Fill&&values.recipe>=8)
     {
-        crtButton(g,kPhrase,values.fillBeats==tr::kWholeLoop?juce::String("EDIT / WHOLE LOOP  v"):"EDIT LAST / "+juce::String(values.fillBeats)+" BEAT"+(values.fillBeats==1?"":"S")+"  v",true);
+        crtButton(g,kPhrase,values.fillBeats==tr::kWholeLoop?juce::String(values.recipe==tr::kR17Chop?"EDIT / WHOLE SAMPLE  v":"EDIT / WHOLE LOOP  v"):"EDIT LAST / "+juce::String(values.fillBeats)+" BEAT"+(values.fillBeats==1?"":"S")+"  v",true);
         if(!tr::isR17(values.kind,values.recipe)) // R17: SPACE does the room
             crtButton(g,kFx,"FILTER + ROOM / "+juce::String(juce::roundToInt(values.fillFx*100))+" %  v",values.fillFx>0);
     }
@@ -284,7 +284,7 @@ void HamloRevolutionTransitionPage::paint(juce::Graphics& g)
     crtButton(g, kClear, "CLEAR / START OVER", false);
     if(values.kind==tr::Fill&&values.recipe>=21)for(int r=0;r<kitCount(values.kind,values.recipe);++r)
         crtButton(g,kitRect(r,kitCount(values.kind,values.recipe)),juce::String(kitNames[r])+" / "+(values.kitEnabled[static_cast<size_t>(r)]?"ON":"OFF")+" / "+juce::String(values.kitCounts[static_cast<size_t>(r)])+" SLICES",values.kitEnabled[static_cast<size_t>(r)]);
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < static_cast<int>(kBarChoices.size()); ++i)
         crtButton(g, barsRect(i), juce::String(kBarChoices[static_cast<size_t>(i)]), values.bars == kBarChoices[static_cast<size_t>(i)]);
     for (int k = 0; k < 4; ++k)
     {
@@ -435,7 +435,7 @@ void HamloRevolutionTransitionPage::pressVariation() { if(onVariation)onVariatio
 void HamloRevolutionTransitionPage::toggleKit(int role)
 {if(role<0||role>=kitCount(values.kind,values.recipe))return;values.kitEnabled[static_cast<size_t>(role)]=!values.kitEnabled[static_cast<size_t>(role)];if(onFillOptions)onFillOptions();repaint();}
 void HamloRevolutionTransitionPage::chooseFillBeats(int beats)
-{const bool r17=tr::isR17(values.kind,values.recipe);values.fillBeats=beats==1||beats==2||(beats==8&&r17)||(beats==tr::kWholeLoop&&phraseRecipe(values.kind,values.recipe)&&!r17)?beats:4;if(onFillOptions)onFillOptions();repaint();}
+{const bool r17=tr::isR17(values.kind,values.recipe);values.fillBeats=beats==1||beats==2||(beats==8&&r17)||(beats==tr::kWholeLoop&&phraseRecipe(values.kind,values.recipe)&&(!r17||values.recipe==tr::kR17Chop))?beats:4;if(onFillOptions)onFillOptions();repaint();}
 void HamloRevolutionTransitionPage::chooseFillFx(double amount)
 {values.fillFx=std::isfinite(amount)?juce::jlimit(0.,1.,amount):0.;if(onFillOptions)onFillOptions();repaint();}
 void HamloRevolutionTransitionPage::pressClear()
@@ -609,7 +609,7 @@ void HamloRevolutionTransitionPage::chooseKind(int k)
 
 void HamloRevolutionTransitionPage::chooseBars(int bars)
 {
-    values.bars = bars == 1 || bars == 4 ? bars : 2;
+    values.bars = tr::legalBars(bars);
     if (onBars)
         onBars(values.bars);
     repaint();
@@ -618,12 +618,15 @@ void HamloRevolutionTransitionPage::chooseBars(int bars)
 void HamloRevolutionTransitionPage::chooseRecipe(int recipe)
 {
     const bool wasR17=tr::isR17(values.kind,values.recipe);
+    const bool wasChop=values.kind==tr::Fill&&values.recipe==tr::kR17Chop;
     values.recipe=juce::jlimit(0,tr::maximumRecipe(values.kind),recipe);
     if(wasR17!=tr::isR17(values.kind,values.recipe)) // R17 knobs mean other things: their own defaults, legal lengths
     {
         values.knobs=tr::defaultKnobs(values.kind,values.recipe);
         if(values.fillBeats==8||values.fillBeats==tr::kWholeLoop)values.fillBeats=4;
     }
+    if(values.recipe==tr::kR17Chop&&values.kind==tr::Fill)values.fillBeats=tr::kWholeLoop; // R18: SAMPLE CHOP re-cuts the whole sample by default
+    else if(wasChop&&values.fillBeats==tr::kWholeLoop)values.fillBeats=4;
     if(onRecipe)onRecipe(values.recipe);
     repaint();
 }
@@ -655,7 +658,7 @@ juce::String HamloRevolutionTransitionPage::helpKeyAt(juce::Point<float> local) 
         return "transitionUseInput";
     if (kindRect(0).contains(d) || kindRect(1).contains(d))
         return "transitionKind";
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < static_cast<int>(kBarChoices.size()); ++i)
         if (barsRect(i).contains(d))
             return "transitionBars";
     for (int k = 0; k < 4; ++k)
@@ -723,7 +726,7 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
     {
         const bool phrase=kPhrase.contains(d);juce::PopupMenu menu;
         if(phrase){for(int i=0;i<3;++i)menu.addItem(i+1,juce::String(kBarChoices[static_cast<size_t>(i)])+" BEAT(S)",true,values.fillBeats==kBarChoices[static_cast<size_t>(i)]);
-            if(tr::isR17(values.kind,values.recipe)){if(values.bars>=2)menu.addItem(5,"8 BEATS (2 BARS)",true,values.fillBeats==8);}
+            if(tr::isR17(values.kind,values.recipe)){if(values.bars>=2)menu.addItem(5,"8 BEATS (2 BARS)",true,values.fillBeats==8);if(values.recipe==tr::kR17Chop)menu.addItem(4,"WHOLE SAMPLE (EVERY BAR)",true,values.fillBeats==tr::kWholeLoop);}
             else if(phraseRecipe(values.kind,values.recipe))menu.addItem(4,"WHOLE LOOP (EVERY BAR)",true,values.fillBeats==tr::kWholeLoop);}
         else for(int i=0;i<=20;++i)menu.addItem(i+1,juce::String(i*5)+" %",true,juce::roundToInt(values.fillFx*20)==i);
         juce::Component::SafePointer<HamloRevolutionTransitionPage> safe(this);
@@ -738,7 +741,7 @@ void HamloRevolutionTransitionPage::mouseDown(const juce::MouseEvent& e)
     for (int k = 0; k < 2; ++k)
         if (kindRect(k).contains(d))
             return chooseKind(k);
-    for (int i = 0; i < 3; ++i)
+    for (int i = 0; i < static_cast<int>(kBarChoices.size()); ++i)
         if (barsRect(i).contains(d))
             return chooseBars(kBarChoices[static_cast<size_t>(i)]);
     if (d.getDistanceFrom(kGenerate) <= 36.0f)

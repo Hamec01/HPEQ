@@ -193,7 +193,7 @@ juce::AudioBuffer<float> renderEvolve(const juce::AudioBuffer<float>& input,cons
 {
     Settings s=original;
     if(!std::isfinite(s.sampleRate)||!std::isfinite(s.bpm)||s.sampleRate<8000||s.sampleRate>192000)return {};
-    s.bpm=std::clamp(s.bpm,20.,999.);s.bars=s.bars==1||s.bars==4?s.bars:2;
+    s.bpm=std::clamp(s.bpm,20.,999.);s.bars = legalBars(s.bars);
     for(auto& k:s.knobs)k=std::isfinite(k)?std::clamp(k,0.,1.):0.;
     const int length=lengthSamples(s);juce::AudioBuffer<float> source(2,length);source.clear();
     if(input.getNumChannels()>0)for(int c=0;c<2;++c)

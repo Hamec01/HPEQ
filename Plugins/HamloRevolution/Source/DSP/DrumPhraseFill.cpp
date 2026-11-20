@@ -1091,7 +1091,7 @@ bool sanitize(Settings& s)
         return false;
     s.kind = Fill;
     s.bpm = std::clamp(s.bpm, 20.0, 999.0);
-    s.bars = s.bars == 1 || s.bars == 4 ? s.bars : 2;
+    s.bars = legalBars(s.bars);
     s.fillBeats = s.fillBeats == 1 || s.fillBeats == 2 || s.fillBeats == kWholeLoop ? s.fillBeats : 4;
     s.recipe = std::clamp(s.recipe, kPhraseRecipe, kPhraseRecipe + 4);
     s.fillFx = std::isfinite(s.fillFx) ? std::clamp(s.fillFx, 0.0, 1.0) : 0.0;

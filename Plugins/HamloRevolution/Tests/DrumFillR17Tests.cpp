@@ -245,6 +245,48 @@ public:
             const auto p = tr::makeR17FillPlan(x, s);
             expect(p.family.contains("SAMPLE MARK"), p.family);
         }
+        beginTest("F10 (R18): SAMPLE CHOP / WHOLE SAMPLE re-cuts every bar; BARS 8 and 16");
+        {
+            expect(tr::legalBars(8) == 8 && tr::legalBars(16) == 16 && tr::legalBars(3) == 2 && tr::legalBars(32) == 2);
+            for (double bpm : { 90.0, 140.0 })
+                for (int bars : { 1, 4, 16 })
+                {
+                    const auto src = loop(bpm, bars, 9);
+                    const double sourcePeak = peakOf(src, 0, src.getNumSamples());
+                    for (std::uint64_t seed : { 1ull, 2ull, 3ull, 4ull })
+                    {
+                        const auto s = settings(tr::kR17Chop, bpm, bars, tr::kWholeLoop, seed);
+                        tr::Plan p;
+                        const auto y = tr::renderR17Fill(src, s, &p);
+                        expectEquals(y.getNumSamples(), tr::lengthSamples(s));
+                        bool finite = true;
+                        for (int c = 0; c < 2; ++c)
+                            for (int n = 0; n < y.getNumSamples(); ++n)
+                                finite = finite && std::isfinite(y.getSample(c, n));
+                        expect(finite, "finite");
+                        expect(peakOf(y, 0, y.getNumSamples()) <= std::max(std::min(sourcePeak, 0.98), std::pow(10.0, -1.8 / 20.0)) + 1e-3, "ceiling");
+                        expect(p.status == ph::Generated, p.reason);
+                        expect(bars == 1 || p.family.contains("WHOLE SAMPLE"), p.family);
+                        expect(bitExact(y, tr::renderR17Fill(src, s)), "deterministic");
+                        if (bars > 1) // the first bar is re-cut too (not only the end)
+                        {
+                            const int bar = static_cast<int>(4 * kFs * 60.0 / bpm);
+                            double diff = 0;
+                            for (int n = static_cast<int>(0.1 * kFs); n < bar; ++n)
+                                diff = std::max(diff, static_cast<double>(std::abs(y.getSample(0, n) - src.getSample(0, n))));
+                            expect(diff > 0.01, "the first bar changed");
+                        }
+                    }
+                }
+            // WHOLE SAMPLE is only for SAMPLE CHOP: the other types play the last 4 beats
+            const auto src = loop(95, 4);
+            const auto build = tr::makeR17FillPlan(src, settings(tr::kR17Recipe + 1, 95, 4, tr::kWholeLoop, 1));
+            const double beat = kFs * 60.0 / 95;
+            expect(build.phraseStart >= static_cast<int>(src.getNumSamples() - 4 * beat - 0.01 * kFs), "BUILD stays in the last 4 beats");
+            // 1 / 2 / 4 / 8 beats of SAMPLE CHOP are the same as 0.5.0 (the whole-sample path is separate)
+            const auto plain = settings(tr::kR17Chop, 95, 2, 4, 3);
+            expect(!tr::makeR17FillPlan(loop(95, 2), plain).family.contains("WHOLE"));
+        }
         beginTest("F8: recipes 0 .. 34 do not take the R17 path");
         {
             for (int recipe : { 0, 8, 21, 30, 34 })

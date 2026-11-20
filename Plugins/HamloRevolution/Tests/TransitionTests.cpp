@@ -413,6 +413,19 @@ public:
             expect(p->lastTransition().settings.kind == tr::Fill);
             page->chooseBars(4);
             expectEquals(p->lastTransition().settings.bars, 4);
+            // R18: BARS 8 and 16; SAMPLE CHOP opens on WHOLE SAMPLE, another type goes back to the last 4 beats
+            page->chooseBars(16);
+            expectEquals(p->lastTransition().settings.bars, 16);
+            page->chooseBars(8);
+            expectEquals(p->lastTransition().settings.bars, 8);
+            page->chooseRecipe(tr::kR17Chop);
+            expectEquals(page->getValues().fillBeats, tr::kWholeLoop);
+            expectEquals(p->lastTransition().settings.fillBeats, tr::kWholeLoop);
+            page->chooseRecipe(tr::kR17Recipe + 1);
+            expectEquals(page->getValues().fillBeats, 4);
+            expectEquals(p->lastTransition().settings.fillBeats, 4);
+            page->chooseFillBeats(tr::kWholeLoop); // not for BUILD
+            expectEquals(page->getValues().fillBeats, 4);
             page->pressBack();
             expect(editor->getSimplePage()->isVisible() && !page->isVisible());
             testFolder.deleteRecursively();

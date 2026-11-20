@@ -35,11 +35,11 @@ juce::String revolutionHelp(const juce::String& key)
                                 "Drop any WAV / AIFF / FLAC / MP3 from the DAW or Explorer onto the page to use it instead." },
         { "transitionKind", "RISE builds up into the next downbeat (roll, pitch, reverse swell, filter); FILL re-cuts the last bar and rolls "
                             "into the downbeat." },
-        { "transitionBars", "BARS: how many of the last bars are used - and how long the transition is." },
+        { "transitionBars", "BARS: how many of the last bars are used (1, 2, 4, 8 or 16) - and how long the transition is. A dropped sample is repeated to fill the bars." },
         { "transitionRecipe", "STYLE (FILL): R17 FILL TYPES first. FILL AUTO picks one from the source and the length; BUILD accelerates snares 1/4 -> 1/32 into the downbeat; "
                               "AROUND THE KIT runs snare -> high -> middle -> floor tom (made from the snare when no toms are marked); BIG SNARE leads repeated snares into one huge, "
                               "reverbed snare; GROOVE BREAK keeps the groove and answers on the last beat; TRAP ROLL rolls the hats faster and higher; SAMPLE CHOP cuts any audio "
-                              "(stutter, rearrange, half speed, tape stop) - a SAMPLE mark on the wave picks the material. NEW VARIATION gives another variant. "
+                              "(stutter, rearrange, half speed, tape stop) - a SAMPLE mark on the wave picks the material; it opens on EDIT / WHOLE SAMPLE (every bar re-cut, the last one into the downbeat). NEW VARIATION gives another variant. "
                               "The older recipes are in the submenus. RISE: AUTO COMPOSE builds independent kick, snare and hat parts. Eight families range from snare torrents and hat weaving "
                               "to triplet breaks and call/response. Composition favours different attacks from the input loop. NEW VARIATION keeps the source. "
                               "R13 SLICER and CLASSIC / R12 RECIPES retain the earlier renderers. RISE stays unchanged." },

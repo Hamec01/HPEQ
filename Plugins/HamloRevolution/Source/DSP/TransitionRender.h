@@ -30,7 +30,7 @@ constexpr int kSampleMark = kKitRoles;
 struct Settings
 {
     int kind = Rise;
-    int bars = 2;               // the source and the result: 1, 2 or 4 bars
+    int bars = 2;               // the source and the result: 1, 2, 4, 8 or 16 bars (legalBars)
     double bpm = 120.0, sampleRate = 48000.0;
     // RISE: PITCH, ROLL, SWELL, SWEEP; FILL: CHOP, ROLL, REVERSE, STOP (0 .. 1)
     std::array<double, 4> knobs { 0.6, 0.8, 0.5, 0.7 };
@@ -81,6 +81,10 @@ juce::AudioBuffer<float> renderComposedFill(const juce::AudioBuffer<float>&,cons
 // R15 PHRASE FILL (recipes 30 AUTO, 31 BOOM BAP, 32 TRAP, 33 DNB, 34 TECHNO): docs/DRUM_FILL_R15.md
 constexpr int kPhraseRecipe = 30;
 constexpr int kWholeLoop = 99; // fillBeats for PHRASE FILL: re-make every bar of the source, not only its end
+// R18: the source length in bars: 1, 2, 4, 8 or 16 (anything else is 2)
+inline int legalBars(int bars) noexcept { return bars == 1 || bars == 4 || bars == 8 || bars == 16 ? bars : 2; }
+// R18: SAMPLE CHOP may re-cut the whole source (fillBeats kWholeLoop)
+constexpr int kR17Chop = 41;
 Plan makePhraseFillPlan(const juce::AudioBuffer<float>&,const Settings&);
 juce::AudioBuffer<float> renderPhraseFill(const juce::AudioBuffer<float>&,const Settings&,Plan* info=nullptr);
 Plan makeR17FillPlan(const juce::AudioBuffer<float>&,const Settings&);

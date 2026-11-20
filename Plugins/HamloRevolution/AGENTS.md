@@ -6,7 +6,14 @@
 
 ---
 
-## Current checkpoint: Revolution R17 / 0.5.0 fill engine rebuilt (2026-11-19)
+## Current checkpoint: Revolution R18 / 0.5.1 whole-sample chop, BARS 8 / 16 (2026-11-20)
+
+Owner in FL with 0.5.0: SAMPLE CHOP should re-cut the whole sample (no such choice), and BARS needs 1-2-4-8-16.
+SAMPLE CHOP (41) now opens on EDIT / WHOLE SAMPLE (fillBeats kWholeLoop; every bar re-cut from its own audio, the last
+bar plays the chosen pattern into the downbeat); 1 / 2 / 4 / 8 beats unchanged. `legalBars` allows 1, 2, 4, 8, 16 in
+every engine; the capture ring is 66 s (16 bars down to 59 BPM). Test F10 + page test. docs/R17_FILL_ENGINE.md (R18).
+
+## Historical checkpoint: Revolution R17 / 0.5.0 fill engine rebuilt (2026-11-19)
 
 Owner: the drum fill always sounded weak (no breath, motion, rhythm); "re-make it completely, other knobs are fine,
 and fill from samples too". docs/R17_FILL_ENGINE.md: recipes 35 FILL AUTO .. 41 SAMPLE CHOP (BUILD, AROUND THE KIT,
