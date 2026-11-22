@@ -118,6 +118,10 @@ void SaturatorProcessor::shape(float* data, int n, float g, float bias, float no
 
 void SaturatorProcessor::process(float* const* channels, int numChannels, int numSamples, const FxSlotParams& p) noexcept
 {
+    // Oversamplers are prepared for two channels. JUCE's fractional-delay
+    // stage requires that same channel count on downsampling, including mono.
+    // Pad only the unobserved right path; channel zero keeps the exact old law.
+    std::array<float,kOversamplingChunk> monoPadding{};
     if (std::lround(p.values[slot::kSatModel]) > 0)
     {
         const int os = std::clamp(static_cast<int>(std::lround(p.values[slot::kOversampling])), 0, 3);
@@ -145,7 +149,9 @@ void SaturatorProcessor::process(float* const* channels, int numChannels, int nu
             for (int start = 0; start < numSamples; start += kOversamplingChunk)
             {
                 const int n = std::min(kOversamplingChunk, numSamples - start);
-                juce::dsp::AudioBlock<float> block(channels, static_cast<size_t>(numChannels), static_cast<size_t>(start), static_cast<size_t>(n));
+                if(numChannels==1)monoPadding.fill(0);
+                float* padded[]{channels[0]+start,numChannels>1?channels[1]+start:monoPadding.data()};
+                juce::dsp::AudioBlock<float> block(padded,kMaxChannels,static_cast<size_t>(n));
                 auto up = sampler.processSamplesUp(block);
                 for (size_t ch = 0; ch < up.getNumChannels(); ++ch)
                     mag.core(up.getChannelPointer(ch), static_cast<int>(up.getNumSamples()), static_cast<int>(ch));
@@ -184,7 +190,9 @@ void SaturatorProcessor::process(float* const* channels, int numChannels, int nu
         for (int start = 0; start < numSamples; start += kOversamplingChunk)
         {
             const int n = std::min(kOversamplingChunk, numSamples - start);
-            juce::dsp::AudioBlock<float> block(channels, static_cast<size_t>(numChannels), static_cast<size_t>(start), static_cast<size_t>(n));
+            if(numChannels==1)monoPadding.fill(0);
+            float* padded[]{channels[0]+start,numChannels>1?channels[1]+start:monoPadding.data()};
+            juce::dsp::AudioBlock<float> block(padded,kMaxChannels,static_cast<size_t>(n));
             auto up = sampler.processSamplesUp(block);
             for (size_t ch = 0; ch < up.getNumChannels(); ++ch)
                 shape(up.getChannelPointer(ch), static_cast<int>(up.getNumSamples()), g, bias, norm, curve);

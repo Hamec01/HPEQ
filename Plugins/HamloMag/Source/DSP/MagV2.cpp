@@ -161,12 +161,15 @@ void MagV2Processor::design(const FxSlotParams& p) noexcept
 
 void MagV2Processor::sample(float* const* channels, int numChannels, int numSamples, int mode) noexcept
 {
+    std::array<float,SaturatorProcessor::kOversamplingChunk> monoPadding{};
     const auto& d = kDevices[static_cast<size_t>(mode)];
     const double step = d.rate / (4.0 * fs);
     for (int start = 0; start < numSamples; start += SaturatorProcessor::kOversamplingChunk)
     {
         const int n = std::min(SaturatorProcessor::kOversamplingChunk, numSamples - start);
-        juce::dsp::AudioBlock<float> block(channels, static_cast<size_t>(numChannels), static_cast<size_t>(start), static_cast<size_t>(n));
+        if(numChannels==1)monoPadding.fill(0);
+        float* padded[]{channels[0]+start,numChannels>1?channels[1]+start:monoPadding.data()};
+        juce::dsp::AudioBlock<float> block(padded,kMaxChannels,static_cast<size_t>(n));
         auto up = samplerOs->processSamplesUp(block);
         const auto count = up.getNumSamples();
         for (size_t i = 0; i < count; ++i)

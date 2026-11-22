@@ -1,4 +1,10 @@
-# HamloMag 0.2.1
+# HamloMag 0.2.2
+
+Mono oversampling now pads the unused right channel on the stack, matching the
+JUCE oversampler's prepared stereo layout. This removes fractional-delay
+assertion logging / heap activity at 8x in mono, including mono rack domains.
+Parameter IDs, latency, stereo samples and audible mono law are preserved.
+See [mono correction](docs/reports/MONO_OVERSAMPLING.md).
 
 The saturator of HPEQ as its own VST3 (HamloProd): six models (CLASSIC, TAPE, TUBE, IRON, GERMANIUM, VINYL), the
 HamloLaw harmonics, tape / vinyl movement and noises, the Black Steel page with the preset screen top left.

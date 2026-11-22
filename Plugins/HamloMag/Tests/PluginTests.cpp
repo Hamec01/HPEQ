@@ -235,6 +235,24 @@ public:
             expectEquals(q.getCurrentProgram(), p.getNumPrograms() - 1);
         }
 
+        beginTest("Mono oversampling preserves channel zero of a silent-right stereo instance");
+        for(double rate:{44100.,48000.,96000.})for(int os:{1,2,3})for(int sampler:{0,1,2,3})
+        {
+            HamloMagProcessor mono,stereo;
+            for(auto* processor:{&mono,&stereo})
+            {processor->setParameterValue("oversampling",static_cast<float>(os));processor->setParameterValue("sampler",static_cast<float>(sampler));processor->setParameterValue("hiss",0);processor->setParameterValue("wow",0);}
+            mono.setPlayConfigDetails(1,1,rate,256);stereo.setPlayConfigDetails(2,2,rate,256);
+            mono.prepareToPlay(rate,256);stereo.prepareToPlay(rate,256);juce::MidiBuffer midi;bool exact=true;
+            for(int b=0;b<12;++b)
+            {
+                juce::AudioBuffer<float> a(1,127),s(2,127);s.clear();
+                for(int i=0;i<127;++i){const float value=.2f*std::sin(static_cast<float>(b*127+i)*.07f);a.setSample(0,i,value);s.setSample(0,i,value);}
+                mono.processBlock(a,midi);stereo.processBlock(s,midi);
+                for(int i=0;i<127;++i)exact=exact&&a.getSample(0,i)==s.getSample(0,i);
+            }
+            expect(exact,"Mono oversampling changed channel zero");
+        }
+
         beginTest("Page: 1180 x 940, resizable; the preset screen top left; a knob writes its parameter");
         {
             HamloMagProcessor p;
