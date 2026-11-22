@@ -16,6 +16,7 @@
 #include "UI/ModuleHelp.h"
 #include "UI/HamloTochkaPanel.h"
 #include "UI/HamloVerbPanel.h"
+#include "UI/NativeModulePanel.h"
 
 namespace hpeq::ui
 {
@@ -67,6 +68,9 @@ private:
     // D6: the module chain of the selected FX region or EQ point (grid, or one module's page).
     enum class ChainKind { Region, Point, Mix };
     void buildModules(const std::vector<FxSlotState>& chain, ChainKind);
+    void buildNativePage(int index,FxType);
+    juce::String structureSignature(const FxProjectState&) const;
+    juce::String builtStructure;
     // The engine node of the selection (a region's or point's slot, or the layer's MIX node).
     const dsp::FxNodeProcessor* selectedNodeProcessor(const FxProjectState&) const;
     // Points into the given project: the caller keeps it alive while using the result.

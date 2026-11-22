@@ -16,6 +16,9 @@ ChannelMode layerMode(ChannelMode m) noexcept
 ProjectSnapshot makeProjectSnapshot(const FxProjectState& project)
 {
     ProjectSnapshot s;
+    s.wetOnly=project.wetOnly;
+    s.outputTrim=std::pow(10.0,project.outputTrimDb/20.0);
+    s.inputTrim=std::pow(10.0,project.inputTrimDb/20.0);
     s.routing = project.routing;
     bool anySolo = false;
     for (const auto& layer : project.layers)
@@ -56,7 +59,7 @@ ProjectEngine::ProjectEngine()
         layer.engine = std::make_unique<LayerEngine>();
 }
 
-void ProjectEngine::prepare(double newSampleRate, int maxBlockSize)
+void ProjectEngine::prepare(double newSampleRate, int maxBlockSize,int channels)
 {
     const bool rebuildNative=!nativeRegistry->empty();
     if(rebuildNative)
@@ -70,6 +73,7 @@ void ProjectEngine::prepare(double newSampleRate, int maxBlockSize)
         nativeRegistry->clear();
     }
     sampleRate = newSampleRate;
+    streamChannels=juce::jlimit(1,2,channels);
     maxBlock = std::max(1, maxBlockSize);
     rampSteps = stepsFor(kMixRampSeconds, sampleRate);
     pools = std::make_unique<LayerPools>();
@@ -82,7 +86,8 @@ void ProjectEngine::prepare(double newSampleRate, int maxBlockSize)
     }
     inputAlign.prepare(maxLayerLatency(sampleRate));
     latencyCap = maxLatency(sampleRate);
-    for (auto* group : { &dryAligned, &work, &current, &component, &rest })
+    wetReference.prepare(latencyCap);
+    for (auto* group : { &dryAligned, &work, &current, &component, &rest, &wetDry })
         for (auto& channel : *group)
             channel.assign(static_cast<size_t>(maxBlock), 0.0f);
     reset();
@@ -91,7 +96,9 @@ void ProjectEngine::prepare(double newSampleRate, int maxBlockSize)
 
 void ProjectEngine::reset() noexcept
 {
+    liveNativeTail.store(0,std::memory_order_relaxed);
     inputAlign.reset();
+    wetReference.reset();
     for (auto& layer : layers)
     {
         layer.engine->reset();
@@ -102,6 +109,9 @@ void ProjectEngine::reset() noexcept
         layer.processedLastBlock = false;
     }
     applySnapshot();
+    wetRemoval.reset(exchange.current().wetOnly?1.0:0.0);
+    outputTrim.reset(exchange.current().outputTrim);
+    inputTrim.reset(exchange.current().inputTrim);
     for (auto& layer : layers)
     {
         layer.mode = layer.params.channel;
@@ -123,7 +133,7 @@ bool ProjectEngine::publish(const FxProjectState& project) noexcept
         auto images=std::make_unique<std::array<LayerSnapshot,kNumLayers>>();
         for(size_t j=0;j<layers.size();++j)(*images)[j]=makeSnapshot(saved.layers[j],sampleRate);
         juce::String error;
-        if(!nativeRegistry->stage(saved,*images,sampleRate,std::max(1,maxBlock),error))
+        if(!nativeRegistry->stage(saved,*images,sampleRate,std::max(1,maxBlock),error,streamChannels))
         {lastError=error;return false;}
         for(size_t j=0;j<layers.size();++j)layers[j].engine->publish((*images)[j]);
         auto controls=makeProjectSnapshot(project);controls.nativeGeneration=nativeRegistry->generation();
@@ -307,7 +317,17 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
     for (const auto& layer : layers)
         acknowledged = std::min(acknowledged, layer.engine->nativeGeneration());
     nativeRegistry->acknowledge(acknowledged);
+    if(freshStart)
+    {
+        wetRemoval.reset(exchange.current().wetOnly?1.0:0.0);
+        outputTrim.reset(exchange.current().outputTrim);
+        inputTrim.reset(exchange.current().inputTrim);
+    }
     freshStart = false;
+
+    wetRemoval.setTarget(exchange.current().wetOnly?1.0:0.0,rampSteps);
+    outputTrim.setTarget(exchange.current().outputTrim,rampSteps);
+    inputTrim.setTarget(exchange.current().inputTrim,rampSteps);
 
     for (int start = 0; start < numSamples; start += maxBlock)
     {
@@ -319,6 +339,16 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
             x[ch] = channels[ch] + start;
             w[ch] = work[static_cast<size_t>(ch)].data();
         }
+
+        if(inputTrim.isRamping()||inputTrim.value()!=1.0)
+            for(int i=0;i<n;++i)
+            {
+                const auto trim=static_cast<float>(inputTrim.next());
+                for(int ch=0;ch<numChannels;++ch)x[ch][i]*=trim;
+            }
+        float* wetDryPtr[kMaxChannels]{};
+        for(int ch=0;ch<numChannels;++ch)wetDryPtr[ch]=wetDry[static_cast<size_t>(ch)].data();
+        wetReference.process(x,wetDryPtr,numChannels,n,latency);
 
         if (routing == LayerRouting::Parallel)
         {
@@ -376,8 +406,21 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
                 }
             }
         }
+        if(wetRemoval.isRamping()||wetRemoval.value()!=0.0||outputTrim.isRamping()||outputTrim.value()!=1.0)
+            for(int i=0;i<n;++i)
+            {
+                const auto removal=static_cast<float>(wetRemoval.next());
+                const auto trim=static_cast<float>(outputTrim.next());
+                for(int ch=0;ch<numChannels;++ch)x[ch][i]=(x[ch][i]-removal*wetDryPtr[ch][i])*trim;
+            }
     }
 
+    // Native sync/freeze settings can change their declared tail with host
+    // tempo, without a project edit. Publish metadata after audio, never expose
+    // the message-thread registry container to host/audio queries.
+    double nativeTail=0;
+    for(const auto& layer:layers)nativeTail+=layer.engine->nativeTailSeconds();
+    liveNativeTail.store(nativeTail,std::memory_order_relaxed);
     // A disabled layer that has faded out stops here; it is reset when enabled again.
     for (auto& layer : layers)
         if (!layer.params.enabled && layer.live && layer.weight.value() == 0.0 && !layer.weight.isRamping())

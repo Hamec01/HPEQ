@@ -200,12 +200,22 @@ def source_manifest():
         source = ROOT.parent / ("HamloRevolutionTransitions" if name=="Revolution" else plugin)
         imported = git("rev-parse",f"HEAD:Plugins/{plugin}")
         imported_dirty=git("status","--porcelain=v1","--",f"Plugins/{plugin}")
-        if source.is_dir():
+        record = pinned.get(plugin, {})
+        if record.get("source_prefix"):
+            # An authorized local correction is pinned to a prefix of this
+            # repository, independently of any older sibling standalone checkout.
+            if record["source_prefix"]!=f"Plugins/{plugin}":
+                raise ValueError(f"Invalid local source prefix: {plugin}")
+            source_commit=record["source_commit"]
+            source_tree=git("rev-parse",f"{source_commit}:{record['source_prefix']}")
+            dirty=False
+            if source_tree!=record["source_tree"]:
+                raise ValueError(f"Unverified local correction identity: {plugin}")
+        elif source.is_dir():
             source_tree = git("rev-parse","HEAD^{tree}",cwd=source)
             source_commit = git("rev-parse","HEAD",cwd=source)
             dirty = git("status","--porcelain=v1",cwd=source)
         else:
-            record = pinned.get(plugin, {})
             source_tree = record.get("source_tree")
             source_commit = record.get("source_commit")
             dirty = False
@@ -216,6 +226,9 @@ def source_manifest():
         cmake = (ROOT/"Plugins"/plugin/"CMakeLists.txt").read_text(encoding="utf-8-sig")
         version = re.search(r"project\([^\s]+\s+VERSION\s+([\d.]+)",cmake)[1]
         out[plugin] = dict(version=version,source_commit=source_commit,source_tree=source_tree,imported_tree=imported,source_checkout=source.name)
+        if record.get("source_prefix"):
+            out[plugin].update(source_prefix=record["source_prefix"],upstream_base=record["upstream_base"],
+                               source_checkout="HPEQ local native correction")
     return out
 
 
@@ -300,11 +313,11 @@ def validate(data, schemas):
     for bank in banks:
         if bank!="Studio" and collections.Counter(r["category"] for r in data if r["bank"]==bank)!=allocation: raise ValueError(f"Allocation: {bank}")
     if set(coverage)!={"Hamlo"+n for n in PLUGINS}: raise ValueError("Module coverage")
-    return dict(recipes=len(data),unique_processing=len(sonic),banks=dict(banks),module_instances=dict(sorted(coverage.items())),audio_status="not_run; runtime adapters required")
+    return dict(recipes=len(data),unique_processing=len(sonic),banks=dict(banks),module_instances=dict(sorted(coverage.items())),audio_status="structural check only; runtime/audio receipt: docs/hamlorack/RACK_COMPLETE.json")
 
 
 def render_catalog(data, schemas):
-    lines=["# HamloRack: 250 authored preset designs", "", "Status: design candidates. Native parameter declarations checked; audio calibration and runtime integration pending.", "", "Every chain below is ordered. EQ precedes frequency regions; the full-range chain follows. Amount is the rack insert blend or wet-send level; native MIX stays unity. Full exact settings and explicit Revolution scenes are in `Assets/Presets/HamloRack/Design/recipes.json`.", ""]
+    lines=["# HamloRack: 250 authored preset designs", "", "These are the immutable raw authoring settings. Executable integration and measured calibration are documented in [RACK_COMPLETE](RACK_COMPLETE.md) and [RACK_BANK_REPORT](RACK_BANK_REPORT.md). Original RACK0 status strings in the design JSON record its authoring stage; runtime calibration overrides live separately in `Assets/Presets/HamloRack/calibration.json`.", "", "Every chain below is ordered. EQ precedes frequency regions; the full-range chain follows. Amount is the rack insert blend or wet-send level; native MIX stays unity. Full exact settings and explicit Revolution scenes are in `Assets/Presets/HamloRack/Design/recipes.json`.", ""]
     for bank in dict.fromkeys(r["bank"] for r in data):
         lines += [f"## {bank}", ""]
         for r in (r for r in data if r["bank"]==bank):
@@ -331,13 +344,13 @@ def render_catalog(data, schemas):
                             events=[f"{step+1}: {actions[i][v] if i<2 else v}" for step,v in enumerate(lane) if v]
                             if events: lines += ["  - "+m["scene"]["lane_names"][i]+" (steps 1-16): "+"; ".join(events)]
                 lines += [""]
-            lines += [f"Reject/revise if: {r['reject_if']}", "", f"Calibration: {r['calibration']['intent_check']}; status **{r['calibration']['status']}**.", ""]
+            lines += [f"Reject/revise if: {r['reject_if']}", "", f"Intent check: {r['calibration']['intent_check']}. Original design-stage calibration status: **{r['calibration']['status']}**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.", ""]
             if "required_action" in r["calibration"]: lines += ["Required native action: "+r["calibration"]["required_action"],""]
     return "\n".join(lines).rstrip()+"\n"
 
 
 def render_overview(data):
-    lines=["# HamloRack preset design overview", "", "250 authored candidates. Design validation passed; native runtime, audio calibration and listening are pending. Full parameter settings and rejection checks: [catalog](PRESET_CATALOG.md). Integration and acceptance: [RACK0](RACK0_DESIGN.md).", ""]
+    lines=["# HamloRack preset design overview", "", "250 authored raw recipes, now executable through the native rack importer. Measured calibration and its exceptions: [bank report](RACK_BANK_REPORT.md). Source/test receipt and remaining owner host/listening checks: [integration](RACK_COMPLETE.md). Raw parameter settings and intent/rejection checks: [catalog](PRESET_CATALOG.md). Original acceptance: [RACK0](RACK0_DESIGN.md).", ""]
     for bank in dict.fromkeys(r["bank"] for r in data):
         lines += [f"## {bank}", "", "| ID | Category | Name | Intended result | Ordered processing |", "|---|---|---|---|---|"]
         for r in (r for r in data if r["bank"]==bank):
@@ -361,7 +374,7 @@ def main():
     bank=dict(format="HamloRackDesign",schema_version=1,status="design_only; no runtime importer",
         project_defaults=dict(used_layers=1,unused_layers="empty and disabled",lenin=False,stalin=False,
             output_gain_db=0,output_gain_status="calibration pending"),native_contract_sha256=digest(native),presets=data)
-    receipt=dict(**summary,bank_sha256=digest(bank),native_contract_sha256=digest(native),structural_gates=["S1 source identity", "S2 count/native IDs/ranges/grid", "S3 exact topology uniqueness", "S4 capacities/scene routing"],audio_gates="A1-A9 pending; see RACK0_DESIGN.md")
+    receipt=dict(**summary,bank_sha256=digest(bank),native_contract_sha256=digest(native),structural_gates=["S1 source identity", "S2 count/native IDs/ranges/grid", "S3 exact topology uniqueness", "S4 capacities/scene routing"],audio_gates="measured separately; see RACK_COMPLETE.json and RACK_BANK_REPORT.md; owner host/listening checks remain")
     outputs={DEST/"recipes.json":json.dumps(bank,indent=2,ensure_ascii=False)+"\n",DEST/"native-contract.json":json.dumps(native,indent=2,ensure_ascii=False,sort_keys=True)+"\n",DOCS/"PRESET_CATALOG.md":render_catalog(data,schemas),DOCS/"PRESET_OVERVIEW.md":render_overview(data),DOCS/"STRUCTURAL_VALIDATION.json":json.dumps(receipt,indent=2,ensure_ascii=False)+"\n"}
     for path,text in outputs.items():
         if args.check:

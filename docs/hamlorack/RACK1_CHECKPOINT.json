@@ -111,5 +111,7 @@
     "DAW and listening"
   ],
   "active_jobs": [],
-  "push_scope": "no push requested; no installed VST replacement; binaries and raw audio stay local"
+  "push_scope": "no push requested; no installed VST replacement; binaries and raw audio stay local",
+  "historical_checkpoint": true,
+  "superseded_by": "RACK_COMPLETE.json"
 }

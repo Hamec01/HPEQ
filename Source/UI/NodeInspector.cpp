@@ -360,7 +360,7 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
         {
             const auto keepOn = c[static_cast<size_t>(k)].enabled;
             const auto keepMix = c[static_cast<size_t>(k)].mix;
-            c[static_cast<size_t>(k)] = defaultModule(kTypes[static_cast<size_t>(i)]);
+            c[static_cast<size_t>(k)] = makeNativeModule(kTypes[static_cast<size_t>(i)]);
             c[static_cast<size_t>(k)].enabled = keepOn;
             c[static_cast<size_t>(k)].mix = keepMix;
         });
@@ -423,6 +423,11 @@ void NodeInspector::buildModules(const std::vector<FxSlotState>& chain, ChainKin
         }
     });
 
+    if(module.engineRevision==native::kRevision)
+    {
+        buildNativePage(k,module.type);
+        return;
+    }
     if (module.type == FxType::Compressor)
     {
         // The owner's HamloComp design: one drawn panel instead of generic knobs (it fills the editor body).
@@ -585,7 +590,7 @@ void NodeInspector::addModule(FxType type)
     editChain("Add module", [type](std::vector<FxSlotState>& c)
     {
         if (c.size() < static_cast<size_t>(kMaxFxPerNode))
-            c.push_back(defaultModule(type));
+            c.push_back(makeNativeModule(type));
     });
     const auto project = processor.getProject(); // keep it alive: selectedChain points into it
     const auto* after = selectedChain(project);
@@ -600,12 +605,18 @@ void NodeInspector::showModulePresets(int k, juce::Component& target)
     if (chain == nullptr || k >= static_cast<int>(chain->size()))
         return;
     const auto type = (*chain)[static_cast<size_t>(k)].type;
+    const bool nativeModule=(*chain)[static_cast<size_t>(k)].engineRevision==native::kRevision;
     juce::PopupMenu menu;
     menu.addItem(1, "Default");
     menu.addSectionHeader("Factory");
     const auto& factory = presets::factoryModulePresets(type);
-    for (size_t i = 0; i < factory.size(); ++i)
+    if(nativeModule)
+    {
+        for(const auto& p:native::programs(type))if(p.index>0)menu.addItem(10000+p.index,p.name);
+    }
+    else for (size_t i = 0; i < factory.size(); ++i)
         menu.addItem(1000 + static_cast<int>(i), factory[i].name);
+    if(!nativeModule)menu.addItem(5,"Upgrade to native module");
     const auto userFiles = presets::listFiles(presets::userModuleFolder(type), "*.hpeqmod");
     menu.addSectionHeader("User");
     for (int i = 0; i < userFiles.size(); ++i)
@@ -617,15 +628,21 @@ void NodeInspector::showModulePresets(int k, juce::Component& target)
     menu.addItem(4, "Open preset folder");
 
     juce::Component::SafePointer<NodeInspector> safe(this);
-    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(&target), [safe, k, type, userFiles](int result)
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(&target), [safe, k, type, userFiles,nativeModule](int result)
     {
         if (safe == nullptr || result == 0)
             return;
         std::optional<FxSlotState> module;
         juce::String name;
-        if (result == 1)
+        if(result>=10000)
         {
-            module = defaultModule(type);
+            module=makeNativeModule(type);juce::String error;
+            if(!native::loadProgram(type,result-10000,module->parameters,module->nativeState,error,&module->mix))return;
+            for(const auto& program:native::programs(type))if(program.index==result-10000)name=program.name;
+        }
+        else if (result == 1||result==5)
+        {
+            module = nativeModule||result==5?makeNativeModule(type):defaultModule(type);
             name = "Default";
         }
         else if (result == 3)
@@ -884,6 +901,7 @@ void NodeInspector::rebuild()
         });
     }
 
+    builtStructure=structureSignature(project);
     refresh();
     resized();
     repaint();
@@ -893,8 +911,47 @@ void NodeInspector::rebuild()
 
 void NodeInspector::refresh()
 {
+    if(builtStructure!=structureSignature(processor.getProject())){rebuildAsync();return;}
     for (auto& r : refreshers)
         r();
+}
+
+juce::String NodeInspector::structureSignature(const FxProjectState& p) const
+{
+    juce::String s=juce::String(p.selectedLayer)+":"+juce::String(static_cast<int>(selection.kind))+":"+juce::String(selection.id)+":"+juce::String(selection.slot);
+    if(const auto* chain=selectedChain(p))for(const auto& m:*chain)s+=":"+toString(m.type)+"/"+juce::String(m.engineRevision);
+    return s;
+}
+void NodeInspector::buildNativePage(int k,FxType type)
+{
+    largePage=true;
+    auto* panel=new NativeModulePanel(type);controls.add(panel);addAndMakeVisible(panel);
+    panel->getProperties().set("section",4);
+    panel->readSlot=[this,k] {
+        const auto p=processor.getProject();
+        if(const auto* c=selectedChain(p);c&&k<static_cast<int>(c->size()))return (*c)[static_cast<size_t>(k)];
+        return FxSlotState{};
+    };
+    panel->onGesture=[this]{processor.getUndoManager().beginNewTransaction("Native module");};
+    panel->readError=[this]{return processor.getProjectError();};
+    panel->onChange=[this,k,type](const FxSlotState& slot) {
+        editChain("Native module",[&](std::vector<FxSlotState>& c) {
+            if(k<static_cast<int>(c.size())&&c[static_cast<size_t>(k)].type==type)c[static_cast<size_t>(k)]=slot;
+        });
+    };
+    panel->readMeters=[this,k] {
+        const auto p=processor.getProject();const int node=selection.kind==Selection::Kind::Mix?8:selectedEngineSlot(p);
+        return processor.nativeMeters(p.selectedLayer,node,k);
+    };
+    if(type==FxType::Gain)
+    {
+        const auto coordinates=[this] {
+            const auto p=processor.getProject();return std::pair<int,int>{p.selectedLayer,selection.kind==Selection::Kind::Mix?8:selectedEngineSlot(p)};
+        };
+        panel->readFader=[this,k,coordinates] {const auto [layer,node]=coordinates();return processor.nativeFaderView(layer,node,k);};
+        panel->faderAction=[this,k,coordinates](int action){const auto [layer,node]=coordinates();return processor.nativeFaderAction(layer,node,k,action);};
+    }
+    refreshers.push_back([panel]{panel->refresh();});
 }
 
 void NodeInspector::timerCallback()
@@ -1786,10 +1843,18 @@ void NodeInspector::resized()
     if (any && !showingGrid)
     {
         // One module's page fills the panel (the region / point controls come back with the arrow).
-        auto header = area.removeFromTop(kRowHeight);
+        auto header = area.withHeight(kRowHeight);
         int x = header.getX();
+        int headerY=header.getY();
+        for(auto* c:controls)if(static_cast<int>(c->getProperties()["section"])==1)
+        {
+            const int width=c->getProperties()["width"],height=c->getProperties()["height"];
+            if(x+width>header.getRight()&&x>header.getX()){x=header.getX();headerY+=kRowHeight;}
+            c->setBounds(x,headerY,width,height);x+=width+6;
+        }
+        area.removeFromTop(headerY-header.getY()+kRowHeight);
         area.removeFromTop(8);
-        chainArea = header;
+        chainArea = header.withHeight(headerY-header.getY()+kRowHeight);
         paramArea = area;
         auto inner = area;
         int knobX = inner.getX(), comboX = inner.getX();
@@ -1800,8 +1865,7 @@ void NodeInspector::resized()
             c->setVisible(section != 0);
             if (section == 1)
             {
-                c->setBounds(x, header.getY(), width, height);
-                x += width + 6;
+                continue; // laid out above, wrapping on narrow editors
             }
             else if (section == 4)
                 c->setBounds(area);

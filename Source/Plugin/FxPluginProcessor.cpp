@@ -1,4 +1,5 @@
 #include "Plugin/FxPluginProcessor.h"
+#include "Rack/RackPresets.h"
 
 #include <cmath>
 
@@ -55,7 +56,7 @@ void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamp
     capture.reset();
     inputLoudness.prepare(sampleRate, false);
     outputLoudness.prepare(sampleRate, true);
-    engine.prepare(sampleRate, maxBlock);
+    engine.prepare(sampleRate, maxBlock,getTotalNumInputChannels());
     tubes.prepare(sampleRate, maxBlock);
     dry.setSize(dsp::kMaxChannels, maxBlock);
     dryAlign.prepare(dsp::ProjectEngine::maxLatency(sampleRate) + tubes.latencySamples());
@@ -122,13 +123,13 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
     // The layer keeps running while bypassed (warm filter/detector state, no click on return); bypass
     // crossfades to the dry copy and, once settled, outputs the dry samples exactly.
     dsp::Transport transport;
+    transport.bpm=fallbackBpm.load(std::memory_order_relaxed);
     if (auto* hostPlayHead = getPlayHead())
         if (const auto position = hostPlayHead->getPosition())
         {
             if (const auto bpm = position->getBpm(); bpm.hasValue() && *bpm > 0.0)
             {
                 transport.bpm = *bpm;
-                hostBpm.store(*bpm, std::memory_order_relaxed);
             }
             transport.playing = position->getIsPlaying();
             if (const auto ppq = position->getPpqPosition(); ppq.hasValue())
@@ -138,6 +139,7 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
             }
         }
 
+    hostBpm.store(transport.bpm,std::memory_order_relaxed);
     auto* const* data = buffer.getArrayOfWritePointers();
     const int capacity = dry.getNumSamples();
     if (capacity <= 0)
@@ -154,12 +156,25 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
 
         if (start > 0 && transport.hasPosition)
             transport.ppqAtBlockStart += static_cast<double>(capacity) * transport.bpm / (60.0 * currentSampleRate.load(std::memory_order_relaxed));
-        engine.process(chunk, channels, n, transport);
+        const bool master=masterRoute.load(std::memory_order_relaxed);
+        const auto applyGain=[&]
+        {
+            if(gain.isSmoothing())
+                for(int i=0;i<n;++i)
+                {
+                    const auto g=gain.getNextValue();
+                    for(int ch=0;ch<channels;++ch)chunk[ch][i]*=g;
+                }
+            else if(const auto g=gain.getTargetValue();g!=1.0f)
+                for(int ch=0;ch<channels;++ch)juce::FloatVectorOperations::multiply(chunk[ch],g,n);
+        };
         // BRING LENIN / STALIN BACK: the tube colour of the whole output (its latency only while it runs)
         tubes.setTargets(tubeLenin.load(std::memory_order_relaxed), tubeStalin.load(std::memory_order_relaxed),
                          tubeLeninMix.load(std::memory_order_relaxed), tubeStalinMix.load(std::memory_order_relaxed));
         const int tubeLatency = tubes.isRunning() ? tubes.latencySamples() : 0;
-        tubes.process(chunk, channels, n);
+        if(master){applyGain();tubes.process(chunk,channels,n);}
+        engine.process(chunk,channels,n,transport);
+        if(!master)tubes.process(chunk, channels, n);
         // Align the dry copy with the layer output (PDC): bypass and the difference view stay in time.
         if (const int latency = engine.getLatencySamples() + tubeLatency; latency > 0)
         {
@@ -182,7 +197,7 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
                 std::copy(dry.getReadPointer(ch), dry.getReadPointer(ch) + n, chunk[ch]);
         }
 
-        if (gain.isSmoothing())
+        if (!master && gain.isSmoothing())
         {
             // One gain value per sample frame, identical for every channel.
             for (int i = 0; i < n; ++i)
@@ -192,7 +207,7 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
                     chunk[ch][i] *= g;
             }
         }
-        else if (const float g = gain.getTargetValue(); g != 1.0f)
+        else if (const float g = gain.getTargetValue(); !master && g != 1.0f)
         {
             for (int ch = 0; ch < channels; ++ch)
                 juce::FloatVectorOperations::multiply(chunk[ch], g, n);
@@ -203,6 +218,7 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
 
     measure(buffer, channels, outputPeak, outputRms);
     outputLoudness.process(buffer.getArrayOfReadPointers(), channels, numSamples);
+    nativeTailHint.store(engine.liveNativeTailSeconds(),std::memory_order_relaxed);
 }
 
 bool FxPluginProcessor::editProject(const juce::String& actionName, const std::function<void(FxProjectState&)>& change)
@@ -284,6 +300,8 @@ bool FxPluginProcessor::setProject(FxProjectState newProject)
     const juce::ScopedLock lock(projectLock);
     if(!engine.publish(newProject))return false;
     project = std::move(newProject);
+    fallbackBpm.store(project.referenceBpm,std::memory_order_relaxed);
+    masterRoute.store(project.masterRoute,std::memory_order_relaxed);
     tubeLenin.store(project.lenin, std::memory_order_relaxed);
     tubeStalin.store(project.stalin, std::memory_order_relaxed);
     tubeLeninMix.store(project.leninMix, std::memory_order_relaxed);
@@ -291,6 +309,102 @@ bool FxPluginProcessor::setProject(FxProjectState newProject)
 
     updateLatencyAndTail(project);
     sendChangeMessage(); // the editor refreshes on the message thread
+    return true;
+}
+bool FxPluginProcessor::loadRackPreset(int index)
+{
+    const auto& bank=rack::recipes();if(index<0||index>=static_cast<int>(bank.size()))return false;
+    FxProjectState p;juce::String error;const auto& recipe=bank[static_cast<size_t>(index)];
+    if(!rack::makeProject(recipe,p,error))return false;
+    undoManager.beginNewTransaction("Rack preset "+recipe.name);
+    if(!editProject("Rack preset "+recipe.name,[&](FxProjectState& target){target=p;}))return false;
+    if(auto* parameter=parameters.getParameter(params::outputGain.getParamID()))parameter->setValueNotifyingHost(parameter->convertTo0to1(0));
+    setPresetName(recipe.name);return true;
+}
+
+native::FaderView FxPluginProcessor::nativeFaderView(int layer,int node,int slot) const
+{
+    const juce::ScopedLock lock(projectLock);
+    if(layer<0||layer>=kNumLayers||slot<0||slot>=kMaxFxPerNode)return {};
+    if(auto* runtime=engine.nativeRuntime(layer,node,slot);runtime&&runtime->kind()==FxType::Gain)
+    {
+        auto view=native::readFader(runtime->referenceProcessor());
+        if(auto* right=engine.nativeRightRuntime(layer,node,slot))
+        {
+            const auto r=native::readFader(right->referenceProcessor());
+            const std::vector<FxSlotState>* chain=node==8?&project.layers[static_cast<size_t>(layer)].mixChain:nullptr;
+            for(const auto& n:project.layers[static_cast<size_t>(layer)].fxNodes)if(n.engineSlot==node)chain=&n.chain;
+            for(const auto& n:project.layers[static_cast<size_t>(layer)].eqNodes)if(n.engineSlot==node)chain=&n.chain;
+            if(chain==nullptr||slot>=static_cast<int>(chain->size()))return {};
+            const auto& values=(*chain)[static_cast<size_t>(slot)].parameters;
+            const auto value=[&](const char* id,double fallback){return static_cast<double>(values.getWithDefault(id,fallback));};
+            const auto powerSum=[](double a,double b,double divisor){return 10*std::log10(std::max(1.e-12,(std::pow(10.,a/10)+std::pow(10.,b/10))/divisor));};
+            view.available=view.available&&r.available;view.learning=view.learning||r.learning;
+            view.canApply=(view.canApply||view.measured<=-60)&&(r.canApply||r.measured<=-60)
+                &&(view.canApply||r.canApply)&&!view.learning&&view.available;
+            const double peak=std::max(view.predictedPeak-view.proposal,r.predictedPeak-r.proposal);
+            view.measured=powerSum(view.measured,r.measured,value("measure",0)==0?2.:1.);
+            view.input=powerSum(view.input,r.input,1.);view.output=powerSum(view.output,r.output,1.);
+            view.proposal=juce::jlimit(-value("matchCut",24),value("matchBoost",12),value("targetDb",-18)-view.measured);
+            if(value("peakGuard",1)!=0)view.proposal=std::min(view.proposal,value("matchCeiling",-1)-peak);
+            if(view.proposal< -value("matchCut",24))view.canApply=false;
+            view.predictedPeak=peak+view.proposal;
+        }
+        return view;
+    }
+    return {};
+}
+native::Meters FxPluginProcessor::nativeMeters(int layer,int node,int slot) const
+{
+    const juce::ScopedLock lock(projectLock);
+    if(auto* runtime=engine.nativeRuntime(layer,node,slot))
+    {
+        auto m=runtime->meters();
+        if(auto* right=engine.nativeRightRuntime(layer,node,slot))
+        {
+            const auto r=right->meters();
+            const auto rms=[](float a,float b){return static_cast<float>(10*std::log10((std::pow(10.,a/10)+std::pow(10.,b/10))*.5));};
+            m.input=rms(m.input,r.input);m.output=rms(m.output,r.output);m.reduction=std::max(m.reduction,r.reduction);
+        }
+        return m;
+    }
+    return {};
+}
+bool FxPluginProcessor::nativeFaderAction(int layer,int node,int slot,int action)
+{
+    const juce::ScopedLock lock(projectLock);
+    if(layer<0||layer>=kNumLayers||slot<0||slot>=kMaxFxPerNode)return false;
+    auto p=project;auto* chain=&p.layers[static_cast<size_t>(layer)].mixChain;
+    if(node!=8)
+    {
+        chain=nullptr;
+        for(auto& n:p.layers[static_cast<size_t>(layer)].fxNodes)if(n.engineSlot==node)chain=&n.chain;
+        for(auto& n:p.layers[static_cast<size_t>(layer)].eqNodes)if(n.engineSlot==node)chain=&n.chain;
+    }
+    if(chain==nullptr||slot>=static_cast<int>(chain->size())||(*chain)[static_cast<size_t>(slot)].type!=FxType::Gain)return false;
+    auto* runtime=engine.nativeRuntime(layer,node,slot);double applied=0;
+    if(runtime==nullptr)return false;
+    auto* right=engine.nativeRightRuntime(layer,node,slot);
+    if(right&&action==3)
+    {const auto view=nativeFaderView(layer,node,slot);if(!view.canApply)return false;applied=view.proposal;}
+    else
+    {
+        if(!native::actionFader(runtime->referenceProcessor(),action,applied))return false;
+        if(right&&!native::actionFader(right->referenceProcessor(),action,applied))return false;
+    }
+    if(action==3)
+    {
+        undoManager.beginNewTransaction("Apply Fader Match");
+        return editProject("Apply Fader Match",[=](FxProjectState& edited) {
+            auto* c=&edited.layers[static_cast<size_t>(layer)].mixChain;
+            if(node!=8)
+            {
+                for(auto& n:edited.layers[static_cast<size_t>(layer)].fxNodes)if(n.engineSlot==node)c=&n.chain;
+                for(auto& n:edited.layers[static_cast<size_t>(layer)].eqNodes)if(n.engineSlot==node)c=&n.chain;
+            }
+            (*c)[static_cast<size_t>(slot)].parameters.set("matchedDb",applied);
+        });
+    }
     return true;
 }
 
@@ -322,7 +436,8 @@ void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
         sum += tail;
         max = std::max(max, tail);
     }
-    tailSeconds.store((state.routing == LayerRouting::Serial ? sum : max) + engine.nativeTailSeconds() + latency / sampleRate, std::memory_order_relaxed);
+    nativeTailHint.store(engine.nativeTailSeconds(),std::memory_order_relaxed);
+    tailSeconds.store((state.routing == LayerRouting::Serial ? sum : max) + latency / sampleRate, std::memory_order_relaxed);
     if (latency != getLatencySamples())
         setLatencySamples(latency);
 }

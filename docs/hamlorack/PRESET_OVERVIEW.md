@@ -1,6 +1,6 @@
 # HamloRack preset design overview
 
-250 authored candidates. Design validation passed; native runtime, audio calibration and listening are pending. Full parameter settings and rejection checks: [catalog](PRESET_CATALOG.md). Integration and acceptance: [RACK0](RACK0_DESIGN.md).
+250 authored raw recipes, now executable through the native rack importer. Measured calibration and its exceptions: [bank report](RACK_BANK_REPORT.md). Source/test receipt and remaining owner host/listening checks: [integration](RACK_COMPLETE.md). Raw parameter settings and intent/rejection checks: [catalog](PRESET_CATALOG.md). Original acceptance: [RACK0](RACK0_DESIGN.md).
 
 ## Boom Bap
 

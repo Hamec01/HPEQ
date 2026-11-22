@@ -48,7 +48,7 @@ LayerControls::LayerControls(FxPluginProcessor& p) : processor(p)
     {
         const auto r = routing.getSelectedItemIndex() == 1 ? LayerRouting::Serial : LayerRouting::Parallel;
         processor.getUndoManager().beginNewTransaction("Routing");
-        processor.editProject("Routing", [r](FxProjectState& p) { p.routing = r; });
+        processor.editProject("Routing", [r](FxProjectState& p) { p.routing = r;if(r==LayerRouting::Parallel)p.masterRoute=false; });
     };
     addAndMakeVisible(mode);
     addAndMakeVisible(routing);

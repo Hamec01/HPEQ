@@ -21,6 +21,7 @@ struct AllocationCounts
 
 AllocationCoverage allocationCoverage() noexcept;
 const char* allocationCoverageName() noexcept;
+void printFirstAllocationStack(); // diagnostic only, called after all probes close
 
 class ScopedAllocationProbe
 {

@@ -96,7 +96,6 @@ Handle create{name}() {{
 }}
 }}
 '''
-        write(dest/plugin/"Factory.cpp",factory)
         if name in KINDS:
             latency=f"return {ns}hpeq::standalone::maximumLatencySamples({ns}hpeq::standalone::ModuleKind::{KINDS[name]},rate);"
         elif name=="Comp":latency="(void)rate;return 0;"
@@ -106,10 +105,37 @@ Handle create{name}() {{
         else:
             latency=f"using namespace {ns}hamlo::dsp; RedWallColour colour;colour.prepare(rate,1);LimiterSettings p;p.values[slot::kLookaheadMs]=10;p.values[slot::kLimTruePeak]=1;return colour.latency()+LimiterProcessor::lookaheadSamples(p,rate);"
         factory+=f"\nnamespace hpeq::native {{ int latency{name}(double rate) {{ {latency} }} }}\n"
+        if name in ("Comp","RedWall"):
+            method="gainReductionDb()" if name=="Comp" else "limiter().lastGainReductionDb()"
+            factory+=f"\nnamespace hpeq::native {{ float reduction{name}(juce::AudioProcessor& p) {{return static_cast<{ns}hamlo::{SIMPLE[name][0]}::{SIMPLE[name][1]}&>(p).{method};}} }}\n"
+        if name=="Fader":
+            factory+=f'''
+namespace hpeq::native {{
+FaderView readFader(juce::AudioProcessor& processor) {{
+    auto& p=static_cast<{ns}hpeq::standalone::ModulePluginProcessor&>(processor);
+    {ns}hpeq::standalone::FaderStatus status;
+    FaderView out;
+    if(p.readStatus(status)) {{out.available=true;out.learning=status.reading.learning;
+        out.input=status.reading.input.lufsI;out.output=status.reading.output.lufsI;
+        out.correction=status.reading.correctionDb;out.proposal=status.proposal.gainDb;out.canApply=p.canApplyMatch();
+        out.measured=status.proposal.measuredDb;out.predictedPeak=status.proposal.predictedPeak;}}
+    return out;
+}}
+bool actionFader(juce::AudioProcessor& processor,int action,double& applied) {{
+    auto& p=static_cast<{ns}hpeq::standalone::ModulePluginProcessor&>(processor);
+    if(action==3) {{if(!p.applyMatch())return false;applied=p.parameterValue("matchedDb");return true;}}
+    if(action<0||action>2)return false;
+    return p.requestAction(static_cast<{ns}hpeq::standalone::FaderAction>(action));
+}}
+}}
+'''
         if name=="Revolution":
             factory+=f'''
 namespace hpeq::native {{
 juce::MemoryBlock makeRevolutionScene(const juce::NamedValueSet& values,const Scene& scene,juce::String& error) {{
+    return editRevolutionScene({{}},values,scene,error);
+}}
+juce::MemoryBlock editRevolutionScene(const juce::MemoryBlock& previous,const juce::NamedValueSet& values,const Scene& scene,juce::String& error) {{
     error.clear();
     Values checked;
     if(!describe(FxType::MonstaFx,values,48000,checked,error))return {{}};
@@ -119,32 +145,58 @@ juce::MemoryBlock makeRevolutionScene(const juce::NamedValueSet& values,const Sc
             if(value>maxima[lane]) {{error="Invalid Revolution scene action";return {{}};}}
     auto h=createRevolution();
     auto& p=*static_cast<{ns}hpeq::standalone::ModulePluginProcessor*>(h.processor.get());
+    if(previous.getSize()>0) {{
+        const auto xml=juce::AudioProcessor::getXmlFromBinary(previous.getData(),static_cast<int>(previous.getSize()));
+        if(xml==nullptr||xml->getTagName()!="HamloRevolution") {{error="Invalid Revolution scene state";return {{}};}}
+        p.setStateInformation(previous.getData(),static_cast<int>(previous.getSize()));
+    }}
     for(const auto& e:values) {{
         auto* parameter=p.parameter(e.name.toString());
         if(parameter==nullptr) {{error="Unknown scene parameter: "+e.name.toString();return {{}};}}
         parameter->setValueNotifyingHost(parameter->convertTo0to1(static_cast<float>(static_cast<double>(e.value))));
     }}
-    {ns}hpeq::standalone::ModulePluginProcessor::RevolutionState state;
+    auto state=p.getRevolutionState();
     for(size_t i=0;i<7;++i) {{
         state.lanes[i].length=16;state.lanes[i].first=scene.lanes[i];
         if(i<3) {{state.pattern.steps[i]=scene.lanes[i];state.pattern.locks[i]=scene.locks[i];state.pattern.allow[i]=scene.allow[i];}}
     }}
-    p.resetScenes(state);
+    if(previous.getSize()==0)p.resetScenes(state);else p.setRevolutionState(state);
     juce::MemoryBlock result;p.getStateInformation(result);return result;
 }}
 bool readRevolutionScene(const juce::MemoryBlock& bytes,Scene& scene,juce::String& error) {{
+    return readRevolutionSceneAt(bytes,-1,scene,error);
+}}
+bool readRevolutionSceneAt(const juce::MemoryBlock& bytes,int index,Scene& scene,juce::String& error) {{
     error.clear();
     const auto xml=juce::AudioProcessor::getXmlFromBinary(bytes.getData(),static_cast<int>(bytes.getSize()));
     if(xml==nullptr||xml->getTagName()!="HamloRevolution") {{error="Invalid Revolution scene state";return false;}}
     auto h=createRevolution();
     auto& p=*static_cast<{ns}hpeq::standalone::ModulePluginProcessor*>(h.processor.get());
     p.setStateInformation(bytes.getData(),static_cast<int>(bytes.getSize()));
-    const auto decoded=p.getRevolutionState();
+    if(index>= {ns}hpeq::revolution::kScenes) {{error="Invalid Revolution scene index";return false;}}
+    const auto decoded=index<0?p.getRevolutionState():p.getScene(index);
     for(size_t lane=0;lane<scene.lanes.size();++lane) {{
         scene.lanes[lane]=lane<3?decoded.pattern.steps[lane]:decoded.lanes[lane].first;
         if(lane<3) {{scene.locks[lane]=decoded.pattern.locks[lane];scene.allow[lane]=decoded.pattern.allow[lane];}}
     }}
     return true;
+}}
+struct PreparedRevolutionUpdate final:SceneUpdate {{
+    std::array<{ns}hpeq::standalone::ModulePluginProcessor::RevolutionState,{ns}hpeq::revolution::kScenes> scenes;
+    std::array<bool,{ns}hpeq::revolution::kScenes> used;
+    void apply(juce::AudioProcessor& processor) noexcept override {{
+        auto& p=static_cast<{ns}hpeq::standalone::ModulePluginProcessor&>(processor);
+        p.resetScenes(scenes[0]);
+        for(int i=1;i<{ns}hpeq::revolution::kScenes;++i)if(used[static_cast<size_t>(i)])p.setScene(i,scenes[static_cast<size_t>(i)]);
+    }}
+}};
+std::unique_ptr<SceneUpdate> prepareRevolutionUpdate(const juce::MemoryBlock& bytes,juce::String& error) {{
+    if(!validStructuralState(FxType::MonstaFx,bytes,error))return {{}};
+    auto h=createRevolution();auto& p=*static_cast<{ns}hpeq::standalone::ModulePluginProcessor*>(h.processor.get());
+    p.setStateInformation(bytes.getData(),static_cast<int>(bytes.getSize()));
+    auto update=std::make_unique<PreparedRevolutionUpdate>();
+    for(int i=0;i<{ns}hpeq::revolution::kScenes;++i) {{update->scenes[static_cast<size_t>(i)]=p.getScene(i);update->used[static_cast<size_t>(i)]=p.isSceneUsed(i);}}
+    return update;
 }}
 }}
 '''

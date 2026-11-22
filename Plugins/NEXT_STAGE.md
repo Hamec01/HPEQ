@@ -1,4 +1,17 @@
-# Revolution0.4.0 publication / 2026-11-05
+# Current local rack integration / 2026-11-22
+
+Read `../docs/hamlorack/RACK_COMPLETE.md` and the final bank receipt first.
+The owner authorized finishing rack integration and correcting any standalone
+source defect. HamloMag 0.2.2 now contains the shared mono oversampler fix;
+`sync/2026-11-22-mag-mono.json` records its exact local prefix commit/tree and
+upstream base. Other nine native payloads retain their pinned source identities,
+including Revolution 0.5.1. No new push, installed VST replacement or dedicated
+publication-branch update is part of this work. The owner will build the VSTs
+and perform host/listening checks. Do not restart the historical publication plan.
+
+---
+
+# Historical Revolution0.4.0 publication / 2026-11-05
 
 Owner requested all current plugins pushed to GitHub Hamec01/HPEQ. All10clean
 standalone checkouts audited. Revolution advanced from8470eeb/R12/0.3.0to

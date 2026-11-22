@@ -124,8 +124,10 @@ private:
         LinearRamp mix, inGate;
         int pooled = -1;
         int silentSamples = 0;
+        std::int64_t closedSamples = 0;
         int latency = 0;
         native::Runtime* nativeRuntime=nullptr;
+        native::Runtime* nativeRight=nullptr;
         AlignmentDelay align;
         GainProcessor gain;
         CompressorProcessor compressor;

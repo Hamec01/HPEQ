@@ -49,6 +49,7 @@ public:
     // bypassing a node does not change it). The dry path and every node are aligned to it.
     int getLatencySamples() const noexcept { return layerLatency + mixNode.latencySamples(); }
     std::uint64_t nativeGeneration() const noexcept { return exchange.current().nativeGeneration; }
+    double nativeTailSeconds() const noexcept; // audio reader only, current immutable snapshot
     static int latencyFor(const LayerSnapshot&, double sampleRate);
     const FxNodeProcessor& getNode(int index) const noexcept { return nodes[static_cast<size_t>(index)]; }
     // D7: the whole-layer chain's node.

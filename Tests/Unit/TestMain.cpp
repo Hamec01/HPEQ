@@ -45,5 +45,6 @@ int main(int argc, char** argv)
     }
     std::cout << "\nallocation probe: " << hpeq::test::allocationCoverageName() << "\n"
               << "HPEQ_Tests: " << passes << " expectations passed, " << failures << " failed\n";
+    if(failures>0)hpeq::test::printFirstAllocationStack();
     return failures == 0 ? 0 : 1;
 }

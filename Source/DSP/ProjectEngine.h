@@ -27,6 +27,8 @@ struct LayerControlParams
 struct ProjectSnapshot
 {
     std::uint64_t nativeGeneration=0;
+    bool wetOnly=false;
+    double outputTrim=1,inputTrim=1;
     LayerRouting routing = LayerRouting::Parallel;
     std::array<LayerControlParams, kNumLayers> layers {};
 };
@@ -56,13 +58,16 @@ public:
     static int maxLatency(double sampleRate) { return maxLayerLatency(sampleRate) * kNumLayers; }
 
     ProjectEngine();
-    void prepare(double sampleRate, int maxBlockSize);
+    void prepare(double sampleRate, int maxBlockSize,int channels=2);
     void reset() noexcept;
 
     // Message thread. Publishes every layer and the routing/controls.
     bool publish(const FxProjectState&) noexcept;
     const juce::String& publicationError() const noexcept { return lastError; }
     double nativeTailSeconds() const noexcept { return nativeRegistry->tailSeconds(); }
+    double liveNativeTailSeconds() const noexcept { return liveNativeTail.load(std::memory_order_relaxed); }
+    native::Runtime* nativeRuntime(int layer,int node,int slot) const noexcept {return nativeRegistry->find(layer,node,slot);}
+    native::Runtime* nativeRightRuntime(int layer,int node,int slot) const noexcept {return nativeRegistry->findRight(layer,node,slot);}
 
     void process(float* const* channels, int numChannels, int numSamples, const Transport& = {}) noexcept;
 
@@ -95,6 +100,8 @@ private:
 
     double sampleRate = 48000.0;
     int maxBlock = 0, rampSteps = 1;
+    int streamChannels=2;
+    std::atomic<double> liveNativeTail{0};
     int latency = 0, latencyCap = 1;
     bool freshStart = true; // first block after reset(): controls land on their targets at once
     SnapshotExchange<ProjectSnapshot> exchange;
@@ -105,6 +112,9 @@ private:
     FxProjectState lastPublished;
     juce::String lastError;
     AlignmentDelay inputAlign; // Parallel: D_L(x)
+    AlignmentDelay wetReference;
+    LinearRamp wetRemoval, outputTrim, inputTrim;
+    std::array<std::vector<float>, kMaxChannels> wetDry;
 
     std::array<std::vector<float>, kMaxChannels> dryAligned, work, current, component, rest;
 };

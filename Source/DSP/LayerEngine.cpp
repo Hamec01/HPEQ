@@ -6,6 +6,17 @@
 
 namespace hpeq::dsp
 {
+double LayerEngine::nativeTailSeconds() const noexcept
+{
+    double tail=0;
+    const auto add=[&](const FxNodeParams& node) {
+        for(int k=0;k<node.numSlots;++k)if(auto* runtime=node.slots[static_cast<size_t>(k)].nativeValues.runtime)
+            tail+=runtime->tailSeconds();
+    };
+    const auto& snapshot=exchange.current();add(snapshot.mix);
+    for(const auto& node:snapshot.fx)add(node);
+    return tail;
+}
 void LayerEngine::prepare(double newSampleRate, int maxBlockSize, LayerPools* sharedPools)
 {
     sampleRate = newSampleRate;

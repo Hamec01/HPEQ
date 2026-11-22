@@ -39,7 +39,8 @@ public:
     bool producesMidi() const override { return false; }
     bool isMidiEffect() const override { return false; }
     // Longest reverb tail of the processed layer (pre-delay + T60), so hosts keep processing after stop.
-    double getTailLengthSeconds() const override { return tailSeconds.load(std::memory_order_relaxed); }
+    double getTailLengthSeconds() const override { return tailSeconds.load(std::memory_order_relaxed)
+        +nativeTailHint.load(std::memory_order_relaxed); }
 
     int getNumPrograms() override { return 1; }
     int getCurrentProgram() override { return 0; }
@@ -64,6 +65,10 @@ public:
     // Project model: message thread / host state thread only, never the audio thread.
     FxProjectState getProject() const;
     bool setProject(FxProjectState);
+    bool loadRackPreset(int index);
+    native::FaderView nativeFaderView(int layer,int node,int slot) const;
+    native::Meters nativeMeters(int layer,int node,int slot) const;
+    bool nativeFaderAction(int layer,int node,int slot,int action);
     juce::String getProjectError() const { return engine.publicationError(); }
 
     // Undoable edit of the project (message thread). No-op if `change` leaves the project unchanged.
@@ -123,8 +128,11 @@ private:
     int bypassRampSteps = 1;
 
     std::atomic<double> tailSeconds { 0.0 };
+    std::atomic<double> nativeTailHint { 0.0 };
     std::atomic<double> currentSampleRate { 48000.0 };
     std::atomic<double> hostBpm { 120.0 }; // last tempo seen from the play head (Delay tail estimate)
+    std::atomic<double> fallbackBpm {120.0};
+    std::atomic<bool> masterRoute {false};
     void updateLatencyAndTail(const FxProjectState&);
     AudioCapture capture;
     LoudnessMeter inputLoudness, outputLoudness;

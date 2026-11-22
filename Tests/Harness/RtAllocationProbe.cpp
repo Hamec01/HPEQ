@@ -2,9 +2,14 @@
 
 #include <cstdlib>
 #include <new>
+#include <iostream>
 
 #if defined(_MSC_VER) && defined(_DEBUG)
  #include <crtdbg.h>
+ #define NOMINMAX
+ #include <windows.h>
+ #include <dbghelp.h>
+ #pragma comment(lib,"dbghelp.lib")
  #define HPEQ_ALLOC_PROBE_CRT_HOOK 1
 #else
  #define HPEQ_ALLOC_PROBE_CRT_HOOK 0
@@ -18,11 +23,21 @@ namespace
 thread_local int probeDepth = 0;
 thread_local std::uint64_t threadAllocations = 0;
 thread_local std::uint64_t threadFrees = 0;
+#if HPEQ_ALLOC_PROBE_CRT_HOOK
+thread_local void* firstStack[32]{};
+thread_local unsigned short firstDepth=0;
+thread_local bool capturing=false;
+#endif
 
 void noteAllocation() noexcept
 {
     if (probeDepth > 0)
+    {
         ++threadAllocations;
+#if HPEQ_ALLOC_PROBE_CRT_HOOK
+        if(firstDepth==0&&!capturing){capturing=true;firstDepth=CaptureStackBackTrace(0,32,firstStack,nullptr);capturing=false;}
+#endif
+    }
 }
 
 void noteFree() noexcept
@@ -63,6 +78,26 @@ ScopedAllocationProbe::ScopedAllocationProbe() noexcept
     : startCounts { threadAllocations, threadFrees }
 {
     ++probeDepth;
+}
+
+void printFirstAllocationStack()
+{
+#if HPEQ_ALLOC_PROBE_CRT_HOOK
+    if(!firstDepth)return;
+    auto process=GetCurrentProcess();SymSetOptions(SYMOPT_LOAD_LINES|SYMOPT_UNDNAME);SymInitialize(process,nullptr,TRUE);
+    std::cout<<"First RT allocation stack (diagnostic; thresholds unchanged):\n";
+    for(unsigned short i=0;i<firstDepth;++i)
+    {
+        alignas(SYMBOL_INFO) unsigned char bytes[sizeof(SYMBOL_INFO)+1024]{};
+        auto* symbol=reinterpret_cast<SYMBOL_INFO*>(bytes);symbol->SizeOfStruct=sizeof(SYMBOL_INFO);symbol->MaxNameLen=1023;
+        DWORD64 offset=0;IMAGEHLP_LINE64 line{};line.SizeOfStruct=sizeof(line);DWORD displacement=0;
+        if(SymFromAddr(process,reinterpret_cast<DWORD64>(firstStack[i]),&offset,symbol))std::cout<<symbol->Name;
+        else std::cout<<firstStack[i];
+        if(SymGetLineFromAddr64(process,reinterpret_cast<DWORD64>(firstStack[i]),&displacement,&line))std::cout<<" "<<line.FileName<<":"<<line.LineNumber;
+        std::cout<<"\n";
+    }
+    SymCleanup(process);
+#endif
 }
 
 ScopedAllocationProbe::~ScopedAllocationProbe() noexcept

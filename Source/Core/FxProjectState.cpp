@@ -6,6 +6,7 @@
 #include <charconv>
 
 #include <cmath>
+#include <stdexcept>
 
 namespace hpeq
 {
@@ -213,6 +214,11 @@ FxSlotState makeNativeModule(FxType type)
 {
     FxSlotState slot;slot.type=type;slot.engineRevision=native::kRevision;
     slot.parameters=native::defaultParameters(type);
+    if(type==FxType::MonstaFx)
+    {
+        juce::String error;slot.nativeState=native::makeRevolutionScene(slot.parameters,native::Scene{},error);
+        if(slot.nativeState.getSize()==0)throw std::runtime_error(error.toStdString());
+    }
     slot.mix=type==FxType::Reverb||type==FxType::Delay?0.f:1.f;
     return slot;
 }
@@ -229,6 +235,7 @@ bool isModuleSupported(const FxSlotState& slot,juce::String* error)
         if(native::describe(slot.type,slot.parameters,48000,values,reason))
         {
             if(slot.nativeState.getSize()==0)return true;
+            if(!native::validStructuralState(slot.type,slot.nativeState,reason)){if(error)*error=reason;return false;}
             const auto xml=juce::AudioProcessor::getXmlFromBinary(slot.nativeState.getData(),static_cast<int>(slot.nativeState.getSize()));
             if(xml!=nullptr && xml->getTagName()==native::productName(slot.type))
             {
@@ -245,6 +252,8 @@ bool isModuleSupported(const FxSlotState& slot,juce::String* error)
 
 int projectSchemaVersion(const FxProjectState& project)
 {
+    if(project.wetOnly||project.masterRoute||project.outputTrimDb!=0||project.inputTrimDb!=0
+        ||project.referenceBpm!=120||project.rackPresetId.isNotEmpty())return 2;
     for(const auto& layer:project.layers)
     {
         for(const auto& slot:layer.mixChain)if(slot.engineRevision!=0)return 2;
@@ -520,6 +529,9 @@ bool layerHasContent(const LayerState& layer)
 
 void sanitize(FxProjectState& project)
 {
+    project.outputTrimDb=clampFinite(project.outputTrimDb,-48.0,24.0,0.0);
+    project.inputTrimDb=clampFinite(project.inputTrimDb,-48.0,24.0,0.0);
+    project.referenceBpm=clampFinite(project.referenceBpm,20.0,400.0,120.0);
     project.selectedLayer = juce::jlimit(0, kNumLayers - 1, project.selectedLayer);
     std::uint32_t maxId = 0;
 
@@ -583,6 +595,12 @@ juce::ValueTree toValueTree(const FxProjectState& project)
     juce::ValueTree root(ids::project);
     root.setProperty(ids::schemaVersion, projectSchemaVersion(project), nullptr);
     root.setProperty(ids::routing, routingNames.name(project.routing), nullptr);
+    if(project.wetOnly)root.setProperty("wetOnly",true,nullptr);
+    if(project.masterRoute)root.setProperty("masterRoute",true,nullptr);
+    if(project.outputTrimDb!=0)root.setProperty("outputTrimDb",exactText(project.outputTrimDb),nullptr);
+    if(project.inputTrimDb!=0)root.setProperty("inputTrimDb",exactText(project.inputTrimDb),nullptr);
+    if(project.referenceBpm!=120)root.setProperty("referenceBpm",exactText(project.referenceBpm),nullptr);
+    if(project.rackPresetId.isNotEmpty())root.setProperty("rackPresetId",project.rackPresetId,nullptr);
     if (project.lenin) // written only when on: older projects and saved states stay as they were
         root.setProperty("lenin", true, nullptr);
     if (project.stalin)
@@ -691,6 +709,12 @@ std::optional<FxProjectState> fromValueTree(const juce::ValueTree& root, juce::S
 
     FxProjectState project;
     project.routing = routingNames.parse(root[ids::routing], LayerRouting::Parallel);
+    project.wetOnly=root.getProperty("wetOnly",false);
+    project.masterRoute=root.getProperty("masterRoute",false);
+    project.outputTrimDb=readDouble(root,"outputTrimDb",0);
+    project.inputTrimDb=readDouble(root,"inputTrimDb",0);
+    project.referenceBpm=readDouble(root,"referenceBpm",120);
+    project.rackPresetId=root.getProperty("rackPresetId").toString();
     project.lenin = root.getProperty("lenin", false);
     project.stalin = root.getProperty("stalin", false);
     project.leninMix = juce::jlimit(0.0, 1.0, readDouble(root, "leninMix", 1.0));

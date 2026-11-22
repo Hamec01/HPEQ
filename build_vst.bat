@@ -1,7 +1,7 @@
 @echo off
-rem Builds the HPEQ VST3 plug-in (Release).
+rem Builds the HamloRack VST3 plug-in (Release; HPEQ-compatible identity).
 rem   build_vst.bat           build only
-rem   build_vst.bat install   build, then copy HPEQ.vst3 to C:\Program Files\Common Files\VST3
+rem   build_vst.bat install   build, back up old rack bundles, then install HamloRack
 rem                           (run as administrator; close the DAW first)
 setlocal
 cd /d "%~dp0"
@@ -19,17 +19,19 @@ if not exist "build\CMakeCache.txt" (
 )
 
 echo.
-echo Building HPEQ (Release)...
+echo Building HamloRack (Release)...
 cmake --build --preset release --parallel --target HPEQ_VST3
 if errorlevel 1 goto :fail
 
-set "HPEQ_VST=%~dp0build\HPEQ_artefacts\Release\VST3\HPEQ.vst3"
+set "HPEQ_VST=%~dp0build\HPEQ_artefacts\Release\VST3\HamloRack.vst3"
+if not exist "%HPEQ_VST%\Contents\x86_64-win\HamloRack.vst3" goto :fail
 echo.
 echo Done:
 echo   %HPEQ_VST%
 
 if not exist "%~dp0batvst" mkdir "%~dp0batvst"
-xcopy "%HPEQ_VST%" "%~dp0batvst\HPEQ.vst3\" /E /I /Y /Q >nul
+xcopy "%HPEQ_VST%" "%~dp0batvst\HamloRack.vst3\" /E /I /Y /Q >nul
+if errorlevel 1 goto :fail
 
 if /i not "%~1"=="install" goto :ok
 
@@ -40,11 +42,9 @@ if errorlevel 1 (
     echo or run it from an administrator command prompt.
     goto :fail
 )
-set "TARGET=C:\Program Files\Common Files\VST3"
-echo Copying to %TARGET% ...
-xcopy "%HPEQ_VST%" "%TARGET%\HPEQ.vst3\" /E /I /Y /Q >nul
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\install_rack.ps1"
 if errorlevel 1 goto :fail
-echo Installed. Start the DAW (rescan plug-ins if HPEQ does not appear).
+echo Installed. Start the DAW and rescan for HamloRack.
 
 :ok
 echo.

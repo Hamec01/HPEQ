@@ -11,6 +11,8 @@
 #include "Plugin/FxPluginProcessor.h"
 #include "Rack/NativeApi.h"
 #include "Rack/NativeRegistry.h"
+#include "Rack/RackPresets.h"
+#include <set>
 
 namespace hpeq::test
 {
@@ -54,6 +56,25 @@ public:
         beginTest("native public APVTS and prepared runtime produce exact output at all rates, channels and blocks");
         for (auto kind : nativeKinds)
             parity(kind);
+
+        beginTest("all authored native engine combinations retain exact public-API parity");
+        std::set<juce::String> modes;
+        for(const auto& recipe:rack::recipes())
+        {
+            FxProjectState project;juce::String error;
+            if(!rack::makeProject(recipe,project,error,false)){expect(false,error);continue;}
+            const auto check=[&](const std::vector<FxSlotState>& chain) {
+                for(const auto& slot:chain)
+                {
+                    auto key=native::productName(slot.type);
+                    for(auto* id:{"engine","model","mode","v2_engine","v2_mode","v2Mode","oversampling","sampler","wow","glitchEngine","timeStretch","lookahead"})
+                        if(slot.parameters.contains(id))key+="/"+juce::String(id)+"="+slot.parameters[id].toString();
+                    if(modes.insert(key).second)parity(slot.type,&slot.parameters,&slot.nativeState);
+                }
+            };
+            for(const auto& layer:project.layers){check(layer.mixChain);for(const auto& node:layer.fxNodes)check(node.chain);}
+        }
+        expect(modes.size()>10);
 
         beginTest("versioned native state, strict revisions and undo round-trip");
         auto processor = std::make_unique<FxPluginProcessor>();
@@ -241,7 +262,7 @@ public:
     }
 
 private:
-    void parity(FxType kind)
+    void parity(FxType kind,const juce::NamedValueSet* supplied=nullptr,const juce::MemoryBlock* state=nullptr)
     {
         const auto product = native::productName(kind);
         auto params = native::defaultParameters(kind);
@@ -268,6 +289,8 @@ private:
             expect(structural.getSize() > 0, error);
         }
 
+        if(supplied)params=*supplied;
+        if(state)structural=*state;
         for (double rate : { 44100.0, 48000.0, 96000.0 })
             for (int channels : { 1, 2 })
             {
@@ -285,7 +308,7 @@ private:
                 reference.processor->setPlayConfigDetails(channels, channels, rate, 256);
                 reference.processor->prepareToPlay(rate, 256);
                 juce::String error;
-                native::Runtime adapter(kind, structural, params, rate, 256, error);
+                native::Runtime adapter(kind, structural, params, rate, 256, error,channels);
                 expect(adapter.valid(), product + ": " + error);
                 if (!adapter.valid())
                     continue;

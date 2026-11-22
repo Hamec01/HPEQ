@@ -8,6 +8,7 @@ namespace hpeq::dsp
 FxNodeProcessor::~FxNodeProcessor()
 {
     for(auto& slot:slots)if(slot.nativeRuntime!=nullptr)slot.nativeRuntime->release();
+    for(auto& slot:slots)if(slot.nativeRight!=nullptr)slot.nativeRight->release();
 }
 
 int FxNodeProcessor::slotLatency(const FxSlotParams& p, double sampleRate)
@@ -97,9 +98,11 @@ void FxNodeProcessor::releasePooled(Slot& slot) noexcept
 void FxNodeProcessor::stopSlot(Slot& slot) noexcept
 {
     if(slot.nativeRuntime!=nullptr){slot.nativeRuntime->release();slot.nativeRuntime=nullptr;}
+    if(slot.nativeRight!=nullptr){slot.nativeRight->release();slot.nativeRight=nullptr;}
     releasePooled(slot);
     slot.running = false;
     slot.silentSamples = 0;
+    slot.closedSamples = 0;
     slot.mix.reset(0.0);
     slot.inGate.reset(0.0);
     slot.gain.reset();
@@ -126,6 +129,8 @@ void FxNodeProcessor::startSlot(Slot& slot, const FxSlotParams& sp) noexcept
         slot.nativeRuntime=sp.nativeValues.runtime;
         if(slot.nativeRuntime==nullptr){slot.starved=true;return;}
         slot.nativeRuntime->retain();
+        slot.nativeRight=sp.nativeValues.rightRuntime;
+        if(slot.nativeRight)slot.nativeRight->retain();
     }
     if (sp.engineRevision==0 && isPooled(sp.type) && pools != nullptr)
     {
@@ -206,7 +211,7 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
         if (!slot.inChain && slot.nativeRuntime != nullptr)
             stopSlot(slot);
 
-        if (slot.running && slot.inChain && (slot.type != sp.type || slot.nativeRuntime!=sp.nativeValues.runtime))
+        if (slot.running && slot.inChain && (slot.type != sp.type || slot.nativeRuntime!=sp.nativeValues.runtime||slot.nativeRight!=sp.nativeValues.rightRuntime))
             stopSlot(slot); // a different processor: never reuse its state
         if ((slot.wanted || (slot.inChain && sp.engineRevision!=0 && !isSend(sp.type))) && !slot.running)
             startSlot(slot, sp);
@@ -222,7 +227,7 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
             slot.inGate.setTarget(slot.wanted ? 1.0 : 0.0, mixSteps);
         }
         else
-            slot.mix.setTarget(slot.wanted ? static_cast<double>(sp.mix) : 0.0, mixSteps);
+            slot.mix.setTarget(slot.wanted && (sp.engineRevision==0||wanted) ? static_cast<double>(sp.mix) : 0.0, mixSteps);
     }
 }
 
@@ -355,7 +360,21 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
             }
             auto t=transport;
             if(t.hasPosition)t.ppqAtBlockStart+=blockOffset*t.bpm/(60.0*sampleRate);
-            slot.nativeRuntime->process(workPtr,workChannels,numSamples,slot.params.nativeValues,
+            if(slot.nativeRight&&workChannels==2)
+            {
+                if(slot.type==FxType::Gain)
+                    for(int i=0;i<numSamples;++i)
+                    {
+                        const float l=workPtr[0][i],r=workPtr[1][i];const int routing=slot.params.nativeValues.faderRouting;
+                        if(routing==1)workPtr[0][i]=workPtr[1][i]=.5f*(l+r);
+                        else if(routing==2)workPtr[1][i]=l;
+                        else if(routing==3)workPtr[0][i]=r;
+                        if(slot.params.nativeValues.faderSwap)std::swap(workPtr[0][i],workPtr[1][i]);
+                    }
+                slot.nativeRuntime->process(workPtr,1,numSamples,slot.params.nativeValues,t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
+                slot.nativeRight->process(workPtr+1,1,numSamples,slot.params.nativeValues,t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
+            }
+            else slot.nativeRuntime->process(workPtr,workChannels,numSamples,slot.params.nativeValues,
                 t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
             float peak=0;
             for(int i=0;i<numSamples;++i)
@@ -370,9 +389,22 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
                 }
             }
             const bool inputClosed=nodeClosed || (send&&!slot.inGate.isRamping()&&slot.inGate.value()==0);
+            if(!send&&nodeClosed)
+            {
+                // A self-noising insert must not turn node bypass into an
+                // endless send tail. Its blend has faded to dry; only flush PDC.
+                slot.silentSamples+=numSamples;
+                if(slot.silentSamples>=std::max(silenceSamples,slot.latency))stopSlot(slot);
+                else sendRunning=true;
+                continue;
+            }
             slot.silentSamples=inputClosed&&peak<1.e-6f?slot.silentSamples+numSamples:0;
-            if(send && slot.silentSamples>=silenceSamples)stopSlot(slot);
-            else if((send&&!inputClosed) || (inputClosed&&slot.silentSamples<silenceSamples))sendRunning=true;
+            slot.closedSamples=inputClosed?slot.closedSamples+numSamples:0;
+            // Echo can be silent for longer than the silence detector before
+            // its first tap, or between repeats. Wait out the native tail too.
+            const double tail=slot.nativeRuntime->tailSeconds()*sampleRate;
+            if(send && slot.silentSamples>=silenceSamples&&slot.closedSamples>=tail)stopSlot(slot);
+            else if(send || (inputClosed&&slot.silentSamples<silenceSamples))sendRunning=true;
             continue;
         }
 

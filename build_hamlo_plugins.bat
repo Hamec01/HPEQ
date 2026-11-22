@@ -1,5 +1,5 @@
 @echo off
-rem Builds standalone Hamlo VST3 plug-ins and HPEQ (Release, VST3 only).
+rem Builds current standalone Hamlo VST3 plug-ins and HamloRack (HPEQ target).
 rem
 rem Usage:
 rem   build_hamlo_plugins.bat                    Interactive menu (choose one or all)
@@ -46,12 +46,12 @@ if not "%ARG1%"=="" (
 :interactive_menu
 cls
 echo ============================================================
-echo           Hamlo & HPEQ VST3 Build System (Release)
+echo           Hamlo & HamloRack VST3 Build System (Release)
 echo ============================================================
 echo.
-echo   [0]  Build ALL (HPEQ + 10 Hamlo plug-ins)
+echo   [0]  Build ALL (HamloRack + 10 Hamlo plug-ins)
 echo.
-echo   [1]  HPEQ                 [7]  HamloEcho
+echo   [1]  HamloRack            [7]  HamloEcho
 echo   [2]  HamloComp            [8]  HamloZastava
 echo   [3]  HamloUdarnik         [9]  HamloShirota
 echo   [4]  HamloRedWall         [10] HamloFader
@@ -91,6 +91,8 @@ if "%TARGET_CHOICE%"=="10" set "TARGET_CHOICE=HamloFader"
 if "%TARGET_CHOICE%"=="11" set "TARGET_CHOICE=HamloRevolution"
 
 rem Normalize aliases
+if /i "%TARGET_CHOICE%"=="rack"       set "TARGET_CHOICE=HPEQ"
+if /i "%TARGET_CHOICE%"=="hamlorack"  set "TARGET_CHOICE=HPEQ"
 if /i "%TARGET_CHOICE%"=="comp"       set "TARGET_CHOICE=HamloComp"
 if /i "%TARGET_CHOICE%"=="udarnik"    set "TARGET_CHOICE=HamloUdarnik"
 if /i "%TARGET_CHOICE%"=="redwall"    set "TARGET_CHOICE=HamloRedWall"
@@ -146,66 +148,77 @@ goto :fail
 call :build_hpeq
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HPEQ
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_comp
 call :build_plugin HamloComp HAMLOCOMP_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloComp
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_udarnik
 call :build_plugin HamloUdarnik HAMLOUDARNIK_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloUdarnik
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_redwall
 call :build_plugin HamloRedWall HAMLOREDWALL_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloRedWall
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_mag
 call :build_plugin HamloMag HAMLOMAG_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloMag
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_verb
 call :build_plugin HamloVerb HAMLO_VERB_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloVerb
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_echo
 call :build_plugin HamloEcho HAMLO_ECHO_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloEcho
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_zastava
 call :build_plugin HamloZastava HAMLO_ZASTAVA_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloZastava
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_shirota
 call :build_plugin HamloShirota HAMLO_SHIROTA_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloShirota
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_fader
 call :build_plugin HamloFader HAMLO_FADER_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloFader
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :single_revolution
 call :build_plugin HamloRevolution HAMLO_REVOLUTION_JUCE_DIR
 if errorlevel 1 goto :fail
 if "%DO_INSTALL%"=="1" call :install_plugin HamloRevolution
+if errorlevel 1 goto :fail
 goto :done_summary
 
 :build_all
@@ -281,11 +294,11 @@ exit /b 1
 
 :build_hpeq
 set "HPEQ_BUILD=%ROOT%build"
-set "HPEQ_BINARY=%HPEQ_BUILD%\HPEQ_artefacts\Release\VST3\HPEQ.vst3\Contents\x86_64-win\HPEQ.vst3"
+set "HPEQ_BINARY=%HPEQ_BUILD%\HPEQ_artefacts\Release\VST3\HamloRack.vst3\Contents\x86_64-win\HamloRack.vst3"
 
 echo.
 echo ============================================================
-echo Building HPEQ (VST3 only) ...
+echo Building HamloRack (VST3 only) ...
 echo ============================================================
 
 if not exist "%HPEQ_BUILD%\CMakeCache.txt" (
@@ -302,11 +315,11 @@ if not exist "%HPEQ_BINARY%" (
     exit /b 1
 )
 
-echo Copying HPEQ.vst3 to %OUTPUT_DIR% ...
-xcopy "%HPEQ_BUILD%\HPEQ_artefacts\Release\VST3\HPEQ.vst3" "%OUTPUT_DIR%\HPEQ.vst3\" /E /I /Y /Q >nul
+echo Copying HamloRack.vst3 to %OUTPUT_DIR% ...
+xcopy "%HPEQ_BUILD%\HPEQ_artefacts\Release\VST3\HamloRack.vst3" "%OUTPUT_DIR%\HamloRack.vst3\" /E /I /Y /Q >nul
 if errorlevel 1 exit /b 1
 
-echo Ready: %OUTPUT_DIR%\HPEQ.vst3
+echo Ready: %OUTPUT_DIR%\HamloRack.vst3
 exit /b 0
 
 :build_plugin
@@ -344,6 +357,10 @@ exit /b 0
 
 :install_plugin
 set "PLUGIN=%~1"
+if /i "%PLUGIN%"=="HPEQ" (
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%scripts\install_rack.ps1"
+    exit /b !errorlevel!
+)
 set "PLUGIN_VST=%OUTPUT_DIR%\%PLUGIN%.vst3"
 echo Installing %PLUGIN%.vst3 ...
 xcopy "%PLUGIN_VST%" "%VST3_TARGET%\%PLUGIN%.vst3\" /E /I /Y /Q >nul

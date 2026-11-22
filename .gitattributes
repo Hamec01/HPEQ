@@ -1,5 +1,6 @@
 # HamloRack's generated artifacts are checked byte-for-byte by build_bank.py.
 /Assets/Presets/HamloRack/Design/*.json text eol=lf
+/Assets/Presets/HamloRack/*.json text eol=lf
 /docs/hamlorack/*.md text eol=lf
 /docs/hamlorack/*.json text eol=lf
 /scripts/hamlorack/*.py text eol=lf

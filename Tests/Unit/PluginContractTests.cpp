@@ -66,7 +66,9 @@ public:
         {
             auto pPtr = std::make_unique<FxPluginProcessor>();
             auto& p = *pPtr;
-            expectEquals(juce::String(JucePlugin_Name), juce::String("HPEQ"));
+            expectEquals(juce::String(JucePlugin_Name), juce::String("HamloRack"));
+            expectEquals(static_cast<int>(JucePlugin_PluginCode),0x48704571);
+            expectEquals(static_cast<int>(JucePlugin_ManufacturerCode),0x42424c42);
             expect(JucePlugin_IsSynth == 0, "IS_SYNTH must be FALSE");
             expect(!p.acceptsMidi() && !p.producesMidi() && !p.isMidiEffect());
             // HPDG is manufacturer BBLB, plugin BBG1. Same vendor, different plugin code.

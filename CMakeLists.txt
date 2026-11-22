@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 project(HPEQ VERSION 0.1.0 LANGUAGES C CXX)
+option(HPEQ_ENABLE_LTO "Use link-time optimization for release binaries" ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -54,7 +55,7 @@ juce_add_plugin(HPEQ
     PLUGIN_CODE HpEq
     VST3_CATEGORIES Fx EQ
     FORMATS VST3
-    PRODUCT_NAME "HPEQ")
+    PRODUCT_NAME "HamloRack")
 
 target_compile_definitions(HPEQ
     PUBLIC
@@ -72,6 +73,8 @@ target_sources(HPEQ
         Source/Analysis/SpectrumAnalyzer.cpp
         Source/Analysis/LoudnessMeter.cpp
         Source/Core/FxProjectState.cpp
+        Source/Rack/RackPresets.cpp
+        Source/UI/NativeModulePanel.cpp
         Source/Core/Revolution.cpp
         Source/Core/ModulePresets.cpp
         Source/DSP/Biquad.cpp
@@ -141,7 +144,9 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt.new "${HPEQ_FACT
 configure_file(${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt.new ${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt COPYONLY)
 juce_add_binary_data(HPEQ_Assets NAMESPACE HpeqAssets
                      SOURCES ${HPEQ_SCRATCH_PICTURES} ${HPEQ_HARDWARE_PICTURES} ${HPEQ_TUBE_PICTURES}
-                             ${HPEQ_FACTORY_PRESETS} ${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt)
+                             ${HPEQ_FACTORY_PRESETS} ${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt
+                             Assets/Presets/HamloRack/Design/recipes.json
+                             Assets/Presets/HamloRack/calibration.json)
 
 target_link_libraries(HPEQ
     PUBLIC
@@ -153,8 +158,10 @@ target_link_libraries(HPEQ
         juce::juce_audio_formats
         juce::juce_cryptography
         juce::juce_recommended_config_flags
-        juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
+if(HPEQ_ENABLE_LTO)
+    target_link_libraries(HPEQ PUBLIC juce::juce_recommended_lto_flags)
+endif()
 
 # --- Standalone module plug-ins ---------------------------------------------------------------
 # These targets are additive: HPEQ above keeps its processor, editor, identity and source list.
@@ -305,6 +312,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/TestMain.cpp
     Tests/Unit/HarnessTests.cpp
     Tests/Unit/RackNativeTests.cpp
+    Tests/Unit/RackProductTests.cpp
     Tests/Unit/PluginContractTests.cpp
     Tests/Unit/StateTests.cpp
     Tests/Unit/DspTests.cpp
@@ -360,6 +368,11 @@ target_link_libraries(HPEQ_Lab PRIVATE HPEQ)
 # RACK1 compatibility probe; the same renderer is used before/after native adapters.
 add_executable(HPEQ_RackLab Tests/Tools/RackLabMain.cpp)
 target_link_libraries(HPEQ_RackLab PRIVATE HPEQ)
+add_executable(HPEQ_RackBank Tests/Tools/RackBankMain.cpp)
+target_include_directories(HPEQ_RackBank PRIVATE Tests)
+target_link_libraries(HPEQ_RackBank PRIVATE HPEQ)
+add_executable(HPEQ_RackRepair Tests/Tools/RackRepairMain.cpp)
+target_link_libraries(HPEQ_RackRepair PRIVATE HPEQ)
 
 # M0 tool: fixtures, baseline metrics, HPDG block audit.
 add_executable(HPEQ_Harness

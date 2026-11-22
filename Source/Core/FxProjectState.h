@@ -97,6 +97,10 @@ struct LayerState
 struct FxProjectState
 {
     LayerRouting routing = LayerRouting::Parallel;
+    bool wetOnly = false;
+    bool masterRoute = false; // output gain/colour precede the final serial layer
+    double outputTrimDb = 0.0, inputTrimDb = 0.0, referenceBpm = 120.0;
+    juce::String rackPresetId;
     // The tube colour of the whole output (owner, 2026-10-26): BRING LENIN BACK (LOMO UP-25) and BRING
     // STALIN BACK (LOMO UP-27); both = LENIN into STALIN.
     bool lenin = false, stalin = false;

@@ -20,14 +20,14 @@
     "HamloVerb": 64,
     "HamloZastava": 14
   },
-  "audio_status": "not_run; runtime adapters required",
-  "bank_sha256": "868ff532de9ae1d42f21444234650181bc0e51f65ae128f2db76aa72bb43eaa5",
-  "native_contract_sha256": "d0bd876b5edeb2afe55c797b149ea2f3db1a2cf9a1677afad7b0336d2bb8c1d4",
+  "audio_status": "structural check only; runtime/audio receipt: docs/hamlorack/RACK_COMPLETE.json",
+  "bank_sha256": "a76fda72f569fde814c30db4f075c0c79403acd9f8573eb4e3a8626155640795",
+  "native_contract_sha256": "99f65bb5785fd26fc6c5d8e2507ded6e26f78a795e03c815ff32b9bebe72308e",
   "structural_gates": [
     "S1 source identity",
     "S2 count/native IDs/ranges/grid",
     "S3 exact topology uniqueness",
     "S4 capacities/scene routing"
   ],
-  "audio_gates": "A1-A9 pending; see RACK0_DESIGN.md"
+  "audio_gates": "measured separately; see RACK_COMPLETE.json and RACK_BANK_REPORT.md; owner host/listening checks remain"
 }

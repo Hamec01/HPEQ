@@ -1,0 +1,27 @@
+{
+  "product": "HamloMag",
+  "reason": "Mono oversampler layout assertion / RT allocation correction; applies to standalone and rack",
+  "repair": {
+    "version": "0.2.2",
+    "source_commit": "21adfcff37a4d717e93d559c6831c7b9cbc285c2",
+    "source_tree": "b7ac8a38fe8579816ecf84c7eadb68fb8ade43bd",
+    "imported_tree": "b7ac8a38fe8579816ecf84c7eadb68fb8ade43bd",
+    "source_checkout": "HPEQ local native correction",
+    "source_prefix": "Plugins/HamloMag",
+    "upstream_base": {
+      "imported_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+      "source_checkout": "HamloMag",
+      "source_commit": "c5dcd10dcfdd8d9248e4b06b73114b9eb3b2b5d3",
+      "source_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+      "version": "0.2.1"
+    }
+  },
+  "upstream_base": {
+    "imported_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+    "source_checkout": "HamloMag",
+    "source_commit": "c5dcd10dcfdd8d9248e4b06b73114b9eb3b2b5d3",
+    "source_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+    "version": "0.2.1"
+  },
+  "scope": "Source correction only; no installed binary or upstream standalone checkout changed"
+}

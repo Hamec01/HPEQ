@@ -1,29 +1,34 @@
 # Hamlo plug-ins in HPEQ
 
-Published source snapshots, synchronized on 2026-11-05 at the owner's request.
-Each `Plugins/<name>` is the exact tracked tree of its standalone repository,
-with its Git history retained by subtree imports. HPEQ's main DSP/build is not
-rewired by these source imports. The EQ remains part of HPEQ, not a separate
+Native source payloads retain the standalone history imported by subtrees.
+The rack now compiles isolated copies of all ten pinned native wrappers. Nine
+payloads retain their upstream identity; HamloMag 0.2.2 adds an owner-authorized
+mono oversampler correction in this repository. Its shared source serves both
+the standalone VST and rack; provenance is in `sync/2026-11-22-mag-mono.json`.
+See `../docs/hamlorack/RACK_COMPLETE.md` for the integration receipt.
+The EQ remains part of HPEQ, not a separate
 standalone plug-in repository. HamloProd is a website folder, not an audio plug-in.
 
 `feature/hamlo-plugins` contains all ten current snapshots. Each dedicated
 `plugins/<lowercase-name>` branch updates just that plug-in from the common
 pre-publication base and records its source in `Plugins/sync/<name>.json`.
-The latest synchronization updates Revolution to0.4.0 with its R13/R14 history.
-The other nine source snapshots,including Fader0.2.0 and Verb0.2.2,are unchanged.
+The current native contract pins Revolution 0.5.1 (`997f2e2156a5`), Fader 0.2.0,
+Verb 0.2.2 and the other upstream source identities listed below. The dedicated
+publication branches describe earlier published snapshots; they are not advanced
+by this local rack integration.
 
 | Plug-in | Version | Purpose | Snapshot status | Source commit | Dedicated HPEQ branch |
 |---|---|---|---|---|---|
 | [HamloComp](HamloComp/) | 0.2.0 | Compressor: VCA/FET/OPTO/TUBE | 0.2.0 source snapshot | `c7d344bffc59` | [plugins/hamlocomp](https://github.com/Hamec01/HPEQ/tree/plugins/hamlocomp) |
 | [HamloUdarnik](HamloUdarnik/) | 0.2.0 | Transient shaper | 0.2.0 source snapshot | `11d37dbff5fe` | [plugins/hamloudarnik](https://github.com/Hamec01/HPEQ/tree/plugins/hamloudarnik) |
 | [HamloRedWall](HamloRedWall/) | 0.3.0 | Limiter | 0.3.0 source snapshot | `d3c9f9a47e94` | [plugins/hamloredwall](https://github.com/Hamec01/HPEQ/tree/plugins/hamloredwall) |
-| [HamloMag](HamloMag/) | 0.2.1 | Saturator and sampler colour | 0.2.1; aliasing/Match fixes included | `c5dcd10dcfdd` | [plugins/hamlomag](https://github.com/Hamec01/HPEQ/tree/plugins/hamlomag) |
+| [HamloMag](HamloMag/) | 0.2.2 | Saturator and sampler colour | Mono oversampling correction on the 0.2.1 base | `21adfcff37a4` (HPEQ prefix) | [plugins/hamlomag](https://github.com/Hamec01/HPEQ/tree/plugins/hamlomag) (historical upstream) |
 | [HamloEcho](HamloEcho/) | 0.2.2 | Delay, Quick Note Score and detailed score | 0.2.2 source snapshot | `00dedb88cc3d` | [plugins/hamloecho](https://github.com/Hamec01/HPEQ/tree/plugins/hamloecho) |
 | [HamloVerb](HamloVerb/) | 0.2.2 | Reverb,six characters and effects | Keep Dry + explicit wet-only return level | `2ae0e1d6fb66` | [plugins/hamloverb](https://github.com/Hamec01/HPEQ/tree/plugins/hamloverb) |
 | [HamloZastava](HamloZastava/) | 0.2.0 | Gate/expander: Clean/Drum/Duck/Rhythm | 0.2.0 S5 release snapshot | `ccc1de21b095` | [plugins/hamlozastava](https://github.com/Hamec01/HPEQ/tree/plugins/hamlozastava) |
 | [HamloShirota](HamloShirota/) | 0.2.0 | Stereo width and spatial motion | 0.2.0 VST-only source snapshot | `ea316b0ea177` | [plugins/hamloshirota](https://github.com/Hamec01/HPEQ/tree/plugins/hamloshirota) |
 | [HamloFader](HamloFader/) | 0.2.0 | Trim/Match/Ride/Motion | F5: Quick/Advanced/Legacy UI,200 calibrated/verified genre recipes | `aef8c4dab839` | [plugins/hamlofader](https://github.com/Hamec01/HPEQ/tree/plugins/hamlofader) |
-| [HamloRevolution](HamloRevolution/) | 0.4.0 | Rhythmic multi-effect and sample workbench | R14 kick/snare/hat composer; R13 slicer and prior renderers retained | `4f8f7bb9f393` | [plugins/hamlorevolution](https://github.com/Hamec01/HPEQ/tree/plugins/hamlorevolution) |
+| [HamloRevolution](HamloRevolution/) | 0.5.1 | Rhythmic multi-effect and sample workbench | Pinned native 0.5.1 source; rack uses live insert/scenes | `997f2e2156a5` | [plugins/hamlorevolution](https://github.com/Hamec01/HPEQ/tree/plugins/hamlorevolution) (historical publication) |
 
 Fader0.2.0 includes the completed UI/library and verified VST release. Manual
 FL loading/listening remains for the owner. A source snapshot does not imply

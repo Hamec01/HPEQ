@@ -1,3 +1,9 @@
+# Historical RACK1 resumption receipt
+
+Superseded by [the full source integration receipt](RACK_COMPLETE.md) and
+`RACK_COMPLETE.json`. This file retains the earlier native-adapter milestone;
+its pending list and 639-expectation counts are not the current product status.
+
 # RACK1 resumed on Windows, 2026-11-22
 
 Continued from `98327f5` after a fast-forward from `ad71826`. The former remote

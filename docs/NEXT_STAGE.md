@@ -1,4 +1,22 @@
-# HamloRack RACK1 continuation - 2026-11-22
+# HamloRack source integration - 2026-11-22
+
+Current receipt: `hamlorack/RACK_COMPLETE.md`, `RACK_COMPLETE.json` and
+`RACK_BANK_REPORT.md`. Native panels, executable 250-recipe browser, measured
+calibration, real Fader actions, editable Revolution scenes and dual-mono/native
+runtime handling are integrated. Existing 224 factory programs retain the legacy
+path. HamloMag's mono oversampler defect was corrected in the common standalone
+and rack source, with new provenance and strict native parity/CRT tests.
+
+The owner will build the VST and check FL. Host validation, DAW state/lifecycle
+and individual musical-intent/listening verdicts belong to that build/check;
+do not present them as completed automated source tests. Numerical loudness
+exceptions stay listed individually. Preserve the immutable references under
+`out/rack1-local/legacy-before`. No push or installed plugin replacement was done.
+No subagents/model changes. Older milestones below are historical.
+
+---
+
+# Historical HamloRack RACK1 continuation - 2026-11-22
 
 Resumed from `98327f5` after pulling the other computer's saved checkpoint.
 The former remote feature branch was deleted; local `feature/hamlo-plugins`

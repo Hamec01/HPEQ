@@ -1,6 +1,6 @@
 # HamloRack: 250 authored preset designs
 
-Status: design candidates. Native parameter declarations checked; audio calibration and runtime integration pending.
+These are the immutable raw authoring settings. Executable integration and measured calibration are documented in [RACK_COMPLETE](RACK_COMPLETE.md) and [RACK_BANK_REPORT](RACK_BANK_REPORT.md). Original RACK0 status strings in the design JSON record its authoring stage; runtime calibration overrides live separately in `Assets/Presets/HamloRack/calibration.json`.
 
 Every chain below is ordered. EQ precedes frequency regions; the full-range chain follows. Amount is the rack insert blend or wet-send level; native MIX stays unity. Full exact settings and explicit Revolution scenes are in `Assets/Presets/HamloRack/Design/recipes.json`.
 
@@ -21,7 +21,7 @@ Full range:
 
 Reject/revise if: The 50-90 Hz body falls or the leading hit softens.
 
-Calibration: Keep the first knock forward and remove cardboard behind it. Assess against: The 50-90 Hz body falls or the leading hit softens.; status **not_run**.
+Intent check: Keep the first knock forward and remove cardboard behind it. Assess against: The 50-90 Hz body falls or the leading hit softens.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR002 - BB Dusty Short Foot
 
@@ -38,7 +38,7 @@ Full range:
 
 Reject/revise if: The tail masks the next bass note or the fundamental becomes thin.
 
-Calibration: Shorten a long dusty kick while retaining its low fundamental. Assess against: The tail masks the next bass note or the fundamental becomes thin.; status **not_run**.
+Intent check: Shorten a long dusty kick while retaining its low fundamental. Assess against: The tail masks the next bass note or the fundamental becomes thin.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR003 - BB Jazzy Felt Weight
 
@@ -55,7 +55,7 @@ Full range:
 
 Reject/revise if: The felt click becomes brighter or 60-120 Hz loses weight.
 
-Calibration: Round the top of a soft acoustic kick without blunting its low pulse. Assess against: The felt click becomes brighter or 60-120 Hz loses weight.; status **not_run**.
+Intent check: Round the top of a soft acoustic kick without blunting its low pulse. Assess against: The felt click becomes brighter or 60-120 Hz loses weight.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR004 - BB Gold Mid Knock
 
@@ -72,7 +72,7 @@ Full range:
 
 Reject/revise if: The new midrange buzz overwhelms the dry sub.
 
-Calibration: Add mid harmonics to a sub-heavy kick for small-speaker audibility. Assess against: The new midrange buzz overwhelms the dry sub.; status **not_run**.
+Intent check: Add mid harmonics to a sub-heavy kick for small-speaker audibility. Assess against: The new midrange buzz overwhelms the dry sub.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR005 - BB Underground Parallel Heel
 
@@ -92,7 +92,7 @@ Band 95-1800 Hz:
 
 Reject/revise if: The dry transient is quieter after loudness matching.
 
-Calibration: Blend a crushed mid-band under the original attack. Assess against: The dry transient is quieter after loudness matching.; status **not_run**.
+Intent check: Blend a crushed mid-band under the original attack. Assess against: The dry transient is quieter after loudness matching.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR006 - BB Lofi Cassette Pillow
 
@@ -109,7 +109,7 @@ Full range:
 
 Reject/revise if: Wow bends the bass pitch or the kick becomes a flat thud.
 
-Calibration: Soften a brittle sampled kick with a slower dark tape response. Assess against: Wow bends the bass pitch or the kick becomes a flat thud.; status **not_run**.
+Intent check: Soften a brittle sampled kick with a slower dark tape response. Assess against: Wow bends the bass pitch or the kick becomes a flat thud.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR007 - BB Classic Wooden Crack
 
@@ -126,7 +126,7 @@ Full range:
 
 Reject/revise if: The 2-4 kHz crack becomes painful or ghost notes disappear.
 
-Calibration: Recover stick attack above a short wooden body. Assess against: The 2-4 kHz crack becomes painful or ghost notes disappear.; status **not_run**.
+Intent check: Recover stick attack above a short wooden body. Assess against: The 2-4 kHz crack becomes painful or ghost notes disappear.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR008 - BB Dusty Sampler Rim
 
@@ -143,7 +143,7 @@ Full range:
 
 Reject/revise if: Aliased grit dominates the rim pitch or the room reaches the next backbeat.
 
-Calibration: Give a clean rim a restrained sampled edge and dark room. Assess against: Aliased grit dominates the rim pitch or the room reaches the next backbeat.; status **not_run**.
+Intent check: Give a clean rim a restrained sampled edge and dark room. Assess against: Aliased grit dominates the rim pitch or the room reaches the next backbeat.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR009 - BB Jazzy Ghost Keeper
 
@@ -160,7 +160,7 @@ Full range:
 
 Reject/revise if: Ghost-note/accent contrast collapses or the brush tail pumps.
 
-Calibration: Control accents gently while leaving ghost notes readable. Assess against: Ghost-note/accent contrast collapses or the brush tail pumps.; status **not_run**.
+Intent check: Control accents gently while leaving ghost notes readable. Assess against: Ghost-note/accent contrast collapses or the brush tail pumps.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR010 - BB Gold Plate Halo
 
@@ -177,7 +177,7 @@ Full range:
 
 Reject/revise if: The plate hides the first 20 ms or adds low-mid mud.
 
-Calibration: Put a short plate behind a dry forward backbeat. Assess against: The plate hides the first 20 ms or adds low-mid mud.; status **not_run**.
+Intent check: Put a short plate behind a dry forward backbeat. Assess against: The plate hides the first 20 ms or adds low-mid mud.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR011 - BB Basement Parallel Bark
 
@@ -194,7 +194,7 @@ Full range:
 
 Reject/revise if: The matched snare loses its crest or the bark rings at 600 Hz.
 
-Calibration: Add a dirty parallel body with the clean crack intact. Assess against: The matched snare loses its crest or the bark rings at 600 Hz.; status **not_run**.
+Intent check: Add a dirty parallel body with the clean crack intact. Assess against: The matched snare loses its crest or the bark rings at 600 Hz.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR012 - BB Lofi Brush Room
 
@@ -211,7 +211,7 @@ Full range:
 
 Reject/revise if: The brush sweep turns into gated chatter.
 
-Calibration: Make a long brush sample softer and more intimate. Assess against: The brush sweep turns into gated chatter.; status **not_run**.
+Intent check: Make a long brush sample softer and more intimate. Assess against: The brush sweep turns into gated chatter.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR013 - BB Silk Closed Hats
 
@@ -227,7 +227,7 @@ Full range:
 
 Reject/revise if: The 5-8 kHz accents still spit or every tick becomes dull.
 
-Calibration: Remove abrasive upper peaks while keeping the timekeeping edge. Assess against: The 5-8 kHz accents still spit or every tick becomes dull.; status **not_run**.
+Intent check: Remove abrasive upper peaks while keeping the timekeeping edge. Assess against: The 5-8 kHz accents still spit or every tick becomes dull.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR014 - BB Dusty Twelve Bit Hats
 
@@ -243,7 +243,7 @@ Full range:
 
 Reject/revise if: Idle gaps gain hiss or the top becomes a continuous hash.
 
-Calibration: Add sampled grain above the kick without broadband noise. Assess against: Idle gaps gain hiss or the top becomes a continuous hash.; status **not_run**.
+Intent check: Add sampled grain above the kick without broadband noise. Assess against: Idle gaps gain hiss or the top becomes a continuous hash.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR015 - BB Jazzy Open Hat Air
 
@@ -260,7 +260,7 @@ Full range:
 
 Reject/revise if: The mono fold loses the tick or tails smear the swung gaps.
 
-Calibration: Let open hats breathe in a small stereo room. Assess against: The mono fold loses the tick or tails smear the swung gaps.; status **not_run**.
+Intent check: Let open hats breathe in a small stereo room. Assess against: The mono fold loses the tick or tails smear the swung gaps.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR016 - BB Swing Echo Tick
 
@@ -276,7 +276,7 @@ Full range:
 
 Reject/revise if: A repeat lands on the following main tick and hides the pocket.
 
-Calibration: Add one quiet swung eighth response after the hat. Assess against: A repeat lands on the following main tick and hides the pocket.; status **not_run**.
+Intent check: Add one quiet swung eighth response after the hat. Assess against: A repeat lands on the following main tick and hides the pocket.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR017 - BB Soft Offbeat Tuck
 
@@ -293,7 +293,7 @@ Full range:
 
 Reject/revise if: Offbeats become inaudible at the matched level.
 
-Calibration: Reduce front-edge aggression and push hats behind the snare. Assess against: Offbeats become inaudible at the matched level.; status **not_run**.
+Intent check: Reduce front-edge aggression and push hats behind the snare. Assess against: Offbeats become inaudible at the matched level.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR018 - BB Conga Palm Body
 
@@ -310,7 +310,7 @@ Full range:
 
 Reject/revise if: The low hand pitch disappears or slaps get louder.
 
-Calibration: Emphasize hand tone and trim hard slap peaks. Assess against: The low hand pitch disappears or slaps get louder.; status **not_run**.
+Intent check: Emphasize hand tone and trim hard slap peaks. Assess against: The low hand pitch disappears or slaps get louder.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR019 - BB Shaker Back Wall
 
@@ -327,7 +327,7 @@ Full range:
 
 Reject/revise if: The shaker sounds closer or the room sustains through every gap.
 
-Calibration: Place a sharp shaker behind the beat in a dark room. Assess against: The shaker sounds closer or the room sustains through every gap.; status **not_run**.
+Intent check: Place a sharp shaker behind the beat in a dark room. Assess against: The shaker sounds closer or the room sustains through every gap.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR020 - BB Rim Dub Answer
 
@@ -343,7 +343,7 @@ Full range:
 
 Reject/revise if: The delay carries sub energy or competes with the next snare.
 
-Calibration: Answer a dry rim with a narrow filtered quarter delay. Assess against: The delay carries sub energy or competes with the next snare.; status **not_run**.
+Intent check: Answer a dry rim with a narrow filtered quarter delay. Assess against: The delay carries sub energy or competes with the next snare.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR021 - BB Last Step Shuffle
 
@@ -361,7 +361,7 @@ Full range:
 
 Reject/revise if: The downbeat or main backbeat changes.
 
-Calibration: Change only the final two sixteenths of a percussion bar. Assess against: The downbeat or main backbeat changes.; status **not_run**.
+Intent check: Change only the final two sixteenths of a percussion bar. Assess against: The downbeat or main backbeat changes.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR022 - BB Classic Bus Cement
 
@@ -378,7 +378,7 @@ Full range:
 
 Reject/revise if: The matched kick/snare attacks lose more contrast than the body.
 
-Calibration: Join the drum body with slow-attack VCA reduction. Assess against: The matched kick/snare attacks lose more contrast than the body.; status **not_run**.
+Intent check: Join the drum body with slow-attack VCA reduction. Assess against: The matched kick/snare attacks lose more contrast than the body.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR023 - BB Dusty Parallel Basement
 
@@ -395,7 +395,7 @@ Full range:
 
 Reject/revise if: Ghost notes vanish or the parallel return overtakes the clean snare.
 
-Calibration: Layer dense sampler crunch under a clean drum loop. Assess against: Ghost notes vanish or the parallel return overtakes the clean snare.; status **not_run**.
+Intent check: Layer dense sampler crunch under a clean drum loop. Assess against: Ghost notes vanish or the parallel return overtakes the clean snare.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR024 - BB Jazzy Room Glue
 
@@ -412,7 +412,7 @@ Full range:
 
 Reject/revise if: Ride cymbals turn splashy or kick low end grows in the room.
 
-Calibration: Give a sparse jazz break a low-density shared room. Assess against: Ride cymbals turn splashy or kick low end grows in the room.; status **not_run**.
+Intent check: Give a sparse jazz break a low-density shared room. Assess against: Ride cymbals turn splashy or kick low end grows in the room.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR025 - BB Gold Snare Shoulder
 
@@ -432,7 +432,7 @@ Band 160-2500 Hz:
 
 Reject/revise if: Kick sub grows or the snare becomes boxier after matching.
 
-Calibration: Add body only around the snare register and leave the sub alone. Assess against: Kick sub grows or the snare becomes boxier after matching.; status **not_run**.
+Intent check: Add body only around the snare register and leave the sub alone. Assess against: Kick sub grows or the snare becomes boxier after matching.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR026 - BB Underground Punch Return
 
@@ -449,7 +449,7 @@ Full range:
 
 Reject/revise if: The matched loop is merely louder or hats dominate the return.
 
-Calibration: Bring short gritty sustain under intact transients. Assess against: The matched loop is merely louder or hats dominate the return.; status **not_run**.
+Intent check: Bring short gritty sustain under intact transients. Assess against: The matched loop is merely louder or hats dominate the return.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR027 - BB Lofi Worn Break
 
@@ -466,7 +466,7 @@ Full range:
 
 Reject/revise if: The kick pitch wanders audibly or swing timing becomes unclear.
 
-Calibration: Darken a bright break and add restrained tape instability. Assess against: The kick pitch wanders audibly or swing timing becomes unclear.; status **not_run**.
+Intent check: Darken a bright break and add restrained tape instability. Assess against: The kick pitch wanders audibly or swing timing becomes unclear.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR028 - BB Bar End Turn
 
@@ -487,7 +487,7 @@ Band 1200-16000 Hz:
 
 Reject/revise if: Any low kick note changes or early-bar groove is chopped.
 
-Calibration: Keep the groove and make a restrained end-of-bar reply on the tops. Assess against: Any low kick note changes or early-bar groove is chopped.; status **not_run**.
+Intent check: Keep the groove and make a restrained end-of-bar reply on the tops. Assess against: Any low kick note changes or early-bar groove is chopped.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR029 - BB Upright Round Fingers
 
@@ -504,7 +504,7 @@ Full range:
 
 Reject/revise if: The note tails pump or the finger noise becomes brittle.
 
-Calibration: Level an upright line while retaining finger articulation. Assess against: The note tails pump or the finger noise becomes brittle.; status **not_run**.
+Intent check: Level an upright line while retaining finger articulation. Assess against: The note tails pump or the finger noise becomes brittle.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR030 - BB Electric Pocket Bass
 
@@ -521,7 +521,7 @@ Full range:
 
 Reject/revise if: The low note sustains into the next kick or pick attack vanishes.
 
-Calibration: Tighten an electric bass into the kick pocket with modest harmonics. Assess against: The low note sustains into the next kick or pick attack vanishes.; status **not_run**.
+Intent check: Tighten an electric bass into the kick pocket with modest harmonics. Assess against: The low note sustains into the next kick or pick attack vanishes.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR031 - BB Sub On Small Speakers
 
@@ -538,7 +538,7 @@ Full range:
 
 Reject/revise if: The 40-80 Hz fundamental changes pitch or the mono fold cancels it.
 
-Calibration: Add upper harmonics while keeping the sub centered. Assess against: The 40-80 Hz fundamental changes pitch or the mono fold cancels it.; status **not_run**.
+Intent check: Add upper harmonics while keeping the sub centered. Assess against: The 40-80 Hz fundamental changes pitch or the mono fold cancels it.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR032 - BB Tape Note Sustain
 
@@ -555,7 +555,7 @@ Full range:
 
 Reject/revise if: Noise rises between notes or the next attack ducks for too long.
 
-Calibration: Support short bass-note tails with gentle tube compression. Assess against: Noise rises between notes or the next attack ducks for too long.; status **not_run**.
+Intent check: Support short bass-note tails with gentle tube compression. Assess against: Noise rises between notes or the next attack ducks for too long.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR033 - BB Muted Sample Bass
 
@@ -572,7 +572,7 @@ Full range:
 
 Reject/revise if: The line loses pitch definition or the expander chatters on held notes.
 
-Calibration: Remove upper spill from a sampled bass phrase and contain its tail. Assess against: The line loses pitch definition or the expander chatters on held notes.; status **not_run**.
+Intent check: Remove upper spill from a sampled bass phrase and contain its tail. Assess against: The line loses pitch definition or the expander chatters on held notes.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR034 - BB Dry Front Rap
 
@@ -589,7 +589,7 @@ Full range:
 
 Reject/revise if: Sibilance rises or endings are pinned down after loudness matching.
 
-Calibration: Keep consonants close with FET control and little ambience. Assess against: Sibilance rises or endings are pinned down after loudness matching.; status **not_run**.
+Intent check: Keep consonants close with FET control and little ambience. Assess against: Sibilance rises or endings are pinned down after loudness matching.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR035 - BB Jazzy Intimate Verse
 
@@ -606,7 +606,7 @@ Full range:
 
 Reject/revise if: Breaths swell in gaps or phrase dynamics disappear.
 
-Calibration: Ride quiet syllables gently before soft opto leveling. Assess against: Breaths swell in gaps or phrase dynamics disappear.; status **not_run**.
+Intent check: Ride quiet syllables gently before soft opto leveling. Assess against: Breaths swell in gaps or phrase dynamics disappear.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR036 - BB Tape Slap Story
 
@@ -623,7 +623,7 @@ Full range:
 
 Reject/revise if: The slap is heard as a second speaker or obscures words.
 
-Calibration: Add a quiet free-time slap under a warm spoken lead. Assess against: The slap is heard as a second speaker or obscures words.; status **not_run**.
+Intent check: Add a quiet free-time slap under a warm spoken lead. Assess against: The slap is heard as a second speaker or obscures words.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR037 - BB Backroom Hook
 
@@ -641,7 +641,7 @@ Full range:
 
 Reject/revise if: The hook moves ahead of the lead or mono consonants blur.
 
-Calibration: Place a doubled hook behind the lead with a dark chamber. Assess against: The hook moves ahead of the lead or mono consonants blur.; status **not_run**.
+Intent check: Place a doubled hook behind the lead with a dark chamber. Assess against: The hook moves ahead of the lead or mono consonants blur.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR038 - BB Phrase Tail Answer
 
@@ -658,7 +658,7 @@ Full range:
 
 Reject/revise if: Repeats compete with active words or accumulate across several lines.
 
-Calibration: Let a ducked quarter echo emerge after the rap phrase. Assess against: Repeats compete with active words or accumulate across several lines.; status **not_run**.
+Intent check: Let a ducked quarter echo emerge after the rap phrase. Assess against: Repeats compete with active words or accumulate across several lines.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR039 - BB Felt Chord Bed
 
@@ -676,7 +676,7 @@ Full range:
 
 Reject/revise if: Hammer definition vanishes or low-mid sustain masks the bass.
 
-Calibration: Round sharp piano hammers and give chords a small shared chamber. Assess against: Hammer definition vanishes or low-mid sustain masks the bass.; status **not_run**.
+Intent check: Round sharp piano hammers and give chords a small shared chamber. Assess against: Hammer definition vanishes or low-mid sustain masks the bass.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR040 - BB Rhodes Tube Cushion
 
@@ -693,7 +693,7 @@ Full range:
 
 Reject/revise if: Chord peaks fuzz or tremolo depth changes unintentionally.
 
-Calibration: Add soft even harmonics under a dry electric piano. Assess against: Chord peaks fuzz or tremolo depth changes unintentionally.; status **not_run**.
+Intent check: Add soft even harmonics under a dry electric piano. Assess against: Chord peaks fuzz or tremolo depth changes unintentionally.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR041 - BB Sampler Piano Slice
 
@@ -710,7 +710,7 @@ Full range:
 
 Reject/revise if: The slice edge clicks or the silent spaces fill with residue.
 
-Calibration: Give chopped piano a restrained sampled texture without extending gaps. Assess against: The slice edge clicks or the silent spaces fill with residue.; status **not_run**.
+Intent check: Give chopped piano a restrained sampled texture without extending gaps. Assess against: The slice edge clicks or the silent spaces fill with residue.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR042 - BB Wide Chord Reply
 
@@ -726,7 +726,7 @@ Full range:
 
 Reject/revise if: The dry piano widens too far or the mono chord loses its root.
 
-Calibration: Send a filtered eighth answer wide while the original chords remain centered. Assess against: The dry piano widens too far or the mono chord loses its root.; status **not_run**.
+Intent check: Send a filtered eighth answer wide while the original chords remain centered. Assess against: The dry piano widens too far or the mono chord loses its root.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR043 - BB Dusty Soul Frame
 
@@ -743,7 +743,7 @@ Full range:
 
 Reject/revise if: The bass becomes unstable or crackle fills the sample gaps.
 
-Calibration: Darken a bright soul loop and retain the chopped envelope. Assess against: The bass becomes unstable or crackle fills the sample gaps.; status **not_run**.
+Intent check: Darken a bright soul loop and retain the chopped envelope. Assess against: The bass becomes unstable or crackle fills the sample gaps.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR044 - BB Jazzy Horn Seat
 
@@ -760,7 +760,7 @@ Full range:
 
 Reject/revise if: The brass loses its entrance or the room enlarges the low end.
 
-Calibration: Tame a nasal horn loop and seat it in a short room. Assess against: The brass loses its entrance or the room enlarges the low end.; status **not_run**.
+Intent check: Tame a nasal horn loop and seat it in a short room. Assess against: The brass loses its entrance or the room enlarges the low end.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR045 - BB Last Word Reverse
 
@@ -778,7 +778,7 @@ Full range:
 
 Reject/revise if: The start of the next bar is reversed or cut off.
 
-Calibration: Reverse only the final eighth of the sample phrase. Assess against: The start of the next bar is reversed or cut off.; status **not_run**.
+Intent check: Reverse only the final eighth of the sample phrase. Assess against: The start of the next bar is reversed or cut off.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR046 - BB Filtered Pan Conversation
 
@@ -799,7 +799,7 @@ Band 450-9000 Hz:
 
 Reject/revise if: The stereo motion steals the low fundamental or folds down badly.
 
-Calibration: Move the mids across the phrase while leaving its low anchor steady. Assess against: The stereo motion steals the low fundamental or folds down badly.; status **not_run**.
+Intent check: Move the mids across the phrase while leaving its low anchor steady. Assess against: The stereo motion steals the low fundamental or folds down badly.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR047 - BB Classic Open Master
 
@@ -817,7 +817,7 @@ Full range:
 
 Reject/revise if: Final 8x true peak exceeds -1 dBTP or limiter work exceeds 3 dB.
 
-Calibration: Finish a warm boom-bap premaster with minimal reduction and intact snare. Assess against: Final 8x true peak exceeds -1 dBTP or limiter work exceeds 3 dB.; status **not_run**.
+Intent check: Finish a warm boom-bap premaster with minimal reduction and intact snare. Assess against: Final 8x true peak exceeds -1 dBTP or limiter work exceeds 3 dB.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR048 - BB Dusty Album Cohesion
 
@@ -835,7 +835,7 @@ Full range:
 
 Reject/revise if: Idle noise grows or the matched chorus loses snare contrast.
 
-Calibration: Join a dusty mix gently without raising noise or narrowing the sample bed. Assess against: Idle noise grows or the matched chorus loses snare contrast.; status **not_run**.
+Intent check: Join a dusty mix gently without raising noise or narrowing the sample bed. Assess against: Idle noise grows or the matched chorus loses snare contrast.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR049 - BB Jazzy Headroom Master
 
@@ -853,7 +853,7 @@ Full range:
 
 Reject/revise if: Limiter work exceeds 2 dB or the room pulls inward on kick hits.
 
-Calibration: Preserve spacious live dynamics with a conservative final ceiling. Assess against: Limiter work exceeds 2 dB or the room pulls inward on kick hits.; status **not_run**.
+Intent check: Preserve spacious live dynamics with a conservative final ceiling. Assess against: Limiter work exceeds 2 dB or the room pulls inward on kick hits.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR050 - BB Gold Low End Frame
 
@@ -871,7 +871,7 @@ Full range:
 
 Reject/revise if: Bass fold-down changes notes or the kick loses low-end authority.
 
-Calibration: Center only the low end and trim a crowded low-mid band before limiting. Assess against: Bass fold-down changes notes or the kick loses low-end authority.; status **not_run**.
+Intent check: Center only the low end and trim a crowded low-mid band before limiting. Assess against: Bass fold-down changes notes or the kick loses low-end authority.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ## Trap
 
@@ -890,7 +890,7 @@ Full range:
 
 Reject/revise if: The boost adds sub masking or click becomes a sharp spit.
 
-Calibration: Create a compact upper click that separates the kick from an 808. Assess against: The boost adds sub masking or click becomes a sharp spit.; status **not_run**.
+Intent check: Create a compact upper click that separates the kick from an 808. Assess against: The boost adds sub masking or click becomes a sharp spit.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR052 - Trap Dark Low Hammer
 
@@ -907,7 +907,7 @@ Full range:
 
 Reject/revise if: The low note rings beyond a sixteenth or loses its initial weight.
 
-Calibration: Keep a dark low kick weighty and shorten its overlap with the bass. Assess against: The low note rings beyond a sixteenth or loses its initial weight.; status **not_run**.
+Intent check: Keep a dark low kick weighty and shorten its overlap with the bass. Assess against: The low note rings beyond a sixteenth or loses its initial weight.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR053 - Trap Cloud Soft Knock
 
@@ -924,7 +924,7 @@ Full range:
 
 Reject/revise if: The kick disappears under the pad or gains extra low-tail sustain.
 
-Calibration: Make a hard kick gentler for a floating melodic beat. Assess against: The kick disappears under the pad or gains extra low-tail sustain.; status **not_run**.
+Intent check: Make a hard kick gentler for a floating melodic beat. Assess against: The kick disappears under the pad or gains extra low-tail sustain.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR054 - Trap Rage Mid Bite
 
@@ -941,7 +941,7 @@ Full range:
 
 Reject/revise if: The dry sub distorts or the added edge resembles broadband noise.
 
-Calibration: Add controlled midrange edge while holding the kick sub clean. Assess against: The dry sub distorts or the added edge resembles broadband noise.; status **not_run**.
+Intent check: Add controlled midrange edge while holding the kick sub clean. Assess against: The dry sub distorts or the added edge resembles broadband noise.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR055 - Trap Memphis Short Crunch
 
@@ -958,7 +958,7 @@ Full range:
 
 Reject/revise if: The next hat ducks or the sampled edge dominates the attack.
 
-Calibration: Make a short kick feel sampled and compressed without a long release. Assess against: The next hat ducks or the sampled edge dominates the attack.; status **not_run**.
+Intent check: Make a short kick feel sampled and compressed without a long release. Assess against: The next hat ducks or the sampled edge dominates the attack.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR056 - Trap Luxury Clean Heel
 
@@ -975,7 +975,7 @@ Full range:
 
 Reject/revise if: The first 10 ms lose contrast or the low shelf overfills the 808.
 
-Calibration: Tidy the kick low mids with a clean high-crest transient. Assess against: The first 10 ms lose contrast or the low shelf overfills the 808.; status **not_run**.
+Intent check: Tidy the kick low mids with a clean high-crest transient. Assess against: The first 10 ms lose contrast or the low shelf overfills the 808.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR057 - Trap ATL Clap Stack
 
@@ -992,7 +992,7 @@ Full range:
 
 Reject/revise if: The stack turns into a click or flam spacing becomes unclear.
 
-Calibration: Bring clap onset forward while reducing long upper tails. Assess against: The stack turns into a click or flam spacing becomes unclear.; status **not_run**.
+Intent check: Bring clap onset forward while reducing long upper tails. Assess against: The stack turns into a click or flam spacing becomes unclear.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR058 - Trap Dark Rim Needle
 
@@ -1009,7 +1009,7 @@ Full range:
 
 Reject/revise if: The 900-1500 Hz ring persists or rim attack becomes harsh.
 
-Calibration: Focus a narrow rim without exaggerating its nasal ring. Assess against: The 900-1500 Hz ring persists or rim attack becomes harsh.; status **not_run**.
+Intent check: Focus a narrow rim without exaggerating its nasal ring. Assess against: The 900-1500 Hz ring persists or rim attack becomes harsh.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR059 - Trap Cloud Air Clap
 
@@ -1026,7 +1026,7 @@ Full range:
 
 Reject/revise if: The mono clap loses its center or air hangs into the next snare.
 
-Calibration: Spread the airy clap tail around a dry center. Assess against: The mono clap loses its center or air hangs into the next snare.; status **not_run**.
+Intent check: Spread the airy clap tail around a dry center. Assess against: The mono clap loses its center or air hangs into the next snare.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR060 - Trap Rage Distorted Backbeat
 
@@ -1047,7 +1047,7 @@ Band 900-11000 Hz:
 
 Reject/revise if: Low body flattens or distortion raises the matched peak excessively.
 
-Calibration: Blend a rough upper snare layer while keeping body clean. Assess against: Low body flattens or distortion raises the matched peak excessively.; status **not_run**.
+Intent check: Blend a rough upper snare layer while keeping body clean. Assess against: Low body flattens or distortion raises the matched peak excessively.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR061 - Trap Memphis Gated Plate
 
@@ -1064,7 +1064,7 @@ Full range:
 
 Reject/revise if: Plate opening swallows the dry clap or the gate snaps audibly.
 
-Calibration: End a synthetic plate sharply after the clap. Assess against: Plate opening swallows the dry clap or the gate snaps audibly.; status **not_run**.
+Intent check: End a synthetic plate sharply after the clap. Assess against: Plate opening swallows the dry clap or the gate snaps audibly.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR062 - Trap Luxury Snap Body
 
@@ -1081,7 +1081,7 @@ Full range:
 
 Reject/revise if: The lower body masks vocal low mids or snap loses height.
 
-Calibration: Add a little body below a bright clean snap. Assess against: The lower body masks vocal low mids or snap loses height.; status **not_run**.
+Intent check: Add a little body below a bright clean snap. Assess against: The lower body masks vocal low mids or snap loses height.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR063 - Trap ATL Roll Definition
 
@@ -1097,7 +1097,7 @@ Full range:
 
 Reject/revise if: Sixteenth rolls fuse or the hats become brighter after matching.
 
-Calibration: Keep rapid ticks separate by shortening bodies rather than boosting treble. Assess against: Sixteenth rolls fuse or the hats become brighter after matching.; status **not_run**.
+Intent check: Keep rapid ticks separate by shortening bodies rather than boosting treble. Assess against: Sixteenth rolls fuse or the hats become brighter after matching.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR064 - Trap Dark Metal Tame
 
@@ -1113,7 +1113,7 @@ Full range:
 
 Reject/revise if: Accent resonance still rings or low-velocity notes are gated out.
 
-Calibration: Suppress sharp metal resonances while retaining quiet roll notes. Assess against: Accent resonance still rings or low-velocity notes are gated out.; status **not_run**.
+Intent check: Suppress sharp metal resonances while retaining quiet roll notes. Assess against: Accent resonance still rings or low-velocity notes are gated out.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR065 - Trap Cloud Wide Tick
 
@@ -1130,7 +1130,7 @@ Full range:
 
 Reject/revise if: Mono fold loses the roll or the center moves between hits.
 
-Calibration: Place only high hat energy wider with a stable dry center. Assess against: Mono fold loses the roll or the center moves between hits.; status **not_run**.
+Intent check: Place only high hat energy wider with a stable dry center. Assess against: Mono fold loses the roll or the center moves between hits.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR066 - Trap Rage End Roll
 
@@ -1147,7 +1147,7 @@ Full range:
 
 Reject/revise if: The roll fires on an earlier beat or cuts the next downbeat.
 
-Calibration: Add one short BLOCK roll at the last sixteenth. Assess against: The roll fires on an earlier beat or cuts the next downbeat.; status **not_run**.
+Intent check: Add one short BLOCK roll at the last sixteenth. Assess against: The roll fires on an earlier beat or cuts the next downbeat.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR067 - Trap Triplet Echo Ghost
 
@@ -1163,7 +1163,7 @@ Full range:
 
 Reject/revise if: The triplet becomes louder than the original or timing sounds unsynced.
 
-Calibration: Put a quiet triplet response around straight hats. Assess against: The triplet becomes louder than the original or timing sounds unsynced.; status **not_run**.
+Intent check: Put a quiet triplet response around straight hats. Assess against: The triplet becomes louder than the original or timing sounds unsynced.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR068 - Trap Bell Ping Seat
 
@@ -1180,7 +1180,7 @@ Full range:
 
 Reject/revise if: The reply clashes with the bell pitch or overtakes the next strike.
 
-Calibration: Seat a hard bell with a damped offset reply. Assess against: The reply clashes with the bell pitch or overtakes the next strike.; status **not_run**.
+Intent check: Seat a hard bell with a damped offset reply. Assess against: The reply clashes with the bell pitch or overtakes the next strike.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR069 - Trap Memphis Cowbell Grit
 
@@ -1197,7 +1197,7 @@ Full range:
 
 Reject/revise if: The cowbell pitch wavers or upper aliasing dominates.
 
-Calibration: Add a sampled rough edge with its fundamental held steady. Assess against: The cowbell pitch wavers or upper aliasing dominates.; status **not_run**.
+Intent check: Add a sampled rough edge with its fundamental held steady. Assess against: The cowbell pitch wavers or upper aliasing dominates.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR070 - Trap Texture Stereo Dots
 
@@ -1213,7 +1213,7 @@ Full range:
 
 Reject/revise if: The echo shifts the dry event or mono loses its attack.
 
-Calibration: Separate dry percussion from small left-right echoes. Assess against: The echo shifts the dry event or mono loses its attack.; status **not_run**.
+Intent check: Separate dry percussion from small left-right echoes. Assess against: The echo shifts the dry event or mono loses its attack.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR071 - Trap Short Reverse Accent
 
@@ -1231,7 +1231,7 @@ Full range:
 
 Reject/revise if: A full bar reverses or the following bar starts late.
 
-Calibration: Reverse the final small percussion gesture only. Assess against: A full bar reverses or the following bar starts late.; status **not_run**.
+Intent check: Reverse the final small percussion gesture only. Assess against: A full bar reverses or the following bar starts late.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR072 - Trap ATL Dry Glue
 
@@ -1248,7 +1248,7 @@ Full range:
 
 Reject/revise if: The 808 slot in the groove feels smaller or hats pump on kicks.
 
-Calibration: Bind kick and snare with a fast recovery while preserving the front edge. Assess against: The 808 slot in the groove feels smaller or hats pump on kicks.; status **not_run**.
+Intent check: Bind kick and snare with a fast recovery while preserving the front edge. Assess against: The 808 slot in the groove feels smaller or hats pump on kicks.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR073 - Trap Dark Parallel Pressure
 
@@ -1268,7 +1268,7 @@ Band 120-6500 Hz:
 
 Reject/revise if: The dry crest drops or the parallel path raises cymbal wash.
 
-Calibration: Add compressed mid-body under clean drum peaks. Assess against: The dry crest drops or the parallel path raises cymbal wash.; status **not_run**.
+Intent check: Add compressed mid-body under clean drum peaks. Assess against: The dry crest drops or the parallel path raises cymbal wash.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR074 - Trap Cloud Open Tops
 
@@ -1285,7 +1285,7 @@ Full range:
 
 Reject/revise if: The kick changes in mono or the top overshadows the vocal.
 
-Calibration: Keep low drums centered and give upper percussion modest air. Assess against: The kick changes in mono or the top overshadows the vocal.; status **not_run**.
+Intent check: Keep low drums centered and give upper percussion modest air. Assess against: The kick changes in mono or the top overshadows the vocal.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR075 - Trap Rage Hit Contrast
 
@@ -1302,7 +1302,7 @@ Full range:
 
 Reject/revise if: The loudest snare clips or quieter ghost hits vanish.
 
-Calibration: Increase hit/body contrast without adding full-range clipping. Assess against: The loudest snare clips or quieter ghost hits vanish.; status **not_run**.
+Intent check: Increase hit/body contrast without adding full-range clipping. Assess against: The loudest snare clips or quieter ghost hits vanish.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR076 - Trap Memphis Sample Bus
 
@@ -1319,7 +1319,7 @@ Full range:
 
 Reject/revise if: The entire beat loses high-frequency separation.
 
-Calibration: Make a clean drum bus cohere around a restrained sampled midrange. Assess against: The entire beat loses high-frequency separation.; status **not_run**.
+Intent check: Make a clean drum bus cohere around a restrained sampled midrange. Assess against: The entire beat loses high-frequency separation.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR077 - Trap Last Beat Chop
 
@@ -1340,7 +1340,7 @@ Band 800-16000 Hz:
 
 Reject/revise if: The low kick is gated or the chop bleeds into the next bar.
 
-Calibration: Chop only the upper drum band at the last two subdivisions. Assess against: The low kick is gated or the chop bleeds into the next bar.; status **not_run**.
+Intent check: Chop only the upper drum band at the last two subdivisions. Assess against: The low kick is gated or the chop bleeds into the next bar.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR078 - Trap Luxury Peak Discipline
 
@@ -1357,7 +1357,7 @@ Full range:
 
 Reject/revise if: Every kick is limited or the next hit remains attenuated.
 
-Calibration: Contain occasional snare spikes with short limiter recovery. Assess against: Every kick is limited or the next hit remains attenuated.; status **not_run**.
+Intent check: Contain occasional snare spikes with short limiter recovery. Assess against: Every kick is limited or the next hit remains attenuated.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR079 - Trap ATL Eight Translation
 
@@ -1374,7 +1374,7 @@ Full range:
 
 Reject/revise if: Glides become rough below 100 Hz or the bass loses mono stability.
 
-Calibration: Generate harmonics above a clean 808 fundamental. Assess against: Glides become rough below 100 Hz or the bass loses mono stability.; status **not_run**.
+Intent check: Generate harmonics above a clean 808 fundamental. Assess against: Glides become rough below 100 Hz or the bass loses mono stability.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR080 - Trap Dark Long Eight
 
@@ -1391,7 +1391,7 @@ Full range:
 
 Reject/revise if: The note breathes audibly or the glide tail is cut short.
 
-Calibration: Level long 808 notes without compressing away the initial drop. Assess against: The note breathes audibly or the glide tail is cut short.; status **not_run**.
+Intent check: Level long 808 notes without compressing away the initial drop. Assess against: The note breathes audibly or the glide tail is cut short.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR081 - Trap Cloud Soft Sub
 
@@ -1408,7 +1408,7 @@ Full range:
 
 Reject/revise if: The bass vanishes on a small speaker or low notes become quieter.
 
-Calibration: Soften upper buzz on a melodic 808 while maintaining pitch. Assess against: The bass vanishes on a small speaker or low notes become quieter.; status **not_run**.
+Intent check: Soften upper buzz on a melodic 808 while maintaining pitch. Assess against: The bass vanishes on a small speaker or low notes become quieter.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR082 - Trap Rage Upper Growl
 
@@ -1429,7 +1429,7 @@ Band 150-5000 Hz:
 
 Reject/revise if: The fundamental clips or the growl covers the kick click.
 
-Calibration: Distort the bass upper band while leaving the sub undriven. Assess against: The fundamental clips or the growl covers the kick click.; status **not_run**.
+Intent check: Distort the bass upper band while leaving the sub undriven. Assess against: The fundamental clips or the growl covers the kick click.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR083 - Trap Memphis Short Eight
 
@@ -1446,7 +1446,7 @@ Full range:
 
 Reject/revise if: The envelope clicks on low notes or ends before pitch is established.
 
-Calibration: Contain an 808 tail and add compact sampled midrange. Assess against: The envelope clicks on low notes or ends before pitch is established.; status **not_run**.
+Intent check: Contain an 808 tail and add compact sampled midrange. Assess against: The envelope clicks on low notes or ends before pitch is established.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR084 - Trap ATL Front Lead
 
@@ -1464,7 +1464,7 @@ Full range:
 
 Reject/revise if: Sibilants rise or the next word ducks after a shout.
 
-Calibration: Hold a dry rap vocal forward with fast FET control and restrained air. Assess against: Sibilants rise or the next word ducks after a shout.; status **not_run**.
+Intent check: Hold a dry rap vocal forward with fast FET control and restrained air. Assess against: Sibilants rise or the next word ducks after a shout.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR085 - Trap Cloud Floating Hook
 
@@ -1481,7 +1481,7 @@ Full range:
 
 Reject/revise if: Hall covers active consonants or low reverb overlaps the 808.
 
-Calibration: Let a ducked bright hall bloom after the hook words. Assess against: Hall covers active consonants or low reverb overlaps the 808.; status **not_run**.
+Intent check: Let a ducked bright hall bloom after the hook words. Assess against: Hall covers active consonants or low reverb overlaps the 808.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR086 - Trap Dark Telephone Adlib
 
@@ -1498,7 +1498,7 @@ Full range:
 
 Reject/revise if: Words lose intelligibility or the echo runs indefinitely.
 
-Calibration: Band-limit an adlib and place a gritty echo behind it. Assess against: Words lose intelligibility or the echo runs indefinitely.; status **not_run**.
+Intent check: Band-limit an adlib and place a gritty echo behind it. Assess against: Words lose intelligibility or the echo runs indefinitely.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR087 - Trap Rage Parallel Shout
 
@@ -1516,7 +1516,7 @@ Full range:
 
 Reject/revise if: The shout sounds louder only because of unmatched level or its esses tear.
 
-Calibration: Add rough density under a controlled shout without boosting ess sounds. Assess against: The shout sounds louder only because of unmatched level or its esses tear.; status **not_run**.
+Intent check: Add rough density under a controlled shout without boosting ess sounds. Assess against: The shout sounds louder only because of unmatched level or its esses tear.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR088 - Trap Luxury Pitch Replies
 
@@ -1533,7 +1533,7 @@ Full range:
 
 Reject/revise if: The pitched reflection sounds like a doubled lead during words.
 
-Calibration: Place a quiet fifth-up reply after the dry phrase. Assess against: The pitched reflection sounds like a doubled lead during words.; status **not_run**.
+Intent check: Place a quiet fifth-up reply after the dry phrase. Assess against: The pitched reflection sounds like a doubled lead during words.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR089 - Trap Cloud Bell Bed
 
@@ -1551,7 +1551,7 @@ Full range:
 
 Reject/revise if: The bell loses pitch or ambience hides the next arpeggio note.
 
-Calibration: Keep bell attack clear above a dark softly spreading tail. Assess against: The bell loses pitch or ambience hides the next arpeggio note.; status **not_run**.
+Intent check: Keep bell attack clear above a dark softly spreading tail. Assess against: The bell loses pitch or ambience hides the next arpeggio note.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR090 - Trap Dark Piano Space
 
@@ -1568,7 +1568,7 @@ Full range:
 
 Reject/revise if: The piano bottom covers the 808 or the chamber sounds detached.
 
-Calibration: Remove muddy piano sustain and add a dark chamber. Assess against: The piano bottom covers the 808 or the chamber sounds detached.; status **not_run**.
+Intent check: Remove muddy piano sustain and add a dark chamber. Assess against: The piano bottom covers the 808 or the chamber sounds detached.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR091 - Trap Rage Pluck Edge
 
@@ -1585,7 +1585,7 @@ Full range:
 
 Reject/revise if: The pluck becomes broadband distortion or masks consonants.
 
-Calibration: Add controlled iron harmonics to a hard synth-key pluck. Assess against: The pluck becomes broadband distortion or masks consonants.; status **not_run**.
+Intent check: Add controlled iron harmonics to a hard synth-key pluck. Assess against: The pluck becomes broadband distortion or masks consonants.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR092 - Trap Luxury Eighth Sparkle
 
@@ -1603,7 +1603,7 @@ Full range:
 
 Reject/revise if: The echo shifts the chord root or dominates the original pattern.
 
-Calibration: Place light dotted-eighth answers around electric keys. Assess against: The echo shifts the chord root or dominates the original pattern.; status **not_run**.
+Intent check: Place light dotted-eighth answers around electric keys. Assess against: The echo shifts the chord root or dominates the original pattern.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR093 - Trap Memphis Tape Scene
 
@@ -1620,7 +1620,7 @@ Full range:
 
 Reject/revise if: Idle gaps gain hum or the chopped rhythm stops feeling clear.
 
-Calibration: Make a sample darker and more compact without adding continuous noise. Assess against: Idle gaps gain hum or the chopped rhythm stops feeling clear.; status **not_run**.
+Intent check: Make a sample darker and more compact without adding continuous noise. Assess against: Idle gaps gain hum or the chopped rhythm stops feeling clear.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR094 - Trap Cloud Octave Mist
 
@@ -1636,7 +1636,7 @@ Full range:
 
 Reject/revise if: The octave becomes the dominant melody or feedback changes the root repeatedly.
 
-Calibration: Add sparse octave-up echo with a quiet soft space tail. Assess against: The octave becomes the dominant melody or feedback changes the root repeatedly.; status **not_run**.
+Intent check: Add sparse octave-up echo with a quiet soft space tail. Assess against: The octave becomes the dominant melody or feedback changes the root repeatedly.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR095 - Trap Last Word Tape Stop
 
@@ -1653,7 +1653,7 @@ Full range:
 
 Reject/revise if: The next bar starts pitched down or has missing samples.
 
-Calibration: Stop the final sample subdivision and resume cleanly on the downbeat. Assess against: The next bar starts pitched down or has missing samples.; status **not_run**.
+Intent check: Stop the final sample subdivision and resume cleanly on the downbeat. Assess against: The next bar starts pitched down or has missing samples.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR096 - Trap Gated Melody Pocket
 
@@ -1670,7 +1670,7 @@ Full range:
 
 Reject/revise if: Gate edges click or the rhythm obscures the melody's main accents.
 
-Calibration: Carve a syncopated melody envelope around the kick and snare. Assess against: Gate edges click or the rhythm obscures the melody's main accents.; status **not_run**.
+Intent check: Carve a syncopated melody envelope around the kick and snare. Assess against: Gate edges click or the rhythm obscures the melody's main accents.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR097 - Trap ATL Sub Anchor
 
@@ -1688,7 +1688,7 @@ Full range:
 
 Reject/revise if: Final 8x true peak exceeds -1 dBTP or bass distorts before 3 dB limiter work.
 
-Calibration: Keep the sub mono and let kick and vocal peaks survive gentle limiting. Assess against: Final 8x true peak exceeds -1 dBTP or bass distorts before 3 dB limiter work.; status **not_run**.
+Intent check: Keep the sub mono and let kick and vocal peaks survive gentle limiting. Assess against: Final 8x true peak exceeds -1 dBTP or bass distorts before 3 dB limiter work.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR098 - Trap Cloud Air Master
 
@@ -1706,7 +1706,7 @@ Full range:
 
 Reject/revise if: The airy band hisses or the matched vocal becomes recessed.
 
-Calibration: Open a soft hook mix while containing upper harshness dynamically. Assess against: The airy band hisses or the matched vocal becomes recessed.; status **not_run**.
+Intent check: Open a soft hook mix while containing upper harshness dynamically. Assess against: The airy band hisses or the matched vocal becomes recessed.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR099 - Trap Dark Density Master
 
@@ -1724,7 +1724,7 @@ Full range:
 
 Reject/revise if: Sub harmonics buzz audibly or limiter work exceeds 3 dB.
 
-Calibration: Support midrange density without saturating the deepest 808. Assess against: Sub harmonics buzz audibly or limiter work exceeds 3 dB.; status **not_run**.
+Intent check: Support midrange density without saturating the deepest 808. Assess against: Sub harmonics buzz audibly or limiter work exceeds 3 dB.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR100 - Trap Luxury Clean Ceiling
 
@@ -1742,7 +1742,7 @@ Full range:
 
 Reject/revise if: Mono fold loses the hook or limiting changes the 808 envelope.
 
-Calibration: Finish a balanced clean mix with little colour and bounded stereo width. Assess against: Mono fold loses the hook or limiting changes the 808 envelope.; status **not_run**.
+Intent check: Finish a balanced clean mix with little colour and bounded stereo width. Assess against: Mono fold loses the hook or limiting changes the 808 envelope.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ## Techno
 
@@ -1761,7 +1761,7 @@ Full range:
 
 Reject/revise if: The next quarter loses impact or low-mid buildup remains.
 
-Calibration: Keep a four-on-floor kick firm with low-mid space and an intact transient. Assess against: The next quarter loses impact or low-mid buildup remains.; status **not_run**.
+Intent check: Keep a four-on-floor kick firm with low-mid space and an intact transient. Assess against: The next quarter loses impact or low-mid buildup remains.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR102 - Techno Hypnotic Round Pulse
 
@@ -1778,7 +1778,7 @@ Full range:
 
 Reject/revise if: The upper click still dominates or low body blooms past the next beat.
 
-Calibration: Round a sharp kick and let its low body carry the pulse. Assess against: The upper click still dominates or low body blooms past the next beat.; status **not_run**.
+Intent check: Round a sharp kick and let its low body carry the pulse. Assess against: The upper click still dominates or low body blooms past the next beat.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR103 - Techno Minimal Dry Foot
 
@@ -1795,7 +1795,7 @@ Full range:
 
 Reject/revise if: The shortened envelope clicks or the kick becomes hollow.
 
-Calibration: Remove excess tail and leave room for a sparse bass pattern. Assess against: The shortened envelope clicks or the kick becomes hollow.; status **not_run**.
+Intent check: Remove excess tail and leave room for a sparse bass pattern. Assess against: The shortened envelope clicks or the kick becomes hollow.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR104 - Techno Detroit Iron Center
 
@@ -1812,7 +1812,7 @@ Full range:
 
 Reject/revise if: The fundamental buzzes or harmonics bury the hi-hat.
 
-Calibration: Give a clean electronic kick restrained iron midrange. Assess against: The fundamental buzzes or harmonics bury the hi-hat.; status **not_run**.
+Intent check: Give a clean electronic kick restrained iron midrange. Assess against: The fundamental buzzes or harmonics bury the hi-hat.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR105 - Techno Dub Dark Rumble Seed
 
@@ -1832,7 +1832,7 @@ Band 70-420 Hz:
 
 Reject/revise if: The bloom builds across bars or destabilizes the dry kick pitch.
 
-Calibration: Derive a filtered room bloom from the kick without a long bright tail. Assess against: The bloom builds across bars or destabilizes the dry kick pitch.; status **not_run**.
+Intent check: Derive a filtered room bloom from the kick without a long bright tail. Assess against: The bloom builds across bars or destabilizes the dry kick pitch.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR106 - Techno Hard Parallel Hammer
 
@@ -1853,7 +1853,7 @@ Band 130-4500 Hz:
 
 Reject/revise if: The sub is distorted or the matched transient loses punch.
 
-Calibration: Blend aggressive upper kick colour below a clean low anchor. Assess against: The sub is distorted or the matched transient loses punch.; status **not_run**.
+Intent check: Blend aggressive upper kick colour below a clean low anchor. Assess against: The sub is distorted or the matched transient loses punch.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR107 - Techno Peak Clap Hit
 
@@ -1870,7 +1870,7 @@ Full range:
 
 Reject/revise if: The clap turns papery or the hat space remains crowded.
 
-Calibration: Emphasize clap attack and pull its tail off the next hat. Assess against: The clap turns papery or the hat space remains crowded.; status **not_run**.
+Intent check: Emphasize clap attack and pull its tail off the next hat. Assess against: The clap turns papery or the hat space remains crowded.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR108 - Techno Hypnotic Rim Chamber
 
@@ -1887,7 +1887,7 @@ Full range:
 
 Reject/revise if: The chamber becomes a second rhythmic event or dulls the rim.
 
-Calibration: Place a dry rim in a small dark chamber with a clear center. Assess against: The chamber becomes a second rhythmic event or dulls the rim.; status **not_run**.
+Intent check: Place a dry rim in a small dark chamber with a clear center. Assess against: The chamber becomes a second rhythmic event or dulls the rim.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR109 - Techno Minimal Tight Snap
 
@@ -1904,7 +1904,7 @@ Full range:
 
 Reject/revise if: Quiet hits disappear or the release adds chatter.
 
-Calibration: Contain a synthetic snap with a fast drum envelope. Assess against: Quiet hits disappear or the release adds chatter.; status **not_run**.
+Intent check: Contain a synthetic snap with a fast drum envelope. Assess against: Quiet hits disappear or the release adds chatter.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR110 - Techno Detroit Short Plate
 
@@ -1921,7 +1921,7 @@ Full range:
 
 Reject/revise if: The plate obscures the clap grid or low mids ring.
 
-Calibration: Give a machine snare a metallic but bounded plate tail. Assess against: The plate obscures the clap grid or low mids ring.; status **not_run**.
+Intent check: Give a machine snare a metallic but bounded plate tail. Assess against: The plate obscures the clap grid or low mids ring.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR111 - Techno Dub Snare Throw
 
@@ -1937,7 +1937,7 @@ Full range:
 
 Reject/revise if: The repeat makes the next snare late or feedback grows each bar.
 
-Calibration: Send a damped offbeat repeat behind a dry snare. Assess against: The repeat makes the next snare late or feedback grows each bar.; status **not_run**.
+Intent check: Send a damped offbeat repeat behind a dry snare. Assess against: The repeat makes the next snare late or feedback grows each bar.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR112 - Techno Hard Gate Burst
 
@@ -1954,7 +1954,7 @@ Full range:
 
 Reject/revise if: The gate clicks or its burst masks the initial crack.
 
-Calibration: Add a short dense room burst behind a hard snare. Assess against: The gate clicks or its burst masks the initial crack.; status **not_run**.
+Intent check: Add a short dense room burst behind a hard snare. Assess against: The gate clicks or its burst masks the initial crack.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR113 - Techno Peak Open Hat Seat
 
@@ -1971,7 +1971,7 @@ Full range:
 
 Reject/revise if: The open hat loses its offbeat accent or still masks the next kick.
 
-Calibration: Shorten overlong offbeat hats while keeping their high lift. Assess against: The open hat loses its offbeat accent or still masks the next kick.; status **not_run**.
+Intent check: Shorten overlong offbeat hats while keeping their high lift. Assess against: The open hat loses its offbeat accent or still masks the next kick.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR114 - Techno Hypnotic Metallic Dots
 
@@ -1987,7 +1987,7 @@ Full range:
 
 Reject/revise if: Echoes replace the main tick or create a constant top layer.
 
-Calibration: Keep a repetitive closed hat focused with subtle dark echoes. Assess against: Echoes replace the main tick or create a constant top layer.; status **not_run**.
+Intent check: Keep a repetitive closed hat focused with subtle dark echoes. Assess against: Echoes replace the main tick or create a constant top layer.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR115 - Techno Minimal Tick Transient
 
@@ -2004,7 +2004,7 @@ Full range:
 
 Reject/revise if: The tick becomes a click artifact or vanishes on quiet passages.
 
-Calibration: Remove body from a small machine tick without expanding stereo width. Assess against: The tick becomes a click artifact or vanishes on quiet passages.; status **not_run**.
+Intent check: Remove body from a small machine tick without expanding stereo width. Assess against: The tick becomes a click artifact or vanishes on quiet passages.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR116 - Techno Detroit Tape Air
 
@@ -2021,7 +2021,7 @@ Full range:
 
 Reject/revise if: Mono loses timekeeping or tape tone dulls every accent.
 
-Calibration: Round brittle hats and keep a modest high-band stereo spread. Assess against: Mono loses timekeeping or tape tone dulls every accent.; status **not_run**.
+Intent check: Round brittle hats and keep a modest high-band stereo spread. Assess against: Mono loses timekeeping or tape tone dulls every accent.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR117 - Techno Hard Last Step Rush
 
@@ -2038,7 +2038,7 @@ Full range:
 
 Reject/revise if: The rise repeats every early beat or the next downbeat is cut.
 
-Calibration: Add one rising BLOCK burst at the phrase edge. Assess against: The rise repeats every early beat or the next downbeat is cut.; status **not_run**.
+Intent check: Add one rising BLOCK burst at the phrase edge. Assess against: The rise repeats every early beat or the next downbeat is cut.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR118 - Techno Hypnotic Tom Focus
 
@@ -2055,7 +2055,7 @@ Full range:
 
 Reject/revise if: The tom tail overlaps the next note or fundamental shifts.
 
-Calibration: Keep low tom notes distinct and soften excessive stick bite. Assess against: The tom tail overlaps the next note or fundamental shifts.; status **not_run**.
+Intent check: Keep low tom notes distinct and soften excessive stick bite. Assess against: The tom tail overlaps the next note or fundamental shifts.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR119 - Techno Minimal Wood Reply
 
@@ -2071,7 +2071,7 @@ Full range:
 
 Reject/revise if: The reply sounds like a flam on the original transient.
 
-Calibration: Add a quiet short delay around a dry wooden hit. Assess against: The reply sounds like a flam on the original transient.; status **not_run**.
+Intent check: Add a quiet short delay around a dry wooden hit. Assess against: The reply sounds like a flam on the original transient.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR120 - Techno Dub Chord Perc Space
 
@@ -2087,7 +2087,7 @@ Full range:
 
 Reject/revise if: The feedback creates low buildup or the dry center shifts.
 
-Calibration: Create a filtered ping-pong response with a stable dry hit. Assess against: The feedback creates low buildup or the dry center shifts.; status **not_run**.
+Intent check: Create a filtered ping-pong response with a stable dry hit. Assess against: The feedback creates low buildup or the dry center shifts.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR121 - Techno Industrial Mid Scrape
 
@@ -2104,7 +2104,7 @@ Full range:
 
 Reject/revise if: The upper band turns into hiss or the clean metal pitch disappears.
 
-Calibration: Add parallel hard colour to metallic percussion without brittle treble. Assess against: The upper band turns into hiss or the clean metal pitch disappears.; status **not_run**.
+Intent check: Add parallel hard colour to metallic percussion without brittle treble. Assess against: The upper band turns into hiss or the clean metal pitch disappears.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR122 - Techno Peak Quarter Glue
 
@@ -2121,7 +2121,7 @@ Full range:
 
 Reject/revise if: The detector pumps the hats excessively or all kicks flatten.
 
-Calibration: Let the compressor recover inside a quarter while keeping the kick front. Assess against: The detector pumps the hats excessively or all kicks flatten.; status **not_run**.
+Intent check: Let the compressor recover inside a quarter while keeping the kick front. Assess against: The detector pumps the hats excessively or all kicks flatten.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR123 - Techno Hypnotic Tape Bed
 
@@ -2138,7 +2138,7 @@ Full range:
 
 Reject/revise if: Loop accents lose their hierarchy or low end turns woolly.
 
-Calibration: Bind a rolling machine beat with modest tape density. Assess against: Loop accents lose their hierarchy or low end turns woolly.; status **not_run**.
+Intent check: Bind a rolling machine beat with modest tape density. Assess against: Loop accents lose their hierarchy or low end turns woolly.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR124 - Techno Minimal Clean Space
 
@@ -2155,7 +2155,7 @@ Full range:
 
 Reject/revise if: Gate noise replaces the gaps or the hats sound closer than the clap.
 
-Calibration: Control the envelope lightly while preserving sparse gaps. Assess against: Gate noise replaces the gaps or the hats sound closer than the clap.; status **not_run**.
+Intent check: Control the envelope lightly while preserving sparse gaps. Assess against: Gate noise replaces the gaps or the hats sound closer than the clap.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR125 - Techno Detroit Parallel Circuit
 
@@ -2175,7 +2175,7 @@ Band 170-6000 Hz:
 
 Reject/revise if: The snare crest falls or the layer muddies the kick-bass pocket.
 
-Calibration: Add an energetic mid-band parallel layer beneath clean machine transients. Assess against: The snare crest falls or the layer muddies the kick-bass pocket.; status **not_run**.
+Intent check: Add an energetic mid-band parallel layer beneath clean machine transients. Assess against: The snare crest falls or the layer muddies the kick-bass pocket.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR126 - Techno Dub Tops Feedback
 
@@ -2195,7 +2195,7 @@ Band 700-12000 Hz:
 
 Reject/revise if: The low kick is echoed or feedback outlasts the intended phrase gaps.
 
-Calibration: Create a dark upper-band delay bed while the low rhythm stays dry. Assess against: The low kick is echoed or feedback outlasts the intended phrase gaps.; status **not_run**.
+Intent check: Create a dark upper-band delay bed while the low rhythm stays dry. Assess against: The low kick is echoed or feedback outlasts the intended phrase gaps.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR127 - Techno Hard Controlled Density
 
@@ -2213,7 +2213,7 @@ Full range:
 
 Reject/revise if: The matched beat loses attack/body contrast or master peaks jump above plan.
 
-Calibration: Increase parallel drum density with protected transient contrast. Assess against: The matched beat loses attack/body contrast or master peaks jump above plan.; status **not_run**.
+Intent check: Increase parallel drum density with protected transient contrast. Assess against: The matched beat loses attack/body contrast or master peaks jump above plan.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR128 - Techno Phrase Tops Shuffle
 
@@ -2234,7 +2234,7 @@ Band 900-16000 Hz:
 
 Reject/revise if: The kick timing changes or the next bar lacks its first hat.
 
-Calibration: Shuffle the final upper-drum fragments while preserving the four-on-floor. Assess against: The kick timing changes or the next bar lacks its first hat.; status **not_run**.
+Intent check: Shuffle the final upper-drum fragments while preserving the four-on-floor. Assess against: The kick timing changes or the next bar lacks its first hat.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR129 - Techno Peak Rolling Bass
 
@@ -2251,7 +2251,7 @@ Full range:
 
 Reject/revise if: The bass sustains into the kick or loudness matching reveals less articulation.
 
-Calibration: Level a rolling line without blurring its sixteenth-note spaces. Assess against: The bass sustains into the kick or loudness matching reveals less articulation.; status **not_run**.
+Intent check: Level a rolling line without blurring its sixteenth-note spaces. Assess against: The bass sustains into the kick or loudness matching reveals less articulation.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR130 - Techno Hypnotic Tempo Dip
 
@@ -2268,7 +2268,7 @@ Full range:
 
 Reject/revise if: The dip misses the grid or the bass fails to recover before the offbeat.
 
-Calibration: Cut a gentle tempo-shaped pocket at the start of each quarter. Assess against: The dip misses the grid or the bass fails to recover before the offbeat.; status **not_run**.
+Intent check: Cut a gentle tempo-shaped pocket at the start of each quarter. Assess against: The dip misses the grid or the bass fails to recover before the offbeat.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR131 - Techno Acid Upper Bite
 
@@ -2289,7 +2289,7 @@ Band 180-7000 Hz:
 
 Reject/revise if: The filter peak tears or the low fundamental is saturated.
 
-Calibration: Add controlled resonance-band grit above an undriven sub. Assess against: The filter peak tears or the low fundamental is saturated.; status **not_run**.
+Intent check: Add controlled resonance-band grit above an undriven sub. Assess against: The filter peak tears or the low fundamental is saturated.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR132 - Techno Dub Round Sustain
 
@@ -2306,7 +2306,7 @@ Full range:
 
 Reject/revise if: Notes swell after their attack or low sub level becomes inconsistent.
 
-Calibration: Smooth a soft dub-bass line without generating extra low tails. Assess against: Notes swell after their attack or low sub level becomes inconsistent.; status **not_run**.
+Intent check: Smooth a soft dub-bass line without generating extra low tails. Assess against: Notes swell after their attack or low sub level becomes inconsistent.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR133 - Techno Hard Mono Grind
 
@@ -2324,7 +2324,7 @@ Full range:
 
 Reject/revise if: Stereo artifacts appear below 150 Hz or the bass overshadows the kick click.
 
-Calibration: Add a compact mid grind with mono low end and short releases. Assess against: Stereo artifacts appear below 150 Hz or the bass overshadows the kick click.; status **not_run**.
+Intent check: Add a compact mid grind with mono low end and short releases. Assess against: Stereo artifacts appear below 150 Hz or the bass overshadows the kick click.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR134 - Techno Spoken Close Command
 
@@ -2341,7 +2341,7 @@ Full range:
 
 Reject/revise if: Breaths surge between commands or the bandpass destroys intelligibility.
 
-Calibration: Keep a spoken phrase dry, focused and stable in front of a loud beat. Assess against: Breaths surge between commands or the bandpass destroys intelligibility.; status **not_run**.
+Intent check: Keep a spoken phrase dry, focused and stable in front of a loud beat. Assess against: Breaths surge between commands or the bandpass destroys intelligibility.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR135 - Techno Dub Word Echo
 
@@ -2358,7 +2358,7 @@ Full range:
 
 Reject/revise if: Repeats obscure commands or build endlessly at phrase boundaries.
 
-Calibration: Let a damped dotted echo emerge between spoken words. Assess against: Repeats obscure commands or build endlessly at phrase boundaries.; status **not_run**.
+Intent check: Let a damped dotted echo emerge between spoken words. Assess against: Repeats obscure commands or build endlessly at phrase boundaries.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR136 - Techno Gated Chant
 
@@ -2375,7 +2375,7 @@ Full range:
 
 Reject/revise if: Gate edges click or consonants become impossible to identify.
 
-Calibration: Shape a held chant into a repeating syncopated figure. Assess against: Gate edges click or consonants become impossible to identify.; status **not_run**.
+Intent check: Shape a held chant into a repeating syncopated figure. Assess against: Gate edges click or consonants become impossible to identify.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR137 - Techno Warehouse Call
 
@@ -2392,7 +2392,7 @@ Full range:
 
 Reject/revise if: The tail masks the next call or adds low-mid boom.
 
-Calibration: Put a clear dry call ahead of a ducked dark warehouse tail. Assess against: The tail masks the next call or adds low-mid boom.; status **not_run**.
+Intent check: Put a clear dry call ahead of a ducked dark warehouse tail. Assess against: The tail masks the next call or adds low-mid boom.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR138 - Techno Last Word Throw Lane
 
@@ -2409,7 +2409,7 @@ Full range:
 
 Reject/revise if: The whole phrase is repeated or the throw has a pitched leading artifact.
 
-Calibration: Send only the final two steps to a Revolution echo throw. Assess against: The whole phrase is repeated or the throw has a pitched leading artifact.; status **not_run**.
+Intent check: Send only the final two steps to a Revolution echo throw. Assess against: The whole phrase is repeated or the throw has a pitched leading artifact.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR139 - Techno Detroit Chord Punch
 
@@ -2427,7 +2427,7 @@ Full range:
 
 Reject/revise if: Chord body spills into the next stab or the top becomes fuzzy.
 
-Calibration: Keep a chord stab short, warm and distinct from the kick. Assess against: Chord body spills into the next stab or the top becomes fuzzy.; status **not_run**.
+Intent check: Keep a chord stab short, warm and distinct from the kick. Assess against: Chord body spills into the next stab or the top becomes fuzzy.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR140 - Techno Dub Chord Tunnel
 
@@ -2444,7 +2444,7 @@ Full range:
 
 Reject/revise if: Low repeats accumulate or the dry chord loses its placement.
 
-Calibration: Create a damped syncopated chord echo with a small chamber return. Assess against: Low repeats accumulate or the dry chord loses its placement.; status **not_run**.
+Intent check: Create a damped syncopated chord echo with a small chamber return. Assess against: Low repeats accumulate or the dry chord loses its placement.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR141 - Techno Minimal Pluck Seat
 
@@ -2461,7 +2461,7 @@ Full range:
 
 Reject/revise if: The plucks become diffuse or sharp accents still dominate.
 
-Calibration: Tuck bright plucks behind the rhythm with restrained early reflections. Assess against: The plucks become diffuse or sharp accents still dominate.; status **not_run**.
+Intent check: Tuck bright plucks behind the rhythm with restrained early reflections. Assess against: The plucks become diffuse or sharp accents still dominate.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR142 - Techno Peak Chord Breathing
 
@@ -2479,7 +2479,7 @@ Full range:
 
 Reject/revise if: The dip sounds like an external-key promise or makes the chord disappear.
 
-Calibration: Give a sustained chord a gentle beat-linked dip and recovery. Assess against: The dip sounds like an external-key promise or makes the chord disappear.; status **not_run**.
+Intent check: Give a sustained chord a gentle beat-linked dip and recovery. Assess against: The dip sounds like an external-key promise or makes the chord disappear.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR143 - Techno Hypnotic Filter Step
 
@@ -2500,7 +2500,7 @@ Band 600-14000 Hz:
 
 Reject/revise if: Its low pulse moves or filter steps click audibly.
 
-Calibration: Move only the sample upper mids through a repeating low-pass gesture. Assess against: Its low pulse moves or filter steps click audibly.; status **not_run**.
+Intent check: Move only the sample upper mids through a repeating low-pass gesture. Assess against: Its low pulse moves or filter steps click audibly.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR144 - Techno Industrial Broken Loop
 
@@ -2518,7 +2518,7 @@ Full range:
 
 Reject/revise if: The chop density obscures the loop or carries into the following bar.
 
-Calibration: Add two explicit BLOCK chops near the end of an industrial loop. Assess against: The chop density obscures the loop or carries into the following bar.; status **not_run**.
+Intent check: Add two explicit BLOCK chops near the end of an industrial loop. Assess against: The chop density obscures the loop or carries into the following bar.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR145 - Techno Dub Stereo Field
 
@@ -2534,7 +2534,7 @@ Full range:
 
 Reject/revise if: The mono fold loses the texture or the low anchor shifts sides.
 
-Calibration: Give an ambient texture width and a slow beat-linked pan journey. Assess against: The mono fold loses the texture or the low anchor shifts sides.; status **not_run**.
+Intent check: Give an ambient texture width and a slow beat-linked pan journey. Assess against: The mono fold loses the texture or the low anchor shifts sides.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR146 - Techno One Beat Reverse Swell
 
@@ -2550,7 +2550,7 @@ Full range:
 
 Reject/revise if: The effect changes the dry timing or arrives after its target hit.
 
-Calibration: Add a quiet reverse-shaped reverb approaching the next sample hit. Assess against: The effect changes the dry timing or arrives after its target hit.; status **not_run**.
+Intent check: Add a quiet reverse-shaped reverb approaching the next sample hit. Assess against: The effect changes the dry timing or arrives after its target hit.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR147 - Techno Peak Clean Pressure
 
@@ -2568,7 +2568,7 @@ Full range:
 
 Reject/revise if: Final 8x true peak exceeds -1 dBTP or kick flattening begins before 3 dB work.
 
-Calibration: Finish a club premaster with a stable low center and controlled limiter work. Assess against: Final 8x true peak exceeds -1 dBTP or kick flattening begins before 3 dB work.; status **not_run**.
+Intent check: Finish a club premaster with a stable low center and controlled limiter work. Assess against: Final 8x true peak exceeds -1 dBTP or kick flattening begins before 3 dB work.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR148 - Techno Hypnotic Longform
 
@@ -2586,7 +2586,7 @@ Full range:
 
 Reject/revise if: Long compression causes audible hat pumping or subtle accents disappear.
 
-Calibration: Preserve small evolving accents while adding gentle tape cohesion. Assess against: Long compression causes audible hat pumping or subtle accents disappear.; status **not_run**.
+Intent check: Preserve small evolving accents while adding gentle tape cohesion. Assess against: Long compression causes audible hat pumping or subtle accents disappear.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR149 - Techno Dub Depth Master
 
@@ -2604,7 +2604,7 @@ Full range:
 
 Reject/revise if: The room folds inward on kicks or low delay returns dominate the mix.
 
-Calibration: Keep dub space deep and protect low-mid headroom. Assess against: The room folds inward on kicks or low delay returns dominate the mix.; status **not_run**.
+Intent check: Keep dub space deep and protect low-mid headroom. Assess against: The room folds inward on kicks or low delay returns dominate the mix.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR150 - Techno Hard Transient Reserve
 
@@ -2622,7 +2622,7 @@ Full range:
 
 Reject/revise if: The hard character vanishes or limiting adds low-note distortion.
 
-Calibration: Keep aggressive midrange while reserving clean space for kick peaks. Assess against: The hard character vanishes or limiting adds low-note distortion.; status **not_run**.
+Intent check: Keep aggressive midrange while reserving clean space for kick peaks. Assess against: The hard character vanishes or limiting adds low-note distortion.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ## Drum and Bass
 
@@ -2641,7 +2641,7 @@ Full range:
 
 Reject/revise if: The body masks the next ghost hit or click loses definition.
 
-Calibration: Keep a short kick attack distinct inside a fast break. Assess against: The body masks the next ghost hit or click loses definition.; status **not_run**.
+Intent check: Keep a short kick attack distinct inside a fast break. Assess against: The body masks the next ghost hit or click loses definition.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR152 - DnB Roller Low Pocket
 
@@ -2658,7 +2658,7 @@ Full range:
 
 Reject/revise if: The low note is cut before a full cycle or the tail overlaps the bass.
 
-Calibration: Tighten a rolling kick tail without stripping its low-note weight. Assess against: The low note is cut before a full cycle or the tail overlaps the bass.; status **not_run**.
+Intent check: Tighten a rolling kick tail without stripping its low-note weight. Assess against: The low note is cut before a full cycle or the tail overlaps the bass.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR153 - DnB Liquid Soft Front
 
@@ -2675,7 +2675,7 @@ Full range:
 
 Reject/revise if: The softened kick disappears under bass or gains excess sustain.
 
-Calibration: Soften an aggressive kick for an open liquid arrangement. Assess against: The softened kick disappears under bass or gains excess sustain.; status **not_run**.
+Intent check: Soften an aggressive kick for an open liquid arrangement. Assess against: The softened kick disappears under bass or gains excess sustain.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR154 - DnB Neuro Mid Click
 
@@ -2696,7 +2696,7 @@ Band 500-6000 Hz:
 
 Reject/revise if: Upper distortion masks the snare or the sub becomes gritty.
 
-Calibration: Add a compact mid click above clean low-end energy. Assess against: Upper distortion masks the snare or the sub becomes gritty.; status **not_run**.
+Intent check: Add a compact mid click above clean low-end energy. Assess against: Upper distortion masks the snare or the sub becomes gritty.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR155 - DnB Jump Up Solid Knock
 
@@ -2713,7 +2713,7 @@ Full range:
 
 Reject/revise if: The 100-180 Hz area clouds the bass line or the front edge clips.
 
-Calibration: Emphasize the audible low-mid punch without bloated sub sustain. Assess against: The 100-180 Hz area clouds the bass line or the front edge clips.; status **not_run**.
+Intent check: Emphasize the audible low-mid punch without bloated sub sustain. Assess against: The 100-180 Hz area clouds the bass line or the front edge clips.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR156 - DnB Break Resampled Foot
 
@@ -2730,7 +2730,7 @@ Full range:
 
 Reject/revise if: Texture erases low-velocity hits or the kick sounds continuously crushed.
 
-Calibration: Blend sampled texture into an acoustic kick with fast release. Assess against: Texture erases low-velocity hits or the kick sounds continuously crushed.; status **not_run**.
+Intent check: Blend sampled texture into an acoustic kick with fast release. Assess against: Texture erases low-velocity hits or the kick sounds continuously crushed.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR157 - DnB Modern Snare Whip
 
@@ -2747,7 +2747,7 @@ Full range:
 
 Reject/revise if: The matched hit lacks crack or the upper snap becomes painful.
 
-Calibration: Increase attack/body contrast without making the snare louder by default. Assess against: The matched hit lacks crack or the upper snap becomes painful.; status **not_run**.
+Intent check: Increase attack/body contrast without making the snare louder by default. Assess against: The matched hit lacks crack or the upper snap becomes painful.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR158 - DnB Roller Dry Backbeat
 
@@ -2764,7 +2764,7 @@ Full range:
 
 Reject/revise if: The gate removes ghost notes or the snare tail still covers the next hat.
 
-Calibration: Trim a lingering snare tail while preserving ghost notes. Assess against: The gate removes ghost notes or the snare tail still covers the next hat.; status **not_run**.
+Intent check: Trim a lingering snare tail while preserving ghost notes. Assess against: The gate removes ghost notes or the snare tail still covers the next hat.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR159 - DnB Liquid Chamber Lift
 
@@ -2781,7 +2781,7 @@ Full range:
 
 Reject/revise if: The room overtakes ghosts or moves the backbeat behind the groove.
 
-Calibration: Put a small dark chamber behind a clean light snare. Assess against: The room overtakes ghosts or moves the backbeat behind the groove.; status **not_run**.
+Intent check: Put a small dark chamber behind a clean light snare. Assess against: The room overtakes ghosts or moves the backbeat behind the groove.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR160 - DnB Neuro Parallel Snap
 
@@ -2798,7 +2798,7 @@ Full range:
 
 Reject/revise if: The dry hit flattens or 3-6 kHz roughness dominates.
 
-Calibration: Add a narrow rough snare edge under the original dry hit. Assess against: The dry hit flattens or 3-6 kHz roughness dominates.; status **not_run**.
+Intent check: Add a narrow rough snare edge under the original dry hit. Assess against: The dry hit flattens or 3-6 kHz roughness dominates.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR161 - DnB Jump Up Short Plate
 
@@ -2815,7 +2815,7 @@ Full range:
 
 Reject/revise if: Plate persists into the next sixteenth or sounds like an abrupt click.
 
-Calibration: Give a machine backbeat size with a quickly gated plate. Assess against: Plate persists into the next sixteenth or sounds like an abrupt click.; status **not_run**.
+Intent check: Give a machine backbeat size with a quickly gated plate. Assess against: Plate persists into the next sixteenth or sounds like an abrupt click.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR162 - DnB Break Ghost Detail
 
@@ -2832,7 +2832,7 @@ Full range:
 
 Reject/revise if: Accent/ghost ratio collapses or ghosts start pumping.
 
-Calibration: Level hard accents gently enough to expose break ghost articulation. Assess against: Accent/ghost ratio collapses or ghosts start pumping.; status **not_run**.
+Intent check: Level hard accents gently enough to expose break ghost articulation. Assess against: Accent/ghost ratio collapses or ghosts start pumping.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR163 - DnB Modern Fast Silk
 
@@ -2848,7 +2848,7 @@ Full range:
 
 Reject/revise if: Roll notes merge or the transient becomes duller than the body.
 
-Calibration: Reduce upper bite while keeping dense rolls legible. Assess against: Roll notes merge or the transient becomes duller than the body.; status **not_run**.
+Intent check: Reduce upper bite while keeping dense rolls legible. Assess against: Roll notes merge or the transient becomes duller than the body.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR164 - DnB Roller Shuffled Tops
 
@@ -2864,7 +2864,7 @@ Full range:
 
 Reject/revise if: The ghost crowds the snare or sounds like free-time drift.
 
-Calibration: Add a quiet eighth-triplet ghost around a straight top loop. Assess against: The ghost crowds the snare or sounds like free-time drift.; status **not_run**.
+Intent check: Add a quiet eighth-triplet ghost around a straight top loop. Assess against: The ghost crowds the snare or sounds like free-time drift.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR165 - DnB Liquid Wide Air
 
@@ -2881,7 +2881,7 @@ Full range:
 
 Reject/revise if: The mono fold loses the hat pulse or the room smears fast notes.
 
-Calibration: Widen soft cymbal air while keeping the low-mid stereo anchor. Assess against: The mono fold loses the hat pulse or the room smears fast notes.; status **not_run**.
+Intent check: Widen soft cymbal air while keeping the low-mid stereo anchor. Assess against: The mono fold loses the hat pulse or the room smears fast notes.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR166 - DnB Neuro Metallic Tuck
 
@@ -2898,7 +2898,7 @@ Full range:
 
 Reject/revise if: The resonance rings past the next subdivision or ticks vanish.
 
-Calibration: Control a hard metallic top resonance with short envelope action. Assess against: The resonance rings past the next subdivision or ticks vanish.; status **not_run**.
+Intent check: Control a hard metallic top resonance with short envelope action. Assess against: The resonance rings past the next subdivision or ticks vanish.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR167 - DnB Break End Ratchet
 
@@ -2915,7 +2915,7 @@ Full range:
 
 Reject/revise if: The roll affects the low kick or repeats across the following bar.
 
-Calibration: Put a single BLOCK roll at the end of the top phrase. Assess against: The roll affects the low kick or repeats across the following bar.; status **not_run**.
+Intent check: Put a single BLOCK roll at the end of the top phrase. Assess against: The roll affects the low kick or repeats across the following bar.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR168 - DnB Modern Tom Separation
 
@@ -2932,7 +2932,7 @@ Full range:
 
 Reject/revise if: The tom pitch becomes too short to identify or the fill loses velocity detail.
 
-Calibration: Shorten tom tails and expose their attack inside a busy fill. Assess against: The tom pitch becomes too short to identify or the fill loses velocity detail.; status **not_run**.
+Intent check: Shorten tom tails and expose their attack inside a busy fill. Assess against: The tom pitch becomes too short to identify or the fill loses velocity detail.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR169 - DnB Roller Wood Groove
 
@@ -2949,7 +2949,7 @@ Full range:
 
 Reject/revise if: The loop loses swing articulation or low-mid body clouds the snare.
 
-Calibration: Keep woody syncopations compact with a modest iron body. Assess against: The loop loses swing articulation or low-mid body clouds the snare.; status **not_run**.
+Intent check: Keep woody syncopations compact with a modest iron body. Assess against: The loop loses swing articulation or low-mid body clouds the snare.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR170 - DnB Liquid Bell Glints
 
@@ -2965,7 +2965,7 @@ Full range:
 
 Reject/revise if: Pitched bell identity changes or mono loses the original attack.
 
-Calibration: Place two quiet stereo bell responses around a dry event. Assess against: Pitched bell identity changes or mono loses the original attack.; status **not_run**.
+Intent check: Place two quiet stereo bell responses around a dry event. Assess against: Pitched bell identity changes or mono loses the original attack.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR171 - DnB Neuro Fragment Answer
 
@@ -2983,7 +2983,7 @@ Full range:
 
 Reject/revise if: The phrase becomes a continuous glitch or the next downbeat is obscured.
 
-Calibration: Repeat the final percussion fragment once with a restrained wet throw. Assess against: The phrase becomes a continuous glitch or the next downbeat is obscured.; status **not_run**.
+Intent check: Repeat the final percussion fragment once with a restrained wet throw. Assess against: The phrase becomes a continuous glitch or the next downbeat is obscured.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR172 - DnB Modern Crest Glue
 
@@ -3000,7 +3000,7 @@ Full range:
 
 Reject/revise if: Matched crest shrinks too far or the compressor stays down between hits.
 
-Calibration: Glue a fast break with release short enough to recover before the next hit. Assess against: Matched crest shrinks too far or the compressor stays down between hits.; status **not_run**.
+Intent check: Glue a fast break with release short enough to recover before the next hit. Assess against: Matched crest shrinks too far or the compressor stays down between hits.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR173 - DnB Roller Parallel Weight
 
@@ -3020,7 +3020,7 @@ Band 130-5500 Hz:
 
 Reject/revise if: Kick/snare attacks flatten or the parallel path lifts hat wash.
 
-Calibration: Add mid-body weight under a clean rolling break. Assess against: Kick/snare attacks flatten or the parallel path lifts hat wash.; status **not_run**.
+Intent check: Add mid-body weight under a clean rolling break. Assess against: Kick/snare attacks flatten or the parallel path lifts hat wash.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR174 - DnB Liquid Open Break
 
@@ -3038,7 +3038,7 @@ Full range:
 
 Reject/revise if: The snare loses its location or mono cymbals thin out.
 
-Calibration: Retain room dynamics and add only a small high-band spread. Assess against: The snare loses its location or mono cymbals thin out.; status **not_run**.
+Intent check: Retain room dynamics and add only a small high-band spread. Assess against: The snare loses its location or mono cymbals thin out.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR175 - DnB Neuro Tight Drum Wall
 
@@ -3056,7 +3056,7 @@ Full range:
 
 Reject/revise if: Ghost notes vanish or sharp edges overshoot the peak-growth plan.
 
-Calibration: Shorten drum bodies before a restrained parallel hard-colour layer. Assess against: Ghost notes vanish or sharp edges overshoot the peak-growth plan.; status **not_run**.
+Intent check: Shorten drum bodies before a restrained parallel hard-colour layer. Assess against: Ghost notes vanish or sharp edges overshoot the peak-growth plan.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR176 - DnB Jump Up Front Back
 
@@ -3074,7 +3074,7 @@ Full range:
 
 Reject/revise if: Cymbal wash rises or the snare becomes thin after matching.
 
-Calibration: Favor kick/snare front edges without increasing cymbal sustain. Assess against: Cymbal wash rises or the snare becomes thin after matching.; status **not_run**.
+Intent check: Favor kick/snare front edges without increasing cymbal sustain. Assess against: Cymbal wash rises or the snare becomes thin after matching.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR177 - DnB Break Sampler Cohesion
 
@@ -3091,7 +3091,7 @@ Full range:
 
 Reject/revise if: The resampled top aliases excessively or original ghost timing changes.
 
-Calibration: Bring a chopped acoustic break together with restrained sampler colour. Assess against: The resampled top aliases excessively or original ghost timing changes.; status **not_run**.
+Intent check: Bring a chopped acoustic break together with restrained sampler colour. Assess against: The resampled top aliases excessively or original ghost timing changes.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR178 - DnB Last Beat Break Edit
 
@@ -3112,7 +3112,7 @@ Band 1000-16000 Hz:
 
 Reject/revise if: Low kick timing moves or the first beat of the next phrase is missing.
 
-Calibration: Use explicit upper-band reverse and repeat steps at the phrase end. Assess against: Low kick timing moves or the first beat of the next phrase is missing.; status **not_run**.
+Intent check: Use explicit upper-band reverse and repeat steps at the phrase end. Assess against: Low kick timing moves or the first beat of the next phrase is missing.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR179 - DnB Modern Sub Level
 
@@ -3129,7 +3129,7 @@ Full range:
 
 Reject/revise if: The compressor modulates pitch or low stereo energy remains.
 
-Calibration: Hold a sine-like sub steady with no stereo motion below the crossover. Assess against: The compressor modulates pitch or low stereo energy remains.; status **not_run**.
+Intent check: Hold a sine-like sub steady with no stereo motion below the crossover. Assess against: The compressor modulates pitch or low stereo energy remains.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR180 - DnB Roller Mid Translation
 
@@ -3146,7 +3146,7 @@ Full range:
 
 Reject/revise if: The added mids hide the snare or the deepest note distorts.
 
-Calibration: Add restrained audible harmonics above an undriven low sub. Assess against: The added mids hide the snare or the deepest note distorts.; status **not_run**.
+Intent check: Add restrained audible harmonics above an undriven low sub. Assess against: The added mids hide the snare or the deepest note distorts.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR181 - DnB Liquid Warm Sustain
 
@@ -3163,7 +3163,7 @@ Full range:
 
 Reject/revise if: The next note ducks noticeably or low sustain becomes woolly.
 
-Calibration: Level a soft bass phrase with smooth opto recovery and tape warmth. Assess against: The next note ducks noticeably or low sustain becomes woolly.; status **not_run**.
+Intent check: Level a soft bass phrase with smooth opto recovery and tape warmth. Assess against: The next note ducks noticeably or low sustain becomes woolly.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR182 - DnB Neuro Clean Sub Dirty Top
 
@@ -3184,7 +3184,7 @@ Band 180-8000 Hz:
 
 Reject/revise if: Distortion leaks into the low fundamental or growl width cancels in mono.
 
-Calibration: Separate aggressive growl treatment from a mono sub anchor. Assess against: Distortion leaks into the low fundamental or growl width cancels in mono.; status **not_run**.
+Intent check: Separate aggressive growl treatment from a mono sub anchor. Assess against: Distortion leaks into the low fundamental or growl width cancels in mono.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR183 - DnB Jump Up Tempo Pocket
 
@@ -3202,7 +3202,7 @@ Full range:
 
 Reject/revise if: The dip drifts with BPM or the offbeat never returns to full level.
 
-Calibration: Dip the bass envelope on quarter-note starts without requiring a key bus. Assess against: The dip drifts with BPM or the offbeat never returns to full level.; status **not_run**.
+Intent check: Dip the bass envelope on quarter-note starts without requiring a key bus. Assess against: The dip drifts with BPM or the offbeat never returns to full level.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR184 - DnB Modern Topline Seat
 
@@ -3219,7 +3219,7 @@ Full range:
 
 Reject/revise if: The topline pumps at drum hits or sibilants become piercing.
 
-Calibration: Control a sung lead with fast recovery and bounded sibilance. Assess against: The topline pumps at drum hits or sibilants become piercing.; status **not_run**.
+Intent check: Control a sung lead with fast recovery and bounded sibilance. Assess against: The topline pumps at drum hits or sibilants become piercing.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR185 - DnB Liquid Hall Lift
 
@@ -3236,7 +3236,7 @@ Full range:
 
 Reject/revise if: The hall hides fast words or low tail covers the bass.
 
-Calibration: Give a melodic lead a ducked hall that blooms in phrase gaps. Assess against: The hall hides fast words or low tail covers the bass.; status **not_run**.
+Intent check: Give a melodic lead a ducked hall that blooms in phrase gaps. Assess against: The hall hides fast words or low tail covers the bass.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR186 - DnB Roller MC Close
 
@@ -3254,7 +3254,7 @@ Full range:
 
 Reject/revise if: Quiet word endings disappear or breaths are raised into the groove.
 
-Calibration: Keep a fast MC phrase dry and intelligible with limited leveling boost. Assess against: Quiet word endings disappear or breaths are raised into the groove.; status **not_run**.
+Intent check: Keep a fast MC phrase dry and intelligible with limited leveling boost. Assess against: Quiet word endings disappear or breaths are raised into the groove.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR187 - DnB Neuro Short Radio Call
 
@@ -3271,7 +3271,7 @@ Full range:
 
 Reject/revise if: The call becomes unintelligible or repeats obscure the next snare.
 
-Calibration: Make a compact gritty band-limited call with a single sync reply. Assess against: The call becomes unintelligible or repeats obscure the next snare.; status **not_run**.
+Intent check: Make a compact gritty band-limited call with a single sync reply. Assess against: The call becomes unintelligible or repeats obscure the next snare.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR188 - DnB Break Reversed Tail
 
@@ -3288,7 +3288,7 @@ Full range:
 
 Reject/revise if: Dry consonants reverse or the response arrives before its capture is available.
 
-Calibration: Reverse a quiet end-of-phrase response without reversing dry words. Assess against: Dry consonants reverse or the response arrives before its capture is available.; status **not_run**.
+Intent check: Reverse a quiet end-of-phrase response without reversing dry words. Assess against: Dry consonants reverse or the response arrives before its capture is available.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR189 - DnB Liquid Piano Bloom
 
@@ -3305,7 +3305,7 @@ Full range:
 
 Reject/revise if: Hall masks new chord attacks or low-mid sustain competes with bass.
 
-Calibration: Keep piano hammers clean while a filtered hall supports the chords. Assess against: Hall masks new chord attacks or low-mid sustain competes with bass.; status **not_run**.
+Intent check: Keep piano hammers clean while a filtered hall supports the chords. Assess against: Hall masks new chord attacks or low-mid sustain competes with bass.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR190 - DnB Roller Stab Cut
 
@@ -3323,7 +3323,7 @@ Full range:
 
 Reject/revise if: Stab body disappears or release pumps on the next sixteenth.
 
-Calibration: Make chord stabs short enough for a fast rolling arrangement. Assess against: Stab body disappears or release pumps on the next sixteenth.; status **not_run**.
+Intent check: Make chord stabs short enough for a fast rolling arrangement. Assess against: Stab body disappears or release pumps on the next sixteenth.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR191 - DnB Neuro Pluck Focus
 
@@ -3340,7 +3340,7 @@ Full range:
 
 Reject/revise if: Hard harmonics dominate the pluck pitch or its attack disappears.
 
-Calibration: Constrain a bright synth pluck before adding mid-band grit. Assess against: Hard harmonics dominate the pluck pitch or its attack disappears.; status **not_run**.
+Intent check: Constrain a bright synth pluck before adding mid-band grit. Assess against: Hard harmonics dominate the pluck pitch or its attack disappears.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR192 - DnB Liquid Rhodes Drifts
 
@@ -3357,7 +3357,7 @@ Full range:
 
 Reject/revise if: Echoes shift chord pitch or mask the following harmony.
 
-Calibration: Add quiet alternating eighth echoes behind a warm Rhodes chord. Assess against: Echoes shift chord pitch or mask the following harmony.; status **not_run**.
+Intent check: Add quiet alternating eighth echoes behind a warm Rhodes chord. Assess against: Echoes shift chord pitch or mask the following harmony.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR193 - DnB Break Ghost Preservation
 
@@ -3374,7 +3374,7 @@ Full range:
 
 Reject/revise if: The sampler erases soft notes or accents lose their natural hierarchy.
 
-Calibration: Glue a vintage break sample while preserving low-level ghost articulation. Assess against: The sampler erases soft notes or accents lose their natural hierarchy.; status **not_run**.
+Intent check: Glue a vintage break sample while preserving low-level ghost articulation. Assess against: The sampler erases soft notes or accents lose their natural hierarchy.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR194 - DnB Neuro Last Eighth Flip
 
@@ -3391,7 +3391,7 @@ Full range:
 
 Reject/revise if: Reversal changes the next phrase start or low notes phase-cancel.
 
-Calibration: Reverse only the final eighth of a melodic sample. Assess against: Reversal changes the next phrase start or low notes phase-cancel.; status **not_run**.
+Intent check: Reverse only the final eighth of a melodic sample. Assess against: Reversal changes the next phrase start or low notes phase-cancel.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR195 - DnB Liquid Skyline Texture
 
@@ -3408,7 +3408,7 @@ Full range:
 
 Reject/revise if: Mono fold loses the main texture or reverb overwhelms transients.
 
-Calibration: Make a quiet atmospheric sample broad above a clean low cut. Assess against: Mono fold loses the main texture or reverb overwhelms transients.; status **not_run**.
+Intent check: Make a quiet atmospheric sample broad above a clean low cut. Assess against: Mono fold loses the main texture or reverb overwhelms transients.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR196 - DnB Roller Rhythmic Fragments
 
@@ -3426,7 +3426,7 @@ Full range:
 
 Reject/revise if: The fragment pattern sounds randomly dense or loses downbeat identity.
 
-Calibration: Cut selected off-grid sample fragments into an explicit 16-step response. Assess against: The fragment pattern sounds randomly dense or loses downbeat identity.; status **not_run**.
+Intent check: Cut selected off-grid sample fragments into an explicit 16-step response. Assess against: The fragment pattern sounds randomly dense or loses downbeat identity.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR197 - DnB Modern Drum Headroom
 
@@ -3444,7 +3444,7 @@ Full range:
 
 Reject/revise if: Final 8x true peak exceeds -1 dBTP or snare contrast drops before 3 dB work.
 
-Calibration: Finish a fast full mix with gentle bus control and restrained final limiting. Assess against: Final 8x true peak exceeds -1 dBTP or snare contrast drops before 3 dB work.; status **not_run**.
+Intent check: Finish a fast full mix with gentle bus control and restrained final limiting. Assess against: Final 8x true peak exceeds -1 dBTP or snare contrast drops before 3 dB work.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR198 - DnB Liquid Open Finish
 
@@ -3462,7 +3462,7 @@ Full range:
 
 Reject/revise if: Mono narrows the hook excessively or the hall pumps on each snare.
 
-Calibration: Retain the open piano and vocal field with a stable low center. Assess against: Mono narrows the hook excessively or the hall pumps on each snare.; status **not_run**.
+Intent check: Retain the open piano and vocal field with a stable low center. Assess against: Mono narrows the hook excessively or the hall pumps on each snare.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR199 - DnB Neuro Controlled Edge
 
@@ -3480,7 +3480,7 @@ Full range:
 
 Reject/revise if: The growl loses identity or limiter work exceeds 3 dB to hit target loudness.
 
-Calibration: Tame upper-mid density before a conservative peak ceiling. Assess against: The growl loses identity or limiter work exceeds 3 dB to hit target loudness.; status **not_run**.
+Intent check: Tame upper-mid density before a conservative peak ceiling. Assess against: The growl loses identity or limiter work exceeds 3 dB to hit target loudness.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR200 - DnB Roller Low End Finish
 
@@ -3498,7 +3498,7 @@ Full range:
 
 Reject/revise if: Bass note balance changes in mono or kicks become softer after matching.
 
-Calibration: Keep the sub mono and prevent low-mid buildup from dominating the limiter. Assess against: Bass note balance changes in mono or kicks become softer after matching.; status **not_run**.
+Intent check: Keep the sub mono and prevent low-mid buildup from dominating the limiter. Assess against: Bass note balance changes in mono or kicks become softer after matching.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ## Studio
 
@@ -3517,7 +3517,7 @@ Full range:
 
 Reject/revise if: Quiet breaths rise between words or loud notes lose expression.
 
-Calibration: Stabilize phrase level gently before clean vocal compression. Assess against: Quiet breaths rise between words or loud notes lose expression.; status **not_run**.
+Intent check: Stabilize phrase level gently before clean vocal compression. Assess against: Quiet breaths rise between words or loud notes lose expression.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR202 - Studio Intimate Soul
 
@@ -3535,7 +3535,7 @@ Full range:
 
 Reject/revise if: Chest body becomes woolly or the vocal sounds farther from the mic.
 
-Calibration: Smooth close-miked soul singing with soft harmonics and a tiny chamber. Assess against: Chest body becomes woolly or the vocal sounds farther from the mic.; status **not_run**.
+Intent check: Smooth close-miked soul singing with soft harmonics and a tiny chamber. Assess against: Chest body becomes woolly or the vocal sounds farther from the mic.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR203 - Studio Rock Front Edge
 
@@ -3553,7 +3553,7 @@ Full range:
 
 Reject/revise if: Shouts flatten or the 3 kHz area becomes painful at matched level.
 
-Calibration: Blend FET density into a rock lead while keeping strong consonants. Assess against: Shouts flatten or the 3 kHz area becomes painful at matched level.; status **not_run**.
+Intent check: Blend FET density into a rock lead while keeping strong consonants. Assess against: Shouts flatten or the 3 kHz area becomes painful at matched level.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR204 - Studio Spoken Warmth
 
@@ -3571,7 +3571,7 @@ Full range:
 
 Reject/revise if: The gate removes word endings or breaths audibly swell.
 
-Calibration: Reduce room noise gently and level spoken phrases without a radio crush. Assess against: The gate removes word endings or breaths audibly swell.; status **not_run**.
+Intent check: Reduce room noise gently and level spoken phrases without a radio crush. Assess against: The gate removes word endings or breaths audibly swell.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR205 - Studio Dry Fast Verse
 
@@ -3588,7 +3588,7 @@ Full range:
 
 Reject/revise if: Fast consonants smear or the final word ducks after an accent.
 
-Calibration: Make a fast dry rap verse readable with quick release and no added space. Assess against: Fast consonants smear or the final word ducks after an accent.; status **not_run**.
+Intent check: Make a fast dry rap verse readable with quick release and no added space. Assess against: Fast consonants smear or the final word ducks after an accent.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR206 - Studio Ballad Open Hall
 
@@ -3605,7 +3605,7 @@ Full range:
 
 Reject/revise if: Consonants sink into the hall or the tail clouds the next line.
 
-Calibration: Keep the lead ahead of a wide hall that opens in sustained gaps. Assess against: Consonants sink into the hall or the tail clouds the next line.; status **not_run**.
+Intent check: Keep the lead ahead of a wide hall that opens in sustained gaps. Assess against: Consonants sink into the hall or the tail clouds the next line.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR207 - Studio Whisper Support
 
@@ -3622,7 +3622,7 @@ Full range:
 
 Reject/revise if: Mouth noise rises or the rider hunts during silence.
 
-Calibration: Support quiet whisper syllables with a bounded rider and soft air control. Assess against: Mouth noise rises or the rider hunts during silence.; status **not_run**.
+Intent check: Support quiet whisper syllables with a bounded rider and soft air control. Assess against: Mouth noise rises or the rider hunts during silence.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR208 - Studio Small Room Truth
 
@@ -3639,7 +3639,7 @@ Full range:
 
 Reject/revise if: Room sounds like slapback or obscures word onsets.
 
-Calibration: Put a dry vocal in a believable short room without washing out detail. Assess against: Room sounds like slapback or obscures word onsets.; status **not_run**.
+Intent check: Put a dry vocal in a believable short room without washing out detail. Assess against: Room sounds like slapback or obscures word onsets.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR209 - Studio Telephone Bridge
 
@@ -3656,7 +3656,7 @@ Full range:
 
 Reject/revise if: The bridge words stop being intelligible or resonant mids hurt.
 
-Calibration: Make an intentional band-limited bridge voice with controlled drive. Assess against: The bridge words stop being intelligible or resonant mids hurt.; status **not_run**.
+Intent check: Make an intentional band-limited bridge voice with controlled drive. Assess against: The bridge words stop being intelligible or resonant mids hurt.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR210 - Studio Fifth Answer
 
@@ -3673,7 +3673,7 @@ Full range:
 
 Reject/revise if: Pitch-shifted words compete with the dry line or create dissonant continuous feedback.
 
-Calibration: Answer the end of a phrase with a quiet fifth-up sync reflection. Assess against: Pitch-shifted words compete with the dry line or create dissonant continuous feedback.; status **not_run**.
+Intent check: Answer the end of a phrase with a quiet fifth-up sync reflection. Assess against: Pitch-shifted words compete with the dry line or create dissonant continuous feedback.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR211 - Studio Short Double Width
 
@@ -3690,7 +3690,7 @@ Full range:
 
 Reject/revise if: The lead moves sideways or mono loses consonant intelligibility.
 
-Calibration: Use quiet offset unpitched reflections as a restrained vocal double. Assess against: The lead moves sideways or mono loses consonant intelligibility.; status **not_run**.
+Intent check: Use quiet offset unpitched reflections as a restrained vocal double. Assess against: The lead moves sideways or mono loses consonant intelligibility.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR212 - Studio Parallel Shout Bed
 
@@ -3708,7 +3708,7 @@ Full range:
 
 Reject/revise if: The matched dry shout feels smaller or saturated esses dominate.
 
-Calibration: Add a rough low-level density bed while retaining the dry shout crest. Assess against: The matched dry shout feels smaller or saturated esses dominate.; status **not_run**.
+Intent check: Add a rough low-level density bed while retaining the dry shout crest. Assess against: The matched dry shout feels smaller or saturated esses dominate.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR213 - Studio Backing Soft Seat
 
@@ -3726,7 +3726,7 @@ Full range:
 
 Reject/revise if: The backing consonants become more forward than the lead.
 
-Calibration: Place a backing stack behind the lead with controlled upper attack. Assess against: The backing consonants become more forward than the lead.; status **not_run**.
+Intent check: Place a backing stack behind the lead with controlled upper attack. Assess against: The backing consonants become more forward than the lead.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR214 - Studio Chorus Side Halo
 
@@ -3744,7 +3744,7 @@ Full range:
 
 Reject/revise if: The mono chorus loses the vowel or center shifts on consonants.
 
-Calibration: Make the high backing field wider while preserving a centered vowel body. Assess against: The mono chorus loses the vowel or center shifts on consonants.; status **not_run**.
+Intent check: Make the high backing field wider while preserving a centered vowel body. Assess against: The mono chorus loses the vowel or center shifts on consonants.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR215 - Studio Dark Gang Stack
 
@@ -3762,7 +3762,7 @@ Full range:
 
 Reject/revise if: The stack turns into flat distortion or low mids crowd the lead.
 
-Calibration: Keep a gang shout compact, rough and slightly behind the lead. Assess against: The stack turns into flat distortion or low mids crowd the lead.; status **not_run**.
+Intent check: Keep a gang shout compact, rough and slightly behind the lead. Assess against: The stack turns into flat distortion or low mids crowd the lead.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR216 - Studio Air Choir Bloom
 
@@ -3779,7 +3779,7 @@ Full range:
 
 Reject/revise if: A pitched dry lead appears or the shimmer builds across several chords.
 
-Calibration: Add a quiet octave shimmer only to the filtered reverb return. Assess against: A pitched dry lead appears or the shimmer builds across several chords.; status **not_run**.
+Intent check: Add a quiet octave shimmer only to the filtered reverb return. Assess against: A pitched dry lead appears or the shimmer builds across several chords.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR217 - Studio Reverse Choir Swell
 
@@ -3796,7 +3796,7 @@ Full range:
 
 Reject/revise if: The dry consonants reverse or the swell arrives after the intended chord change.
 
-Calibration: Create a quiet reverse-shaped reverb rise behind held backing vowels. Assess against: The dry consonants reverse or the swell arrives after the intended chord change.; status **not_run**.
+Intent check: Create a quiet reverse-shaped reverb rise behind held backing vowels. Assess against: The dry consonants reverse or the swell arrives after the intended chord change.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR218 - Studio Rhythmic Hook Gate
 
@@ -3813,7 +3813,7 @@ Full range:
 
 Reject/revise if: Gate clicks appear or key lyrical accents are removed.
 
-Calibration: Shape a backing hook into explicit soft sixteenth-note openings. Assess against: Gate clicks appear or key lyrical accents are removed.; status **not_run**.
+Intent check: Shape a backing hook into explicit soft sixteenth-note openings. Assess against: Gate clicks appear or key lyrical accents are removed.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR219 - Studio Acoustic Pick Balance
 
@@ -3830,7 +3830,7 @@ Full range:
 
 Reject/revise if: String accents lose movement or the guitar gains low-mid boom.
 
-Calibration: Reduce pick bite and stabilize acoustic strums without flattening them. Assess against: String accents lose movement or the guitar gains low-mid boom.; status **not_run**.
+Intent check: Reduce pick bite and stabilize acoustic strums without flattening them. Assess against: String accents lose movement or the guitar gains low-mid boom.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR220 - Studio Fingerstyle Detail
 
@@ -3847,7 +3847,7 @@ Full range:
 
 Reject/revise if: Fret noise rises between notes or the sustained body pumps.
 
-Calibration: Retain finger transients while supporting quiet ringing notes. Assess against: Fret noise rises between notes or the sustained body pumps.; status **not_run**.
+Intent check: Retain finger transients while supporting quiet ringing notes. Assess against: Fret noise rises between notes or the sustained body pumps.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR221 - Studio Funk Short Chank
 
@@ -3865,7 +3865,7 @@ Full range:
 
 Reject/revise if: Chord stops click or low-mid sustain covers the groove.
 
-Calibration: Keep muted electric chords tight with a little iron midrange. Assess against: Chord stops click or low-mid sustain covers the groove.; status **not_run**.
+Intent check: Keep muted electric chords tight with a little iron midrange. Assess against: Chord stops click or low-mid sustain covers the groove.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR222 - Studio Clean Amp Slap
 
@@ -3882,7 +3882,7 @@ Full range:
 
 Reject/revise if: The slap becomes a second distinct melody or combs out the mono lead.
 
-Calibration: Put a filtered short slap behind a clean electric lead. Assess against: The slap becomes a second distinct melody or combs out the mono lead.; status **not_run**.
+Intent check: Put a filtered short slap behind a clean electric lead. Assess against: The slap becomes a second distinct melody or combs out the mono lead.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR223 - Studio Grit Lead Sustain
 
@@ -3900,7 +3900,7 @@ Full range:
 
 Reject/revise if: The dry pick flattens or distortion hides bent-note pitch.
 
-Calibration: Add a parallel rough edge and smooth sustain under a guitar lead. Assess against: The dry pick flattens or distortion hides bent-note pitch.; status **not_run**.
+Intent check: Add a parallel rough edge and smooth sustain under a guitar lead. Assess against: The dry pick flattens or distortion hides bent-note pitch.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR224 - Studio Wide Rhythm Pair
 
@@ -3917,7 +3917,7 @@ Full range:
 
 Reject/revise if: Mono loses riff body or the pair balance drifts.
 
-Calibration: Widen the high part of a recorded guitar pair without inventing low stereo. Assess against: Mono loses riff body or the pair balance drifts.; status **not_run**.
+Intent check: Widen the high part of a recorded guitar pair without inventing low stereo. Assess against: Mono loses riff body or the pair balance drifts.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR225 - Studio Ambient Guitar Trail
 
@@ -3934,7 +3934,7 @@ Full range:
 
 Reject/revise if: Feedback muddies the next harmony or the dry pick is buried.
 
-Calibration: Let a filtered delay feed a quiet long hall after clean guitar notes. Assess against: Feedback muddies the next harmony or the dry pick is buried.; status **not_run**.
+Intent check: Let a filtered delay feed a quiet long hall after clean guitar notes. Assess against: Feedback muddies the next harmony or the dry pick is buried.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR226 - Studio Garage Sample Edge
 
@@ -3952,7 +3952,7 @@ Full range:
 
 Reject/revise if: The sample loses chord identity or noise fills the stops.
 
-Calibration: Give a dry guitar sample a compact sampled edge and a small room. Assess against: The sample loses chord identity or noise fills the stops.; status **not_run**.
+Intent check: Give a dry guitar sample a compact sampled edge and a small room. Assess against: The sample loses chord identity or noise fills the stops.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR227 - Studio Grand Clear Body
 
@@ -3969,7 +3969,7 @@ Full range:
 
 Reject/revise if: Piano sounds scooped or sustain becomes obviously compressed.
 
-Calibration: Trim piano low-mid congestion while leaving natural hammer dynamics. Assess against: Piano sounds scooped or sustain becomes obviously compressed.; status **not_run**.
+Intent check: Trim piano low-mid congestion while leaving natural hammer dynamics. Assess against: Piano sounds scooped or sustain becomes obviously compressed.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR228 - Studio Felt Close Piano
 
@@ -3987,7 +3987,7 @@ Full range:
 
 Reject/revise if: The felt attack disappears or quiet key noise rises audibly.
 
-Calibration: Soften felt-piano mechanical bite and bring the room closer. Assess against: The felt attack disappears or quiet key noise rises audibly.; status **not_run**.
+Intent check: Soften felt-piano mechanical bite and bring the room closer. Assess against: The felt attack disappears or quiet key noise rises audibly.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR229 - Studio Rhodes Velvet
 
@@ -4004,7 +4004,7 @@ Full range:
 
 Reject/revise if: The loud chords fuzz or tremolo gets an unintended pumping envelope.
 
-Calibration: Smooth electric-piano chords with restrained even harmonics. Assess against: The loud chords fuzz or tremolo gets an unintended pumping envelope.; status **not_run**.
+Intent check: Smooth electric-piano chords with restrained even harmonics. Assess against: The loud chords fuzz or tremolo gets an unintended pumping envelope.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR230 - Studio Organ Iron Seat
 
@@ -4022,7 +4022,7 @@ Full range:
 
 Reject/revise if: The organ becomes a static wall or mono loses the held chord.
 
-Calibration: Give a steady organ soft iron density and a bounded upper field. Assess against: The organ becomes a static wall or mono loses the held chord.; status **not_run**.
+Intent check: Give a steady organ soft iron density and a bounded upper field. Assess against: The organ becomes a static wall or mono loses the held chord.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR231 - Studio Wide Piano Early Room
 
@@ -4039,7 +4039,7 @@ Full range:
 
 Reject/revise if: The mono hammer cancels or low piano notes lean to one side.
 
-Calibration: Use early room reflections to widen piano above its low body. Assess against: The mono hammer cancels or low piano notes lean to one side.; status **not_run**.
+Intent check: Use early room reflections to widen piano above its low body. Assess against: The mono hammer cancels or low piano notes lean to one side.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR232 - Studio Tape Keys Drift
 
@@ -4056,7 +4056,7 @@ Full range:
 
 Reject/revise if: Chord pitch becomes seasick or dry gaps gain noise.
 
-Calibration: Add mild tape instability to a sustained key texture. Assess against: Chord pitch becomes seasick or dry gaps gain noise.; status **not_run**.
+Intent check: Add mild tape instability to a sustained key texture. Assess against: Chord pitch becomes seasick or dry gaps gain noise.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR233 - Studio Piano Reverse Reply
 
@@ -4073,7 +4073,7 @@ Full range:
 
 Reject/revise if: The dry hammer reverses or the reply smears the next chord change.
 
-Calibration: Add a quiet reversed echo after the piano chord attack. Assess against: The dry hammer reverses or the reply smears the next chord change.; status **not_run**.
+Intent check: Add a quiet reversed echo after the piano chord attack. Assess against: The dry hammer reverses or the reply smears the next chord change.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR234 - Studio Chord Soft Pulse
 
@@ -4090,7 +4090,7 @@ Full range:
 
 Reject/revise if: The chord hard-gates or pulse phase drifts with transport.
 
-Calibration: Make a sustained chord breathe gently over a two-beat custom curve. Assess against: The chord hard-gates or pulse phase drifts with transport.; status **not_run**.
+Intent check: Make a sustained chord breathe gently over a two-beat custom curve. Assess against: The chord hard-gates or pulse phase drifts with transport.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR235 - Studio Lead Focus Cut
 
@@ -4107,7 +4107,7 @@ Full range:
 
 Reject/revise if: The lead loses pitch focus or echoes occupy the next melody note.
 
-Calibration: Tame upper-mid lead resonance and add a small filtered sync response. Assess against: The lead loses pitch focus or echoes occupy the next melody note.; status **not_run**.
+Intent check: Tame upper-mid lead resonance and add a small filtered sync response. Assess against: The lead loses pitch focus or echoes occupy the next melody note.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR236 - Studio Pad Wide Calm
 
@@ -4124,7 +4124,7 @@ Full range:
 
 Reject/revise if: The mono fold loses chord identity or motion makes the bass move.
 
-Calibration: Make a pad wide above a mono low anchor with a slow spatial journey. Assess against: The mono fold loses chord identity or motion makes the bass move.; status **not_run**.
+Intent check: Make a pad wide above a mono low anchor with a slow spatial journey. Assess against: The mono fold loses chord identity or motion makes the bass move.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR237 - Studio Pluck Falling Notes
 
@@ -4140,7 +4140,7 @@ Full range:
 
 Reject/revise if: The echoes replace the main melody or descend repeatedly in uncontrolled feedback.
 
-Calibration: Answer a pluck with sparse descending interval reflections. Assess against: The echoes replace the main melody or descend repeatedly in uncontrolled feedback.; status **not_run**.
+Intent check: Answer a pluck with sparse descending interval reflections. Assess against: The echoes replace the main melody or descend repeatedly in uncontrolled feedback.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR238 - Studio Synth Texture Stair
 
@@ -4161,7 +4161,7 @@ Band 600-11000 Hz:
 
 Reject/revise if: The sub distorts or drive transitions create clicks.
 
-Calibration: Use explicit SHAPE drive steps on the upper band of a synth phrase. Assess against: The sub distorts or drive transitions create clicks.; status **not_run**.
+Intent check: Use explicit SHAPE drive steps on the upper band of a synth phrase. Assess against: The sub distorts or drive transitions create clicks.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR239 - Studio Short Stereo Spark
 
@@ -4178,7 +4178,7 @@ Full range:
 
 Reject/revise if: The mono pluck loses its central attack or width sounds like a hard echo.
 
-Calibration: Add small diffuse high-band stereo energy to a mono pluck. Assess against: The mono pluck loses its central attack or width sounds like a hard echo.; status **not_run**.
+Intent check: Add small diffuse high-band stereo energy to a mono pluck. Assess against: The mono pluck loses its central attack or width sounds like a hard echo.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR240 - Studio End Phrase Half Time
 
@@ -4196,7 +4196,7 @@ Full range:
 
 Reject/revise if: The next bar stays half-speed or pitch drops despite Clean stretch.
 
-Calibration: Apply half-time only on the final two subdivisions of a synth phrase. Assess against: The next bar stays half-speed or pitch drops despite Clean stretch.; status **not_run**.
+Intent check: Apply half-time only on the final two subdivisions of a synth phrase. Assess against: The next bar stays half-speed or pitch drops despite Clean stretch.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR241 - Studio Mix Gentle Glue
 
@@ -4213,7 +4213,7 @@ Full range:
 
 Reject/revise if: Matched kick/snare contrast falls or the vocal ducks on bass notes.
 
-Calibration: Bind a balanced premaster with minimal reduction and no forced loudness. Assess against: Matched kick/snare contrast falls or the vocal ducks on bass notes.; status **not_run**.
+Intent check: Bind a balanced premaster with minimal reduction and no forced loudness. Assess against: Matched kick/snare contrast falls or the vocal ducks on bass notes.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR242 - Studio Mix Tape Cohesion
 
@@ -4230,7 +4230,7 @@ Full range:
 
 Reject/revise if: Bass becomes woolly or the top loses separation after matching.
 
-Calibration: Add restrained tape density while holding the deepest bass clean. Assess against: Bass becomes woolly or the top loses separation after matching.; status **not_run**.
+Intent check: Add restrained tape density while holding the deepest bass clean. Assess against: Bass becomes woolly or the top loses separation after matching.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR243 - Studio Mix Low Center
 
@@ -4247,7 +4247,7 @@ Full range:
 
 Reject/revise if: The mono lead loses body or kick/sub notes change in the fold.
 
-Calibration: Center only low-frequency mix energy and gently open the top field. Assess against: The mono lead loses body or kick/sub notes change in the fold.; status **not_run**.
+Intent check: Center only low-frequency mix energy and gently open the top field. Assess against: The mono lead loses body or kick/sub notes change in the fold.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR244 - Studio Mix Dynamic Mud
 
@@ -4263,7 +4263,7 @@ Full range:
 
 Reject/revise if: Sparse passages sound scooped or bass-note body is removed continuously.
 
-Calibration: Let the low mids duck only when dense chords build up. Assess against: Sparse passages sound scooped or bass-note body is removed continuously.; status **not_run**.
+Intent check: Let the low mids duck only when dense chords build up. Assess against: Sparse passages sound scooped or bass-note body is removed continuously.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR245 - Studio Mix Soft Top Control
 
@@ -4283,7 +4283,7 @@ Band 5000-16000 Hz:
 
 Reject/revise if: The lead loses presence or cymbals trigger broadband pumping.
 
-Calibration: Control a brittle upper mix band while leaving the rest open. Assess against: The lead loses presence or cymbals trigger broadband pumping.; status **not_run**.
+Intent check: Control a brittle upper mix band while leaving the rest open. Assess against: The lead loses presence or cymbals trigger broadband pumping.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR246 - Studio Mix Parallel Body
 
@@ -4300,7 +4300,7 @@ Full range:
 
 Reject/revise if: The dry crest shrinks or the kick-bass pocket clouds at matched loudness.
 
-Calibration: Blend a little clean parallel density under the full dry premaster. Assess against: The dry crest shrinks or the kick-bass pocket clouds at matched loudness.; status **not_run**.
+Intent check: Blend a little clean parallel density under the full dry premaster. Assess against: The dry crest shrinks or the kick-bass pocket clouds at matched loudness.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR247 - Studio Capture Match Minus Eighteen
 
@@ -4316,7 +4316,7 @@ Full range:
 
 Reject/revise if: Match runs as an unbounded live rider or raises a silent clip.
 
-Calibration: Prepare a bounded RMS match capture for comparing source clips at -18 dBFS. Assess against: Match runs as an unbounded live rider or raises a silent clip.; status **not_run**.
+Intent check: Prepare a bounded RMS match capture for comparing source clips at -18 dBFS. Assess against: Match runs as an unbounded live rider or raises a silent clip.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 Required native action: Capture native Fader Match on an active clip window; persist measured matchedDb; silence must not produce a boost.
 
@@ -4334,7 +4334,7 @@ Full range:
 
 Reject/revise if: The fold clips or the result retains a left-right difference.
 
-Calibration: Fold a stereo source to mono for a deliberate center-only utility. Assess against: The fold clips or the result retains a left-right difference.; status **not_run**.
+Intent check: Fold a stereo source to mono for a deliberate center-only utility. Assess against: The fold clips or the result retains a left-right difference.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR249 - Studio One Beat Breathing
 
@@ -4350,7 +4350,7 @@ Full range:
 
 Reject/revise if: The envelope clicks at the grid edge or free-runs after transport reset.
 
-Calibration: Apply a clear quarter-note dip and recovery to a sustained input. Assess against: The envelope clicks at the grid edge or free-runs after transport reset.; status **not_run**.
+Intent check: Apply a clear quarter-note dip and recovery to a sustained input. Assess against: The envelope clicks at the grid edge or free-runs after transport reset.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.
 
 ### HR250 - Studio Filtered Space Return
 
@@ -4366,4 +4366,4 @@ Full range:
 
 Reject/revise if: Any original dry impulse remains at the output or low-frequency tails build.
 
-Calibration: Specify a pure wet-only filtered chamber return for an aux bus. Assess against: Any original dry impulse remains at the output or low-frequency tails build.; status **not_run**.
+Intent check: Specify a pure wet-only filtered chamber return for an aux bus. Assess against: Any original dry impulse remains at the output or low-frequency tails build.. Original design-stage calibration status: **not_run**; final numerical results and individual owner-audition status are in RACK_BANK_REPORT.md.

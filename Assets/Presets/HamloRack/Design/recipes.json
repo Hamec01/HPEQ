@@ -10,7 +10,7 @@
     "output_gain_db": 0,
     "output_gain_status": "calibration pending"
   },
-  "native_contract_sha256": "d0bd876b5edeb2afe55c797b149ea2f3db1a2cf9a1677afad7b0336d2bb8c1d4",
+  "native_contract_sha256": "99f65bb5785fd26fc6c5d8e2507ded6e26f78a795e03c815ff32b9bebe72308e",
   "presets": [
     {
       "id": "HR001",

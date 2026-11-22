@@ -1,19 +1,26 @@
 # HamloRack (HPEQ)
 
 Frequency-layer FX plugin (VST3 audio insert effect, Windows x64). **HamloRack** is the new working
-product name. The existing build and saved-state identity remain HPEQ during integration.
+product name. The CMake target, VST3 ID, saved-state root and user-preset location remain HPEQ-compatible.
 
 The [HamloRack design stage](docs/hamlorack/RACK0_DESIGN.md) specifies the beta-module adapters and
 250 authored preset candidates: [overview](docs/hamlorack/PRESET_OVERVIEW.md),
 [exact settings and individual intent/rejection checks](docs/hamlorack/PRESET_CATALOG.md).
-These designs are not yet executable factory programs: beta DSP integration and audio calibration
-remain pending. The current 224-preset legacy bank is preserved.
+All 250 recipes are executable factory presets in the **HamloRack / 250** browser,
+with native parameter panels for all ten modules. The 224-preset legacy bank stays intact;
+old projects retain their original DSP until explicitly upgraded. See the
+[integration receipt](docs/hamlorack/RACK_COMPLETE.md) and
+[individual bank measurements](docs/hamlorack/RACK_BANK_REPORT.md) for validation and listening limits.
 
 Each layer runs **PRE-EQ → frequency-range FX nodes (up to 6 processors per node) → delta mix**, with
 up to 10 layers. The spec, roadmap and acceptance matrix are in [`docs/fx-addon/`](docs/fx-addon/);
 owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECISIONS.md).
 
 ## Status
+
+The table retains earlier HPEQ milestone history. Current HamloRack source
+validation is in `docs/hamlorack/RACK_COMPLETE.md`; host validation and owner
+listening apply to the owner's new VST build.
 
 | Milestone | State | Report |
 |---|---|---|
@@ -47,6 +54,16 @@ layer semantics D5. Beta package: `scripts/package.ps1` -> `dist/HPEQ-<version>-
 Needs CMake ≥ 3.22 and Visual Studio 2026 (or adjust the preset generator). JUCE 8.0.12 is taken from
 `HPEQ_JUCE_DIR` if set, otherwise fetched.
 
+`build_vst.bat` builds only the rack VST3 and copies it to `batvst/HamloRack.vst3`.
+The build output is `build/HPEQ_artefacts/Release/VST3/HamloRack.vst3`.
+The optional `build_vst.bat install` backs up old rack bundles before replacing them;
+close the DAW and run that option as administrator. Individual Hamlo products are
+built by `build_hamlo_plugins.bat`. The rack's old `HPEQ.vst3` and new `HamloRack.vst3`
+share a plugin ID, so keep only the chosen version in the host's scan folder.
+The root `HamloComp_VST3` and other old module targets are compatibility builds
+from the legacy module code. Current standalone products come from `Plugins/`
+through `build_hamlo_plugins.bat`, including the shared HamloMag 0.2.2 correction.
+
 ```bash
 set HPEQ_JUCE_DIR=C:/DRUMENGINE/JUCE
 set HPEQ_HPDG_SOURCE_DIR=C:/DRUMENGINE/Source
@@ -62,6 +79,8 @@ ctest --test-dir build -C Release --output-on-failure
 | Executable | Purpose |
 |---|---|
 | `HPEQ_Tests` | Unit tests: plugin contract, state schema, harness. Run Debug for full RT-allocation coverage |
+| `HPEQ_RackBank` | Private material calibration, 30 native-panel snapshots and exact embedded-bank replay |
+| `HPEQ_RackLab` | Reproducible legacy 224-program before/after comparison; keep the original reference directory immutable |
 | `HPEQ_Harness selfcheck / fixtures / baseline` | M0 measurement harness: fixtures (WAV + SHA-256 manifest), metrics JSON |
 | `HPEQ_Lab --out <dir>` | M2 frequency-core experiment: H1 / H1-LR8 / H2 / H3-tree / H3-engine, JSON + SVG + WAV |
 | `HPEQ_Lab bench [--cold]` | CPU benchmark of fixed engine configurations (warm-up, repetitions, spikes); compare binaries interleaved |

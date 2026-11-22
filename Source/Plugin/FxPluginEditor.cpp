@@ -4,6 +4,7 @@
 #include "Plugin/FxParameterContract.h"
 #include "Plugin/FxPluginProcessor.h"
 #include "Plugin/Presets.h"
+#include "Rack/RackPresets.h"
 #include "UI/AnalysisModel.h"
 #include "UI/LayerControls.h"
 #include "UI/NodeInspector.h"
@@ -147,7 +148,7 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     for (auto* c : std::initializer_list<juce::Component*> { waveform.get(), workspace.get(), nodeList.get(), inspector.get(), inputMeter.get(), outputMeter.get(), layerControls.get() })
         addAndMakeVisible(c);
 
-    title.setText("HPEQ", juce::dontSendNotification);
+    title.setText("HamloRack", juce::dontSendNotification);
     title.setFont(juce::FontOptions(26.0f, juce::Font::bold));
     title.setColour(juce::Label::textColourId, colours::text);
     subtitle.setText("BETA  -  frequency-layer FX  (PRE-EQ > FX regions)", juce::dontSendNotification);
@@ -245,7 +246,7 @@ void FxPluginEditor::renderBackground()
         const float s = juce::jmin(plate.getWidth() / 330.0f, plate.getHeight() / 92.0f);
         juce::Graphics::ScopedSaveState state(g);
         g.addTransform(juce::AffineTransform::scale(s).translated(plate.getX(), plate.getY()));
-        ui::steel::nameplate(g, { 0.0f, 0.0f, 330.0f, 92.0f }, "HPEQ", juce::String::fromUTF8("MODEL \xd0\xad\xd0\x9a-1"),
+        ui::steel::nameplate(g, { 0.0f, 0.0f, 330.0f, 92.0f }, "HamloRack", juce::String::fromUTF8("MODEL \xd0\xad\xd0\x9a-1"),
                              juce::String::fromUTF8("\xe2\x84\x96 0001"));
     }
 }
@@ -281,6 +282,10 @@ void FxPluginEditor::updateHeader()
     styleTab(tabSpectrum, workspace->mode == SpectrumWorkspace::Mode::Spectrum);
     styleTab(tabDifference, workspace->mode == SpectrumWorkspace::Mode::Difference);
     const auto presetName = processor.getPresetName();
+    const auto project=processor.getProject();
+    outputGain.setTooltip(project.masterRoute?"Master route: gain and colour feed the final limiter in layer 10.":"Output gain after the layers.");
+    for(const auto& recipe:rack::recipes())if(recipe.id==project.rackPresetId)
+        presetButton.setTooltip(recipe.intent+"\n"+recipe.rejection+"\nReference tempo: "+juce::String(recipe.bpm,0)+" BPM. Host tempo takes priority.");
     presetButton.setButtonText(presetName.isEmpty() ? juce::String("Presets") : presetName);
     undo.setEnabled(processor.getUndoManager().canUndo());
     redo.setEnabled(processor.getUndoManager().canRedo());
@@ -291,6 +296,23 @@ void FxPluginEditor::showPresetMenu()
 {
     juce::PopupMenu menu;
     menu.addItem(1, "Init (empty project)");
+    juce::PopupMenu rackMenu;
+    const auto& recipes=rack::recipes();
+    for(const auto& bank:juce::StringArray{"Boom Bap","Trap","Techno","Drum and Bass","Studio"})
+    {
+        juce::PopupMenu categories;
+        juce::StringArray names;
+        for(const auto& r:recipes)if(r.bank==bank)names.addIfNotAlreadyThere(r.category);
+        for(const auto& category:names)
+        {
+            juce::PopupMenu items;
+            for(size_t i=0;i<recipes.size();++i)if(recipes[i].bank==bank&&recipes[i].category==category)
+                items.addItem(10000+static_cast<int>(i),recipes[i].name,true,processor.getProject().rackPresetId==recipes[i].id);
+            categories.addSubMenu(category,items);
+        }
+        rackMenu.addSubMenu(bank,categories);
+    }
+    menu.addSubMenu("HamloRack / 250",rackMenu);
     menu.addSeparator();
 
     // Factory: pack > category [> group] > preset; item ids 1000 + index in the library.
@@ -357,6 +379,8 @@ void FxPluginEditor::showPresetMenu()
             folder.createDirectory();
             folder.startAsProcess();
         }
+        else if(result>=10000)
+            proc.loadRackPreset(result-10000);
         else if (result >= 5000 && result - 5000 < userFiles.size())
         {
             juce::MemoryBlock data;

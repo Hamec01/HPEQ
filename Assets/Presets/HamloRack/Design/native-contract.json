@@ -2661,11 +2661,19 @@
       "version": "0.2.0"
     },
     "HamloMag": {
-      "imported_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
-      "source_checkout": "HamloMag",
-      "source_commit": "c5dcd10dcfdd8d9248e4b06b73114b9eb3b2b5d3",
-      "source_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
-      "version": "0.2.1"
+      "imported_tree": "b7ac8a38fe8579816ecf84c7eadb68fb8ade43bd",
+      "source_checkout": "HPEQ local native correction",
+      "source_commit": "21adfcff37a4d717e93d559c6831c7b9cbc285c2",
+      "source_prefix": "Plugins/HamloMag",
+      "source_tree": "b7ac8a38fe8579816ecf84c7eadb68fb8ade43bd",
+      "upstream_base": {
+        "imported_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+        "source_checkout": "HamloMag",
+        "source_commit": "c5dcd10dcfdd8d9248e4b06b73114b9eb3b2b5d3",
+        "source_tree": "f905c153e4c24c22e15df3751ab5dbe14e49767f",
+        "version": "0.2.1"
+      },
+      "version": "0.2.2"
     },
     "HamloRedWall": {
       "imported_tree": "4baefbd3e9083eb63ce0475d2d803633d0bd0590",
