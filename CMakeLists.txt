@@ -304,6 +304,7 @@ add_executable(HPEQ_Tests
     ${HPEQ_HARNESS_SOURCES}
     Tests/Unit/TestMain.cpp
     Tests/Unit/HarnessTests.cpp
+    Tests/Unit/RackNativeTests.cpp
     Tests/Unit/PluginContractTests.cpp
     Tests/Unit/StateTests.cpp
     Tests/Unit/DspTests.cpp
@@ -333,6 +334,12 @@ add_executable(HPEQ_Tests
 target_include_directories(HPEQ_Tests PRIVATE Tests)
 target_compile_definitions(HPEQ_Tests PRIVATE HPEQ_TEST_FIXTURES_DIR="${CMAKE_CURRENT_SOURCE_DIR}/Tests/Fixtures")
 target_link_libraries(HPEQ_Tests PRIVATE HPEQ)
+if(MSVC)
+    # DSP test functions keep many fixed-capacity snapshots alive together.
+    # Native parameter images exceed the default 1 MiB test-process stack.
+    # This reserve applies only to the test runner, never the plugin/audio host.
+    target_link_options(HPEQ_Tests PRIVATE /STACK:8388608)
+endif()
 add_test(NAME HPEQ_Tests COMMAND HPEQ_Tests)
 
 # M2 lab: H1 vs H2 frequency-core experiment on the real engine (JSON, SVG, WAV).

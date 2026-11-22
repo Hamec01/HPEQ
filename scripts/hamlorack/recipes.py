@@ -110,7 +110,7 @@ def R(amount=.3, time=None, glitch=None, motion_steps=None, target=1, shape=None
     if throw: p.update(throwATarget=throw[0],throwAMix=.3,throwATail=.25,throwATime=5)
     p.update(extra)
     m=module("Revolution",amount,**p)
-    m["scene"]=dict(lanes=lanes,locks=[65535]*7,allow_masks=[63,1023,65535,65535,65535,65535,65535],
+    m["scene"]=dict(lanes=lanes,locks=[65535]*3,allow_masks=[63,1023,65535],
         lane_names=["TIME","BLOCK GLITCH","MOTION","SHAPE A","SHAPE B","THROW A","THROW B"],
         encoding="semantic_scene_v1; encode with pinned native scene serializer")
     return m

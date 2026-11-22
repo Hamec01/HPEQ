@@ -203,6 +203,8 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
         auto& slot = slots[static_cast<size_t>(k)];
         const auto& sp = p.slots[static_cast<size_t>(k)];
         slot.wanted = slot.inChain && sp.active;
+        if (!slot.inChain && slot.nativeRuntime != nullptr)
+            stopSlot(slot);
 
         if (slot.running && slot.inChain && (slot.type != sp.type || slot.nativeRuntime!=sp.nativeValues.runtime))
             stopSlot(slot); // a different processor: never reuse its state

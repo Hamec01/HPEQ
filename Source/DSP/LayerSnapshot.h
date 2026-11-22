@@ -132,6 +132,7 @@ struct FxNodeParams
 
 struct LayerSnapshot
 {
+    std::uint64_t nativeGeneration = 0;
     std::array<EqBandParams, kMaxEqNodesPerLayer> eq {};
     std::array<FxNodeParams, kMaxFxNodesPerLayer> fx {};
     FxNodeParams mix {}; // D7: the whole-layer chain (band unused)

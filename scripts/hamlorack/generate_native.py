@@ -85,6 +85,7 @@ def main():
             expression=f"std::make_unique<{ns}hpeq::standalone::ModulePluginProcessor>({ns}hpeq::standalone::ModuleKind::{KINDS[name]}"
             expression+=",true)" if name=="Revolution" else ")"
         factory=f'''#include "Rack/NativeApi.h"
+#include "{ROOT.as_posix()}/Source/Core/FxProjectState.h"
 #include "{header}"
 namespace hpeq::native {{
 Handle create{name}() {{
@@ -109,6 +110,13 @@ Handle create{name}() {{
             factory+=f'''
 namespace hpeq::native {{
 juce::MemoryBlock makeRevolutionScene(const juce::NamedValueSet& values,const Scene& scene,juce::String& error) {{
+    error.clear();
+    Values checked;
+    if(!describe(FxType::MonstaFx,values,48000,checked,error))return {{}};
+    constexpr int maxima[] {{5,9,15,15,15,15,15}};
+    for(size_t lane=0;lane<scene.lanes.size();++lane)
+        for(auto value:scene.lanes[lane])
+            if(value>maxima[lane]) {{error="Invalid Revolution scene action";return {{}};}}
     auto h=createRevolution();
     auto& p=*static_cast<{ns}hpeq::standalone::ModulePluginProcessor*>(h.processor.get());
     for(const auto& e:values) {{
@@ -123,6 +131,20 @@ juce::MemoryBlock makeRevolutionScene(const juce::NamedValueSet& values,const Sc
     }}
     p.resetScenes(state);
     juce::MemoryBlock result;p.getStateInformation(result);return result;
+}}
+bool readRevolutionScene(const juce::MemoryBlock& bytes,Scene& scene,juce::String& error) {{
+    error.clear();
+    const auto xml=juce::AudioProcessor::getXmlFromBinary(bytes.getData(),static_cast<int>(bytes.getSize()));
+    if(xml==nullptr||xml->getTagName()!="HamloRevolution") {{error="Invalid Revolution scene state";return false;}}
+    auto h=createRevolution();
+    auto& p=*static_cast<{ns}hpeq::standalone::ModulePluginProcessor*>(h.processor.get());
+    p.setStateInformation(bytes.getData(),static_cast<int>(bytes.getSize()));
+    const auto decoded=p.getRevolutionState();
+    for(size_t lane=0;lane<scene.lanes.size();++lane) {{
+        scene.lanes[lane]=lane<3?decoded.pattern.steps[lane]:decoded.lanes[lane].first;
+        if(lane<3) {{scene.locks[lane]=decoded.pattern.locks[lane];scene.allow[lane]=decoded.pattern.allow[lane];}}
+    }}
+    return true;
 }}
 }}
 '''

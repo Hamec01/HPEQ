@@ -119,6 +119,7 @@ juce::NamedValueSet defaultParameters(FxType type)
 
 bool describe(FxType type,const juce::NamedValueSet& params,double rate,Values& values,juce::String& error)
 {
+    error.clear();
     const auto& specs=layout(type);
     values.count=static_cast<int>(specs.size());values.latency=fixedLatency(type,rate);
     for(size_t i=0;i<specs.size();++i)values.physical[i]=specs[i].initial;
@@ -147,6 +148,18 @@ bool describe(FxType type,const juce::NamedValueSet& params,double rate,Values& 
     {error="Native Echo requires a Score wet-only send";return false;}
     if((type==FxType::StereoProcessor&&actual("v2Mix",1)!=1) || (type==FxType::GateExpander&&actual("v2_mix",1)!=1))
     {error="Native spatial/gate MIX is owned by the rack slot";return false;}
+    // Match the public JUCE path before binding raw APVTS atoms: setValue()
+    // denormalises once, then ParameterAdapter reads getValue() and denormalises
+    // again. A physical float written verbatim can differ by several ULPs.
+    for(size_t i=0;i<specs.size();++i)
+    {
+        const auto& range=specs[i].range;
+        auto value=values.physical[i];
+        for(int pass=0;pass<2;++pass)
+            value=range.snapToLegalValue(range.convertFrom0to1(
+                range.convertTo0to1(range.snapToLegalValue(value))));
+        values.physical[i]=value;
+    }
     return true;
 }
 
@@ -175,7 +188,10 @@ Runtime::Runtime(FxType kind,const juce::MemoryBlock& structuralState,const juce
     for(int i=0;i<values.count;++i)
     {
         auto* p=handle.bindings[static_cast<size_t>(i)].parameter;
-        p->setValueNotifyingHost(p->convertTo0to1(values.physical[static_cast<size_t>(i)]));
+        const auto& spec=layout(type)[static_cast<size_t>(i)];
+        const auto* supplied=params.getVarPointer(spec.id);
+        const float physical=supplied!=nullptr?static_cast<float>(*supplied):spec.initial;
+        p->setValueNotifyingHost(p->convertTo0to1(physical));
     }
     handle.processor->setPlayHead(&playHead);
     handle.processor->setPlayConfigDetails(2,2,rate,maxBlock);

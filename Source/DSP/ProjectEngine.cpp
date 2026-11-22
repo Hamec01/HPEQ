@@ -303,7 +303,10 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
         max = std::max(max, lj[j]);
     }
     latency = routing == LayerRouting::Serial ? std::min(sum, latencyCap) : max;
-    nativeRegistry->acknowledge(exchange.current().nativeGeneration);
+    auto acknowledged = exchange.current().nativeGeneration;
+    for (const auto& layer : layers)
+        acknowledged = std::min(acknowledged, layer.engine->nativeGeneration());
+    nativeRegistry->acknowledge(acknowledged);
     freshStart = false;
 
     for (int start = 0; start < numSamples; start += maxBlock)

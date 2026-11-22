@@ -64,6 +64,7 @@ struct Scene
     std::array<std::uint16_t,3> allow {63,1023,65535};
 };
 juce::MemoryBlock makeRevolutionScene(const juce::NamedValueSet&,const Scene&,juce::String& error);
+bool readRevolutionScene(const juce::MemoryBlock&,Scene&,juce::String& error);
 
 class Runtime
 {

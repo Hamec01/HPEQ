@@ -1,41 +1,115 @@
 {
-  "status": "paused_by_owner; unfinished WIP",
-  "date": "2026-11-20",
-  "branch": "main",
-  "base_commit": "45d61b3",
-  "legacy_before": {
-    "presets": 224,
-    "rendered": 224,
-    "failures": 0,
-    "fixture_sha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b"
-  },
+  "status": "validated RACK1 continuation; remaining integration gates pending",
+  "date": "2026-11-22",
+  "branch": "feature/hamlo-plugins",
+  "upstream": "origin/main",
+  "base_commit": "98327f5",
+  "compiler": "MSVC 19.51.36231.0, Visual Studio 18 2026, x64",
+  "source_scope": "rack adapters and design metadata; standalone source payloads unchanged",
+  "owner_authorization": "fix any standalone Hamlo VST as well as rack; preserve compatibility and source provenance",
   "release_checkpoint": {
     "native_libraries_compiled": 10,
     "tools_compiled": [
       "HPEQ_RackLab",
       "HPEQ_Tests"
     ],
-    "inputs_edited_after_build": [
-      "Source/Rack/NativeApi.h",
-      "Tests/Unit/StateTests.cpp",
-      "scripts/hamlorack/build_bank.py",
-      "scripts/hamlorack/generate_native.py"
-    ],
-    "current_source_fully_rebuilt": false
+    "current_source_fully_rebuilt": true
   },
-  "not_run": [
-    "legacy_after_exact_comparison",
-    "native_adapter_parity",
-    "new_runtime_unit_tests",
-    "debug_crt_allocation_probe",
-    "native_timing_channel_block_matrix",
-    "host_validators",
-    "new_ui_verification",
-    "250_recipe_audio_calibration",
-    "listening"
+  "legacy": {
+    "reference_source_commit": "45d61b3",
+    "reference_reconstructed_on_this_machine": true,
+    "renderer_sha256": "eb7c991357df454acf73c35d1516a0fd6a9b5768bc37c1155163f6e9f493ce44",
+    "fixture_sha256": "55216d286ca1d3a8c526c14a9582330e91c5a91a3020c1024431862c818f964b",
+    "configuration": "rack1-legacy-v1;48000Hz;stereo;prepare256;block127;120BPM;input2s;tail1s",
+    "presets": 224,
+    "exact": 224,
+    "failures": 0,
+    "before_receipt_sha256": "1025b3b0c46514ebac6d48929e0c5aa6563dc57190adf92a91ef8b832121abe8",
+    "after_receipt_sha256": "7721fd4a501c4e2d7f510fb6976315256d4367acc7e4808d60c3097202301b65",
+    "local_raw_render_directory": "out/rack1-local/legacy-before/renders",
+    "limits": "same compiler/machine; 2s input + 1s tail, not entire long tails or subjective quality"
+  },
+  "checks": {
+    "native_release": {
+      "passed": 639,
+      "failed": 0,
+      "log": "out/rack1-local/native-release.log",
+      "sha256": "9a271cc652e3d8aae21fba1b4295807cc957a9d2ff5d01345e7255efc0801d5f",
+      "allocation_coverage": "operator-new-only (malloc not seen)"
+    },
+    "native_debug": {
+      "passed": 639,
+      "failed": 0,
+      "log": "out/rack1-local/native-debug.log",
+      "sha256": "3796db4b4e8d3ecb4887ef658c1a453edc27bed5d8a0d8025e5101813e9669dc",
+      "allocation_coverage": "crt-debug-hook (malloc + new)"
+    },
+    "all_release": {
+      "passed": 3737,
+      "failed": 0,
+      "log": "out/rack1-local/all-release.log",
+      "sha256": "fb4f752d372f37f68d05d1eb9949f96feb3cd2248f3ffa40b7b73cecdf11f523",
+      "allocation_coverage": "operator-new-only (malloc not seen)"
+    },
+    "standalone_comp": {
+      "passed": 764,
+      "failed": 0,
+      "log": "out/rack1-local/standalone-comp-tests.log",
+      "sha256": "c823d48114e5139bc566fcffbd4fe47d1417e0fee2ab4947ca228588d2d98e4f"
+    },
+    "standalone_fader": {
+      "passed": 17432,
+      "failed": 0,
+      "log": "out/rack1-local/standalone-fader-tests.log",
+      "sha256": "aef0eab369f03f1c4f728dea46987e246f2ba521af32a5161946e1e6764d23fb"
+    }
+  },
+  "native_matrix": {
+    "modules": 10,
+    "sample_rates": [
+      44100,
+      48000,
+      96000
+    ],
+    "channels": [
+      1,
+      2
+    ],
+    "prepare_block": 256,
+    "successive_blocks": [
+      1,
+      64,
+      127,
+      512,
+      4096
+    ],
+    "comparison": "exact float samples and latency against public native API",
+    "limits": "one authored setting/scene per module; same chunk schedule, not exhaustive parameter/block-schedule sweep"
+  },
+  "structural_designs": {
+    "recipes": 250,
+    "tests": 13,
+    "audio_calibration": "not run"
+  },
+  "artifacts_sha256": {
+    "build/Release/HPEQ_RackLab.exe": "dd359281b73e98a092c0aa5837c0452c9f0bc956d0f54bda064ad36a82ce90bf",
+    "build/Release/HPEQ_Tests.exe": "9f6237e998f858d22b65f3ac98faea40382ca56f5c96ad135c22acec0b1ac034",
+    "build/Debug/HPEQ_Tests.exe": "b9e04fe8b1073907e19a8dfcc421e92921f2af4bd32383391e5392caa86a1e49",
+    "build/rack1-reference-build/Release/HPEQ_RackLab.exe": "c48b494c1925c8fd31b093341dfeee6ffe3e687630c01c5370705aad7eaea51a",
+    "build/standalone-comp/HamloComp_artefacts/Release/VST3/HamloComp.vst3/Contents/x86_64-win/HamloComp.vst3": "9d7cc163e8108d4eeb721b6f9708ab068c8489fb4a2b632184d7b8175a8e522e",
+    "build/standalone-fader/HamloFader_artefacts/Release/VST3/HamloFader.vst3/Contents/x86_64-win/HamloFader.vst3": "717284ac1ed585107845379c707335be8d7cd2255cb39f8c2cdb2138dca63811"
+  },
+  "pending": [
+    "full native composition/PDC matrix",
+    "long-tail bypass/re-enable",
+    "concurrent publication/reclamation stress",
+    "expanded parameter/transport/block-schedule matrix",
+    "runtime bank importer",
+    "native UI panels",
+    "250-recipe audio calibration",
+    "host validators",
+    "DAW and listening"
   ],
   "active_jobs": [],
-  "source_scope": "RACK0 designs plus unfinished RACK1; Plugins and legacy factory payloads unchanged",
-  "push_scope": "source and nonaudio receipts only; no binaries or raw/private audio",
-  "commit_preflight": "Design artifacts regenerated after removing extra EOF blank lines; targeted LF attributes keep their byte-level checks stable."
+  "push_scope": "no push requested; no installed VST replacement; binaries and raw audio stay local"
 }

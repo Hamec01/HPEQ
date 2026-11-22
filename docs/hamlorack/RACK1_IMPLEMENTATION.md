@@ -2,11 +2,11 @@
 
 Base: HPEQ `45d61b3`, preserving the uncommitted RACK0 bank. Date: 2026-11-20.
 
-Status: **paused by owner, unfinished WIP source checkpoint**. Native libraries
-and the main Release tools compiled before the last native source/header edits;
-runtime/audio acceptance remains pending. See `docs/NEXT_STAGE.md` and
-`RACK1_CHECKPOINT.json` for exact limits and continuation commands. This document
-records the intended design and acceptance probes, not completed verification.
+Status: **resumed on 2026-11-22; integration acceptance remains unfinished**.
+The native adapter matrix and legacy comparison now have passing results.
+See `RACK1_RESUME.md`, `RACK1_CHECKPOINT.json` and `docs/NEXT_STAGE.md` for the
+verified scope, first-run failures and remaining gates. The acceptance probes
+below remain the intended design; a passing subset does not complete RACK1.
 
 ## Implementation decision, before changing runtime DSP
 

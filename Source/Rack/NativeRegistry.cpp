@@ -85,6 +85,7 @@ bool Registry::stage(const FxProjectState& project,std::array<dsp::LayerSnapshot
     for(auto* e:chosen)e->seen=next;
     for(auto& e:created)entries.push_back(std::move(e));
     for(auto& e:entries)if(e->seen!=next && e->retired==0)e->retired=next;
+    for(auto& image:images)image.nativeGeneration=next;
     published=next;
     return true;
 }

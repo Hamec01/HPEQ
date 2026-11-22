@@ -191,20 +191,31 @@ def read_schema(plugin):
 
 def source_manifest():
     out = {}
+    prior_file = DEST / "native-contract.json"
+    pinned = json.loads(prior_file.read_text(encoding="utf-8"))["sources"] if prior_file.exists() else {}
     def git(*args, cwd=ROOT):
         return subprocess.check_output(["git",*args],cwd=cwd,text=True,encoding="utf-8").strip()
     for name in PLUGINS:
         plugin = "Hamlo"+name
         source = ROOT.parent / ("HamloRevolutionTransitions" if name=="Revolution" else plugin)
         imported = git("rev-parse",f"HEAD:Plugins/{plugin}")
-        source_tree = git("rev-parse","HEAD^{tree}",cwd=source)
-        dirty = git("status","--porcelain=v1",cwd=source)
         imported_dirty=git("status","--porcelain=v1","--",f"Plugins/{plugin}")
+        if source.is_dir():
+            source_tree = git("rev-parse","HEAD^{tree}",cwd=source)
+            source_commit = git("rev-parse","HEAD",cwd=source)
+            dirty = git("status","--porcelain=v1",cwd=source)
+        else:
+            record = pinned.get(plugin, {})
+            source_tree = record.get("source_tree")
+            source_commit = record.get("source_commit")
+            dirty = False
+            if not source_commit or source_tree != imported:
+                raise ValueError(f"No verified source identity for imported payload: {plugin}")
         if dirty or imported_dirty or imported != source_tree:
             raise ValueError(f"Source identity mismatch or dirty source: {plugin}")
         cmake = (ROOT/"Plugins"/plugin/"CMakeLists.txt").read_text(encoding="utf-8-sig")
         version = re.search(r"project\([^\s]+\s+VERSION\s+([\d.]+)",cmake)[1]
-        out[plugin] = dict(version=version,source_commit=git("rev-parse","HEAD",cwd=source),source_tree=source_tree,imported_tree=imported,source_checkout=source.name)
+        out[plugin] = dict(version=version,source_commit=source_commit,source_tree=source_tree,imported_tree=imported,source_checkout=source.name)
     return out
 
 
@@ -244,6 +255,12 @@ def validate(data, schemas):
             if plugin=="HamloRevolution":
                 scene = module["scene"]
                 if len(scene["lanes"])!=7 or any(len(lane)!=16 for lane in scene["lanes"]): raise ValueError("Scene dimensions")
+                if len(scene["locks"]) != 3 or len(scene["allow_masks"]) != 3:
+                    raise ValueError("Scene pattern masks require TIME, GLITCH and MOTION entries")
+                if any(type(v)!=int or not 0<=v<=65535 for v in scene["locks"]):
+                    raise ValueError("Scene lock mask range")
+                if any(type(v)!=int or not 0<=v<=maximum for v,maximum in zip(scene["allow_masks"],(63,1023,65535))):
+                    raise ValueError("Scene allow mask range")
                 maxima=[5,9,15,15,15,15,15]
                 for i,lane in enumerate(scene["lanes"]):
                     if any(type(v)!=int or not 0<=v<=maxima[i] for v in lane): raise ValueError("Scene action range")

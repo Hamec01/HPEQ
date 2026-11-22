@@ -90,6 +90,17 @@ class BankContractTests(unittest.TestCase):
         del row["calibration"]["required_action"]
         with self.assertRaisesRegex(ValueError,"Match capture"): bank.validate(data,self.schemas)
 
+    def test_scene_uses_three_valid_native_pattern_masks(self):
+        for defect in ("seven_masks","negative_lock","invalid_allow","fractional_lock"):
+            data=deepcopy(self.data);_,m=self.module(data,"Revolution")
+            scene=m["scene"]
+            if defect=="seven_masks": scene["locks"]=[65535]*7
+            elif defect=="negative_lock": scene["locks"][0]=-1
+            elif defect=="invalid_allow": scene["allow_masks"][0]=64
+            else: scene["locks"][0]=1.5
+            with self.subTest(defect=defect),self.assertRaisesRegex(ValueError,"Scene"):
+                bank.validate(data,self.schemas)
+
     def test_master_requires_a_final_ceiling_stage(self):
         data=deepcopy(self.data);row=next(r for r in data if r["category"]=="Master")
         row["chain"].reverse()

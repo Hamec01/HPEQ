@@ -1,4 +1,34 @@
-# HamloRack RACK1 WIP handoff - paused by owner 2026-11-20
+# HamloRack RACK1 continuation - 2026-11-22
+
+Resumed from `98327f5` after pulling the other computer's saved checkpoint.
+The former remote feature branch was deleted; local `feature/hamlo-plugins`
+now tracks `origin/main`. No push or installed VST replacement is authorized
+as part of this continuation.
+
+Native adapter rounding, Revolution scene masks/codec, removed runtime references
+and per-layer reclamation acknowledgements have been repaired. Native Release
+and Debug matrices each pass 639 expectations; Debug CRT audio allocations/frees
+are zero. The reconstructed same-machine legacy reference passes all 224 exact
+audio/latency comparisons. Structural checks pass 250 designs and 13 tests.
+Separate Comp/Fader builds pass 764 / 17,432 expectations and build their VST3s.
+The complete HPEQ Release suite passes 3,737 expectations after a test-only
+8 MiB stack reserve correction for its enlarged snapshot fixtures.
+
+The owner explicitly permits fixing any standalone Hamlo VST along with the
+rack. Fix defects at their source, preserve compatibility, and synchronize the
+native pinned identity when the imported payload changes. The present adapter
+fix did not require a standalone DSP change. No subagents/model changes.
+
+Read `docs/hamlorack/RACK1_RESUME.md` and `RACK1_CHECKPOINT.json` first. Remaining
+RACK1 work: full composition/PDC and long-tail bypass/re-enable tests, concurrent
+publication/reclamation stress, expanded parameter/transport/block schedules.
+Then RACK2 native panels/runtime bank import; RACK3 recipe calibration and DAW
+checks. The 250 recipes remain design-only. Preserve references under
+`out/rack1-local/legacy-before`; never render the candidate over them.
+
+---
+
+# Historical HamloRack RACK1 WIP handoff - paused by owner 2026-11-20
 
 Owner explicitly stopped implementation and requested commit + push. Save this
 as an **unfinished checkpoint**, not a completed RACK1 or a released beta.
