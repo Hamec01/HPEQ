@@ -71,6 +71,12 @@ const std::vector<Recipe>& recipes()
         if(root["format"].toString()!="HamloRackDesign"||root["presets"].size()!=250)
             throw std::runtime_error("Embedded HamloRack bank is invalid");
         std::vector<Recipe> out;
+        int powerSize=0;const auto* powerBytes=HpeqAssets::getNamedResource("power_json",powerSize);
+        const auto power=juce::JSON::parse(juce::String::fromUTF8(powerBytes,powerSize));
+        if(power["format"].toString()!="HamloRackPower"||power["presets"].size()!=20)
+            throw std::runtime_error("Embedded Rack Power bank is invalid");
+        for(const auto& row:*power["presets"].getArray())
+            out.push_back({row["id"],"Rack Power / "+row["bank"].toString(),row["category"],row["name"],row["intent"],row["reject_if"],row["bpm"],row});
         for(const auto& row:*root["presets"].getArray())
             out.push_back({row["id"],row["bank"],row["category"],row["name"],row["intent"],row["reject_if"],row["bpm"],row});
         return out;
@@ -108,6 +114,25 @@ bool makeProject(const Recipe& recipe,FxProjectState& output,juce::String& error
 {
     try
     {
+        if(const auto* layers=recipe.data["layers"].getArray())
+        {
+            if(layers->isEmpty()||layers->size()>kNumLayers)throw std::invalid_argument("Invalid Rack Power layer count");
+            FxProjectState p;for(auto& l:p.layers)l.enabled=false;
+            p.routing=recipe.data["routing"].toString()=="Serial"?LayerRouting::Serial:LayerRouting::Parallel;
+            for(int i=0;i<layers->size();++i)
+            {
+                Recipe sub=recipe;sub.category="Power layer";sub.data=(*layers)[i].clone();
+                sub.data.getDynamicObject()->setProperty("output_mode","insert");
+                FxProjectState one;if(!makeProject(sub,one,error,false))return false;
+                auto& layer=p.layers[static_cast<size_t>(i)];layer=std::move(one.layers[0]);
+                layer.name=(*layers)[i]["name"].toString();layer.mix=static_cast<float>((*layers)[i]["mix"]);
+                if(!std::isfinite(layer.mix)||layer.mix<0||layer.mix>1)throw std::invalid_argument("Invalid Power layer mix");
+                for(auto& n:layer.eqNodes)n.id=p.nextNodeId++;for(auto& n:layer.fxNodes)n.id=p.nextNodeId++;
+            }
+            p.referenceBpm=recipe.bpm;p.rackPresetId=recipe.id;
+            p.outputTrimDb=static_cast<double>(recipe.data["output_trim_db"]);
+            sanitize(p);output=std::move(p);error.clear();return true;
+        }
         if(!recipe.data["eq"].isArray()||recipe.data["eq"].size()>kMaxEqNodesPerLayer
             ||!recipe.data["regions"].isArray()||recipe.data["regions"].size()>kMaxFxNodesPerLayer)
             throw std::invalid_argument("Invalid rack geometry");

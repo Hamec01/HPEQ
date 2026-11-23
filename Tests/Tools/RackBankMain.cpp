@@ -4,6 +4,7 @@
 #include "Plugin/FxPluginProcessor.h"
 #include "Plugin/FxPluginEditor.h"
 #include "Analysis/LoudnessMeter.h"
+#include <BinaryData.h>
 #include <juce_dsp/juce_dsp.h>
 #include <juce_audio_utils/juce_audio_utils.h>
 #include <juce_cryptography/juce_cryptography.h>
@@ -195,9 +196,18 @@ juce::var calibrationData(hpeq::FxProjectState& p,hpeq::FxProjectState& original
     }
     put(value,"overrides",overrides);return value;
 }
+const std::vector<hpeq::rack::Recipe>& taskRecipes()
+{
+    static const auto bank=[] {
+        std::vector<hpeq::rack::Recipe> result;
+        for(const auto& recipe:hpeq::rack::recipes())if(recipe.id.startsWith("HR"))result.push_back(recipe);
+        return result;
+    }();
+    return bank;
+}
 int calibrate(const juce::File& folder,int first,int count)
 {
-    const auto& bank=hpeq::rack::recipes();int failures=0;
+    const auto& bank=taskRecipes();int failures=0;
     for(int i=first;i<std::min(first+count,static_cast<int>(bank.size()));++i)
     {
         const auto& recipe=bank[static_cast<size_t>(i)];const auto file=folder.getChildFile("records/"+recipe.id+".json");
@@ -304,6 +314,92 @@ int calibrate(const juce::File& folder,int first,int count)
     }
     return failures?1:0;
 }
+int powerBank(const juce::File& folder,bool verifyOnly=false)
+{
+    // Rack Power method v1, fixed before its first render: preserve every DSP
+    // parameter; tune output trim only. Two independent local clips, -6/0/+6 dB,
+    // true peak <= -0.3 dBTP, finite active output, plus +/-20% tempo and an
+    // eight-second silent input tail. Numerical character is not a listening verdict.
+    juce::Array<juce::var> records;int failures=0;
+    for(const auto& recipe:hpeq::rack::recipes())if(recipe.id.startsWith("PW"))
+    {
+        hpeq::FxProjectState p;juce::String error;
+        if(!hpeq::rack::makeProject(recipe,p,error,false))throw std::runtime_error(error.toStdString());
+        if(verifyOnly)
+        {
+            const auto row=juce::JSON::parse(folder.getChildFile("records/"+recipe.id+".json"));
+            const auto source=fixture(recipe,0,recipe.bpm);const auto actual=render(p,source,recipe.bpm);
+            const bool exact=std::abs(p.outputTrimDb-static_cast<double>(row["output_trim_db"]))<1.e-9
+                &&pcmHash(source)==row["checks"][1]["input_pcm_sha256"].toString()
+                &&pcmHash(actual.audio)==row["checks"][1]["output_pcm_sha256"].toString();
+            if(!exact)++failures;std::cout<<recipe.id<<(exact?" exact":" FAIL")<<std::endl;continue;
+        }
+        auto x=fixture(recipe,0,recipe.bpm);const auto input=metrics(x);
+        const auto first=render(p,x,recipe.bpm);const auto initial=metrics(first.audio);
+        double trim=p.outputTrimDb+input.lufs-initial.lufs;
+        for(int variant=0;variant<2;++variant)for(double level:{-6.,0.,6.})
+        {
+            auto hot=fixture(recipe,variant,recipe.bpm);hot.applyGain(static_cast<float>(std::pow(10.,level/20)));
+            const auto m=metrics(render(p,hot,recipe.bpm).audio);
+            trim=std::min(trim,p.outputTrimDb-.35-m.truePeak);
+        }
+        p.outputTrimDb=juce::jlimit(-48.,24.,trim);
+        auto row=object();put(row,"id",recipe.id);put(row,"name",recipe.name);put(row,"output_trim_db",p.outputTrimDb);
+        put(row,"input",data(input));put(row,"initial_output",data(initial));
+        put(row,"definition_sha256",juce::SHA256(juce::JSON::toString(recipe.data).toRawUTF8(),static_cast<size_t>(juce::JSON::toString(recipe.data).getNumBytesAsUTF8())).toHexString());
+        juce::Array<juce::var> checks;bool safe=true;
+        for(int variant=0;variant<2;++variant)for(double level:{-6.,0.,6.})
+        {
+            auto source=fixture(recipe,variant,recipe.bpm);source.applyGain(static_cast<float>(std::pow(10.,level/20)));
+            const auto result=render(p,source,recipe.bpm);const auto m=metrics(result.audio);
+            const bool pass=m.finite&&m.peak> -110&&m.truePeak<=-.3;
+            auto check=object();put(check,"variant",variant);put(check,"level_db",level);put(check,"output",data(m));
+            put(check,"compressor_peak_gr_db",result.comp);put(check,"limiter_peak_gr_db",result.limiter);
+            put(check,"input_pcm_sha256",pcmHash(source));put(check,"output_pcm_sha256",pcmHash(result.audio));put(check,"pass",pass);
+            checks.add(check);safe=safe&&pass;
+            if(variant==0&&level==0)
+            {
+                wave(folder.getChildFile("audio/"+recipe.id+"-dry.wav"),source);
+                wave(folder.getChildFile("audio/"+recipe.id+"-processed.wav"),result.audio);
+                auto matched=result.audio;
+                const double matchDb=input.lufs-m.lufs;
+                const double common=std::min(0.,-1.5-std::max(input.truePeak,m.truePeak+matchDb));
+                auto dryMatched=source;dryMatched.applyGain(static_cast<float>(std::pow(10.,common/20)));
+                matched.applyGain(static_cast<float>(std::pow(10.,(matchDb+common)/20)));
+                wave(folder.getChildFile("audio/"+recipe.id+"-matched-dry.wav"),dryMatched);
+                wave(folder.getChildFile("audio/"+recipe.id+"-matched.wav"),matched);
+                double difference=0,dryEnergy=0;
+                for(int c=0;c<2;++c)for(int i=0;i<source.getNumSamples();++i)
+                {const double d=source.getSample(c,i),w=result.audio.getSample(c,i)*std::pow(10.,matchDb/20);difference+=(w-d)*(w-d);dryEnergy+=d*d;}
+                put(row,"loudness_delta_lu",m.lufs-input.lufs);put(row,"matched_difference_db",10*std::log10(std::max(1.e-24,difference/std::max(1.e-24,dryEnergy))));
+            }
+        }
+        for(double multiplier:{.8,1.2})
+        {
+            auto source=fixture(recipe,1,recipe.bpm);const auto m=metrics(render(p,source,recipe.bpm*multiplier).audio);
+            const bool pass=m.finite&&m.peak> -110&&m.truePeak<=-.3;
+            auto check=object();put(check,"bpm",recipe.bpm*multiplier);put(check,"output",data(m));put(check,"pass",pass);checks.add(check);safe=safe&&pass;
+        }
+        auto tail=fixture(recipe,0,recipe.bpm);const int active=tail.getNumSamples();tail.setSize(2,active+static_cast<int>(fs*8),true,true);
+        const auto tailResult=render(p,tail,recipe.bpm);const auto tailMetrics=metrics(tailResult.audio);
+        double tailEnd=0;
+        for(int c=0;c<2;++c)for(int i=tailResult.audio.getNumSamples()-static_cast<int>(fs);i<tailResult.audio.getNumSamples();++i)
+            tailEnd=std::max(tailEnd,static_cast<double>(std::abs(tailResult.audio.getSample(c,i))));
+        const bool tailPass=tailMetrics.finite&&tailMetrics.truePeak<=-.3&&db(tailEnd)<=-45;
+        put(row,"tail_render",data(tailMetrics));put(row,"tail_final_second_peak_dbfs",db(tailEnd));put(row,"tail_pass",tailPass);safe=safe&&tailPass;
+        put(row,"checks",checks);put(row,"safety_pass",safe);put(row,"intent_verdict","Owner listening pending; numerical difference does not certify musical intent");
+        save(folder.getChildFile("records/"+recipe.id+".json"),row);records.add(row);if(!safe)++failures;
+        std::cout<<recipe.id<<" "<<(safe?"safe":"FAIL")<<" "<<recipe.name<<std::endl;
+    }
+    if(verifyOnly)return failures?1:0;
+    auto receipt=object();put(receipt,"format","HamloRackPowerVerification");put(receipt,"version",1);
+    put(receipt,"material_manifest_sha256",juce::SHA256(materialFolder.getChildFile("sources.json")).toHexString());
+    put(receipt,"executable_sha256",juce::SHA256(juce::File::getSpecialLocation(juce::File::currentExecutableFile)).toHexString());
+    int size=0;const auto* bytes=HpeqAssets::getNamedResource("power_json",size);
+    const auto definition=juce::JSON::parse(juce::String::fromUTF8(bytes,size));
+    put(receipt,"authoring_sha256",definition["authoring_sha256"]);put(receipt,"records",records);put(receipt,"failures",failures);
+    save(folder.getChildFile("receipt.json"),receipt);return failures?1:0;
+}
 int snapshots(const juce::File& folder)
 {
     folder.createDirectory();
@@ -325,7 +421,7 @@ int snapshots(const juce::File& folder)
 }
 int verify(const juce::File& folder,int first=0,int count=250)
 {
-    int failures=0,verified=0;const auto& bank=hpeq::rack::recipes();
+    int failures=0,verified=0;const auto& bank=taskRecipes();
     if(first<0||count<1||first>=static_cast<int>(bank.size()))throw std::runtime_error("Invalid replay range");
     for(int index=first;index<std::min(first+count,static_cast<int>(bank.size()));++index)
     {
@@ -347,6 +443,8 @@ int main(int argc,char** argv)
     juce::ScopedJuceInitialiser_GUI init;
     try
     {
+        if(argc==4&&(juce::String(argv[1])=="power"||juce::String(argv[1])=="power-verify"))
+        {materialMode=true;materialFolder=juce::File(argv[3]);return powerBank(juce::File(argv[2]),juce::String(argv[1])=="power-verify");}
         if(argc==3&&juce::String(argv[1])=="snapshots")return snapshots(juce::File(argv[2]));
         if((argc==4||argc==6)&&juce::String(argv[1])=="verify")
         {materialMode=true;materialFolder=juce::File(argv[3]);return verify(juce::File(argv[2]),argc==6?std::stoi(argv[4]):0,argc==6?std::stoi(argv[5]):250);}

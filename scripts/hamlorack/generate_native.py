@@ -1,8 +1,8 @@
 """Build-directory-only namespace isolation of pinned complete native wrappers.
 
 DSP tokens change only for hpeq/hamlo namespaces. Strings/comments remain exact.
-The additional accessor exposes existing APVTS atoms; editor construction is
-replaced in the internal copy. Input payloads are never modified.
+The additional accessor exposes existing APVTS atoms. Complete original editors
+and their own embedded assets are compiled too. Input payloads are never modified.
 """
 from pathlib import Path
 import argparse
@@ -15,7 +15,7 @@ ROOT=Path(__file__).resolve().parents[2]
 SIMPLE={"Comp":("comp","HamloCompProcessor"),"Udarnik":("udarnik","HamloUdarnikProcessor"),
     "RedWall":("redwall","HamloRedWallProcessor"),"Mag":("saturator","HamloMagProcessor")}
 KINDS={"Verb":"Verb","Echo":"Echo","Zastava":"Zastava","Shirota":"Shirota","Fader":"Fader","Revolution":"Revolution"}
-TOKEN=re.compile(r'''("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|//[^\n]*|/\*[\s\S]*?\*/)|\b(hpeq|hamlo)\b''')
+TOKEN=re.compile(r'''("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|//[^\n]*|/\*[\s\S]*?\*/)|\b(hpeq|hamlo|HpeqAssets)\b''')
 
 
 def isolated(text,name):
@@ -40,7 +40,7 @@ def sources(name):
     if found is None:raise ValueError("No native source list: "+name)
     block=balanced(text,found.end())
     return [p for p in re.findall(r"Source/[A-Za-z0-9_/]+\.cpp",block)
-        if "/UI/" not in p and not p.endswith(("Editor.cpp","Entry.cpp"))]
+        if not p.endswith("Entry.cpp")]
 
 
 def write(path,text):
@@ -48,10 +48,32 @@ def write(path,text):
     if not path.exists() or path.read_bytes()!=data:
         path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(data)
 
+def legacy_defaults(dest):
+    # Import the actual HPEQ missing-key defaults, not the newer plug-ins'
+    # authored factory defaults (which can include tape drive/noise etc.).
+    source=(ROOT/"Source/DSP/LayerSnapshot.cpp").read_text(encoding="utf-8-sig")
+    start=source.index("    switch (state.type)")
+    source=source[start:source.index("    return slotParams;",start)]
+    lines=['#include "Rack/NativeApi.h"','#include "Core/FxProjectState.h"',
+        'namespace hpeq::native { juce::NamedValueSet legacyDefaults(FxType type) {',
+        'juce::NamedValueSet values; switch(type) {']
+    cases=list(re.finditer(r'case FxType::(\w+):([\s\S]*?)(?=case FxType::|$)',source))
+    if len(cases)!=10:raise ValueError("HPEQ legacy default extraction must cover all ten processors")
+    for match in cases:
+        values={key:float(value) for key,value in re.findall(
+            r'param\(state\.parameters,\s*"([^"]+)",\s*([-+]?(?:\d+\.?\d*|\.\d+))(?:f|F)?\s*\)',match[2])}
+        if not values:raise ValueError("Missing HPEQ defaults: "+match[1])
+        lines.append('case FxType::'+match[1]+':')
+        for key,value in values.items():lines.append(f'values.set("{key}",{value!r});')
+        lines.append('break;')
+    lines+=['} return values; } }']
+    write(dest/"LegacyDefaults.cpp","\n".join(lines)+"\n")
+
 
 def main():
     p=argparse.ArgumentParser();p.add_argument("--out",required=True);args=p.parse_args()
     dest=Path(args.out).resolve();manifest=json.loads((ROOT/"Assets/Presets/HamloRack/Design/native-contract.json").read_text(encoding="utf-8"))
+    legacy_defaults(dest)
     cmake=[];receipt={}
     for plugin,identity in manifest["sources"].items():
         name=plugin.removeprefix("Hamlo");base=ROOT/"Plugins"/plugin
@@ -70,25 +92,30 @@ def main():
             transformed=isolated(raw,name)
             if rel=="Source/"+header:
                 accessor="\n    juce::AudioProcessorValueTreeState& rackNativeState() noexcept { return parameters; }\n"
+                if name=="Fader":
+                    transformed="#include <functional>\n"+transformed
+                    accessor+="    std::function<bool(int)> rackFaderAction;\n"
                 transformed,count=re.subn(r"(\npublic:\s*\n)",lambda m:m[1]+accessor,transformed,count=1)
                 if count!=1:raise ValueError("Native accessor insertion: "+name)
-            if rel==processor:
-                transformed=re.sub(r'^#include "[^"\n]*Editor.h"\s*$',"",transformed,flags=re.M)
-                transformed,count=re.subn(r"(juce::AudioProcessorEditor\*\s+\w+::createEditor\(\)\s*)\{[^{}]*\}",
-                    r"\1{ return new juce::GenericAudioProcessorEditor(*this); }",transformed)
-                if count!=1:raise ValueError("Unexpected editor factory: "+name)
+            if name=="Fader" and rel==processor:
+                for pattern,body in [
+                    (r"(bool ModulePluginProcessor::requestAction\([^\n]+\) noexcept\s*\{)","if(rackFaderAction)return rackFaderAction(static_cast<int>(action));"),
+                    (r"(bool ModulePluginProcessor::applyMatch\(\)\s*\{)","if(rackFaderAction)return rackFaderAction(3);")]:
+                    transformed,count=re.subn(pattern,lambda m:m[1]+"\n    "+body,transformed)
+                    if count!=1:raise ValueError("Fader editor action bridge: "+pattern)
             write(dest/plugin/rel,transformed)
         ns="hr_"+name.lower()+"_"
         if name in SIMPLE:
             group,cls=SIMPLE[name];expression=f"std::make_unique<{ns}hamlo::{group}::{cls}>()"
         else:
             expression=f"std::make_unique<{ns}hpeq::standalone::ModulePluginProcessor>({ns}hpeq::standalone::ModuleKind::{KINDS[name]}"
-            expression+=",true)" if name=="Revolution" else ")"
+            expression+=",!realtime)" if name=="Revolution" else ")"
+        arguments="bool realtime" if name=="Revolution" else ""
         factory=f'''#include "Rack/NativeApi.h"
 #include "{ROOT.as_posix()}/Source/Core/FxProjectState.h"
 #include "{header}"
 namespace hpeq::native {{
-Handle create{name}() {{
+Handle create{name}({arguments}) {{
     auto p = {expression};
     Handle h; h.processor = std::move(p);
     h.bind(static_cast<decltype(p)::element_type*>(h.processor.get())->rackNativeState());
@@ -123,9 +150,13 @@ FaderView readFader(juce::AudioProcessor& processor) {{
 }}
 bool actionFader(juce::AudioProcessor& processor,int action,double& applied) {{
     auto& p=static_cast<{ns}hpeq::standalone::ModulePluginProcessor&>(processor);
+    const juce::ScopedValueSetter<std::function<bool(int)>> bridge(p.rackFaderAction,{{}});
     if(action==3) {{if(!p.applyMatch())return false;applied=p.parameterValue("matchedDb");return true;}}
     if(action<0||action>2)return false;
     return p.requestAction(static_cast<{ns}hpeq::standalone::FaderAction>(action));
+}}
+void installFaderActionBridge(juce::AudioProcessor& processor,std::function<bool(int)> action) {{
+    static_cast<{ns}hpeq::standalone::ModulePluginProcessor&>(processor).rackFaderAction=std::move(action);
 }}
 }}
 '''
@@ -161,6 +192,8 @@ juce::MemoryBlock editRevolutionScene(const juce::MemoryBlock& previous,const ju
         if(i<3) {{state.pattern.steps[i]=scene.lanes[i];state.pattern.locks[i]=scene.locks[i];state.pattern.allow[i]=scene.allow[i];}}
     }}
     if(previous.getSize()==0)p.resetScenes(state);else p.setRevolutionState(state);
+    if(previous.getSize()==0 && std::any_of(scene.lanes.begin(),scene.lanes.end(),[](const auto& lane) {{return std::any_of(lane.begin(),lane.end(),[](auto event) {{return event!=0;}});}}))
+        p.setPage({ns}hpeq::standalone::ModulePluginProcessor::Page::Advanced);
     juce::MemoryBlock result;p.getStateInformation(result);return result;
 }}
 bool readRevolutionScene(const juce::MemoryBlock& bytes,Scene& scene,juce::String& error) {{
@@ -201,11 +234,16 @@ std::unique_ptr<SceneUpdate> prepareRevolutionUpdate(const juce::MemoryBlock& by
 }}
 '''
         write(dest/plugin/"Factory.cpp",factory)
-        lines=[f'add_library(HpeqNative{name} STATIC',f'    "${{CMAKE_CURRENT_LIST_DIR}}/{plugin}/Factory.cpp"']
+        asset_namespace=f"Hamlo{name}Assets" if name in SIMPLE else ns+"HpeqAssets"
+        asset_glob="Assets/scratches/*.png Assets/hardware/*.png" if name in SIMPLE else "Assets/scratches/*.png Assets/hardware_pack/*.png Assets/tubes/*.png"
+        asset_patterns=" ".join(f'"${{CMAKE_SOURCE_DIR}}/Plugins/{plugin}/{pattern}"' for pattern in asset_glob.split())
+        lines=[f'file(GLOB_RECURSE HpeqNative{name}_PICTURES CONFIGURE_DEPENDS {asset_patterns})',
+            f'juce_add_binary_data(HpeqNative{name}_Assets NAMESPACE {asset_namespace} HEADER_NAME BinaryData.h SOURCES ${{HpeqNative{name}_PICTURES}})',
+            f'add_library(HpeqNative{name} STATIC',f'    "${{CMAKE_CURRENT_LIST_DIR}}/{plugin}/Factory.cpp"']
         lines += [f'    "${{CMAKE_CURRENT_LIST_DIR}}/{plugin}/{file}"' for file in selected]
-        lines += [")",f'target_include_directories(HpeqNative{name} PRIVATE "${{CMAKE_CURRENT_LIST_DIR}}/{plugin}/Source" "${{CMAKE_CURRENT_LIST_DIR}}/{plugin}" "${{CMAKE_SOURCE_DIR}}/Source" "${{JUCE_MODULES_DIR}}")',
+        lines += [")",f'target_include_directories(HpeqNative{name} PRIVATE "${{CMAKE_CURRENT_BINARY_DIR}}/juce_binarydata_HpeqNative{name}_Assets/JuceLibraryCode" "${{CMAKE_CURRENT_LIST_DIR}}/{plugin}/Source" "${{CMAKE_CURRENT_LIST_DIR}}/{plugin}" "${{CMAKE_SOURCE_DIR}}/Source" "${{JUCE_MODULES_DIR}}")',
             f'target_compile_definitions(HpeqNative{name} PRIVATE JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1 JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0 JUCE_VST3_CAN_REPLACE_VST2=0)',
-            f'target_link_libraries(HpeqNative{name} PRIVATE juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)',
+            f'target_link_libraries(HpeqNative{name} PUBLIC HpeqNative{name}_Assets PRIVATE juce::juce_recommended_config_flags juce::juce_recommended_warning_flags)',
             f'list(APPEND HPEQ_NATIVE_LIBRARIES HpeqNative{name})']
         cmake+=lines
         receipt[plugin]=dict(source_tree=tree,source_commit=identity["source_commit"],version=identity["version"],compiled_sources=selected,input_sha256=hashes)

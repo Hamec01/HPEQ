@@ -1,5 +1,10 @@
 # HamloRack source integration — 2026-11-22
 
+Historical checkpoint at `c0bd771`. The owner rejected generic replacement panels,
+visible legacy modules and manual default-reset upgrades. This receipt describes
+that earlier checkpoint only. The replacement integration and its current checks
+are in [CURRENT_INTEGRATION.md](CURRENT_INTEGRATION.md).
+
 Source is ready for the owner's VST build and DAW/listening checks. The rack now
 uses all ten pinned native module wrappers, with native parameter panels and an
 executable 250-recipe browser. This is a source/test receipt, not a claim that

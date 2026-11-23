@@ -464,13 +464,17 @@ public:
                 return y;
             };
             auto a = std::make_unique<FxPluginProcessor>();
-            a->setProject(p);
+            // The current product imports old modules into current wrappers;
+            // compare a native project with its restored native project.
+            auto nativeProject=p;useCurrentModules(nativeProject);a->setProject(nativeProject);
             juce::MemoryBlock state;
             a->getStateInformation(state);
             auto b = std::make_unique<FxPluginProcessor>();
             b->setStateInformation(state.getData(), static_cast<int>(state.getSize()));
             expectEquals(b->getProject().selectedLayer, 4);
-            expect(toValueTree(b->getProject()).isEquivalentTo(toValueTree(a->getProject())));
+            const auto savedXml=juce::AudioProcessor::getXmlFromBinary(state.getData(),static_cast<int>(state.getSize()));
+            const auto savedProject=juce::ValueTree::fromXml(*savedXml).getChildWithName("HpeqProject");
+            expect(toValueTree(b->getProject()).isEquivalentTo(savedProject));
             expect(compareAligned(render(*b), render(*a)).bitExact, "restored plugin renders differently");
             expectEquals(b->getLatencySamples(), a->getLatencySamples());
         }

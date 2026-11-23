@@ -17,8 +17,10 @@ public:
     std::uint64_t generation() const noexcept { return published; } // writer only
     bool empty() const noexcept { return entries.empty(); } // writer only
     void clear(); // suspended/quiescent, after every node releases its runtime
+    void reprepare(double sampleRate,int maximumBlockSize);
     double tailSeconds() const noexcept;
     Runtime* find(int layer,int node,int slot) const noexcept;
+    std::shared_ptr<Runtime> share(int layer,int node,int slot) const noexcept;
     Runtime* findRight(int layer,int node,int slot) const noexcept;
 
 private:
@@ -29,13 +31,14 @@ private:
         bool active=false;
         int channels=2;bool dual=false;
         juce::MemoryBlock structural;
-        std::unique_ptr<Runtime> runtime;
+        std::shared_ptr<Runtime> runtime;
         std::unique_ptr<Runtime> right;
         std::uint64_t seen=0,retired=0;
     };
     std::vector<std::unique_ptr<Entry>> entries;
     std::atomic<std::uint64_t> acknowledged {0};
     std::uint64_t published=0;
+    bool preservePendingAfterPrepare=false;
     void collect();
 };
 } // namespace hpeq::native

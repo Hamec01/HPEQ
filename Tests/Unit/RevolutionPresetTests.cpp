@@ -184,7 +184,13 @@ public:
                 std::array<int, rev::kEngines * 8> counts {};
                 for (const auto& m : modules)
                 {
-                    const auto pattern = rev::readPattern(m.parameters);
+                    auto pattern = rev::readPattern(m.parameters);
+                    if(m.engineRevision==native::kRevision)
+                    {
+                        native::Scene scene;juce::String error;
+                        expect(native::readRevolutionScene(m.nativeState,scene,error),error);
+                        for(size_t lane=0;lane<3;++lane)pattern.steps[lane]=scene.lanes[lane];
+                    }
                     for (int e = 0; e < rev::kEngines; ++e)
                     {
                         const juce::String key(names[e]);

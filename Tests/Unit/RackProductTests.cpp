@@ -19,8 +19,8 @@ public:
     RackProductTests():UnitTest("HamloRack product","HPEQ"){}
     void runTest() override
     {
-        beginTest("250 executable recipes preserve all native controls and exact state");
-        const auto& bank=rack::recipes();expectEquals(static_cast<int>(bank.size()),250);
+        beginTest("270 executable recipes preserve all native controls and exact state");
+        const auto& bank=rack::recipes();expectEquals(static_cast<int>(bank.size()),270);
         for(const auto& recipe:bank)
         {
             FxProjectState project;juce::String error;
@@ -178,7 +178,7 @@ public:
         auto editor=std::make_unique<FxPluginEditor>(*processor);editor->selectMix(0);
         expect(editor->getInspector().wantsLargeView());
         expect(processor->getUndoManager().undo());expect(processor->getProject().rackPresetId.isEmpty());
-        expect(processor->getUndoManager().redo());expect(processor->getProject().rackPresetId=="HR001");
+        expect(processor->getUndoManager().redo());expect(processor->getProject().rackPresetId==bank.front().id);
 
         beginTest("Fader Match captures real stereo and Dual Mono audio, applies once and supports undo");
         double stereoProposal=0;

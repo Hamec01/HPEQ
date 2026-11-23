@@ -116,6 +116,7 @@ void FxNodeProcessor::stopSlot(Slot& slot) noexcept
 void FxNodeProcessor::startSlot(Slot& slot, const FxSlotParams& sp) noexcept
 {
     slot.type = sp.type;
+    slot.nativeReturnDry.reset(sp.nativeValues.runtime?(sp.nativeValues.runtime->returnTarget()?1.:0.):(isSend(sp)?1.:0.));
     slot.gain.reset();
     slot.compressor.reset();
     slot.saturator.reset();
@@ -141,7 +142,7 @@ void FxNodeProcessor::startSlot(Slot& slot, const FxSlotParams& sp) noexcept
         if (slot.starved)
             return; // stays off; reported through slotStarved()
     }
-    if (isSend(sp.type))
+    if (isSend(sp))
     {
         // A send starts with silence in its memory: open the input, output weight at once.
         slot.mix.reset(sp.mix);
@@ -213,7 +214,7 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
 
         if (slot.running && slot.inChain && (slot.type != sp.type || slot.nativeRuntime!=sp.nativeValues.runtime||slot.nativeRight!=sp.nativeValues.rightRuntime))
             stopSlot(slot); // a different processor: never reuse its state
-        if ((slot.wanted || (slot.inChain && sp.engineRevision!=0 && !isSend(sp.type))) && !slot.running)
+        if ((slot.wanted || (slot.inChain && sp.engineRevision!=0 && !isSend(sp))) && !slot.running)
             startSlot(slot, sp);
         if (!slot.wanted)
             slot.starved = false;
@@ -221,7 +222,7 @@ void FxNodeProcessor::setTargets(const FxNodeParams& p) noexcept
             slot.params = sp;
         if (!slot.running)
             continue;
-        if (isSend(slot.type))
+        if (isSend(slot.params))
         {
             slot.mix.setTarget(sp.mix, mixSteps);
             slot.inGate.setTarget(slot.wanted ? 1.0 : 0.0, mixSteps);
@@ -281,7 +282,7 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
             nodeMix.next();
         }
         for (auto& slot : slots)
-            if (!slot.wanted || isSend(slot.type))
+            if (!slot.wanted || isSend(slot.params))
                 stopSlot(slot);
         if (!wanted && !gate.isRamping() && gate.value() == 0.0)
             running = false;
@@ -352,7 +353,7 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
                 if(slot.latency>0)for(int ch=0;ch<workChannels;++ch)std::copy(d[ch],d[ch]+numSamples,chainPtr[ch]);
                 continue;
             }
-            const bool send=isSend(slot.type);
+            bool send=isSend(slot.params);
             for(int i=0;i<numSamples;++i)
             {
                 const float input=send?static_cast<float>(slot.inGate.next()):1.f;
@@ -371,21 +372,27 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
                         else if(routing==3)workPtr[0][i]=r;
                         if(slot.params.nativeValues.faderSwap)std::swap(workPtr[0][i],workPtr[1][i]);
                     }
-                slot.nativeRuntime->process(workPtr,1,numSamples,slot.params.nativeValues,t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
+                send=slot.nativeRuntime->process(workPtr,1,numSamples,slot.params.nativeValues,t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
                 slot.nativeRight->process(workPtr+1,1,numSamples,slot.params.nativeValues,t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
             }
-            else slot.nativeRuntime->process(workPtr,workChannels,numSamples,slot.params.nativeValues,
+            else send=slot.nativeRuntime->process(workPtr,workChannels,numSamples,slot.params.nativeValues,
                 t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
+            // Mirror the native 20 ms bypass ramp in the extra dry reference.
+            // Otherwise a wet-only plug-in returning dry during bypass would
+            // briefly double it (or drop it when treated as an insert at once).
+            slot.nativeReturnDry.setTarget(send?1.:0.,mixSteps);
             float peak=0;
             for(int i=0;i<numSamples;++i)
             {
                 const float amount=static_cast<float>(slot.mix.next());
+                const float returnDry=static_cast<float>(slot.nativeReturnDry.next());
                 for(int ch=0;ch<workChannels;++ch)
                 {
                     const float processed=workPtr[ch][i];peak=std::max(peak,std::abs(processed));
                     const float drySample=d[ch][i];
-                    chainPtr[ch][i]=send?drySample+amount*processed
-                        :amount==1.f?processed:amount==0.f?drySample:drySample+amount*(processed-drySample);
+                    chainPtr[ch][i]=returnDry==1.f?drySample+amount*processed
+                        :returnDry==0.f?(amount==1.f?processed:amount==0.f?drySample:drySample+amount*(processed-drySample))
+                        :drySample+amount*(processed+(returnDry-1.f)*drySample);
                 }
             }
             const bool inputClosed=nodeClosed || (send&&!slot.inGate.isRamping()&&slot.inGate.value()==0);
@@ -408,7 +415,7 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
             continue;
         }
 
-        if (isSend(slot.type) && slot.running)
+        if (isSend(slot.params) && slot.running)
         {
             for (int i = 0; i < numSamples; ++i)
             {
@@ -452,7 +459,7 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
             slot.align.process(chainPtr, alignedPtr, workChannels, numSamples, slot.latency);
             dryAligned = alignedPtr;
         }
-        if (!slot.running || isSend(slot.type))
+        if (!slot.running || isSend(slot.params))
         {
             if (delayed)
                 for (int ch = 0; ch < workChannels; ++ch)

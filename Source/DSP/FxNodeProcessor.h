@@ -127,6 +127,7 @@ private:
         std::int64_t closedSamples = 0;
         int latency = 0;
         native::Runtime* nativeRuntime=nullptr;
+        LinearRamp nativeReturnDry;
         native::Runtime* nativeRight=nullptr;
         AlignmentDelay align;
         GainProcessor gain;
@@ -139,6 +140,7 @@ private:
     };
 
     static bool isSend(FxType t) noexcept { return t == FxType::Reverb || t == FxType::Delay; }
+    static bool isSend(const FxSlotParams& p) noexcept { return p.engineRevision!=0?p.nativeValues.additiveSend:isSend(p.type); }
     static bool isPooled(FxType t) noexcept { return isSend(t) || t == FxType::MonstaFx; }
     void startSlot(Slot&, const FxSlotParams&) noexcept;
     void stopSlot(Slot&) noexcept;

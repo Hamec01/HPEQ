@@ -17,6 +17,12 @@ Runtime* Registry::findRight(int layer,int node,int slot) const noexcept
     for(const auto& e:entries)if(e->key==key&&e->retired==0&&e->seen==published)return e->right.get();
     return nullptr;
 }
+std::shared_ptr<Runtime> Registry::share(int layer,int node,int slot) const noexcept
+{
+    const int key=(layer*9+node)*6+slot;
+    for(const auto& e:entries)if(e->key==key&&e->retired==0&&e->seen==published)return e->runtime;
+    return {};
+}
 void Registry::collect()
 {
     const auto safe=acknowledged.load(std::memory_order_acquire);
@@ -28,6 +34,16 @@ void Registry::clear()
 {
     for(const auto& e:entries){jassert(e->runtime->inUse()==0);jassert(!e->right||e->right->inUse()==0);}
     entries.clear();published=0;acknowledged.store(0,std::memory_order_relaxed);
+}
+void Registry::reprepare(double rate,int maximumBlock)
+{
+    collect();
+    for(auto& e:entries)
+    {
+        e->runtime->reprepare(rate,maximumBlock,e->channels);
+        if(e->right)e->right->reprepare(rate,maximumBlock,1);
+    }
+    preservePendingAfterPrepare=true;
 }
 
 double Registry::tailSeconds() const noexcept
@@ -94,7 +110,7 @@ bool Registry::stage(const FxProjectState& project,std::array<dsp::LayerSnapshot
             auto fresh=std::make_unique<Entry>();fresh->key=request.key;fresh->type=state.type;
             fresh->active=request.active;fresh->structural=state.nativeState;
             fresh->channels=request.channels;fresh->dual=request.dual;
-            fresh->runtime=std::make_unique<Runtime>(state.type,state.nativeState,state.parameters,rate,maximumBlock,error,request.channels);
+            fresh->runtime=std::make_shared<Runtime>(state.type,state.nativeState,state.parameters,rate,maximumBlock,error,request.channels);
             if(!fresh->runtime->valid())return false;
             if(request.dual)
             {
@@ -117,6 +133,12 @@ bool Registry::stage(const FxProjectState& project,std::array<dsp::LayerSnapshot
     for(auto& e:created)entries.push_back(std::move(e));
     for(auto& e:entries)if(e->seen!=next && e->retired==0)e->retired=next;
     for(auto& image:images)image.nativeGeneration=next;
+    for(size_t i=0;i<chosen.size();++i)
+    {
+        chosen[i]->runtime->synchronizeEditor(*requests[i].image,preservePendingAfterPrepare);
+        if(chosen[i]->right)chosen[i]->right->synchronizeEditor(*requests[i].image,preservePendingAfterPrepare);
+    }
+    preservePendingAfterPrepare=false;
     // Preparation above can fail without editing a running processor. Applying
     // an already decoded scene uses only the native control-thread scene API;
     // its atomic scene slots are read by audio without a lock or a DSP reset.

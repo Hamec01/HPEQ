@@ -65,12 +65,13 @@ void ProjectEngine::prepare(double newSampleRate, int maxBlockSize,int channels)
     if(rebuildNative)
     {
         // Host has suspended audio for prepare. Drain every old raw pointer
-        // before destroying/reallocating native delay memory at the new rate.
+        // before reallocating native delay memory at the new rate. The native
+        // processor/editor/workbench objects themselves remain alive.
         for(auto& layer:layers)
         {
             layer.engine->publish(LayerSnapshot{});layer.engine->update();layer.engine->reset();
         }
-        nativeRegistry->clear();
+        nativeRegistry->reprepare(newSampleRate,maxBlockSize);
     }
     sampleRate = newSampleRate;
     streamChannels=juce::jlimit(1,2,channels);
@@ -133,7 +134,7 @@ bool ProjectEngine::publish(const FxProjectState& project) noexcept
         auto images=std::make_unique<std::array<LayerSnapshot,kNumLayers>>();
         for(size_t j=0;j<layers.size();++j)(*images)[j]=makeSnapshot(saved.layers[j],sampleRate);
         juce::String error;
-        if(!nativeRegistry->stage(saved,*images,sampleRate,std::max(1,maxBlock),error,streamChannels))
+        if(!nativeRegistry->stage(saved,*images,sampleRate,maxBlock,error,streamChannels))
         {lastError=error;return false;}
         for(size_t j=0;j<layers.size();++j)layers[j].engine->publish((*images)[j]);
         auto controls=makeProjectSnapshot(project);controls.nativeGeneration=nativeRegistry->generation();

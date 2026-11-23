@@ -20,7 +20,8 @@ if not exist "build\CMakeCache.txt" (
 
 echo.
 echo Building HamloRack (Release)...
-cmake --build --preset release --parallel --target HPEQ_VST3
+rem Ten complete embedded editors compile together: keep MSBuild and /MP bounded.
+cmake --build --preset release --parallel 4 --target HPEQ_VST3 -- /p:CL_MPCount=2
 if errorlevel 1 goto :fail
 
 set "HPEQ_VST=%~dp0build\HPEQ_artefacts\Release\VST3\HamloRack.vst3"

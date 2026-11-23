@@ -67,6 +67,7 @@ public:
     double nativeTailSeconds() const noexcept { return nativeRegistry->tailSeconds(); }
     double liveNativeTailSeconds() const noexcept { return liveNativeTail.load(std::memory_order_relaxed); }
     native::Runtime* nativeRuntime(int layer,int node,int slot) const noexcept {return nativeRegistry->find(layer,node,slot);}
+    std::shared_ptr<native::Runtime> shareNativeRuntime(int layer,int node,int slot) const noexcept {return nativeRegistry->share(layer,node,slot);}
     native::Runtime* nativeRightRuntime(int layer,int node,int slot) const noexcept {return nativeRegistry->findRight(layer,node,slot);}
 
     void process(float* const* channels, int numChannels, int numSamples, const Transport& = {}) noexcept;

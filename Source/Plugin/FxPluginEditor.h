@@ -8,6 +8,7 @@
 #include "UI/ModuleTile.h"
 #include "UI/TubeButton.h"
 #include "UI/SteelLookAndFeel.h"
+#include "UI/RackPresetBar.h"
 
 namespace hpeq
 {
@@ -79,8 +80,9 @@ private:
     juce::TextButton loudnessReset { "Reset" };
     juce::TextButton abA { "A" }, abB { "B" }, copyAB { "A>B" }, undo { "Undo" }, redo { "Redo" };
     juce::TextButton waveOverlay { "Overlay" }, waveDelta { "Delta" }, freeze { "Freeze" };
-    juce::TextButton presetButton { "Presets" }; // presets pass: factory / user presets of the whole plug-in
+    ui::RackPresetBar presetButton;
     void showPresetMenu();
+    void stepPreset(int direction);
     void savePresetAs();
     std::unique_ptr<juce::AlertWindow> saveDialog;
     juce::TextButton tabSpectrum { "Spectrum" }, tabDifference { "Difference" };

@@ -177,7 +177,8 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     waveDelta.onClick = [this] { waveform->setMode(WaveformPanel::Mode::Delta); updateHeader(); };
     freeze.onClick = [this] { analysis->frozen = !analysis->frozen; updateHeader(); };
     presetButton.setTooltip("Presets of the whole HPEQ: the factory library and your own (save, load)");
-    presetButton.onClick = [this] { showPresetMenu(); };
+    presetButton.onChoose = [this] { showPresetMenu(); };
+    presetButton.onStep = [this](int direction) { stepPreset(direction); };
     addAndMakeVisible(presetButton);
     tabSpectrum.onClick = [this] { workspace->mode = SpectrumWorkspace::Mode::Spectrum; updateHeader(); };
     tabDifference.onClick = [this] { workspace->mode = SpectrumWorkspace::Mode::Difference; updateHeader(); };
@@ -286,10 +287,44 @@ void FxPluginEditor::updateHeader()
     outputGain.setTooltip(project.masterRoute?"Master route: gain and colour feed the final limiter in layer 10.":"Output gain after the layers.");
     for(const auto& recipe:rack::recipes())if(recipe.id==project.rackPresetId)
         presetButton.setTooltip(recipe.intent+"\n"+recipe.rejection+"\nReference tempo: "+juce::String(recipe.bpm,0)+" BPM. Host tempo takes priority.");
-    presetButton.setButtonText(presetName.isEmpty() ? juce::String("Presets") : presetName);
+    juce::String group="HAMLO RACK";int currentIndex=0,count=0;
+    for(const auto& selected:rack::recipes())if(selected.id==project.rackPresetId)
+    {
+        group=selected.bank+" / "+selected.category;
+        for(const auto& recipe:rack::recipes())if(recipe.bank==selected.bank)
+        {if(recipe.id==selected.id)currentIndex=count;++count;}
+        break;
+    }
+    presetButton.setCurrent(presetName,group,currentIndex,count);
     undo.setEnabled(processor.getUndoManager().canUndo());
     redo.setEnabled(processor.getUndoManager().canRedo());
     repaint();
+}
+
+void FxPluginEditor::stepPreset(int direction)
+{
+    const auto userFiles=presets::listFiles(presets::userPresetFolder(),"*.hpeq");
+    for(int i=0;i<userFiles.size();++i)if(userFiles[i].getFileNameWithoutExtension()==processor.getPresetName())
+    {
+        const int next=(i+(direction<0?-1:1)+userFiles.size())%userFiles.size();
+        juce::MemoryBlock data;
+        if(userFiles[next].loadFileAsData(data)&&processor.loadPreset(data.getData(),static_cast<int>(data.getSize()),userFiles[next].getFileNameWithoutExtension()))
+        {updateHeader();selectionChanged();}
+        return;
+    }
+    const auto& bank=rack::recipes();const auto id=processor.getProject().rackPresetId;
+    std::vector<int> filtered;int position=-1;
+    for(const auto& selected:bank)if(selected.id==id)
+    {
+        for(size_t i=0;i<bank.size();++i)if(bank[i].bank==selected.bank)
+        {if(bank[i].id==id)position=static_cast<int>(filtered.size());filtered.push_back(static_cast<int>(i));}
+        break;
+    }
+    if(filtered.empty())for(size_t i=0;i<bank.size();++i)filtered.push_back(static_cast<int>(i));
+    if(filtered.empty())return;
+    const int count=static_cast<int>(filtered.size());
+    const int next=position<0?(direction<0?count-1:0):(position+(direction<0?-1:1)+count)%count;
+    if(processor.loadRackPreset(filtered[static_cast<size_t>(next)])){updateHeader();selectionChanged();}
 }
 
 void FxPluginEditor::showPresetMenu()
@@ -298,7 +333,8 @@ void FxPluginEditor::showPresetMenu()
     menu.addItem(1, "Init (empty project)");
     juce::PopupMenu rackMenu;
     const auto& recipes=rack::recipes();
-    for(const auto& bank:juce::StringArray{"Boom Bap","Trap","Techno","Drum and Bass","Studio"})
+    juce::StringArray banks;for(const auto& r:recipes)banks.addIfNotAlreadyThere(r.bank);
+    for(const auto& bank:banks)
     {
         juce::PopupMenu categories;
         juce::StringArray names;
@@ -312,42 +348,11 @@ void FxPluginEditor::showPresetMenu()
         }
         rackMenu.addSubMenu(bank,categories);
     }
-    menu.addSubMenu("HamloRack / 250",rackMenu);
+    menu.addSubMenu("Rack presets",rackMenu);
     menu.addSeparator();
 
-    // Factory: pack > category [> group] > preset; item ids 1000 + index in the library.
-    const auto& factory = presets::factoryPresets();
-    juce::PopupMenu factoryMenu, packMenu, categoryMenu, groupMenu;
-    juce::String pack, category, group;
-    const auto closeGroup = [&] { if (group.isNotEmpty()) categoryMenu.addSubMenu(group, groupMenu); groupMenu = {}; group = {}; };
-    const auto closeCategory = [&] { closeGroup(); if (category.isNotEmpty()) packMenu.addSubMenu(category, categoryMenu); categoryMenu = {}; };
-    const auto closePack = [&] { closeCategory(); if (pack.isNotEmpty()) factoryMenu.addSubMenu(pack, packMenu); packMenu = {}; };
-    const auto current = processor.getPresetName();
-    for (size_t i = 0; i < factory.size(); ++i)
-    {
-        const auto& p = factory[i];
-        if (p.pack != pack)
-        {
-            closePack();
-            pack = p.pack;
-            category = {};
-        }
-        if (p.category != category)
-        {
-            closeCategory();
-            category = p.category;
-        }
-        if (p.group != group)
-        {
-            closeGroup();
-            group = p.group;
-        }
-        (group.isEmpty() ? categoryMenu : groupMenu).addItem(1000 + static_cast<int>(i), p.name, true, p.name == current);
-    }
-    closePack();
-    menu.addSubMenu("Factory", factoryMenu, !factory.empty());
-
     // User: item ids 5000 + index.
+    const auto current=processor.getPresetName();
     const auto userFiles = presets::listFiles(presets::userPresetFolder(), "*.hpeq");
     juce::PopupMenu userMenu;
     for (int i = 0; i < userFiles.size(); ++i)
@@ -360,7 +365,7 @@ void FxPluginEditor::showPresetMenu()
     menu.addItem(4, "Open preset folder");
 
     juce::Component::SafePointer<FxPluginEditor> safe(this);
-    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(presetButton), [safe, userFiles](int result)
+    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(&presetButton.menuTarget()), [safe, userFiles](int result)
     {
         if (safe == nullptr || result == 0)
             return;
@@ -588,11 +593,11 @@ void FxPluginEditor::resized()
     for (int i = 0; i < 10; ++i)
         layerButtons[static_cast<size_t>(i)].setBounds(layers.getX() + (i % 5) * 52, layers.getY() + (i / 5) * rowHeight, 48, rowHeight - 4);
     strip.removeFromRight(8);
-    auto waveButtons = strip.removeFromTop(24);
-    freeze.setBounds(waveButtons.removeFromRight(70).reduced(2, 0));
-    waveDelta.setBounds(waveButtons.removeFromRight(70).reduced(2, 0));
-    waveOverlay.setBounds(waveButtons.removeFromRight(70).reduced(2, 0));
-    presetButton.setBounds(waveButtons.removeFromRight(190).reduced(2, 0));
+    auto waveButtons = strip.removeFromTop(44);
+    freeze.setBounds(waveButtons.removeFromRight(60).reduced(2, 0).withSizeKeepingCentre(56,24));
+    waveDelta.setBounds(waveButtons.removeFromRight(60).reduced(2, 0).withSizeKeepingCentre(56,24));
+    waveOverlay.setBounds(waveButtons.removeFromRight(60).reduced(2, 0).withSizeKeepingCentre(56,24));
+    presetButton.setBounds(waveButtons.removeFromRight(juce::jmin(340,waveButtons.getWidth())).reduced(2, 0));
     waveform->setBounds(strip.withTrimmedTop(2));
     area.removeFromTop(8);
     const int layersX = layers.getX();

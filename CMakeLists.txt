@@ -42,6 +42,7 @@ include(cmake/HamloNative.cmake)
 
 # --- Plugin -----------------------------------------------------------------------------------
 juce_add_plugin(HPEQ
+    VERSION 0.2.0
     COMPANY_NAME "HamloProd"
     BUNDLE_ID com.hamloprod.hpeq
     IS_SYNTH FALSE
@@ -102,6 +103,8 @@ target_sources(HPEQ
         Source/Plugin/Presets.cpp
         Source/UI/AnalysisModel.cpp
         Source/UI/NodeInspector.cpp
+        Source/UI/EmbeddedPluginPanel.cpp
+        Source/UI/RackPresetBar.cpp
         Source/UI/LayerControls.cpp
         Source/UI/HamloCompPanel.cpp
         Source/UI/BlackSteel.cpp
@@ -146,7 +149,8 @@ juce_add_binary_data(HPEQ_Assets NAMESPACE HpeqAssets
                      SOURCES ${HPEQ_SCRATCH_PICTURES} ${HPEQ_HARDWARE_PICTURES} ${HPEQ_TUBE_PICTURES}
                              ${HPEQ_FACTORY_PRESETS} ${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt
                              Assets/Presets/HamloRack/Design/recipes.json
-                             Assets/Presets/HamloRack/calibration.json)
+                             Assets/Presets/HamloRack/calibration.json
+                             Assets/Presets/HamloRack/power.json)
 
 target_link_libraries(HPEQ
     PUBLIC
@@ -313,6 +317,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/HarnessTests.cpp
     Tests/Unit/RackNativeTests.cpp
     Tests/Unit/RackProductTests.cpp
+    Tests/Unit/EmbeddedPluginTests.cpp
     Tests/Unit/PluginContractTests.cpp
     Tests/Unit/StateTests.cpp
     Tests/Unit/DspTests.cpp

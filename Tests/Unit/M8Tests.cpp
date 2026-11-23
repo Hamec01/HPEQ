@@ -231,7 +231,7 @@ public:
             }
         }
 
-        beginTest("Preset compatibility: the committed v1 state (M8) loads, re-saves identically and renders; a minimal old-style v1 tree loads with defaults");
+        beginTest("Preset compatibility: committed v1 state imports current modules and reopens; old-style trees retain model defaults");
         {
             const auto fixture = juce::File(HPEQ_TEST_FIXTURES_DIR).getChildFile("state_v1_d6.xml"); // canonical: written by the current build (D6 adds engine slots, point modules)
             expect(fixture.existsAsFile(), fixture.getFullPathName());
@@ -246,7 +246,18 @@ public:
                 juce::MemoryBlock back;
                 plugin->getStateInformation(back);
                 const auto again = juce::AudioProcessor::getXmlFromBinary(back.getData(), static_cast<int>(back.getSize()));
-                expect(again != nullptr && again->isEquivalentTo(xml.get(), false), "re-saved state differs from the committed v1 fixture");
+                // The owner now requires current wrappers on import, not a
+                // separate old engine. Keep the committed v1 fixture intact
+                // and verify the explicit migration and new saved state.
+                auto expected=fromValueTree(juce::ValueTree::fromXml(*xml).getChildWithName("HpeqProject"));
+                expect(expected.has_value());
+                if(expected){useCurrentModules(*expected);expect(toValueTree(*expected).isEquivalentTo(toValueTree(plugin->getProject())));}
+                expect(again!=nullptr);
+                if(again)
+                {
+                    auto reopened=std::make_unique<FxPluginProcessor>();reopened->setStateInformation(back.getData(),static_cast<int>(back.getSize()));
+                    expect(toValueTree(reopened->getProject()).isEquivalentTo(juce::ValueTree::fromXml(*again).getChildWithName("HpeqProject")));
+                }
                 plugin->setRateAndBufferSizeDetails(48000.0, 512);
                 plugin->prepareToPlay(48000.0, 512);
                 auto audio = makeSyntheticDrums({ 48000.0, 2, 0.5, kFixtureSeed });

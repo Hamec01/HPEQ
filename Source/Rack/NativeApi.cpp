@@ -20,7 +20,7 @@ void Handle::bind(juce::AudioProcessorValueTreeState& state)
     if (bindings.empty() || bindings.size()>kMaxParameters) throw std::runtime_error("Native parameter capacity exceeded");
 }
 
-Handle create(FxType type)
+Handle create(FxType type,bool realtime)
 {
     switch(type)
     {
@@ -33,7 +33,7 @@ Handle create(FxType type)
         case FxType::StereoProcessor:return createShirota();
         case FxType::Limiter:return createRedWall();
         case FxType::Gain:return createFader();
-        case FxType::MonstaFx:return createRevolution();
+        case FxType::MonstaFx:return createRevolution(realtime);
     }
     throw std::runtime_error("Unsupported native module");
 }
@@ -145,14 +145,12 @@ bool describe(FxType type,const juce::NamedValueSet& params,double rate,Values& 
         for(size_t i=0;i<specs.size();++i)if(specs[i].id==name)return values.physical[i];
         return fallback;
     };
-    if(actual("bypass")!=0 || actual("mix",1)!=1)
-    {error="Native bypass/MIX is owned by the rack slot";return false;}
-    if(type==FxType::Reverb && (actual("routing")!=1||actual("keepDry")!=0||actual("engine")<1))
-    {error="Native Verb requires a wet-only send";return false;}
-    if(type==FxType::Delay && (actual("echoMode")!=1||actual("scoreRouting")!=1||actual("scoreMix")!=1))
-    {error="Native Echo requires a Score wet-only send";return false;}
-    if((type==FxType::StereoProcessor&&actual("v2Mix",1)!=1) || (type==FxType::GateExpander&&actual("v2_mix",1)!=1))
-    {error="Native spatial/gate MIX is owned by the rack slot";return false;}
+    // Original plug-in controls stay functional, including MIX, BYPASS and
+    // insert/send routing. Only an explicitly wet-only native output is added
+    // to a dry reference; a complete native insert is crossfaded by rack MIX.
+    values.additiveSend=actual("bypass")==0 &&
+        ((type==FxType::Reverb&&actual("engine")>=1&&actual("routing")==1)
+        ||(type==FxType::Delay&&actual("echoMode")==1&&actual("scoreRouting")==1));
     if(type==FxType::Gain){values.faderRouting=static_cast<int>(actual("routing"));values.faderSwap=actual("swap")!=0;}
     // Match the public JUCE path before binding raw APVTS atoms: setValue()
     // denormalises once, then ParameterAdapter reads getValue() and denormalises
@@ -169,10 +167,18 @@ bool describe(FxType type,const juce::NamedValueSet& params,double rate,Values& 
     return true;
 }
 
-bool loadProgram(FxType type,int index,juce::NamedValueSet& params,juce::MemoryBlock& structural,juce::String& error,float* rackMix)
+bool loadProgram(FxType type,int index,juce::NamedValueSet& params,juce::MemoryBlock& structural,juce::String& error,float* rackMix,bool completePlugin)
 {
     auto h=create(type);
     if(index<0||index>=h.processor->getNumPrograms()){error="Unknown native program";return false;}
+    if(completePlugin)
+    {
+        h.processor->setCurrentProgram(index);params.clear();
+        for(const auto& b:h.bindings)params.set(b.parameter->paramID,static_cast<double>(b.raw->load()));
+        if(rackMix)*rackMix=1.f;
+        h.processor->getStateInformation(structural);Values checked;
+        return describe(type,params,48000,checked,error);
+    }
     if(index==0)
     {
         params=defaultParameters(type);structural.reset();if(rackMix)*rackMix=1.f;
@@ -232,10 +238,16 @@ bool validStructuralState(FxType kind,const juce::MemoryBlock& state,juce::Strin
 
 Runtime::Runtime(FxType kind,const juce::MemoryBlock& structuralState,const juce::NamedValueSet& params,
                  double sampleRate,int maximumBlockSize,juce::String& error,int channels,bool right)
-    :handle(create(kind)),type(kind),maxBlock(std::max(1,maximumBlockSize)),rate(sampleRate)
+    :handle(create(kind,true)),type(kind),maxBlock(std::max(1,maximumBlockSize)),rate(sampleRate)
 {
     rightChannel=right&&kind==FxType::Gain;
     const auto indexOf=[&](const char* id) {for(size_t i=0;i<handle.bindings.size();++i)if(handle.bindings[i].parameter->paramID==id)return static_cast<int>(i);return -1;};
+    if(kind==FxType::Reverb||kind==FxType::Delay)
+    {
+        returnEngineIndex=indexOf(kind==FxType::Reverb?"engine":"echoMode");
+        returnRoutingIndex=indexOf(kind==FxType::Reverb?"routing":"scoreRouting");
+        returnBypassIndex=indexOf("bypass");
+    }
     for(int i=0;i<static_cast<int>(handle.bindings.size());++i)sourceIndex[static_cast<size_t>(i)]=i;
     if(rightChannel)
     {
@@ -265,25 +277,46 @@ Runtime::Runtime(FxType kind,const juce::MemoryBlock& structuralState,const juce
     }
     handle.processor->setPlayHead(&playHead);
     handle.processor->setPlayConfigDetails(channels,channels,rate,maxBlock);
-    handle.processor->prepareToPlay(rate,maxBlock);
-    reportedLatency=handle.processor->getLatencySamples();
+    if(maximumBlockSize>0){handle.processor->prepareToPlay(rate,maxBlock);prepared=true;}
+    reportedLatency=prepared?handle.processor->getLatencySamples():values.latency;
     if(reportedLatency!=values.latency){error="Native fixed-latency contract mismatch";return;}
     reportedTail.store(handle.processor->getTailLengthSeconds(),std::memory_order_relaxed);
     ready=true;
 }
 
 Runtime::~Runtime(){handle.processor->setPlayHead(nullptr);handle.processor->releaseResources();}
+void Runtime::reprepare(double sampleRate,int maximumBlockSize,int channels)
+{
+    jassert(inUse()==0);
+    // The native processor owns editor/workbench state too. Keep that object
+    // across host prepare calls, exactly as a standalone plug-in host does.
+    if(prepared)handle.processor->releaseResources();rate=sampleRate;maxBlock=std::max(1,maximumBlockSize);
+    handle.processor->setPlayConfigDetails(channels,channels,rate,maxBlock);
+    handle.processor->prepareToPlay(rate,maxBlock);
+    prepared=true;
+    reportedLatency=handle.processor->getLatencySamples();
+    if(reportedLatency!=fixedLatency(type,rate))throw std::runtime_error("Native reprepare latency mismatch");
+    reportedTail.store(handle.processor->getTailLengthSeconds(),std::memory_order_relaxed);
+}
 double Runtime::tailSeconds() const noexcept{return reportedTail.load(std::memory_order_relaxed);}
 
-void Runtime::process(float* const* channels,int count,int samples,const Values& values,
+bool Runtime::process(float* const* channels,int count,int samples,const Values& values,
                       double bpm,bool playing,bool hasPosition,double ppq) noexcept
 {
-    jassert(ready && values.count==static_cast<int>(handle.bindings.size()));
+    jassert(ready && prepared && values.count==static_cast<int>(handle.bindings.size()));
     double inputEnergy=0,outputEnergy=0;float reduction=0;
     for(int ch=0;ch<count;++ch)for(int i=0;i<samples;++i)inputEnergy+=static_cast<double>(channels[ch][i])*channels[ch][i];
     for(int i=0;i<values.count;++i)
     {
-        float value=values.physical[static_cast<size_t>(sourceIndex[static_cast<size_t>(i)])];
+        const auto source=static_cast<size_t>(sourceIndex[static_cast<size_t>(i)]);
+        float value=values.physical[source];
+        auto serial=editorSerial[source].load(std::memory_order_acquire);
+        if(serial!=0)
+        {
+            const auto edited=editorValues[source].load(std::memory_order_relaxed);
+            if(value==edited)editorSerial[source].compare_exchange_strong(serial,0,std::memory_order_acq_rel);
+            value=edited;
+        }
         if(rightChannel&&i==phaseIndex&&rightPhaseIndex>=0)
         {
             const double phase=static_cast<double>(value)+values.physical[static_cast<size_t>(rightPhaseIndex)];
@@ -310,11 +343,50 @@ void Runtime::process(float* const* channels,int count,int samples,const Values&
     reductionMeter.store(reduction,std::memory_order_relaxed);
     if(type==FxType::Reverb||type==FxType::Delay)
         reportedTail.store(handle.processor->getTailLengthSeconds(),std::memory_order_relaxed);
+    return returnTarget();
+}
+bool Runtime::returnTarget() const noexcept
+{
+    const auto raw=[&](int index){return index>=0?handle.bindings[static_cast<size_t>(index)].raw->load(std::memory_order_relaxed):0.f;};
+    return returnEngineIndex>=0&&raw(returnEngineIndex)>=1&&raw(returnRoutingIndex)==1&&raw(returnBypassIndex)<.5f;
 }
 
 juce::MemoryBlock Runtime::state()
 {
     jassert(inUse()==0);
     juce::MemoryBlock block;if(inUse()==0)handle.processor->getStateInformation(block);return block;
+}
+void Runtime::requestEditorValue(int index,float physical) noexcept
+{
+    if(index<0||index>=static_cast<int>(handle.bindings.size()))return;
+    const auto& range=handle.bindings[static_cast<size_t>(index)].parameter->getNormalisableRange();
+    for(int pass=0;pass<2;++pass)physical=range.snapToLegalValue(range.convertFrom0to1(range.convertTo0to1(range.snapToLegalValue(physical))));
+    editorValues[static_cast<size_t>(index)].store(physical,std::memory_order_relaxed);
+    editorSerial[static_cast<size_t>(index)].store(nextEditorSerial.fetch_add(1,std::memory_order_relaxed),std::memory_order_release);
+}
+void Runtime::applyPendingEditorValues(juce::NamedValueSet& values) const
+{
+    for(size_t i=0;i<handle.bindings.size();++i)if(editorSerial[i].load(std::memory_order_acquire)!=0)
+        values.set(handle.bindings[i].parameter->paramID,static_cast<double>(editorValues[i].load(std::memory_order_relaxed)));
+}
+juce::MemoryBlock Runtime::captureEditorState()
+{
+    juce::MemoryBlock bytes;handle.processor->getStateInformation(bytes);return bytes;
+}
+void Runtime::synchronizeEditor(const Values& values,bool preservePending)
+{
+    editorSynchronizing.store(true,std::memory_order_release);
+    for(int i=0;i<values.count;++i)
+    {
+        auto& b=handle.bindings[static_cast<size_t>(i)];
+        const auto value=values.physical[static_cast<size_t>(i)];
+        auto serial=editorSerial[static_cast<size_t>(i)].load(std::memory_order_acquire);
+        if(preservePending&&serial!=0)continue;
+        if(serial!=0&&editorValues[static_cast<size_t>(i)].load(std::memory_order_relaxed)!=value)
+            editorSerial[static_cast<size_t>(i)].compare_exchange_strong(serial,0,std::memory_order_acq_rel);
+        if(b.raw->load(std::memory_order_relaxed)!=value)
+            b.parameter->setValueNotifyingHost(b.parameter->convertTo0to1(value));
+    }
+    editorSynchronizing.store(false,std::memory_order_release);
 }
 } // namespace hpeq::native

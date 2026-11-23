@@ -2,6 +2,7 @@
 #include "Plugin/Presets.h"
 
 #include "UI/ModuleTile.h"
+#include "UI/EmbeddedPluginPanel.h"
 
 namespace hpeq::ui
 {
@@ -616,7 +617,6 @@ void NodeInspector::showModulePresets(int k, juce::Component& target)
     }
     else for (size_t i = 0; i < factory.size(); ++i)
         menu.addItem(1000 + static_cast<int>(i), factory[i].name);
-    if(!nativeModule)menu.addItem(5,"Upgrade to native module");
     const auto userFiles = presets::listFiles(presets::userModuleFolder(type), "*.hpeqmod");
     menu.addSectionHeader("User");
     for (int i = 0; i < userFiles.size(); ++i)
@@ -637,12 +637,12 @@ void NodeInspector::showModulePresets(int k, juce::Component& target)
         if(result>=10000)
         {
             module=makeNativeModule(type);juce::String error;
-            if(!native::loadProgram(type,result-10000,module->parameters,module->nativeState,error,&module->mix))return;
+            if(!native::loadProgram(type,result-10000,module->parameters,module->nativeState,error,&module->mix,true))return;
             for(const auto& program:native::programs(type))if(program.index==result-10000)name=program.name;
         }
-        else if (result == 1||result==5)
+        else if (result == 1)
         {
-            module = nativeModule||result==5?makeNativeModule(type):defaultModule(type);
+            module = makeNativeModule(type);
             name = "Default";
         }
         else if (result == 3)
@@ -667,6 +667,7 @@ void NodeInspector::showModulePresets(int k, juce::Component& target)
         }
         if (!module.has_value())
             return;
+        *module=useCurrentModule(std::move(*module));
         safe->processor.getUndoManager().beginNewTransaction(fxFullName(type) + " preset " + name);
         safe->editChain(fxFullName(type) + " preset " + name, [k, type, &module](std::vector<FxSlotState>& c)
         {
@@ -685,7 +686,9 @@ void NodeInspector::saveModulePresetAs(int k)
     const auto* chain = selectedChain(project);
     if (chain == nullptr || k >= static_cast<int>(chain->size()))
         return;
-    const auto module = (*chain)[static_cast<size_t>(k)];
+    auto module = (*chain)[static_cast<size_t>(k)];
+    if(auto runtime=processor.nativeEditorRuntime(project.selectedLayer,selection.kind==Selection::Kind::Mix?8:selectedEngineSlot(project),k))
+    {runtime->applyPendingEditorValues(module.parameters);module.nativeState=runtime->captureEditorState();}
     saveDialog = std::make_unique<juce::AlertWindow>("Save " + fxFullName(module.type) + " preset", "Name of the preset:", juce::MessageBoxIconType::NoIcon, this);
     saveDialog->addTextEditor("name", "My " + fxFullName(module.type));
     saveDialog->addButton("Save", 1, juce::KeyPress(juce::KeyPress::returnKey));
@@ -925,7 +928,7 @@ juce::String NodeInspector::structureSignature(const FxProjectState& p) const
 void NodeInspector::buildNativePage(int k,FxType type)
 {
     largePage=true;
-    auto* panel=new NativeModulePanel(type);controls.add(panel);addAndMakeVisible(panel);
+    auto* panel=new EmbeddedPluginPanel();controls.add(panel);addAndMakeVisible(panel);
     panel->getProperties().set("section",4);
     panel->readSlot=[this,k] {
         const auto p=processor.getProject();
@@ -933,24 +936,20 @@ void NodeInspector::buildNativePage(int k,FxType type)
         return FxSlotState{};
     };
     panel->onGesture=[this]{processor.getUndoManager().beginNewTransaction("Native module");};
-    panel->readError=[this]{return processor.getProjectError();};
     panel->onChange=[this,k,type](const FxSlotState& slot) {
         editChain("Native module",[&](std::vector<FxSlotState>& c) {
             if(k<static_cast<int>(c.size())&&c[static_cast<size_t>(k)].type==type)c[static_cast<size_t>(k)]=slot;
         });
     };
-    panel->readMeters=[this,k] {
-        const auto p=processor.getProject();const int node=selection.kind==Selection::Kind::Mix?8:selectedEngineSlot(p);
-        return processor.nativeMeters(p.selectedLayer,node,k);
+    panel->readRuntime=[this,k] {
+        const auto p=processor.getProject();
+        return processor.nativeEditorRuntime(p.selectedLayer,selection.kind==Selection::Kind::Mix?8:selectedEngineSlot(p),k);
     };
-    if(type==FxType::Gain)
-    {
-        const auto coordinates=[this] {
-            const auto p=processor.getProject();return std::pair<int,int>{p.selectedLayer,selection.kind==Selection::Kind::Mix?8:selectedEngineSlot(p)};
-        };
-        panel->readFader=[this,k,coordinates] {const auto [layer,node]=coordinates();return processor.nativeFaderView(layer,node,k);};
-        panel->faderAction=[this,k,coordinates](int action){const auto [layer,node]=coordinates();return processor.nativeFaderAction(layer,node,k,action);};
-    }
+    if(type==FxType::Gain)panel->onFaderAction=[this,k](int action) {
+        const auto p=processor.getProject();
+        return processor.nativeFaderAction(p.selectedLayer,selection.kind==Selection::Kind::Mix?8:selectedEngineSlot(p),k,action);
+    };
+    panel->refresh();
     refreshers.push_back([panel]{panel->refresh();});
 }
 

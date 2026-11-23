@@ -27,6 +27,7 @@ foreach(identity_spec "HamloShirota|WriteS4Identity.cmake|S4Identity.h"
 endforeach()
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
     "${CMAKE_SOURCE_DIR}/scripts/hamlorack/generate_native.py"
+    "${CMAKE_SOURCE_DIR}/Source/DSP/LayerSnapshot.cpp"
     "${CMAKE_SOURCE_DIR}/Assets/Presets/HamloRack/Design/native-contract.json")
 include("${HPEQ_NATIVE_GENERATED}/NativeTargets.cmake")
 juce_add_binary_data(HPEQ_NativeHrtf NAMESPACE ShirotaHrtf HEADER_NAME ShirotaHrtf.h
@@ -35,7 +36,8 @@ target_include_directories(HpeqNativeShirota PRIVATE
     "${CMAKE_CURRENT_BINARY_DIR}/juce_binarydata_HPEQ_NativeHrtf/JuceLibraryCode")
 target_link_libraries(HpeqNativeShirota PUBLIC HPEQ_NativeHrtf)
 add_dependencies(HpeqNativeShirota HPEQ_NativeHrtf)
-add_library(HPEQ_NativeRuntime STATIC Source/Rack/NativeApi.cpp Source/Rack/NativeRegistry.cpp)
+add_library(HPEQ_NativeRuntime STATIC Source/Rack/NativeApi.cpp Source/Rack/NativeRegistry.cpp
+    "${HPEQ_NATIVE_GENERATED}/LegacyDefaults.cpp")
 target_include_directories(HPEQ_NativeRuntime PUBLIC "${CMAKE_SOURCE_DIR}/Source"
     PRIVATE "${JUCE_MODULES_DIR}")
 target_compile_definitions(HPEQ_NativeRuntime PRIVATE JUCE_GLOBAL_MODULE_SETTINGS_INCLUDED=1

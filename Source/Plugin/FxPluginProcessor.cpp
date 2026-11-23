@@ -309,6 +309,7 @@ bool FxPluginProcessor::setProject(FxProjectState newProject)
 
     updateLatencyAndTail(project);
     sendChangeMessage(); // the editor refreshes on the message thread
+    updateHostDisplay(juce::AudioProcessorListener::ChangeDetails().withNonParameterStateChanged(true));
     return true;
 }
 bool FxPluginProcessor::loadRackPreset(int index)
@@ -353,6 +354,12 @@ native::FaderView FxPluginProcessor::nativeFaderView(int layer,int node,int slot
         return view;
     }
     return {};
+}
+std::shared_ptr<native::Runtime> FxPluginProcessor::nativeEditorRuntime(int layer,int node,int slot) const
+{
+    const juce::ScopedLock lock(projectLock);
+    if(layer<0||layer>=kNumLayers||node<0||node>8||slot<0||slot>=kMaxFxPerNode)return {};
+    return engine.shareNativeRuntime(layer,node,slot);
 }
 native::Meters FxPluginProcessor::nativeMeters(int layer,int node,int slot) const
 {
@@ -442,10 +449,30 @@ void FxPluginProcessor::updateLatencyAndTail(const FxProjectState& state)
         setLatencySamples(latency);
 }
 
+void FxPluginProcessor::captureNativeState(FxProjectState& saved) const
+{
+    {
+        const juce::ScopedLock lock(projectLock);
+        for(int layer=0;layer<kNumLayers;++layer)
+        {
+            const auto capture=[&](int node,std::vector<FxSlotState>& chain) {
+                for(size_t slot=0;slot<chain.size();++slot)if(chain[slot].engineRevision==native::kRevision)
+                    if(auto* runtime=engine.nativeRuntime(layer,node,static_cast<int>(slot)))
+                    {runtime->applyPendingEditorValues(chain[slot].parameters);chain[slot].nativeState=runtime->captureEditorState();}
+            };
+            auto& l=saved.layers[static_cast<size_t>(layer)];capture(8,l.mixChain);
+            for(auto& n:l.eqNodes)if(n.engineSlot>=0)capture(n.engineSlot,n.chain);
+            for(auto& n:l.fxNodes)if(n.engineSlot>=0)capture(n.engineSlot,n.chain);
+        }
+    }
+}
+
 void FxPluginProcessor::getStateInformation(juce::MemoryBlock& destData)
 {
+    const juce::ScopedLock stateLock(projectLock);
     juce::ValueTree root(kStateRoot);
-    const auto saved=getProject();
+    auto saved=getProject();
+    captureNativeState(saved);
     root.setProperty(kStateSchema, projectSchemaVersion(saved), nullptr);
     if (const auto name = getPresetName(); name.isNotEmpty())
         root.setProperty("presetName", name, nullptr);
@@ -472,6 +499,7 @@ void FxPluginProcessor::setStateInformation(const void* data, int sizeInBytes)
     if (!restored.has_value())
         return;
 
+    useCurrentModules(*restored);
     if(!setProject(std::move(*restored)))return;
 
     const auto parametersTree = root.getChildWithName(kParametersTree);
@@ -496,6 +524,7 @@ bool FxPluginProcessor::loadPreset(const void* data, int sizeInBytes, const juce
     if (!restored.has_value())
         return false;
 
+    useCurrentModules(*restored);
     undoManager.beginNewTransaction("Preset " + name);
     if(!editProject("Preset " + name, [&restored](FxProjectState& p) { p = *restored; }))return false;
     // Output gain comes with the preset (not undoable: it is a host parameter); Bypass stays.

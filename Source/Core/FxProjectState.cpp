@@ -219,8 +219,51 @@ FxSlotState makeNativeModule(FxType type)
         juce::String error;slot.nativeState=native::makeRevolutionScene(slot.parameters,native::Scene{},error);
         if(slot.nativeState.getSize()==0)throw std::runtime_error(error.toStdString());
     }
-    slot.mix=type==FxType::Reverb||type==FxType::Delay?0.f:1.f;
+    slot.mix=type==FxType::Reverb||type==FxType::Delay?.25f:1.f;
     return slot;
+}
+
+FxSlotState useCurrentModule(FxSlotState previous)
+{
+    if(previous.engineRevision!=0)return previous;
+    auto current=makeNativeModule(previous.type);
+    current.enabled=previous.enabled;current.mix=previous.mix;
+    auto legacy=native::legacyDefaults(previous.type);
+    for(const auto& value:previous.parameters)legacy.set(value.name,value.value);
+    // Use the compatibility controls inside the current plug-ins for imported
+    // state, so its old parameter names retain their meaning. This is still the
+    // complete current wrapper/editor, never the former HPEQ module instance.
+    for(const auto* key:{"engine","v2_engine","v2Mode","echoMode"})
+        if(current.parameters.contains(key)&&!previous.parameters.contains(key))current.parameters.set(key,0);
+    for(const auto& p:native::layout(previous.type))
+        if(const auto* v=legacy.getVarPointer(p.id))
+        {
+            const double value=static_cast<double>(*v);
+            if(std::isfinite(value))current.parameters.set(p.id,static_cast<double>(p.range.snapToLegalValue(juce::jlimit(p.range.start,p.range.end,static_cast<float>(value)))));
+        }
+    if(previous.type==FxType::MonstaFx)
+    {
+        for(const auto* lane:{"time","glitch","motion"})
+            for(const auto* suffix:{"On","Mix","Depth"})
+            {
+                const juce::String key=juce::String(lane)+suffix;
+                if(!previous.parameters.contains(key))current.parameters.set(key,key=="motionDepth"?.6:1.);
+            }
+        const auto pattern=revolution::readPattern(previous.parameters);native::Scene scene;
+        for(size_t lane=0;lane<3;++lane){scene.lanes[lane]=pattern.steps[lane];scene.locks[lane]=pattern.locks[lane];scene.allow[lane]=pattern.allow[lane];}
+        current.parameters.set("glitchEngine",0); // retain the old action-number vocabulary
+        juce::String error;current.nativeState=native::makeRevolutionScene(current.parameters,scene,error);
+        if(current.nativeState.getSize()==0)throw std::runtime_error(error.toStdString());
+    }
+    return current;
+}
+void useCurrentModules(FxProjectState& project)
+{
+    for(auto& layer:project.layers)
+    {
+        const auto convert=[](std::vector<FxSlotState>& chain){for(auto& slot:chain)slot=useCurrentModule(std::move(slot));};
+        convert(layer.mixChain);for(auto& node:layer.eqNodes)convert(node.chain);for(auto& node:layer.fxNodes)convert(node.chain);
+    }
 }
 
 bool isModuleSupported(const FxSlotState& slot,juce::String* error)

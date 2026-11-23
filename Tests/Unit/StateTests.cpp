@@ -100,12 +100,12 @@ public:
             expectEquals(static_cast<int>(tree[juce::Identifier("schemaVersion")]), 1); // legacy writes stay schema 1; schema 2 is opt-in
         }
 
-        beginTest("plugin state: parameters, project and sound survive save/restore");
+        beginTest("current native plugin state: parameters, project and sound survive save/restore");
         {
             auto aPtr = std::make_unique<FxPluginProcessor>();
             auto& a = *aPtr;
             setParameter(a, params::outputGain, -4.5f);
-            a.setProject(makeRichProject());
+            auto current=makeRichProject();useCurrentModules(current);a.setProject(current);
             juce::MemoryBlock blob;
             a.getStateInformation(blob);
 
@@ -114,12 +114,28 @@ public:
             auto& b = *bPtr;
             b.setStateInformation(blob.getData(), static_cast<int>(blob.getSize()));
             expectWithinAbsoluteError(b.getParameters().getRawParameterValue("outputGain")->load(), -4.5f, 1.0e-4f);
-            expect(toValueTree(a.getProject()).isEquivalentTo(toValueTree(b.getProject())));
+            // The native public serializer contributes complete native state
+            // to the saved copy. Compare the actual saved project, not the
+            // optional/empty structural blobs of its in-memory authoring state.
+            const auto xml=juce::AudioProcessor::getXmlFromBinary(blob.getData(),static_cast<int>(blob.getSize()));
+            const auto saved=juce::ValueTree::fromXml(*xml).getChildWithName("HpeqProject");
+            expect(saved.isEquivalentTo(toValueTree(b.getProject())));
             expectEquals(b.getProject().selectedLayer, 3);
 
             const auto outA = renderWith(a);
             const auto outB = renderWith(b);
             expect(compareAligned(outB, outA).bitExact, "restored instance sounds different");
+        }
+
+        beginTest("old HPEQ plugin state imports current modules without resetting shared controls");
+        {
+            auto legacy=makeRichProject();legacy.layers[3].fxNodes[0].chain[0].parameters.set("thresholdDb",-31.0);
+            auto a=std::make_unique<FxPluginProcessor>();expect(a->setProject(legacy));
+            juce::MemoryBlock blob;a->getStateInformation(blob);
+            auto b=std::make_unique<FxPluginProcessor>();b->setStateInformation(blob.getData(),static_cast<int>(blob.getSize()));
+            auto expected=legacy;useCurrentModules(expected);
+            expect(toValueTree(expected).isEquivalentTo(toValueTree(b->getProject())));
+            expectEquals(static_cast<double>(b->getProject().layers[3].fxNodes[0].chain[0].parameters["thresholdDb"]),-31.0);
         }
 
         beginTest("unknown schema versions and garbage are rejected without touching state");

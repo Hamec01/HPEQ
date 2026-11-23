@@ -6,11 +6,16 @@ product name. The CMake target, VST3 ID, saved-state root and user-preset locati
 The [HamloRack design stage](docs/hamlorack/RACK0_DESIGN.md) specifies the beta-module adapters and
 250 authored preset candidates: [overview](docs/hamlorack/PRESET_OVERVIEW.md),
 [exact settings and individual intent/rejection checks](docs/hamlorack/PRESET_CATALOG.md).
-All 250 recipes are executable factory presets in the **HamloRack / 250** browser,
-with native parameter panels for all ten modules. The 224-preset legacy bank stays intact;
-old projects retain their original DSP until explicitly upgraded. See the
-[integration receipt](docs/hamlorack/RACK_COMPLETE.md) and
-[individual bank measurements](docs/hamlorack/RACK_BANK_REPORT.md) for validation and listening limits.
+The rack embeds the complete current standalone plug-ins from `Plugins/`, including
+their original editors and resources, in **one HamloRack.vst3**. No installed plug-in
+files are needed. HPEQ's EQ, regions, ten layers, channel modes and routing remain.
+The preset display has previous/next arrows, wheel navigation and a name menu.
+Twenty multi-layer [Rack Power presets](docs/hamlorack/RACK_POWER.md) lead the browser,
+followed by the 250 task recipes. Imported HPEQ states use current wrappers automatically;
+shared parameter values are retained rather than reset. The former 224-preset library
+is retained as source data, not offered as the main rack bank. See
+[the current integration handoff](docs/hamlorack/CURRENT_INTEGRATION.md) for verification
+and the exact remaining host/listening scope. Earlier checkpoint receipts are historical.
 
 Each layer runs **PRE-EQ → frequency-range FX nodes (up to 6 processors per node) → delta mix**, with
 up to 10 layers. The spec, roadmap and acceptance matrix are in [`docs/fx-addon/`](docs/fx-addon/);
@@ -18,9 +23,9 @@ owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECIS
 
 ## Status
 
-The table retains earlier HPEQ milestone history. Current HamloRack source
-validation is in `docs/hamlorack/RACK_COMPLETE.md`; host validation and owner
-listening apply to the owner's new VST build.
+The table retains earlier HPEQ milestone history. Current HamloRack validation
+is in `docs/hamlorack/CURRENT_INTEGRATION.md` and `CURRENT_VERIFICATION.json`;
+the owner's FL Studio and musical listening checks remain pending.
 
 | Milestone | State | Report |
 |---|---|---|

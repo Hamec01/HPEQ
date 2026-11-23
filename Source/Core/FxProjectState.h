@@ -126,6 +126,8 @@ void copyLayerInto(FxProjectState&, const LayerState& source, int targetIndex);
 // projects) are unchanged.
 FxSlotState defaultModule(FxType);
 FxSlotState makeNativeModule(FxType);
+void useCurrentModules(FxProjectState&);
+FxSlotState useCurrentModule(FxSlotState);
 bool isModuleSupported(const FxSlotState&,juce::String* error=nullptr);
 int projectSchemaVersion(const FxProjectState&);
 // The base the factory module presets are written against (the module defaults before the owner's

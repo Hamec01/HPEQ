@@ -12,6 +12,7 @@
 #include "UI/HamloVerbPanel.h"
 #include "UI/HamloZastavaPanel.h"
 #include "UI/Theme.h"
+#include "Rack/NativeApi.h"
 
 namespace hpeq::ui
 {
@@ -29,20 +30,9 @@ juce::Image renderPage(int width, int height)
 
 juce::Image renderThumbnail(FxType type)
 {
-    switch (type)
-    {
-        case FxType::Compressor: return renderPage<HamloCompPanel>(1180, 700);
-        case FxType::Reverb: return renderPage<HamloVerbPanel>(1180, 760);
-        case FxType::Delay: return renderPage<HamloEchoPanel>(1180, 760);
-        case FxType::Saturator: return renderPage<HamloMagPanel>(1180, 820);
-        case FxType::Limiter: return renderPage<HamloRedWallPanel>(1180, 700);
-        case FxType::TransientShaper: return renderPage<HamloUdarnikPanel>(1180, 700);
-        case FxType::GateExpander: return renderPage<HamloZastavaPanel>(1180, 780);
-        case FxType::StereoProcessor: return renderPage<HamloShirotaPanel>(1180, 780);
-        case FxType::MonstaFx: return renderPage<HamloRevolutionPanel>(1180, 700);
-        case FxType::Gain: return renderPage<HamloFaderPanel>(1180, 700);
-    }
-    return {};
+    auto plugin=native::create(type);
+    std::unique_ptr<juce::AudioProcessorEditor> editor(plugin.processor->createEditorIfNeeded());
+    return editor?editor->createComponentSnapshot(editor->getLocalBounds(),true,.24f):juce::Image{};
 }
 } // namespace
 

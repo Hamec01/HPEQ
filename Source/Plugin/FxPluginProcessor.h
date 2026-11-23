@@ -68,6 +68,7 @@ public:
     bool loadRackPreset(int index);
     native::FaderView nativeFaderView(int layer,int node,int slot) const;
     native::Meters nativeMeters(int layer,int node,int slot) const;
+    std::shared_ptr<native::Runtime> nativeEditorRuntime(int layer,int node,int slot) const;
     bool nativeFaderAction(int layer,int node,int slot,int action);
     juce::String getProjectError() const { return engine.publicationError(); }
 
@@ -107,6 +108,7 @@ public:
     void resetLoudness() noexcept { inputLoudness.requestReset(); outputLoudness.requestReset(); }
 
 private:
+    void captureNativeState(FxProjectState&) const;
     static void measure(const juce::AudioBuffer<float>&, int numChannels, std::atomic<float>& peak, std::atomic<float>& rms) noexcept;
 
     juce::AudioProcessorValueTreeState parameters;

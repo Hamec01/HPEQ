@@ -1,11 +1,13 @@
 # Hamlo plug-ins in HPEQ
 
 Native source payloads retain the standalone history imported by subtrees.
-The rack now compiles isolated copies of all ten pinned native wrappers. Nine
-payloads retain their upstream identity; HamloMag 0.2.2 adds an owner-authorized
+The rack compiles all ten complete current plug-ins, their original editors and
+their own embedded resources into one binary. See
+`../docs/hamlorack/CURRENT_INTEGRATION.md` for the current owner requirements and
+verification. Nine payloads retain their upstream identity; HamloMag 0.2.2 adds an owner-authorized
 mono oversampler correction in this repository. Its shared source serves both
 the standalone VST and rack; provenance is in `sync/2026-11-22-mag-mono.json`.
-See `../docs/hamlorack/RACK_COMPLETE.md` for the integration receipt.
+See `../docs/hamlorack/CURRENT_VERIFICATION.json` for the current integration receipt.
 The EQ remains part of HPEQ, not a separate
 standalone plug-in repository. HamloProd is a website folder, not an audio plug-in.
 

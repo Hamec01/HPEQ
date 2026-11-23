@@ -1,0 +1,344 @@
+{
+  "format": "HamloRackCurrentIntegration",
+  "version": 1,
+  "date": "2026-11-23",
+  "rack_version": "0.2.0",
+  "base_commit": "c0bd77133016949300a7659ae0b0bcef626e5adc",
+  "source_scope": "One binary, ten current complete native wrappers, original editors and assets; HPEQ EQ/layers/regions/routing retained",
+  "sources": {
+    "HamloComp": {
+      "version": "0.2.0",
+      "source_commit": "c7d344bffc598eb9dd012db94772462648081a99",
+      "source_tree": "21506ec89e982e90c186be1e3aea697ec8f69478"
+    },
+    "HamloEcho": {
+      "version": "0.2.2",
+      "source_commit": "00dedb88cc3d4420fd6ba641ad7d710400e22c24",
+      "source_tree": "29a00b5c04ca5503e3dce1ea377b09f7bc805930"
+    },
+    "HamloFader": {
+      "version": "0.2.0",
+      "source_commit": "aef8c4dab83919a1f3eae98fd5836a59890f9042",
+      "source_tree": "724dfcb9ab2ee10529125626f60c127cfcf703c6"
+    },
+    "HamloMag": {
+      "version": "0.2.2",
+      "source_commit": "21adfcff37a4d717e93d559c6831c7b9cbc285c2",
+      "source_tree": "b7ac8a38fe8579816ecf84c7eadb68fb8ade43bd"
+    },
+    "HamloRedWall": {
+      "version": "0.3.0",
+      "source_commit": "d3c9f9a47e94dfe258ebaa71db3de576c815ca94",
+      "source_tree": "4baefbd3e9083eb63ce0475d2d803633d0bd0590"
+    },
+    "HamloRevolution": {
+      "version": "0.5.1",
+      "source_commit": "997f2e2156a588727eb14e47449928d5ca7bffb3",
+      "source_tree": "834a095eb7107beb593e9e3e78f2fed6d8e317cf"
+    },
+    "HamloShirota": {
+      "version": "0.2.0",
+      "source_commit": "ea316b0ea17763303188d06dce14dd9e8e3ffd37",
+      "source_tree": "f1a6963dc7b863725399a5c82933f1b8f6737d56"
+    },
+    "HamloUdarnik": {
+      "version": "0.2.0",
+      "source_commit": "11d37dbff5fe7ccbe87f4becf17daa5b13b02f8f",
+      "source_tree": "2dcf0ecd83c25e0144e0d65e814bb95649dd3dfd"
+    },
+    "HamloVerb": {
+      "version": "0.2.2",
+      "source_commit": "2ae0e1d6fb6652825811a476084a2c5e9db07029",
+      "source_tree": "4a54a1130861b688faf38dd11855e0295563619d"
+    },
+    "HamloZastava": {
+      "version": "0.2.0",
+      "source_commit": "ccc1de21b095acc6b424d00c78122acd8d4fa748",
+      "source_tree": "bcf48c0145c13c5e1bea0a1fd4acb6ba4069485e"
+    }
+  },
+  "release": {
+    "passed": 7851,
+    "failed": 0,
+    "log": "out/rack-0.2-all-release.log",
+    "sha256": "0b31c86e546b65a0da69234d70095e9cb51645715f97075d8a214c7ebac6d29d",
+    "allocation_scope": "allocation probe: operator-new-only (malloc not seen)"
+  },
+  "debug_native": {
+    "passed": 4708,
+    "failed": 0,
+    "log": "out/rack-0.2-debug-native.log",
+    "sha256": "8344f0ac97332d50559cfe961f4b2899f13d2689015180e2b7d3dd397baf5e15",
+    "allocation_scope": "allocation probe: crt-debug-hook (malloc + new)"
+  },
+  "python_structural": {
+    "passed": 13,
+    "failed": 0,
+    "log": "out/rack-0.2-python.log",
+    "sha256": "db8eb30a07fa90b45e3a8bb9f6615024e1f732887cd0389ba060441dd9fbe988"
+  },
+  "bank_structural": {
+    "log": "out/rack-0.2-bank-structure.log",
+    "sha256": "cc150666add86fb0cfb7e4e26308027f3cde55a410eaca6e7e37344873bb51a2",
+    "details": {
+      "recipes": 250,
+      "unique_processing": 250,
+      "banks": {
+        "Boom Bap": 50,
+        "Trap": 50,
+        "Techno": 50,
+        "Drum and Bass": 50,
+        "Studio": 50
+      },
+      "module_instances": {
+        "HamloComp": 142,
+        "HamloEcho": 32,
+        "HamloFader": 17,
+        "HamloMag": 118,
+        "HamloRedWall": 17,
+        "HamloRevolution": 20,
+        "HamloShirota": 41,
+        "HamloUdarnik": 53,
+        "HamloVerb": 64,
+        "HamloZastava": 14
+      },
+      "audio_status": "structural check only; runtime/audio receipt: docs/hamlorack/RACK_COMPLETE.json",
+      "bank_sha256": "a76fda72f569fde814c30db4f075c0c79403acd9f8573eb4e3a8626155640795",
+      "native_contract_sha256": "99f65bb5785fd26fc6c5d8e2507ded6e26f78a795e03c815ff32b9bebe72308e",
+      "structural_gates": [
+        "S1 source identity",
+        "S2 count/native IDs/ranges/grid",
+        "S3 exact topology uniqueness",
+        "S4 capacities/scene routing"
+      ],
+      "audio_gates": "measured separately; see RACK_COMPLETE.json and RACK_BANK_REPORT.md; owner host/listening checks remain"
+    }
+  },
+  "binary_host": {
+    "receipt": "out/rack-0.2-host-smoke.json",
+    "sha256": "435bafd633a1d27050d72761825309b7b44ac92776dc3a6518ba187eac5cf40b",
+    "failures": 0,
+    "details": {
+      "machine": {
+        "os": "Windows 10",
+        "cpu_vendor": "GenuineIntel",
+        "cpu_model": "Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz",
+        "cpu_mhz": 3951,
+        "logical_cpus": 8,
+        "physical_cpus": 4,
+        "memory_mb": 49072,
+        "juce_version": "JUCE v8.0.12",
+        "compiler": "MSVC 195136231",
+        "build": "Release",
+        "allocation_probe": "operator-new-only (malloc not seen)",
+        "utc": "2026-11-23T09:05:49.456+02:00"
+      },
+      "plugin_path": "D:\\HPEQ\\build\\HPEQ_artefacts\\Release\\VST3\\HamloRack.vst3",
+      "hpeq": {
+        "name": "HamloRack",
+        "manufacturer": "HamloProd",
+        "category": "Fx|EQ",
+        "uid": -1663069447,
+        "identifier": "VST3-HamloRack-27c31cf5-9cdf92f9",
+        "is_instrument": false,
+        "inputs": 0,
+        "outputs": 0,
+        "version": "0.2.0"
+      },
+      "checks": [
+        {
+          "check": "HPEQ.vst3 scan finds exactly one plugin",
+          "pass": true
+        },
+        {
+          "check": "scanned as an effect, not an instrument",
+          "pass": true
+        },
+        {
+          "check": "instantiate: ok",
+          "pass": true
+        },
+        {
+          "check": "instance default bus: stereo in / stereo out",
+          "pass": true
+        },
+        {
+          "check": "instance accepts mono in / mono out",
+          "pass": true
+        },
+        {
+          "check": "M1-A via VST3 binary: bit-exact pass-through, block 64",
+          "pass": true
+        },
+        {
+          "check": "M1-A via VST3 binary: bit-exact pass-through, block 512",
+          "pass": true
+        },
+        {
+          "check": "M1-A via VST3 binary: bit-exact pass-through, block 2048",
+          "pass": true
+        },
+        {
+          "check": "Output Gain parameter exposed to the host",
+          "pass": true
+        },
+        {
+          "check": "STATE via VST3 binary: restored instance renders identically",
+          "pass": true
+        },
+        {
+          "check": "Output Gain -6 dB measured -6.000 dB",
+          "pass": true
+        },
+        {
+          "check": "M1-C: 100/100 instance cycles",
+          "pass": true
+        },
+        {
+          "check": "M1-C: 100/100 editor open/close on desktop",
+          "pass": true
+        }
+      ],
+      "failures": 0
+    }
+  },
+  "power_audio": {
+    "receipt": "docs/hamlorack/RACK_POWER_RECEIPT.json",
+    "sha256": "300a98385ac7c176b2dfcb5c3e7176b86d0f8264cc79c07d0a07460edac2ca54",
+    "presets": 20,
+    "checks": 160,
+    "silent_tails": 20,
+    "loudness_exceptions": 10,
+    "owner_listening": "pending"
+  },
+  "final_power_replay": {
+    "exact": 20,
+    "failed": 0,
+    "log": "out/rack-0.2-power-replay.log",
+    "sha256": "e394a2ee215f6fa6b5a8f6dc70720ede57c2961e482e1395c22a0d29cd0472e5"
+  },
+  "task_bank_replay": {
+    "exact": 250,
+    "failed": 0,
+    "logs": [
+      {
+        "path": "out/rack-0.2-base-replay-0.log",
+        "sha256": "b16168af86fcee294619e9a5f9928d041b5845866658ced48ef9c48f144a0a43"
+      },
+      {
+        "path": "out/rack-0.2-base-replay-1.log",
+        "sha256": "c26da2f09fe593d5a6510490949b37df32a9d5a769d65a67489df0f491100ac6"
+      },
+      {
+        "path": "out/rack-0.2-base-replay-2.log",
+        "sha256": "a61566456a1f3c52b135742f0482bc481807a944f29cc2e7c8e69035be02173a"
+      },
+      {
+        "path": "out/rack-0.2-base-replay-3.log",
+        "sha256": "bd0e77f9ef11a591a45659093766c5d0e0c3d36ab328a770e9c335bc7374bb9e"
+      },
+      {
+        "path": "out/rack-0.2-base-replay-4.log",
+        "sha256": "96f2e174c03923cd2fd980c22f7dbf1f68f6bfe59cb04eef2aca947305c5614c"
+      },
+      {
+        "path": "out/rack-0.2-base-replay-5.log",
+        "sha256": "d13173f3fee48ef08b4ce81aae6b06ee47d1af4ad92af0a664bc1c509f0413cd"
+      }
+    ]
+  },
+  "original_editor_snapshots": {
+    "count": 30,
+    "dimensions": [
+      "1000x700",
+      "1280x840",
+      "1920x1200"
+    ],
+    "files": {
+      "out/rack-0.2-snapshots/HamloComp-1000.png": "f6fdce8c4fe4299f6b1ce6bc465a576eb956441eaf9cf454fe851e2599962fed",
+      "out/rack-0.2-snapshots/HamloComp-1280.png": "b6ee8976a1361093d817e0c24fafd1fa6b5e2fdb6c9e1ea7a72fbd00c26394e5",
+      "out/rack-0.2-snapshots/HamloComp-1920.png": "324cb180a828f04a749ef99f80b55fb44e7c8839b39c9600ad73cfb5ffbb986c",
+      "out/rack-0.2-snapshots/HamloEcho-1000.png": "6bab210e4e161b592c6645d5449376f2b618e89190f12596cc8d893383460418",
+      "out/rack-0.2-snapshots/HamloEcho-1280.png": "a0adcab0eb14194df0c0f1afc9015413505f03a8a135d4fda4893c0acb47fec0",
+      "out/rack-0.2-snapshots/HamloEcho-1920.png": "d261d781447b5ea108734b001df4b9959e7137ec9482477f10887407bf16b0be",
+      "out/rack-0.2-snapshots/HamloFader-1000.png": "404719782599d71b6490f11331f56da5326a318a07604cb37e90f83173012fd7",
+      "out/rack-0.2-snapshots/HamloFader-1280.png": "415f708cf3acce05f325a423a444985a0c671133a19a30ddecc878bb3e09750d",
+      "out/rack-0.2-snapshots/HamloFader-1920.png": "ca98a39e0b56f80fe3f8f1b92758f0504b1999ee118bca5e490a44179b8d5135",
+      "out/rack-0.2-snapshots/HamloMag-1000.png": "ba8d06533d6c6763d509ab79fdb8797d9758d83f57a4261bcd00c648787acf8e",
+      "out/rack-0.2-snapshots/HamloMag-1280.png": "160319055cf81252ba8dfc5ae281cd24129045b6f2a0a2ae3646bdb4019b8246",
+      "out/rack-0.2-snapshots/HamloMag-1920.png": "1310d553541108f14f3ecbeb7d021ff311cb4651eb95aa6c5a936637f2399928",
+      "out/rack-0.2-snapshots/HamloRedWall-1000.png": "c8f771785f1d21ce4eba6ca7a8fcdb0355545191f0ce74bc0ca4d549a5fe9fe3",
+      "out/rack-0.2-snapshots/HamloRedWall-1280.png": "1a85b212a63d25028fb9267eb72fdba94d886c16a18dee24feff8379250ca8ef",
+      "out/rack-0.2-snapshots/HamloRedWall-1920.png": "6585c4318cd0ad796aa6880d77a8e9f08239cfe4819dba272a4d6b33f862028c",
+      "out/rack-0.2-snapshots/HamloRevolution-1000.png": "0ace38cf34519f7be8c178fa6642fe36225dcc2c2fea44ced9d73ddbacc888c5",
+      "out/rack-0.2-snapshots/HamloRevolution-1280.png": "7a56acf8c7ec21a5d6d065b9ebad07702e05b9e59a98a662982dbb7bd7c6d777",
+      "out/rack-0.2-snapshots/HamloRevolution-1920.png": "860274fce3ad4d4c7335f8b796c24623abdc55e4f9c994b977dd5fa38cdd8a53",
+      "out/rack-0.2-snapshots/HamloShirota-1000.png": "69907adcd52541f68e0323e5d172db168fcbb079102e410a47f274c1bb66c2a8",
+      "out/rack-0.2-snapshots/HamloShirota-1280.png": "c487f3940caea8a4d9cbab71034369ebe2accbdc7bd7c510280812c11c503d74",
+      "out/rack-0.2-snapshots/HamloShirota-1920.png": "36cce3f6824853a4a7ecf62ec71b4449f81ae9f9d3eb374a2bbaabbe8981b0e8",
+      "out/rack-0.2-snapshots/HamloUdarnik-1000.png": "94b4cd8f0a8c527230aaea7c72abf8f4c6ab9315be3bef0b78c43716b5ad5868",
+      "out/rack-0.2-snapshots/HamloUdarnik-1280.png": "9f30509684cf193b35e66d0c28351dbf155647744c8fa3ca7f1dbac4c4ce0819",
+      "out/rack-0.2-snapshots/HamloUdarnik-1920.png": "b3fca3367e0c53edd8ec40f5d554137cded9ada1bfeeb6cc930e4d4a596e0e30",
+      "out/rack-0.2-snapshots/HamloVerb-1000.png": "056ab424fca276288963a8faef8d7e5a8a1531f48edb2406bddf5a701319ff8c",
+      "out/rack-0.2-snapshots/HamloVerb-1280.png": "3879c990c070aaa46b6abfdafc0b4454b05ad0ea1a1571f5ee3658dcaf44a639",
+      "out/rack-0.2-snapshots/HamloVerb-1920.png": "bdde9309c07f1d5ebbe9b6c463a06c1f32abcea97dedc1ca8f4247ab223c51c1",
+      "out/rack-0.2-snapshots/HamloZastava-1000.png": "4ca13279e5f011acdf413998b27e98157f3997d90ad1e5e755d3811df2303e2a",
+      "out/rack-0.2-snapshots/HamloZastava-1280.png": "cc74699671c85e71d60c72a36dc741f6a8428a8f3ba687c7cada13566d8d5b9a",
+      "out/rack-0.2-snapshots/HamloZastava-1920.png": "fab4ad87311f55351ba49861905d4df087f1ddd246e21d1e57dbe67838aef615"
+    }
+  },
+  "build": {
+    "release_lto": false,
+    "debug_crt_allocation_probe": true
+  },
+  "binaries": {
+    "build/HPEQ_artefacts/Release/VST3/HamloRack.vst3/Contents/x86_64-win/HamloRack.vst3": "b47273d18e9646a9771f89e3a7a7979411ecc08479b401f27b213a0b9e0b62c0",
+    "build/Release/HPEQ_Tests.exe": "8f691785bdc065bbb0366aae0c72fc1b55e84ccaae809aec7034092b42e8ac60",
+    "build/Debug/HPEQ_Tests.exe": "27d8a498a185606723a6fe3766117ed4aa7dc1573cb73b6ce3575c6ee6be5fbb",
+    "build/Release/HPEQ_RackBank.exe": "8a2dfe5e89d0e340106b243dec760e4fb9b38b28bc268a1d3d6725e45f1aa12c"
+  },
+  "code_sha256": {
+    "Assets/Presets/HamloRack/power.json": "9e5014f4e2fa15285256974429260d43280a53cd7c22d8710fde2c1e836194d2",
+    "CMakeLists.txt": "316d2b18379ccaa8830ec6f4675891ae9e14a153ba9785aeedfb8f50844abe82",
+    "Source/Core/FxProjectState.cpp": "d634505e1a7d2afa044f3857e630354626e06e69ab9224300f90350f6ac57df1",
+    "Source/Core/FxProjectState.h": "a1327356689c98f97f5b3d3fdf4a3807946dda321e110d591a7c2effa0586a78",
+    "Source/DSP/FxNodeProcessor.cpp": "6fb3d7a2ace1ce582bdc347105f38a78120adec11714a918869a9b0ac1f8400f",
+    "Source/DSP/FxNodeProcessor.h": "fcb6a59646ee65c0069483818048f9808440a941bf710f60b2445fc67e55092a",
+    "Source/DSP/ProjectEngine.cpp": "080581f003aa1e86ea551c622a8184a4a2b41f4a16e9306d92d4a44701b1f0ae",
+    "Source/DSP/ProjectEngine.h": "aa7ce44499d39e16db17b738c2b2774a67e79a88cbff365de11f6a2a72d5eb2d",
+    "Source/Plugin/FxPluginEditor.cpp": "ec97d9c2279f03716b8431f874af60a3f3fd20f4413416557e98686ce7bd0c31",
+    "Source/Plugin/FxPluginEditor.h": "455981d5042bd8622cab36ee67012ccf95a87e0cd219d9d8cb188d7f0c0794a1",
+    "Source/Plugin/FxPluginProcessor.cpp": "c1598a6c237be10dfc0c95d5bb45269fed8b45c063c715f99519386d1648acec",
+    "Source/Plugin/FxPluginProcessor.h": "35bd15444e435d7cd05fd993d3f5a825457d08c429854626c2a46cb389ca9284",
+    "Source/Rack/NativeApi.cpp": "f373a1cdcad4db48b381275e2f49e4b43b312599f88847543359403ad293cb66",
+    "Source/Rack/NativeApi.h": "296e52fdd19665ed6dea8c5a427f8eccf45378bfaef961bb976b6816c4a16312",
+    "Source/Rack/NativeRegistry.cpp": "e8f539660203a3ddb95aab56bd6a147ca25a2289da14f7ba02c15e683a611b0d",
+    "Source/Rack/NativeRegistry.h": "435d57a977194242f850ba55ae592d42f85057d3e9202f4cd1d36166c43e1f87",
+    "Source/Rack/RackPresets.cpp": "f33089263cc0d405e5baf25a4dc789eeb4664d36ba282b87ae7e78ea7a96f152",
+    "Source/UI/EmbeddedPluginPanel.cpp": "e1d317a7e963600ea1f453cd89a9c0d0588ce50b15c91587ee7e74dcf7364aa1",
+    "Source/UI/EmbeddedPluginPanel.h": "7e12516829c9cd31340edc89ea61c5787de171e82e9e23a8041bb8195100c48b",
+    "Source/UI/ModuleTile.cpp": "8f88441c429c5cd5e8b37cda7d396229250281ea253479bd82619835a3d901ef",
+    "Source/UI/NodeInspector.cpp": "a5606e2109153a52e383c7b4ec3bcbb55dabfc5991f8a2710cc9d37d44eee7d3",
+    "Source/UI/RackPresetBar.cpp": "eaa1083cc308749a366b0ec50ab89eb56c16d68a0ad0590fb471ce4fad1032cd",
+    "Source/UI/RackPresetBar.h": "ec50ea3290101123f812624d7f196abf80f704643f875ace3124826b06a91054",
+    "Tests/Tools/RackBankMain.cpp": "56b7f7cc89f5b0cdd1e558e936cfbd394f83eb2e2605f16c29225f24b764e995",
+    "Tests/Unit/EmbeddedPluginTests.cpp": "3d35a3eca0b81db28252db82401b03636711b29f3876d1906a33180891d3b5a8",
+    "Tests/Unit/M7Tests.cpp": "aa5564beb4d4fc56544c10b8f33b6cb002be2c7cb53e0674d5e398a1d4511ba5",
+    "Tests/Unit/M8Tests.cpp": "34f71547ae70722efdc63277d5737651003a68447dfc33120c6b66f4840a5739",
+    "Tests/Unit/PresetPassTests.cpp": "115b05e338958dadb539342ac509277f0529e3bea274bf9b0d6847a2091ef04a",
+    "Tests/Unit/RackProductTests.cpp": "628285dd59d7e944a7c7397f9d5765733a3647c1a359a2cb77449f253cea5164",
+    "Tests/Unit/RevolutionPresetTests.cpp": "43a6d31641628935aab4e440d273f22f5aaba89b5fd89f6cef72e9643d2e85c4",
+    "Tests/Unit/StateTests.cpp": "5723dd91fc0b510621f2dfe7d0544266173ac628f2e3f7078f0e27cbe62c3492",
+    "build_vst.bat": "8a31e760d8a1239b54fada9879fb59d4fd8fb041c6b4ac7d886bc26231ba8058",
+    "cmake/HamloNative.cmake": "6e06b333d5bea119e66349a8b745a2fe47bf166d349cc202268e0f3938c651b1",
+    "scripts/hamlorack/generate_native.py": "73fade65ee96f7432d6d5faeed0a754bb4968ae00e43fa6f075bbf2336972fba",
+    "scripts/hamlorack/power_presets.py": "74b6df29e05844f73dc5c84a5210add1cf18c471492cadfb6e845b08a0f08d94"
+  },
+  "code_sha256_scope": "Worktree file bytes before Git line-ending normalization",
+  "limitations": [
+    "Owner FL Studio musical/listening verdicts remain pending.",
+    "No new pluginval or Steinberg validator run.",
+    "Imported old HPEQ modules use current wrappers; exact former project sound is not guaranteed.",
+    "Native sample/workbench file persistence follows the native product; no rack sample-asset packaging is claimed."
+  ]
+}

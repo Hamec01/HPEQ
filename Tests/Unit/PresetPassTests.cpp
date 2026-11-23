@@ -229,7 +229,7 @@ public:
             root.deleteRecursively();
         }
 
-        beginTest("Panel: the preset button stands left of Overlay and shows the loaded preset; module pages have Presets");
+        beginTest("Panel: preset display and arrows stand left of Overlay, change presets and show the loaded name");
         {
             auto plugin = std::make_unique<FxPluginProcessor>();
             FxProjectState p;
@@ -242,8 +242,17 @@ public:
             auto editor = std::unique_ptr<FxPluginEditor>(dynamic_cast<FxPluginEditor*>(plugin->createEditor()));
             editor->setSize(1400, 900);
             auto* overlay = findButton(editor.get(), "Overlay");
-            auto* button = findButton(editor.get(), "Presets");
-            expect(overlay != nullptr && button != nullptr && button->getRight() <= overlay->getX() + 4 && button->getY() == overlay->getY());
+            ui::RackPresetBar* bar=nullptr;
+            for(auto* child:editor->getChildren())if(auto* display=dynamic_cast<ui::RackPresetBar*>(child))bar=display;
+            expect(overlay&&bar&&bar->getRight()<=overlay->getX()+4&&bar->getBounds().getCentreY()==overlay->getBounds().getCentreY());
+            auto* previous=findButton(bar,"<");auto* next=findButton(bar,">");
+            expect(previous&&next,"Preset arrows missing");
+            if(previous&&next)
+            {
+                next->onClick();expect(plugin->getProject().rackPresetId=="PW001");
+                next->onClick();expect(plugin->getProject().rackPresetId=="PW002");
+                previous->onClick();expect(plugin->getProject().rackPresetId=="PW001");
+            }
             const auto& f = presets::factoryPresets()[3];
             plugin->loadPreset(f.data, f.size, f.name);
             plugin->dispatchPendingMessages();
