@@ -1,0 +1,54 @@
+{
+  "format": "HamloWindowsBuildLauncherReview",
+  "version": 1,
+  "date": "2026-11-25",
+  "base_commit": "3c58a104c8eb929dd55f4f609872ab8bc5fa8692",
+  "smoke": {
+    "passed": 82,
+    "failed": 0,
+    "log": "out/build-scripts-test.log",
+    "sha256": "44b4977972257903fdca0a57bf473862dca468ad1e276a66ef2e3a7acbc6d92b",
+    "scope": "Real BAT and Windows PowerShell control flow with a compiled native fake CMake and fake VST bundles; isolated out/fake-common destination only"
+  },
+  "real_configure": [
+    {
+      "log": "out/build-scripts-root-configure.log",
+      "sha256": "fc7a6c4b3a6135ed1771e360d7d550b61dec65e3e7b9b5dca35bc8f22f4e2483",
+      "success": true
+    },
+    {
+      "log": "out/build-scripts-comp-configure.log",
+      "sha256": "38feb6b35adf502408fc16bfb54e25a3672622616c784407fcc3ddf24ca39077",
+      "success": true
+    }
+  ],
+  "real_command_check": {
+    "selection": "all",
+    "log": "out/build-scripts-check-all.log",
+    "sha256": "b21402f0f9b82f72bba17003eb659685fa1198104417113c1c27280da3c9297c",
+    "compilation": false,
+    "installation": false
+  },
+  "cmake": "cmake version 4.2.0-rc1",
+  "code_sha256": {
+    "build_vst.bat": "0060a382633e8988c8f8203ccc5cec396ca8b8caba5c33db5dae7c7a6ec2872f",
+    "build_hamlo_plugins.bat": "0cc620599b12aec4dcba1ea6c9e33869fdf01565bdd878a05d057c41ddc7aa08",
+    "install_hamlo_plugins.bat": "f3d8d8af01de1a3577eef14f29539cb83422782100e23020946ce8101ef90b2d",
+    "scripts/build_hamlo.ps1": "96b6e76a2f343ca0ecda2d077757f99db4e85d8f0f67d30776da425029c0ae29",
+    "scripts/install_hamlo_plugins.ps1": "baf86e796b41f0d8092cc70a809ba04fd8855f0684e65a8d730593af215b949c",
+    "scripts/install_rack.ps1": "c5580538cfea38215c7090ae8f880cf5f339f551151274c53fd33061c0551a15",
+    "Tests/Tools/BuildScriptsSmoke.ps1": "dc5843cb5080451336b7b99559ffa857d6dabab32aa50e15780dc41d43e46348"
+  },
+  "code_sha256_scope": "Worktree bytes before Git line-ending normalization",
+  "unchanged": [
+    "DSP and plug-in source payloads",
+    "CMake product definitions",
+    "Preset assets and calibration",
+    "Product version 0.2.3"
+  ],
+  "limitations": [
+    "No full VST compilation in this launcher review.",
+    "No real installed VST bundles replaced.",
+    "Elevation payload constructed and executed against fake destination without requesting UAC."
+  ]
+}

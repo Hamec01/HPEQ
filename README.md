@@ -75,11 +75,14 @@ layer semantics D5. Beta package: `scripts/package.ps1` -> `dist/HPEQ-<version>-
 
 ## Build
 
-Needs CMake ≥ 3.22 and Visual Studio 2026 (or adjust the preset generator). JUCE 8.0.12 is taken from
+Needs CMake with the Visual Studio 18 2026 generator, Visual Studio 2026 C++ tools and Windows SDK. JUCE 8.0.12 is taken from
 `HPEQ_JUCE_DIR` if set, otherwise fetched.
 
 `build_vst.bat` builds only the rack VST3 and copies it to `batvst/HamloRack.vst3`.
-The build output is `build/HPEQ_artefacts/Release/VST3/HamloRack.vst3`.
+The default build output is `build/HPEQ_artefacts/Release/VST3/HamloRack.vst3`.
+Moved caches use a separate `build-rebuild/` folder; `batvst/` remains the common output.
+Use `build_hamlo_plugins.bat all` for all ten current standalone plug-ins plus the rack.
+Commands, prerequisites, installation and check-only mode: [Windows build launchers](docs/BUILD_SCRIPTS.md).
 The optional `build_vst.bat install` backs up old rack bundles before replacing them;
 close the DAW and run that option as administrator. Individual Hamlo products are
 built by `build_hamlo_plugins.bat`. The rack's old `HPEQ.vst3` and new `HamloRack.vst3`
