@@ -9,7 +9,9 @@ The [HamloRack design stage](docs/hamlorack/RACK0_DESIGN.md) specifies the beta-
 The rack embeds the complete current standalone plug-ins from `Plugins/`, including
 their original editors and resources, in **one HamloRack.vst3**. No installed plug-in
 files are needed. HPEQ's EQ, regions, ten layers, channel modes and routing remain.
-The preset display has previous/next arrows, wheel navigation and a name menu.
+The preset display has previous/next arrows, wheel navigation and a searchable
+[preset library](docs/hamlorack/PRESET_BROWSER.md), with source, genre, character
+and processor filters, favourites, descriptions and editable user tags.
 Twenty multi-layer [Rack Power presets](docs/hamlorack/RACK_POWER.md) lead the browser,
 followed by the 250 task recipes. Imported HPEQ states use current wrappers automatically;
 shared parameter values are retained rather than reset. The former 224-preset library

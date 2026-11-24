@@ -1,5 +1,11 @@
 # Current HamloRack integration
 
+Current UI patch: **0.2.1**, 2026-11-24. The searchable preset library replaces
+the name menu; see [PRESET_BROWSER.md](PRESET_BROWSER.md). Current verification
+is in `CURRENT_VERIFICATION.json`. The implementation and full-suite/audio
+results below describe the original 0.2.0 integration; its receipt is preserved
+in `INTEGRATION_0.2.0_VERIFICATION.json`.
+
 Owner clarification: 2026-11-23. One HamloRack VST3 must embed the latest versions
 of our standalone plug-ins, complete with their own panels and capabilities,
 while retaining HPEQ's EQ, frequency regions, ten layers and routing. It must not
@@ -62,7 +68,7 @@ The owner authorized commit and push after completion.
 
 ## Verification and continuation
 
-The current machine-readable evidence is `CURRENT_VERIFICATION.json`, separate
+The original 0.2.0 evidence is `INTEGRATION_0.2.0_VERIFICATION.json`, separate
 from the historical `RACK_COMPLETE.json`. The complete Release suite passed
 7851 expectations with zero failures. The Debug HamloRack suite passed 4708
 expectations with zero failures, using the CRT hook for both malloc and new

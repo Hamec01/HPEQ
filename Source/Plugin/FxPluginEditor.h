@@ -22,6 +22,7 @@ class LayerControls;
 class SpectrumWorkspace;
 class NodeList;
 class NodeInspector;
+class PresetBrowser;
 struct Selection;
 } // namespace ui
 
@@ -47,6 +48,7 @@ public:
     ui::NodeInspector& getInspector() noexcept { return *inspector; } // tests and screenshots
     bool isMixSelected() const noexcept; // tests
     void showDifference(bool difference);
+    void showPresetBrowser();
 
 private:
     class LevelMeter;
@@ -81,6 +83,7 @@ private:
     juce::TextButton abA { "A" }, abB { "B" }, copyAB { "A>B" }, undo { "Undo" }, redo { "Redo" };
     juce::TextButton waveOverlay { "Overlay" }, waveDelta { "Delta" }, freeze { "Freeze" };
     ui::RackPresetBar presetButton;
+    std::unique_ptr<ui::PresetBrowser> presetBrowser;
     void showPresetMenu();
     void stepPreset(int direction);
     void savePresetAs();

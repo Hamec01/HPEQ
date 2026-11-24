@@ -42,7 +42,7 @@ include(cmake/HamloNative.cmake)
 
 # --- Plugin -----------------------------------------------------------------------------------
 juce_add_plugin(HPEQ
-    VERSION 0.2.0
+    VERSION 0.2.1
     COMPANY_NAME "HamloProd"
     BUNDLE_ID com.hamloprod.hpeq
     IS_SYNTH FALSE
@@ -75,6 +75,7 @@ target_sources(HPEQ
         Source/Analysis/LoudnessMeter.cpp
         Source/Core/FxProjectState.cpp
         Source/Rack/RackPresets.cpp
+        Source/Rack/PresetCatalogue.cpp
         Source/UI/NativeModulePanel.cpp
         Source/Core/Revolution.cpp
         Source/Core/ModulePresets.cpp
@@ -105,6 +106,7 @@ target_sources(HPEQ
         Source/UI/NodeInspector.cpp
         Source/UI/EmbeddedPluginPanel.cpp
         Source/UI/RackPresetBar.cpp
+        Source/UI/PresetBrowser.cpp
         Source/UI/LayerControls.cpp
         Source/UI/HamloCompPanel.cpp
         Source/UI/BlackSteel.cpp
@@ -150,7 +152,8 @@ juce_add_binary_data(HPEQ_Assets NAMESPACE HpeqAssets
                              ${HPEQ_FACTORY_PRESETS} ${CMAKE_CURRENT_BINARY_DIR}/hpeq_factory_presets.txt
                              Assets/Presets/HamloRack/Design/recipes.json
                              Assets/Presets/HamloRack/calibration.json
-                             Assets/Presets/HamloRack/power.json)
+                             Assets/Presets/HamloRack/power.json
+                             Assets/Presets/HamloRack/browser-tags.json)
 
 target_link_libraries(HPEQ
     PUBLIC
@@ -318,6 +321,7 @@ add_executable(HPEQ_Tests
     Tests/Unit/RackNativeTests.cpp
     Tests/Unit/RackProductTests.cpp
     Tests/Unit/EmbeddedPluginTests.cpp
+    Tests/Unit/PresetBrowserTests.cpp
     Tests/Unit/PluginContractTests.cpp
     Tests/Unit/StateTests.cpp
     Tests/Unit/DspTests.cpp

@@ -22,7 +22,7 @@ RackPresetBar::RackPresetBar()
 void RackPresetBar::setCurrent(const juce::String& name,const juce::String& group,int index,int count)
 {
     nameButton.setButtonText(name.isEmpty()?"Init (empty project)":name);
-    groupText=group.toUpperCase()+(count>0?"   "+juce::String(index+1)+" / "+juce::String(count):juce::String());
+    groupText=group.toUpperCase()+(count>0?"   "+(index<0?juce::String("--"):juce::String(index+1))+" / "+juce::String(count):juce::String());
     repaint();
 }
 void RackPresetBar::paint(juce::Graphics& g)

@@ -12,6 +12,7 @@
 #include "UI/SpectrumWorkspace.h"
 #include "UI/Theme.h"
 #include "UI/WaveformPanel.h"
+#include "UI/PresetBrowser.h"
 
 namespace hpeq
 {
@@ -224,6 +225,7 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
 FxPluginEditor::~FxPluginEditor()
 {
     stopTimer();
+    presetBrowser.reset();
     processor.removeChangeListener(this);
     setLookAndFeel(nullptr);
     if (--openEditors == 0 && &juce::LookAndFeel::getDefaultLookAndFeel() == &steelLook.get())
@@ -296,6 +298,8 @@ void FxPluginEditor::updateHeader()
         break;
     }
     presetButton.setCurrent(presetName,group,currentIndex,count);
+    if(presetBrowser&&presetBrowser->getFilter().active())
+        presetButton.setCurrent(presetName,"FILTERED LIBRARY",presetBrowser->positionOf(project.rackPresetId,presetName),presetBrowser->resultCount());
     undo.setEnabled(processor.getUndoManager().canUndo());
     redo.setEnabled(processor.getUndoManager().canRedo());
     repaint();
@@ -303,6 +307,7 @@ void FxPluginEditor::updateHeader()
 
 void FxPluginEditor::stepPreset(int direction)
 {
+    if(presetBrowser&&presetBrowser->stepAndLoad(direction,processor.getProject().rackPresetId,processor.getPresetName()))return;
     const auto userFiles=presets::listFiles(presets::userPresetFolder(),"*.hpeq");
     for(int i=0;i<userFiles.size();++i)if(userFiles[i].getFileNameWithoutExtension()==processor.getPresetName())
     {
@@ -327,78 +332,33 @@ void FxPluginEditor::stepPreset(int direction)
     if(processor.loadRackPreset(filtered[static_cast<size_t>(next)])){updateHeader();selectionChanged();}
 }
 
-void FxPluginEditor::showPresetMenu()
+void FxPluginEditor::showPresetMenu() {showPresetBrowser();}
+
+void FxPluginEditor::showPresetBrowser()
 {
-    juce::PopupMenu menu;
-    menu.addItem(1, "Init (empty project)");
-    juce::PopupMenu rackMenu;
-    const auto& recipes=rack::recipes();
-    juce::StringArray banks;for(const auto& r:recipes)banks.addIfNotAlreadyThere(r.bank);
-    for(const auto& bank:banks)
+    if(!presetBrowser)
     {
-        juce::PopupMenu categories;
-        juce::StringArray names;
-        for(const auto& r:recipes)if(r.bank==bank)names.addIfNotAlreadyThere(r.category);
-        for(const auto& category:names)
-        {
-            juce::PopupMenu items;
-            for(size_t i=0;i<recipes.size();++i)if(recipes[i].bank==bank&&recipes[i].category==category)
-                items.addItem(10000+static_cast<int>(i),recipes[i].name,true,processor.getProject().rackPresetId==recipes[i].id);
-            categories.addSubMenu(category,items);
-        }
-        rackMenu.addSubMenu(bank,categories);
+        presetBrowser=std::make_unique<ui::PresetBrowser>(presets::userPresetFolder());
+        addChildComponent(*presetBrowser);
+        presetBrowser->onClose=[this]{presetBrowser->setVisible(false);presetButton.menuTarget().grabKeyboardFocus();};
+        presetBrowser->onFilterChanged=[this]{updateHeader();};
+        presetBrowser->onLoad=[this](const rack::BrowserEntry& entry) {
+            bool ok=false;
+            if(entry.recipeIndex>=0)ok=processor.loadRackPreset(entry.recipeIndex);
+            else {juce::MemoryBlock bytes;if(entry.file.loadFileAsData(bytes))
+                ok=processor.loadPreset(bytes.getData(),static_cast<int>(bytes.getSize()),entry.name);}
+            if(ok){updateHeader();selectionChanged();}return ok;
+        };
+        presetBrowser->onSave=[this]{presetBrowser->setVisible(false);savePresetAs();};
+        presetBrowser->onInit=[this]{
+            processor.getUndoManager().beginNewTransaction("Init");
+            processor.editProject("Init",[](FxProjectState& p){p=FxProjectState{};});
+            processor.setPresetName({});presetBrowser->setVisible(false);updateHeader();selectionChanged();
+        };
+        presetBrowser->onFolder=[] {const auto directory=presets::userPresetFolder();directory.createDirectory();directory.startAsProcess();};
     }
-    menu.addSubMenu("Rack presets",rackMenu);
-    menu.addSeparator();
-
-    // User: item ids 5000 + index.
-    const auto current=processor.getPresetName();
-    const auto userFiles = presets::listFiles(presets::userPresetFolder(), "*.hpeq");
-    juce::PopupMenu userMenu;
-    for (int i = 0; i < userFiles.size(); ++i)
-        userMenu.addItem(5000 + i, userFiles[i].getFileNameWithoutExtension(), true, userFiles[i].getFileNameWithoutExtension() == current);
-    if (userFiles.isEmpty())
-        userMenu.addItem(2, "(no presets saved yet)", false);
-    menu.addSubMenu("User", userMenu);
-    menu.addSeparator();
-    menu.addItem(3, "Save preset...");
-    menu.addItem(4, "Open preset folder");
-
-    juce::Component::SafePointer<FxPluginEditor> safe(this);
-    menu.showMenuAsync(juce::PopupMenu::Options().withTargetComponent(&presetButton.menuTarget()), [safe, userFiles](int result)
-    {
-        if (safe == nullptr || result == 0)
-            return;
-        auto& proc = safe->processor;
-        if (result == 1)
-        {
-            proc.getUndoManager().beginNewTransaction("Init");
-            proc.editProject("Init", [](FxProjectState& p) { p = FxProjectState {}; });
-            proc.setPresetName({});
-        }
-        else if (result == 3)
-            safe->savePresetAs();
-        else if (result == 4)
-        {
-            const auto folder = presets::userPresetFolder();
-            folder.createDirectory();
-            folder.startAsProcess();
-        }
-        else if(result>=10000)
-            proc.loadRackPreset(result-10000);
-        else if (result >= 5000 && result - 5000 < userFiles.size())
-        {
-            juce::MemoryBlock data;
-            const auto& file = userFiles[result - 5000];
-            if (file.loadFileAsData(data))
-                proc.loadPreset(data.getData(), static_cast<int>(data.getSize()), file.getFileNameWithoutExtension());
-        }
-        else if (result >= 1000 && static_cast<size_t>(result - 1000) < presets::factoryPresets().size())
-        {
-            const auto& p = presets::factoryPresets()[static_cast<size_t>(result - 1000)];
-            proc.loadPreset(p.data, p.size, p.name);
-        }
-    });
+    presetBrowser->setBounds(getLocalBounds());
+    presetBrowser->open(processor.getProject().rackPresetId,processor.getPresetName());
 }
 
 void FxPluginEditor::savePresetAs()
@@ -554,6 +514,7 @@ void FxPluginEditor::paint(juce::Graphics& g)
 
 void FxPluginEditor::resized()
 {
+    if(presetBrowser)presetBrowser->setBounds(getLocalBounds());
     struct Background
     {
         FxPluginEditor& e;

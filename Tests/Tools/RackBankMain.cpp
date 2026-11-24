@@ -3,6 +3,7 @@
 #include "Rack/RackPresets.h"
 #include "Plugin/FxPluginProcessor.h"
 #include "Plugin/FxPluginEditor.h"
+#include "UI/PresetBrowser.h"
 #include "Analysis/LoudnessMeter.h"
 #include <BinaryData.h>
 #include <juce_dsp/juce_dsp.h>
@@ -400,6 +401,26 @@ int powerBank(const juce::File& folder,bool verifyOnly=false)
     put(receipt,"authoring_sha256",definition["authoring_sha256"]);put(receipt,"records",records);put(receipt,"failures",failures);
     save(folder.getChildFile("receipt.json"),receipt);return failures?1:0;
 }
+int browserSnapshots(const juce::File& folder)
+{
+    folder.createDirectory();auto processor=std::make_unique<hpeq::FxPluginProcessor>();
+    auto editor=std::make_unique<hpeq::FxPluginEditor>(*processor);editor->showPresetBrowser();
+    hpeq::ui::PresetBrowser* browser=nullptr;
+    for(auto* child:editor->getChildren())if(auto* panel=dynamic_cast<hpeq::ui::PresetBrowser*>(child))browser=panel;
+    if(!browser)return 1;
+    const auto capture=[&](const juce::String& name){
+        auto image=editor->createComponentSnapshot(editor->getLocalBounds());
+        auto stream=folder.getChildFile(name+".png").createOutputStream();juce::PNGImageFormat png;
+        return stream&&stream->setPosition(0)&&stream->truncate().wasOk()&&png.writeImageToStream(image,*stream);
+    };
+    for(auto size:{juce::Point<int>{1000,700},juce::Point<int>{1280,840},juce::Point<int>{1920,1200}})
+    {editor->setSize(size.x,size.y);if(!capture("library-"+juce::String(size.x)))return 1;}
+    editor->setSize(1280,840);hpeq::rack::BrowserFilter filter;filter.collection="Rack Power";filter.genre="Trap";filter.character="Aggressive";
+    browser->setFilter(filter);if(!capture("filtered"))return 1;
+    browser->loadSelected();if(!capture("loaded"))return 1;
+    filter.query="no such preset";browser->setFilter(filter);if(!capture("empty"))return 1;
+    return 0;
+}
 int snapshots(const juce::File& folder)
 {
     folder.createDirectory();
@@ -446,6 +467,7 @@ int main(int argc,char** argv)
         if(argc==4&&(juce::String(argv[1])=="power"||juce::String(argv[1])=="power-verify"))
         {materialMode=true;materialFolder=juce::File(argv[3]);return powerBank(juce::File(argv[2]),juce::String(argv[1])=="power-verify");}
         if(argc==3&&juce::String(argv[1])=="snapshots")return snapshots(juce::File(argv[2]));
+        if(argc==3&&juce::String(argv[1])=="browser-snapshots")return browserSnapshots(juce::File(argv[2]));
         if((argc==4||argc==6)&&juce::String(argv[1])=="verify")
         {materialMode=true;materialFolder=juce::File(argv[3]);return verify(juce::File(argv[2]),argc==6?std::stoi(argv[4]):0,argc==6?std::stoi(argv[5]):250);}
         if((argc==5||argc==6)&&juce::String(argv[1])=="calibrate")
