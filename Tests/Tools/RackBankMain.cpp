@@ -5,6 +5,7 @@
 #include "Plugin/FxPluginEditor.h"
 #include "UI/PresetBrowser.h"
 #include "Analysis/LoudnessMeter.h"
+#include "Tools/CalibrationSearch.h"
 #include <BinaryData.h>
 #include <juce_dsp/juce_dsp.h>
 #include <juce_audio_utils/juce_audio_utils.h>
@@ -18,6 +19,11 @@ namespace
 {
 constexpr double fs=48000;
 juce::File materialFolder;bool materialMode=false;
+juce::File materialFile(const hpeq::rack::Recipe& recipe,int variant)
+{
+    const auto specific=materialFolder.getChildFile(recipe.id+"-"+juce::String(variant)+".wav");
+    return specific.existsAsFile()?specific:materialFolder.getChildFile(recipe.category.replaceCharacter(' ','_')+"-"+juce::String(variant)+".wav");
+}
 struct Head:juce::AudioPlayHead
 {
     int sample=0;double bpm=120;
@@ -66,7 +72,7 @@ juce::AudioBuffer<float> fixture(const hpeq::rack::Recipe& recipe,int variant,do
 {
     if(materialMode)
     {
-        const auto file=materialFolder.getChildFile(recipe.category.replaceCharacter(' ','_')+"-"+juce::String(variant)+".wav");
+        const auto file=materialFile(recipe,variant);
         juce::AudioFormatManager formats;formats.registerBasicFormats();
         auto reader=std::unique_ptr<juce::AudioFormatReader>(formats.createReaderFor(file));
         if(!reader||reader->sampleRate!=fs||reader->numChannels!=2||reader->lengthInSamples<fs*3)
@@ -206,6 +212,32 @@ const std::vector<hpeq::rack::Recipe>& taskRecipes()
     }();
     return bank;
 }
+int inspectChains(const juce::File& folder)
+{
+    juce::Array<juce::var> rows;
+    for(const auto& recipe:taskRecipes())
+    {
+        if(recipe.id!="HR019"&&recipe.id!="HR059"&&recipe.id!="HR074"&&recipe.id!="HR174")continue;
+        hpeq::FxProjectState p;juce::String error;
+        if(!hpeq::rack::makeProject(recipe,p,error,false))throw std::runtime_error(error.toStdString());
+        const auto source=fixture(recipe,0,recipe.bpm);auto row=object();put(row,"id",recipe.id);put(row,"input",data(metrics(source)));
+        put(row,"material_file",materialFile(recipe,0).getFileName());
+        juce::Array<juce::var> stages;
+        const auto chain=p.layers[0].mixChain;
+        for(size_t count=0;count<=chain.size();++count)
+        {
+            auto candidate=p;candidate.layers[0].mixChain.assign(chain.begin(),chain.begin()+static_cast<std::ptrdiff_t>(count));
+            const auto result=render(candidate,source,recipe.bpm);auto step=object();put(step,"prefix_length",static_cast<int>(count));
+            put(step,"last_module",count?hpeq::native::productName(chain[count-1].type):"PRE-EQ");put(step,"output",data(metrics(result.audio)));
+            put(step,"comp_peak_gr_db",result.comp);stages.add(step);
+        }
+        put(row,"stages",stages);rows.add(row);std::cout<<recipe.id<<" inspected\n";
+    }
+    auto root=object();put(root,"executable_sha256",juce::SHA256(juce::File::getSpecialLocation(juce::File::currentExecutableFile)).toHexString());
+    put(root,"material_manifest_sha256",juce::SHA256(materialFolder.getChildFile("sources.json")).toHexString());put(root,"presets",rows);
+    save(folder.getChildFile("chains.json"),root);return 0;
+}
+
 int calibrate(const juce::File& folder,int first,int count)
 {
     const auto& bank=taskRecipes();int failures=0;
@@ -224,18 +256,26 @@ int calibrate(const juce::File& folder,int first,int count)
             const double ratio=s.state->parameters["ratio"];
             const double target=s.state->mix<.75&&ratio>=4?8:ratio>=3?4.5:2;
             const double lower=target==8?6:target==4.5?3:1,upper=target==8?12:target==4.5?6:3;
-            double best=s.state->parameters["thresholdDb"],distance=1.e9,achieved=0;
+            double best=s.state->parameters["thresholdDb"],achieved=0;bool measured=false;
+            double lowThreshold=-60,highThreshold=0;juce::Array<juce::var> search;
             for(int iteration=0;iteration<6;++iteration)
             {
                 const auto r=render(p,source,recipe.bpm);const double gr=r.reductions.at(s.key());
-                if(std::abs(gr-target)<distance){distance=std::abs(gr-target);best=s.state->parameters["thresholdDb"];achieved=gr;}
+                auto step=object();put(step,"threshold_db",s.state->parameters["thresholdDb"]);put(step,"peak_gr_db",gr);search.add(step);
+                if(!measured||hpeq::test::preferCompressorMeasurement(gr,achieved,target,lower,upper))
+                {measured=true;best=s.state->parameters["thresholdDb"];achieved=gr;}
                 if(gr>=lower&&gr<=upper)break;
                 const double threshold=s.state->parameters["thresholdDb"];
-                const double next=juce::jlimit(-60.,0.,threshold+juce::jlimit(-12.,12.,(gr-target)/std::max(.1,1-1/ratio)));
+                // First v3 material run: the old ratio-derived Newton step
+                // missed HR005's 6--12 dB band in six attempts. Native models
+                // need not have that local slope. Retain the six-render budget
+                // and unchanged GR gates; bracket the measured response instead.
+                if(gr<lower)highThreshold=threshold;else lowThreshold=threshold;
+                const double next=.5*(lowThreshold+highThreshold);
                 if(std::abs(next-threshold)<.01)break;s.state->parameters.set("thresholdDb",next);
             }
             s.state->parameters.set("thresholdDb",best);
-            auto d=object();put(d,"slot_key",s.key());put(d,"target_gr_db",target);put(d,"achieved_gr_db",achieved);put(d,"pass",achieved>=lower&&achieved<=upper);dynamics.add(d);
+            auto d=object();put(d,"slot_key",s.key());put(d,"target_gr_db",target);put(d,"achieved_gr_db",achieved);put(d,"pass",achieved>=lower&&achieved<=upper);put(d,"search",search);dynamics.add(d);
         }
         learnFader(p,source,recipe.bpm);
         const auto tuned=render(p,source,recipe.bpm);const auto tunedMetrics=metrics(tuned.audio);
@@ -270,8 +310,10 @@ int calibrate(const juce::File& folder,int first,int count)
             p.outputTrimDb=trim;
         }
         auto row=object();put(row,"id",recipe.id);put(row,"name",recipe.name);
+        put(row,"calibration_search","bounded-bracket-v2");
         put(row,"bank_sha256",hpeq::rack::bankSha256());
-        put(row,"fixture_method",materialMode?"rack-material-v2; two category-specific local recordings/sample arrangements; owner listening pending":"rack-fixtures-v1; category-specific synthetic, two variants; owner listening pending");
+        put(row,"fixture_method",materialMode?"rack-material-v3; two category-specific recordings/sample arrangements, explicit recipe overrides; owner listening pending":"rack-fixtures-v1; category-specific synthetic, two variants; owner listening pending");
+        if(materialMode){juce::Array<juce::var> files;for(int v=0;v<2;++v)files.add(materialFile(recipe,v).getFileName());put(row,"material_files",files);}
         if(materialMode)put(row,"material_manifest_sha256",juce::SHA256(materialFolder.getChildFile("sources.json")).toHexString());
         put(row,"calibration",calibrationData(p,original));put(row,"dynamics",dynamics);put(row,"initial_input",data(in));put(row,"initial_output",data(initial));
         put(row,"executable_sha256",juce::SHA256(juce::File::getSpecialLocation(juce::File::currentExecutableFile)).toHexString());
@@ -440,6 +482,34 @@ int snapshots(const juce::File& folder)
     }
     return 0;
 }
+int verifyExternal(const juce::File& folder,int first=0,int count=250)
+{
+    const auto& bank=taskRecipes();int failures=0;
+    const auto materialHash=juce::SHA256(materialFolder.getChildFile("sources.json")).toHexString();
+    const auto exeHash=juce::SHA256(juce::File::getSpecialLocation(juce::File::currentExecutableFile)).toHexString();
+    for(int i=first;i<std::min(first+count,static_cast<int>(bank.size()));++i)
+    {
+        const auto& recipe=bank[static_cast<size_t>(i)];const auto file=folder.getChildFile("records/"+recipe.id+".json");
+        const auto row=juce::JSON::parse(file);juce::String error;hpeq::FxProjectState p;
+        if(row["id"].toString()!=recipe.id||row["bank_sha256"].toString()!=hpeq::rack::bankSha256()
+            ||row["material_manifest_sha256"].toString()!=materialHash||!static_cast<bool>(row["safety_pass"]))
+            throw std::runtime_error("Stale/unsafe calibration record: "+recipe.id.toStdString());
+        if(!hpeq::rack::makeProject(recipe,p,error,false)||!hpeq::rack::applyCalibration(row["calibration"],p,error))
+            throw std::runtime_error(error.toStdString());
+        const auto x=fixture(recipe,0,recipe.bpm);const auto result=render(p,x,recipe.bpm);
+        const auto inputHash=pcmHash(x),outputHash=pcmHash(result.audio);
+        const bool exact=inputHash==row["input_pcm_sha256"].toString()&&outputHash==row["output_pcm_sha256"].toString();
+        auto proof=object();put(proof,"id",recipe.id);put(proof,"exact",exact);
+        put(proof,"dsp_source_sha256",hpeq::rack::dspSourceSha256());put(proof,"verification_executable_sha256",exeHash);
+        put(proof,"calibrated_executable_sha256",row["executable_sha256"]);
+        put(proof,"calibration_receipt_sha256",juce::SHA256(file).toHexString());
+        put(proof,"input_pcm_sha256",inputHash);put(proof,"output_pcm_sha256",outputHash);
+        save(folder.getChildFile("verification/"+recipe.id+".json"),proof);
+        std::cout<<recipe.id<<(exact?" current-DSP exact":" CURRENT-DSP FAIL")<<std::endl;if(!exact)++failures;
+    }
+    return failures?1:0;
+}
+
 int verify(const juce::File& folder,int first=0,int count=250)
 {
     int failures=0,verified=0;const auto& bank=taskRecipes();
@@ -464,10 +534,14 @@ int main(int argc,char** argv)
     juce::ScopedJuceInitialiser_GUI init;
     try
     {
+        if(argc==4&&juce::String(argv[1])=="inspect-chains")
+        {materialMode=true;materialFolder=juce::File(argv[3]);return inspectChains(juce::File(argv[2]));}
         if(argc==4&&(juce::String(argv[1])=="power"||juce::String(argv[1])=="power-verify"))
         {materialMode=true;materialFolder=juce::File(argv[3]);return powerBank(juce::File(argv[2]),juce::String(argv[1])=="power-verify");}
         if(argc==3&&juce::String(argv[1])=="snapshots")return snapshots(juce::File(argv[2]));
         if(argc==3&&juce::String(argv[1])=="browser-snapshots")return browserSnapshots(juce::File(argv[2]));
+        if((argc==4||argc==6)&&juce::String(argv[1])=="verify-external")
+        {materialMode=true;materialFolder=juce::File(argv[3]);return verifyExternal(juce::File(argv[2]),argc==6?std::stoi(argv[4]):0,argc==6?std::stoi(argv[5]):250);}
         if((argc==4||argc==6)&&juce::String(argv[1])=="verify")
         {materialMode=true;materialFolder=juce::File(argv[3]);return verify(juce::File(argv[2]),argc==6?std::stoi(argv[4]):0,argc==6?std::stoi(argv[5]):250);}
         if((argc==5||argc==6)&&juce::String(argv[1])=="calibrate")

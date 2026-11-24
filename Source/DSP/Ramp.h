@@ -40,6 +40,7 @@ public:
     }
 
     bool isRamping() const noexcept { return remaining > 0; }
+    int remainingSteps() const noexcept { return remaining; }
     double value() const noexcept { return current; }
     double targetValue() const noexcept { return target; }
 

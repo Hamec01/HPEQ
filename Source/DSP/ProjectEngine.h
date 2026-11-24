@@ -39,8 +39,9 @@ ProjectSnapshot makeProjectSnapshot(const FxProjectState&);
 // Ten layers (01 §8, DECISIONS D5). L_j{.} = a full layer (PRE-EQ -> FX nodes, LayerEngine) followed
 // by its controls (channel component, gain, width, pan). w_j = the smoothed layer weight.
 //
-//   Parallel (delta layers):  y = D_L(x) + sum_j w_j ( D_{L-L_j}(L_j{x}) - D_L(x) ),   L = max_j L_j
-//   Serial:                   x_0 = x;  x_{j+1} = D_{L_j}(x_j) + w_j ( L_j{x_j} - D_{L_j}(x_j) );  y = x_10,
+// Let A_j be layer j's crossover-only all-pass and C the product of live A_j.
+//   Parallel: y = D_L(C{x}) + sum_j w_j (D_{L-L_j}(C_except_j{L_j{x}}) - D_L(C{x})), L = max L_j
+//   Serial: x_{j+1} = D_{L_j}(A_j{x_j}) + w_j (L_j{x_j} - D_{L_j}(A_j{x_j})); y = x_10,
 //                             L = sum_j L_j
 //
 // Latency: L_j counts whether the layer is enabled, muted or not (like node latency), so toggling a
@@ -48,6 +49,7 @@ ProjectSnapshot makeProjectSnapshot(const FxProjectState&);
 // A layer is skipped (no DSP) when it is disabled and faded out, or when it is the identity
 // (neutral PRE-EQ, no running node, identity controls): then its delta is exactly 0, so ten empty or
 // bypassed layers give the input bit-exactly. Mute / Solo only change w_j: the layer keeps running,
+// including its phase in the shared reference, so a neutral wet branch cannot comb with dry.
 // so un-muting is seamless. Re-enabling a disabled layer resets it first (its tails were cut when it
 // was disabled). Channel-mode changes fade the layer out, switch, and fade it back in.
 // Pooled processors (Reverb / Delay / Monsta) are shared by all layers of the project.
@@ -89,9 +91,13 @@ private:
         bool modePending = false;
         bool live = false;      // engine has been running (false after a disable: reset before reuse)
         bool processedLastBlock = false;
+        bool phaseRetiring=false;
         LinearRamp weight, gain, pan, width;
         AlignmentDelay outAlign; // Parallel: D_{L-L_j}; Serial: D_{L_j} of the layer input
         AlignmentDelay restAlign; // the component the channel mode leaves untouched
+        CrossoverTree::PhasePath restPhase,referencePhase;
+        std::array<CrossoverTree::PhasePath,kNumLayers> branchPhase;
+        std::array<std::vector<float>,kMaxChannels> rendered;
     };
 
     bool layerNeedsDsp(Layer&) const noexcept;
@@ -118,5 +124,6 @@ private:
     std::array<std::vector<float>, kMaxChannels> wetDry;
 
     std::array<std::vector<float>, kMaxChannels> dryAligned, work, current, component, rest;
+    std::array<CrossoverTree::PhasePath,kNumLayers> commonPhase;
 };
 } // namespace hpeq::dsp

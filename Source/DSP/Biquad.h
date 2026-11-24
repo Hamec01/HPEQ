@@ -61,6 +61,13 @@ class TptSvf
 public:
     enum class Mode { LowPass, HighPass, AllPass };
 
+    // Replay a crossover's coefficient clock on an independent signal history.
+    void copyTuning(const TptSvf& other) noexcept
+    {
+        mode=other.mode;k=other.k;a1=other.a1;a2=other.a2;a3=other.a3;
+        g=other.g;gTarget=other.gTarget;gStep=other.gStep;remaining=other.remaining;
+    }
+
     void setMode(Mode m) noexcept { mode = m; }
     // `interpolate`: glide g linearly over the next kControlInterval samples (call advance() once per
     // sample), instead of stepping it; a stepped g leaks zipper products into the output.

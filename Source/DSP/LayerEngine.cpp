@@ -86,6 +86,7 @@ void LayerEngine::prepare(double newSampleRate, int maxBlockSize, LayerPools* sh
 
 void LayerEngine::reset() noexcept
 {
+    phaseParking=false;
     controlPhase = 0;
     preEq.reset();
     for (auto& node : nodes)
@@ -139,15 +140,26 @@ void LayerEngine::updateTree() noexcept
     std::array<double, kMaxFxNodesPerLayer> low {}, high {};
     for (size_t j = 0; j < nodes.size(); ++j)
     {
-        running[j] = nodes[j].isRunning();
+        running[j] = !phaseParking&&nodes[j].isRunning();
         low[j] = nodes[j].targetLowHz();
         high[j] = nodes[j].targetHighHz();
     }
     tree.update(running, low, high);
 }
 
+void LayerEngine::processPhaseRetirement(int samples) noexcept
+{
+    phaseParking=true;updateTree();
+    float* input[kMaxChannels]{};
+    for(int ch=0;ch<kMaxChannels;++ch)
+    {input[ch]=xeCopy[static_cast<size_t>(ch)].data();std::fill(input[ch],input[ch]+samples,0.f);}
+    tree.process(input,kMaxChannels,samples,controlPhase,dryPtr.data(),bandList.data(),presencePtr.data());
+    controlPhase=(controlPhase+samples)%kControlInterval;
+}
+
 void LayerEngine::process(float* const* channels, int numChannels, int numSamples, const Transport& transport) noexcept
 {
+    phaseParking=false;
     juce::ScopedNoDenormals noDenormals;
     numChannels = std::min(numChannels, kMaxChannels);
     update();
@@ -247,7 +259,8 @@ void LayerEngine::process(float* const* channels, int numChannels, int numSample
                 std::copy(chunk[ch], chunk[ch] + n, band[ch]);
                 std::fill(delta[ch], delta[ch] + n, 0.0f);
             }
-            mixNode.process(band, mixPresence.data(), delta, numChannels, n, transport, start);
+            auto mixTransport=transport;mixTransport.controls.latency+=layerLatency;
+            mixNode.process(band, mixPresence.data(), delta, numChannels, n, mixTransport, start);
             if (mixLatency > 0)
                 mixDryAlign.process(chunk, chunk, numChannels, n, mixLatency);
             for (int ch = 0; ch < numChannels; ++ch)

@@ -39,10 +39,13 @@ float targetGain(float gainDb, bool bypassed) noexcept
 FxPluginProcessor::FxPluginProcessor()
     : juce::AudioProcessor(BusesProperties()
                                .withInput("Input", juce::AudioChannelSet::stereo(), true)
+                               .withInput("Sidechain", juce::AudioChannelSet::stereo(), false)
                                .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
       parameters(*this, nullptr, kParametersTree, params::createLayout())
 {
     outputGainDb = parameters.getRawParameterValue(params::outputGain.getParamID());
+    finalTrimDb=parameters.getRawParameterValue(params::finalTrim.getParamID());
+    for(int i=0;i<control::kMacros;++i)macroValues[static_cast<size_t>(i)]=parameters.getRawParameterValue(params::macroId(i));
     bypassParameter = dynamic_cast<juce::AudioParameterBool*>(parameters.getParameter(params::bypass.getParamID()));
     jassert(outputGainDb != nullptr && bypassParameter != nullptr);
     engine.publish(project);
@@ -56,7 +59,12 @@ void FxPluginProcessor::prepareToPlay(double sampleRate, int maximumExpectedSamp
     capture.reset();
     inputLoudness.prepare(sampleRate, false);
     outputLoudness.prepare(sampleRate, true);
-    engine.prepare(sampleRate, maxBlock,getTotalNumInputChannels());
+    engine.prepare(sampleRate, maxBlock,getMainBusNumInputChannels());
+    processedFrames=0;macroRampSteps=dsp::stepsFor(.020,sampleRate);
+    for(int i=0;i<control::kMacros;++i){const auto v=macroValues[static_cast<size_t>(i)]->load();
+        macroRamps[static_cast<size_t>(i)].reset(std::isfinite(v)?v:0);macroHeld[static_cast<size_t>(i)]=std::isfinite(v)?v:0;
+        macroCurves[static_cast<size_t>(i)].assign(static_cast<size_t>(maxBlock),0.f);}
+    finalGain.reset(sampleRate,.020);finalGain.setCurrentAndTargetValue(juce::Decibels::decibelsToGain(finalTrimDb->load()));
     tubes.prepare(sampleRate, maxBlock);
     dry.setSize(dsp::kMaxChannels, maxBlock);
     dryAlign.prepare(dsp::ProjectEngine::maxLatency(sampleRate) + tubes.latencySamples());
@@ -74,7 +82,9 @@ bool FxPluginProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
     const auto in = layouts.getMainInputChannelSet();
     const auto out = layouts.getMainOutputChannelSet();
     // Mono -> mono and stereo -> stereo only. Mono -> stereo needs a defined upmix rule first (01 §10).
-    return in == out && (out == juce::AudioChannelSet::mono() || out == juce::AudioChannelSet::stereo());
+    if(in!=out||(out!=juce::AudioChannelSet::mono()&&out!=juce::AudioChannelSet::stereo())||layouts.inputBuses.size()>2||layouts.outputBuses.size()!=1)return false;
+    return layouts.inputBuses.size()<2||layouts.inputBuses[1].isDisabled()
+        ||layouts.inputBuses[1]==juce::AudioChannelSet::mono()||layouts.inputBuses[1]==juce::AudioChannelSet::stereo();
 }
 
 void FxPluginProcessor::measure(const juce::AudioBuffer<float>& buffer,
@@ -104,8 +114,8 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
 {
     juce::ScopedNoDenormals noDenormals;
 
-    const int numInputs = getTotalNumInputChannels();
-    const int numOutputs = getTotalNumOutputChannels();
+    const int numInputs = getMainBusNumInputChannels();
+    const int numOutputs = getMainBusNumOutputChannels();
     const int numSamples = buffer.getNumSamples();
     for (int ch = numInputs; ch < numOutputs; ++ch)
         buffer.clear(ch, 0, numSamples);
@@ -117,6 +127,17 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
     inputLoudness.process(buffer.getArrayOfReadPointers(), channels, numSamples);
 
     const bool bypassed = bypassParameter->get();
+    finalGain.setTargetValue(bypassed?1.f:juce::Decibels::decibelsToGain(finalTrimDb->load(std::memory_order_relaxed)));
+    const auto macros=macroMask.load(std::memory_order_acquire);
+    for(int i=0;i<control::kMacros;++i)if(macros&(1u<<i)){
+        const auto v=macroValues[static_cast<size_t>(i)]->load(std::memory_order_relaxed);
+        const auto serial=macroResetSerial[static_cast<size_t>(i)].load(std::memory_order_acquire);
+        if(serial!=macroSeenSerial[static_cast<size_t>(i)]){
+            macroSeenSerial[static_cast<size_t>(i)]=serial;macroRamps[static_cast<size_t>(i)].reset(std::isfinite(v)?v:0);
+            macroHeld[static_cast<size_t>(i)]=std::isfinite(v)?v:0;
+        }
+        macroRamps[static_cast<size_t>(i)].setTarget(std::isfinite(v)?v:0,macroRampSteps);
+    }
     gain.setTargetValue(targetGain(outputGainDb->load(std::memory_order_relaxed), bypassed));
     wetAmount.setTarget(bypassed ? 0.0 : 1.0, bypassRampSteps);
 
@@ -147,6 +168,22 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
     for (int start = 0; start < numSamples; start += capacity)
     {
         const int n = juce::jmin(capacity, numSamples - start);
+        transport.controls={};transport.controls.position=processedFrames+static_cast<std::uint64_t>(start);
+        if(externalKeyEnabled()){
+            const int keyChannels=getBus(true,1)->getNumberOfChannels();
+            const int first=getChannelIndexInProcessBlockBuffer(true,1,0);
+            if(first+keyChannels<=buffer.getNumChannels()){
+                transport.controls.keyChannels=keyChannels;
+                for(int ch=0;ch<keyChannels;++ch)transport.controls.key[static_cast<size_t>(ch)]=buffer.getReadPointer(first+ch)+start;
+            }
+        }
+        for(int m=0;m<control::kMacros;++m)if(macros&(1u<<m)){
+            auto& curve=macroCurves[static_cast<size_t>(m)];auto& ramp=macroRamps[static_cast<size_t>(m)];
+            for(int i=0;i<n;++i){const auto value=static_cast<float>(ramp.next());
+                if((transport.controls.position+static_cast<std::uint64_t>(i))%control::kInterval==0)macroHeld[static_cast<size_t>(m)]=value;
+                curve[static_cast<size_t>(i)]=macroHeld[static_cast<size_t>(m)];}
+            transport.controls.macros[static_cast<size_t>(m)]=curve.data();
+        }
         float* chunk[dsp::kMaxChannels] {};
         for (int ch = 0; ch < channels; ++ch)
         {
@@ -173,6 +210,7 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
                          tubeLeninMix.load(std::memory_order_relaxed), tubeStalinMix.load(std::memory_order_relaxed));
         const int tubeLatency = tubes.isRunning() ? tubes.latencySamples() : 0;
         if(master){applyGain();tubes.process(chunk,channels,n);}
+        transport.controls.latency=master?tubeLatency:0;
         engine.process(chunk,channels,n,transport);
         if(!master)tubes.process(chunk, channels, n);
         // Align the dry copy with the layer output (PDC): bypass and the difference view stay in time.
@@ -213,10 +251,13 @@ void FxPluginProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::Mid
                 juce::FloatVectorOperations::multiply(chunk[ch], g, n);
         }
         // g == 1 and not ramping: untouched, so pass-through and bypass are bit-exact.
+        if(finalGain.isSmoothing())for(int i=0;i<n;++i){const auto g=finalGain.getNextValue();for(int ch=0;ch<channels;++ch)chunk[ch][i]*=g;}
+        else if(const auto g=finalGain.getTargetValue();g!=1.f)for(int ch=0;ch<channels;++ch)juce::FloatVectorOperations::multiply(chunk[ch],g,n);
         capture.push(dry.getArrayOfReadPointers(), chunk, channels, n);
     }
 
     measure(buffer, channels, outputPeak, outputRms);
+    processedFrames+=static_cast<std::uint64_t>(numSamples);
     outputLoudness.process(buffer.getArrayOfReadPointers(), channels, numSamples);
     nativeTailHint.store(engine.liveNativeTailSeconds(),std::memory_order_relaxed);
 }
@@ -297,9 +338,18 @@ FxProjectState FxPluginProcessor::getProject() const
 bool FxPluginProcessor::setProject(FxProjectState newProject)
 {
     sanitize(newProject);
+    bool valid=true;const auto inspect=[&](const auto& chain){for(const auto& slot:chain)
+        if((slot.externalSidechain||!slot.macros.empty())&&!isModuleSupported(slot))valid=false;};
+    for(const auto& layer:newProject.layers){inspect(layer.mixChain);for(const auto& n:layer.fxNodes)inspect(n.chain);for(const auto& n:layer.eqNodes)inspect(n.chain);}
+    if(!valid)return false;
     const juce::ScopedLock lock(projectLock);
     if(!engine.publish(newProject))return false;
     project = std::move(newProject);
+    projectRevision.fetch_add(1,std::memory_order_release);
+    std::uint32_t used=0;
+    const auto collect=[&](const auto& chain){for(const auto& s:chain)for(const auto& m:s.macros)used|=1u<<m.macro;};
+    for(const auto& layer:project.layers){collect(layer.mixChain);for(const auto& n:layer.fxNodes)collect(n.chain);for(const auto& n:layer.eqNodes)collect(n.chain);}
+    macroMask.store(used,std::memory_order_release);
     fallbackBpm.store(project.referenceBpm,std::memory_order_relaxed);
     masterRoute.store(project.masterRoute,std::memory_order_relaxed);
     tubeLenin.store(project.lenin, std::memory_order_relaxed);
@@ -320,6 +370,8 @@ bool FxPluginProcessor::loadRackPreset(int index)
     undoManager.beginNewTransaction("Rack preset "+recipe.name);
     if(!editProject("Rack preset "+recipe.name,[&](FxProjectState& target){target=p;}))return false;
     if(auto* parameter=parameters.getParameter(params::outputGain.getParamID()))parameter->setValueNotifyingHost(parameter->convertTo0to1(0));
+    for(int i=0;i<control::kMacros;++i)parameters.getParameter(params::macroId(i))->setValueNotifyingHost(0);
+    parameters.getParameter(params::finalTrim.getParamID())->setValueNotifyingHost(parameters.getParameter(params::finalTrim.getParamID())->getDefaultValue());
     setPresetName(recipe.name);return true;
 }
 
@@ -473,7 +525,7 @@ void FxPluginProcessor::getStateInformation(juce::MemoryBlock& destData)
     juce::ValueTree root(kStateRoot);
     auto saved=getProject();
     captureNativeState(saved);
-    root.setProperty(kStateSchema, projectSchemaVersion(saved), nullptr);
+    root.setProperty(kStateSchema, finalTrimDb->load()!=0?3:projectSchemaVersion(saved), nullptr);
     if (const auto name = getPresetName(); name.isNotEmpty())
         root.setProperty("presetName", name, nullptr);
     root.appendChild(parameters.copyState(), nullptr);
@@ -503,6 +555,13 @@ void FxPluginProcessor::setStateInformation(const void* data, int sizeInBytes)
     if(!setProject(std::move(*restored)))return;
 
     const auto parametersTree = root.getChildWithName(kParametersTree);
+    // APVTS keeps missing values alive across replaceState; old projects must
+    // explicitly clear new controls rather than inherit the previous session.
+    for(int index=0;index<control::kMacros+1;++index){
+        const auto id=index<control::kMacros?params::macroId(index):params::finalTrim.getParamID();bool found=false;
+        for(const auto child:parametersTree)found=found||child["id"].toString()==id;
+        if(!found)if(auto* p=parameters.getParameter(id))p->setValueNotifyingHost(p->getDefaultValue());
+    }
     if (parametersTree.isValid())
         parameters.replaceState(parametersTree);
     {
@@ -527,12 +586,17 @@ bool FxPluginProcessor::loadPreset(const void* data, int sizeInBytes, const juce
     useCurrentModules(*restored);
     undoManager.beginNewTransaction("Preset " + name);
     if(!editProject("Preset " + name, [&restored](FxProjectState& p) { p = *restored; }))return false;
-    // Output gain comes with the preset (not undoable: it is a host parameter); Bypass stays.
+    // Host controls come with the preset (DAW parameter undo); Bypass stays.
     const auto parametersTree = root.getChildWithName(kParametersTree);
     for (const auto& child : parametersTree)
         if (child["id"].toString() == params::outputGain.getParamID())
             if (auto* p = parameters.getParameter(params::outputGain.getParamID()))
                 p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(child["value"])));
+    for(int i=0;i<control::kMacros+1;++i){const auto id=i<control::kMacros?params::macroId(i):params::finalTrim.getParamID();
+        auto* p=parameters.getParameter(id);bool found=false;
+        for(const auto child:parametersTree)if(child["id"].toString()==id){p->setValueNotifyingHost(p->convertTo0to1(static_cast<float>(child["value"])));found=true;break;}
+        if(!found)p->setValueNotifyingHost(p->getDefaultValue());
+    }
     setPresetName(name);
     return true;
 }

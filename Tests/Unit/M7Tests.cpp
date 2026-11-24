@@ -113,6 +113,15 @@ juce::AudioBuffer<float> segment(const juce::AudioBuffer<float>& x, int start, i
     return y;
 }
 
+// Independent signal branch: a unity, zero-latency layer with only the same
+// region edges. It models A_j, without using ProjectEngine's phase replay API.
+LayerState phaseOnly(LayerState layer)
+{
+    layer.eqNodes.clear();layer.mixChain.clear();layer.gainDb=0;layer.pan=0;layer.width=1;layer.mix=1;
+    for(auto& n:layer.fxNodes){n.mix=0;n.chain={slot(FxType::Gain,{{"gainDb",0}})};}
+    return layer;
+}
+
 // Three layers with different jobs, latency 0 (used by the formula tests).
 FxProjectState threeLayers(LayerRouting routing)
 {
@@ -176,25 +185,28 @@ public:
             expect(null.errorDb <= -100.0);
         }
 
-        beginTest("Parallel equals the documented formula y = x + sum w_j (L_j{x} - x) (independent model, <= -120 dB)");
+        beginTest("Parallel equals the common-phase delta formula (independent unity-region branches, <= -120 dB)");
         {
             const auto p = threeLayers(LayerRouting::Parallel);
             const auto y = renderProject(p, drums);
             auto model = drums;
+            for(int j:{0,3,7})model=modelLayer(phaseOnly(p.layers[static_cast<size_t>(j)]),model);
+            const auto reference=model;
             for (int j : { 0, 3, 7 })
             {
                 const auto& layer = p.layers[static_cast<size_t>(j)];
-                const auto lj = modelLayer(layer, drums);
+                auto lj = modelLayer(layer, drums);
+                for(int k:{0,3,7})if(k!=j)lj=modelLayer(phaseOnly(p.layers[static_cast<size_t>(k)]),lj);
                 for (int ch = 0; ch < 2; ++ch)
                     for (int i = 0; i < drums.getNumSamples(); ++i)
-                        model.setSample(ch, i, model.getSample(ch, i) + layer.mix * (lj.getSample(ch, i) - drums.getSample(ch, i)));
+                        model.setSample(ch, i, model.getSample(ch, i) + layer.mix * (lj.getSample(ch, i) - reference.getSample(ch, i)));
             }
             const auto null = compareAligned(y, model);
             logMessage("  parallel vs model: " + juce::String(null.errorDb, 1) + " dB");
             expect(null.errorDb <= -120.0);
         }
 
-        beginTest("Serial equals x_{j+1} = x_j + w_j (L_j{x_j} - x_j) in layer order (independent model, <= -120 dB); order matters");
+        beginTest("Serial equals phase-aligned layer crossfade in order (independent model, <= -120 dB); order matters");
         {
             const auto p = threeLayers(LayerRouting::Serial);
             const auto y = renderProject(p, drums);
@@ -203,9 +215,10 @@ public:
             {
                 const auto& layer = p.layers[static_cast<size_t>(j)];
                 const auto lj = modelLayer(layer, model);
+                const auto reference=modelLayer(phaseOnly(layer),model);
                 for (int ch = 0; ch < 2; ++ch)
                     for (int i = 0; i < drums.getNumSamples(); ++i)
-                        model.setSample(ch, i, model.getSample(ch, i) + layer.mix * (lj.getSample(ch, i) - model.getSample(ch, i)));
+                        model.setSample(ch, i, reference.getSample(ch, i) + layer.mix * (lj.getSample(ch, i) - reference.getSample(ch, i)));
             }
             const auto null = compareAligned(y, model);
             logMessage("  serial vs model: " + juce::String(null.errorDb, 1) + " dB");
@@ -256,7 +269,9 @@ public:
             }
         }
 
-        beginTest("Mute, layer Mix 0 and Solo: a muted / mix-0 layer is exactly absent; Solo hears only soloed layers; mutes and solos are not lost");
+        // Owner-authorized sound change: muted live regions retain A_j in the
+        // reference. Compare to unity-region branches, not absent all-passes.
+        beginTest("Mute, Mix 0 and Solo remove the effect delta and retain the common phase (<= -120 dB)");
         {
             for (auto routing : { LayerRouting::Parallel, LayerRouting::Serial })
             {
@@ -264,19 +279,21 @@ public:
                 auto muted = p;
                 muted.layers[3].mute = true;
                 auto without = p;
-                without.layers[3] = LayerState {};
-                expect(compareAligned(renderProject(muted, drums), renderProject(without, drums)).bitExact, toString(routing) + ": mute");
+                without.layers[3] = phaseOnly(p.layers[3]);
+                without.layers[3].mix=0; // retain phase, contribute no effect delta
+                expect(compareAligned(renderProject(muted, drums), renderProject(without, drums)).errorDb<=-120, toString(routing) + ": mute");
                 auto mixZero = p;
                 mixZero.layers[3].mix = 0.0f; // MIX-0 for a layer
-                expect(compareAligned(renderProject(mixZero, drums), renderProject(without, drums)).bitExact, toString(routing) + ": layer mix 0");
+                expect(compareAligned(renderProject(mixZero, drums), renderProject(without, drums)).errorDb<=-120, toString(routing) + ": layer mix 0");
 
                 auto soloed = p;
                 soloed.layers[3].solo = true;
                 soloed.layers[0].mute = true; // stays muted after solo is released
                 auto only = p;
-                only.layers[0] = LayerState {};
-                only.layers[7] = LayerState {};
-                expect(compareAligned(renderProject(soloed, drums), renderProject(only, drums)).bitExact, toString(routing) + ": solo");
+                only.layers[0] = phaseOnly(p.layers[0]);
+                only.layers[7] = phaseOnly(p.layers[7]);
+                only.layers[0].mix=only.layers[7].mix=0;
+                expect(compareAligned(renderProject(soloed, drums), renderProject(only, drums)).errorDb<=-120, toString(routing) + ": solo");
                 const auto snapshot = makeProjectSnapshot(soloed);
                 expect(snapshot.layers[7].weight == 0.0f && snapshot.layers[3].weight == 1.0f);
             }

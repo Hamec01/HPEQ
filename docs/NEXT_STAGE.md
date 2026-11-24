@@ -1,3 +1,228 @@
+# HamloRack controls stage COMPLETE - 2026-11-24
+
+Owner selected16 assignable macros. Implemented and qualified0.2.3. The owner
+subsequently authorized commit/push of the completed HamloRack work. No subagents,
+model switch or installed DAW bundle replacement. Stage base commit:
+9f8c63729bdaa4d461ee0e79c5c56093822df3c9; publication commit is shown by git log -1.
+Pre-existing separate build-relocation changes remain local and uncommitted.
+Binaries, private audio and build caches remain ignored.
+
+## Deliverable
+
+`batvst/HamloRack.vst3`, build/HPEQ_artefacts/Release/VST3 and immutable independently
+validated out/controls-20261124/qualified-artifact/HamloRack.vst3 have IDENTICAL
+complete file inventories. DLL SHA256:
+0ef2edf2ef3bb35c4ce5389a863ddf48aef16e75b8fc15394842930ea9ea8023.
+WindowsFileVersion/ProductVersion and moduleinfo version all0.2.3. ReleaseLTOON.
+Normalized DSP source1c5f3358f8331e4a6f820282b44b97ef9ce5b66a29d2ddf6d3bb5ef6fc2b2d3a.
+Current receipt: docs/hamlorack/CURRENT_VERIFICATION.json.
+Human report: CONTROLS_REPORT.md; usage: CONTROLS_GUIDE.md; design/gates/failures:
+AUTOMATION_SIDECHAIN_OUTPUT.md. Previous0.2.2 archived INTEGRATION_0.2.2_*.
+
+## Completed behavior
+
+Original outputGain/bypass IDs retained, macro01..macro16 and finalTrim appended
+(19 total). Module-owned bindings support fanout, reverse physical ranges, move/
+copy/delete/undo/save. Stale targets and malformed XML rejected. Clear/Unassign
+retain current mapped targets. Native editor knob values and gestures feed host
+macros; End remains balanced after routing/module removal. Per-module max64
+bindings; native parameters only (rack EQ/region/layer controls outside mapping).
+20ms macro ramps on fixed16sample clock; VST3 events arrive at JUCE callbacks.
+
+Optional disabled-by-default mono/stereo key bus, per-Comp ExternalSC for all5
+models, full key forSide and independent L/R forDualMono, prepared key delays
+track preceding rack latency. Disabled/unavailable bus fallsback; enabledsilent
+key produces0GR, including removed send with busstillenabled. Key never mixedin.
+Generated isolated Comp gets separate external kernels; original internal kernels
+verbatim and Plugins/ untouched. FinalTrim after effects/tubes/legacygain/Master;
+peak-only CLIPreset retains integratedLUFS. Positive trim can exceed ceiling;
+no new limiter. Settled bypass exactdry. Optional schema3; old1/2 remain readable,
+absentnew hostcontrols resetneutral. RackUndo projectedits; DAWundo hostvalues.
+
+## Verification (all complete, no active jobs)
+
+- Final quiet UNFILTERED Release9245/0; log release-full.log, immutable
+  HPEQ_Tests-final.exe. Ran after all own builds/validators/replays finished.
+- Debug finalcontrols214/0, CRT malloc+new with varying macro/trim+hotkey;
+  controls-debug-v13.log. Earlier corrected empty-graph contract205/0 and phase49/0;
+  finalRelease repeats all tests. No threshold relaxation.
+- Final1c5 phase matrix400/0, phase-qualified/phase.json, immutable
+  HPEQ_PhaseAudit-final.exe. Direct phase fixtures don't use preset calibration.
+- Raw250+20 exact, final embedded250+20 exact. Calibration entries exactlyequal
+  calibration-before.json; no preset settings/trims changed in controlsstage.
+  Rawverifier5d8b1cf98006c6c6840c8de080952d1a36f815e63420f0192784a7d3da3567db;
+  embeddedverifierbf39086a88aaebd145257b658df0936996ccb454a1e069118121d1518df2f9f1.
+  Originalrecords/2000task checks/160Power+20tails keep original calibratorhashes.
+  finish_bank --embed authenticated all250 final1c5 proofs, Powerhistory appended.
+- Corrected immutable ControlAudit2 ran BOTHbaseline0.2.2 andfinal0.2.3:0fail;
+  internalPCM537a22ef0c830adaf30e4849c39fd5865902b30edae0186dee80e72f53516f72 exact;
+  macro+6.00000030dB, key-15.09779625dB, trim-6.00000049dB, no keyleak.
+- Same DLL: Steinberg3.8.0 extensive537/0; pluginval9 GUI SUCCESS/noexclusions;
+  independent originalHostSmoke100/100instances and100/100desktopeditors.
+- Final Pythonbank/adapter16/0; structural--checkpass. Final UI at1000x700 and
+  1280x840 plus nativeCompSC inspected. Private screenshots/audio ignored.
+
+Core commands (cwd E:/HPM/HPEQ):
+cmake --build --preset release --parallel 4 --target HPEQ_VST3 HPEQ_RackBank HPEQ_Tests -- /p:CL_MPCount=2
+& out/controls-20261124/HPEQ_Tests-final.exe
+& out/controls-20261124/HPEQ_Tests-debug-v13.exe 'Rack controls stage'
+python scripts/hamlorack/finish_bank.py out/phase-level-20261124/bank-bracket out/phase-level-20261124/material-v4 --embed
+ControlAudit2: HPEQ_ControlAudit-v2.exe <absolute bundle> <NEW absolute outputdir> [require]
+PhaseAudit: HPEQ_PhaseAudit-final.exe <NEW absolute outputdir>
+Raw bank: HPEQ_RackBank-final-raw.exe verify-external <absolute bank-bracket> <absolute material-v4> first count
+Embedded bank: HPEQ_RackBank-final-embedded.exe verify <same folders> first count
+Ranges0/83,83/83,166/84; Power: power-verify <absolute power> <absolute material-v4>.
+Steinberg validator.exe -e <bundle>; pluginval --strictness-level9 --timeout-ms120000
+--output-dir<privatefolder> --validate<bundle> (actual command uses separate args,
+GUI enabled). HostSmoke --plugin<bundle> --cycles100 --out<privateJSON>.
+Full CLI provenance/results/hashes in current receipt and private evidence.
+
+## Failures retained and measurement corrections
+
+Invalid attack0.05ms fixture replaced with same valid1ms as baseline; zero-delay
+Fader timingfixture replaced with neutral Udarnik240sample while preserving exact
+onset gate. Debugv8 XML numeric-string index rejection and Undo transaction bugs
+fixed (177/4 before, final214/0). Old contract helper's one-bus layout was rejected;
+corrected to declared buses/keydisabled, same coverage. Obsolete invalid-fixture
+run stopped; preserved log and stopnote. Unassign/Clear retention and gesture-End
+regressions added after review. Candidate1(9834source)270/400 passed but superseded;
+all270+400 repeated forfinal1c5, candidateproofs preserved.
+
+ControlAudit1 had two real failed assertions from an INSTRUMENT bug: edited outer
+JUCE VST3PluginState, so requested module graph never reached IComponent. Original
+exe/source/before/after preserved. Corrected ControlAudit2 unwraps/wraps IComponent
+and checks restored module+feature state. SAMEv2 tool reran both binaries with
+unchanged signal/blocks/thresholds; bothpassed. Originalv1 defaultgraph hash is not
+Comp-restoration evidence. No productDSPchange or new calibration cycle needed.
+Receipt generation initially used a strict parser on SDK moduleinfo (trailing
+comma); actual versions verified with PowerShell parser and identical bundle
+inventories. No SDK/product metadata edits or validator gate changes.
+Private progress/history: out/controls-20261124/control-progress-notes.md and
+active-jobs-in-progress.json. Current active-jobs.json explicitly has no jobs.
+
+## Next stage (owner/manual)
+
+Actual FL Studio: sidechain enable/mute/disable, macro automation with editorclosed,
+save/reopen and audio audition. Every preset's musical-intent verdict still owner
+pending; existing23insert+HR250wet and PW011/PW019 loudness exceptions remain.
+Rack sample-asset packaging separate. Do not silently claim owner listening or
+install the bundle. Commit/push was subsequently authorized; installation remains a separate action.
+Recommend medium for routine host/package follow-up; Astra/xhigh for unexpected
+DSP/compatibility diagnosis. No model/effort switch performed. A new chat can
+continue from this handoff; none created automatically.
+
+---
+
+# HamloRack phase and level repair COMPLETE - 2026-11-24
+
+Completed the owner-approved phase/level stage. Owner chose changed sound for
+all existing projects and low latency. No subagents, model/effort switch,
+commit/push or install. Branch main, base/HEAD unchanged:
+9f8c63729bdaa4d461ee0e79c5c56093822df3c9. All changes remain in the working tree.
+Preserved the pre-existing build-relocation changes described below.
+
+## Deliverable and provenance
+
+Release LTO ON, VST3/Windows version0.2.2:
+`batvst/HamloRack.vst3` (also build/HPEQ_artefacts/Release/VST3).
+DLL SHA256:5333ea3926478c24e5ff4d3d173dece0d56289c20f069dd1d7a42ca1d076499f.
+Immutable independently validated copy:
+`out/phase-level-20261124/qualified-artifact/HamloRack.vst3`; identical DLL hash.
+Compiled normalized source identity:
+5324bfad090c07e9b02e64d66a07461852d53ec02e81454889b7366ffcdda9c3.
+Calibration format3 checks this identity plus actual recipe resource hash.
+Native plugin payloads, host parameter IDs and state schema unchanged.
+Evidence and private audio: out/phase-level-20261124/ (ignored, do not commit WAVs).
+Authoritative current receipt: docs/hamlorack/CURRENT_VERIFICATION.json.
+Human report: PHASE_LEVEL_REPORT.md; failures/method: PHASE_LEVEL_METHOD.md.
+0.2.1 receipt/notes archived as INTEGRATION_0.2.1_*; 0.2.0 remains historical.
+
+## Completed behavior and measurements
+
+Common crossover phase for parallel layer delta sums; phase-aligned serial dry
+references, unused L/R and M/S components and wet-only subtraction. Independent
+histories replay the actual coefficient clock. Disable/mode/region retirement
+is sample-clock based, with stale phase programs invalidated. No added lookahead;
+active mix0 retains all-pass phase, settled global bypass original aligned dry.
+External parallel dry routing needs phase assessment. Old project sound can change.
+
+Final phase audit400/400, zero mono channel difference, max magnitude error
+0.000003106316754dB. Same original instrument failed232/400 before repair.
+Debug phase/transition/search/RT49/49, CRT malloc+new covered. That Debug binary
+precedes only the host program-name metadata fix; audio code unchanged, identity
+transition proven by reconstructing entire previous source hash from that one line.
+
+All250 task recipes individually measured:2000 source/level/tempo renders,
+safety250/250,142/142 compressor tuning targets (before final Master input trim),
+loudness226/250 within+/-0.5LU. Actual final Comp/RedWall GR also recorded per render.
+23 insert peak-growth exceptions plus HR250 intentional wet-only remain explicit.
+Power20/20 safe:160 checks+20tails,18/20 loudness matches; PW011/PW019 headroom
+exceptions. Worst Power8xTP -0.349999236944497, tail -100.21424225552187dBFS.
+All270 canonical PCM hashes exact through final DSP before embedding AND final
+embedded bank. Original frozen bracket calibrator/records retain original hashes;
+separate current-source proofs authenticate unchanged records. No relabelled EXEs.
+Dataset material-v4 has36 WAV fixtures, category pairs + HR019 shakers/HR059 claps;
+old-computer dataset unavailable, so no direct old/new loudness-count comparison.
+All270 loudness-matched A/B pairs ready, private bank-bracket/audio and power/audio.
+PRESET_REVIEW.md has250 individual engineering decisions. Owner listening pending.
+
+## Completed acceptance checks
+
+- Final unfiltered quiet Release suite:9031 expectations,0 failures,
+  `HPEQ_Tests-final.exe`, full-release-final.log/.exit0 (session51319 complete).
+- Final VST Steinberg3.8.0 extensive:537/537; pluginval strictness9SUCCESS (GUI
+  included, no disabled tests); independent binary host all pass,100/100 instance
+  and100/100 desktop editor cycles. Each final log/.exit0 in evidence root.
+- Final PhaseAudit: phase-qualified/phase.json,400/400; canonical embedded replays
+  three verify-embedded logs83+83+84 exact, Power20 exact, all .exit0.
+- Python structural15/15; build_bank.py --check0; configure_build_tests.ps1
+  6checks pass; git diff --check0 (only line-ending warnings).
+- Existing legacy MonstaProcessor/TubeColour CPU regressions passed unchanged
+  p99 gates:Revolution1/8=7.4/66.1%, Tubes11.4%. Eight-instance max139.1% deadline;
+  this is not a timing guarantee for eight full native racks. DAW check pending.
+
+Failures preserved/documented: original phase232/400; earlier transition and
+retired-region failures; initial Newton HR005 failure replaced by entire bounded
+calibration; earlier full Release9013/2CPU under load. First qualified Steinberg
+536/1 found advertised program0 blank -> Default + contract regression, renewed
+source guard and ALL canonical proofs. JUCE rcfile lacked Info.txt dependency,
+leaving Windows0.2.0 with VST0.2.2 -> CMake dependency fixed. An early final suite
+was stopped at obsolete browser recipe hash; exact pin updated for authorized
+16 Master ceilings, test-only rebuild, then entire suite rerun9031/0. No gates
+relaxed. Archived *before-program-name*, *before-resource-fix*, original logs/tools.
+
+## Reproduction and remaining scope
+
+Build: build_vst.bat (no install); Release production LTO stays ON.
+Tools:
+
+```
+cmake --build --preset release --parallel 4 --target HPEQ_RackBank HPEQ_Tests HPEQ_PhaseAudit -- /p:CL_MPCount=2
+```
+
+Replay: HPEQ_RackBank-final.exe verify <bank-bracket> <material-v4> [first count];
+power-verify <power> <material-v4>. PhaseAudit requires a NEW output directory.
+Finalize exact receipt: python out/phase-level-20261124/finalize_receipt.py after
+all real .exit0s. Source changes invalidate dependent calibration: frozen original
+record hashes must stay intact; reverify before embedding. Do not run or overwrite
+an EXE while its build target links. All jobs completed; no active task process.
+
+Uncommitted work: Source/DSP phase paths/engines, Source/Rack calibration guard,
+Source/Plugin program name, CMake, tests/tools, 250/20 assets, numerical receipts,
+method/review/current integration docs, scripts/hamlorack and preserved BAT/helper
+relocation changes. No Plugins/ changes. Private files only in ignored out/.
+
+Next coherent stage: owner audition in FL Studio, then the already requested
+host automation, external sidechain and final-output controls. Include automation
+with frequency moves and delayed native branches in the next validation design.
+Rack sample-asset packaging also remains separate. Do not claim musical approval.
+Recommended for next DSP/automation design: owner's Astra/xhigh; no switch made.
+Continuation prompt: "Continue from docs/NEXT_STAGE.md. Phase/level stage is
+complete; implement the next agreed automation/sidechain/output stage."
+
+---
+
+
 # HamloRack source integration - 2026-11-22
 
 Current receipt: `hamlorack/RACK_COMPLETE.md`, `RACK_COMPLETE.json` and

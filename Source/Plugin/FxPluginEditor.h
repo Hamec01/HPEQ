@@ -23,6 +23,7 @@ class SpectrumWorkspace;
 class NodeList;
 class NodeInspector;
 class PresetBrowser;
+class MacroRoutingPanel;
 struct Selection;
 } // namespace ui
 
@@ -49,6 +50,7 @@ public:
     bool isMixSelected() const noexcept; // tests
     void showDifference(bool difference);
     void showPresetBrowser();
+    void showMacroControls();
 
 private:
     class LevelMeter;
@@ -94,6 +96,11 @@ private:
     int lastShownLayer = -1;
     bool largeLayout = false;
     juce::Slider outputGain;
+    juce::TextButton macroButton{"Macros"},clipReset{"CLIP"};
+    juce::Slider finalTrim;
+    juce::Label finalTrimLabel,keyStatus;
+    std::unique_ptr<ui::MacroRoutingPanel> macroPanel;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> finalTrimAttachment;
     juce::Label outputGainLabel;
     juce::ToggleButton bypass { "Bypass" };
     juce::TooltipWindow tooltips { this };

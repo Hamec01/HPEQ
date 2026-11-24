@@ -182,7 +182,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": 4.276645024101185,
+      "output_trim_db": 1.944980837599743,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -389,7 +389,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": 5.030235698655783,
+      "output_trim_db": 3.97634567734417,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -631,7 +631,7 @@
       ],
       "routing": "Serial",
       "output_mode": "insert",
-      "output_trim_db": 7.183227757317511,
+      "output_trim_db": 5.091263009503447,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -942,7 +942,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": -0.220028509608775,
+      "output_trim_db": 1.724512697631589,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -1097,7 +1097,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": 3.883123414670424,
+      "output_trim_db": 4.042089866716966,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -1337,7 +1337,7 @@
       ],
       "routing": "Serial",
       "output_mode": "insert",
-      "output_trim_db": 9.691650026165389,
+      "output_trim_db": 10.162313974531212,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -1549,7 +1549,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": 6.451773341934384,
+      "output_trim_db": 4.887537456939015,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -1768,7 +1768,7 @@
       ],
       "routing": "Serial",
       "output_mode": "insert",
-      "output_trim_db": 5.400824987601485,
+      "output_trim_db": 7.284982447295782,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -1964,7 +1964,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": -0.370632637177733,
+      "output_trim_db": 1.55155963696827,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -2293,7 +2293,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": -3.056603479330619,
+      "output_trim_db": 2.270254437886543,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -2487,7 +2487,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": 6.63110217659918,
+      "output_trim_db": 5.276257700651438,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -2858,7 +2858,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": 3.752807461937774,
+      "output_trim_db": 0.844679164946211,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -3115,7 +3115,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": -3.786836940210339,
+      "output_trim_db": 0.250769713814496,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -3453,7 +3453,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": -3.331664383607173,
+      "output_trim_db": 0.193968898366812,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -3656,7 +3656,7 @@
       ],
       "routing": "Serial",
       "output_mode": "insert",
-      "output_trim_db": 3.093075920664592,
+      "output_trim_db": 3.765662915229885,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -3997,7 +3997,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": 0.180883072981233,
+      "output_trim_db": 1.218992117989971,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -4228,7 +4228,7 @@
       ],
       "routing": "Serial",
       "output_mode": "insert",
-      "output_trim_db": 6.293169864912709,
+      "output_trim_db": 4.088766306116632,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -4428,7 +4428,7 @@
       ],
       "routing": "Serial",
       "output_mode": "insert",
-      "output_trim_db": 2.332398011447214,
+      "output_trim_db": 2.316883193808344,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -4658,7 +4658,7 @@
       ],
       "routing": "Parallel",
       "output_mode": "insert",
-      "output_trim_db": 0.803265339570538,
+      "output_trim_db": 1.442109820065783,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"
@@ -5161,7 +5161,7 @@
       ],
       "routing": "Serial",
       "output_mode": "insert",
-      "output_trim_db": -0.466265334419564,
+      "output_trim_db": -1.824082614976703,
       "calibration": {
         "reference_input_dbfs": -18,
         "method": "output trim only; keep authored character and dynamics"

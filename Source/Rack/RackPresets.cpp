@@ -1,5 +1,6 @@
 #include "Rack/RackPresets.h"
 #include "Rack/NativeApi.h"
+#include <HamloRackDspIdentity.h>
 #include <BinaryData.h>
 #include <juce_cryptography/juce_cryptography.h>
 #include <cmath>
@@ -88,6 +89,7 @@ juce::String bankSha256()
     int size=0;const auto* bytes=HpeqAssets::getNamedResource("recipes_json",size);
     return juce::SHA256(bytes,static_cast<size_t>(size)).toHexString();
 }
+juce::String dspSourceSha256() { return HPEQ_RACK_DSP_SOURCE_SHA256; }
 bool applyCalibration(const juce::var& entry,FxProjectState& p,juce::String& error)
 {
     if(entry.isVoid())return true;
@@ -183,7 +185,8 @@ bool makeProject(const Recipe& recipe,FxProjectState& output,juce::String& error
             static const auto calibration=[] {int size=0;const auto* bytes=HpeqAssets::getNamedResource("calibration_json",size);
                 return bytes?juce::JSON::parse(juce::String::fromUTF8(bytes,size)):juce::var();}();
             const auto* entries=calibration["entries"].getDynamicObject();
-            if(calibration["format"].toString()!="HamloRackCalibration"||static_cast<int>(calibration["version"])!=2
+            if(calibration["format"].toString()!="HamloRackCalibration"||static_cast<int>(calibration["version"])!=3
+                ||calibration["dsp_source_sha256"].toString()!=dspSourceSha256()
                 ||calibration["bank_sha256"].toString()!=bankSha256()||entries==nullptr||entries->getProperties().size()!=250)
                 throw std::invalid_argument("Embedded rack calibration is missing or stale");
             const auto entry=calibration["entries"][juce::Identifier(recipe.id)];

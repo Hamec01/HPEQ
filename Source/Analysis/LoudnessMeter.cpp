@@ -104,6 +104,10 @@ void LoudnessMeter::process(const float* const* channels, int numChannels, int n
 {
     if (resetRequested.exchange(false, std::memory_order_relaxed))
         reset();
+    if(peakResetRequested.exchange(false,std::memory_order_relaxed)){
+        peakTrue=peakSample=0;truePeak.store(kSilence,std::memory_order_relaxed);samplePeak.store(kSilence,std::memory_order_relaxed);
+        for(auto& channel:history)channel.fill(0);historyPos=0;
+    }
     numChannels = std::min(numChannels, 2);
     for (int i = 0; i < numSamples; ++i)
     {

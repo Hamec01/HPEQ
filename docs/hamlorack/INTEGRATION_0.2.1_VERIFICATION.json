@@ -1,0 +1,222 @@
+{
+  "format": "HamloRackPresetBrowserVerification",
+  "version": 1,
+  "date": "2026-11-24",
+  "rack_version": "0.2.1",
+  "base_commit": "58bda3307e18fcdb3d31c92b80f868a98cc9253c",
+  "scope": "Searchable main rack preset library; source/genre/character/processor filters, favourites, editable user tags and filtered header navigation",
+  "presets": 270,
+  "preset_regression": {
+    "passed": 2535,
+    "failed": 0,
+    "log": "out/preset-browser/preset-tests-final.log",
+    "sha256": "a8feb849f1dd186a61000517cc7f0f2c224fdc026aab9301b692fca2281f58f5"
+  },
+  "state_regression": {
+    "passed": 37,
+    "failed": 0,
+    "log": "out/preset-browser/state-tests.log",
+    "sha256": "345ccdcc6b2b46f3426977fab2c9f50354d631a1712c6ff14d51b7ae226467ff"
+  },
+  "python_structural": {
+    "passed": 13,
+    "failed": 0,
+    "log": "out/preset-browser/python-tests.log",
+    "sha256": "4bbbdf9fb3e30fc8ef97813b479907edd581122118c3738135e4050aa5d79468"
+  },
+  "binary_host": {
+    "receipt": "out/preset-browser/host.json",
+    "sha256": "a9210557a2f90f4cdc9aa4b0ab566cd9000bfbfcb3f66b9e5d42343f497416bf",
+    "details": {
+      "machine": {
+        "os": "Windows 10",
+        "cpu_vendor": "GenuineIntel",
+        "cpu_model": "Intel(R) Core(TM) i7-6700K CPU @ 4.00GHz",
+        "cpu_mhz": 3987,
+        "logical_cpus": 8,
+        "physical_cpus": 4,
+        "memory_mb": 49072,
+        "juce_version": "JUCE v8.0.12",
+        "compiler": "MSVC 195136231",
+        "build": "Release",
+        "allocation_probe": "operator-new-only (malloc not seen)",
+        "utc": "2026-11-24T07:00:14.023+02:00"
+      },
+      "plugin_path": "D:\\HPEQ\\build\\HPEQ_artefacts\\Release\\VST3\\HamloRack.vst3",
+      "hpeq": {
+        "name": "HamloRack",
+        "manufacturer": "HamloProd",
+        "category": "Fx|EQ",
+        "uid": -1663069447,
+        "identifier": "VST3-HamloRack-27c31cf5-9cdf92f9",
+        "is_instrument": false,
+        "inputs": 0,
+        "outputs": 0,
+        "version": "0.2.1"
+      },
+      "checks": [
+        {
+          "check": "HPEQ.vst3 scan finds exactly one plugin",
+          "pass": true
+        },
+        {
+          "check": "scanned as an effect, not an instrument",
+          "pass": true
+        },
+        {
+          "check": "instantiate: ok",
+          "pass": true
+        },
+        {
+          "check": "instance default bus: stereo in / stereo out",
+          "pass": true
+        },
+        {
+          "check": "instance accepts mono in / mono out",
+          "pass": true
+        },
+        {
+          "check": "M1-A via VST3 binary: bit-exact pass-through, block 64",
+          "pass": true
+        },
+        {
+          "check": "M1-A via VST3 binary: bit-exact pass-through, block 512",
+          "pass": true
+        },
+        {
+          "check": "M1-A via VST3 binary: bit-exact pass-through, block 2048",
+          "pass": true
+        },
+        {
+          "check": "Output Gain parameter exposed to the host",
+          "pass": true
+        },
+        {
+          "check": "STATE via VST3 binary: restored instance renders identically",
+          "pass": true
+        },
+        {
+          "check": "Output Gain -6 dB measured -6.000 dB",
+          "pass": true
+        },
+        {
+          "check": "M1-C: 20/20 instance cycles",
+          "pass": true
+        },
+        {
+          "check": "M1-C: 20/20 editor open/close on desktop",
+          "pass": true
+        }
+      ],
+      "failures": 0
+    }
+  },
+  "snapshots": {
+    "out/preset-browser/screenshots/empty.png": "c7a7c1a5182e758d5d343abcb049e7bb6a0cd5cf414f0153d100a548defae1d7",
+    "out/preset-browser/screenshots/filtered.png": "a632494390b2a20e64f430f31d9a65c321d3fa88be90fb22837e923947da628b",
+    "out/preset-browser/screenshots/library-1000.png": "d0888f5c04e1bc0603a3aab1cb717e293903dc387294cedc06aa41d3e2250133",
+    "out/preset-browser/screenshots/library-1280.png": "e8dc3bafe150e1a4054206a32701aabbf5835f44a4d039f8d4ef1fa19b93b389",
+    "out/preset-browser/screenshots/library-1920.png": "c05e334083abd65934d0f285b38be73fe0f8475d982196b5437f91eac2cc2c64",
+    "out/preset-browser/screenshots/loaded.png": "757e0f397ba4e44ce45dd69d699f833410ba0908a53d0f3a9fd5edac089228ea"
+  },
+  "preview_sha256": "d0888f5c04e1bc0603a3aab1cb717e293903dc387294cedc06aa41d3e2250133",
+  "unchanged": {
+    "paths": [
+      "Source/DSP",
+      "Source/Core",
+      "Source/Rack/NativeApi.cpp",
+      "Source/Rack/NativeRegistry.cpp",
+      "Source/Rack/RackPresets.cpp",
+      "Source/Plugin/FxPluginProcessor.cpp",
+      "Assets/Presets/HamloRack/Design/recipes.json",
+      "Assets/Presets/HamloRack/calibration.json",
+      "Assets/Presets/HamloRack/power.json",
+      "Plugins"
+    ],
+    "relative_to": "base_commit",
+    "recipe_resource_sha256": "c72f1d993c1d99fb495053457a749150fdc0768dfb8925ac653247192aa9dfb9"
+  },
+  "native_sources": {
+    "HamloComp": {
+      "version": "0.2.0",
+      "source_commit": "c7d344bffc598eb9dd012db94772462648081a99",
+      "source_tree": "21506ec89e982e90c186be1e3aea697ec8f69478"
+    },
+    "HamloEcho": {
+      "version": "0.2.2",
+      "source_commit": "00dedb88cc3d4420fd6ba641ad7d710400e22c24",
+      "source_tree": "29a00b5c04ca5503e3dce1ea377b09f7bc805930"
+    },
+    "HamloFader": {
+      "version": "0.2.0",
+      "source_commit": "aef8c4dab83919a1f3eae98fd5836a59890f9042",
+      "source_tree": "724dfcb9ab2ee10529125626f60c127cfcf703c6"
+    },
+    "HamloMag": {
+      "version": "0.2.2",
+      "source_commit": "21adfcff37a4d717e93d559c6831c7b9cbc285c2",
+      "source_tree": "b7ac8a38fe8579816ecf84c7eadb68fb8ade43bd"
+    },
+    "HamloRedWall": {
+      "version": "0.3.0",
+      "source_commit": "d3c9f9a47e94dfe258ebaa71db3de576c815ca94",
+      "source_tree": "4baefbd3e9083eb63ce0475d2d803633d0bd0590"
+    },
+    "HamloRevolution": {
+      "version": "0.5.1",
+      "source_commit": "997f2e2156a588727eb14e47449928d5ca7bffb3",
+      "source_tree": "834a095eb7107beb593e9e3e78f2fed6d8e317cf"
+    },
+    "HamloShirota": {
+      "version": "0.2.0",
+      "source_commit": "ea316b0ea17763303188d06dce14dd9e8e3ffd37",
+      "source_tree": "f1a6963dc7b863725399a5c82933f1b8f6737d56"
+    },
+    "HamloUdarnik": {
+      "version": "0.2.0",
+      "source_commit": "11d37dbff5fe7ccbe87f4becf17daa5b13b02f8f",
+      "source_tree": "2dcf0ecd83c25e0144e0d65e814bb95649dd3dfd"
+    },
+    "HamloVerb": {
+      "version": "0.2.2",
+      "source_commit": "2ae0e1d6fb6652825811a476084a2c5e9db07029",
+      "source_tree": "4a54a1130861b688faf38dd11855e0295563619d"
+    },
+    "HamloZastava": {
+      "version": "0.2.0",
+      "source_commit": "ccc1de21b095acc6b424d00c78122acd8d4fa748",
+      "source_tree": "bcf48c0145c13c5e1bea0a1fd4acb6ba4069485e"
+    }
+  },
+  "historical_integration": {
+    "path": "docs/hamlorack/INTEGRATION_0.2.0_VERIFICATION.json",
+    "sha256": "e55abd0ca03573c5d5c7974e04705e8bc07651cd60234272abee6a8f0beeb64f",
+    "scope": "0.2.0 only; no new full-suite, Debug or 270-audio-replay claim for this UI patch"
+  },
+  "binaries": {
+    "build/HPEQ_artefacts/Release/VST3/HamloRack.vst3/Contents/x86_64-win/HamloRack.vst3": "de9c93389ac15392c7c35d5a0275af2ba3f27980ab52e7bf7c3fcaff103c93d6",
+    "build/Release/HPEQ_Tests.exe": "b02419e433ee989615d10c3134bdd29caf51c2ffbfe0022488bf6a51aa988c2c",
+    "build/Release/HPEQ_RackBank.exe": "f107b5b2a4971d36dabb5b6533a8701101295634990a3bd32b6dd8dca0c096dd"
+  },
+  "code_sha256": {
+    "Assets/Presets/HamloRack/browser-tags.json": "f202d5002537d97f6b10b2cfdf923abea39c9afab6437bb87afe63a682dda6b9",
+    "CMakeLists.txt": "e1e40d69ef3f53c866566e1966d8fb3f369e49de70151c275725cdecb341e3ea",
+    "Source/Plugin/FxPluginEditor.cpp": "b264fa55ac3b38a0125df3ec97e0dd3ac00a27f02c051d9c046eeee6be763bd5",
+    "Source/Plugin/FxPluginEditor.h": "091b4937cd874ec28dd679b3d9dd98b4edb7343f4fc66eedb7c5c2a10a93fcbe",
+    "Source/Rack/PresetCatalogue.cpp": "533350127e017b15968aa4389be2ef9fc139cb180439bafd0677e34b95822bd5",
+    "Source/Rack/PresetCatalogue.h": "e6827a354dcd323c08230c99484bb252b9941811b1a42050ced2ae13b458607a",
+    "Source/UI/PresetBrowser.cpp": "2440ce37cfadb2e23e952dd76984e6668318c3ed859f6030edc9ef63648fa7b3",
+    "Source/UI/PresetBrowser.h": "430df095069e34e5f4a8db99ea80cc62734947ed50f03b6ca82f58f8fab571be",
+    "Source/UI/RackPresetBar.cpp": "927d45eea8ae22c363d0dca362457c6d019116fd4c42f243a1d5c46b22cb8876",
+    "Tests/Tools/RackBankMain.cpp": "363576fc0f4c71ae57147a38090fd6485fd724c28217af06d78c94c34039d2e6",
+    "Tests/Unit/PresetBrowserTests.cpp": "9a3b7d1c8d043b2a7e85c31e11ad2a6557091a573607e2bd257fb83c38d04bf0"
+  },
+  "code_sha256_scope": "Worktree bytes before Git line-ending normalization",
+  "build": {
+    "configuration": "Release",
+    "lto": false,
+    "allocation_probe": "operator-new-only"
+  },
+  "corrected_test": "Initial browser test used normalized design hash a76fda72... instead of committed recipe resource byte hash c72f1d99.... Corrected expected hash only; no recipe or audio threshold changes.",
+  "remaining": "Owner FL Studio inspection/listening. No new pluginval/Steinberg or full Debug run claimed."
+}

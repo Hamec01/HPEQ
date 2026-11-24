@@ -26,6 +26,7 @@ public:
     void prepare(double sampleRate, bool measureTruePeak);
     void reset() noexcept;               // audio thread, or before processing starts
     void requestReset() noexcept { resetRequested.store(true, std::memory_order_relaxed); } // any thread
+    void requestPeakReset() noexcept {peakResetRequested.store(true,std::memory_order_relaxed);}
 
     void process(const float* const* channels, int numChannels, int numSamples) noexcept;
 
@@ -76,6 +77,7 @@ private:
     double peakTrue = 0.0, peakSample = 0.0;
 
     std::atomic<bool> resetRequested { false };
+    std::atomic<bool> peakResetRequested {false};
     std::atomic<double> momentary { kSilence }, shortTerm { kSilence }, integrated { kSilence };
     std::atomic<double> truePeak { kSilence }, samplePeak { kSilence };
 };

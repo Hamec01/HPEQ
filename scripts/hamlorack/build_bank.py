@@ -284,7 +284,7 @@ def validate(data, schemas):
                 "HamloComp":{"mix":1},
                 "HamloUdarnik":{"engine":1,"protect":1,"mix":1},
                 "HamloMag":{"mix":1,"match":0,"delta":0},
-                "HamloRedWall":{"engine":1,"mix":1,"truePeak":1,"ceilingDb":-1},
+                "HamloRedWall":{"engine":1,"mix":1,"truePeak":1,"ceilingDb":-1.05 if r["category"]=="Master" else -1},
                 "HamloEcho":{"echoMode":1,"quickEnabled":0,"scoreRouting":1,"scoreMix":1},
                 "HamloVerb":{"routing":1,"keepDry":0,"mix":1},
                 "HamloFader":{"engine":1,"enabled":1,"mix":1},

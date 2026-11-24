@@ -28,9 +28,9 @@ void setParameter(FxPluginProcessor& p, const juce::ParameterID& id, float plain
 bool configure(FxPluginProcessor& p, int channels, double fs, int maxBlock)
 {
     const auto set = channels == 1 ? juce::AudioChannelSet::mono() : juce::AudioChannelSet::stereo();
-    juce::AudioProcessor::BusesLayout layout;
-    layout.inputBuses.add(set);
-    layout.outputBuses.add(set);
+    auto layout=p.getBusesLayout();
+    layout.inputBuses.set(0,set);
+    layout.outputBuses.set(0,set);
     if (!p.setBusesLayout(layout))
         return false;
     p.setRateAndBufferSizeDetails(fs, maxBlock);
@@ -76,9 +76,13 @@ public:
             expectEquals(p.getLatencySamples(), 0);
             expectEquals(p.getTailLengthSeconds(), 0.0);
             expect(p.getBypassParameter() != nullptr, "host bypass must map to the bypass parameter");
+            expect(p.getNumPrograms() > 0, "host program list must be nonempty");
+            expect(p.getCurrentProgram() >= 0 && p.getCurrentProgram() < p.getNumPrograms());
+            for (int program = 0; program < p.getNumPrograms(); ++program)
+                expect(p.getProgramName(program).isNotEmpty(), "each advertised host program must have a name");
         }
 
-        beginTest("bus layouts: mono->mono and stereo->stereo only");
+        beginTest("main bus layouts: mono->mono and stereo->stereo, key disabled");
         {
             auto pPtr = std::make_unique<FxPluginProcessor>();
             auto& p = *pPtr;
@@ -86,6 +90,7 @@ public:
             {
                 juce::AudioProcessor::BusesLayout l;
                 l.inputBuses.add(in);
+                l.inputBuses.add(juce::AudioChannelSet::disabled());
                 l.outputBuses.add(out);
                 return l;
             };

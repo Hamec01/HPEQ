@@ -1,5 +1,6 @@
 #include "Rack/NativeApi.h"
 #include "Core/FxProjectState.h"
+#include "DSP/ProjectEngine.h"
 #include <algorithm>
 #include <cmath>
 #include <map>
@@ -8,6 +9,10 @@
 
 namespace hpeq::native
 {
+struct Runtime::KeyDelay {
+    dsp::AlignmentDelay alignment;
+    std::array<std::vector<float>,2> work;
+};
 void Handle::bind(juce::AudioProcessorValueTreeState& state)
 {
     for (auto* p : processor->getParameters())
@@ -242,6 +247,7 @@ Runtime::Runtime(FxType kind,const juce::MemoryBlock& structuralState,const juce
 {
     rightChannel=right&&kind==FxType::Gain;
     const auto indexOf=[&](const char* id) {for(size_t i=0;i<handle.bindings.size();++i)if(handle.bindings[i].parameter->paramID==id)return static_cast<int>(i);return -1;};
+    faderRoutingIndex=indexOf("routing");faderSwapIndex=indexOf("swap");
     if(kind==FxType::Reverb||kind==FxType::Delay)
     {
         returnEngineIndex=indexOf(kind==FxType::Reverb?"engine":"echoMode");
@@ -278,6 +284,11 @@ Runtime::Runtime(FxType kind,const juce::MemoryBlock& structuralState,const juce
     handle.processor->setPlayHead(&playHead);
     handle.processor->setPlayConfigDetails(channels,channels,rate,maxBlock);
     if(maximumBlockSize>0){handle.processor->prepareToPlay(rate,maxBlock);prepared=true;}
+    if(type==FxType::Compressor){
+        keyDelay=std::make_unique<KeyDelay>();
+        keyDelay->alignment.prepare(dsp::ProjectEngine::maxLatency(rate)+static_cast<int>(rate*.1));
+        for(auto& data:keyDelay->work)data.assign(static_cast<size_t>(maxBlock),0.f);
+    }
     reportedLatency=prepared?handle.processor->getLatencySamples():values.latency;
     if(reportedLatency!=values.latency){error="Native fixed-latency contract mismatch";return;}
     reportedTail.store(handle.processor->getTailLengthSeconds(),std::memory_order_relaxed);
@@ -293,6 +304,10 @@ void Runtime::reprepare(double sampleRate,int maximumBlockSize,int channels)
     if(prepared)handle.processor->releaseResources();rate=sampleRate;maxBlock=std::max(1,maximumBlockSize);
     handle.processor->setPlayConfigDetails(channels,channels,rate,maxBlock);
     handle.processor->prepareToPlay(rate,maxBlock);
+    if(type==FxType::Compressor){
+        keyDelay->alignment.prepare(dsp::ProjectEngine::maxLatency(rate)+static_cast<int>(rate*.1));
+        for(auto& data:keyDelay->work)data.assign(static_cast<size_t>(maxBlock),0.f);
+    }
     prepared=true;
     reportedLatency=handle.processor->getLatencySamples();
     if(reportedLatency!=fixedLatency(type,rate))throw std::runtime_error("Native reprepare latency mismatch");
@@ -301,7 +316,7 @@ void Runtime::reprepare(double sampleRate,int maximumBlockSize,int channels)
 double Runtime::tailSeconds() const noexcept{return reportedTail.load(std::memory_order_relaxed);}
 
 bool Runtime::process(float* const* channels,int count,int samples,const Values& values,
-                      double bpm,bool playing,bool hasPosition,double ppq) noexcept
+                      double bpm,bool playing,bool hasPosition,double ppq,const control::Frame& controls) noexcept
 {
     jassert(ready && prepared && values.count==static_cast<int>(handle.bindings.size()));
     double inputEnergy=0,outputEnergy=0;float reduction=0;
@@ -311,7 +326,8 @@ bool Runtime::process(float* const* channels,int count,int samples,const Values&
         const auto source=static_cast<size_t>(sourceIndex[static_cast<size_t>(i)]);
         float value=values.physical[source];
         auto serial=editorSerial[source].load(std::memory_order_acquire);
-        if(serial!=0)
+        automatedForEditor[static_cast<size_t>(i)].store(values.automated[source],std::memory_order_relaxed);
+        if(serial!=0&&!values.automated[source])
         {
             const auto edited=editorValues[source].load(std::memory_order_relaxed);
             if(value==edited)editorSerial[source].compare_exchange_strong(serial,0,std::memory_order_acq_rel);
@@ -329,10 +345,27 @@ bool Runtime::process(float* const* channels,int count,int samples,const Values&
     {
         float* ptr[2]{channels[0]+offset,count>1?channels[1]+offset:nullptr};
         const int n=std::min(maxBlock,samples-offset);
+        if(handle.setSidechain){
+            const float* key[2]{};float* aligned[2]{keyDelay->work[0].data(),keyDelay->work[1].data()};
+            const int keyChannels=std::min(2,controls.keyChannels);
+            if(keyChannels>0){
+                for(int ch=0;ch<keyChannels;++ch)key[ch]=controls.key[static_cast<size_t>(ch)]+controls.offset+offset;
+                keyDelay->alignment.process(key,aligned,keyChannels,n,controls.latency);
+                for(int ch=0;ch<keyChannels;++ch)key[ch]=aligned[ch];
+            }
+            handle.setSidechain(*handle.processor,values.externalSidechain&&keyChannels>0?key:nullptr,
+                values.externalSidechain?keyChannels:0);
+            // key points to this scope; native processing below is synchronous.
+            playHead.bpm=bpm;playHead.playing=playing;playHead.position=hasPosition;
+            playHead.ppq=ppq+offset*bpm/(60.0*rate);
+            juce::AudioBuffer<float> block(ptr,count,n);midi.clear();handle.processor->processBlock(block,midi);
+            handle.setSidechain(*handle.processor,nullptr,0);
+        } else {
         playHead.bpm=bpm;playHead.playing=playing;playHead.position=hasPosition;
         playHead.ppq=ppq+offset*bpm/(60.0*rate);
         juce::AudioBuffer<float> block(ptr,count,n);
         midi.clear();handle.processor->processBlock(block,midi);
+        }
         if(type==FxType::Compressor)reduction=std::max(reduction,reductionComp(*handle.processor));
         if(type==FxType::Limiter)reduction=std::max(reduction,reductionRedWall(*handle.processor));
     }
@@ -379,6 +412,8 @@ void Runtime::synchronizeEditor(const Values& values,bool preservePending)
     for(int i=0;i<values.count;++i)
     {
         auto& b=handle.bindings[static_cast<size_t>(i)];
+        automatedForEditor[static_cast<size_t>(i)].store(values.automated[static_cast<size_t>(i)],std::memory_order_relaxed);
+        if(values.automated[static_cast<size_t>(i)])continue;
         const auto value=values.physical[static_cast<size_t>(i)];
         auto serial=editorSerial[static_cast<size_t>(i)].load(std::memory_order_acquire);
         if(preservePending&&serial!=0)continue;
@@ -386,6 +421,26 @@ void Runtime::synchronizeEditor(const Values& values,bool preservePending)
             editorSerial[static_cast<size_t>(i)].compare_exchange_strong(serial,0,std::memory_order_acq_rel);
         if(b.raw->load(std::memory_order_relaxed)!=value)
             b.parameter->setValueNotifyingHost(b.parameter->convertTo0to1(value));
+    }
+    editorSynchronizing.store(false,std::memory_order_release);
+}
+void Runtime::applyMacro(Values& values,int index,float normalized) noexcept
+{
+    if(index<0||index>=values.count)return;
+    const auto& r=handle.bindings[static_cast<size_t>(index)].parameter->getNormalisableRange();
+    float value=r.snapToLegalValue(r.convertFrom0to1(std::clamp(normalized,0.f,1.f)));
+    for(int pass=0;pass<2;++pass)value=r.snapToLegalValue(r.convertFrom0to1(r.convertTo0to1(value)));
+    values.physical[static_cast<size_t>(index)]=value;
+    if(type==FxType::Gain){if(index==faderRoutingIndex)values.faderRouting=static_cast<int>(value);if(index==faderSwapIndex)values.faderSwap=value!=0;}
+    if(returnEngineIndex>=0&&returnRoutingIndex>=0)values.additiveSend=values.physical[static_cast<size_t>(returnEngineIndex)]>=1
+        &&values.physical[static_cast<size_t>(returnRoutingIndex)]==1&&(returnBypassIndex<0||values.physical[static_cast<size_t>(returnBypassIndex)]<.5f);
+}
+void Runtime::synchronizeAutomatedEditor()
+{
+    editorSynchronizing.store(true,std::memory_order_release);
+    for(size_t i=0;i<handle.bindings.size();++i)if(automatedForEditor[i].load(std::memory_order_relaxed)){
+        auto& b=handle.bindings[i];const auto normalized=b.parameter->convertTo0to1(b.raw->load(std::memory_order_relaxed));
+        if(std::abs(b.parameter->getValue()-normalized)>1.e-7f)b.parameter->setValueNotifyingHost(normalized);
     }
     editorSynchronizing.store(false,std::memory_order_release);
 }

@@ -6,6 +6,7 @@
 #include <functional>
 #include <vector>
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "DSP/ControlFrame.h"
 
 namespace hpeq { enum class FxType; }
 namespace hpeq::native
@@ -18,6 +19,11 @@ class Runtime;
 // message-thread registry; running slots retain it with an atomic user count.
 struct Values
 {
+    struct Macro {int macro=0,parameter=0;float minimum=0,maximum=1;};
+    int macroCount=0;
+    std::array<Macro,control::kMaxBindings> macros {};
+    std::array<bool,kMaxParameters> automated {};
+    bool externalSidechain=false;
     Runtime* runtime = nullptr;
     Runtime* rightRuntime = nullptr; // independent mono instance in Dual Mono
     int count = 0, latency = 0;
@@ -46,6 +52,7 @@ struct Binding
 // wrappers and their original editors. VST files are not loaded at runtime.
 struct Handle
 {
+    void (*setSidechain)(juce::AudioProcessor&,const float* const*,int)=nullptr;
     std::unique_ptr<juce::AudioProcessor> processor;
     std::vector<Binding> bindings;
     void bind(juce::AudioProcessorValueTreeState&);
@@ -112,7 +119,9 @@ public:
     void release() noexcept { users.fetch_sub(1,std::memory_order_acq_rel); }
     int inUse() const noexcept { return users.load(std::memory_order_acquire); }
     bool process(float* const*,int channels,int samples,const Values&,double bpm,
-                 bool playing,bool hasPosition,double ppq) noexcept;
+                 bool playing,bool hasPosition,double ppq,const control::Frame& = {}) noexcept;
+    void applyMacro(Values&,int parameter,float normalized) noexcept;
+    void synchronizeAutomatedEditor(); // message thread only
     juce::MemoryBlock state(); // message thread, quiescent runtime only
     juce::AudioProcessor& referenceProcessor() noexcept { return *handle.processor; }
     void requestEditorValue(int parameterIndex,float physical) noexcept;
@@ -137,6 +146,10 @@ private:
     std::atomic<double> reportedTail{0};
     std::array<int,kMaxParameters> sourceIndex{};
     int phaseIndex=-1,rightPhaseIndex=-1,polarityIndex=-1;
+    int faderRoutingIndex=-1,faderSwapIndex=-1;
+    struct KeyDelay;
+    std::unique_ptr<KeyDelay> keyDelay;
+    std::array<std::atomic<bool>,kMaxParameters> automatedForEditor {};
     int returnEngineIndex=-1,returnRoutingIndex=-1,returnBypassIndex=-1;
     bool rightChannel=false;
     juce::MidiBuffer midi;

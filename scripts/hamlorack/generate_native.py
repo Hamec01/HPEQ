@@ -1,8 +1,9 @@
 """Build-directory-only namespace isolation of pinned complete native wrappers.
 
-DSP tokens change only for hpeq/hamlo namespaces. Strings/comments remain exact.
-The additional accessor exposes existing APVTS atoms. Complete original editors
-and their own embedded assets are compiled too. Input payloads are never modified.
+Namespace isolation preserves strings/comments. The accessor exposes APVTS atoms;
+the rack-only Comp adapter adds separate external-detector kernels while keeping
+the original kernels verbatim. Complete original editors/assets are compiled.
+Pinned input payloads are never modified.
 """
 from pathlib import Path
 import argparse
@@ -103,6 +104,11 @@ def main():
                     (r"(bool ModulePluginProcessor::applyMatch\(\)\s*\{)","if(rackFaderAction)return rackFaderAction(3);")]:
                     transformed,count=re.subn(pattern,lambda m:m[1]+"\n    "+body,transformed)
                     if count!=1:raise ValueError("Fader editor action bridge: "+pattern)
+            if name=="Comp":
+                import importlib.util
+                spec=importlib.util.spec_from_file_location("rack_control_adapters",ROOT/"scripts/hamlorack/control_adapters.py")
+                adapters=importlib.util.module_from_spec(spec);spec.loader.exec_module(adapters)
+                transformed=adapters.comp(transformed,rel)
             write(dest/plugin/rel,transformed)
         ns="hr_"+name.lower()+"_"
         if name in SIMPLE:
@@ -131,6 +137,11 @@ Handle create{name}({arguments}) {{
             latency=f"using namespace {ns}hamlo::dsp; FxSlotParams p; p.active=true;p.values[slot::kOversampling]=3;p.values[slot::kSatModel]=1;p.values[slot::kSatWow]=1;p.values[slot::kSatSampler]=1;return MagV2Processor::latencySamples(p,rate);"
         else:
             latency=f"using namespace {ns}hamlo::dsp; RedWallColour colour;colour.prepare(rate,1);LimiterSettings p;p.values[slot::kLookaheadMs]=10;p.values[slot::kLimTruePeak]=1;return colour.latency()+LimiterProcessor::lookaheadSamples(p,rate);"
+        if name=="Comp":
+            factory=factory.replace('    return h;',f'''    h.setSidechain=[](juce::AudioProcessor& p,const float* const* key,int count) {{
+        auto& c=static_cast<{ns}hamlo::comp::HamloCompProcessor&>(p);c.rackKey=key;c.rackKeyChannels=count;
+    }};
+    return h;''')
         factory+=f"\nnamespace hpeq::native {{ int latency{name}(double rate) {{ {latency} }} }}\n"
         if name in ("Comp","RedWall"):
             method="gainReductionDb()" if name=="Comp" else "limiter().lastGainReductionDb()"

@@ -23,6 +23,7 @@ void CrossoverTree::reset() noexcept
     for (auto& e : edges)
     {
         e.allocated = e.parking = e.birth = false;
+        e.phaseAllocated=false;e.phaseEnd=0;
         e.logLow = e.logHigh = e.presence = LinearRamp {};
         for (auto* group : { &e.prefixAllPass, &e.highPass, &e.lowPass, &e.hornerAllPass })
             for (auto& f : *group)
@@ -37,6 +38,7 @@ void CrossoverTree::allocate(int node) noexcept
     auto& e = edges[static_cast<size_t>(node)];
     const double park = std::log2(kParkingHz);
     e.allocated = true;
+    e.epoch=++nextEpoch;
     e.parking = false;
     e.birth = true;
     e.presence.reset(0.0);
@@ -82,6 +84,9 @@ void CrossoverTree::update(const std::array<bool, kMaxFxNodesPerLayer>& running,
     for (int j = 0; j < kMaxFxNodesPerLayer; ++j)
     {
         auto& e = edges[static_cast<size_t>(j)];
+        // A replay describes only the next process() call. When the final edge
+        // retires, LayerEngine skips process(); never replay the previous block.
+        e.phaseAllocated=false;
         const auto lo = std::log2(design::clampFrequency(lowHz[static_cast<size_t>(j)], sampleRate));
         const auto hi = std::log2(design::clampFrequency(highHz[static_cast<size_t>(j)], sampleRate));
 
@@ -108,11 +113,7 @@ void CrossoverTree::update(const std::array<bool, kMaxFxNodesPerLayer>& running,
                 e.logLow.setTarget(park, birthSteps);
                 e.logHigh.setTarget(park, birthSteps);
             }
-            else if (!e.logLow.isRamping() && !e.logHigh.isRamping())
-            {
-                e.allocated = false; // parked at 1 Hz: leave the chains
-                e.parking = false;
-            }
+            // Removal uses the sample control clock in process().
         }
         anyAllocated = anyAllocated || e.allocated;
     }
@@ -122,7 +123,11 @@ void CrossoverTree::process(const float* const* in, int numChannels, int numSamp
                             float* const* dry, float* const* const* bands, float* const* presence) noexcept
 {
     for (auto& e : edges)
+    {
         e.retuneCount = 0;
+        e.phaseStart=e.prefixAllPass;
+        e.phaseAllocated=e.allocated;e.phaseEnd=numSamples;
+    }
     int phase = controlPhase;
     for (int i = 0; i < numSamples; ++i)
     {
@@ -132,6 +137,10 @@ void CrossoverTree::process(const float* const* in, int numChannels, int numSamp
                 auto& e = edges[static_cast<size_t>(j)];
                 if (!e.allocated)
                     continue;
+                if(e.parking&&!e.logLow.isRamping()&&!e.logHigh.isRamping())
+                {
+                    e.allocated=false;e.parking=false;e.phaseEnd=i;continue;
+                }
                 if (e.logLow.isRamping() || e.logHigh.isRamping())
                 {
                     e.logLow.next();
@@ -193,6 +202,32 @@ void CrossoverTree::process(const float* const* in, int numChannels, int numSamp
             }
             dry[ch][i] = static_cast<float>(prefix);
         }
+    }
+}
+
+void CrossoverTree::processPhase(PhasePath& path,float* const* io,int channels,int samples) const noexcept
+{
+    for(size_t j=0;j<edges.size();++j)
+    {
+        const auto& source=edges[j];auto& target=path.edges[j];
+        if(!source.phaseAllocated) {target.epoch=0;continue;}
+        if(target.epoch!=source.epoch)for(auto& f:target.filters)f.reset();
+        target.epoch=source.epoch;
+        for(size_t k=0;k<2;++k)target.filters[k].copyTuning(source.phaseStart[k]);
+        int next=0;
+        for(int i=0;i<std::min(samples,source.phaseEnd);++i)
+        {
+            if(next<source.retuneCount&&source.retunes[static_cast<size_t>(next)].sample==i)
+            {
+                const auto& r=source.retunes[static_cast<size_t>(next++)];
+                target.filters[0].setFrequency(sampleRate,r.lowHz,design::kButterworthQ,true);
+                target.filters[1].setFrequency(sampleRate,r.highHz,design::kButterworthQ,true);
+            }
+            for(auto& f:target.filters)f.advance();
+            for(int ch=0;ch<channels;++ch)
+                io[ch][i]=static_cast<float>(target.filters[1].processSample(ch,target.filters[0].processSample(ch,io[ch][i])));
+        }
+        if(source.phaseEnd<samples)target.epoch=0;
     }
 }
 

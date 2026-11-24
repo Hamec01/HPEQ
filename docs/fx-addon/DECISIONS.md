@@ -151,3 +151,21 @@ whole mix of the layer.
 controls (`PRE-EQ -> nodes -> MIX chain -> gain / width / pan`), on its own engine node outside the 8
 frequency nodes. Its latency adds to the layer's. State: `MixChain` (additive; older projects unchanged).
 The "+" and workspace menus list every module for all three places. Details: `LIMITER_DESIGN.md` §1.
+
+## D8 — 2026-11-24 — Phase references across layers (owner-approved revision of D5)
+
+The owner chose low latency and permits changed sound in existing projects.
+Keep H3's crossover all-passes and use their coefficient clock for independent
+reference branches. Let A_j be layer j's crossover phase and C the product of
+live A_j. Parallel becomes `D_L(C(x)) + sum w_j (D_(L-L_j)(C_except_j(L_j(x))) - D_L(C(x)))`.
+Serial blends `D_Lj(A_j(x_j))` with `L_j(x_j)`. The unprocessed L/R or M/S
+component receives the same crossover phase. Intentional EQ and native effect
+phase remain part of their processing.
+
+Mute/Solo and layer Mix remove effect deltas while retaining live crossover
+phase. Disabling a layer retires that phase smoothly after its weight reaches
+zero; disabling its last region clears the completed phase program even if EQ
+keeps the layer running. Handovers use sample ramp endpoints. No additional
+latency, phase selector, host parameter IDs or project-state schema are added.
+Global Bypass still settles to exact latency-aligned original dry. Method and
+remaining listening scope: `../hamlorack/PHASE_LEVEL_METHOD.md`.

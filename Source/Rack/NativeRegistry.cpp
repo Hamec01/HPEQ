@@ -76,7 +76,15 @@ bool Registry::stage(const FxProjectState& project,std::array<dsp::LayerSnapshot
                     const int channels=dual||one?1:2;
                     if(target.slots[k].nativeValues.latency>dsp::FxNodeProcessor::maxSlotLatency(rate))
                     {supported=false;error="Native fixed latency exceeds alignment capacity";return;}
-                    requests.push_back({static_cast<int>((j*9+static_cast<size_t>(node))*6+k),l.enabled,&chain[k],&target.slots[k].nativeValues,channels,dual});
+                    auto& values=target.slots[k].nativeValues;
+                    values.externalSidechain=chain[k].externalSidechain;
+                    if(!isModuleSupported(chain[k],&error)){supported=false;return;}
+                    const auto& specs=native::layout(chain[k].type);
+                    for(const auto& m:chain[k].macros)for(size_t index=0;index<specs.size();++index)if(specs[index].id==m.parameter){
+                        values.macros[static_cast<size_t>(values.macroCount++)]={m.macro,static_cast<int>(index),m.minimum,m.maximum};
+                        values.automated[index]=true;
+                    }
+                    requests.push_back({static_cast<int>((j*9+static_cast<size_t>(node))*6+k),l.enabled,&chain[k],&values,channels,dual});
                     counts[chain[k].type]+=dual?2:1;
                 }
         };

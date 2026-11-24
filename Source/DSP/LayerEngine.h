@@ -57,6 +57,9 @@ public:
     // EQ pass: the PRE-EQ (dynamic gain offsets, solo state) for the page.
     const PreEqProcessor& getPreEq() const noexcept { return preEq; }
     bool isTreeActive() const noexcept { return tree.isActive(); }
+    void processPhase(CrossoverTree::PhasePath& path,float* const* io,int channels,int samples) const noexcept
+    { tree.processPhase(path,io,channels,samples); }
+    void processPhaseRetirement(int samples) noexcept;
     int reverbsInUse() const noexcept { return pools->reverbs.inUse(); }
     int delaysInUse() const noexcept { return pools->delays.inUse(); }
     int monstasInUse() const noexcept { return pools->monstas.inUse(); }
@@ -79,6 +82,7 @@ private:
     std::unique_ptr<LayerPools> ownPools; // allocated in prepare() only when no shared pools are given
     LayerPools* pools = nullptr;
     bool hasEq = false;
+    bool phaseParking=false;
     int layerLatency = 0;
     AlignmentDelay dryAlign;
     std::array<AlignmentDelay, kMaxFxNodesPerLayer> deltaAlign;

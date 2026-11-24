@@ -84,6 +84,7 @@ void ProjectEngine::prepare(double newSampleRate, int maxBlockSize,int channels)
         layer.engine->prepare(sampleRate, maxBlock, pools.get());
         layer.outAlign.prepare(maxLayerLatency(sampleRate));
         layer.restAlign.prepare(maxLayerLatency(sampleRate));
+        for(auto& buffer:layer.rendered)buffer.assign(static_cast<size_t>(maxBlock),0.f);
     }
     inputAlign.prepare(maxLayerLatency(sampleRate));
     latencyCap = maxLatency(sampleRate);
@@ -100,14 +101,18 @@ void ProjectEngine::reset() noexcept
     liveNativeTail.store(0,std::memory_order_relaxed);
     inputAlign.reset();
     wetReference.reset();
+    for(auto& path:commonPhase)path.reset();
     for (auto& layer : layers)
     {
         layer.engine->reset();
         layer.outAlign.reset();
         layer.restAlign.reset();
+        layer.restPhase.reset();layer.referencePhase.reset();
+        for(auto& path:layer.branchPhase)path.reset();
         layer.live = false;
         layer.modePending = false;
         layer.processedLastBlock = false;
+        layer.phaseRetiring=false;
     }
     applySnapshot();
     wetRemoval.reset(exchange.current().wetOnly?1.0:0.0);
@@ -153,6 +158,8 @@ void ProjectEngine::applySnapshot() noexcept
         inputAlign.reset();
         for (auto& layer : layers)
             layer.outAlign.reset();
+        for(auto& path:commonPhase)path.reset();
+        for(auto& layer:layers)for(auto& path:layer.branchPhase)path.reset();
     }
     for (size_t j = 0; j < layers.size(); ++j)
         layers[j].params = s.layers[j];
@@ -177,6 +184,7 @@ bool ProjectEngine::layerNeedsDsp(Layer& layer) const noexcept
 void ProjectEngine::runLayer(Layer& layer, float* const* io, int numChannels, int n, const Transport& transport, int blockOffset) noexcept
 {
     Transport t = transport;
+    t.controls.offset+=blockOffset;t.controls.position+=static_cast<std::uint64_t>(blockOffset);
     if (t.hasPosition && blockOffset > 0)
         t.ppqAtBlockStart += blockOffset * t.bpm / (60.0 * sampleRate);
     const int lj = layer.engine->getLatencySamples();
@@ -191,6 +199,7 @@ void ProjectEngine::runLayer(Layer& layer, float* const* io, int numChannels, in
             float* one[] { io[processed] };
             layer.engine->process(one, 1, n, t);
             float* untouched[] { io[other] };
+            layer.engine->processPhase(layer.restPhase,untouched,1,n);
             layer.restAlign.process(untouched, untouched, 1, n, lj);
             break;
         }
@@ -209,6 +218,7 @@ void ProjectEngine::runLayer(Layer& layer, float* const* io, int numChannels, in
             float* one[] { c };
             layer.engine->process(one, 1, n, t);
             float* other[] { r };
+            layer.engine->processPhase(layer.restPhase,other,1,n);
             layer.restAlign.process(other, other, 1, n, lj);
             for (int i = 0; i < n; ++i)
             {
@@ -257,8 +267,11 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
 
     // Targets, mode changes, enable / disable, latencies.
     std::array<bool, kNumLayers> dsp {};
+    std::array<bool,kNumLayers> phase {};
     std::array<int, kNumLayers> lj {};
     int sum = 0, max = 0;
+    const auto refresh=[&] {
+    sum=0;max=0;
     for (size_t j = 0; j < layers.size(); ++j)
     {
         auto& layer = layers[j];
@@ -280,10 +293,12 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
             layer.engine->reset();
             layer.outAlign.reset();
             layer.restAlign.reset();
+            layer.engine->update(); // establish the new tree before needsProcessing()
             layer.weight.reset(0.0);
             layer.mode = layer.params.channel;
             layer.modePending = false;
             layer.live = true;
+            layer.phaseRetiring=false;
         }
         if (layer.params.channel != layer.mode)
             layer.modePending = true;
@@ -293,6 +308,7 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
             layer.modePending = false;
             layer.engine->reset();
             layer.restAlign.reset();
+            layer.engine->update();
         }
         const double target = layer.params.enabled && !layer.modePending ? layer.params.weight : 0.0;
         layer.weight.setTarget(target, rampSteps);
@@ -300,6 +316,8 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
         layer.pan.setTarget(layer.params.pan, rampSteps);
         layer.width.setTarget(layer.params.width, rampSteps);
         dsp[j] = layerNeedsDsp(layer);
+        if(!dsp[j]&&layer.processedLastBlock&&layer.engine->isTreeActive())layer.phaseRetiring=true;
+        phase[j]=dsp[j]||layer.phaseRetiring;
         if (!dsp[j])
         {
             // Skipped: its delta is exactly 0 whatever the weight, so the ramps may land at once.
@@ -318,6 +336,8 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
     for (const auto& layer : layers)
         acknowledged = std::min(acknowledged, layer.engine->nativeGeneration());
     nativeRegistry->acknowledge(acknowledged);
+    };
+    refresh();
     if(freshStart)
     {
         wetRemoval.reset(exchange.current().wetOnly?1.0:0.0);
@@ -330,9 +350,19 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
     outputTrim.setTarget(exchange.current().outputTrim,rampSteps);
     inputTrim.setTarget(exchange.current().inputTrim,rampSteps);
 
-    for (int start = 0; start < numSamples; start += maxBlock)
+    for (int start = 0; start < numSamples;)
     {
-        const int n = std::min(maxBlock, numSamples - start);
+        if(start>0)refresh();
+        int n = std::min(maxBlock, numSamples - start);
+        // Land disable/mode handovers at their sample, independent of the host
+        // block. Native DSP still runs in normal chunks between handovers.
+        for(const auto& layer:layers)if((!layer.params.enabled||layer.modePending)&&layer.weight.isRamping())
+            n=std::min(n,layer.weight.remainingSteps());
+        for(size_t j=0;j<layers.size();++j)if(!dsp[j]&&phase[j])
+        {
+            layers[j].engine->processPhaseRetirement(n);
+            if(!layers[j].engine->isTreeActive())layers[j].phaseRetiring=false;
+        }
         float* x[kMaxChannels] {};
         float* w[kMaxChannels] {};
         for (int ch = 0; ch < numChannels; ++ch)
@@ -349,7 +379,7 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
             }
         float* wetDryPtr[kMaxChannels]{};
         for(int ch=0;ch<numChannels;++ch)wetDryPtr[ch]=wetDry[static_cast<size_t>(ch)].data();
-        wetReference.process(x,wetDryPtr,numChannels,n,latency);
+        for(int ch=0;ch<numChannels;++ch)std::copy(x[ch],x[ch]+n,wetDryPtr[ch]);
 
         if (routing == LayerRouting::Parallel)
         {
@@ -360,17 +390,36 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
                 d[ch] = dryAligned[static_cast<size_t>(ch)].data();
                 acc[ch] = current[static_cast<size_t>(ch)].data();
             }
-            inputAlign.process(x, d, numChannels, n, max);
-            for (int ch = 0; ch < numChannels; ++ch)
-                std::copy(d[ch], d[ch] + n, acc[ch]);
+            // Render first: every phase replay below uses this block's actual
+            // crossover coefficient clock, including edge birth/retirement.
             for (size_t j = 0; j < layers.size(); ++j)
             {
                 if (!dsp[j])
                     continue;
                 auto& layer = layers[j];
+                float* branch[kMaxChannels]{};
                 for (int ch = 0; ch < numChannels; ++ch)
-                    std::copy(x[ch], x[ch] + n, w[ch]);
-                runLayer(layer, w, numChannels, n, transport, start);
+                {
+                    branch[ch]=layer.rendered[static_cast<size_t>(ch)].data();
+                    std::copy(x[ch],x[ch]+n,branch[ch]);
+                }
+                runLayer(layer,branch,numChannels,n,transport,start);
+            }
+            for(int ch=0;ch<numChannels;++ch)std::copy(x[ch],x[ch]+n,w[ch]);
+            for(size_t k=0;k<layers.size();++k)if(phase[k])
+                layers[k].engine->processPhase(commonPhase[k],w,numChannels,n);
+            inputAlign.process(w,d,numChannels,n,max);
+            for(int ch=0;ch<numChannels;++ch)std::copy(d[ch],d[ch]+n,wetDryPtr[ch]);
+            for(int ch=0;ch<numChannels;++ch)std::copy(d[ch],d[ch]+n,acc[ch]);
+            for(size_t j=0;j<layers.size();++j)
+            {
+                if(!dsp[j])continue;
+                auto& layer=layers[j];
+                for(int ch=0;ch<numChannels;++ch)w[ch]=layer.rendered[static_cast<size_t>(ch)].data();
+                // A branch already owns its own crossover phase. Complete it
+                // with the other branches' phase before summing their deltas.
+                for(size_t k=0;k<layers.size();++k)if(k!=j&&phase[k])
+                    layers[k].engine->processPhase(layer.branchPhase[k],w,numChannels,n);
                 if (max - lj[j] > 0)
                     layer.outAlign.process(w, w, numChannels, n, max - lj[j]);
                 for (int i = 0; i < n; ++i)
@@ -385,18 +434,28 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
         }
         else
         {
+            int serialKeyLatency=0;
             for (size_t j = 0; j < layers.size(); ++j)
             {
                 auto& layer = layers[j];
+                const int keyLatency=serialKeyLatency;serialKeyLatency+=lj[j];
                 if (!dsp[j])
                 {
+                    if(phase[j])
+                    {
+                        layer.engine->processPhase(layer.referencePhase,x,numChannels,n);
+                        layer.engine->processPhase(commonPhase[j],wetDryPtr,numChannels,n);
+                    }
                     if (lj[j] > 0)
                         layer.outAlign.process(x, x, numChannels, n, lj[j]); // disabled layer: pure delay
                     continue;
                 }
                 for (int ch = 0; ch < numChannels; ++ch)
                     std::copy(x[ch], x[ch] + n, w[ch]);
-                runLayer(layer, w, numChannels, n, transport, start);
+                auto layerTransport=transport;layerTransport.controls.latency+=keyLatency;
+                runLayer(layer, w, numChannels, n, layerTransport, start);
+                layer.engine->processPhase(layer.referencePhase,x,numChannels,n);
+                layer.engine->processPhase(commonPhase[j],wetDryPtr,numChannels,n);
                 if (lj[j] > 0)
                     layer.outAlign.process(x, x, numChannels, n, lj[j]);
                 for (int i = 0; i < n; ++i)
@@ -406,6 +465,7 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
                         x[ch][i] = g == 1.0f ? w[ch][i] : x[ch][i] + g * (w[ch][i] - x[ch][i]); // w = 1: exactly L_j
                 }
             }
+            wetReference.process(wetDryPtr,wetDryPtr,numChannels,n,latency);
         }
         if(wetRemoval.isRamping()||wetRemoval.value()!=0.0||outputTrim.isRamping()||outputTrim.value()!=1.0)
             for(int i=0;i<n;++i)
@@ -414,6 +474,7 @@ void ProjectEngine::process(float* const* channels, int numChannels, int numSamp
                 const auto trim=static_cast<float>(outputTrim.next());
                 for(int ch=0;ch<numChannels;++ch)x[ch][i]=(x[ch][i]-removal*wetDryPtr[ch][i])*trim;
             }
+        start+=n;
     }
 
     // Native sync/freeze settings can change their declared tail with host

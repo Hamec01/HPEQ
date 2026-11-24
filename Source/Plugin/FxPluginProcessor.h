@@ -45,7 +45,7 @@ public:
     int getNumPrograms() override { return 1; }
     int getCurrentProgram() override { return 0; }
     void setCurrentProgram(int) override {}
-    const juce::String getProgramName(int) override { return {}; }
+    const juce::String getProgramName(int) override { return "Default"; }
     void changeProgramName(int, const juce::String&) override {}
 
     void getStateInformation(juce::MemoryBlock&) override;
@@ -66,6 +66,19 @@ public:
     FxProjectState getProject() const;
     bool setProject(FxProjectState);
     bool loadRackPreset(int index);
+    struct MacroDestination {
+        int layer=0,chain=0,slot=0;std::uint32_t node=0;
+        juce::String parameter,label;float minimum=0,maximum=1;
+        std::uint64_t revision=0;
+    };
+    std::vector<MacroDestination> macroDestinations(int assignedMacro=-1) const;
+    bool assignMacro(int,const MacroDestination&,float minimum=0,float maximum=1);
+    bool clearMacro(int);
+    bool removeMacroDestination(int,const MacroDestination&);
+    void nativeMacroTouch(const FxSlotState&,const juce::String&,float normalized);
+    void nativeMacroGesture(const FxSlotState&,const juce::String&,bool beginning);
+    bool externalKeyEnabled() const noexcept {return getBusCount(true)>1&&getBus(true,1)->isEnabled();}
+    void resetOutputPeak() noexcept {outputLoudness.requestPeakReset();}
     native::FaderView nativeFaderView(int layer,int node,int slot) const;
     native::Meters nativeMeters(int layer,int node,int slot) const;
     std::shared_ptr<native::Runtime> nativeEditorRuntime(int layer,int node,int slot) const;
@@ -108,6 +121,18 @@ public:
     void resetLoudness() noexcept { inputLoudness.requestReset(); outputLoudness.requestReset(); }
 
 private:
+    std::array<std::atomic<float>*,control::kMacros> macroValues {};
+    std::array<dsp::LinearRamp,control::kMacros> macroRamps;
+    std::array<std::vector<float>,control::kMacros> macroCurves;
+    std::array<float,control::kMacros> macroHeld {};
+    std::atomic<std::uint32_t> macroMask {0};
+    std::atomic<std::uint64_t> projectRevision {1};
+    std::array<std::atomic<unsigned>,control::kMacros> macroResetSerial {};
+    std::array<unsigned,control::kMacros> macroSeenSerial {};
+    std::uint64_t processedFrames=0;
+    int macroRampSteps=1;
+    std::atomic<float>* finalTrimDb=nullptr;
+    juce::SmoothedValue<float,juce::ValueSmoothingTypes::Linear> finalGain;
     void captureNativeState(FxProjectState&) const;
     static void measure(const juce::AudioBuffer<float>&, int numChannels, std::atomic<float>& peak, std::atomic<float>& rms) noexcept;
 

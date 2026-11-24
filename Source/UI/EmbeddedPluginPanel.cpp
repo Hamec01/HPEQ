@@ -17,6 +17,9 @@ void EmbeddedPluginPanel::detach()
     synchronizing=true;
     if(runtime)
     {
+        if(onParameterGesture)for(int i=0;i<int(runtime->referenceProcessor().getParameters().size())&&i<native::kMaxParameters;++i)
+            if(gestures[static_cast<size_t>(i)])if(auto* p=dynamic_cast<juce::RangedAudioParameter*>(runtime->referenceProcessor().getParameters()[i]))onParameterGesture(p->paramID,false);
+        gestures.fill(false);
         if(runtime->kind()==FxType::Gain)native::installFaderActionBridge(runtime->referenceProcessor(),{});
         runtime->referenceProcessor().removeListener(this);
     }
@@ -77,17 +80,32 @@ void EmbeddedPluginPanel::audioProcessorParameterChanged(juce::AudioProcessor* p
     if(!parameter)return;
     const float physical=parameter->convertFrom0to1(normalized);
     pending[static_cast<size_t>(index)].store(physical,std::memory_order_relaxed);
+    touchForwarded[static_cast<size_t>(index)].store(false,std::memory_order_relaxed);
     changed[static_cast<size_t>(index)].store(true,std::memory_order_release);
     runtime->requestEditorValue(index,physical);
+    if(auto* manager=juce::MessageManager::getInstanceWithoutCreating();manager&&manager->isThisTheMessageThread()&&onParameterTouch&&(!readRuntime||readRuntime()==runtime)){
+        onParameterTouch(parameter->paramID,normalized);touchForwarded[static_cast<size_t>(index)].store(true,std::memory_order_release);
+    }
     triggerAsyncUpdate();
 }
 void EmbeddedPluginPanel::audioProcessorChanged(juce::AudioProcessor*,const ChangeDetails&)
 {
     if(!synchronizing&&runtime&&!runtime->isSynchronizingEditor())triggerAsyncUpdate();
 }
-void EmbeddedPluginPanel::audioProcessorParameterChangeGestureBegin(juce::AudioProcessor*,int)
+void EmbeddedPluginPanel::audioProcessorParameterChangeGestureBegin(juce::AudioProcessor* p,int index)
 {
+    if(index<0||index>=native::kMaxParameters)return;
+    if(!runtime||(readRuntime&&readRuntime()!=runtime))return;
     if(onGesture&&!synchronizing)onGesture();
+    if(onParameterGesture&&!synchronizing&&runtime&&!runtime->isSynchronizingEditor())
+        if(auto* parameter=dynamic_cast<juce::RangedAudioParameter*>(p->getParameters()[index])){gestures[static_cast<size_t>(index)]=true;onParameterGesture(parameter->paramID,true);}
+}
+void EmbeddedPluginPanel::audioProcessorParameterChangeGestureEnd(juce::AudioProcessor* p,int index)
+{
+    if(index<0||index>=native::kMaxParameters||!gestures[static_cast<size_t>(index)])return;
+    gestures[static_cast<size_t>(index)]=false;
+    if(onParameterGesture&&!synchronizing&&runtime&&!runtime->isSynchronizingEditor())
+        if(auto* parameter=dynamic_cast<juce::RangedAudioParameter*>(p->getParameters()[index]))onParameterGesture(parameter->paramID,false);
 }
 void EmbeddedPluginPanel::handleAsyncUpdate()
 {
@@ -101,6 +119,8 @@ void EmbeddedPluginPanel::handleAsyncUpdate()
             if(auto* parameter=dynamic_cast<juce::RangedAudioParameter*>(parameters[index]))
             {
                 slot.parameters.set(parameter->paramID,static_cast<double>(pending[static_cast<size_t>(index)].load(std::memory_order_relaxed)));
+                if(!touchForwarded[static_cast<size_t>(index)].exchange(false,std::memory_order_acq_rel)&&onParameterTouch)
+                    onParameterTouch(parameter->paramID,parameter->convertTo0to1(pending[static_cast<size_t>(index)].load(std::memory_order_relaxed)));
                 edited=true;
             }
     if(slot.type==FxType::MonstaFx)
@@ -112,8 +132,10 @@ void EmbeddedPluginPanel::handleAsyncUpdate()
 }
 void EmbeddedPluginPanel::timerCallback()
 {
+    if(!isShowing())return;
     refresh();
     // Scene and workbench buttons also edit native non-parameter state.
+    if(runtime)runtime->synchronizeAutomatedEditor();
     if(runtime&&runtime->kind()==FxType::MonstaFx)handleAsyncUpdate();
 }
 }

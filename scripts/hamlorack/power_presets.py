@@ -179,7 +179,8 @@ if __name__=="__main__":
         lines=["# Rack Power presets","","Twenty authored demonstrations of complete current plug-ins and HPEQ layer/region routing. Audio verification is recorded separately; topology alone does not prove musical quality.",""]
         if calibration.exists():
             records=measured['records']
-            lines.extend(['All 20 passed 160 source/level/tempo checks and 20 silent-tail renders. Output trim alone was adjusted; every authored DSP parameter stayed fixed. Loudness is within +/-0.5 LU for 10/20; ten headroom-constrained exceptions are listed below. Listening verdicts remain pending. Full metrics and hashes: [RACK_POWER_RECEIPT.json](RACK_POWER_RECEIPT.json).', '', '| ID | Output trim dB | LU difference | Worst dBTP | Tail end dBFS |', '|---|---:|---:|---:|---:|'])
+            matched=sum(abs(r['loudness_delta_lu'])<=.5 for r in records)
+            lines.extend([f'All 20 passed 160 source/level/tempo checks and 20 silent-tail renders. Output trim alone was adjusted; every authored DSP parameter stayed fixed. Loudness is within +/-0.5 LU for {matched}/20; {20-matched} headroom-constrained exceptions remain. Listening verdicts remain pending. Full metrics and hashes: [RACK_POWER_RECEIPT.json](RACK_POWER_RECEIPT.json).', '', '| ID | Output trim dB | LU difference | Worst dBTP | Tail end dBFS |', '|---|---:|---:|---:|---:|'])
             for item in records:
                 peak=max(c['output']['true_peak_8x_dbtp'] for c in item['checks'])
                 lines.append(f"| {item['id']} | {item['output_trim_db']:.2f} | {item['loudness_delta_lu']:+.2f} | {peak:.2f} | {item['tail_final_second_peak_dbfs']:.1f} |")

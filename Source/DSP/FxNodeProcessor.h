@@ -116,6 +116,7 @@ public:
     static int nodeLatencyFor(const FxNodeParams&, double sampleRate);
 
 private:
+    void processChunk(const float* const*,const float*,float* const*,int,int,const Transport&,int) noexcept;
     struct Slot
     {
         bool wanted = false, running = false, starved = false, inChain = false;

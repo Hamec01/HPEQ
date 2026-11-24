@@ -19,6 +19,23 @@ is retained as source data, not offered as the main rack bank. See
 [the current integration handoff](docs/hamlorack/CURRENT_INTEGRATION.md) for verification
 and the exact remaining host/listening scope. Earlier checkpoint receipts are historical.
 
+HamloRack 0.2.3 adds [sixteen assignable host macros, external HamloComp sidechain,
+and final output trim/monitoring](docs/hamlorack/CONTROLS_GUIDE.md). Module-owned
+assignments survive move/copy/undo/save; the original host parameter IDs remain.
+New unused features preserve the qualified 0.2.2 sound: all 270 canonical preset
+renders match exactly. [Qualification](docs/hamlorack/CONTROLS_REPORT.md) includes
+9245 Release checks, 214 Debug control/allocation checks, pluginval 9 and the
+Steinberg validator; owner listening and FL Studio verification remain pending.
+
+The phase behavior introduced in 0.2.2 aligns layers and channel components,
+without additional latency. Active regions retain their all-pass phase at layer
+Mix 0; settled global Bypass returns the original latency-aligned dry signal.
+External parallel routing should be checked for phase as well as latency.
+Measured factory calibration carries a portable DSP source identity; a changed
+DSP requires revalidation before that calibration can load. See the
+[phase/level method](docs/hamlorack/PHASE_LEVEL_METHOD.md) and
+[individual preset review](docs/hamlorack/PRESET_REVIEW.md).
+
 Each layer runs **PRE-EQ → frequency-range FX nodes (up to 6 processors per node) → delta mix**, with
 up to 10 layers. The spec, roadmap and acceptance matrix are in [`docs/fx-addon/`](docs/fx-addon/);
 owner decisions that change the spec are in [`DECISIONS.md`](docs/fx-addon/DECISIONS.md).

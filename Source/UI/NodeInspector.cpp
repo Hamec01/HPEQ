@@ -1,5 +1,7 @@
 #include "UI/NodeInspector.h"
 #include "Plugin/Presets.h"
+#include "Plugin/FxParameterContract.h"
+#include <map>
 
 #include "UI/ModuleTile.h"
 #include "UI/EmbeddedPluginPanel.h"
@@ -927,6 +929,12 @@ juce::String NodeInspector::structureSignature(const FxProjectState& p) const
 }
 void NodeInspector::buildNativePage(int k,FxType type)
 {
+    if(type==FxType::Compressor){
+        auto& key=addButton("External SC",[this,k]{editChain("External sidechain",[k](auto& chain){auto& s=chain[static_cast<size_t>(k)];s.externalSidechain=!s.externalSidechain;});},true);
+        key.setComponentID("externalSidechain");key.setTooltip("Use the DAW Sidechain input as this compressor's detector. Disabled bus: internal detector. SOURCE still shapes the key.");
+        key.getProperties().set("section",1);key.getProperties().set("width",120);key.getProperties().set("height",kRowHeight-2);
+        refreshers.push_back([this,k,&key]{auto p=processor.getProject();if(auto* c=selectedChain(p);c&&k<int(c->size()))key.setToggleState((*c)[static_cast<size_t>(k)].externalSidechain,juce::dontSendNotification);});
+    }
     largePage=true;
     auto* panel=new EmbeddedPluginPanel();controls.add(panel);addAndMakeVisible(panel);
     panel->getProperties().set("section",4);
@@ -936,6 +944,22 @@ void NodeInspector::buildNativePage(int k,FxType type)
         return FxSlotState{};
     };
     panel->onGesture=[this]{processor.getUndoManager().beginNewTransaction("Native module");};
+    panel->onParameterTouch=[this,panel](const juce::String& id,float value){processor.nativeMacroTouch(panel->readSlot(),id,value);};
+    // End the gesture on its original host parameter even if routing or the
+    // selected module changes before mouse-up/editor detachment.
+    panel->onParameterGesture=[this,panel,active=std::map<juce::String,juce::RangedAudioParameter*>{}](const juce::String& id,bool begin) mutable {
+        if(begin){
+            if(active.count(id))return;
+            for(const auto& m:panel->readSlot().macros)if(m.parameter==id)
+                if(auto* host=processor.getParameters().getParameter(params::macroId(m.macro))){
+                    const bool shared=std::any_of(active.begin(),active.end(),[host](const auto& pair){return pair.second==host;});
+                    active.emplace(id,host);if(!shared)host->beginChangeGesture();break;
+                }
+        }else if(const auto found=active.find(id);found!=active.end()){
+            auto* host=found->second;active.erase(found);
+            if(std::none_of(active.begin(),active.end(),[host](const auto& pair){return pair.second==host;}))host->endChangeGesture();
+        }
+    };
     panel->onChange=[this,k,type](const FxSlotState& slot) {
         editChain("Native module",[&](std::vector<FxSlotState>& c) {
             if(k<static_cast<int>(c.size())&&c[static_cast<size_t>(k)].type==type)c[static_cast<size_t>(k)]=slot;

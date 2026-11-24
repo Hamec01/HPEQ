@@ -56,6 +56,16 @@ public:
     // Recombine: out[ch][i] += sum_j S_j(deltas[j][ch][i]) for every allocated node (Horner).
     void combine(const float* const* const* deltas, float* const* out, int numChannels, int numSamples) noexcept;
 
+    struct PhasePath
+    {
+        struct Edge { std::array<TptSvf,2> filters; std::uint64_t epoch=0; };
+        std::array<Edge,kMaxFxNodesPerLayer> edges;
+        void reset() noexcept { for(auto& e:edges){e.epoch=0;for(auto& f:e.filters)f.reset();} }
+    };
+    // After process(), replay precisely its coefficient schedule, without EQ,
+    // FX or delay, on another branch. Each branch owns a separate PhasePath.
+    void processPhase(PhasePath&,float* const*,int channels,int samples) const noexcept;
+
 private:
     struct NodeEdges
     {
@@ -70,6 +80,10 @@ private:
         struct Retune { int sample; double lowHz, highHz; };
         std::vector<Retune> retunes;
         int retuneCount = 0;
+        std::uint64_t epoch=0;
+        std::array<TptSvf,2> phaseStart;
+        bool phaseAllocated=false;
+        int phaseEnd=0;
     };
 
     void allocate(int node) noexcept;
@@ -78,6 +92,7 @@ private:
     double sampleRate = 48000.0;
     int glideSteps = 1, birthSteps = 1, presenceSteps = 1;
     bool anyAllocated = false;
+    std::uint64_t nextEpoch=0; // monotonic across reset, so external histories cannot alias
     std::array<NodeEdges, kMaxFxNodesPerLayer> edges;
 };
 } // namespace hpeq::dsp

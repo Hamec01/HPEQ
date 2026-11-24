@@ -813,7 +813,7 @@ Full range:
 
 - HamloMag (amount 0.2): model=Tape (1), driveDb=2, mix=1, trimDb=0, oversampling=8x (3), autoGain=On (1), harmonics=0.35, tone=0, evenOdd=0, tapeBias=0.5, speed=1 (0), wow=0, hiss=0, hum=0, crackle=0, noiseFollow=Follow (1), punish=Off (0), thump=Off (0), steep=Off (0), sampler=Off (0), phoneBass=0, subProtectHz=0, dynamics=0, match=Off (0), delta=Off (0)
 - HamloComp (amount 1): thresholdDb=-19, ratio=1.5, attackMs=40, releaseMs=180, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2, ceilingDb=-1, releaseMs=130, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2, ceilingDb=-1.05, releaseMs=130, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Final 8x true peak exceeds -1 dBTP or limiter work exceeds 3 dB.
 
@@ -831,7 +831,7 @@ Full range:
 
 - HamloComp (amount 1): thresholdDb=-21, ratio=1.6, attackMs=35, releaseMs=200, model=Opto (3), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
 - HamloMag (amount 0.15): model=Iron (3), driveDb=2, mix=1, trimDb=0, oversampling=8x (3), autoGain=On (1), harmonics=0.35, tone=0, evenOdd=0, tapeBias=0.5, speed=1 (0), wow=0, hiss=0, hum=0, crackle=0, noiseFollow=Follow (1), punish=Off (0), thump=Off (0), steep=Off (0), sampler=Off (0), phoneBass=0, subProtectHz=0, dynamics=0, match=Off (0), delta=Off (0)
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.5, ceilingDb=-1, releaseMs=145, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.5, ceilingDb=-1.05, releaseMs=145, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Idle noise grows or the matched chorus loses snare contrast.
 
@@ -849,7 +849,7 @@ Full range:
 
 - HamloComp (amount 1): thresholdDb=-18, ratio=1.3, attackMs=45, releaseMs=230, model=Opto (3), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0.95, v2MidWidth=1, v2HighWidth=1.05, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=100, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1, ceilingDb=-1, releaseMs=180, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1, ceilingDb=-1.05, releaseMs=180, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Limiter work exceeds 2 dB or the room pulls inward on kick hits.
 
@@ -867,7 +867,7 @@ Full range:
 
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0, v2MidWidth=1, v2HighWidth=1.08, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=110, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
 - HamloComp (amount 1): thresholdDb=-20, ratio=1.5, attackMs=35, releaseMs=167, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.2, ceilingDb=-1, releaseMs=120, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.2, ceilingDb=-1.05, releaseMs=120, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Bass fold-down changes notes or the kick loses low-end authority.
 
@@ -1684,7 +1684,7 @@ Full range:
 
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0, v2MidWidth=1, v2HighWidth=1.06, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=130, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
 - HamloComp (amount 1): thresholdDb=-18, ratio=1.4, attackMs=35, releaseMs=107, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.2, ceilingDb=-1, releaseMs=90, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.2, ceilingDb=-1.05, releaseMs=90, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Final 8x true peak exceeds -1 dBTP or bass distorts before 3 dB limiter work.
 
@@ -1702,7 +1702,7 @@ Full range:
 
 - HamloComp (amount 1): thresholdDb=-19, ratio=1.4, attackMs=40, releaseMs=160, model=Opto (3), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0.9, v2MidWidth=1.03, v2HighWidth=1.1, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=120, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.8, ceilingDb=-1, releaseMs=125, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.8, ceilingDb=-1.05, releaseMs=125, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: The airy band hisses or the matched vocal becomes recessed.
 
@@ -1720,7 +1720,7 @@ Full range:
 
 - HamloMag (amount 0.18): model=Iron (3), driveDb=3, mix=1, trimDb=0, oversampling=8x (3), autoGain=On (1), harmonics=0.35, tone=0, evenOdd=0, tapeBias=0.5, speed=1 (0), wow=0, hiss=0, hum=0, crackle=0, noiseFollow=Follow (1), punish=Off (0), thump=Off (0), steep=Off (0), sampler=Off (0), phoneBass=0, subProtectHz=110, dynamics=0, match=Off (0), delta=Off (0)
 - HamloComp (amount 1): thresholdDb=-20, ratio=1.6, attackMs=30, releaseMs=110, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.5, ceilingDb=-1, releaseMs=95, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.5, ceilingDb=-1.05, releaseMs=95, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Sub harmonics buzz audibly or limiter work exceeds 3 dB.
 
@@ -1738,7 +1738,7 @@ Full range:
 
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0, v2MidWidth=1.02, v2HighWidth=1.07, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=140, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
 - HamloComp (amount 1): thresholdDb=-17, ratio=1.3, attackMs=45, releaseMs=140, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.5, ceilingDb=-1, releaseMs=105, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.5, ceilingDb=-1.05, releaseMs=105, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Mono fold loses the hook or limiting changes the 808 envelope.
 
@@ -2564,7 +2564,7 @@ Full range:
 
 - HamloComp (amount 1): thresholdDb=-19, ratio=1.5, attackMs=40, releaseMs=114, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0, v2MidWidth=1, v2HighWidth=1.06, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=110, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.4, ceilingDb=-1, releaseMs=100, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.4, ceilingDb=-1.05, releaseMs=100, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Final 8x true peak exceeds -1 dBTP or kick flattening begins before 3 dB work.
 
@@ -2582,7 +2582,7 @@ Full range:
 
 - HamloMag (amount 0.15): model=Tape (1), driveDb=2, mix=1, trimDb=0, oversampling=8x (3), autoGain=On (1), harmonics=0.35, tone=0, evenOdd=0, tapeBias=0.5, speed=1 (0), wow=0, hiss=0, hum=0, crackle=0, noiseFollow=Follow (1), punish=Off (0), thump=Off (0), steep=Off (0), sampler=Off (0), phoneBass=0, subProtectHz=0, dynamics=0, match=Off (0), delta=Off (0)
 - HamloComp (amount 1): thresholdDb=-20, ratio=1.4, attackMs=45, releaseMs=190, model=Opto (3), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.8, ceilingDb=-1, releaseMs=145, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.8, ceilingDb=-1.05, releaseMs=145, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Long compression causes audible hat pumping or subtle accents disappear.
 
@@ -2600,7 +2600,7 @@ Full range:
 
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0.9, v2MidWidth=1.02, v2HighWidth=1.08, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=120, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
 - HamloComp (amount 1): thresholdDb=-19, ratio=1.4, attackMs=40, releaseMs=170, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.6, ceilingDb=-1, releaseMs=150, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.6, ceilingDb=-1.05, releaseMs=150, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: The room folds inward on kicks or low delay returns dominate the mix.
 
@@ -2618,7 +2618,7 @@ Full range:
 
 - HamloComp (amount 1): thresholdDb=-18, ratio=1.5, attackMs=35, releaseMs=95, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
 - HamloMag (amount 0.12): model=Iron (3), driveDb=2, mix=1, trimDb=0, oversampling=8x (3), autoGain=On (1), harmonics=0.35, tone=0, evenOdd=0, tapeBias=0.5, speed=1 (0), wow=0, hiss=0, hum=0, crackle=0, noiseFollow=Follow (1), punish=Off (0), thump=Off (0), steep=Off (0), sampler=Off (0), phoneBass=0, subProtectHz=120, dynamics=0, match=Off (0), delta=Off (0)
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.8, ceilingDb=-1, releaseMs=85, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.8, ceilingDb=-1.05, releaseMs=85, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: The hard character vanishes or limiting adds low-note distortion.
 
@@ -3440,7 +3440,7 @@ Full range:
 
 - HamloComp (amount 1): thresholdDb=-18, ratio=1.4, attackMs=35, releaseMs=86, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0, v2MidWidth=1, v2HighWidth=1.05, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=120, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.2, ceilingDb=-1, releaseMs=75, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.2, ceilingDb=-1.05, releaseMs=75, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Final 8x true peak exceeds -1 dBTP or snare contrast drops before 3 dB work.
 
@@ -3458,7 +3458,7 @@ Full range:
 
 - HamloComp (amount 1): thresholdDb=-19, ratio=1.4, attackMs=40, releaseMs=130, model=Opto (3), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0.9, v2MidWidth=1.02, v2HighWidth=1.1, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=110, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.7, ceilingDb=-1, releaseMs=110, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-1.7, ceilingDb=-1.05, releaseMs=110, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Mono narrows the hook excessively or the hall pumps on each snare.
 
@@ -3476,7 +3476,7 @@ Full range:
 
 - HamloMag (amount 0.12): model=Iron (3), driveDb=2, mix=1, trimDb=0, oversampling=8x (3), autoGain=On (1), harmonics=0.35, tone=0, evenOdd=0, tapeBias=0.5, speed=1 (0), wow=0, hiss=0, hum=0, crackle=0, noiseFollow=Follow (1), punish=Off (0), thump=Off (0), steep=Off (0), sampler=Off (0), phoneBass=0, subProtectHz=130, dynamics=0, match=Off (0), delta=Off (0)
 - HamloComp (amount 1): thresholdDb=-19, ratio=1.5, attackMs=32, releaseMs=86, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.3, ceilingDb=-1, releaseMs=70, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2.3, ceilingDb=-1.05, releaseMs=70, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: The growl loses identity or limiter work exceeds 3 dB to hit target loudness.
 
@@ -3494,7 +3494,7 @@ Full range:
 
 - HamloShirota (amount 1): v2Mode=Stereo / Space (1), v2Width=1, v2LowWidth=0, v2MidWidth=1, v2HighWidth=1.04, v2LowSplit=300, v2HighSplit=3000, v2MonoBass=140, v2Generate=0, v2Guard=On (1), v2Floor=0.15, v2Mix=1, v2Output=0, v2Motion=Off (0), v2PositionOn=Off (0), v2Mono=Stereo (0)
 - HamloComp (amount 1): thresholdDb=-20, ratio=1.6, attackMs=30, releaseMs=95, model=VCA (1), source=All (0), kneeDb=6, detector=RMS (1), character=Clean (0), autoMakeup=Off (0), makeupDb=0, mix=1
-- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2, ceilingDb=-1, releaseMs=85, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
+- HamloRedWall (amount 1): engine=V2 (1), thresholdDb=-2, ceilingDb=-1.05, releaseMs=85, autoRelease=Manual (0), lookaheadMs=2, link=1, truePeak=On (1), style=GLASNOST (0), outputDb=0, drive=0, tube=0, monitor=Normal (0), mix=1
 
 Reject/revise if: Bass note balance changes in mono or kicks become softer after matching.
 

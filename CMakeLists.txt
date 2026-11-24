@@ -40,9 +40,31 @@ set(HPEQ_HPDG_SOURCE_DIR "" CACHE PATH "HPDG Source/ directory for M0 measuremen
 enable_testing()
 include(cmake/HamloNative.cmake)
 
+# Calibration follows audio source identity, not checkout line endings or paths.
+file(GLOB_RECURSE HPEQ_DSP_IDENTITY_INPUTS CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/Source/DSP/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/Source/DSP/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Source/DSP/*.inc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Source/Rack/*.h" "${CMAKE_CURRENT_SOURCE_DIR}/Source/Rack/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Source/Rack/*.inc")
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${HPEQ_DSP_IDENTITY_INPUTS})
+foreach(HPEQ_DSP_IDENTITY_EXTRA IN ITEMS
+    Source/Core/FxProjectState.cpp Source/Core/FxProjectState.h Source/Plugin/FxPluginProcessor.cpp
+    Source/Plugin/FxPluginProcessor.h Source/Plugin/FxParameterContract.h Source/Plugin/MacroRouting.cpp
+    Source/Analysis/LoudnessMeter.cpp Source/Analysis/LoudnessMeter.h
+    Assets/Presets/HamloRack/Design/native-contract.json scripts/hamlorack/generate_native.py
+    scripts/hamlorack/dsp_identity.py scripts/hamlorack/control_adapters.py cmake/HamloNative.cmake)
+    set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${HPEQ_DSP_IDENTITY_EXTRA}")
+endforeach()
+execute_process(COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/scripts/hamlorack/dsp_identity.py"
+    --header "${CMAKE_CURRENT_BINARY_DIR}/HPEQ_artefacts/JuceLibraryCode/HamloRackDspIdentity.h"
+    RESULT_VARIABLE HPEQ_DSP_IDENTITY_RESULT OUTPUT_QUIET ERROR_VARIABLE HPEQ_DSP_IDENTITY_ERROR)
+if(NOT HPEQ_DSP_IDENTITY_RESULT EQUAL 0)
+    message(FATAL_ERROR "DSP identity failed: ${HPEQ_DSP_IDENTITY_ERROR}")
+endif()
+
 # --- Plugin -----------------------------------------------------------------------------------
 juce_add_plugin(HPEQ
-    VERSION 0.2.1
+    VERSION 0.2.3
     COMPANY_NAME "HamloProd"
     BUNDLE_ID com.hamloprod.hpeq
     IS_SYNTH FALSE
@@ -57,6 +79,15 @@ juce_add_plugin(HPEQ
     VST3_CATEGORIES Fx EQ
     FORMATS VST3
     PRODUCT_NAME "HamloRack")
+
+# JUCE 8.0.12 omits Info.txt from the rcfile command's dependencies. Without
+# this, an incremental version bump leaves Windows file properties stale.
+if(WIN32)
+    get_target_property(HPEQ_JUCE_CODE_DIR HPEQ JUCE_GENERATED_SOURCES_DIRECTORY)
+    get_target_property(HPEQ_JUCE_INFO_FILE HPEQ JUCE_INFO_FILE)
+    add_custom_command(OUTPUT "${HPEQ_JUCE_CODE_DIR}/HPEQ_resources.rc"
+        APPEND DEPENDS "${HPEQ_JUCE_INFO_FILE}")
+endif()
 
 target_compile_definitions(HPEQ
     PUBLIC
@@ -100,6 +131,7 @@ target_sources(HPEQ
         Source/DSP/CrossoverTree.cpp
         Source/DSP/EqDesign.cpp
         Source/Plugin/FxPluginProcessor.cpp
+        Source/Plugin/MacroRouting.cpp
         Source/Plugin/FxPluginEditor.cpp
         Source/Plugin/Presets.cpp
         Source/UI/AnalysisModel.cpp
@@ -107,6 +139,7 @@ target_sources(HPEQ
         Source/UI/EmbeddedPluginPanel.cpp
         Source/UI/RackPresetBar.cpp
         Source/UI/PresetBrowser.cpp
+        Source/UI/MacroRoutingPanel.cpp
         Source/UI/LayerControls.cpp
         Source/UI/HamloCompPanel.cpp
         Source/UI/BlackSteel.cpp
@@ -329,6 +362,8 @@ add_executable(HPEQ_Tests
     Tests/Unit/DynamicsReverbTests.cpp
     Tests/Unit/M6Tests.cpp
     Tests/Unit/M7Tests.cpp
+    Tests/Unit/PhaseRoutingTests.cpp
+    Tests/Unit/ControlStageTests.cpp
     Tests/Unit/M8Tests.cpp
     Tests/Unit/D6Tests.cpp
     Tests/Unit/CompressorPassTests.cpp
@@ -380,6 +415,11 @@ target_link_libraries(HPEQ_RackLab PRIVATE HPEQ)
 add_executable(HPEQ_RackBank Tests/Tools/RackBankMain.cpp)
 target_include_directories(HPEQ_RackBank PRIVATE Tests)
 target_link_libraries(HPEQ_RackBank PRIVATE HPEQ)
+add_executable(HPEQ_PhaseAudit Tests/Tools/PhaseAuditMain.cpp)
+target_link_libraries(HPEQ_PhaseAudit PRIVATE HPEQ)
+add_executable(HPEQ_ControlAudit Tests/Tools/ControlAuditMain.cpp)
+target_link_libraries(HPEQ_ControlAudit PRIVATE HPEQ juce::juce_audio_utils)
+target_compile_definitions(HPEQ_ControlAudit PRIVATE JUCE_PLUGINHOST_VST3=1)
 add_executable(HPEQ_RackRepair Tests/Tools/RackRepairMain.cpp)
 target_link_libraries(HPEQ_RackRepair PRIVATE HPEQ)
 

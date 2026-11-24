@@ -184,6 +184,12 @@ juce::ValueTree slotToTree(const FxSlotState& slot)
         if(slot.nativeState.getSize()>0)
             tree.setProperty("nativeStateBase64",slot.nativeState.toBase64Encoding(),nullptr);
     }
+    if(slot.externalSidechain)tree.setProperty("externalSidechain",true,nullptr);
+    for(const auto& m:slot.macros){
+        juce::ValueTree link("MacroBinding");link.setProperty("macro",m.macro,nullptr);
+        link.setProperty("parameter",m.parameter,nullptr);link.setProperty("minimum",exactText(m.minimum),nullptr);
+        link.setProperty("maximum",exactText(m.maximum),nullptr);tree.appendChild(link,nullptr);
+    }
     return tree;
 }
 
@@ -194,6 +200,21 @@ FxSlotState slotFromTree(const juce::ValueTree& tree)
     slot.enabled = tree.getProperty(ids::enabled, true);
     slot.mix = static_cast<float>(readDouble(tree, ids::mix, 1.0));
     slot.engineRevision=tree.getProperty("engineRevision",0);
+    slot.externalSidechain=tree.getProperty("externalSidechain",false);
+    for(const auto child:tree)if(child.hasType("MacroBinding")){
+        const auto index=child.getProperty("macro");MacroAssignment m;
+        m.macro=static_cast<int>(index);m.parameter=child["parameter"].toString();
+        bool integer=index.isInt()||index.isInt64();
+        if(index.isString()){
+            const auto text=index.toString().toStdString();const auto parsed=std::from_chars(text.data(),text.data()+text.size(),m.macro);
+            integer=!text.empty()&&parsed.ec==std::errc()&&parsed.ptr==text.data()+text.size();
+        }
+        m.minimum=static_cast<float>(readDouble(child,"minimum",0));m.maximum=static_cast<float>(readDouble(child,"maximum",1));
+        if(!integer||m.macro<0||m.macro>=control::kMacros||m.parameter.isEmpty()
+            ||!std::isfinite(m.minimum)||!std::isfinite(m.maximum)||m.minimum<0||m.minimum>1||m.maximum<0||m.maximum>1
+            ||slot.macros.size()>=control::kMaxBindings)slot.engineRevision=-1;
+        slot.macros.push_back(std::move(m));
+    }
     if(tree.hasProperty("nativeStateBase64") && !slot.nativeState.fromBase64Encoding(tree["nativeStateBase64"].toString()))
         slot.engineRevision=-1; // retain an explicit failure, never turn corrupt native state into legacy
     const auto params = tree.getChildWithName(ids::params);
@@ -269,6 +290,19 @@ void useCurrentModules(FxProjectState& project)
 bool isModuleSupported(const FxSlotState& slot,juce::String* error)
 {
     juce::String reason;
+    if(slot.externalSidechain&&(slot.type!=FxType::Compressor||slot.engineRevision!=native::kRevision))
+    {if(error)*error="External sidechain requires native HamloComp";return false;}
+    if(!slot.macros.empty()){
+        juce::StringArray used;
+        if(slot.engineRevision!=native::kRevision||slot.macros.size()>control::kMaxBindings)
+        {if(error)*error="Invalid macro module/capacity";return false;}
+        for(const auto& m:slot.macros){
+            bool found=false;for(const auto& spec:native::layout(slot.type))found=found||spec.id==m.parameter;
+            if(!found||used.contains(m.parameter)||m.macro<0||m.macro>=control::kMacros||!std::isfinite(m.minimum)
+                ||!std::isfinite(m.maximum)||m.minimum<0||m.minimum>1||m.maximum<0||m.maximum>1)
+            {if(error)*error="Invalid/duplicate macro destination";return false;}used.add(m.parameter);
+        }
+    }
     if(slot.engineRevision==0 && slot.nativeState.getSize()==0)return true;
     if(slot.engineRevision!=native::kRevision)reason="Unsupported module engine revision";
     else if(slot.nativeState.getSize()>16*1024*1024)reason="Native structural state exceeds capacity";
@@ -295,15 +329,19 @@ bool isModuleSupported(const FxSlotState& slot,juce::String* error)
 
 int projectSchemaVersion(const FxProjectState& project)
 {
-    if(project.wetOnly||project.masterRoute||project.outputTrimDb!=0||project.inputTrimDb!=0
-        ||project.referenceBpm!=120||project.rackPresetId.isNotEmpty())return 2;
+    int version=(project.wetOnly||project.masterRoute||project.outputTrimDb!=0||project.inputTrimDb!=0
+        ||project.referenceBpm!=120||project.rackPresetId.isNotEmpty())?2:1;
+    const auto inspect=[&](const auto& chain){for(const auto& s:chain){
+        if(s.engineRevision!=0)version=std::max(version,2);
+        if(s.externalSidechain||!s.macros.empty())version=3;
+    }};
     for(const auto& layer:project.layers)
     {
-        for(const auto& slot:layer.mixChain)if(slot.engineRevision!=0)return 2;
-        for(const auto& node:layer.fxNodes)for(const auto& slot:node.chain)if(slot.engineRevision!=0)return 2;
-        for(const auto& node:layer.eqNodes)for(const auto& slot:node.chain)if(slot.engineRevision!=0)return 2;
+        inspect(layer.mixChain);
+        for(const auto& node:layer.fxNodes)inspect(node.chain);
+        for(const auto& node:layer.eqNodes)inspect(node.chain);
     }
-    return 1;
+    return version;
 }
 
 std::array<LayerState, kNumLayers> FxProjectState::makeDefaultLayers()

@@ -1,566 +1,681 @@
 {
   "format": "HamloRackCalibration",
-  "version": 2,
-  "status": "numerically_calibrated; owner audition pending",
-  "bank_sha256": "c72f1d993c1d99fb495053457a749150fdc0768dfb8925ac653247192aa9dfb9",
-  "material_manifest_sha256": "c0fa29dedb852a9b526cdba872387b0f4ceb3560d8fe3f7de08c205c84963a31",
+  "version": 3,
+  "status": "numerically_calibrated; current DSP verified; owner audition pending",
+  "dsp_source_sha256": "1c5f3358f8331e4a6f820282b44b97ef9ce5b66a29d2ddf6d3bb5ef6fc2b2d3a",
+  "verification_executable_sha256": [
+    "5d8b1cf98006c6c6840c8de080952d1a36f815e63420f0192784a7d3da3567db"
+  ],
+  "bank_sha256": "4f0e19304f3b17bc61c47f17532c601ce76958508684349404b273c981b4c356",
+  "material_manifest_sha256": "f4a02353b3b92b59f49a18d617dca5ddb102bd5e2e8dc8a7730f65390c995979",
   "laboratory_executable_sha256": [
-    "04bbeb5bfe1ac7d0a6596a23af55f3a473b73d83d0ba8b8d90eb957a37feed6e",
-    "a1c3757cf5c6e05828562d1e611dd68a172207a55331ad48ea43fbafb493c790"
+    "f1dcddca2f845811fb9ac1102630d3e8d077baad0312268506bd2cf4b5cc2f96"
   ],
   "entries": {
     "HR001": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.306117656388833,
+      "output_trim_db": 0.098211344432112,
       "overrides": []
     },
     "HR002": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.076110214081082,
+      "output_trim_db": 0.491297472971443,
       "overrides": []
     },
     "HR003": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.761155337583805,
+      "output_trim_db": 1.019654731916777,
+      "overrides": []
+    },
+    "HR004": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 3.016859100145355,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -18.254377365112305
+            "thresholdDb": -25.0
           }
         }
       ]
     },
-    "HR004": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -0.339387552966981,
-      "overrides": []
-    },
     "HR005": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.528986410999336,
+      "output_trim_db": 1.703392214599905,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -19.0
+            "thresholdDb": -21.3125
           }
         }
       ]
     },
     "HR006": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.638428462440901,
+      "output_trim_db": 0.910791745361603,
       "overrides": []
     },
     "HR007": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.896590544564406,
+      "output_trim_db": -0.616867153504948,
       "overrides": []
     },
     "HR008": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.081037681293955,
+      "output_trim_db": 1.136882094248918,
       "overrides": []
     },
     "HR009": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.633960130775939,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -20.60485553741455
-          }
-        }
-      ]
+      "output_trim_db": 1.058781422069291,
+      "overrides": []
     },
     "HR010": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.507325967384066,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -18.435987949371338
-          }
-        }
-      ]
+      "output_trim_db": 0.636068884479613,
+      "overrides": []
     },
     "HR011": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.731907913089906,
+      "output_trim_db": 1.621865261336023,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -18.0
+            "thresholdDb": -22.5
           }
         }
       ]
     },
     "HR012": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.027201541996382,
+      "output_trim_db": 1.553071010802014,
       "overrides": []
     },
     "HR013": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.249144248913488,
+      "output_trim_db": 1.988115960685413,
       "overrides": []
     },
     "HR014": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.712373474112095,
+      "output_trim_db": 5.029299932995954,
       "overrides": []
     },
     "HR015": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.55362398826136,
+      "output_trim_db": -0.191351747144875,
       "overrides": []
     },
     "HR016": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.724333768828284,
+      "output_trim_db": 0.00555942075918,
       "overrides": []
     },
     "HR017": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.993853753750781,
+      "output_trim_db": 2.587883714877641,
       "overrides": []
     },
     "HR018": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.3025575741258,
+      "output_trim_db": -1.134870817028379,
       "overrides": []
     },
     "HR019": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.250035122907697,
+      "output_trim_db": 0.315790543198734,
       "overrides": []
     },
     "HR020": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.330762228468151,
+      "output_trim_db": 1.128545867050306,
       "overrides": []
     },
     "HR021": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.524466392353384,
+      "output_trim_db": 1.323028537733309,
       "overrides": []
     },
     "HR022": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.540360011790996,
+      "output_trim_db": 0.745512161808666,
       "overrides": []
     },
     "HR023": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.84512240886281,
+      "output_trim_db": 0.761250671714546,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -20.57450294494629
+            "thresholdDb": -22.5
           }
         }
       ]
     },
     "HR024": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.143823309139329,
+      "output_trim_db": 0.772020391565267,
       "overrides": []
     },
     "HR025": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.478040586903447,
+      "output_trim_db": 0.146743820802442,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -23.586451768875122
+            "thresholdDb": -30.75
           }
         }
       ]
     },
     "HR026": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.499634746162435,
+      "output_trim_db": 1.50072543391385,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -20.0
+            "thresholdDb": -24.0
           }
         }
       ]
     },
     "HR027": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.190132877878504,
+      "output_trim_db": -1.802538563416402,
       "overrides": []
     },
     "HR028": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.222550803644035,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -20.541453957557678
-          }
-        }
-      ]
+      "output_trim_db": 0.76838584778482,
+      "overrides": []
     },
     "HR029": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.692680778515278,
+      "output_trim_db": 2.818697767200764,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -21.07547680536906
+            "thresholdDb": -18.75
           }
         }
       ]
     },
     "HR030": {
       "input_trim_db": 0.0,
-      "output_trim_db": 9.2404849907512,
+      "output_trim_db": 7.513266090798888,
       "overrides": []
     },
     "HR031": {
       "input_trim_db": 0.0,
-      "output_trim_db": 7.917884234960761,
+      "output_trim_db": 2.971765886959727,
       "overrides": []
     },
     "HR032": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.693288683143766,
+      "output_trim_db": 2.956073888328323,
       "overrides": []
     },
     "HR033": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.023954922813008,
+      "output_trim_db": 1.171314887048723,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -20.84153175354004
+            "thresholdDb": -17.25
           }
         }
       ]
     },
     "HR034": {
       "input_trim_db": 0.0,
-      "output_trim_db": 4.451509310172147,
+      "output_trim_db": 3.236337262860729,
       "overrides": []
     },
     "HR035": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.162246163498336,
-      "overrides": []
-    },
-    "HR036": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.826776434624513,
-      "overrides": []
-    },
-    "HR037": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 3.293105460639708,
+      "output_trim_db": 0.006759471939358,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
-          "slot": 0,
+          "slot": 1,
           "parameters": {
-            "thresholdDb": -23.07583785057068
+            "thresholdDb": -20.125
           }
         }
       ]
     },
+    "HR036": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.559016307965038,
+      "overrides": []
+    },
+    "HR037": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 3.323027918813786,
+      "overrides": []
+    },
     "HR038": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.333233491432225,
+      "output_trim_db": 0.89709781268736,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -19.63182830810547
+            "thresholdDb": -21.0
           }
         }
       ]
     },
     "HR039": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.015050755947531,
+      "output_trim_db": 0.056862605461905,
       "overrides": []
     },
     "HR040": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.170113515638022,
+      "output_trim_db": 0.531586364958947,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -21.73465871810913
+            "thresholdDb": -18.75
           }
         }
       ]
     },
     "HR041": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.265248122064698,
+      "output_trim_db": 0.656367687108119,
       "overrides": []
     },
     "HR042": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.038762841806651,
+      "output_trim_db": 0.011912311048977,
       "overrides": []
     },
     "HR043": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.256277077314188,
+      "output_trim_db": 1.036701623696686,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -21.217508554458618
+            "thresholdDb": -21.0
           }
         }
       ]
     },
     "HR044": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.398918457886124,
+      "output_trim_db": 1.555524943055207,
       "overrides": []
     },
     "HR045": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.631638087941495,
+      "output_trim_db": 0.211423102420746,
       "overrides": []
     },
     "HR046": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.205773889622352,
+      "output_trim_db": 0.28131588840828,
       "overrides": []
     },
     "HR047": {
-      "input_trim_db": -0.998666769200533,
+      "input_trim_db": -1.563175442027291,
       "output_trim_db": 0.0,
       "overrides": []
     },
     "HR048": {
-      "input_trim_db": -0.856401094773602,
+      "input_trim_db": -1.807092547928342,
+      "output_trim_db": 0.0,
+      "overrides": []
+    },
+    "HR049": {
+      "input_trim_db": 0.302464697961234,
       "output_trim_db": 0.0,
       "overrides": [
         {
-          "layer": 9,
+          "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "ceilingDb": -1.05
+            "thresholdDb": -28.5
           }
         }
       ]
     },
-    "HR049": {
-      "input_trim_db": -0.454862119348899,
-      "output_trim_db": 0.0,
-      "overrides": []
-    },
     "HR050": {
-      "input_trim_db": -1.076574004086982,
+      "input_trim_db": -1.641993536472491,
       "output_trim_db": 0.0,
       "overrides": []
     },
     "HR051": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.105224094594256,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -17.022446155548096
-          }
-        }
-      ]
+      "output_trim_db": -0.288449722055034,
+      "overrides": []
     },
     "HR052": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.569272425057104,
+      "output_trim_db": 2.335252837988456,
       "overrides": []
     },
     "HR053": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.87034756160967,
+      "output_trim_db": 1.473898885251259,
       "overrides": []
     },
     "HR054": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.952617637902524,
+      "output_trim_db": 1.957849858291077,
       "overrides": []
     },
     "HR055": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.389370536045426,
+      "output_trim_db": 1.340576007047225,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -20.691566467285156
+            "thresholdDb": -21.875
           }
         }
       ]
     },
     "HR056": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.222368729931127,
-      "overrides": []
+      "output_trim_db": 0.952463823990833,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 1,
+          "parameters": {
+            "thresholdDb": -25.0
+          }
+        }
+      ]
     },
     "HR057": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.305638370822157,
+      "output_trim_db": -0.654269427818461,
       "overrides": []
     },
     "HR058": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.926572166757765,
+      "output_trim_db": 1.339183891879254,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -14.615990797678629
+            "thresholdDb": -20.125
           }
         }
       ]
     },
     "HR059": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.857034040310515,
+      "output_trim_db": 0.039687499439854,
       "overrides": []
     },
     "HR060": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.77186151504738,
+      "output_trim_db": -0.551966165353715,
+      "overrides": []
+    },
+    "HR061": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.394688832395428,
+      "overrides": []
+    },
+    "HR062": {
+      "input_trim_db": 0.0,
+      "output_trim_db": -0.148127132831178,
+      "overrides": []
+    },
+    "HR063": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.984267563716049,
+      "overrides": []
+    },
+    "HR064": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.665513594916074,
+      "overrides": []
+    },
+    "HR065": {
+      "input_trim_db": 0.0,
+      "output_trim_db": -0.025410853882597,
+      "overrides": []
+    },
+    "HR066": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.146517949758792,
+      "overrides": []
+    },
+    "HR067": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.013589245307902,
+      "overrides": []
+    },
+    "HR068": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 3.217808329076917,
+      "overrides": []
+    },
+    "HR069": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 2.314088278383666,
+      "overrides": []
+    },
+    "HR070": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 3.402090360320203,
+      "overrides": []
+    },
+    "HR071": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 2.718273504188411,
+      "overrides": []
+    },
+    "HR072": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.095275317004258,
+      "overrides": []
+    },
+    "HR073": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.757557140271874,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -22.5
+          }
+        }
+      ]
+    },
+    "HR074": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.134093925628473,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -25.875
+          }
+        }
+      ]
+    },
+    "HR075": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 2.546760934618025,
+      "overrides": []
+    },
+    "HR076": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.378720865914527,
+      "overrides": []
+    },
+    "HR077": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.413231356864493,
+      "overrides": []
+    },
+    "HR078": {
+      "input_trim_db": 0.0,
+      "output_trim_db": -0.063435879619306,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -25.0
+          }
+        }
+      ]
+    },
+    "HR079": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 2.783813425778398,
+      "overrides": []
+    },
+    "HR080": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 5.188951311973025,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -18.75
+          }
+        }
+      ]
+    },
+    "HR081": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 4.436182064702741,
+      "overrides": []
+    },
+    "HR082": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.171197809369044,
       "overrides": [
         {
           "layer": 0,
           "node": 0,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -26.286201858520506
+            "thresholdDb": -24.5
           }
         }
       ]
     },
-    "HR061": {
+    "HR083": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.152634626514759,
+      "output_trim_db": 3.854189488166259,
       "overrides": []
     },
-    "HR062": {
+    "HR084": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.855465115781907,
+      "output_trim_db": 0.901115539940253,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -18.23726797103882
+            "thresholdDb": -21.875
           }
         }
       ]
     },
-    "HR063": {
+    "HR085": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.581284019510271,
+      "output_trim_db": 1.085937413432848,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -21.0
+          }
+        }
+      ]
+    },
+    "HR086": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 3.154220994758841,
       "overrides": []
     },
-    "HR064": {
+    "HR087": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.643898081703794,
+      "output_trim_db": 2.424757594149082,
       "overrides": []
     },
-    "HR065": {
+    "HR088": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.48920795664643,
+      "output_trim_db": 0.885878386739737,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -20.125
+          }
+        }
+      ]
+    },
+    "HR089": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.549472824003296,
       "overrides": []
     },
-    "HR066": {
+    "HR090": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.804605754939271,
-      "overrides": []
-    },
-    "HR067": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.740370719401639,
-      "overrides": []
-    },
-    "HR068": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.726185239130038,
-      "overrides": []
-    },
-    "HR069": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.57559519383841,
-      "overrides": []
-    },
-    "HR070": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.464337423069603,
-      "overrides": []
-    },
-    "HR071": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.029461640391999,
-      "overrides": []
-    },
-    "HR072": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.157316994134062,
-      "overrides": []
-    },
-    "HR073": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -1.644537225640692,
+      "output_trim_db": 1.124902288643892,
       "overrides": [
         {
           "layer": 0,
@@ -572,210 +687,47 @@
         }
       ]
     },
-    "HR074": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.20050998882348,
-      "overrides": []
-    },
-    "HR075": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.29449488951143,
-      "overrides": []
-    },
-    "HR076": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.123227989352442,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -19.295881271362305
-          }
-        }
-      ]
-    },
-    "HR077": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -4.290922967850104,
-      "overrides": []
-    },
-    "HR078": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -0.309602647262571,
-      "overrides": []
-    },
-    "HR079": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 7.483253471422882,
-      "overrides": []
-    },
-    "HR080": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 8.150929920432626,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -21.673836310704548
-          }
-        }
-      ]
-    },
-    "HR081": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 8.375168249986368,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -26.32118913105556
-          }
-        }
-      ]
-    },
-    "HR082": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.120609782056832,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 0,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -31.064277331034344
-          }
-        }
-      ]
-    },
-    "HR083": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 6.233856774405449,
-      "overrides": []
-    },
-    "HR084": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 3.663057386388767,
-      "overrides": []
-    },
-    "HR085": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.41545174785993,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -20.0202800432841
-          }
-        }
-      ]
-    },
-    "HR086": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 2.673570440080042,
-      "overrides": []
-    },
-    "HR087": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 3.072664898155459,
-      "overrides": []
-    },
-    "HR088": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.390228830463567,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -19.662836869557697
-          }
-        }
-      ]
-    },
-    "HR089": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.304845129990042,
-      "overrides": []
-    },
-    "HR090": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 2.839850956176129,
-      "overrides": []
-    },
     "HR091": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.581286752907754,
+      "output_trim_db": 0.581216920990187,
       "overrides": []
     },
     "HR092": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.338404932166384,
+      "output_trim_db": 1.013723076434868,
       "overrides": []
     },
     "HR093": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.443411119894613,
+      "output_trim_db": 0.622873997947369,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -21.838727474212646
+            "thresholdDb": -18.0
           }
         }
       ]
     },
     "HR094": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.029700220799658,
+      "output_trim_db": 0.070900651800709,
       "overrides": []
     },
     "HR095": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.814169065200913,
+      "output_trim_db": 0.197310237490768,
       "overrides": []
     },
     "HR096": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.230324374220725,
+      "output_trim_db": 2.908063028134979,
       "overrides": []
     },
     "HR097": {
-      "input_trim_db": -1.685657959140261,
-      "output_trim_db": 0.0,
-      "overrides": []
-    },
-    "HR098": {
-      "input_trim_db": -1.095098499757498,
-      "output_trim_db": 0.0,
-      "overrides": []
-    },
-    "HR099": {
-      "input_trim_db": -0.06795178791705,
-      "output_trim_db": 0.0,
-      "overrides": [
-        {
-          "layer": 9,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "ceilingDb": -1.05
-          }
-        }
-      ]
-    },
-    "HR100": {
-      "input_trim_db": -0.53064017718226,
+      "input_trim_db": -1.518690038297347,
       "output_trim_db": 0.0,
       "overrides": [
         {
@@ -783,1167 +735,1191 @@
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -22.454434394836426
+            "thresholdDb": -23.25
           }
-        },
+        }
+      ]
+    },
+    "HR098": {
+      "input_trim_db": -1.557013202396739,
+      "output_trim_db": 0.0,
+      "overrides": []
+    },
+    "HR099": {
+      "input_trim_db": -0.860761732672707,
+      "output_trim_db": 0.0,
+      "overrides": []
+    },
+    "HR100": {
+      "input_trim_db": -0.434694555794788,
+      "output_trim_db": 0.0,
+      "overrides": [
         {
-          "layer": 9,
+          "layer": 0,
           "node": 8,
-          "slot": 0,
+          "slot": 1,
           "parameters": {
-            "ceilingDb": -1.05
+            "thresholdDb": -27.75
           }
         }
       ]
     },
     "HR101": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.619779037918118,
+      "output_trim_db": 0.35663134955098,
+      "overrides": []
+    },
+    "HR102": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 2.649664214794164,
+      "overrides": []
+    },
+    "HR103": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.032664183338497,
+      "overrides": []
+    },
+    "HR104": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 3.105143042535694,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -18.48815393447876
+            "thresholdDb": -30.75
           }
         }
       ]
     },
-    "HR102": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.352119269513331,
-      "overrides": []
-    },
-    "HR103": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -0.503762837096406,
-      "overrides": []
-    },
-    "HR104": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -0.229669576606987,
-      "overrides": []
-    },
     "HR105": {
       "input_trim_db": 0.0,
-      "output_trim_db": -3.625178657698092,
+      "output_trim_db": 0.162366817765975,
       "overrides": []
     },
     "HR106": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.271308093006354,
+      "output_trim_db": 1.046330670795484,
       "overrides": [
         {
           "layer": 0,
           "node": 0,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -24.05080896615982
+            "thresholdDb": -25.375
           }
         }
       ]
     },
     "HR107": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.067048018317637,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -18.526880264282227
-          }
-        }
-      ]
+      "output_trim_db": -0.251540100560472,
+      "overrides": []
     },
     "HR108": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.828202291017279,
+      "output_trim_db": 0.554964296659094,
       "overrides": []
     },
     "HR109": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.002649314984323,
+      "output_trim_db": -0.014845785665283,
       "overrides": []
     },
     "HR110": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.422678354397886,
+      "output_trim_db": -0.13981038230628,
       "overrides": []
     },
     "HR111": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.413113009427593,
+      "output_trim_db": 0.088831299571794,
       "overrides": []
     },
     "HR112": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.429823774518711,
+      "output_trim_db": 1.82396683027484,
       "overrides": []
     },
     "HR113": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.46932656905755,
+      "output_trim_db": 1.718486241842498,
       "overrides": []
     },
     "HR114": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.76290952737039,
+      "output_trim_db": 0.116978958485131,
       "overrides": []
     },
     "HR115": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.841093246096882,
+      "output_trim_db": 0.578080693642459,
       "overrides": []
     },
     "HR116": {
       "input_trim_db": 0.0,
-      "output_trim_db": 4.147154924071502,
+      "output_trim_db": 0.76302078267225,
       "overrides": []
     },
     "HR117": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.765463099937818,
+      "output_trim_db": 0.141298050875413,
       "overrides": []
     },
     "HR118": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.297748007329742,
+      "output_trim_db": 1.783090379178365,
       "overrides": []
     },
     "HR119": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.065350918719115,
+      "output_trim_db": 2.344936953944578,
       "overrides": []
     },
     "HR120": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.03247260034035,
+      "output_trim_db": 1.718257064624288,
       "overrides": []
     },
     "HR121": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.694549835151944,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -23.123999277750652
-          }
-        }
-      ]
+      "output_trim_db": 4.7051292634709,
+      "overrides": []
     },
     "HR122": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.149240973488086,
+      "output_trim_db": 1.041198935117688,
       "overrides": []
     },
     "HR123": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.897031635617486,
+      "output_trim_db": 1.056449250349988,
       "overrides": []
     },
     "HR124": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.490433732293367,
-      "overrides": []
-    },
-    "HR125": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -0.87028788852243,
+      "output_trim_db": 1.62834003562558,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -21.021016120910645
+            "thresholdDb": -30.0
+          }
+        }
+      ]
+    },
+    "HR125": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.992111578884501,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -25.375
           }
         }
       ]
     },
     "HR126": {
       "input_trim_db": 0.0,
-      "output_trim_db": -4.44021059354339,
+      "output_trim_db": 0.512597914817338,
       "overrides": []
     },
     "HR127": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.392108917127437,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 2,
-          "parameters": {
-            "thresholdDb": -22.0395081837972
-          }
-        }
-      ]
+      "output_trim_db": 1.911934520858921,
+      "overrides": []
     },
     "HR128": {
       "input_trim_db": 0.0,
-      "output_trim_db": -3.844908008413706,
+      "output_trim_db": 0.655857207779036,
       "overrides": []
     },
     "HR129": {
       "input_trim_db": 0.0,
-      "output_trim_db": 9.466219977169642,
+      "output_trim_db": 7.426707490242292,
       "overrides": []
     },
     "HR130": {
       "input_trim_db": 0.0,
-      "output_trim_db": 7.948205821206731,
+      "output_trim_db": 5.17448719866605,
       "overrides": []
     },
     "HR131": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.082367801443027,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 0,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -36.064656496047974
-          }
-        }
-      ]
+      "output_trim_db": 0.363442834779402,
+      "overrides": []
     },
     "HR132": {
       "input_trim_db": 0.0,
-      "output_trim_db": 7.453104666002554,
+      "output_trim_db": 5.42109874015981,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -21.06505235036214
+            "thresholdDb": -18.75
           }
         }
       ]
     },
     "HR133": {
       "input_trim_db": 0.0,
-      "output_trim_db": 9.319130493446325,
+      "output_trim_db": 6.126021331909588,
+      "overrides": []
+    },
+    "HR134": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.934872626710931,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -29.413697254657745
+            "thresholdDb": -21.875
           }
         }
       ]
-    },
-    "HR134": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 3.641940836148647,
-      "overrides": []
     },
     "HR135": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.168460369654191,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -19.764607826868694
-          }
-        }
-      ]
+      "output_trim_db": 1.991245264148993,
+      "overrides": []
     },
     "HR136": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.2463035189206,
+      "output_trim_db": 2.323446232510395,
       "overrides": []
     },
     "HR137": {
       "input_trim_db": 0.0,
-      "output_trim_db": 4.615231883730685,
+      "output_trim_db": 2.959429679480678,
       "overrides": []
     },
     "HR138": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.083530100499285,
+      "output_trim_db": 0.390299740508471,
       "overrides": []
     },
     "HR139": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.548529672855807,
-      "overrides": []
-    },
-    "HR140": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.859126855588784,
-      "overrides": []
-    },
-    "HR141": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.629469485668093,
-      "overrides": []
-    },
-    "HR142": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 3.794761530085299,
-      "overrides": []
-    },
-    "HR143": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -0.090663284530681,
-      "overrides": []
-    },
-    "HR144": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -1.612264093116044,
-      "overrides": []
-    },
-    "HR145": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -4.1143349126168,
-      "overrides": []
-    },
-    "HR146": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -2.300119627810834,
-      "overrides": []
-    },
-    "HR147": {
-      "input_trim_db": -1.686772162151335,
-      "output_trim_db": 0.0,
-      "overrides": []
-    },
-    "HR148": {
-      "input_trim_db": -0.863333682973153,
-      "output_trim_db": 0.0,
+      "output_trim_db": 2.071795492761606,
       "overrides": [
         {
-          "layer": 9,
+          "layer": 0,
           "node": 8,
-          "slot": 0,
+          "slot": 2,
           "parameters": {
-            "ceilingDb": -1.05
+            "thresholdDb": -21.0
           }
         }
       ]
     },
-    "HR149": {
-      "input_trim_db": -0.622569081650209,
-      "output_trim_db": 0.0,
-      "overrides": []
-    },
-    "HR150": {
-      "input_trim_db": -1.222894102755696,
-      "output_trim_db": 0.0,
-      "overrides": []
-    },
-    "HR151": {
+    "HR140": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.62065194019703,
+      "output_trim_db": 0.088211882143678,
+      "overrides": []
+    },
+    "HR141": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.245723110654946,
+      "overrides": []
+    },
+    "HR142": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 3.0236497612342,
+      "overrides": []
+    },
+    "HR143": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.067585333417444,
+      "overrides": []
+    },
+    "HR144": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.555266164255958,
+      "overrides": []
+    },
+    "HR145": {
+      "input_trim_db": 0.0,
+      "output_trim_db": -1.0142786016747,
+      "overrides": []
+    },
+    "HR146": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.194666002746889,
+      "overrides": []
+    },
+    "HR147": {
+      "input_trim_db": -2.022597037985637,
+      "output_trim_db": 0.0,
+      "overrides": []
+    },
+    "HR148": {
+      "input_trim_db": -1.424342428394379,
+      "output_trim_db": 0.0,
+      "overrides": []
+    },
+    "HR149": {
+      "input_trim_db": -0.585444253279839,
+      "output_trim_db": 0.0,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -17.127735137939453
+            "thresholdDb": -24.125
           }
         }
       ]
     },
+    "HR150": {
+      "input_trim_db": -1.374112357348555,
+      "output_trim_db": 0.0,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -23.25
+          }
+        }
+      ]
+    },
+    "HR151": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.05716367954216,
+      "overrides": []
+    },
     "HR152": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.250340297304536,
+      "output_trim_db": 2.445109460317973,
       "overrides": []
     },
     "HR153": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.060347339087093,
-      "overrides": []
+      "output_trim_db": 1.820567912301122,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 1,
+          "parameters": {
+            "thresholdDb": -25.875
+          }
+        }
+      ]
     },
     "HR154": {
       "input_trim_db": 0.0,
-      "output_trim_db": -4.573929008395201,
+      "output_trim_db": -0.655261197147581,
       "overrides": [
         {
           "layer": 0,
           "node": 0,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -20.416992902755737
+            "thresholdDb": -37.5
           }
         }
       ]
     },
     "HR155": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.904364885817394,
+      "output_trim_db": -0.831300697396063,
       "overrides": []
     },
     "HR156": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.581312631580632,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -20.686591386795044
-          }
-        }
-      ]
+      "output_trim_db": 0.706652892377075,
+      "overrides": []
     },
     "HR157": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.735567263479748,
+      "output_trim_db": -0.076185722496216,
       "overrides": []
     },
     "HR158": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.117184003074726,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -18.504029035568237
-          }
-        }
-      ]
+      "output_trim_db": 0.595753881855586,
+      "overrides": []
     },
     "HR159": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.808221932817184,
+      "output_trim_db": -0.720018146529927,
       "overrides": []
     },
     "HR160": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.112546259204477,
+      "output_trim_db": 1.158348591358205,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -20.100403594970704
+            "thresholdDb": -21.75
           }
         }
       ]
     },
     "HR161": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.255450497410354,
+      "output_trim_db": -0.729743503750669,
       "overrides": []
     },
     "HR162": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.625038399237141,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -20.199159622192383
-          }
-        }
-      ]
+      "output_trim_db": 1.787807922766984,
+      "overrides": []
     },
     "HR163": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.777506142133404,
+      "output_trim_db": 1.231045622037112,
       "overrides": []
     },
     "HR164": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.722835590946396,
+      "output_trim_db": 0.011587884700173,
       "overrides": []
     },
     "HR165": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.486197512829632,
+      "output_trim_db": -0.07390390177061,
       "overrides": []
     },
     "HR166": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.714726232358997,
+      "output_trim_db": 2.031834466783383,
       "overrides": []
     },
     "HR167": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.806796476941166,
+      "output_trim_db": 0.177040271854903,
       "overrides": []
     },
     "HR168": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.590708808038022,
+      "output_trim_db": -0.10537850591567,
       "overrides": []
     },
     "HR169": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.306666165214285,
+      "output_trim_db": 2.565261900233883,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -21.142236709594727
+            "thresholdDb": -28.5
           }
         }
       ]
     },
     "HR170": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.23796168935989,
+      "output_trim_db": 2.824271611887669,
       "overrides": []
     },
     "HR171": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.1212776139444,
+      "output_trim_db": 2.789527621684291,
       "overrides": []
     },
     "HR172": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.198383918041211,
+      "output_trim_db": 0.700554737991418,
       "overrides": []
     },
     "HR173": {
       "input_trim_db": 0.0,
-      "output_trim_db": -0.594602865657832,
+      "output_trim_db": 0.923582492022881,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -20.76281452178955
+            "thresholdDb": -25.375
           }
         }
       ]
     },
     "HR174": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.355269970968386,
-      "overrides": []
-    },
-    "HR175": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.837271554922649,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 2,
-          "parameters": {
-            "thresholdDb": -22.056274890899658
-          }
-        }
-      ]
-    },
-    "HR176": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -0.370867260496729,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 2,
-          "parameters": {
-            "thresholdDb": -19.863991260528564
-          }
-        }
-      ]
-    },
-    "HR177": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.140491354969637,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 1,
-          "parameters": {
-            "thresholdDb": -19.756447712580364
-          }
-        }
-      ]
-    },
-    "HR178": {
-      "input_trim_db": 0.0,
-      "output_trim_db": -3.155049831370668,
-      "overrides": []
-    },
-    "HR179": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.229153613166734,
+      "output_trim_db": 1.333667489854175,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -21.089799404144287
+            "thresholdDb": -25.875
+          }
+        }
+      ]
+    },
+    "HR175": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.783584162013721,
+      "overrides": []
+    },
+    "HR176": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.411590575250397,
+      "overrides": []
+    },
+    "HR177": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.257271362767639,
+      "overrides": []
+    },
+    "HR178": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.617390963911195,
+      "overrides": []
+    },
+    "HR179": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.647025139429193,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -18.75
           }
         }
       ]
     },
     "HR180": {
       "input_trim_db": 0.0,
-      "output_trim_db": 8.30228637263351,
+      "output_trim_db": 3.858213551969705,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -26.04203059275945
+            "thresholdDb": -21.0
           }
         }
       ]
     },
     "HR181": {
       "input_trim_db": 0.0,
-      "output_trim_db": 7.306959006649587,
+      "output_trim_db": 4.21267566862819,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -21.947763641675312
+            "thresholdDb": -18.75
           }
         }
       ]
     },
     "HR182": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.061992386847553,
+      "output_trim_db": 0.155728991497707,
       "overrides": [
         {
           "layer": 0,
           "node": 0,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -33.96027334779501
+            "thresholdDb": -24.5
           }
         }
       ]
     },
     "HR183": {
       "input_trim_db": 0.0,
-      "output_trim_db": 8.77413005454942,
+      "output_trim_db": 4.671878117390659,
       "overrides": []
     },
     "HR184": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.954528379853896,
+      "output_trim_db": -1.048236257751629,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -19.79466120402018
+            "thresholdDb": -18.0
           }
         }
       ]
     },
     "HR185": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.409137382522207,
+      "output_trim_db": 1.089004614406395,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -19.92772758924044
+            "thresholdDb": -21.0
           }
         }
       ]
     },
     "HR186": {
       "input_trim_db": 0.0,
-      "output_trim_db": 4.411977381532287,
+      "output_trim_db": 3.138271637841605,
       "overrides": []
     },
     "HR187": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.49231364801963,
+      "output_trim_db": 3.763528008628942,
       "overrides": []
     },
     "HR188": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.378169388641773,
+      "output_trim_db": 1.774169088720601,
+      "overrides": []
+    },
+    "HR189": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.584524097201363,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -20.002590497334797
+            "thresholdDb": -17.25
           }
         }
       ]
     },
-    "HR189": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 2.047088213536316,
-      "overrides": []
-    },
     "HR190": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.350892843995474,
+      "output_trim_db": 2.434924925748909,
       "overrides": []
     },
     "HR191": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.004386063680748,
+      "output_trim_db": 1.169704836617957,
       "overrides": []
     },
     "HR192": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.149496540448446,
+      "output_trim_db": 0.027821323147251,
       "overrides": []
     },
     "HR193": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.239998402048661,
+      "output_trim_db": 1.118438336219139,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -20.062588572502136
+            "thresholdDb": -18.75
           }
         }
       ]
     },
     "HR194": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.253199106569731,
+      "output_trim_db": 0.233782543885145,
       "overrides": []
     },
     "HR195": {
       "input_trim_db": 0.0,
-      "output_trim_db": -1.74366925143635,
+      "output_trim_db": 0.557482153476762,
       "overrides": []
     },
     "HR196": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.234088481150981,
+      "output_trim_db": 0.572941665956659,
       "overrides": []
     },
     "HR197": {
-      "input_trim_db": -1.711953700923338,
-      "output_trim_db": 0.0,
-      "overrides": []
-    },
-    "HR198": {
-      "input_trim_db": -1.069131559795316,
+      "input_trim_db": -1.532441688535044,
       "output_trim_db": 0.0,
       "overrides": [
         {
-          "layer": 9,
+          "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "ceilingDb": -1.05
+            "thresholdDb": -23.25
           }
         }
       ]
     },
+    "HR198": {
+      "input_trim_db": -1.389621529432311,
+      "output_trim_db": 0.0,
+      "overrides": []
+    },
     "HR199": {
-      "input_trim_db": -0.586191567853156,
+      "input_trim_db": -0.744906625633412,
       "output_trim_db": 0.0,
-      "overrides": []
-    },
-    "HR200": {
-      "input_trim_db": -0.791210941685272,
-      "output_trim_db": 0.0,
-      "overrides": []
-    },
-    "HR201": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.113399521965603,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -20.702537059783936
+            "thresholdDb": -24.125
+          }
+        }
+      ]
+    },
+    "HR200": {
+      "input_trim_db": -1.426361478838608,
+      "output_trim_db": 0.0,
+      "overrides": []
+    },
+    "HR201": {
+      "input_trim_db": 0.0,
+      "output_trim_db": -0.634287093267744,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 1,
+          "parameters": {
+            "thresholdDb": -20.125
           }
         }
       ]
     },
     "HR202": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.88106811546281,
+      "output_trim_db": 1.248321610425531,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -20.297542572021484
+            "thresholdDb": -21.0
           }
         }
       ]
     },
     "HR203": {
       "input_trim_db": 0.0,
-      "output_trim_db": 4.271144007020677,
+      "output_trim_db": 3.114772115216375,
       "overrides": []
     },
     "HR204": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.133395525633768,
+      "output_trim_db": 0.996120316915565,
       "overrides": []
     },
     "HR205": {
       "input_trim_db": 0.0,
-      "output_trim_db": 4.551534281134822,
+      "output_trim_db": 3.353121333893807,
       "overrides": []
     },
     "HR206": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.434044540558599,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 8,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -20.48561716079712
-          }
-        }
-      ]
+      "output_trim_db": 1.804846630328878,
+      "overrides": []
     },
     "HR207": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.022492510915246,
+      "output_trim_db": 0.221221724983891,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -21.915496706962585
+            "thresholdDb": -19.5
           }
         }
       ]
     },
     "HR208": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.737466396500448,
+      "output_trim_db": 1.423403464688871,
       "overrides": []
     },
     "HR209": {
       "input_trim_db": 0.0,
-      "output_trim_db": 4.470919499692215,
+      "output_trim_db": 3.280076699780416,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -22.8995418548584
+            "thresholdDb": -22.75
           }
         }
       ]
     },
     "HR210": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.399826522716744,
+      "output_trim_db": 1.142558776362524,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -19.65919240315755
+            "thresholdDb": -21.0
           }
         }
       ]
     },
     "HR211": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.122790928733036,
+      "output_trim_db": 0.699696350119741,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -20.004743869488056
+            "thresholdDb": -21.0
           }
         }
       ]
     },
     "HR212": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.228688771943212,
+      "output_trim_db": 0.793661268590878,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -24.82330886522929
+            "thresholdDb": -22.5
           }
         }
       ]
     },
     "HR213": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.319159531241841,
+      "output_trim_db": 1.361876332050734,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -23.128796815872192
+            "thresholdDb": -19.5
           }
         }
       ]
     },
     "HR214": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.142484499468317,
+      "output_trim_db": 3.382764181087264,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -20.513741175333656
+            "thresholdDb": -18.75
           }
         }
       ]
     },
     "HR215": {
       "input_trim_db": 0.0,
-      "output_trim_db": 4.700613014771804,
+      "output_trim_db": 4.15312684643445,
       "overrides": []
     },
     "HR216": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.700718707925134,
+      "output_trim_db": 1.441770843120374,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "thresholdDb": -20.535377502441406
+            "thresholdDb": -18.75
           }
         }
       ]
     },
     "HR217": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.158012474738296,
+      "output_trim_db": 2.294661910055463,
       "overrides": []
     },
     "HR218": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.12165069740675,
+      "output_trim_db": 2.464741466520923,
       "overrides": []
     },
     "HR219": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.006144739575912,
+      "output_trim_db": 1.09875631291861,
       "overrides": []
     },
     "HR220": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.905568745271086,
+      "output_trim_db": 0.399378758470718,
       "overrides": []
     },
     "HR221": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.839224423361429,
-      "overrides": []
+      "output_trim_db": 3.646694817913289,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 2,
+          "parameters": {
+            "thresholdDb": -27.625
+          }
+        }
+      ]
     },
     "HR222": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.150821661612646,
+      "output_trim_db": 0.461206779999358,
       "overrides": []
     },
     "HR223": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.928015986276716,
-      "overrides": []
+      "output_trim_db": 3.004106749458586,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -31.125
+          }
+        }
+      ]
     },
     "HR224": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.229793015489001,
-      "overrides": []
+      "output_trim_db": 2.050568099811656,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -26.75
+          }
+        }
+      ]
     },
     "HR225": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.321229751169842,
+      "output_trim_db": 0.06248273861506,
       "overrides": []
     },
     "HR226": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.11355581085266,
+      "output_trim_db": 0.977915450058756,
       "overrides": []
     },
     "HR227": {
       "input_trim_db": 0.0,
-      "output_trim_db": 1.164577872786257,
+      "output_trim_db": 1.077285539931292,
       "overrides": []
     },
     "HR228": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.71852327048212,
+      "output_trim_db": -0.038539358564808,
       "overrides": []
     },
     "HR229": {
       "input_trim_db": 0.0,
-      "output_trim_db": 2.04922713076048,
-      "overrides": []
-    },
-    "HR230": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.349374378804864,
-      "overrides": []
-    },
-    "HR231": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.626189279046836,
-      "overrides": []
-    },
-    "HR232": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.052016718974901,
-      "overrides": []
-    },
-    "HR233": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.07751320247754,
-      "overrides": []
-    },
-    "HR234": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 2.787108659074292,
-      "overrides": []
-    },
-    "HR235": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.56106160652492,
-      "overrides": []
-    },
-    "HR236": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.556379871748437,
-      "overrides": []
-    },
-    "HR237": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.747685464598579,
-      "overrides": []
-    },
-    "HR238": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.128207008010939,
-      "overrides": []
-    },
-    "HR239": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.235963977948277,
-      "overrides": []
-    },
-    "HR240": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.504028783524948,
-      "overrides": []
-    },
-    "HR241": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.626455686042011,
-      "overrides": []
-    },
-    "HR242": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 1.018295571502749,
-      "overrides": []
-    },
-    "HR243": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.71601118048595,
+      "output_trim_db": 1.016265641318366,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 1,
           "parameters": {
-            "thresholdDb": -22.511856257915497
+            "thresholdDb": -18.0
           }
         }
       ]
     },
-    "HR244": {
+    "HR230": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.97912836989496,
+      "output_trim_db": 0.990587506684587,
       "overrides": []
     },
-    "HR245": {
+    "HR231": {
       "input_trim_db": 0.0,
-      "output_trim_db": 0.115284091794186,
-      "overrides": [
-        {
-          "layer": 0,
-          "node": 0,
-          "slot": 0,
-          "parameters": {
-            "thresholdDb": -28.9235106036067
-          }
-        }
-      ]
-    },
-    "HR246": {
-      "input_trim_db": 0.0,
-      "output_trim_db": 0.989090005484728,
+      "output_trim_db": 1.097428976317008,
       "overrides": []
     },
-    "HR247": {
+    "HR232": {
       "input_trim_db": 0.0,
-      "output_trim_db": -2.406423777644012,
+      "output_trim_db": 0.116391237880219,
+      "overrides": []
+    },
+    "HR233": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.038034034761893,
+      "overrides": []
+    },
+    "HR234": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 2.30340498381328,
+      "overrides": []
+    },
+    "HR235": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.651392187528771,
       "overrides": [
         {
           "layer": 0,
           "node": 8,
           "slot": 0,
           "parameters": {
-            "matchedDb": 2.406646728515625
+            "thresholdDb": -17.25
+          }
+        }
+      ]
+    },
+    "HR236": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 4.928636595015325,
+      "overrides": []
+    },
+    "HR237": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.642796181574216,
+      "overrides": []
+    },
+    "HR238": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.198411765463888,
+      "overrides": []
+    },
+    "HR239": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 5.051302393465229,
+      "overrides": []
+    },
+    "HR240": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.52328125358472,
+      "overrides": []
+    },
+    "HR241": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.571506160112911,
+      "overrides": []
+    },
+    "HR242": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 2.320469585926318,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 1,
+          "parameters": {
+            "thresholdDb": -25.0
+          }
+        }
+      ]
+    },
+    "HR243": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.280990193436892,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 1,
+          "parameters": {
+            "thresholdDb": -28.5
+          }
+        }
+      ]
+    },
+    "HR244": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.136634634395151,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -24.125
+          }
+        }
+      ]
+    },
+    "HR245": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 1.320801118868388,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -28.5
+          }
+        },
+        {
+          "layer": 0,
+          "node": 0,
+          "slot": 0,
+          "parameters": {
+            "thresholdDb": -33.75
+          }
+        }
+      ]
+    },
+    "HR246": {
+      "input_trim_db": 0.0,
+      "output_trim_db": 0.832770468807894,
+      "overrides": []
+    },
+    "HR247": {
+      "input_trim_db": 0.0,
+      "output_trim_db": -5.999539985044109,
+      "overrides": [
+        {
+          "layer": 0,
+          "node": 8,
+          "slot": 0,
+          "parameters": {
+            "matchedDb": 6.0
           }
         }
       ]
     },
     "HR248": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.092968249669408,
+      "output_trim_db": 3.177935702018111,
       "overrides": []
     },
     "HR249": {
       "input_trim_db": 0.0,
-      "output_trim_db": 3.18965908751075,
+      "output_trim_db": 4.149939847083296,
       "overrides": []
     },
     "HR250": {

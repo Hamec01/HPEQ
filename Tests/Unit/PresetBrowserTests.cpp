@@ -23,9 +23,9 @@ public:
             allModules.addArray(row.modules);
         }
         allModules.removeDuplicates(false);expectEquals(allModules.size(),10);
-        // The first assertion used the structural report's normalized design
-        // hash. bankSha256 hashes the actual committed resource bytes instead.
-        expect(rack::bankSha256()=="c72f1d993c1d99fb495053457a749150fdc0768dfb8925ac653247192aa9dfb9");
+        // Exact resource-byte baseline after the owner-approved 0.2.2 Master
+        // ceiling margin. Catalogue operations must not alter authored audio data.
+        expect(rack::bankSha256()=="4f0e19304f3b17bc61c47f17532c601ce76958508684349404b273c981b4c356");
 
         beginTest("Search combines tokens across name, source, character, description and processor, with Cyrillic aliases and zero-result handling");
         rack::BrowserFilter filter;filter.query="bAsEmEnT COMP";

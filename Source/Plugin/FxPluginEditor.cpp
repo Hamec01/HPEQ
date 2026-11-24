@@ -1,4 +1,5 @@
 #include "Plugin/FxPluginEditor.h"
+#include "UI/MacroRoutingPanel.h"
 #include "UI/BlackSteel.h"
 
 #include "Plugin/FxParameterContract.h"
@@ -208,6 +209,15 @@ FxPluginEditor::FxPluginEditor(FxPluginProcessor& p)
     auto& apvts = processor.getParameters();
     outputGainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, params::outputGain.getParamID(), outputGain);
     bypassAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ButtonAttachment>(apvts, params::bypass.getParamID(), bypass);
+    macroButton.setComponentID("showMacros");macroButton.onClick=[this]{showMacroControls();};
+    finalTrimLabel.setText("Final Trim",juce::dontSendNotification);
+    finalTrim.setSliderStyle(juce::Slider::LinearHorizontal);finalTrim.setTextBoxStyle(juce::Slider::TextBoxRight,false,68,22);finalTrim.setTextValueSuffix(" dB");
+    finalTrim.setTooltip("After every effect and Master limiter. Positive trim can exceed a limiter's ceiling.");
+    finalTrim.setComponentID("finalTrim");clipReset.setComponentID("outputClip");
+    clipReset.setTooltip("Final output true-peak overload since reset. Click to reset peaks; integrated loudness is retained.");
+    clipReset.onClick=[this]{processor.resetOutputPeak();};
+    for(auto* c:std::initializer_list<juce::Component*>{&macroButton,&finalTrimLabel,&finalTrim,&clipReset,&keyStatus})addAndMakeVisible(c);
+    finalTrimAttachment=std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts,params::finalTrim.getParamID(),finalTrim);
 
     processor.addChangeListener(this);
     // The layer shown now: the first project change (e.g. a module added to the MIX chain) is not a
@@ -333,6 +343,14 @@ void FxPluginEditor::stepPreset(int direction)
 }
 
 void FxPluginEditor::showPresetMenu() {showPresetBrowser();}
+
+void FxPluginEditor::showMacroControls()
+{
+    if(!macroPanel){macroPanel=std::make_unique<ui::MacroRoutingPanel>(processor);addChildComponent(*macroPanel);
+        macroPanel->onClose=[this]{macroPanel->setVisible(false);inspector->setVisible(true);macroButton.grabKeyboardFocus();};}
+    inspector->setVisible(false);
+    macroPanel->setBounds(getLocalBounds());macroPanel->setVisible(true);macroPanel->toFront(true);
+}
 
 void FxPluginEditor::showPresetBrowser()
 {
@@ -487,6 +505,10 @@ void FxPluginEditor::showDifference(bool difference)
 void FxPluginEditor::timerCallback()
 {
     selectSoftwareRenderer();
+    const bool clipped=processor.getOutputLoudness().truePeakDbtp()>0;
+    clipReset.setColour(juce::TextButton::buttonColourId,clipped?colours::danger:colours::panelRaised);
+    keyStatus.setText(processor.externalKeyEnabled()?"SC bus: active":"SC bus: off",juce::dontSendNotification);
+    keyStatus.setTooltip("External key input supplied by the DAW. Select External SC on each HamloComp that should follow it.");
     analysis->update();
     {
         const auto& out = processor.getOutputLoudness();
@@ -515,6 +537,7 @@ void FxPluginEditor::paint(juce::Graphics& g)
 void FxPluginEditor::resized()
 {
     if(presetBrowser)presetBrowser->setBounds(getLocalBounds());
+    if(macroPanel)macroPanel->setBounds(getLocalBounds());
     struct Background
     {
         FxPluginEditor& e;
@@ -543,6 +566,11 @@ void FxPluginEditor::resized()
     header.removeFromRight(6);
     loudnessScreen->setBounds(header.removeFromRight(juce::jmin(header.getWidth() - 10, 380)).reduced(0, 2));
     area.removeFromTop(6);
+
+    auto controls=area.removeFromTop(32);macroButton.setBounds(controls.removeFromLeft(86).reduced(2));
+    finalTrimLabel.setBounds(controls.removeFromLeft(80));finalTrim.setBounds(controls.removeFromLeft(240).reduced(2));
+    clipReset.setBounds(controls.removeFromLeft(58).reduced(2));keyStatus.setBounds(controls.removeFromLeft(150).reduced(4,0));
+    area.removeFromTop(4);
 
     auto strip = area.removeFromTop(104);
     auto meters = strip.removeFromRight(90);

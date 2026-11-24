@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <juce_data_structures/juce_data_structures.h>
+#include "DSP/ControlFrame.h"
 
 namespace hpeq
 {
@@ -13,7 +14,7 @@ namespace hpeq
 // Pure data: no DSP, no UI, no HPDG types. Edited on the message thread; the audio thread will get
 // immutable snapshots of it from M2 on, never this object.
 
-constexpr int kStateSchemaVersion = 2; // maximum supported; legacy projects still write schema 1
+constexpr int kStateSchemaVersion = 3; // optional macro/SC features; old projects retain schema 1/2
 constexpr int kNumLayers = 10;
 constexpr int kMaxEqNodesPerLayer = 24;  // 01 §3 starting budget, to be refined by measurement
 constexpr int kMaxFxNodesPerLayer = 8;
@@ -28,6 +29,12 @@ enum class EqShape { Bell, LowShelf, HighShelf, LowCut, HighCut, Notch, BandPass
 enum class FxType { Compressor, Limiter, Reverb, Delay, TransientShaper, Saturator, MonstaFx, StereoProcessor, GateExpander, Gain };
 enum class LayerRouting { Parallel, Serial };
 
+struct MacroAssignment
+{
+    int macro=0;
+    juce::String parameter;
+    float minimum=0,maximum=1; // normalized native parameter endpoints, including reverse ranges
+};
 struct FxSlotState
 {
     FxType type = FxType::Compressor;
@@ -36,6 +43,8 @@ struct FxSlotState
     juce::NamedValueSet parameters; // processor-specific, defined with each processor
     int engineRevision = 0; // absent/0: exact legacy path; 1: pinned native beta wrapper
     juce::MemoryBlock nativeState; // optional complete native structural state; physical parameters above are authoritative
+    bool externalSidechain=false;
+    std::vector<MacroAssignment> macros;
 };
 
 struct EqNodeState

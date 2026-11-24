@@ -21,7 +21,7 @@
     "HamloZastava": 14
   },
   "audio_status": "structural check only; runtime/audio receipt: docs/hamlorack/RACK_COMPLETE.json",
-  "bank_sha256": "a76fda72f569fde814c30db4f075c0c79403acd9f8573eb4e3a8626155640795",
+  "bank_sha256": "b2c31bb9b407dcdfabac6964efe62181b112c8315f92de49ceccb54ba54f22e7",
   "native_contract_sha256": "99f65bb5785fd26fc6c5d8e2507ded6e26f78a795e03c815ff32b9bebe72308e",
   "structural_gates": [
     "S1 source identity",

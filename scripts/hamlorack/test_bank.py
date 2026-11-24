@@ -7,9 +7,19 @@ import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import build_bank as bank
+import dsp_identity
+import control_adapters
 
 
 class BankContractTests(unittest.TestCase):
+    def test_external_comp_adapter_keeps_original_internal_kernels_verbatim(self):
+        source=(bank.ROOT/'Plugins/HamloComp/Source/DSP/Compressor.cpp').read_text(encoding='utf-8-sig')
+        adapted=control_adapters.comp(source,'Source/DSP/Compressor.cpp')
+        for signature in ('void CompressorProcessor::process(', 'void CompressorProcessor::processModel('):
+            self.assertEqual(control_adapters.function(source,signature),control_adapters.function(adapted,signature))
+        self.assertIn('void CompressorProcessor::processExternal(',adapted)
+        self.assertIn('void CompressorProcessor::processModelExternal(',adapted)
+
     @classmethod
     def setUpClass(cls):
         cls.data=bank.recipes()
@@ -32,6 +42,21 @@ class BankContractTests(unittest.TestCase):
         tree=ast.parse((Path(__file__).parent/"recipes.py").read_text(encoding="utf-8"))
         names=[n.name for n in tree.body if isinstance(n,(ast.FunctionDef,ast.ClassDef))]
         self.assertEqual(len(names),len(set(names)),"A second helper silently shadows the first")
+
+    def test_master_ceiling_margin_keeps_the_strict_independent_target(self):
+        masters=[r for r in self.data if r["category"]=="Master"]
+        self.assertEqual(len(masters),16)
+        for row in masters:
+            self.assertEqual(row["chain"][-1]["parameters"]["ceilingDb"],-1.05)
+            self.assertEqual(row["calibration"]["output_true_peak_max_dbtp"],-1)
+        data=deepcopy(self.data)
+        next(r for r in data if r["category"]=="Master")["chain"][-1]["parameters"]["ceilingDb"]=-1
+        with self.assertRaises(ValueError): bank.validate(data,self.schemas)
+
+    def test_dsp_identity_normalizes_checkout_line_endings_and_bom(self):
+        self.assertEqual(dsp_identity.normalized(b'\xef\xbb\xbfint x = 1;\r\n'), b'int x = 1;\n')
+        self.assertEqual(dsp_identity.normalized(b'int x = 1;\n'), b'int x = 1;\n')
+        self.assertNotEqual(dsp_identity.normalized(b'int x = 1;\n'), dsp_identity.normalized(b'int x = 2;\n'))
 
     def test_numeric_reader_accepts_cpp_units_without_executing_code(self):
         self.assertEqual(bank.number("1.f/64"),1/64)

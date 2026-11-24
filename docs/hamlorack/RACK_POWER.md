@@ -1,31 +1,37 @@
 # Rack Power presets
 
+Controls stage 0.2.3: all 20 canonical Power renders were replayed both before
+and after embedding, with exact PCM matches to 0.2.2. Authored settings, trims,
+original 160 checks and 20 tail measurements retain their previous provenance;
+the current source proof is separate in `RACK_POWER_RECEIPT.json`. See
+[the controls report](CONTROLS_REPORT.md).
+
 Twenty authored demonstrations of complete current plug-ins and HPEQ layer/region routing. Audio verification is recorded separately; topology alone does not prove musical quality.
 
-All 20 passed 160 source/level/tempo checks and 20 silent-tail renders. Output trim alone was adjusted; every authored DSP parameter stayed fixed. Loudness is within +/-0.5 LU for 10/20; ten headroom-constrained exceptions are listed below. Listening verdicts remain pending. Full metrics and hashes: [RACK_POWER_RECEIPT.json](RACK_POWER_RECEIPT.json).
+All 20 passed 160 source/level/tempo checks and 20 silent-tail renders. Output trim alone was adjusted; every authored DSP parameter stayed fixed. Loudness is within +/-0.5 LU for 18/20; 2 headroom-constrained exceptions remain. Listening verdicts remain pending. Full metrics and hashes: [RACK_POWER_RECEIPT.json](RACK_POWER_RECEIPT.json).
 
 | ID | Output trim dB | LU difference | Worst dBTP | Tail end dBFS |
 |---|---:|---:|---:|---:|
-| PW001 | 4.28 | -0.66 | -0.35 | -240.0 |
-| PW002 | 5.03 | +0.00 | -2.07 | -162.2 |
-| PW003 | 7.18 | +0.00 | -3.37 | -240.0 |
-| PW004 | -0.22 | -4.14 | -0.35 | -240.0 |
-| PW005 | 3.88 | -4.85 | -0.35 | -240.0 |
-| PW006 | 9.69 | -6.04 | -0.35 | -240.0 |
-| PW007 | 6.45 | +0.00 | -4.19 | -170.5 |
-| PW008 | 5.40 | +0.00 | -0.86 | -143.2 |
-| PW009 | -0.37 | -4.66 | -0.35 | -240.0 |
-| PW010 | -3.06 | -7.90 | -0.35 | -240.0 |
-| PW011 | 6.63 | -1.40 | -0.35 | -113.4 |
-| PW012 | 3.75 | +0.00 | -0.60 | -126.7 |
-| PW013 | -3.79 | -2.00 | -0.35 | -240.0 |
-| PW014 | -3.33 | +0.00 | -2.80 | -240.0 |
-| PW015 | 3.09 | +0.00 | -3.31 | -130.4 |
-| PW016 | 0.18 | -3.37 | -0.35 | -240.0 |
-| PW017 | 6.29 | +0.00 | -3.88 | -240.0 |
-| PW018 | 2.33 | +0.00 | -4.36 | -117.0 |
-| PW019 | 0.80 | -2.92 | -0.35 | -240.0 |
-| PW020 | -0.47 | -0.00 | -1.47 | -226.0 |
+| PW001 | 1.94 | -0.00 | -2.74 | -240.0 |
+| PW002 | 3.98 | +0.00 | -4.62 | -163.2 |
+| PW003 | 5.09 | +0.00 | -3.12 | -240.0 |
+| PW004 | 1.72 | -0.19 | -0.35 | -240.0 |
+| PW005 | 4.04 | +0.00 | -4.02 | -240.0 |
+| PW006 | 10.16 | -0.00 | -0.77 | -240.0 |
+| PW007 | 4.89 | -0.00 | -3.75 | -158.5 |
+| PW008 | 7.28 | -0.00 | -1.99 | -133.8 |
+| PW009 | 1.55 | -0.46 | -0.35 | -240.0 |
+| PW010 | 2.27 | +0.00 | -3.97 | -240.0 |
+| PW011 | 5.28 | -1.13 | -0.35 | -119.1 |
+| PW012 | 0.84 | +0.00 | -4.99 | -125.5 |
+| PW013 | 0.25 | -0.00 | -2.39 | -240.0 |
+| PW014 | 0.19 | -0.00 | -3.91 | -240.0 |
+| PW015 | 3.77 | -0.00 | -2.55 | -126.2 |
+| PW016 | 1.22 | -0.09 | -0.35 | -240.0 |
+| PW017 | 4.09 | -0.00 | -3.92 | -240.0 |
+| PW018 | 2.32 | +0.00 | -8.13 | -100.2 |
+| PW019 | 1.44 | -1.32 | -0.35 | -240.0 |
+| PW020 | -1.82 | -0.00 | -3.86 | -222.8 |
 
 ## PW001 — Boom Bap / Basement Parallel Punch
 

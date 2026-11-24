@@ -11,6 +11,7 @@ struct Recipe
 };
 const std::vector<Recipe>& recipes();
 juce::String bankSha256();
+juce::String dspSourceSha256(); // build-time identity; independent of checkout path/line endings
 // All native defaults are applied before authored physical parameters. Fails
 // atomically; no unknown key, scene event or unsupported topology is discarded.
 bool makeProject(const Recipe&, FxProjectState&, juce::String& error,bool calibrated=true);

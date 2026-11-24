@@ -8,6 +8,7 @@ import collections
 import hashlib
 import json
 import sys
+from dsp_identity import identity as dsp_identity
 
 ROOT = Path(__file__).resolve().parents[2]
 def digest(path):
@@ -49,7 +50,25 @@ def finish(folder, material, embed=False):
         if changed!={ceiling} or after[ceiling]!=repair['ceiling_after_db'] or abs(repair['ceiling_before_db']-repair['ceiling_after_db']-.05)>1e-9:
             raise ValueError('Repair changed more than the final ceiling')
     executable_hashes=sorted({r['executable_sha256'] for r in rows})
+    current_dsp=dsp_identity()['sha256']
+    verified=0;verification_executables=set()
     for row in rows:
+        proof_file=folder/'verification'/f"{row['id']}.json"
+        if not proof_file.exists():
+            continue
+        proof=json.loads(proof_file.read_text(encoding='utf-8-sig'))
+        if (proof.get('id')!=row['id'] or not proof.get('exact')
+            or proof.get('dsp_source_sha256')!=current_dsp
+            or proof.get('calibration_receipt_sha256')!=digest(folder/'records'/f"{row['id']}.json")
+            or proof.get('calibrated_executable_sha256')!=row['executable_sha256']
+            or proof.get('input_pcm_sha256')!=row['input_pcm_sha256']
+            or proof.get('output_pcm_sha256')!=row['output_pcm_sha256']):
+            raise ValueError('Invalid/stale current-DSP proof: '+row['id'])
+        row['canonical_reverification']=proof;verified+=1
+        verification_executables.add(proof['verification_executable_sha256'])
+    for row in rows:
+        if row.get('calibration_search')!='bounded-bracket-v2':
+            raise ValueError('Wrong calibration search method: '+row['id'])
         if row['bank_sha256']!=bank_hash or row['material_manifest_sha256']!=manifest_hash:
             raise ValueError(f"Stale record {row['id']}")
         if row['name']!=definitions[row['id']]['name'] or len(row['checks'])!=8:
@@ -67,10 +86,12 @@ def finish(folder, material, embed=False):
         compressor_canonical_targets=sum(len(r['dynamics']) for r in rows),compressor_tuning_failures=dynamics,
         owner_intent_verdicts='pending; each recipe has its own intent and rejection check',
         owner_listening='pending; local dry/processed/loudness-matched WAVs exist for all recipes',
-        host_validators='deferred to the owner VST build and host check')
-    result=dict(format='HamloRackBankReceipt',method='RACK_BANK_METHOD.md / material-v2',sample_rate=48000,
+        host_validators='See CURRENT_VERIFICATION.json for final VST artifact checks; owner FL Studio session remains pending')
+    summary['current_dsp_canonical_exact']=verified
+    result=dict(format='HamloRackBankReceipt',method=f'PHASE_LEVEL_METHOD.md / {material.name} / bounded-bracket-v2',sample_rate=48000,
         channels=2,prepare_block=256,host_block=127,bank_sha256=bank_hash,
         material_manifest_sha256=manifest_hash,executable_sha256=executable_hashes,
+        dsp_source_sha256=current_dsp,verification_executable_sha256=sorted(verification_executables),
         native_sources=json.loads((ROOT/'Assets/Presets/HamloRack/Design/native-contract.json').read_text(encoding='utf-8'))['sources'],
         material=source_notes,summary=summary,presets=rows)
     (folder/'aggregate.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
@@ -95,11 +116,14 @@ def finish(folder, material, embed=False):
     (folder/'report.md').write_text('\n'.join(lines),encoding='utf-8')
     print(json.dumps(summary,indent=2))
     if embed:
+        if verified!=250 or len(verification_executables)!=1:
+            raise ValueError('Require all 250 exact canonical proofs from one current-DSP verifier before embedding')
         if safety or dynamics:
             raise ValueError('Resolve numerical safety / compressor tuning failures before embedding')
         if any('audition' not in r for r in rows):
             raise ValueError('Prepare safe matched audition pairs before embedding')
-        calibration=dict(format='HamloRackCalibration',version=2,status='numerically_calibrated; owner audition pending',
+        calibration=dict(format='HamloRackCalibration',version=3,status='numerically_calibrated; current DSP verified; owner audition pending',
+            dsp_source_sha256=current_dsp,verification_executable_sha256=sorted(verification_executables),
             bank_sha256=bank_hash,material_manifest_sha256=manifest_hash,
             laboratory_executable_sha256=executable_hashes,entries={r['id']:r['calibration'] for r in rows})
         destination=ROOT/'Assets/Presets/HamloRack/calibration.json'

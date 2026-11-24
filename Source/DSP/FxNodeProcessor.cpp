@@ -256,6 +256,26 @@ void FxNodeProcessor::runInsert(Slot& slot, float* const* channels, int numChann
 void FxNodeProcessor::process(const float* const* bandPtr, const float* presence, float* const* out, int numChannels, int numSamples,
                               const Transport& transport, int blockOffset) noexcept
 {
+    bool automated=false;
+    for(const auto& s:slots)automated=automated||(s.inChain&&s.params.nativeValues.macroCount>0);
+    if(!automated){processChunk(bandPtr,presence,out,numChannels,numSamples,transport,blockOffset);return;}
+    for(int at=0;at<numSamples;){
+        const auto position=transport.controls.position+static_cast<std::uint64_t>(blockOffset+at);
+        const int n=std::min(numSamples-at,control::kInterval-static_cast<int>(position%control::kInterval));
+        for(auto& s:slots)if(s.inChain&&s.nativeRuntime){auto& v=s.params.nativeValues;
+            for(int i=0;i<v.macroCount;++i){const auto& m=v.macros[static_cast<size_t>(i)];
+                if(const auto* curve=transport.controls.macros[static_cast<size_t>(m.macro)])
+                    s.nativeRuntime->applyMacro(v,m.parameter,m.minimum+(m.maximum-m.minimum)*curve[transport.controls.offset+blockOffset+at]);
+            }
+        }
+        const float* band[2]{};float* output[2]{};
+        for(int ch=0;ch<numChannels;++ch){band[ch]=bandPtr[ch]+at;output[ch]=out[ch]+at;}
+        processChunk(band,presence+at,output,numChannels,n,transport,blockOffset+at);at+=n;
+    }
+}
+void FxNodeProcessor::processChunk(const float* const* bandPtr, const float* presence, float* const* out, int numChannels, int numSamples,
+                              const Transport& transport, int blockOffset) noexcept
+{
     if (!running)
         return;
 
@@ -333,10 +353,12 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
 
     const bool nodeClosed = !gate.isRamping() && gate.value() == 0.0;
     bool sendRunning = false;
+    int precedingLatency=0;
     for (auto& slot : slots)
     {
         if (!slot.inChain)
             continue;
+        const int keyDelay=precedingLatency;precedingLatency+=slot.latency;
 
         if(slot.params.engineRevision!=0)
         {
@@ -360,6 +382,8 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
                 for(int ch=0;ch<workChannels;++ch)workPtr[ch][i]=input*chainPtr[ch][i];
             }
             auto t=transport;
+            t.controls.offset+=blockOffset;t.controls.position+=static_cast<std::uint64_t>(blockOffset);
+            t.controls.latency+=keyDelay;
             if(t.hasPosition)t.ppqAtBlockStart+=blockOffset*t.bpm/(60.0*sampleRate);
             if(slot.nativeRight&&workChannels==2)
             {
@@ -372,11 +396,13 @@ void FxNodeProcessor::process(const float* const* bandPtr, const float* presence
                         else if(routing==3)workPtr[0][i]=r;
                         if(slot.params.nativeValues.faderSwap)std::swap(workPtr[0][i],workPtr[1][i]);
                     }
-                send=slot.nativeRuntime->process(workPtr,1,numSamples,slot.params.nativeValues,t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
-                slot.nativeRight->process(workPtr+1,1,numSamples,slot.params.nativeValues,t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
+                auto left=t.controls,right=t.controls;
+                if(left.keyChannels>0){left.keyChannels=1;right.key[0]=right.key[static_cast<size_t>(right.keyChannels>1?1:0)];right.keyChannels=1;}
+                send=slot.nativeRuntime->process(workPtr,1,numSamples,slot.params.nativeValues,t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart,left);
+                slot.nativeRight->process(workPtr+1,1,numSamples,slot.params.nativeValues,t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart,right);
             }
             else send=slot.nativeRuntime->process(workPtr,workChannels,numSamples,slot.params.nativeValues,
-                t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart);
+                t.bpm,t.playing,t.hasPosition,t.ppqAtBlockStart,t.controls);
             // Mirror the native 20 ms bypass ramp in the extra dry reference.
             // Otherwise a wet-only plug-in returning dry during bypass would
             // briefly double it (or drop it when treated as an insert at once).

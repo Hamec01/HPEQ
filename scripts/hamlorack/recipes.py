@@ -153,6 +153,13 @@ def recipes():
     out=[]
     def bank(name,bpm):
         def add(group,title,intent,reject,eqs=(),chain=(),regions=(),output="insert"):
+            chain=deepcopy(list(chain))
+            if group=="Master":
+                # Keep the existing <= -1 dBTP gate. The previous bank needed
+                # individual -0.05 dB ceiling repairs for independent-meter
+                # overshoot; author that margin before this calibration run.
+                assert chain[-1]["plugin"]=="HamloRedWall"
+                chain[-1]["parameters"]["ceilingDb"]=-1.05
             n=len(out)+1
             r=dict(id=f"HR{n:03d}",bank=name,category=group,name=title,bpm=bpm,
                 source=MATERIAL[group],intent=intent,reject_if=reject,eq=list(eqs),chain=list(chain),

@@ -113,6 +113,7 @@ constexpr int kCeilingDb = 0, kLimiterReleaseMs = 1, kLookaheadMs = 2,
 // a free-running sample counter.
 struct Transport
 {
+    control::Frame controls;
     double bpm = 120.0;
     bool playing = false;
     bool hasPosition = false;

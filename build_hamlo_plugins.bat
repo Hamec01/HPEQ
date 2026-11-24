@@ -339,6 +339,10 @@ if not exist "%PLUGIN_BUILD%\CMakeCache.txt" (
     if errorlevel 1 exit /b 1
 )
 
+rem Some pinned standalone projects do not order Shared after generated BinaryData.h.
+rem Finish their asset target first, without changing the pinned native payload.
+cmake --build "%PLUGIN_BUILD%" --config Release --parallel 4 --target "%PLUGIN%_Assets" -- /p:CL_MPCount=2
+if errorlevel 1 exit /b 1
 cmake --build "%PLUGIN_BUILD%" --config Release --parallel --target "%PLUGIN%_VST3"
 if errorlevel 1 exit /b 1
 

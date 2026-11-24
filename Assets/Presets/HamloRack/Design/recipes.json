@@ -5021,7 +5021,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 130,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -5134,7 +5134,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2.5,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 145,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -5231,7 +5231,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -1,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 180,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -5335,7 +5335,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2.2,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 120,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -10527,7 +10527,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2.2,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 90,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -10646,7 +10646,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -1.8,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 125,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -10759,7 +10759,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2.5,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 95,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -10856,7 +10856,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -1.5,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 105,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -16227,7 +16227,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2.4,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 100,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -16340,7 +16340,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -1.8,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 145,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -16444,7 +16444,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -1.6,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 150,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -16565,7 +16565,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2.8,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 85,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -21913,7 +21913,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2.2,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 75,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -22017,7 +22017,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -1.7,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 110,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -22138,7 +22138,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2.3,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 70,
             "autoRelease": 0,
             "lookaheadMs": 2,
@@ -22242,7 +22242,7 @@
           "parameters": {
             "engine": 1,
             "thresholdDb": -2,
-            "ceilingDb": -1,
+            "ceilingDb": -1.05,
             "releaseMs": 85,
             "autoRelease": 0,
             "lookaheadMs": 2,
