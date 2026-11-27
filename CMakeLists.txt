@@ -77,7 +77,8 @@ juce_add_plugin(HPEQ
     PLUGIN_MANUFACTURER_CODE BBLB
     PLUGIN_CODE HpEq
     VST3_CATEGORIES Fx EQ
-    FORMATS VST3
+    # Standalone: HamloRack as an app (audio device in -> rack -> out), for demos and live input checks
+    FORMATS VST3 Standalone
     PRODUCT_NAME "HamloRack")
 
 # JUCE 8.0.12 omits Info.txt from the rcfile command's dependencies. Without
